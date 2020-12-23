@@ -1,0 +1,127 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.bunbeauty.fooddeleveryadmin"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src\\main\\assets'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.arr"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.21"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintlayoutVersion"
+    implementation "no.nordicsemi.android.support.v18:scanner:$rootProject.scannerVersion"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.legacySupportVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.appcompatV7Version"
+    implementation "com.android.support:design:$rootProject.designVersion"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
+    androidTestImplementation "androidx.navigation:navigation-testing:2.3.2"
+
+    testImplementation "io.mockk:mockk:$rootProject.mockVerchion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVerchion"
+    androidTestImplementation "androidx.test:rules:$rootProject.rulesVerchion"
+
+    testImplementation "junit:junit:$rootProject.junitVerchion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testJunitVerchion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVerchion"
+
+    //Optional -- Mockito framework
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVerchion"
+    testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVerchion"
+
+    //Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+
+    //Dagger 2
+    implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+
+    //Сoroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.corountinesVersion"
+
+    //Design
+    implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+    implementation "com.miguelcatalan:materialsearchview:$rootProject.materialSerachVersion"
+    implementation "com.github.Triggertrap:SeekArc:$rootProject.seekArcVersion"
+
+    //Database
+    implementation "androidx.room:room-runtime:$rootProject.roomDatabaseVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomDatabaseVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomDatabaseVersion"
+
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:$rootProject.datastoreVersion"
+
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:$rootProject.workManagerVersion"
+    implementation "androidx.work:work-gcm:$rootProject.workManagerVersion"
+    androidTestImplementation "androidx.work:work-testing:$rootProject.workManagerVersion"
+
+    //Joda time
+    implementation "joda-time:joda-time:$rootProject.jodaVersion"
+
+    //picasso
+    implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseVersion")
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database'
+}
