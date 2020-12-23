@@ -40,34 +40,34 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
     override fun updateClick() {
         val currentOrder = ChangeStatusDialogArgs.fromBundle(requireArguments()).order
 
-        if (viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked && currentOrder.orderStatus == OrderStatus.NotAccepted) {
+        if (viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked && currentOrder.orderStatus == OrderStatus.NOT_ACCEPTED) {
             dismiss()
             return
         }
-        if (viewDataBinding.dialogChangeStatusRbPreparing.isChecked && currentOrder.orderStatus == OrderStatus.Preparing) {
+        if (viewDataBinding.dialogChangeStatusRbPreparing.isChecked && currentOrder.orderStatus == OrderStatus.PREPARING) {
             dismiss()
             return
         }
-        if (viewDataBinding.dialogChangeStatusRbSentOut.isChecked && currentOrder.orderStatus == OrderStatus.SentOut) {
+        if (viewDataBinding.dialogChangeStatusRbSentOut.isChecked && currentOrder.orderStatus == OrderStatus.SENT_OUT) {
             dismiss()
             return
         }
-        if (viewDataBinding.dialogChangeStatusRbDelivered.isChecked && currentOrder.orderStatus == OrderStatus.Delivered) {
+        if (viewDataBinding.dialogChangeStatusRbDelivered.isChecked && currentOrder.orderStatus == OrderStatus.DONE) {
             dismiss()
             return
         }
 
         if (viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked)
-            currentOrder.orderStatus = OrderStatus.NotAccepted
+            currentOrder.orderStatus = OrderStatus.NOT_ACCEPTED
 
         if (viewDataBinding.dialogChangeStatusRbPreparing.isChecked)
-            currentOrder.orderStatus = OrderStatus.Preparing
+            currentOrder.orderStatus = OrderStatus.PREPARING
 
         if (viewDataBinding.dialogChangeStatusRbSentOut.isChecked)
-            currentOrder.orderStatus = OrderStatus.SentOut
+            currentOrder.orderStatus = OrderStatus.SENT_OUT
 
         if (viewDataBinding.dialogChangeStatusRbDelivered.isChecked)
-            currentOrder.orderStatus = OrderStatus.Delivered
+            currentOrder.orderStatus = OrderStatus.DONE
 
         viewModel.changeStatus(currentOrder)
     }

@@ -25,6 +25,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/element_order"
             bind:addItemToTop="@{viewModel.addOrderWithCartProducts}"
             bind:items="@{viewModel.addOrderWithCartProductList}"
             bind:replaceItem="@{viewModel.replaceOrderWithCartProducts}" />
