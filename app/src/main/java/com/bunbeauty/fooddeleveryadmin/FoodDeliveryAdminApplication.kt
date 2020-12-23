@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeleveryadmin
 
 import android.app.Application
 import com.bunbeauty.fooddeleveryadmin.di.components.AppComponent
+import com.bunbeauty.fooddeleveryadmin.di.components.DaggerAppComponent
 
 class FoodDeliveryAdminApplication: Application() {
 
