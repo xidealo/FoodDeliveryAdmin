@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeleveryadmin.di.components
 
 import androidx.lifecycle.ViewModelStoreOwner
-import com.bunbeauty.fooddeleveryadmin.MainActivity
+import com.bunbeauty.fooddeleveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeleveryadmin.di.modules.ViewModelModule
 
 import dagger.BindsInstance
