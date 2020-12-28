@@ -25,7 +25,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_user">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_login_et_login"
@@ -38,14 +39,16 @@
             style="@style/MaterialInputLayout"
             android:layout_margin="@dimen/large_margin"
             android:hint="@string/hint_login_password"
+            app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_login_til_login">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_login_til_login"
+            app:startIconDrawable="@drawable/ic_locked">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_login_et_password"
                 style="@style/MaterialInput"
-                android:inputType="textCapSentences" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
