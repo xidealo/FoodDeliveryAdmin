@@ -36,6 +36,7 @@
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="cornerRadius">0dp</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:layout_margin">@dimen/small_margin</item>
     </style>
 

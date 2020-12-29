@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -51,13 +52,16 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fragment_creation_order_btn_order"
+        <com.bunbeauty.fooddeliveryadmin.ui.view.ProgressButton
+            android:id="@+id/fragment_login_btn_login"
             style="@style/MainButton"
+            android:onClick="@{()->viewModel.loginClick()}"
             android:text="@string/action_login_enter"
+            android:layout_margin="@dimen/large_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            bind:isLoading="@{viewModel.isLoadingButton}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

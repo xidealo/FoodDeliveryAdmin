@@ -19,4 +19,11 @@
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
 
+    <!--ERRORS-->
+    <string name="enter_user_name_error">Enter username</string>
+    <string name="enter_user_password_error">Enter password</string>
+    <string name="enter_data_correct_error">Enter correct data</string>
+    <string name="enter_description_error">Enter description</string>
+    <string name="enter_not_found_error">Not found</string>
+
 </resources>
