@@ -13,5 +13,6 @@ data class Company(
         const val COMPANY: String = "company"
         const val LOGIN: String = "login"
         const val PASSWORD: String = "password"
+        const val TOKEN: String = "token"
     }
 }

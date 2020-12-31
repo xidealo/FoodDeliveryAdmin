@@ -1,13 +1,17 @@
 package com.bunbeauty.fooddeliveryadmin.ui.log_in
 
 import android.os.Bundle
+import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginFragmentDirections.actionLoginFragmentToOrdersFragment
 import com.bunbeauty.fooddeliveryadmin.view_model.LoginViewModel
 import java.lang.ref.WeakReference
+import java.util.*
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), LoginNavigator {
 
@@ -19,9 +23,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
         viewModelComponent.inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.navigator = WeakReference(this)
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.tokenLiveData.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                viewModel.isLoadingButton.set(false)
+            } else {
+                goToOrders()
+            }
+        }
     }
 
     override fun login() {
@@ -40,9 +51,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
         }
 
         viewModel.login(
-            viewDataBinding.fragmentLoginEtLogin.text.toString(),
-            viewDataBinding.fragmentLoginEtPassword.text.toString()
+            viewDataBinding.fragmentLoginEtLogin.text.toString().toLowerCase(Locale.ROOT),
+            viewDataBinding.fragmentLoginEtPassword.text.toString().toLowerCase(Locale.ROOT)
         )
+    }
+
+    fun goToOrders() {
+        findNavController().navigate(actionLoginFragmentToOrdersFragment())
     }
 
 }
