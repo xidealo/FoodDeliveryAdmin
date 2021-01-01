@@ -1,16 +1,15 @@
 package com.bunbeauty.fooddeliveryadmin.data.api.firebase
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
+import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
 import com.bunbeauty.fooddeliveryadmin.data.model.Company
+import com.bunbeauty.fooddeliveryadmin.data.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
+import com.google.firebase.database.*
+import kotlinx.coroutines.*
 import java.math.BigInteger
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -27,17 +26,16 @@ class ApiRepository @Inject constructor(
 
     override fun login(login: String, password: String) {
         val query = firebaseInstance.getReference(Company.COMPANY)
-            .orderByChild(Company.LOGIN).equalTo(login)
+            .child(login)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(companysSnapshot: DataSnapshot) {
+            override fun onDataChange(companySnapshot: DataSnapshot) {
                 launch {
                     val passwordHash = md5(password)
 
-                    if (companysSnapshot.childrenCount == 0L) {
+                    if (companySnapshot.childrenCount == 0L) {
                         return@launch
                     }
 
-                    val companySnapshot = companysSnapshot.children.iterator().next()
                     val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
 
                     if (passwordHash == companyPassword) {
@@ -56,9 +54,56 @@ class ApiRepository @Inject constructor(
 
     }
 
+    override fun getOrderWithCartProducts(login: String): LiveData<List<OrderWithCartProducts>> {
+        val ordersRef = firebaseInstance.getReference(Order.ORDERS)
+            .child(login)
+        val ordersWithCartProductsLiveData = MutableLiveData<List<OrderWithCartProducts>>()
+        ordersRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(ordersSnapshot: DataSnapshot) {
+                launch {
+                    val ordersWithCartProductsList = arrayListOf<OrderWithCartProducts>()
+                    for (orderSnapshot in ordersSnapshot.children) {
+                        ordersWithCartProductsList.add(
+                            getOrderWithCartProductsFromSnapshot(
+                                orderSnapshot
+                            )
+                        )
+                    }
+                    withContext(Dispatchers.Main) {
+                        ordersWithCartProductsLiveData.value = ordersWithCartProductsList
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+        return ordersWithCartProductsLiveData
+    }
+
     fun md5(input: String): String {
         val md = MessageDigest.getInstance("MD5")
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    }
+
+    fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): OrderWithCartProducts {
+        val orderWithCartProducts = OrderWithCartProducts()
+        orderWithCartProducts.order.street = orderSnapshot.child(Order.STREET).value as String
+
+
+        val cartProducts = mutableListOf<CartProduct>()
+        for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {
+            cartProducts.add(
+                CartProduct(
+                    count = (cartProductSnapshot.child(CartProduct.COUNT).value as Long).toInt(),
+                    menuProduct = MenuProduct(
+                        name = cartProductSnapshot.child(MenuProduct.NAME).value as String
+                    )
+                )
+            )
+        }
+
+        orderWithCartProducts.cartProducts = cartProducts
+        return orderWithCartProducts
     }
 
 }

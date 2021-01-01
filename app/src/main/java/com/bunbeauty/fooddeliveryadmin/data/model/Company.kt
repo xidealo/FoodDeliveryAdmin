@@ -10,8 +10,7 @@ data class Company(
 ) : BaseModel() {
 
     companion object {
-        const val COMPANY: String = "company"
-        const val LOGIN: String = "login"
+        const val COMPANY: String = "COMPANY"
         const val PASSWORD: String = "password"
         const val TOKEN: String = "token"
     }

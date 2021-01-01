@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
+import com.bunbeauty.fooddeliveryadmin.data.model.Time
 import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 
@@ -23,6 +24,10 @@ data class Order(
     override var id: Long = 0,
     override var uuid: String = "",
 ) : BaseModel(), Parcelable {
+    fun getTimeHHMM(): String {
+        val newTime = Time(time, 3)
+        return newTime.toStringTimeHHMM()
+    }
 
     fun getAddress() = "Доставка на улицу $street дом $house контактный телефон $phone"
     fun getUuidCode() = "Код заказа $uuid"
