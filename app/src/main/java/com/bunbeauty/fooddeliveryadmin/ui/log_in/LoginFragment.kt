@@ -28,7 +28,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
         super.onViewCreated(view, savedInstanceState)
         viewModel.tokenLiveData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
-                viewModel.isLoadingButton.set(false)
+                viewModel.isLoading.set(false)
             } else {
                 goToOrders()
             }
@@ -39,14 +39,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
         if (!viewModel.isCorrectUsername(viewDataBinding.fragmentLoginEtLogin.text.toString())) {
             viewDataBinding.fragmentLoginEtLogin.error =
                 resources.getString(R.string.enter_user_name_error)
-            viewDataBinding.fragmentLoginBtnLogin.hideLoading()
             return
         }
 
         if (!viewModel.isCorrectPassword(viewDataBinding.fragmentLoginEtPassword.text.toString())) {
             viewDataBinding.fragmentLoginEtPassword.error =
                 resources.getString(R.string.enter_user_password_error)
-            viewDataBinding.fragmentLoginBtnLogin.hideLoading()
             return
         }
 

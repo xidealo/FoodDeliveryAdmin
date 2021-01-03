@@ -15,16 +15,16 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginNavigator>() {
     override var navigator: WeakReference<LoginNavigator>? = null
 
-    val isLoadingButton = ObservableField(false)
+    val isLoading = ObservableField(true)
     val tokenLiveData = iDataStoreHelper.token.asLiveData()
 
     fun login(login: String, password: String) {
+        isLoading.set(true)
         apiRepository.login(login, password)
     }
 
     fun isCorrectUsername(username: String): Boolean {
         if (username.isEmpty()) {
-            isLoadingButton.set(false)
             return false
         }
         return true
@@ -32,7 +32,6 @@ class LoginViewModel @Inject constructor(
 
     fun isCorrectPassword(password: String): Boolean {
         if (password.isEmpty()) {
-            isLoadingButton.set(false)
             return false
         }
         return true
