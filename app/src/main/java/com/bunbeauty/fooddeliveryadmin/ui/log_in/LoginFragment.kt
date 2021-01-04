@@ -9,6 +9,7 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginFragmentDirections.actionLoginFragmentToOrdersFragment
+import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.view_model.LoginViewModel
 import java.lang.ref.WeakReference
 import java.util.*
@@ -38,24 +39,29 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
     override fun login() {
         if (!viewModel.isCorrectUsername(viewDataBinding.fragmentLoginEtLogin.text.toString())) {
             viewDataBinding.fragmentLoginEtLogin.error =
-                resources.getString(R.string.enter_user_name_error)
+                resources.getString(R.string.error_login_enter_user_name)
             return
         }
 
         if (!viewModel.isCorrectPassword(viewDataBinding.fragmentLoginEtPassword.text.toString())) {
             viewDataBinding.fragmentLoginEtPassword.error =
-                resources.getString(R.string.enter_user_password_error)
+                resources.getString(R.string.error_login_enter_user_password)
             return
         }
 
-        viewModel.login(
-            viewDataBinding.fragmentLoginEtLogin.text.toString().toLowerCase(Locale.ROOT),
-            viewDataBinding.fragmentLoginEtPassword.text.toString().toLowerCase(Locale.ROOT)
-        )
+        viewModel.isLoading.set(true)
+        viewModel.apiRepository.login(
+            viewDataBinding.fragmentLoginEtLogin.text.toString().toLowerCase(Locale.ROOT).trim(),
+            viewDataBinding.fragmentLoginEtPassword.text.toString().toLowerCase(Locale.ROOT).trim()
+        ).observe(viewLifecycleOwner) {
+            if (!it) {
+                viewModel.isLoading.set(false)
+                (activity as MainActivity).showError(resources.getString(R.string.error_login_authorization))
+            }
+        }
     }
 
-    fun goToOrders() {
+    private fun goToOrders() {
         findNavController().navigate(actionLoginFragmentToOrdersFragment())
     }
-
 }

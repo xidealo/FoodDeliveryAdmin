@@ -11,4 +11,7 @@ interface IDataStoreHelper {
      */
     val token: Flow<String>
     suspend fun saveToken(token: String)
+
+
+    suspend fun clearCache()
 }

@@ -13,17 +13,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
-
-    <!--ERRORS-->
-    <string name="enter_user_name_error">Enter username</string>
-    <string name="enter_user_password_error">Enter password</string>
-    <string name="enter_data_correct_error">Enter correct data</string>
-    <string name="enter_description_error">Enter description</string>
-    <string name="enter_not_found_error">Not found</string>
+    <string name="error_login_enter_user_name">Введите логин</string>
+    <string name="error_login_enter_user_password">Введите пароль</string>
+    <string name="error_login_authorization">Неправильный логин или пароль</string>
 
 </resources>

@@ -24,15 +24,20 @@ class ApiRepository @Inject constructor(
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.IO
 
-    override fun login(login: String, password: String) {
+    override fun login(login: String, password: String): LiveData<Boolean> {
         val query = firebaseInstance.getReference(Company.COMPANY)
             .child(login)
+        val isAuthorized = MutableLiveData<Boolean>()
+
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(companySnapshot: DataSnapshot) {
                 launch {
                     val passwordHash = md5(password)
 
                     if (companySnapshot.childrenCount == 0L) {
+                        withContext(Dispatchers.Main) {
+                            isAuthorized.value = false
+                        }
                         return@launch
                     }
 
@@ -40,14 +45,21 @@ class ApiRepository @Inject constructor(
 
                     if (passwordHash == companyPassword) {
                         iDataStoreHelper.saveToken(companySnapshot.child(Company.TOKEN).value as String)
+                        withContext(Dispatchers.Main) {
+                            isAuthorized.value = true
+                        }
                     } else {
-                        //set false
+                        withContext(Dispatchers.Main) {
+                            isAuthorized.value = false
+                        }
                     }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+
+        return isAuthorized
     }
 
     override fun updateOrder(order: Order) {
@@ -88,7 +100,6 @@ class ApiRepository @Inject constructor(
     fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): OrderWithCartProducts {
         val orderWithCartProducts = OrderWithCartProducts()
         orderWithCartProducts.order.street = orderSnapshot.child(Order.STREET).value as String
-
 
         val cartProducts = mutableListOf<CartProduct>()
         for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {
