@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
 import javax.inject.Inject
 
-class OrdersAdapter @Inject constructor() :
+class OrdersAdapter @Inject constructor(private val context: Context) :
     BaseAdapter<OrdersAdapter.OrderViewHolder, OrderWithCartProducts>() {
 
     lateinit var ordersNavigator: OrdersNavigator
@@ -23,6 +24,7 @@ class OrdersAdapter @Inject constructor() :
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, i: Int) {
+        holder.binding?.context = context
         holder.setListener(itemList[i])
         holder.binding?.orderWithCartProducts = itemList[i]
     }

@@ -11,6 +11,8 @@
             name="context"
             type="android.content.Context" />
 
+        <import type="androidx.core.content.ContextCompat" />
+
         <variable
             name="orderWithCartProducts"
             type="com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts" />
@@ -19,7 +21,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
         style="@style/DefaultMaterialCard"
-        android:backgroundTint="@{orderWithCartProducts.order.getOrderStatusColor()">
+        android:backgroundTint="@{ContextCompat.getColor(context, orderWithCartProducts.order.getOrderStatusColor(orderWithCartProducts.order))}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

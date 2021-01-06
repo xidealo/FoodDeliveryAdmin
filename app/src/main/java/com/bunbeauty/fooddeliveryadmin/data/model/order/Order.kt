@@ -46,12 +46,12 @@ data class Order(
 
     fun getUuidCode() = "Код заказа $uuid"
 
-    fun getOrderStatusColor(order: Order, context: Context): Int {
+    fun getOrderStatusColor(order: Order): Int {
         return when (order.orderStatus) {
-            OrderStatus.NotAccepted -> ContextCompat.getColor(context, R.color.notAcceptedColor)
-            OrderStatus.Preparing -> ContextCompat.getColor(context, R.color.preparingColor)
-            OrderStatus.SentOut -> ContextCompat.getColor(context, R.color.sentOutColor)
-            OrderStatus.Delivered -> ContextCompat.getColor(context, R.color.deliveredColor)
+            OrderStatus.NotAccepted -> R.color.notAcceptedColor
+            OrderStatus.Preparing -> R.color.preparingColor
+            OrderStatus.SentOut -> R.color.sentOutColor
+            OrderStatus.Delivered -> R.color.deliveredColor
         }
     }
 
