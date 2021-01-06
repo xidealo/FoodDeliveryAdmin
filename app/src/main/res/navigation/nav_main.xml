@@ -29,6 +29,10 @@
         android:id="@+id/changeStatusDialog"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusDialog"
         android:label="ChangeStatusDialog"
-        tools:layout="@layout/dialog_change_status"/>
+        tools:layout="@layout/dialog_change_status">
+        <argument
+            android:name="Order"
+            app:argType="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
+    </dialog>
 
 </navigation>

@@ -24,8 +24,8 @@ data class OrderWithCartProducts(
         var structure = ""
 
         for (cartProduct in cartProducts)
-            structure += "${cartProduct.menuProduct.name} ${cartProduct.count}шт.; "
+            structure += "${cartProduct.menuProduct.name} ${cartProduct.count}шт.;\n"
 
-        return "В заказе: $structure"
+        return "В заказе:\n$structure"
     }
 }

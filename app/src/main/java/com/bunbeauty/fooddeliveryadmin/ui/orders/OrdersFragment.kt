@@ -37,6 +37,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
     }
 
     override fun showChangeStatus(orderWithCartProducts: OrderWithCartProducts) {
-        findNavController().navigate(actionOrdersFragmentToChangeStatusDialog())
+        findNavController().navigate(actionOrdersFragmentToChangeStatusDialog(orderWithCartProducts.order))
     }
 }

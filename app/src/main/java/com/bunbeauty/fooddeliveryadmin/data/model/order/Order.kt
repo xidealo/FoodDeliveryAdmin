@@ -1,8 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.data.model.order
 
+import android.content.Context
 import android.os.Parcelable
+import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
 import com.bunbeauty.fooddeliveryadmin.data.model.Time
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
@@ -33,20 +36,24 @@ data class Order(
 
     fun getAddress() =
         "Доставка на улицу:$street\n" +
-                "Дом:$house\n" +
-                "Квартира:$flat\n" +
-                "Подъезд:$entrance\n" +
-                "Домофон:$intercom\n" +
+                "Дом:$house " +
+                "Квартира:$flat " +
+                "Подъезд:$entrance " +
+                "Домофон:$intercom " +
                 "Этаж:$floor\n" +
                 "Комментарий:$comment\n" +
                 "Контактный телефон:$phone"
 
     fun getUuidCode() = "Код заказа $uuid"
 
-    fun getOrderStatus(): String {
-        return ""
+    fun getOrderStatusColor(order: Order, context: Context): Int {
+        return when (order.orderStatus) {
+            OrderStatus.NotAccepted -> ContextCompat.getColor(context, R.color.notAcceptedColor)
+            OrderStatus.Preparing -> ContextCompat.getColor(context, R.color.preparingColor)
+            OrderStatus.SentOut -> ContextCompat.getColor(context, R.color.sentOutColor)
+            OrderStatus.Delivered -> ContextCompat.getColor(context, R.color.deliveredColor)
+        }
     }
-
 
     companion object {
         const val ORDERS = "ORDERS"

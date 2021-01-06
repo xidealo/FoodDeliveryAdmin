@@ -18,7 +18,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
-        style="@style/DefaultMaterialCard">
+        style="@style/DefaultMaterialCard"
+        android:backgroundTint="@{orderWithCartProducts.order.getOrderStatusColor()">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

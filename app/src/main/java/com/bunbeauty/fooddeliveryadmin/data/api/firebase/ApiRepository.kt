@@ -2,12 +2,14 @@ package com.bunbeauty.fooddeliveryadmin.data.api.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
 import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
 import com.bunbeauty.fooddeliveryadmin.data.model.Company
 import com.bunbeauty.fooddeliveryadmin.data.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
+import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import com.google.firebase.database.*
 import kotlinx.coroutines.*
 import java.math.BigInteger
@@ -63,7 +65,22 @@ class ApiRepository @Inject constructor(
     }
 
     override fun updateOrder(order: Order) {
+        val orderRef = firebaseInstance
+            .getReference(Order.ORDERS)
+            .child(APP_ID)
+            .child(order.uuid)
 
+        val orderItems = HashMap<String, Any>()
+        orderItems[Order.STREET] = order.street
+        orderItems[Order.HOUSE] = order.house
+        orderItems[Order.FLAT] = order.flat
+        orderItems[Order.ENTRANCE] = order.entrance
+        orderItems[Order.INTERCOM] = order.intercom
+        orderItems[Order.FLOOR] = order.floor
+        orderItems[Order.COMMENT] = order.comment
+        orderItems[Order.PHONE] = order.phone
+        orderItems[Order.ORDER_STATUS] = order.orderStatus
+        orderRef.updateChildren(orderItems)
     }
 
     override fun getOrderWithCartProducts(login: String): LiveData<List<OrderWithCartProducts>> {
@@ -108,6 +125,8 @@ class ApiRepository @Inject constructor(
         orderWithCartProducts.order.floor = orderSnapshot.child(Order.FLOOR).value as String
         orderWithCartProducts.order.comment = orderSnapshot.child(Order.COMMENT).value as String
         orderWithCartProducts.order.phone = orderSnapshot.child(Order.PHONE).value as String
+        orderWithCartProducts.order.orderStatus =
+            OrderStatus.valueOf(orderSnapshot.child(Order.ORDER_STATUS).value as String)
 
         val cartProducts = mutableListOf<CartProduct>()
         for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {

@@ -8,6 +8,11 @@
     <color name="white" tools:override="true">#FFFFFF</color>
     <color name="grey">#93969A</color>
 
+    <color name="notAcceptedColor">#FFFFFF</color>
+    <color name="preparingColor">#F6D55C</color>
+    <color name="sentOutColor">#ED553B</color>
+    <color name="deliveredColor">#20639B</color>
+
     <!-- BACKGROUND -->
     <color name="backgroundPage">#242526</color>
     <color name="backgroundComponent">#3C3D40</color>

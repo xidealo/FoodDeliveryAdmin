@@ -6,9 +6,15 @@
 
         <import type="android.view.View" />
 
+        <import type="com.bunbeauty.fooddeliveryadmin.enums.OrderStatus" />
+
         <variable
             name="viewModel"
             type="com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel" />
+
+        <variable
+            name="order"
+            type="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +43,7 @@
                 android:id="@+id/dialog_change_status_rb_not_accepted"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checked="true"
+                android:checked="@{order.orderStatus == OrderStatus.NotAccepted}"
                 android:text="@string/hint_change_status_not_accepted"
                 android:textColor="@color/mainTextColor" />
 
@@ -45,6 +51,7 @@
                 android:id="@+id/dialog_change_status_rb_preparing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="@{order.orderStatus == OrderStatus.Preparing}"
                 android:text="@string/hint_change_status_preparing"
                 android:textColor="@color/mainTextColor" />
 
@@ -52,6 +59,7 @@
                 android:id="@+id/dialog_change_status_rb_sent_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="@{order.orderStatus == OrderStatus.SentOut}"
                 android:text="@string/hint_change_status_sent_out"
                 android:textColor="@color/mainTextColor" />
 
@@ -59,6 +67,7 @@
                 android:id="@+id/dialog_change_status_rb_delivered"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="@{order.orderStatus == OrderStatus.Delivered}"
                 android:text="@string/hint_change_status_delivered"
                 android:textColor="@color/mainTextColor" />
         </RadioGroup>
@@ -75,6 +84,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dialog_change_status_btn_confirm"
             style="@style/DialogMainButton"
+            android:onClick="@{()->viewModel.updateClick()}"
             android:text="@string/hint_change_status_confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
