@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.di.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.di.ViewModelKey
+import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
 import com.bunbeauty.fooddeliveryadmin.view_model.LoginViewModel
 import com.bunbeauty.fooddeliveryadmin.view_model.MainViewModel
 import com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel
@@ -31,4 +32,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(OrdersViewModel::class)
     internal abstract fun provideOrdersViewModel(ordersViewModel: OrdersViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChangeStatusViewModel::class)
+    internal abstract fun provideChangeStatusViewModel(changeStatusViewModel: ChangeStatusViewModel): ViewModel
 }

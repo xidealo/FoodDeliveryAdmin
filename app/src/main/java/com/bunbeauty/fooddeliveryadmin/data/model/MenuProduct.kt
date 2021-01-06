@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.data.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bunbeauty.papakarlo.enums.ProductCode
+import com.bunbeauty.fooddeliveryadmin.enums.ProductCode
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

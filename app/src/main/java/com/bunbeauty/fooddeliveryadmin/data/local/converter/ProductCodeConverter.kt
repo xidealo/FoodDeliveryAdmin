@@ -1,7 +1,7 @@
-package com.bunbeauty.papakarlo.data.local.converter
+package com.bunbeauty.fooddeliveryadmin.data.local.converter
 
 import androidx.room.TypeConverter
-import com.bunbeauty.papakarlo.enums.ProductCode
+import com.bunbeauty.fooddeliveryadmin.enums.ProductCode
 
 class ProductCodeConverter {
     @TypeConverter

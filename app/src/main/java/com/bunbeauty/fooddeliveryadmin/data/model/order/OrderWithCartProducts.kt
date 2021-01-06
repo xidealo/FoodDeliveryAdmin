@@ -20,7 +20,6 @@ data class OrderWithCartProducts(
         return "Стоимость заказа: $fullPrice ₽"
     }
 
-
     fun getCartProductsStructure(): String {
         var structure = ""
 

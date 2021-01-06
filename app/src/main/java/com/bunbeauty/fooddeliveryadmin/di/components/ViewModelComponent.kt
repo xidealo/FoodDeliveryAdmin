@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.di.modules.ViewModelModule
 import com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginFragment
+import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragment
 
 import dagger.BindsInstance
@@ -25,4 +26,5 @@ interface ViewModelComponent {
     fun inject(ordersFragment: OrdersFragment)
 
     // dialogs
+    fun inject(changeStatusDialog: ChangeStatusDialog)
 }

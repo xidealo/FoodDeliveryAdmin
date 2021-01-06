@@ -43,5 +43,4 @@ class LoginViewModel @Inject constructor(
     fun loginClick() {
         navigator?.get()?.login()
     }
-
 }

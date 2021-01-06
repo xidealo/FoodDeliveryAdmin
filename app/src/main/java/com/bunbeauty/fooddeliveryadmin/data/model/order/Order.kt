@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
 import com.bunbeauty.fooddeliveryadmin.data.model.Time
+import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 
@@ -20,6 +21,7 @@ data class Order(
     var comment: String = "",
     var phone: String = "",
     var time: Long = DateTime.now().millis,
+    var orderStatus: OrderStatus = OrderStatus.NotAccepted,
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
     override var uuid: String = "",
@@ -29,8 +31,22 @@ data class Order(
         return newTime.toStringTimeHHMM()
     }
 
-    fun getAddress() = "Доставка на улицу $street дом $house контактный телефон $phone"
+    fun getAddress() =
+        "Доставка на улицу:$street\n" +
+                "Дом:$house\n" +
+                "Квартира:$flat\n" +
+                "Подъезд:$entrance\n" +
+                "Домофон:$intercom\n" +
+                "Этаж:$floor\n" +
+                "Комментарий:$comment\n" +
+                "Контактный телефон:$phone"
+
     fun getUuidCode() = "Код заказа $uuid"
+
+    fun getOrderStatus(): String {
+        return ""
+    }
+
 
     companion object {
         const val ORDERS = "ORDERS"
@@ -43,5 +59,6 @@ data class Order(
         const val FLOOR = "floor"
         const val COMMENT = "comment"
         const val PHONE = "phone"
+        const val ORDER_STATUS = "order status"
     }
 }

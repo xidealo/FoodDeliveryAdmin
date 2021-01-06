@@ -19,6 +19,16 @@
         android:id="@+id/orders_fragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragment"
         android:label="OrdersFragment"
-        tools:layout="@layout/fragment_orders"/>
+        tools:layout="@layout/fragment_orders">
+        <action
+            android:id="@+id/action_orders_fragment_to_changeStatusDialog"
+            app:destination="@id/changeStatusDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/changeStatusDialog"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusDialog"
+        android:label="ChangeStatusDialog"
+        tools:layout="@layout/dialog_change_status"/>
 
 </navigation>

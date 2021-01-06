@@ -21,4 +21,14 @@
     <string name="error_login_enter_user_password">Введите пароль</string>
     <string name="error_login_authorization">Неправильный логин или пароль</string>
 
+
+    <!-- CHANGE STATUS -->
+    <string name="hint_change_status_status">Статус заказа</string>
+    <string name="hint_change_status_not_accepted">Не принят</string>
+    <string name="hint_change_status_preparing">Готовится</string>
+    <string name="hint_change_status_sent_out">Отправлен</string>
+    <string name="hint_change_status_delivered">Доставлен</string>
+    <string name="hint_change_status_cancel">Отменить</string>
+    <string name="hint_change_status_confirm">Принять</string>
+
 </resources>

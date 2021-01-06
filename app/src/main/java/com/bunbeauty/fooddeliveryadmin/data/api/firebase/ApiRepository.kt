@@ -99,15 +99,25 @@ class ApiRepository @Inject constructor(
 
     fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): OrderWithCartProducts {
         val orderWithCartProducts = OrderWithCartProducts()
+        orderWithCartProducts.order.uuid = orderSnapshot.key ?: ""
         orderWithCartProducts.order.street = orderSnapshot.child(Order.STREET).value as String
+        orderWithCartProducts.order.house = orderSnapshot.child(Order.HOUSE).value as String
+        orderWithCartProducts.order.flat = orderSnapshot.child(Order.FLAT).value as String
+        orderWithCartProducts.order.entrance = orderSnapshot.child(Order.ENTRANCE).value as String
+        orderWithCartProducts.order.intercom = orderSnapshot.child(Order.INTERCOM).value as String
+        orderWithCartProducts.order.floor = orderSnapshot.child(Order.FLOOR).value as String
+        orderWithCartProducts.order.comment = orderSnapshot.child(Order.COMMENT).value as String
+        orderWithCartProducts.order.phone = orderSnapshot.child(Order.PHONE).value as String
 
         val cartProducts = mutableListOf<CartProduct>()
         for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {
             cartProducts.add(
                 CartProduct(
                     count = (cartProductSnapshot.child(CartProduct.COUNT).value as Long).toInt(),
+                    orderUuid = orderSnapshot.key ?: "",
                     menuProduct = MenuProduct(
-                        name = cartProductSnapshot.child(MenuProduct.NAME).value as String
+                        name = cartProductSnapshot.child(MenuProduct.NAME).value as String,
+                        cost = (cartProductSnapshot.child(MenuProduct.COST).value as Long).toInt()
                     )
                 )
             )

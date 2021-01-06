@@ -16,7 +16,9 @@
             type="com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView style="@style/DefaultMaterialCard">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/element_order_mvc_main"
+        style="@style/DefaultMaterialCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +29,6 @@
                 android:id="@+id/element_order_tv_uuid"
                 style="@style/TitleOrderElement"
                 android:text="@{orderWithCartProducts.order.getUuidCode()}"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +36,6 @@
                 android:id="@+id/element_order_tv_time"
                 style="@style/TimeOrderElement"
                 android:text="@{orderWithCartProducts.order.getTimeHHMM()}"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +43,6 @@
                 android:id="@+id/element_order_tv_address"
                 style="@style/AddressOrderElement"
                 android:text="@{orderWithCartProducts.order.getAddress()}"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_uuid" />
 
@@ -51,7 +50,6 @@
                 android:id="@+id/element_order_tv_full_price"
                 style="@style/CostOrderElement"
                 android:text="@{orderWithCartProducts.getFullPrice()}"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_address" />
 
@@ -59,7 +57,6 @@
                 android:id="@+id/element_order_tv_structure"
                 style="@style/CostOrderElement"
                 android:text="@{orderWithCartProducts.getCartProductsStructure()}"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_full_price" />
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_padding">
+
+        <TextView
+            android:id="@+id/dialog_change_status_tv_title"
+            style="@style/TitleOrderStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_change_status_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/dialog_change_status_rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_change_status_tv_title">
+
+            <RadioButton
+                android:id="@+id/dialog_change_status_rb_not_accepted"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:text="@string/hint_change_status_not_accepted"
+                android:textColor="@color/mainTextColor" />
+
+            <RadioButton
+                android:id="@+id/dialog_change_status_rb_preparing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_change_status_preparing"
+                android:textColor="@color/mainTextColor" />
+
+            <RadioButton
+                android:id="@+id/dialog_change_status_rb_sent_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_change_status_sent_out"
+                android:textColor="@color/mainTextColor" />
+
+            <RadioButton
+                android:id="@+id/dialog_change_status_rb_delivered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_change_status_delivered"
+                android:textColor="@color/mainTextColor" />
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dialog_change_status_btn_cancel"
+            style="@style/DialogSecondaryButton"
+            android:onClick="@{()->viewModel.cancelClick()}"
+            android:text="@string/hint_change_status_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_btn_confirm"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dialog_change_status_btn_confirm"
+            style="@style/DialogMainButton"
+            android:text="@string/hint_change_status_confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
