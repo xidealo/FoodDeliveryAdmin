@@ -56,6 +56,22 @@ object DataBinding {
     }
 
     @JvmStatic
+    @BindingAdapter("bind:addItemToTop")
+    fun <T : BaseModel> addItemToTop(recyclerView: RecyclerView, item: T?) {
+        if (item != null && recyclerView.adapter != null) {
+            (recyclerView.adapter as BaseAdapter<out RecyclerView.ViewHolder, T>).addItemToTop(item)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind:replaceItem")
+    fun <T : BaseModel> replaceItem(recyclerView: RecyclerView, item: T?) {
+        if (item != null && recyclerView.adapter != null) {
+            (recyclerView.adapter as BaseAdapter<out RecyclerView.ViewHolder, T>).replaceItem(item)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("bind:isLoading")
     fun setLoading(progressBar: ProgressBar, isLoading: Boolean) {
         if (isLoading) {

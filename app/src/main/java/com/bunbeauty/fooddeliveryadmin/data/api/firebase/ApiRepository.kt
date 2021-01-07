@@ -84,6 +84,36 @@ class ApiRepository @Inject constructor(
         orderRef.updateChildren(orderItems)
     }
 
+    override fun getOrderWithCartProductsList(): LiveData<List<OrderWithCartProducts>> {
+        val ordersRef = firebaseInstance
+            .getReference(Order.ORDERS)
+            .child(APP_ID)
+            .orderByChild(Order.TIMESTAMP)
+            .startAt(DateTime.now().minusDays(2).millis.toDouble())
+
+        val ordersWithCartProductsLiveData = MutableLiveData<List<OrderWithCartProducts>>()
+        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(ordersSnapshot: DataSnapshot) {
+                launch {
+                    val ordersWithCartProductsList = arrayListOf<OrderWithCartProducts>()
+                    for (orderSnapshot in ordersSnapshot.children.reversed()) {
+                        ordersWithCartProductsList.add(
+                            getOrderWithCartProductsFromSnapshot(
+                                orderSnapshot
+                            )
+                        )
+                    }
+                    withContext(Dispatchers.Main) {
+                        ordersWithCartProductsLiveData.value = ordersWithCartProductsList
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+        return ordersWithCartProductsLiveData
+    }
+
     override fun getOrderWithCartProducts(): LiveData<OrderWithCartProducts> {
         val ordersRef = firebaseInstance
             .getReference(Order.ORDERS)

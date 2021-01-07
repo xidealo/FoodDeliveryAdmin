@@ -33,11 +33,15 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
         ordersAdapter.ordersNavigator = this
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
-        viewModel.iApiRepository.getOrderWithCartProducts().observe(viewLifecycleOwner) {
-            ordersAdapter.addOrReplaceItem(it)
-            viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
-            //(activity as MainActivity).createNotification()
+        viewModel.orderWithCartProductsListLiveData.observe(viewLifecycleOwner) {
+            viewModel.orderWithCartProductsLiveData.observe(viewLifecycleOwner) {
+                if (it) {
+                    viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
+                    (activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
+                }
+            }
         }
+        (activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
     }
 
     override fun showChangeStatus(orderWithCartProducts: OrderWithCartProducts) {
@@ -49,7 +53,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
         findNavController().navigate(actionOrdersFragmentToChangeStatusDialog(orderWithCartProducts.order))
     }
-
 
 
 }
