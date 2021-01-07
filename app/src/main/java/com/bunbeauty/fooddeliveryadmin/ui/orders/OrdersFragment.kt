@@ -10,9 +10,11 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel
 import javax.inject.Inject
+
 
 class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), OrdersNavigator {
 
@@ -31,12 +33,23 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
         ordersAdapter.ordersNavigator = this
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
-        viewModel.iApiRepository.getOrderWithCartProducts("papakarlo").observe(viewLifecycleOwner) {
-            ordersAdapter.setItemList(it)
+        viewModel.iApiRepository.getOrderWithCartProducts().observe(viewLifecycleOwner) {
+            ordersAdapter.addOrReplaceItem(it)
+            viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
+            //(activity as MainActivity).createNotification()
         }
     }
 
     override fun showChangeStatus(orderWithCartProducts: OrderWithCartProducts) {
+        findNavController().currentDestination?.getAction(
+            actionOrdersFragmentToChangeStatusDialog(
+                orderWithCartProducts.order
+            ).actionId
+        ) ?: return
+
         findNavController().navigate(actionOrdersFragmentToChangeStatusDialog(orderWithCartProducts.order))
     }
+
+
+
 }

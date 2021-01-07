@@ -23,7 +23,7 @@ data class Order(
     var floor: String = "",
     var comment: String = "",
     var phone: String = "",
-    var time: Long = DateTime.now().millis,
+    var time: Long = 0,
     var orderStatus: OrderStatus = OrderStatus.NotAccepted,
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
@@ -67,5 +67,6 @@ data class Order(
         const val COMMENT = "comment"
         const val PHONE = "phone"
         const val ORDER_STATUS = "order status"
+        const val TIMESTAMP = "timestamp"
     }
 }

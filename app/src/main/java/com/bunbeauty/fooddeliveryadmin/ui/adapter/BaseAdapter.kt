@@ -26,5 +26,22 @@ abstract class BaseAdapter<T : RecyclerView.ViewHolder, E : BaseModel> : Recycle
         notifyItemInserted(itemCount)
     }
 
+    open fun addItemToTop(item: E) {
+        itemList.add(0, item)
+        notifyItemInserted(0)
+    }
+
+    open fun addOrReplaceItem(item: E) {
+        val foundedItem = itemList.find { it.uuid == item.uuid }
+        if (foundedItem == null) {
+            addItemToTop(item)
+            return
+        }
+
+        val index = itemList.indexOf(foundedItem)
+        itemList[index] = item
+        notifyItemChanged(index)
+    }
+
     override fun getItemCount() = itemList.size
 }

@@ -1,9 +1,14 @@
 package com.bunbeauty.fooddeliveryadmin.ui.main
 
+import android.app.Notification
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -56,5 +61,24 @@ class MainActivity : AppCompatActivity() {
         snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
             View.TEXT_ALIGNMENT_CENTER
         snack.show()
+    }
+
+    fun createNotification(){
+        val notificationId = 3
+        //создание notification
+        val builder =
+            NotificationCompat.Builder(
+                this,
+                "1"
+            )
+                //.setSmallIcon(R.drawable.bun_beauty_icon)
+                //.setLargeIcon(getBitmapFromURL(photoLink))
+                .setContentTitle("Новый заказ!")
+                //.setContentText("На вас подписался ${name.firstCapitalSymbol()} ${surname.firstCapitalSymbol()}")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        val notificationManager = NotificationManagerCompat.from(this)
+        val notification = builder.build()
+        notification.flags = Notification.FLAG_AUTO_CANCEL
+        notificationManager.notify(notificationId, notification)
     }
 }

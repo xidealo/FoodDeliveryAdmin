@@ -12,6 +12,7 @@ import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import com.google.firebase.database.*
 import kotlinx.coroutines.*
+import org.joda.time.DateTime
 import java.math.BigInteger
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -83,30 +84,34 @@ class ApiRepository @Inject constructor(
         orderRef.updateChildren(orderItems)
     }
 
-    override fun getOrderWithCartProducts(login: String): LiveData<List<OrderWithCartProducts>> {
-        val ordersRef = firebaseInstance.getReference(Order.ORDERS)
-            .child(login)
-        val ordersWithCartProductsLiveData = MutableLiveData<List<OrderWithCartProducts>>()
-        ordersRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(ordersSnapshot: DataSnapshot) {
-                launch {
-                    val ordersWithCartProductsList = arrayListOf<OrderWithCartProducts>()
-                    for (orderSnapshot in ordersSnapshot.children) {
-                        ordersWithCartProductsList.add(
-                            getOrderWithCartProductsFromSnapshot(
-                                orderSnapshot
-                            )
-                        )
-                    }
-                    withContext(Dispatchers.Main) {
-                        ordersWithCartProductsLiveData.value = ordersWithCartProductsList
-                    }
-                }
+    override fun getOrderWithCartProducts(): LiveData<OrderWithCartProducts> {
+        val ordersRef = firebaseInstance
+            .getReference(Order.ORDERS)
+            .child(APP_ID)
+            .orderByChild(Order.TIMESTAMP)
+            .startAt(DateTime.now().minusDays(2).millis.toDouble())
+
+        val orderWithCartProductsLiveData = MutableLiveData<OrderWithCartProducts>()
+        ordersRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                if (snapshot.child(CartProduct.CART_PRODUCTS).childrenCount != 0L)
+                    orderWithCartProductsLiveData.value =
+                        getOrderWithCartProductsFromSnapshot(snapshot)
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                orderWithCartProductsLiveData.value =
+                    getOrderWithCartProductsFromSnapshot(snapshot)
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {}
+
         })
-        return ordersWithCartProductsLiveData
+        return orderWithCartProductsLiveData
     }
 
     fun md5(input: String): String {
@@ -116,6 +121,7 @@ class ApiRepository @Inject constructor(
 
     fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): OrderWithCartProducts {
         val orderWithCartProducts = OrderWithCartProducts()
+        orderWithCartProducts.uuid = orderSnapshot.key ?: ""
         orderWithCartProducts.order.uuid = orderSnapshot.key ?: ""
         orderWithCartProducts.order.street = orderSnapshot.child(Order.STREET).value as String
         orderWithCartProducts.order.house = orderSnapshot.child(Order.HOUSE).value as String
@@ -127,6 +133,7 @@ class ApiRepository @Inject constructor(
         orderWithCartProducts.order.phone = orderSnapshot.child(Order.PHONE).value as String
         orderWithCartProducts.order.orderStatus =
             OrderStatus.valueOf(orderSnapshot.child(Order.ORDER_STATUS).value as String)
+        orderWithCartProducts.order.time = orderSnapshot.child(Order.TIMESTAMP).value as Long
 
         val cartProducts = mutableListOf<CartProduct>()
         for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {
