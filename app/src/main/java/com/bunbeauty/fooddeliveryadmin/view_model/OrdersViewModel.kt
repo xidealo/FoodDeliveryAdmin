@@ -25,7 +25,7 @@ class OrdersViewModel @Inject constructor(
         }
     }
 
-    val orderWithCartProductsLiveData by lazy {
+    val isNewOrderLiveData by lazy {
         Transformations.map(iApiRepository.getOrderWithCartProducts()) { orderWithCartProducts ->
             val foundOrderWithCartProducts =
                 orderWithCartProductsList.find { it == orderWithCartProducts.uuid }
@@ -33,7 +33,6 @@ class OrdersViewModel @Inject constructor(
                 orderWithCartProductsList.add(orderWithCartProducts.uuid)
                 addOrderWithCartProducts.set(orderWithCartProducts)
                 //createNotification
-                //go to top
                 true
             } else {
                 replaceOrderWithCartProducts.set(orderWithCartProducts)

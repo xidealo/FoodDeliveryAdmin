@@ -2,6 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.ui.orders
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
@@ -34,7 +36,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
         ordersAdapter.ordersNavigator = this
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
         viewModel.orderWithCartProductsListLiveData.observe(viewLifecycleOwner) {
-            viewModel.orderWithCartProductsLiveData.observe(viewLifecycleOwner) {
+            viewModel.isNewOrderLiveData.observe(viewLifecycleOwner) {
                 if (it) {
                     viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
                     (activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")

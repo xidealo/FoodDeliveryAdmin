@@ -61,18 +61,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNotification(title: String, text: String) {
-        val notificationId = 3
         val builder =
             NotificationCompat.Builder(
                 this,
                 "1"
             ).setSmallIcon(R.drawable.ic_done)
-                //.setLargeIcon(getBitmapFromURL(photoLink))
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         with(NotificationManagerCompat.from(this)) {
-            notify(notificationId, builder.build())
+            notify(1, builder.build())
         }
         //notification.flags = Notification.FLAG_AUTO_CANCEL
     }
