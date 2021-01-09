@@ -11,55 +11,59 @@ import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import org.joda.time.DateTime
-import java.math.BigInteger
-import java.security.MessageDigest
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class ApiRepository @Inject constructor(
-    private val iDataStoreHelper: IDataStoreHelper
+    private val dataStoreHelper: IDataStoreHelper
 ) : IApiRepository, CoroutineScope {
 
     private val firebaseInstance = FirebaseDatabase.getInstance()
 
     override val coroutineContext: CoroutineContext
-        get() = Job() + Dispatchers.IO
+        get() = Job()
 
-    override fun login(login: String, password: String): LiveData<Boolean> {
-        val query = firebaseInstance.getReference(Company.COMPANY)
-            .child(login)
+    override fun login(login: String, passwordHash: String): LiveData<Boolean> {
         val isAuthorized = MutableLiveData<Boolean>()
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        val companyRef = firebaseInstance.getReference(Company.COMPANY).child(login)
+        companyRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(companySnapshot: DataSnapshot) {
-                launch {
-                    val passwordHash = md5(password)
+                if (companySnapshot.childrenCount == 0L) {
+                    isAuthorized.value = false
+                    return
+                }
 
-                    if (companySnapshot.childrenCount == 0L) {
-                        withContext(Dispatchers.Main) {
+                val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
+                if (passwordHash == companyPassword) {
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                        if (!task.isSuccessful) {
                             isAuthorized.value = false
+                            return@addOnCompleteListener
                         }
-                        return@launch
-                    }
 
-                    val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
-
-                    if (passwordHash == companyPassword) {
-                        iDataStoreHelper.saveToken(companySnapshot.child(Company.TOKEN).value as String)
-                        withContext(Dispatchers.Main) {
-                            isAuthorized.value = true
+                        val token = task.result!!
+                        firebaseInstance.getReference(Company.COMPANY)
+                            .child(login)
+                            .child(Company.TOKEN)
+                            .setValue(token)
+                        launch(IO) {
+                            dataStoreHelper.saveToken(token)
                         }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            isAuthorized.value = false
-                        }
+                        isAuthorized.value = true
                     }
+                } else {
+                    isAuthorized.value = false
                 }
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
+            override fun onCancelled(databaseError: DatabaseError) {
+                isAuthorized.value = false
+            }
         })
 
         return isAuthorized
@@ -142,11 +146,6 @@ class ApiRepository @Inject constructor(
 
         })
         return orderWithCartProductsLiveData
-    }
-
-    fun md5(input: String): String {
-        val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
     fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): OrderWithCartProducts {

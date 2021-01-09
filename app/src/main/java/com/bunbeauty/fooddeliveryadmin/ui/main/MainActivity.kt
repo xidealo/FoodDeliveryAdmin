@@ -59,19 +59,4 @@ class MainActivity : AppCompatActivity() {
             View.TEXT_ALIGNMENT_CENTER
         snack.show()
     }
-
-    fun createNotification(title: String, text: String) {
-        val builder =
-            NotificationCompat.Builder(
-                this,
-                "1"
-            ).setSmallIcon(R.drawable.ic_done)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        with(NotificationManagerCompat.from(this)) {
-            notify(1, builder.build())
-        }
-        //notification.flags = Notification.FLAG_AUTO_CANCEL
-    }
 }

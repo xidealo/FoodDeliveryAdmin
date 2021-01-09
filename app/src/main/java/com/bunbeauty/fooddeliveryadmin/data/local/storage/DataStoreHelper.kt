@@ -32,7 +32,7 @@ class DataStoreHelper @Inject constructor(context: Context) : IDataStoreHelper {
     companion object {
 
         // NAMES
-        private const val TOKEN_DATA_STORE = "Token data store"
+        private const val TOKEN_DATA_STORE = "token dataStore"
         private const val TOKEN = "token"
 
         // KEYS

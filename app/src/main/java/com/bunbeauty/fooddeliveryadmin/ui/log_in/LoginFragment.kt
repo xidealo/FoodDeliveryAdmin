@@ -50,7 +50,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
         }
 
         viewModel.isLoading.set(true)
-        viewModel.apiRepository.login(
+        viewModel.login(
             viewDataBinding.fragmentLoginEtLogin.text.toString().toLowerCase(Locale.ROOT).trim(),
             viewDataBinding.fragmentLoginEtPassword.text.toString().toLowerCase(Locale.ROOT).trim()
         ).observe(viewLifecycleOwner) {

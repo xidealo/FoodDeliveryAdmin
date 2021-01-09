@@ -6,6 +6,7 @@ import com.bunbeauty.fooddeliveryadmin.di.modules.ApiModule
 import com.bunbeauty.fooddeliveryadmin.di.modules.AppModule
 import com.bunbeauty.fooddeliveryadmin.di.modules.DataModule
 import com.bunbeauty.fooddeliveryadmin.di.modules.RepositoryModule
+import com.bunbeauty.fooddeliveryadmin.notification.MessagingService
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -29,4 +30,5 @@ interface AppComponent {
     fun getViewModelComponent(): ViewModelComponent.Factory
 
     fun inject(application: FoodDeliveryAdminApplication)
+    fun inject(messagingService: MessagingService)
 }

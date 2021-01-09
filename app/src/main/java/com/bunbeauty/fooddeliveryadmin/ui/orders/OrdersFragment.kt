@@ -39,11 +39,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
             viewModel.isNewOrderLiveData.observe(viewLifecycleOwner) {
                 if (it) {
                     viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
-                    (activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
+                    //(activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
                 }
             }
         }
-        (activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
+        //(activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
     }
 
     override fun showChangeStatus(orderWithCartProducts: OrderWithCartProducts) {
@@ -55,6 +55,4 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
         findNavController().navigate(actionOrdersFragmentToChangeStatusDialog(orderWithCartProducts.order))
     }
-
-
 }
