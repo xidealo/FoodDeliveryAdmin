@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.view_model
 
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import java.lang.ref.WeakReference
@@ -21,8 +22,7 @@ class ChangeStatusViewModel @Inject constructor(
         navigator?.get()?.updateClick()
     }
 
-    fun changeStatus(order: Order) {
-        iApiRepository.updateOrder(order)
-        navigator?.get()?.closeDialog()
+    fun changeStatus(order: Order, newStatus: OrderStatus) {
+        iApiRepository.updateOrder(order.uuid, newStatus)
     }
 }

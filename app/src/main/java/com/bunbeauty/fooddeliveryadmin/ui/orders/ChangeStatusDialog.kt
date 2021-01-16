@@ -8,9 +8,9 @@ import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseDialog
 import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
 import com.bunbeauty.fooddeliveryadmin.BR
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus.*
+import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusDialogArgs.fromBundle
 import java.lang.ref.WeakReference
-
 
 class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusViewModel>(),
     ChangeStatusNavigator {
@@ -29,7 +29,7 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewDataBinding.order = ChangeStatusDialogArgs.fromBundle(requireArguments()).order
+        viewDataBinding.order = fromBundle(requireArguments()).order
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -38,37 +38,19 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
     }
 
     override fun updateClick() {
-        val currentOrder = ChangeStatusDialogArgs.fromBundle(requireArguments()).order
+        val currentOrder = fromBundle(requireArguments()).order
 
-        if (viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked && currentOrder.orderStatus == OrderStatus.NOT_ACCEPTED) {
-            dismiss()
-            return
-        }
-        if (viewDataBinding.dialogChangeStatusRbPreparing.isChecked && currentOrder.orderStatus == OrderStatus.PREPARING) {
-            dismiss()
-            return
-        }
-        if (viewDataBinding.dialogChangeStatusRbSentOut.isChecked && currentOrder.orderStatus == OrderStatus.SENT_OUT) {
-            dismiss()
-            return
-        }
-        if (viewDataBinding.dialogChangeStatusRbDelivered.isChecked && currentOrder.orderStatus == OrderStatus.DONE) {
-            dismiss()
-            return
+        val newStatus = when {
+            viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked -> NOT_ACCEPTED
+            viewDataBinding.dialogChangeStatusRbPreparing.isChecked -> PREPARING
+            viewDataBinding.dialogChangeStatusRbSentOut.isChecked -> SENT_OUT
+            viewDataBinding.dialogChangeStatusRbDelivered.isChecked -> DONE
+            else -> NOT_ACCEPTED
         }
 
-        if (viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked)
-            currentOrder.orderStatus = OrderStatus.NOT_ACCEPTED
-
-        if (viewDataBinding.dialogChangeStatusRbPreparing.isChecked)
-            currentOrder.orderStatus = OrderStatus.PREPARING
-
-        if (viewDataBinding.dialogChangeStatusRbSentOut.isChecked)
-            currentOrder.orderStatus = OrderStatus.SENT_OUT
-
-        if (viewDataBinding.dialogChangeStatusRbDelivered.isChecked)
-            currentOrder.orderStatus = OrderStatus.DONE
-
-        viewModel.changeStatus(currentOrder)
+        if (newStatus != currentOrder.orderStatus) {
+            viewModel.changeStatus(currentOrder, newStatus)
+        }
+        dismiss()
     }
 }

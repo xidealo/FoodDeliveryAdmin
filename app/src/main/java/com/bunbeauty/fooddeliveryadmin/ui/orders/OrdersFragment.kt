@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.orders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -35,14 +36,19 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
         ordersAdapter.ordersNavigator = this
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
-        viewModel.orderWithCartProductsListLiveData.observe(viewLifecycleOwner) {
+        viewModel.orderListLiveData.observe(viewLifecycleOwner) { orderList ->
+            Log.d("test", "orderList " + orderList.size)
+            viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
+            ordersAdapter.setItemList(orderList)
+        }
+        /*viewModel.orderWithCartProductsListLiveData.observe(viewLifecycleOwner) {
             viewModel.isNewOrderLiveData.observe(viewLifecycleOwner) {
                 if (it) {
                     viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
                     //(activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
                 }
             }
-        }
+        }*/
         //(activity as MainActivity).createNotification("Новый заказ!", "Новый заказ")
     }
 

@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.fooddeliveryadmin.BuildConfig
+import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
@@ -37,6 +39,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             iDataStoreHelper.clearCache()
         }
+    }
+
+    fun updateToken() {
+        apiRepository.updateToken(APP_ID)
     }
 
     fun isCorrectUsername(username: String): Boolean {

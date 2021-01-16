@@ -1,6 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.view_model
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.Transformations
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
@@ -10,23 +13,24 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class OrdersViewModel @Inject constructor(
-    private val iApiRepository: IApiRepository
+        private val apiRepository: IApiRepository
 ) : BaseViewModel<OrdersNavigator>() {
 
+    override var navigator: WeakReference<OrdersNavigator>? = null
     val addOrderWithCartProducts = ObservableField<OrderWithCartProducts?>()
     val addOrderWithCartProductList = ObservableField<List<OrderWithCartProducts>>()
     val replaceOrderWithCartProducts = ObservableField<OrderWithCartProducts?>()
     private val orderWithCartProductsList = arrayListOf<String>()
 
     val orderWithCartProductsListLiveData by lazy {
-        Transformations.map(iApiRepository.getOrderWithCartProductsList()) { ordersList ->
+        Transformations.map(apiRepository.getOrderWithCartProductsList()) { ordersList ->
             orderWithCartProductsList.addAll(ordersList.map { it.uuid })
             addOrderWithCartProductList.set(ordersList)
         }
     }
 
     val isNewOrderLiveData by lazy {
-        Transformations.map(iApiRepository.getOrderWithCartProducts()) { orderWithCartProducts ->
+        /*Transformations.map(apiRepository.getOrderWithCartProducts()) { orderWithCartProducts ->
             val foundOrderWithCartProducts =
                 orderWithCartProductsList.find { it == orderWithCartProducts.uuid }
             if (foundOrderWithCartProducts == null) {
@@ -38,8 +42,9 @@ class OrdersViewModel @Inject constructor(
                 replaceOrderWithCartProducts.set(orderWithCartProducts)
                 false
             }
-        }
+        }*/
     }
-    override var navigator: WeakReference<OrdersNavigator>? = null
+
+    val orderListLiveData = apiRepository.orderListLiveData
 
 }

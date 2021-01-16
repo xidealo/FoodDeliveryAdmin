@@ -31,6 +31,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
             if (it.isEmpty()) {
                 viewModel.isLoading.set(false)
             } else {
+                viewModel.updateToken()
                 goToOrders()
             }
         }

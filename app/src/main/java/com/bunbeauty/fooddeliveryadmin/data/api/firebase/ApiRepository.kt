@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.data.api.firebase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
@@ -15,6 +16,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import org.joda.time.DateTime
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -26,6 +28,31 @@ class ApiRepository @Inject constructor(
 
     override val coroutineContext: CoroutineContext
         get() = Job()
+
+    private val orderList = LinkedList<OrderWithCartProducts>()
+    override val orderListLiveData = object: MutableLiveData<List<OrderWithCartProducts>>(emptyList()) {
+        private var orderListener: ChildEventListener? = null
+        private val ordersReference = firebaseInstance
+                .getReference(Order.ORDERS)
+                .child(APP_ID)
+                .orderByChild(Order.TIMESTAMP)
+                .startAt(DateTime.now().minusDays(2).millis.toDouble())
+
+        override fun onActive() {
+            super.onActive()
+
+            orderListener = getOrderWithCartProducts(ordersReference)
+        }
+
+        override fun onInactive() {
+            orderList.clear()
+            orderListener?.let {
+                ordersReference.removeEventListener(it)
+            }
+
+            super.onInactive()
+        }
+    }
 
     override fun login(login: String, passwordHash: String): LiveData<Boolean> {
         val isAuthorized = MutableLiveData<Boolean>()
@@ -40,22 +67,8 @@ class ApiRepository @Inject constructor(
 
                 val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
                 if (passwordHash == companyPassword) {
-                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            isAuthorized.value = false
-                            return@addOnCompleteListener
-                        }
-
-                        val token = task.result!!
-                        firebaseInstance.getReference(Company.COMPANY)
-                            .child(login)
-                            .child(Company.TOKEN)
-                            .setValue(token)
-                        launch(IO) {
-                            dataStoreHelper.saveToken(token)
-                        }
-                        isAuthorized.value = true
-                    }
+                    updateToken(login)
+                    isAuthorized.value = true
                 } else {
                     isAuthorized.value = false
                 }
@@ -69,31 +82,67 @@ class ApiRepository @Inject constructor(
         return isAuthorized
     }
 
-    override fun updateOrder(order: Order) {
-        val orderRef = firebaseInstance
-            .getReference(Order.ORDERS)
-            .child(APP_ID)
-            .child(order.uuid)
+    override fun updateToken(login: String) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
 
-        val orderItems = HashMap<String, Any>()
-        orderItems[Order.STREET] = order.street
-        orderItems[Order.HOUSE] = order.house
-        orderItems[Order.FLAT] = order.flat
-        orderItems[Order.ENTRANCE] = order.entrance
-        orderItems[Order.INTERCOM] = order.intercom
-        orderItems[Order.FLOOR] = order.floor
-        orderItems[Order.COMMENT] = order.comment
-        orderItems[Order.PHONE] = order.phone
-        orderItems[Order.ORDER_STATUS] = order.orderStatus
-        orderRef.updateChildren(orderItems)
+            val token = task.result!!
+            firebaseInstance.getReference(Company.COMPANY)
+                    .child(login)
+                    .child(Company.TOKEN)
+                    .setValue(token)
+            launch(IO) {
+                dataStoreHelper.saveToken(token)
+            }
+        }
     }
+
+    override fun updateOrder(uuid: String, newStatus: OrderStatus) {
+        val orderRef = firebaseInstance
+                .getReference(Order.ORDERS)
+                .child(APP_ID)
+                .child(uuid)
+                .child(Order.ORDER_STATUS)
+        orderRef.setValue(newStatus)
+    }
+
+    private fun getOrderWithCartProducts(ordersReference: Query): ChildEventListener {
+        return ordersReference.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                if (snapshot.child(CartProduct.CART_PRODUCTS).childrenCount != 0L) {
+                    orderList.addFirst(getOrderWithCartProductsFromSnapshot(snapshot))
+                    orderListLiveData.value = orderList
+                    Log.d("test", "onChildAdded " + orderListLiveData.value!!.size)
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val order = getOrderWithCartProductsFromSnapshot(snapshot)
+                val index = orderList.indexOfFirst { it.uuid == order.uuid }
+                if (index != -1) {
+                    orderList[index] = order
+                    orderListLiveData.value = orderList
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {}
+
+        })
+    }
+
 
     override fun getOrderWithCartProductsList(): LiveData<List<OrderWithCartProducts>> {
         val ordersRef = firebaseInstance
-            .getReference(Order.ORDERS)
-            .child(APP_ID)
-            .orderByChild(Order.TIMESTAMP)
-            .startAt(DateTime.now().minusDays(2).millis.toDouble())
+                .getReference(Order.ORDERS)
+                .child(APP_ID)
+                .orderByChild(Order.TIMESTAMP)
+                .startAt(DateTime.now().minusDays(2).millis.toDouble())
 
         val ordersWithCartProductsLiveData = MutableLiveData<List<OrderWithCartProducts>>()
         ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -102,9 +151,7 @@ class ApiRepository @Inject constructor(
                     val ordersWithCartProductsList = arrayListOf<OrderWithCartProducts>()
                     for (orderSnapshot in ordersSnapshot.children.reversed()) {
                         ordersWithCartProductsList.add(
-                            getOrderWithCartProductsFromSnapshot(
-                                orderSnapshot
-                            )
+                                getOrderWithCartProductsFromSnapshot(orderSnapshot)
                         )
                     }
                     withContext(Dispatchers.Main) {
@@ -118,7 +165,7 @@ class ApiRepository @Inject constructor(
         return ordersWithCartProductsLiveData
     }
 
-    override fun getOrderWithCartProducts(): LiveData<OrderWithCartProducts> {
+    /*override fun getOrderWithCartProducts(): LiveData<OrderWithCartProducts> {
         val ordersRef = firebaseInstance
             .getReference(Order.ORDERS)
             .child(APP_ID)
@@ -146,7 +193,7 @@ class ApiRepository @Inject constructor(
 
         })
         return orderWithCartProductsLiveData
-    }
+    }*/
 
     fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): OrderWithCartProducts {
         val orderWithCartProducts = OrderWithCartProducts()
