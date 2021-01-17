@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.data.api.firebase
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
@@ -30,7 +29,7 @@ class ApiRepository @Inject constructor(
         get() = Job()
 
     private val orderList = LinkedList<OrderWithCartProducts>()
-    override val orderListLiveData = object: MutableLiveData<List<OrderWithCartProducts>>(emptyList()) {
+    override val addedOrderListLiveData = object: MutableLiveData<List<OrderWithCartProducts>>(emptyList()) {
         private var orderListener: ChildEventListener? = null
         private val ordersReference = firebaseInstance
                 .getReference(Order.ORDERS)
@@ -53,6 +52,8 @@ class ApiRepository @Inject constructor(
             super.onInactive()
         }
     }
+    override val updatedOrderListLiveData = MutableLiveData<List<OrderWithCartProducts>>(emptyList())
+
 
     override fun login(login: String, passwordHash: String): LiveData<Boolean> {
         val isAuthorized = MutableLiveData<Boolean>()
@@ -111,11 +112,8 @@ class ApiRepository @Inject constructor(
     private fun getOrderWithCartProducts(ordersReference: Query): ChildEventListener {
         return ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                if (snapshot.child(CartProduct.CART_PRODUCTS).childrenCount != 0L) {
-                    orderList.addFirst(getOrderWithCartProductsFromSnapshot(snapshot))
-                    orderListLiveData.value = orderList
-                    Log.d("test", "onChildAdded " + orderListLiveData.value!!.size)
-                }
+                orderList.addFirst(getOrderWithCartProductsFromSnapshot(snapshot))
+                addedOrderListLiveData.value = orderList
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
@@ -123,7 +121,7 @@ class ApiRepository @Inject constructor(
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
-                    orderListLiveData.value = orderList
+                    updatedOrderListLiveData.value = orderList
                 }
             }
 

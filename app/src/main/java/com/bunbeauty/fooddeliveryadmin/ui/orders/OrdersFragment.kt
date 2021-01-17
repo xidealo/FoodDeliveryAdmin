@@ -3,8 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.orders
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
@@ -13,7 +11,6 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel
 import javax.inject.Inject
@@ -36,9 +33,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
         ordersAdapter.ordersNavigator = this
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
-        viewModel.orderListLiveData.observe(viewLifecycleOwner) { orderList ->
-            Log.d("test", "orderList " + orderList.size)
+        viewModel.addedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
             viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
+            ordersAdapter.setItemList(orderList)
+        }
+        viewModel.updatedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
             ordersAdapter.setItemList(orderList)
         }
         /*viewModel.orderWithCartProductsListLiveData.observe(viewLifecycleOwner) {

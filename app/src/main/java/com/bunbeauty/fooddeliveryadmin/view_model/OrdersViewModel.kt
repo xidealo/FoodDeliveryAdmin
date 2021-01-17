@@ -1,9 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.view_model
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.Transformations
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
@@ -45,6 +42,7 @@ class OrdersViewModel @Inject constructor(
         }*/
     }
 
-    val orderListLiveData = apiRepository.orderListLiveData
+    val addedOrderListLiveData = apiRepository.addedOrderListLiveData
+    val updatedOrderListLiveData = apiRepository.updatedOrderListLiveData
 
 }

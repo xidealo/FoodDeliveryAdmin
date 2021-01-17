@@ -6,7 +6,8 @@ import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 
 interface IApiRepository {
 
-    val orderListLiveData: LiveData<List<OrderWithCartProducts>>
+    val addedOrderListLiveData: LiveData<List<OrderWithCartProducts>>
+    val updatedOrderListLiveData: LiveData<List<OrderWithCartProducts>>
 
     fun updateToken(login: String)
     fun login(login: String, passwordHash: String): LiveData<Boolean>
