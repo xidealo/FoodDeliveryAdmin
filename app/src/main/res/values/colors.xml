@@ -14,19 +14,19 @@
     <color name="deliveredColor">#A2FBA5</color>
 
     <!-- BACKGROUND -->
-    <color name="backgroundPage">#242526</color>
-    <color name="backgroundComponent">#3C3D40</color>
-    <color name="cardViewBackground">#2B2C2E</color>
-    <color name="fragmentBackground">#2B2C2E</color>
-    <color name="dialogBackground">#2B2C2E</color>
-    <color name="tabLayoutBackground">#2B2C2E</color>
+    <color name="backgroundPage">#f3f2f7</color>
+    <color name="backgroundComponent">#F3F2F3</color>
+    <color name="cardViewBackground">#FFFFFF</color>
+    <color name="fragmentBackground">#FFFFFF</color>
+    <color name="dialogBackground">#FFFFFF</color>
+    <color name="tabLayoutBackground">#FFFFFF</color>
     <color name="actionChipBackground">#F3F2F3</color>
-    <color name="backgroundRed">#47140D</color>
-    <color name="backgroundYellow">#614201</color>
+    <color name="backgroundRed">#FF8572</color>
+    <color name="backgroundYellow">#FFD57C</color>
 
     <!-- TEXT -->
-    <color name="mainTextColor" tools:override="true">#FFFFFF</color>
-    <color name="buttonTextColor" >#FFFFFF</color>
+    <color name="mainTextColor">#000000</color>
+    <color name="buttonTextColor">#FFFFFF</color>
     <color name="hintColor">#93969A</color>
     <color name="iconTintColor">#93969A</color>
 </resources>
