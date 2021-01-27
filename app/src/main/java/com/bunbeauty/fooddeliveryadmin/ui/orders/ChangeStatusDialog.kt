@@ -10,7 +10,9 @@ import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus.*
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusDialogArgs.fromBundle
+import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusViewModel>(),
     ChangeStatusNavigator {
@@ -23,6 +25,9 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
         viewModelComponent.inject(this)
     }
 
+    @Inject
+    lateinit var iStringHelper: IStringHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.navigator = WeakReference(this)
@@ -30,6 +35,7 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewDataBinding.order = fromBundle(requireArguments()).order
+        viewDataBinding.iStringHelper = iStringHelper
         super.onViewCreated(view, savedInstanceState)
     }
 
