@@ -1,70 +1,25 @@
 package com.bunbeauty.fooddeliveryadmin.data.model.order
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.Embedded
+import androidx.room.Relation
 import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
-import com.bunbeauty.fooddeliveryadmin.data.model.Time
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity
 data class Order(
-        var street: String = "",
-        var house: String = "",
-        var flat: String = "",
-        var entrance: String = "",
-        var intercom: String = "",
-        var floor: String = "",
-        var comment: String = "",
-        var phone: String = "",
-        var time: Long = 0,
-        var orderStatus: OrderStatus = OrderStatus.NOT_ACCEPTED,
+    @Embedded
+    var orderEntity: OrderEntity = OrderEntity(),
 
-        @PrimaryKey(autoGenerate = true)
-        override var id: Long = 0,
-        override var uuid: String = "",
+    @Relation(parentColumn = "uuid", entityColumn = "orderUuid")
+    var cartProducts: List<CartProduct> = ArrayList()
 ) : BaseModel(), Parcelable {
+    fun getFullPrice(): String {
+        var fullPrice = 0
+        for (cartProduct in cartProducts)
+            fullPrice += cartProduct.count * cartProduct.menuProduct.cost
 
-    fun getTimeHHMM(): String {
-        val newTime = Time(time, 3)
-        return newTime.toStringTimeHHMM()
-    }
-
-    fun getAddress() =
-        "Доставка на улицу:$street\n" +
-                "Дом:$house " +
-                "Квартира:$flat " +
-                "Подъезд:$entrance " +
-                "Домофон:$intercom " +
-                "Этаж:$floor\n" +
-                "Комментарий:$comment\n" +
-                "Контактный телефон:$phone"
-
-    fun getUuidCode() = "Код заказа $uuid"
-
-    /*fun getOrderStatusColor(order: Order): Int {
-        return when (order.orderStatus) {
-            OrderStatus.NOT_ACCEPTED -> R.color.notAcceptedColor
-            OrderStatus.PREPARING -> R.color.preparingColor
-            OrderStatus.SENT_OUT -> R.color.sentOutColor
-            OrderStatus.DONE -> R.color.deliveredColor
-        }
-    }*/
-
-    companion object {
-        const val ORDERS = "ORDERS"
-
-        const val STREET = "street"
-        const val HOUSE = "house"
-        const val FLAT = "flat"
-        const val ENTRANCE = "entrance"
-        const val INTERCOM = "intercom"
-        const val FLOOR = "floor"
-        const val COMMENT = "comment"
-        const val PHONE = "phone"
-        const val ORDER_STATUS = "order status"
-        const val TIMESTAMP = "timestamp"
+        return "Стоимость заказа: $fullPrice ₽"
     }
 }

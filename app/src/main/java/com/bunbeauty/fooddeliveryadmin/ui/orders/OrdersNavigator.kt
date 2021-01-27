@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.orders
 
-import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
+import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 
 interface OrdersNavigator {
-    fun showChangeStatus(orderWithCartProducts: OrderWithCartProducts)
+    fun showChangeStatus(order: Order)
 }

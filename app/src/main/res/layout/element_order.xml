@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,13 +16,17 @@
 
         <variable
             name="orderWithCartProducts"
-            type="com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts" />
+            type="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
+
+        <variable
+            name="iStringHelper"
+            type="com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
         style="@style/DefaultMaterialCard"
-        bind:status="@{orderWithCartProducts.order.orderStatus}">
+        bind:status="@{orderWithCartProducts.orderEntity.orderStatus}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,21 +36,21 @@
             <TextView
                 android:id="@+id/element_order_tv_uuid"
                 style="@style/TitleOrderElement"
-                android:text="@{orderWithCartProducts.order.getUuidCode()}"
+                android:text="@{orderWithCartProducts.orderEntity.code}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/element_order_tv_time"
                 style="@style/TimeOrderElement"
-                android:text="@{orderWithCartProducts.order.getTimeHHMM()}"
+                android:text="@{orderWithCartProducts.orderEntity.getTimeHHMM()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/element_order_tv_address"
                 style="@style/AddressOrderElement"
-                android:text="@{orderWithCartProducts.order.getAddress()}"
+                android:text="@{iStringHelper.toString(orderWithCartProducts.orderEntity.address)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_uuid" />
 
@@ -59,17 +64,17 @@
             <TextView
                 android:id="@+id/element_order_tv_structure"
                 style="@style/CostOrderElement"
-                android:text="@{orderWithCartProducts.getCartProductsStructure()}"
+                android:text="@{iStringHelper.toString(orderWithCartProducts.cartProducts)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_full_price" />
 
             <ImageView
-                bind:status="@{orderWithCartProducts.order.orderStatus}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                bind:status="@{orderWithCartProducts.orderEntity.orderStatus}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

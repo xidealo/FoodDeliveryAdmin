@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.bunbeauty.fooddeliveryadmin.data.local.db.BaseDao
+import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
-import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
 
 @Dao
-interface OrderDao : BaseDao<Order> {
+interface OrderDao : BaseDao<OrderEntity> {
 
-    @Query("SELECT * FROM `Order`")
-    fun getOrders(): LiveData<List<OrderWithCartProducts>>
+    @Query("SELECT * FROM OrderEntity")
+    fun getOrders(): LiveData<List<Order>>
 }

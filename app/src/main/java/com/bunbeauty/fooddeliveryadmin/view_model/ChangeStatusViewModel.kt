@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.view_model
 
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
@@ -23,6 +24,6 @@ class ChangeStatusViewModel @Inject constructor(
     }
 
     fun changeStatus(order: Order, newStatus: OrderStatus) {
-        iApiRepository.updateOrder(order.uuid, newStatus)
+        iApiRepository.updateOrder(order.orderEntity.uuid, newStatus)
     }
 }

@@ -48,7 +48,7 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
             else -> NOT_ACCEPTED
         }
 
-        if (newStatus != currentOrder.orderStatus) {
+        if (newStatus != currentOrder.orderEntity.orderStatus) {
             viewModel.changeStatus(currentOrder, newStatus)
         }
         dismiss()

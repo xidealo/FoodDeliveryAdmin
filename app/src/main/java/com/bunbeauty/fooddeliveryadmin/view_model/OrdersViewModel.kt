@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.view_model
 import androidx.databinding.ObservableField
 import androidx.lifecycle.Transformations
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
-import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderWithCartProducts
+import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import java.lang.ref.WeakReference
@@ -14,9 +14,9 @@ class OrdersViewModel @Inject constructor(
 ) : BaseViewModel<OrdersNavigator>() {
 
     override var navigator: WeakReference<OrdersNavigator>? = null
-    val addOrderWithCartProducts = ObservableField<OrderWithCartProducts?>()
-    val addOrderWithCartProductList = ObservableField<List<OrderWithCartProducts>>()
-    val replaceOrderWithCartProducts = ObservableField<OrderWithCartProducts?>()
+    val addOrderWithCartProducts = ObservableField<Order?>()
+    val addOrderWithCartProductList = ObservableField<List<Order>>()
+    val replaceOrderWithCartProducts = ObservableField<Order?>()
     private val orderWithCartProductsList = arrayListOf<String>()
 
     val orderWithCartProductsListLiveData by lazy {

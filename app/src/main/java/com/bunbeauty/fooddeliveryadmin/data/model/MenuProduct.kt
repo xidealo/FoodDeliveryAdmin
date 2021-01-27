@@ -14,22 +14,24 @@ data class MenuProduct(
     override var uuid: String = "",
     var name: String = "",
     var cost: Int = 0,
-    var gram: Int = 0,
+    var weight: Int = 0,
     var description: String = "",
     var photoLink: String = "",
-    var productCode: ProductCode = ProductCode.All
+    var onFire: Boolean = false,
+    var inOven: Boolean = false,
+    var productCode: ProductCode = ProductCode.ALL,
+    var barcode: Int = 0
 ) : BaseModel(), Parcelable {
 
     fun getStringCost() = "$cost ₽"
-    fun getStringGram() = "$gram г."
+    fun getStringGram() = "$weight г."
 
     companion object {
         const val PRODUCTS: String = "products"
-        const val PRODUCT: String = "product"
+        const val MENU_PRODUCT: String = "menuProduct"
 
         const val NAME: String = "name"
         const val COST: String = "cost"
-        const val GRAM: String = "gram"
         const val DESCRIPTION: String = "description"
         const val PHOTO_LINK: String = "photo link"
         const val PRODUCT_CODE: String = "product code"

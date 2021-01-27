@@ -4,10 +4,14 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-enum class ProductCode(val code: Int) : Parcelable {
-    All(0),
-    Pizza(1),
-    Hamburger(2),
-    Potato(3),
-    OnCoals(4)
+enum class ProductCode : Parcelable {
+    ALL,
+    PIZZA,
+    BARBECUE,
+    BURGER,
+    DRINK,
+    POTATO,
+    SPICE,
+    BAKERY,
+    OVEN
 }
