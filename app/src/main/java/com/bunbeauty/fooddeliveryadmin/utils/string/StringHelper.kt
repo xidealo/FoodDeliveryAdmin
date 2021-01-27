@@ -2,11 +2,12 @@ package com.bunbeauty.fooddeliveryadmin.utils.string
 
 import com.bunbeauty.fooddeliveryadmin.data.model.Address
 import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
+import java.lang.StringBuilder
 import javax.inject.Inject
 
 class StringHelper @Inject constructor() : IStringHelper {
-
+    //TODO(Get strings from resources)
     override fun toString(address: Address): String {
         return checkLastSymbol(
             "Улица:${address.street}, " +
@@ -31,8 +32,17 @@ class StringHelper @Inject constructor() : IStringHelper {
         )
     }
 
-    override fun toString(order: Order): String {
-        return "ORDER STIRNG"
+    override fun toString(orderEntity: OrderEntity): String {
+        val orderString = StringBuilder()
+
+        if (orderEntity.isDelivery)
+            orderString.append("Доставка\n")
+        else
+            orderString.append("Самовывоз\n")
+
+        orderString.append("Телефон: ${orderEntity.phone}\n")
+        orderString.append("Комментарий:${orderEntity.comment}")
+        return orderString.toString()
     }
 
     fun checkLastSymbol(data: String, symbol: Char): String {

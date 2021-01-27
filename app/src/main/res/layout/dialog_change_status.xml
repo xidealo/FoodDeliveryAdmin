@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,122 +22,138 @@
             type="com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/small_padding">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/dialog_change_status_cl_order_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/small_padding"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_padding">
 
-            <TextView
-                android:id="@+id/element_order_tv_uuid"
-                style="@style/TitleOrderElement"
-                android:text="@{order.orderEntity.code}"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dialog_change_status_cl_order_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/dialog_change_status_tv_code"
+                    style="@style/MainTitle"
+                    android:text="@{order.orderEntity.code}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/dialog_change_status_tv_time"
+                    style="@style/MainText"
+                    android:text="@{order.orderEntity.getTimeHHMM()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/dialog_change_status_tv_order"
+                    style="@style/MainText"
+                    android:layout_marginTop="@dimen/very_small_margin"
+                    android:text="@{iStringHelper.toString(order.orderEntity)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_code" />
+
+                <TextView
+                    android:id="@+id/dialog_change_status_tv_address"
+                    style="@style/MainText"
+                    android:layout_marginTop="@dimen/very_small_margin"
+                    android:text="@{iStringHelper.toString(order.orderEntity.address)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_order" />
+
+                <TextView
+                    android:id="@+id/dialog_change_status_tv_structure"
+                    style="@style/MainText"
+                    android:layout_marginTop="@dimen/very_small_margin"
+                    android:text="@{iStringHelper.toString(order.cartProducts)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_address" />
+
+                <TextView
+                    android:id="@+id/dialog_change_status_tv_full_price"
+                    style="@style/MainText"
+                    android:layout_marginTop="@dimen/very_small_margin"
+                    android:text="@{order.getFullPrice()}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_structure" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/element_order_tv_time"
-                style="@style/TimeOrderElement"
-                android:text="@{order.orderEntity.getTimeHHMM()}"
+                android:id="@+id/dialog_change_status_tv_title"
+                style="@style/TitleOrderStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_change_status_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_cl_order_info" />
+
+            <RadioGroup
+                android:id="@+id/dialog_change_status_rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/element_order_tv_address"
-                style="@style/AddressOrderElement"
-                android:text="@{iStringHelper.toString(order.orderEntity.address)}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_uuid" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_change_status_tv_title">
 
-            <TextView
-                android:id="@+id/element_order_tv_full_price"
-                style="@style/CostOrderElement"
-                android:text="@{order.getFullPrice()}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_address" />
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_not_accepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.NOT_ACCEPTED}"
+                    android:text="@string/hint_change_status_not_accepted"
+                    android:textColor="@color/mainTextColor" />
 
-            <TextView
-                android:id="@+id/element_order_tv_structure"
-                style="@style/CostOrderElement"
-                android:text="@{iStringHelper.toString(order.cartProducts)}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_full_price" />
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_preparing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.PREPARING}"
+                    android:text="@string/hint_change_status_preparing"
+                    android:textColor="@color/mainTextColor" />
 
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_sent_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.SENT_OUT}"
+                    android:text="@string/hint_change_status_sent_out"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_delivered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.DONE}"
+                    android:text="@string/hint_change_status_delivered"
+                    android:textColor="@color/mainTextColor" />
+            </RadioGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dialog_change_status_btn_cancel"
+                style="@style/SmallSecondaryButton"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:onClick="@{()->viewModel.cancelClick()}"
+                android:text="@string/hint_change_status_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_btn_confirm"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dialog_change_status_btn_confirm"
+                style="@style/SmallMainButton"
+                android:onClick="@{()->viewModel.updateClick()}"
+                android:text="@string/hint_change_status_confirm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/dialog_change_status_tv_title"
-            style="@style/TitleOrderStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hint_change_status_status"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_cl_order_info" />
-
-        <RadioGroup
-            android:id="@+id/dialog_change_status_rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialog_change_status_tv_title">
-
-            <RadioButton
-                android:id="@+id/dialog_change_status_rb_not_accepted"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:checked="@{order.orderEntity.orderStatus == OrderStatus.NOT_ACCEPTED}"
-                android:text="@string/hint_change_status_not_accepted"
-                android:textColor="@color/mainTextColor" />
-
-            <RadioButton
-                android:id="@+id/dialog_change_status_rb_preparing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{order.orderEntity.orderStatus == OrderStatus.PREPARING}"
-                android:text="@string/hint_change_status_preparing"
-                android:textColor="@color/mainTextColor" />
-
-            <RadioButton
-                android:id="@+id/dialog_change_status_rb_sent_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{order.orderEntity.orderStatus == OrderStatus.SENT_OUT}"
-                android:text="@string/hint_change_status_sent_out"
-                android:textColor="@color/mainTextColor" />
-
-            <RadioButton
-                android:id="@+id/dialog_change_status_rb_delivered"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{order.orderEntity.orderStatus == OrderStatus.DONE}"
-                android:text="@string/hint_change_status_delivered"
-                android:textColor="@color/mainTextColor" />
-        </RadioGroup>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/dialog_change_status_btn_cancel"
-            style="@style/DialogSecondaryButton"
-            android:onClick="@{()->viewModel.cancelClick()}"
-            android:text="@string/hint_change_status_cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_btn_confirm"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/dialog_change_status_btn_confirm"
-            style="@style/DialogMainButton"
-            android:onClick="@{()->viewModel.updateClick()}"
-            android:text="@string/hint_change_status_confirm"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

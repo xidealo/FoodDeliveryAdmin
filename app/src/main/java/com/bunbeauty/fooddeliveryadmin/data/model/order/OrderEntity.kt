@@ -49,5 +49,6 @@ data class OrderEntity(
         const val ORDER_STATUS = "orderStatus"
         const val TIMESTAMP = "timestamp"
         const val CODE = "code"
+        const val DELIVERY = "delivery"
     }
 }

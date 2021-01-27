@@ -5,7 +5,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
@@ -34,39 +33,51 @@
             android:padding="@dimen/small_padding">
 
             <TextView
-                android:id="@+id/element_order_tv_uuid"
-                style="@style/TitleOrderElement"
+                android:id="@+id/element_order_tv_code"
+                style="@style/MainTitle"
+                android:layout_margin="@dimen/very_small_margin"
                 android:text="@{orderWithCartProducts.orderEntity.code}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/element_order_tv_time"
-                style="@style/TimeOrderElement"
+                style="@style/MainText"
                 android:text="@{orderWithCartProducts.orderEntity.getTimeHHMM()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/element_order_tv_address"
-                style="@style/AddressOrderElement"
-                android:text="@{iStringHelper.toString(orderWithCartProducts.orderEntity.address)}"
+                android:id="@+id/element_order_tv_order"
+                style="@style/MainText"
+                android:layout_margin="@dimen/very_small_margin"
+                android:text="@{iStringHelper.toString(orderWithCartProducts.orderEntity)}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_uuid" />
+                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_code" />
 
             <TextView
-                android:id="@+id/element_order_tv_full_price"
-                style="@style/CostOrderElement"
-                android:text="@{orderWithCartProducts.getFullPrice()}"
+                android:id="@+id/element_order_tv_address"
+                style="@style/MainText"
+                android:layout_margin="@dimen/very_small_margin"
+                android:text="@{iStringHelper.toString(orderWithCartProducts.orderEntity.address)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_order" />
+
+            <TextView
+                android:id="@+id/element_order_tv_structure"
+                style="@style/MainText"
+                android:layout_margin="@dimen/very_small_margin"
+                android:text="@{iStringHelper.toString(orderWithCartProducts.cartProducts)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_address" />
 
             <TextView
-                android:id="@+id/element_order_tv_structure"
-                style="@style/CostOrderElement"
-                android:text="@{iStringHelper.toString(orderWithCartProducts.cartProducts)}"
+                android:id="@+id/element_order_tv_full_price"
+                style="@style/MainText"
+                android:layout_margin="@dimen/very_small_margin"
+                android:text="@{orderWithCartProducts.getFullPrice()}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_full_price" />
+                app:layout_constraintTop_toBottomOf="@+id/element_order_tv_structure" />
 
             <ImageView
                 android:layout_width="wrap_content"

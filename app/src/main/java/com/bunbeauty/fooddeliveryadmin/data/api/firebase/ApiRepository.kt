@@ -106,6 +106,7 @@ class ApiRepository @Inject constructor(
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
             .child(uuid)
+            .child(OrderEntity.ORDER_ENTITY)
             .child(OrderEntity.ORDER_STATUS)
         orderRef.setValue(newStatus)
     }
@@ -229,6 +230,8 @@ class ApiRepository @Inject constructor(
             orderSnapshot.child(OrderEntity.TIMESTAMP).value as Long
         orderWithCartProducts.orderEntity.code =
             orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(OrderEntity.CODE).value as String
+        orderWithCartProducts.orderEntity.isDelivery =
+            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(OrderEntity.DELIVERY).value as Boolean
 
         val cartProducts = mutableListOf<CartProduct>()
         for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {
