@@ -24,6 +24,6 @@ class ChangeStatusViewModel @Inject constructor(
     }
 
     fun changeStatus(order: Order, newStatus: OrderStatus) {
-        iApiRepository.updateOrder(order.orderEntity.uuid, newStatus)
+        iApiRepository.updateOrder(order.uuid, newStatus)
     }
 }

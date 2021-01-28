@@ -10,6 +10,6 @@ import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 @Dao
 interface OrderDao : BaseDao<OrderEntity> {
 
-    @Query("SELECT * FROM OrderEntity")
-    fun getOrders(): LiveData<List<Order>>
+    /*@Query("SELECT * FROM OrderEntity")
+    fun getOrders(): LiveData<List<Order>>*/
 }

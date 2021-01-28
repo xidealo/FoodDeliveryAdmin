@@ -15,7 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.data.local.converter.ProductCodeConverter
         CartProduct::class,
         MenuProduct::class,
         OrderEntity::class
-    ], version = 3
+    ], version = 5
 )
 @TypeConverters(ProductCodeConverter::class, OrderStatusConverter::class)
 abstract class LocalDatabase : RoomDatabase() {

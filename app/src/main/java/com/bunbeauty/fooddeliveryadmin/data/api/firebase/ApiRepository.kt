@@ -165,92 +165,11 @@ class ApiRepository @Inject constructor(
         return ordersWithCartProductsLiveData
     }
 
-    /*override fun getOrderWithCartProducts(): LiveData<OrderWithCartProducts> {
-        val ordersRef = firebaseInstance
-            .getReference(Order.ORDERS)
-            .child(APP_ID)
-            .orderByChild(Order.TIMESTAMP)
-            .startAt(DateTime.now().minusDays(2).millis.toDouble())
-
-        val orderWithCartProductsLiveData = MutableLiveData<OrderWithCartProducts>()
-        ordersRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                if (snapshot.child(CartProduct.CART_PRODUCTS).childrenCount != 0L)
-                    orderWithCartProductsLiveData.value =
-                        getOrderWithCartProductsFromSnapshot(snapshot)
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                orderWithCartProductsLiveData.value =
-                    getOrderWithCartProductsFromSnapshot(snapshot)
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-            override fun onCancelled(error: DatabaseError) {}
-
-        })
-        return orderWithCartProductsLiveData
-    }*/
-
     fun getOrderWithCartProductsFromSnapshot(orderSnapshot: DataSnapshot): Order {
-        val orderWithCartProducts = Order()
-        orderWithCartProducts.uuid = orderSnapshot.key ?: ""
-        orderWithCartProducts.orderEntity.uuid = orderSnapshot.key ?: ""
-        orderWithCartProducts.orderEntity.address.street =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(Address.ADDRESS)
-                .child(OrderEntity.STREET).value as String
-        orderWithCartProducts.orderEntity.address.house =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(Address.ADDRESS)
-                .child(OrderEntity.HOUSE).value as String
-        orderWithCartProducts.orderEntity.address.flat =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(Address.ADDRESS)
-                .child(OrderEntity.FLAT).value as String
-        orderWithCartProducts.orderEntity.address.entrance =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(Address.ADDRESS)
-                .child(OrderEntity.ENTRANCE).value as String
-        orderWithCartProducts.orderEntity.address.intercom =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(Address.ADDRESS)
-                .child(OrderEntity.INTERCOM).value as String
-        orderWithCartProducts.orderEntity.address.floor =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(Address.ADDRESS)
-                .child(OrderEntity.FLOOR).value as String
-        orderWithCartProducts.orderEntity.comment =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(OrderEntity.COMMENT).value as String
-        orderWithCartProducts.orderEntity.phone =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(OrderEntity.PHONE).value as String
-        orderWithCartProducts.orderEntity.orderStatus =
-            OrderStatus.valueOf(
-                orderSnapshot.child(OrderEntity.ORDER_ENTITY)
-                    .child(OrderEntity.ORDER_STATUS).value as String
-            )
-        orderWithCartProducts.orderEntity.time =
-            orderSnapshot.child(OrderEntity.TIMESTAMP).value as Long
-        orderWithCartProducts.orderEntity.code =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(OrderEntity.CODE).value as String
-        orderWithCartProducts.orderEntity.isDelivery =
-            orderSnapshot.child(OrderEntity.ORDER_ENTITY).child(OrderEntity.DELIVERY).value as Boolean
+        val order = orderSnapshot.getValue(Order::class.java)!!
+        order.uuid = orderSnapshot.key ?: ""
 
-        val cartProducts = mutableListOf<CartProduct>()
-        for (cartProductSnapshot in orderSnapshot.child(CartProduct.CART_PRODUCTS).children) {
-            cartProducts.add(
-                CartProduct(
-                    count = (cartProductSnapshot.child(CartProduct.COUNT).value as Long).toInt(),
-                    orderUuid = orderSnapshot.key ?: "",
-                    menuProduct = MenuProduct(
-                        name = cartProductSnapshot.child(MenuProduct.MENU_PRODUCT)
-                            .child(MenuProduct.NAME).value as String,
-                        cost = (cartProductSnapshot.child(MenuProduct.MENU_PRODUCT)
-                            .child(MenuProduct.COST).value as Long).toInt()
-                    )
-                )
-            )
-        }
-
-        orderWithCartProducts.cartProducts = cartProducts
-        return orderWithCartProducts
+        return order
     }
 
 }

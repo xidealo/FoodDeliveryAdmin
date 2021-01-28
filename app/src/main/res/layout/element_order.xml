@@ -43,7 +43,7 @@
             <TextView
                 android:id="@+id/element_order_tv_time"
                 style="@style/MainText"
-                android:text="@{orderWithCartProducts.orderEntity.getTimeHHMM()}"
+                android:text="@{orderWithCartProducts.getTimeHHMM()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

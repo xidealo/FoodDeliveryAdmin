@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.data.model.order
 
 import android.os.Parcelable
+import android.provider.ContactsContract
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -22,17 +23,11 @@ data class OrderEntity(
     var address: Address = Address(),
     var comment: String = "",
     var phone: String = "",
-    var time: Long = DateTime.now().millis,
-    @Ignore
-    var timestamp: Map<String, String>? = null,
+    var email: String = "",
     var orderStatus: OrderStatus = OrderStatus.NOT_ACCEPTED,
     var isDelivery: Boolean = true,
     var code: String = ""
 ) : BaseModel(), Parcelable {
-
-    fun getTimeHHMM(): String {
-        return Time(time, 3).toStringTimeHHMM()
-    }
 
     companion object {
         const val ORDERS = "ORDERS"
