@@ -1,9 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.storage
 
 import android.content.Context
-import androidx.datastore.preferences.core.clear
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -36,6 +35,6 @@ class DataStoreHelper @Inject constructor(context: Context) : IDataStoreHelper {
         private const val TOKEN = "token"
 
         // KEYS
-        private val TOKEN_KEY = preferencesKey<String>(TOKEN)
+        private val TOKEN_KEY = stringPreferencesKey(TOKEN)
     }
 }

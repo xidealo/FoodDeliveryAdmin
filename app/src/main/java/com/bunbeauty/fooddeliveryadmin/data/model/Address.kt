@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.data.model
 
 import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -10,15 +11,11 @@ import kotlinx.parcelize.Parcelize
 data class Address(
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
-    var street: String = "",
+    @Embedded(prefix = "street_")
+    var street: Street? = Street(),
     var house: String = "",
     var flat: String = "",
     var entrance: String = "",
     var intercom: String = "",
-    var floor: String = "",
-    var city: String = ""
-) : BaseModel(), Parcelable{
-    companion object{
-        const val ADDRESS = "address"
-    }
-}
+    var floor: String = ""
+) : BaseModel(), Parcelable

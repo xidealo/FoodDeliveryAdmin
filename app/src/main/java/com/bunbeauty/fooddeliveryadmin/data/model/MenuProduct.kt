@@ -9,8 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity
 data class MenuProduct(
-    @PrimaryKey(autoGenerate = true)
-    override var id: Long = 0,
+    @PrimaryKey
     override var uuid: String = "",
     var name: String = "",
     var cost: Int = 0,
@@ -22,10 +21,6 @@ data class MenuProduct(
     var productCode: ProductCode = ProductCode.ALL,
     var barcode: Int = 0
 ) : BaseModel(), Parcelable {
-
-    fun getStringCost() = "$cost ₽"
-    fun getStringGram() = "$weight г."
-
     companion object {
         const val PRODUCTS: String = "products"
         const val MENU_PRODUCT: String = "menuProduct"

@@ -11,11 +11,10 @@ import kotlinx.parcelize.Parcelize
 data class CartProduct(
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
-    override var uuid: String = "",
     @Embedded(prefix = "menuProduct") var menuProduct: MenuProduct = MenuProduct(),
     var count: Int = 1,
     var discount: Float = 0f,
-    var orderUuid: String = ""
+    var orderId: Long? = null
 ) : BaseModel(), Parcelable {
 
     companion object {

@@ -10,7 +10,7 @@ class StringHelper @Inject constructor() : IStringHelper {
     //TODO(Get strings from resources)
     override fun toString(address: Address): String {
         return checkLastSymbol(
-            "Улица:${address.street}, " +
+            "${address.street?.name}, " +
                     "Дом:${address.house}, " +
                     flatString(address) +
                     entranceString(address) +
