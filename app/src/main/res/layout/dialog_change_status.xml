@@ -48,7 +48,7 @@
                 <TextView
                     android:id="@+id/dialog_change_status_tv_time"
                     style="@style/MainText"
-                    android:text="@{order.orderEntity.getTimeHHMM()}"
+                    android:text="@{order.getTimeHHMM()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

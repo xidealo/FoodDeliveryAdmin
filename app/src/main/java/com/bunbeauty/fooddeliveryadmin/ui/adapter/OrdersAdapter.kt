@@ -15,8 +15,7 @@ import javax.inject.Inject
 class OrdersAdapter @Inject constructor(
     private val context: Context,
     private val iStringHelper: IStringHelper
-) :
-    BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
+) : BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
 
     lateinit var ordersNavigator: OrdersNavigator
 
