@@ -2,6 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.utils.string
 
 import com.bunbeauty.fooddeliveryadmin.data.model.Address
 import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
+import com.bunbeauty.fooddeliveryadmin.data.model.Time
+import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
 import java.lang.StringBuilder
 import javax.inject.Inject
@@ -44,6 +46,14 @@ class StringHelper @Inject constructor() : IStringHelper {
         orderString.append("Комментарий:${orderEntity.comment}\n")
         orderString.append("Email:${orderEntity.email}")
         return orderString.toString()
+    }
+
+    override fun toStringTime(orderEntity: OrderEntity): String {
+        return Time(orderEntity.time, 3).toStringTimeHHMM()
+    }
+
+    override fun toStringTime(order: Order): String {
+        return Time(order.timestamp, 3).toStringTimeHHMM()
     }
 
     fun checkLastSymbol(data: String, symbol: Char): String {

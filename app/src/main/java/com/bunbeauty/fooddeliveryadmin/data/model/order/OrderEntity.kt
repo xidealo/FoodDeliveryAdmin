@@ -28,10 +28,6 @@ data class OrderEntity(
     var email: String = ""
 ) : BaseModel(), Parcelable {
 
-    fun getTimeHHMM(): String {
-        return Time(time, 3).toStringTimeHHMM()
-    }
-
     companion object {
         const val ORDERS = "ORDERS"
         const val ORDER_ENTITY = "orderEntity"

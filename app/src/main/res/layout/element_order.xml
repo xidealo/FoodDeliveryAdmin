@@ -5,6 +5,7 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -14,7 +15,7 @@
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
-            name="orderWithCartProducts"
+            name="order"
             type="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
 
         <variable
@@ -25,7 +26,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
         style="@style/DefaultMaterialCard"
-        bind:status="@{orderWithCartProducts.orderEntity.orderStatus}">
+        bind:status="@{order.orderEntity.orderStatus}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,14 +37,14 @@
                 android:id="@+id/element_order_tv_code"
                 style="@style/MainTitle"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{orderWithCartProducts.orderEntity.code}"
+                android:text="@{order.orderEntity.code}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/element_order_tv_time"
                 style="@style/MainText"
-                android:text="@{orderWithCartProducts.getTimeHHMM()}"
+                android:text="@{iStringHelper.toStringTime(order)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,7 +52,7 @@
                 android:id="@+id/element_order_tv_order"
                 style="@style/MainText"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{iStringHelper.toString(orderWithCartProducts.orderEntity)}"
+                android:text="@{iStringHelper.toString(order.orderEntity)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_code" />
 
@@ -59,7 +60,7 @@
                 android:id="@+id/element_order_tv_address"
                 style="@style/MainText"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{iStringHelper.toString(orderWithCartProducts.orderEntity.address)}"
+                android:text="@{iStringHelper.toString(order.orderEntity.address)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_order" />
 
@@ -67,7 +68,7 @@
                 android:id="@+id/element_order_tv_structure"
                 style="@style/MainText"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{iStringHelper.toString(orderWithCartProducts.cartProducts)}"
+                android:text="@{iStringHelper.toString(order.cartProducts)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_address" />
 
@@ -75,7 +76,7 @@
                 android:id="@+id/element_order_tv_full_price"
                 style="@style/MainText"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{orderWithCartProducts.getFullPrice()}"
+                android:text="@{order.getFullPrice()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/element_order_tv_structure" />
 
@@ -85,7 +86,7 @@
                 android:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                bind:status="@{orderWithCartProducts.orderEntity.orderStatus}" />
+                bind:status="@{order.orderEntity.orderStatus}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

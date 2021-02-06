@@ -30,7 +30,7 @@ class OrdersAdapter @Inject constructor(
         holder.binding?.context = context
         holder.binding?.iStringHelper = iStringHelper
         holder.setListener(itemList[i])
-        holder.binding?.orderWithCartProducts = itemList[i]
+        holder.binding?.order = itemList[i]
     }
 
     inner class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
