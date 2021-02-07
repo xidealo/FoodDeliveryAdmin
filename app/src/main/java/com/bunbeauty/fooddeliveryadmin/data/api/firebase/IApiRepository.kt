@@ -12,5 +12,5 @@ interface IApiRepository {
     fun updateToken(login: String)
     fun login(login: String, passwordHash: String): LiveData<Boolean>
     fun updateOrder(uuid: String, newStatus: OrderStatus)
-    fun getOrderWithCartProductsList():LiveData<List<Order>>
+    fun getOrderWithCartProductsList(daysCount:Int):LiveData<List<Order>>
 }

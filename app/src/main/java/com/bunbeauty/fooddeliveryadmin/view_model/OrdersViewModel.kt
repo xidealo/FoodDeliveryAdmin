@@ -17,31 +17,6 @@ class OrdersViewModel @Inject constructor(
     val addOrderWithCartProducts = ObservableField<Order?>()
     val addOrderWithCartProductList = ObservableField<List<Order>>()
     val replaceOrderWithCartProducts = ObservableField<Order?>()
-    private val orderWithCartProductsList = arrayListOf<String>()
-
-    val orderWithCartProductsListLiveData by lazy {
-        Transformations.map(apiRepository.getOrderWithCartProductsList()) { ordersList ->
-            orderWithCartProductsList.addAll(ordersList.map { it.uuid })
-            addOrderWithCartProductList.set(ordersList)
-        }
-    }
-
-    val isNewOrderLiveData by lazy {
-        /*Transformations.map(apiRepository.getOrderWithCartProducts()) { orderWithCartProducts ->
-            val foundOrderWithCartProducts =
-                orderWithCartProductsList.find { it == orderWithCartProducts.uuid }
-            if (foundOrderWithCartProducts == null) {
-                orderWithCartProductsList.add(orderWithCartProducts.uuid)
-                addOrderWithCartProducts.set(orderWithCartProducts)
-                //createNotification
-                true
-            } else {
-                replaceOrderWithCartProducts.set(orderWithCartProducts)
-                false
-            }
-        }*/
-    }
-
     val addedOrderListLiveData = apiRepository.addedOrderListLiveData
     val updatedOrderListLiveData = apiRepository.updatedOrderListLiveData
 

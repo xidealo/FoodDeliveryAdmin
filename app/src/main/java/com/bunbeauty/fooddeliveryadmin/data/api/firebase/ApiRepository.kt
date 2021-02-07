@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.data.model.Address
-import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
 import com.bunbeauty.fooddeliveryadmin.data.model.Company
-import com.bunbeauty.fooddeliveryadmin.data.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
@@ -30,6 +27,7 @@ class ApiRepository @Inject constructor(
         get() = Job()
 
     private val orderList = LinkedList<Order>()
+
     override val addedOrderListLiveData = object : MutableLiveData<List<Order>>(emptyList()) {
         private var orderListener: ChildEventListener? = null
         private val ordersReference = firebaseInstance
@@ -40,7 +38,6 @@ class ApiRepository @Inject constructor(
 
         override fun onActive() {
             super.onActive()
-
             orderListener = getOrderWithCartProducts(ordersReference)
         }
 
@@ -137,12 +134,12 @@ class ApiRepository @Inject constructor(
     }
 
 
-    override fun getOrderWithCartProductsList(): LiveData<List<Order>> {
+    override fun getOrderWithCartProductsList(daysCount: Int): LiveData<List<Order>> {
         val ordersRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
             .orderByChild(OrderEntity.TIMESTAMP)
-            .startAt(DateTime.now().minusDays(2).millis.toDouble())
+            .startAt(DateTime.now().minusDays(daysCount).millis.toDouble())
 
         val ordersWithCartProductsLiveData = MutableLiveData<List<Order>>()
         ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {

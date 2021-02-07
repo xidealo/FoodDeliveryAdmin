@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/dialog_change_status_tv_title"
-                style="@style/TitleOrderStatus"
+                style="@style/MainTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/hint_change_status_status"

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.bunbeauty.fooddeliveryadmin.view_model.StatisticViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.statistic.StatisticFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_statistic_til_days_count"
+            style="@style/MaterialInputLayout"
+            android:layout_marginTop="@dimen/small_margin"
+            android:hint="Количество дней"
+            android:layout_margin="@dimen/medium_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_statistic_et_days_count"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:padding="@dimen/medium_padding" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_creation_address_btn_creation_address"
+            style="@style/MainButton"
+            android:onClick="@{()->viewModel.getStatisticClick()}"
+            android:text="Получить статистику"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <!--     <com.google.android.material.textfield.TextInputLayout
+                 android:id="@+id/fragment_statistic_til_cafe"
+                 style="@style/MaterialInputLayout"
+                 android:layout_marginTop="@dimen/small_margin"
+                 android:hint="Количество дней"
+                 app:endIconMode="dropdown_menu"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent">
+
+                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                     android:id="@+id/fragment_statistic_et_cafe"
+                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:inputType="textCapSentences"
+                     android:padding="@dimen/medium_padding" />
+             </com.google.android.material.textfield.TextInputLayout>
+     -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

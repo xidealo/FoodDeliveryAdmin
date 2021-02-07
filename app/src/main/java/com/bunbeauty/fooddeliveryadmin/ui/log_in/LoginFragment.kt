@@ -8,7 +8,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginFragmentDirections.actionLoginFragmentToOrdersFragment
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.view_model.LoginViewModel
 import java.lang.ref.WeakReference
@@ -63,6 +62,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
     }
 
     private fun goToOrders() {
-        findNavController().navigate(actionLoginFragmentToOrdersFragment())
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
     }
 }
