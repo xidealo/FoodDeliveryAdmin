@@ -17,17 +17,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         tools:context=".ui.statistic.StatisticFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_statistic_til_days_count"
             style="@style/MaterialInputLayout"
-            android:layout_marginTop="@dimen/small_margin"
-            android:hint="Количество дней"
             android:layout_margin="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:hint="@string/hint_statics_days_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_lpi_loading">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_statistic_et_days_count"
@@ -39,34 +40,36 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/fragment_creation_address_btn_creation_address"
+            android:id="@+id/fragment_statistic_btn_get_statistic"
             style="@style/MainButton"
             android:onClick="@{()->viewModel.getStatisticClick()}"
-            android:text="Получить статистику"
+            android:text="@string/action_statics_get_statistic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_til_days_count" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_statistic_rv_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_btn_get_statistic"
+            bind:items="@{viewModel.statisticField}"
+            tools:listitem="@layout/element_statistic" />
 
-
-        <!--     <com.google.android.material.textfield.TextInputLayout
-                 android:id="@+id/fragment_statistic_til_cafe"
-                 style="@style/MaterialInputLayout"
-                 android:layout_marginTop="@dimen/small_margin"
-                 android:hint="Количество дней"
-                 app:endIconMode="dropdown_menu"
-                 app:layout_constraintEnd_toEndOf="parent"
-                 app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintTop_toTopOf="parent">
-
-                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                     android:id="@+id/fragment_statistic_et_cafe"
-                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:inputType="textCapSentences"
-                     android:padding="@dimen/medium_padding" />
-             </com.google.android.material.textfield.TextInputLayout>
-     -->
-
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/fragment_statistic_lpi_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.isLoadingField ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

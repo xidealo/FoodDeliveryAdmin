@@ -28,11 +28,14 @@ class ApiRepository @Inject constructor(
 
     private val orderList = LinkedList<Order>()
 
+    var cafeId = "0cafe"
+
     override val addedOrderListLiveData = object : MutableLiveData<List<Order>>(emptyList()) {
         private var orderListener: ChildEventListener? = null
         private val ordersReference = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
+            .child(cafeId)
             .orderByChild(OrderEntity.TIMESTAMP)
             .startAt(DateTime.now().minusDays(2).millis.toDouble())
 
@@ -102,6 +105,7 @@ class ApiRepository @Inject constructor(
         val orderRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
+            .child(cafeId)
             .child(uuid)
             .child(OrderEntity.ORDER_ENTITY)
             .child(OrderEntity.ORDER_STATUS)
@@ -111,12 +115,12 @@ class ApiRepository @Inject constructor(
     private fun getOrderWithCartProducts(ordersReference: Query): ChildEventListener {
         return ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
-                orderList.addFirst(orderSnapshot.getValue(Order::class.java) ?: Order())
+                orderList.addFirst(getOrderValue(orderSnapshot))
                 addedOrderListLiveData.value = orderList
             }
 
             override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
-                val order = orderSnapshot.getValue(Order::class.java) ?: Order()
+                val order = getOrderValue(orderSnapshot)
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
@@ -138,6 +142,7 @@ class ApiRepository @Inject constructor(
         val ordersRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
+            .child(cafeId)
             .orderByChild(OrderEntity.TIMESTAMP)
             .startAt(DateTime.now().minusDays(daysCount).millis.toDouble())
 
@@ -148,7 +153,7 @@ class ApiRepository @Inject constructor(
                     val ordersWithCartProductsList = arrayListOf<Order>()
                     for (orderSnapshot in ordersSnapshot.children.reversed()) {
                         ordersWithCartProductsList.add(
-                            orderSnapshot.getValue(Order::class.java) ?: Order()
+                            getOrderValue(orderSnapshot)
                         )
                     }
                     withContext(Dispatchers.Main) {
@@ -160,6 +165,12 @@ class ApiRepository @Inject constructor(
             override fun onCancelled(databaseError: DatabaseError) {}
         })
         return ordersWithCartProductsLiveData
+    }
+
+    fun getOrderValue(orderSnapshot: DataSnapshot): Order {
+        return orderSnapshot.getValue(Order::class.java).apply {
+            this?.uuid = orderSnapshot.key.toString()
+        } ?: Order()
     }
 
 }

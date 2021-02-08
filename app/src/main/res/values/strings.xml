@@ -38,4 +38,9 @@
     <string name="title_bottom_navigation_menu_orders">Заказы</string>
     <string name="title_bottom_navigation_menu_statistic">Статистика</string>
 
+    <!-- STATISTICS -->
+    <string name="hint_statics_days_count">Количество дней</string>
+    <string name="action_statics_get_statistic">Получить статистику</string>
+    <string name="error_statics_days_count">Введите количество дней</string>
+
 </resources>

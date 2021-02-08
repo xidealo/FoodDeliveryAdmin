@@ -8,6 +8,9 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.invisible
+import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
@@ -29,7 +32,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         ordersAdapter.ordersNavigator = this
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
         viewModel.addedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
