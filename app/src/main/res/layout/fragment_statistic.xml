@@ -33,6 +33,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_statistic_et_days_count"
                 style="@style/MaterialInput"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 android:padding="@dimen/medium_padding" />
         </com.google.android.material.textfield.TextInputLayout>

@@ -24,20 +24,16 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
+        android:padding="@dimen/small_padding"
         style="@style/DefaultMaterialCard">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/small_padding">
 
             <TextView
                 style="@style/MainTitle"
+                android:layout_margin="@dimen/small_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{statistic.date}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
