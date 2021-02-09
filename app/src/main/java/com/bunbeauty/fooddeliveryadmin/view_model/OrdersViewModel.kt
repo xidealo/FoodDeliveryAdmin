@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.view_model
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.Transformations
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
@@ -10,7 +9,7 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class OrdersViewModel @Inject constructor(
-        private val apiRepository: IApiRepository
+    private val apiRepository: IApiRepository
 ) : BaseViewModel<OrdersNavigator>() {
 
     override var navigator: WeakReference<OrdersNavigator>? = null

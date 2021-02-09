@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.utils.string
 
 import com.bunbeauty.fooddeliveryadmin.data.model.Address
 import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
+import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.data.model.Time
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
@@ -46,6 +47,13 @@ class StringHelper @Inject constructor() : IStringHelper {
         orderString.append("Комментарий:${orderEntity.comment}\n")
         orderString.append("Email:${orderEntity.email}")
         return orderString.toString()
+    }
+
+    override fun toString(statistic: Statistic): String {
+        val statisticString = StringBuilder()
+        //statisticString.append(toString(statistic.orderList))
+        statisticString.append("Выручка:${statistic.orderList.sumBy { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }}")
+        return statisticString.toString()
     }
 
     override fun toStringTime(orderEntity: OrderEntity): String {

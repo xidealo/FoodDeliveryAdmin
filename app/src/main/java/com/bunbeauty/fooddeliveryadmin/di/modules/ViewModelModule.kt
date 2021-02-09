@@ -39,4 +39,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StatisticViewModel::class)
     internal abstract fun provideStatisticViewModel(statisticViewModel: StatisticViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectedStatisticViewModel::class)
+    internal abstract fun provideSelectedStatisticViewModel(selectedStatisticViewModel: SelectedStatisticViewModel): ViewModel
 }

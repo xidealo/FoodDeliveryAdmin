@@ -8,13 +8,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
+import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
+import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticNavigator
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class StatisticAdapter @Inject constructor(
     private val context: Context,
     private val iStringHelper: IStringHelper
 ) : BaseAdapter<StatisticAdapter.StatisticViewHolder, Statistic>() {
+
+    lateinit var statisticNavigator: WeakReference<StatisticNavigator>
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StatisticViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
@@ -28,16 +33,14 @@ class StatisticAdapter @Inject constructor(
         holder.binding?.iStringHelper = iStringHelper
         holder.binding?.statistic = itemList[i]
         holder.setListener(itemList[i])
-
     }
 
     inner class StatisticViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = DataBindingUtil.bind<ElementStatisticBinding>(view)
-          fun setListener(statistic: Statistic) {
+        fun setListener(statistic: Statistic) {
             binding?.elementOrderMvcMain?.setOnClickListener {
-
+                statisticNavigator.get()?.goToSelectedStatistic(statistic)
             }
         }
-
     }
 }

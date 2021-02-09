@@ -15,6 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
@@ -32,7 +33,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ordersAdapter.ordersNavigator = this
+        ordersAdapter.ordersNavigator = WeakReference(this)
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
         viewModel.addedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
             viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)

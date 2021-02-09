@@ -28,5 +28,18 @@
         android:id="@+id/statistic_fragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticFragment"
         android:label="StatisticFragment"
-        tools:layout="@layout/fragment_statistic" />
+        tools:layout="@layout/fragment_statistic">
+        <action
+            android:id="@+id/action_statistic_fragment_to_selectedStatisticBottomSheet"
+            app:destination="@id/selectedStatisticBottomSheet" />
+    </fragment>
+    <dialog
+        android:id="@+id/selectedStatisticBottomSheet"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.statistic.SelectedStatisticBottomSheet"
+        android:label="SelectedStatisticBottomSheet"
+        tools:layout="@layout/bottom_sheet_selected_statistic" >
+        <argument
+            android:name="statistic"
+            app:argType="com.bunbeauty.fooddeliveryadmin.data.model.Statistic" />
+    </dialog>
 </navigation>

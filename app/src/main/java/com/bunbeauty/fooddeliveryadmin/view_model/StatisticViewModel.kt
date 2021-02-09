@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.ApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.data.model.Time
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +24,17 @@ class StatisticViewModel @Inject constructor(private val apiRepository: ApiRepos
     fun getStatistic(daysCount: Int) {
         viewModelScope.launch {
             apiRepository.getOrderWithCartProductsList(daysCount).asFlow().collect { ordersList ->
-                val statistics = ordersList.groupBy { Time(it.timestamp, 3).toStringDateYYYYMMDD() }
-                    .map { Statistic(it.key, it.key, it.value) }
+                val statistics = arrayListOf(Statistic(date = "Все время", orderList = ordersList))
+
+                statistics.addAll(ordersList.groupBy {
+                    Time(
+                        it.timestamp,
+                        3
+                    ).toStringDateYYYYMMDD()
+                }.map { Statistic(it.key, it.key, it.value) })
+
                 statisticField.set(statistics)
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     isLoadingField.set(false)
                 }
             }

@@ -10,6 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class OrdersAdapter @Inject constructor(
@@ -17,7 +18,7 @@ class OrdersAdapter @Inject constructor(
     private val iStringHelper: IStringHelper
 ) : BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
 
-    lateinit var ordersNavigator: OrdersNavigator
+    lateinit var ordersNavigator: WeakReference<OrdersNavigator>
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): OrderViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
@@ -38,7 +39,7 @@ class OrdersAdapter @Inject constructor(
 
         fun setListener(order: Order) {
             binding?.elementOrderMvcMain?.setOnClickListener {
-                ordersNavigator.showChangeStatus(order)
+                ordersNavigator.get()?.showChangeStatus(order)
             }
         }
     }

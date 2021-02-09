@@ -35,7 +35,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
+                android:inputType="number"
                 android:padding="@dimen/medium_padding" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class Statistic(
     override var uuid: String = "",
     var date: String,
-    var order: List<Order>
+    var orderList: List<Order>
 ) : Parcelable, BaseModel()

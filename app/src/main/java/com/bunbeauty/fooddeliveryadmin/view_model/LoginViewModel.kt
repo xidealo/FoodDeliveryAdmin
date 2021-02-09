@@ -2,25 +2,14 @@ package com.bunbeauty.fooddeliveryadmin.view_model
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.data.model.Company
 import com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 import java.math.BigInteger
 import java.security.MessageDigest
