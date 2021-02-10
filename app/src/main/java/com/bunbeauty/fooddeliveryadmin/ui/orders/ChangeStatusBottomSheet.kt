@@ -1,25 +1,29 @@
 package com.bunbeauty.fooddeliveryadmin.ui.orders
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.databinding.DialogChangeStatusBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.ui.base.BaseDialog
-import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
 import com.bunbeauty.fooddeliveryadmin.BR
+import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetChangeStatusBinding
+import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus.*
-import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusDialogArgs.fromBundle
+import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
+import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheetArgs.fromBundle
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusViewModel>(),
+
+class ChangeStatusBottomSheet :
+    BaseBottomSheetDialog<BottomSheetChangeStatusBinding, ChangeStatusViewModel>(),
     ChangeStatusNavigator {
 
-    override var dataBindingVariable: Int = BR.viewModel
-    override var layoutId: Int = R.layout.dialog_change_status
-    override var viewModelClass = ChangeStatusViewModel::class.java
+    override var layoutId = R.layout.bottom_sheet_change_status
+    override var viewModelVariable = BR.viewModel
 
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
@@ -28,15 +32,18 @@ class ChangeStatusDialog : BaseDialog<DialogChangeStatusBinding, ChangeStatusVie
     @Inject
     lateinit var iStringHelper: IStringHelper
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.navigator = WeakReference(this)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewDataBinding.order = fromBundle(requireArguments()).order
         viewDataBinding.iStringHelper = iStringHelper
+        viewModel.navigator = WeakReference(this)
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        dialog.behavior.skipCollapsed = true
+        return dialog
     }
 
     override fun closeDialog() {
