@@ -50,10 +50,21 @@ class StringHelper @Inject constructor() : IStringHelper {
     }
 
     override fun toString(statistic: Statistic): String {
-        val statisticString = StringBuilder()
-        //statisticString.append(toString(statistic.orderList))
-        statisticString.append("Выручка:${statistic.orderList.sumBy { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }}")
-        return statisticString.toString()
+        val statisticStringBuilder = StringBuilder()
+
+        statisticStringBuilder.append("Выручка: ${
+            statistic.orderList.sumBy
+            { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
+        } ₽")
+        statisticStringBuilder.append("\n")
+        val menuProductList =
+            statistic.orderList.flatMap { it.cartProducts }.groupBy { it.menuProduct.name }.toList()
+                .sortedByDescending { pair -> pair.second.sumBy { it.count } }
+        for ((index, menuProduct) in menuProductList.withIndex()) {
+            statisticStringBuilder.append("${index + 1}) ${menuProduct.first}: ${menuProduct.second.sumBy { it.count }} шт.")
+            statisticStringBuilder.append("\n")
+        }
+        return statisticStringBuilder.toString()
     }
 
     override fun toStringTime(orderEntity: OrderEntity): String {

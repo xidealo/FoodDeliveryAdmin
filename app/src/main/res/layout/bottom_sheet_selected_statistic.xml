@@ -37,6 +37,7 @@
             android:id="@+id/bottom_sheet_statistic_tv_products"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/MainText"
             android:text="@{iStringHelper.toString(statistic)}" />
 
     </LinearLayout>
