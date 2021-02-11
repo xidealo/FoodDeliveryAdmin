@@ -22,4 +22,10 @@ class DataModule {
 
     @Provides
     fun provideOrderDao(localDatabase: LocalDatabase) = localDatabase.orderDao()
+
+    @Provides
+    fun provideAddressDao(localDatabase: LocalDatabase) = localDatabase.addressDao()
+
+    @Provides
+    fun provideCafeDao(localDatabase: LocalDatabase) = localDatabase.cafeDao()
 }

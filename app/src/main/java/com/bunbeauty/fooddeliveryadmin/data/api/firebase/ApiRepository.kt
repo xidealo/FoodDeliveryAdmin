@@ -1,10 +1,13 @@
 package com.bunbeauty.fooddeliveryadmin.data.api.firebase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
+import com.bunbeauty.fooddeliveryadmin.data.model.Cafe
 import com.bunbeauty.fooddeliveryadmin.data.model.Company
+import com.bunbeauty.fooddeliveryadmin.data.model.Company.Companion.COMPANY
 import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
@@ -12,6 +15,8 @@ import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
@@ -21,40 +26,67 @@ class ApiRepository @Inject constructor(
     private val dataStoreHelper: IDataStoreHelper
 ) : IApiRepository, CoroutineScope {
 
-    private val firebaseInstance = FirebaseDatabase.getInstance()
-
     override val coroutineContext: CoroutineContext
         get() = Job()
-
-    private val orderList = LinkedList<Order>()
-
-    var cafeId = "0cafe"
-
-    override val addedOrderListLiveData = object : MutableLiveData<List<Order>>(emptyList()) {
-        private var orderListener: ChildEventListener? = null
-        private val ordersReference = firebaseInstance
-            .getReference(OrderEntity.ORDERS)
-            .child(APP_ID)
-            .child(cafeId)
-            .orderByChild(OrderEntity.TIMESTAMP)
-            .startAt(DateTime.now().minusDays(2).millis.toDouble())
-
-        override fun onActive() {
-            super.onActive()
-            orderListener = getOrderWithCartProducts(ordersReference)
-        }
-
-        override fun onInactive() {
-            orderList.clear()
-            orderListener?.let {
-                ordersReference.removeEventListener(it)
-            }
-
-            super.onInactive()
-        }
-    }
     override val updatedOrderListLiveData = MutableLiveData<List<Order>>(emptyList())
 
+    private val firebaseInstance = FirebaseDatabase.getInstance()
+    private val orderList = LinkedList<Order>()
+    private lateinit var addedOrderListLiveData: MutableLiveData<List<Order>>
+
+    override fun getAddedOrderListLiveData(cafeId: String): LiveData<List<Order>> {
+        addedOrderListLiveData = object : MutableLiveData<List<Order>>(emptyList()) {
+            private var orderListener: ChildEventListener? = null
+            private val ordersReference = firebaseInstance
+                    .getReference(OrderEntity.ORDERS)
+                    .child(APP_ID)
+                    .child(cafeId)
+                    .orderByChild(OrderEntity.TIMESTAMP)
+                    .startAt(DateTime.now().minusDays(2).millis.toDouble())
+
+            override fun onActive() {
+                super.onActive()
+                orderListener = getOrderWithCartProducts(ordersReference)
+            }
+
+            override fun onInactive() {
+                orderList.clear()
+                orderListener?.let {
+                    ordersReference.removeEventListener(it)
+                }
+
+                super.onInactive()
+            }
+        }
+
+        return addedOrderListLiveData
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun getCafeList(): SharedFlow<List<Cafe>> {
+        val cafeListSharedFlow = MutableSharedFlow<List<Cafe>>()
+        val contactInfoRef = firebaseInstance
+                .getReference(COMPANY)
+                .child(APP_ID)
+                .child(Cafe.CAFES)
+
+        contactInfoRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val cafeList = snapshot.children.map { cafeSnapshot ->
+                    cafeSnapshot.getValue(Cafe::class.java)!!
+                }
+                launch(IO) {
+                    cafeListSharedFlow.emit(cafeList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+        return cafeListSharedFlow
+    }
 
     override fun login(login: String, passwordHash: String): LiveData<Boolean> {
         val isAuthorized = MutableLiveData<Boolean>()
@@ -101,7 +133,7 @@ class ApiRepository @Inject constructor(
         }
     }
 
-    override fun updateOrder(uuid: String, newStatus: OrderStatus) {
+    override fun updateOrder(cafeId: String, uuid: String, newStatus: OrderStatus) {
         val orderRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
@@ -137,8 +169,7 @@ class ApiRepository @Inject constructor(
         })
     }
 
-
-    override fun getOrderWithCartProductsList(daysCount: Int): LiveData<List<Order>> {
+    override fun getOrderWithCartProductsList(cafeId: String, daysCount: Int): LiveData<List<Order>> {
         val ordersRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)

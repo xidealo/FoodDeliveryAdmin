@@ -24,7 +24,7 @@ class DataStoreHelper @Inject constructor(context: Context) : IDataStoreHelper {
     }
 
     override val cafeId: Flow<String> = cafeIdDataStore.data.map {
-        it[CAFE_ID_KEY] ?: "0cafe"
+        it[CAFE_ID_KEY] ?: ""
     }
 
     override suspend fun saveCafeId(cafeId: String) {

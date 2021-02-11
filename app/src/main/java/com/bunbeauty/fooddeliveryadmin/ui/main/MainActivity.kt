@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         viewDataBinding.executePendingBindings()
 
         viewModel = ViewModelProvider(this, modelFactory).get(MainViewModel::class.java)
+        viewModel.refreshCafeList()
     }
 
     fun showMessage(message: String) {

@@ -1,15 +1,21 @@
 package com.bunbeauty.fooddeliveryadmin.view_model
 
+import androidx.lifecycle.viewModelScope
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
+import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
 import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class ChangeStatusViewModel @Inject constructor(
-    private val iApiRepository: IApiRepository
+        private val apiRepository: IApiRepository,
+        private val dataStoreHelper: IDataStoreHelper
 ) : BaseViewModel<ChangeStatusNavigator>() {
 
     override var navigator: WeakReference<ChangeStatusNavigator>? = null
@@ -23,6 +29,9 @@ class ChangeStatusViewModel @Inject constructor(
     }
 
     fun changeStatus(order: Order, newStatus: OrderStatus) {
-        iApiRepository.updateOrder(order.uuid, newStatus)
+        viewModelScope.launch(IO) {
+            val cafeId = dataStoreHelper.cafeId.first()
+            apiRepository.updateOrder(cafeId, order.uuid, newStatus)
+        }
     }
 }

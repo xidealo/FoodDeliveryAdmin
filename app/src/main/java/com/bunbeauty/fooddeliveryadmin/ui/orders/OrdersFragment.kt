@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.orders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
@@ -17,6 +18,12 @@ import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.action
 import com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel
 import java.lang.ref.WeakReference
 import javax.inject.Inject
+import android.widget.Toast
+
+import android.widget.AdapterView
+
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
 
 
 class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), OrdersNavigator {
@@ -33,14 +40,31 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         ordersAdapter.ordersNavigator = WeakReference(this)
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
+
+        viewModel.cafeAddressLiveData.observe(viewLifecycleOwner) { cafeAddress ->
+            //ToDo replace spinner
+        }
         viewModel.addedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
             viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
             ordersAdapter.setItemList(orderList)
         }
         viewModel.updatedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
             ordersAdapter.setItemList(orderList)
+        }
+        viewModel.cafeAddressListLiveData.observe(viewLifecycleOwner) { cafeAddressList ->
+            val adapter = ArrayAdapter(
+                    requireContext(),
+                    R.layout.support_simple_spinner_dropdown_item,
+                    cafeAddressList
+            )
+            viewDataBinding.fragmentOrdersAtvCafe.setAdapter(adapter)
+        }
+
+        viewDataBinding.fragmentOrdersAtvCafe.setOnItemClickListener { _, _, _, _ ->
+            viewModel.setCafe(viewDataBinding.fragmentOrdersAtvCafe.text.toString())
         }
     }
 
