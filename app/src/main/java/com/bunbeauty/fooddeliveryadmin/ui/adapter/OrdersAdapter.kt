@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class OrdersAdapter @Inject constructor(
     private val context: Context,
-    private val iStringHelper: IStringHelper
+    private val stringHelper: IStringHelper
 ) : BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
 
     lateinit var ordersNavigator: WeakReference<OrdersNavigator>
@@ -29,7 +29,7 @@ class OrdersAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: OrderViewHolder, i: Int) {
         holder.binding?.context = context
-        holder.binding?.iStringHelper = iStringHelper
+        holder.binding?.stringHelper = stringHelper
         holder.setListener(itemList[i])
         holder.binding?.order = itemList[i]
     }
