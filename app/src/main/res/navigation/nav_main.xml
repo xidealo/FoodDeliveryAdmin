@@ -11,13 +11,14 @@
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_login_fragment_to_mainFragment"
+            android:id="@+id/to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
         tools:layout="@layout/fragment_main"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.main.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+    </fragment>
 
 </navigation>

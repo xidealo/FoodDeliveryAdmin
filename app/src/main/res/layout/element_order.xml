@@ -19,7 +19,7 @@
             type="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
 
         <variable
-            name="iStringHelper"
+            name="stringHelper"
             type="com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper" />
     </data>
 
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/element_order_tv_time"
                 style="@style/MainText"
-                android:text="@{iStringHelper.toStringTime(order)}"
+                android:text="@{stringHelper.toStringTime(order)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

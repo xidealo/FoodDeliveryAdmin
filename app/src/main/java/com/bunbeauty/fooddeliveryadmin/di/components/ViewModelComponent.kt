@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.di.components
 import androidx.lifecycle.ViewModelStoreOwner
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.di.modules.ViewModelModule
+import com.bunbeauty.fooddeliveryadmin.ui.address_list.AddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginFragment
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheet
@@ -29,6 +30,7 @@ interface ViewModelComponent {
     fun inject(ordersFragment: OrdersFragment)
     fun inject(statisticFragment: StatisticFragment)
     fun inject(mainFragment: MainFragment)
+    fun inject(addressListBottomSheet: AddressListBottomSheet)
 
     // bottom sheet
     fun inject(selectedStatisticBottomSheet: SelectedStatisticBottomSheet)

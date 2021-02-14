@@ -60,6 +60,7 @@ ext {
     coreKtxVersion = "1.3.2"
     appcompatVersion = "1.2.0"
     firebaseVersion = "26.1.1"
+    fastAdapterVersion = "5.3.4"
 
     //design
     materialDesignVersion = "1.3.0"

@@ -62,6 +62,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Logi
     }
 
     private fun goToOrders() {
-        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+        findNavController().navigate(LoginFragmentDirections.
+        toMainFragment())
     }
 }

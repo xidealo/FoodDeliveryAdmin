@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="address"
+            type="com.bunbeauty.fooddeliveryadmin.data.model.Address" />
+
+        <variable
+            name="stringHelper"
+            type="com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/element_address_mcv_main"
+        style="@style/DefaultMaterialCard">
+
+        <TextView
+            style="@style/MainText"
+            android:layout_margin="@dimen/medium_margin"
+            android:drawablePadding="@dimen/medium_padding"
+            android:text="@{stringHelper.toString(address)}"/>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

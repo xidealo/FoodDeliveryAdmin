@@ -138,4 +138,8 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseVersion")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-database'
+
+    //FastAdapter
+    implementation "com.mikepenz:fastadapter:$rootProject.fastAdapterVersion"
+    implementation "com.mikepenz:fastadapter-extensions-binding:$rootProject.fastAdapterVersion"
 }
