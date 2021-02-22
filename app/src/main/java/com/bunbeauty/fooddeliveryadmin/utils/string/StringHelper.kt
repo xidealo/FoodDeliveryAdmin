@@ -57,6 +57,8 @@ class StringHelper @Inject constructor() : IStringHelper {
             { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
         } ₽")
         statisticStringBuilder.append("\n")
+        statisticStringBuilder.append("Количество заказов: ${statistic.orderList.size}x")
+        statisticStringBuilder.append("\n")
         val menuProductList =
             statistic.orderList.flatMap { it.cartProducts }.groupBy { it.menuProduct.name }.toList()
                 .sortedByDescending { pair -> pair.second.sumBy { it.count } }
