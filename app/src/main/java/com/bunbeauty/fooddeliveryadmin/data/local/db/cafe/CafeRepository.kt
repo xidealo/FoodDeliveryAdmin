@@ -8,8 +8,7 @@ import javax.inject.Inject
 
 class CafeRepository @Inject constructor(
         private val cafeDao: CafeDao,
-        private val apiRepository: IApiRepository,
-        private val addressRepo: AddressRepo
+        private val apiRepository: IApiRepository
 ) : CafeRepo {
 
     override val cafeListLiveData = cafeDao.getCafeListLiveData()
@@ -19,15 +18,8 @@ class CafeRepository @Inject constructor(
 
         apiRepository.getCafeList().collect { cafeList ->
             for (cafe in cafeList) {
-                saveCafe(cafe)
+                cafeDao.insertCafe(cafe)
             }
         }
-    }
-
-    suspend fun saveCafe(cafe: Cafe) {
-        cafeDao.insert(cafe.cafeEntity)
-
-        cafe.address.cafeId = cafe.cafeEntity.id
-        addressRepo.insert(cafe.address)
     }
 }
