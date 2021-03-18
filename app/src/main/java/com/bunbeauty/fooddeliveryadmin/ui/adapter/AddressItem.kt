@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import com.bunbeauty.data.model.Address
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementAddressBinding
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 data class AddressItem(val address: Address, val stringHelper: IStringHelper) :

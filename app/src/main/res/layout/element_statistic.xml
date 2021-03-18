@@ -19,7 +19,7 @@
 
         <variable
             name="iStringHelper"
-            type="com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper" />
+            type="com.bunbeauty.domain.string_helper.IStringHelper" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

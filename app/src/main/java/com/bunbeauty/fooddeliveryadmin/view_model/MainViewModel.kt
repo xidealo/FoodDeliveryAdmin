@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.view_model
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.fooddeliveryadmin.data.local.db.cafe.CafeRepo
+import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers

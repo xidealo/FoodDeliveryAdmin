@@ -7,7 +7,7 @@ import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetSelectedStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.view_model.SelectedStatisticViewModel
 import javax.inject.Inject
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
@@ -62,4 +63,9 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel<*>> : Fragmen
         viewDataBinding.lifecycleOwner = this
         viewDataBinding.executePendingBindings()
     }
+
+    protected fun <T> subscribe(liveData: LiveData<T>, observer: (T) -> Unit) {
+        liveData.observe(viewLifecycleOwner, observer::invoke)
+    }
+
 }

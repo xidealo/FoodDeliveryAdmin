@@ -8,7 +8,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.view_model.AddressListViewModel
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter

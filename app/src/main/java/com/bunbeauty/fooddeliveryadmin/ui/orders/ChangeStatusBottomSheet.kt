@@ -10,7 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheetArgs.fromBundle
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog

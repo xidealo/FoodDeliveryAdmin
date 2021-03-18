@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticNavigator
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.domain.string_helper.IStringHelper
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 

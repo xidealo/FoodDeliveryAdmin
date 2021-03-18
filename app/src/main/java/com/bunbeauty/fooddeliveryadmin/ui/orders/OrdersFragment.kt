@@ -38,14 +38,14 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), O
             findNavController().navigate(toAddressListBottomSheet())
         }
 
-        viewModel.cafeAddressLiveData.observe(viewLifecycleOwner) { cafeAddress ->
+        subscribe(viewModel.cafeAddressLiveData) { cafeAddress ->
             viewDataBinding.fragmentOrdersTvAddress.text = cafeAddress
         }
-        viewModel.addedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
+        subscribe(viewModel.addedOrderListLiveData) { orderList ->
             viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
             ordersAdapter.setItemList(orderList)
         }
-        viewModel.updatedOrderListLiveData.observe(viewLifecycleOwner) { orderList ->
+        subscribe(viewModel.updatedOrderListLiveData) { orderList ->
             ordersAdapter.setItemList(orderList)
         }
     }

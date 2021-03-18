@@ -4,20 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.asLiveData
-import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
-import com.bunbeauty.fooddeliveryadmin.data.local.db.cafe.CafeRepo
-import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
+import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class OrdersViewModel @Inject constructor(
-        private val apiRepository: IApiRepository,
-        private val stringHelper: IStringHelper,
-        cafeRepo: CafeRepo,
-        dataStoreHelper: IDataStoreHelper
+    private val apiRepository: IApiRepository,
+    private val stringHelper: IStringHelper,
+    cafeRepo: CafeRepo,
+    dataStoreHelper: IDataStoreHelper
 ) : BaseViewModel<OrdersNavigator>() {
 
     override var navigator: WeakReference<OrdersNavigator>? = null

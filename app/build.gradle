@@ -65,6 +65,8 @@ repositories {
 
 dependencies {
     implementation project(":data")
+    implementation project(":domain")
+    implementation project(":common")
 
     implementation fileTree(dir: "libs", include: ["*.jar", "*.arr"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -121,9 +123,6 @@ dependencies {
     implementation "androidx.room:room-ktx:$rootProject.roomDatabaseVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomDatabaseVersion"
 
-    //DataStore
-    implementation "androidx.datastore:datastore-preferences:$rootProject.datastoreVersion"
-
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:$rootProject.workManagerVersion"
     implementation "androidx.work:work-gcm:$rootProject.workManagerVersion"
@@ -134,11 +133,6 @@ dependencies {
 
     //picasso
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
-
-    //Firebase
-    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseVersion")
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-database'
 
     //FastAdapter
     implementation "com.mikepenz:fastadapter:$rootProject.fastAdapterVersion"

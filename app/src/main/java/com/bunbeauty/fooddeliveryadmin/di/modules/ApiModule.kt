@@ -1,11 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.di.modules
 
-import com.bunbeauty.fooddeliveryadmin.data.api.firebase.ApiRepository
-import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
-import com.bunbeauty.fooddeliveryadmin.data.local.storage.DataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
-import com.bunbeauty.fooddeliveryadmin.utils.string.StringHelper
+import com.bunbeauty.domain.repository.api.firebase.ApiRepository
+import com.bunbeauty.common.utils.DataStoreHelper
+import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string_helper.StringHelper
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
