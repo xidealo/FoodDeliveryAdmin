@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.bunbeauty.fooddeliveryadmin.data.local.db.LocalDatabase
+import com.bunbeauty.domain.LocalDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

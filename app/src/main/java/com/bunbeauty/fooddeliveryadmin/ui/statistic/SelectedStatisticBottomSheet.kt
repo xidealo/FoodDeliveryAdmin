@@ -8,11 +8,11 @@ import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetSelectedStatisticB
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.bunbeauty.domain.string_helper.IStringHelper
-import com.bunbeauty.fooddeliveryadmin.view_model.SelectedStatisticViewModel
+import com.bunbeauty.presentation.view_model.SelectedStatisticViewModel
 import javax.inject.Inject
 
 class SelectedStatisticBottomSheet :
-    BaseBottomSheetDialog<BottomSheetSelectedStatisticBinding, SelectedStatisticViewModel>() {
+    BaseBottomSheetDialog<BottomSheetSelectedStatisticBinding, com.bunbeauty.presentation.view_model.SelectedStatisticViewModel>() {
 
     override var layoutId = R.layout.bottom_sheet_selected_statistic
     override var viewModelVariable = BR.viewModel

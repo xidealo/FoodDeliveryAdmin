@@ -18,10 +18,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
-import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
+import com.bunbeauty.presentation.view_model.BaseViewModel
 import javax.inject.Inject
 
-abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel<*>> : DialogFragment() {
+abstract class BaseDialog<T : ViewDataBinding, V : com.bunbeauty.presentation.view_model.BaseViewModel<*>> : DialogFragment() {
 
     abstract var layoutId: Int
     abstract var dataBindingVariable: Int

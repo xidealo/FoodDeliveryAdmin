@@ -9,11 +9,12 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
-import com.bunbeauty.fooddeliveryadmin.view_model.LoginViewModel
+import com.bunbeauty.presentation.view_model.LoginViewModel
 import java.lang.ref.WeakReference
 import java.util.*
 
-class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), LoginNavigator {
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
+    com.bunbeauty.presentation.navigator.LoginNavigator {
 
     override var viewModelVariable: Int = BR.viewModel
     override var layoutId: Int = R.layout.fragment_login

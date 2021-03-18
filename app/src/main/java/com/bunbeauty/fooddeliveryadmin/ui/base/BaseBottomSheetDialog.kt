@@ -10,12 +10,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
+import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
 
-abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel<*>> :
+abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : com.bunbeauty.presentation.view_model.BaseViewModel<*>> :
     BottomSheetDialogFragment() {
 
     abstract var layoutId: Int

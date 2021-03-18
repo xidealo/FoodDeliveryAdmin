@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.bunbeauty.fooddeliveryadmin.view_model.StatisticViewModel" />
+            type="com.bunbeauty.presentation.view_model.StatisticViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

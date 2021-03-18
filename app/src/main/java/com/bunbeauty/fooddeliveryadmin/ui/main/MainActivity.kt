@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
-import com.bunbeauty.fooddeliveryadmin.view_model.MainViewModel
-import com.bunbeauty.fooddeliveryadmin.view_model.base.ViewModelFactory
+import com.bunbeauty.presentation.view_model.MainViewModel
+import com.bunbeauty.presentation.view_model.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 

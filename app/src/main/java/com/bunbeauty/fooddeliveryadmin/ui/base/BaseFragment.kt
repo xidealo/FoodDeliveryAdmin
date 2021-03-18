@@ -12,10 +12,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
+import com.bunbeauty.presentation.view_model.BaseViewModel
 import javax.inject.Inject
 
-abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel<*>> : Fragment(){
+abstract class BaseFragment<T : ViewDataBinding, V : com.bunbeauty.presentation.view_model.BaseViewModel<*>> : Fragment(){
 
     abstract var layoutId: Int
     abstract var viewModelVariable: Int

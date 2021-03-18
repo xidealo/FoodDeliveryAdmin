@@ -12,7 +12,7 @@
 
         <variable
             name="viewModel"
-            type="com.bunbeauty.fooddeliveryadmin.view_model.SelectedStatisticViewModel" />
+            type="com.bunbeauty.presentation.view_model.SelectedStatisticViewModel" />
 
         <variable
             name="iStringHelper"

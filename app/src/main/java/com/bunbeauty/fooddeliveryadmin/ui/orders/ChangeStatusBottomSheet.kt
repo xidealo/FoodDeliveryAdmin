@@ -3,15 +3,14 @@ package com.bunbeauty.fooddeliveryadmin.ui.orders
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import com.bunbeauty.data.enums.OrderStatus.*
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetChangeStatusBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
-import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheetArgs.fromBundle
-import com.bunbeauty.domain.string_helper.IStringHelper
-import com.bunbeauty.fooddeliveryadmin.view_model.ChangeStatusViewModel
+import com.bunbeauty.presentation.view_model.ChangeStatusViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.lang.ref.WeakReference
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 class ChangeStatusBottomSheet :
     BaseBottomSheetDialog<BottomSheetChangeStatusBinding, ChangeStatusViewModel>(),
-    ChangeStatusNavigator {
+    com.bunbeauty.presentation.navigator.ChangeStatusNavigator {
 
     override var layoutId = R.layout.bottom_sheet_change_status
     override var viewModelVariable = BR.viewModel
@@ -33,7 +32,7 @@ class ChangeStatusBottomSheet :
     lateinit var iStringHelper: IStringHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewDataBinding.order = fromBundle(requireArguments()).order
+        viewDataBinding.order = ChangeStatusBottomSheetArgs.fromBundle(requireArguments()).order
         viewDataBinding.iStringHelper = iStringHelper
         viewModel.navigator = WeakReference(this)
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +50,7 @@ class ChangeStatusBottomSheet :
     }
 
     override fun updateClick() {
-        val currentOrder = fromBundle(requireArguments()).order
+        val currentOrder = ChangeStatusBottomSheetArgs.fromBundle(requireArguments()).order
 
         val newStatus = when {
             viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked -> NOT_ACCEPTED

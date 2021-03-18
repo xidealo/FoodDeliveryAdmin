@@ -3,8 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.di.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.di.ViewModelKey
-import com.bunbeauty.fooddeliveryadmin.view_model.*
-import com.bunbeauty.fooddeliveryadmin.view_model.base.ViewModelFactory
+import com.bunbeauty.presentation.view_model.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -23,12 +22,12 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
-    internal abstract fun provideLoginViewModel(loginViewModel: LoginViewModel): ViewModel
+    internal abstract fun provideLoginViewModel(loginViewModel:LoginViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(OrdersViewModel::class)
-    internal abstract fun provideOrdersViewModel(ordersViewModel: OrdersViewModel): ViewModel
+    internal abstract fun provideOrdersViewModel(ordersViewModel:OrdersViewModel): ViewModel
 
     @Binds
     @IntoMap

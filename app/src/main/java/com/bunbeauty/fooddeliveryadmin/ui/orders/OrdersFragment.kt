@@ -12,12 +12,12 @@ import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.toAddressListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel
+import com.bunbeauty.presentation.view_model.OrdersViewModel
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-
-class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(), OrdersNavigator {
+class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(),
+    com.bunbeauty.presentation.navigator.OrdersNavigator {
 
     override var viewModelVariable: Int = BR.viewModel
     override var layoutId: Int = R.layout.fragment_orders

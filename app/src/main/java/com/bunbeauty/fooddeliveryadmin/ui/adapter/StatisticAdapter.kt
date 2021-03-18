@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.data.model.Statistic
-import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
-import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticNavigator
 import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -18,7 +17,7 @@ class StatisticAdapter @Inject constructor(
     private val iStringHelper: IStringHelper
 ) : BaseAdapter<StatisticAdapter.StatisticViewHolder, Statistic>() {
 
-    lateinit var statisticNavigator: WeakReference<StatisticNavigator>
+    lateinit var statisticNavigator: WeakReference<com.bunbeauty.presentation.navigator.StatisticNavigator>
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StatisticViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)

@@ -9,13 +9,14 @@ import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.bunbeauty.domain.string_helper.IStringHelper
-import com.bunbeauty.fooddeliveryadmin.view_model.AddressListViewModel
+import com.bunbeauty.presentation.view_model.AddressListViewModel
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>(), AddressListNavigator  {
+class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>(),
+    com.bunbeauty.presentation.navigator.AddressListNavigator {
 
     override var layoutId = R.layout.bottom_sheet_address_list
     override var viewModelVariable = BR.viewModel

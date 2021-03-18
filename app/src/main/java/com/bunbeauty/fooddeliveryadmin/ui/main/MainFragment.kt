@@ -10,7 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMainBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.view_model.MainViewModel
+import com.bunbeauty.presentation.view_model.MainViewModel
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 

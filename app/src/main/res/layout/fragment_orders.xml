@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.bunbeauty.fooddeliveryadmin.view_model.OrdersViewModel" />
+            type="com.bunbeauty.presentation.view_model.OrdersViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

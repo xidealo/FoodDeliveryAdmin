@@ -10,16 +10,15 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.view_model.StatisticViewModel
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>(),
-    StatisticNavigator {
+class StatisticFragment : BaseFragment<FragmentStatisticBinding, com.bunbeauty.presentation.view_model.StatisticViewModel>(),
+    com.bunbeauty.presentation.navigator.StatisticNavigator {
 
     override var viewModelVariable: Int = BR.viewModel
     override var layoutId: Int = R.layout.fragment_statistic
-    override var viewModelClass = StatisticViewModel::class.java
+    override var viewModelClass = com.bunbeauty.presentation.view_model.StatisticViewModel::class.java
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
     }
