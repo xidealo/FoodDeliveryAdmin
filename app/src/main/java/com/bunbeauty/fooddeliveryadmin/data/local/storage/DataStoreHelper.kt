@@ -1,43 +1,45 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.storage
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class DataStoreHelper @Inject constructor(context: Context) : IDataStoreHelper {
+class DataStoreHelper @Inject constructor(private val context: Context) : IDataStoreHelper {
 
-    private val tokenDataStore = context.createDataStore(TOKEN_DATA_STORE)
-    private val cafeIdDataStore = context.createDataStore(CAFE_ID_DATA_STORE)
+    private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = TOKEN_DATA_STORE)
+    private val Context.cafeIdDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_ID_DATA_STORE)
 
-    override val token: Flow<String> = tokenDataStore.data.map {
+    override val token: Flow<String> = context.tokenDataStore.data.map {
         it[TOKEN_KEY] ?: ""
     }
 
     override suspend fun saveToken(token: String) {
-        tokenDataStore.edit {
+        context.tokenDataStore.edit {
             it[TOKEN_KEY] = token
         }
     }
 
-    override val cafeId: Flow<String> = cafeIdDataStore.data.map {
+    override val cafeId: Flow<String> = context.cafeIdDataStore.data.map {
         it[CAFE_ID_KEY] ?: ""
     }
 
     override suspend fun saveCafeId(cafeId: String) {
-        cafeIdDataStore.edit {
+       context. cafeIdDataStore.edit {
             it[CAFE_ID_KEY] = cafeId
         }
     }
 
     override suspend fun clearCache() {
-        tokenDataStore.edit {
+        context.tokenDataStore.edit {
             it.clear()
         }
-        cafeIdDataStore.edit {
+        context.cafeIdDataStore.edit {
             it.clear()
         }
     }

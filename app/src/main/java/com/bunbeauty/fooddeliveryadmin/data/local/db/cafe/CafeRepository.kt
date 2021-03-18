@@ -1,8 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.db.cafe
 
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
-import com.bunbeauty.fooddeliveryadmin.data.local.db.address.AddressRepo
-import com.bunbeauty.fooddeliveryadmin.data.model.Cafe
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 

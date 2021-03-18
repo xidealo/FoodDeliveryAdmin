@@ -7,7 +7,7 @@ import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetChangeStatusBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus.*
+import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheetArgs.fromBundle
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper

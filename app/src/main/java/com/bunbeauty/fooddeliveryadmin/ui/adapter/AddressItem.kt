@@ -1,8 +1,9 @@
-package com.bunbeauty.fooddeliveryadmin.data.model
+package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.room.Ignore
+import com.bunbeauty.data.model.Address
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementAddressBinding
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper

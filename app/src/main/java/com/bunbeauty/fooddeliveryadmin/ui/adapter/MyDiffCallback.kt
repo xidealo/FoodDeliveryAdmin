@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
+import com.bunbeauty.data.model.BaseModel
 
 class MyDiffCallback(
     private val newList: List<BaseModel>,

@@ -24,7 +24,7 @@
         tools:layout="@layout/bottom_sheet_change_status">
         <argument
             android:name="Order"
-            app:argType="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
+            app:argType="com.bunbeauty.data.model.order.Order" />
     </dialog>
     <fragment
         android:id="@+id/statistic_fragment"
@@ -42,7 +42,7 @@
         tools:layout="@layout/bottom_sheet_selected_statistic">
         <argument
             android:name="statistic"
-            app:argType="com.bunbeauty.fooddeliveryadmin.data.model.Statistic" />
+            app:argType="com.bunbeauty.data.model.Statistic" />
     </dialog>
     <dialog
         android:id="@+id/addressListBottomSheet"

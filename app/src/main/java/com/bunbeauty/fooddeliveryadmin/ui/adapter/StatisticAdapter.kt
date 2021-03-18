@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
+import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
-import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
 import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticNavigator
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
 import java.lang.ref.WeakReference

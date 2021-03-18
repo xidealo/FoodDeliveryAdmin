@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersNavigator
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper

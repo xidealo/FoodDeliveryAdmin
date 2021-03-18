@@ -1,11 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.db.order
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Query
 import com.bunbeauty.fooddeliveryadmin.data.local.db.BaseDao
-import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.data.model.order.OrderEntity
 
 @Dao
 interface OrderDao : BaseDao<OrderEntity> {

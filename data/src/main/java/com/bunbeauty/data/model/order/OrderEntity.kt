@@ -1,14 +1,12 @@
-package com.bunbeauty.fooddeliveryadmin.data.model.order
+package com.bunbeauty.data.model.order
 
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.bunbeauty.fooddeliveryadmin.data.model.Address
-import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
-import com.bunbeauty.fooddeliveryadmin.data.model.Time
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.data.enums.OrderStatus
+import com.bunbeauty.data.model.Address
+import com.bunbeauty.data.model.BaseModel
 import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 

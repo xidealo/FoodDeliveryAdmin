@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.ui.statistic
 
-import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
+import com.bunbeauty.data.model.Statistic
 
 interface StatisticNavigator {
     fun getStatistic()

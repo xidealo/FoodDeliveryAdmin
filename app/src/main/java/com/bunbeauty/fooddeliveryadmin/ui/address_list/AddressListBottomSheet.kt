@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.data.model.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog

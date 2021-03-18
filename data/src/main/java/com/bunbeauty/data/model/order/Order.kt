@@ -1,11 +1,11 @@
-package com.bunbeauty.fooddeliveryadmin.data.model.order
+package com.bunbeauty.data.model.order
 
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Ignore
 import androidx.room.Relation
-import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
-import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
+import com.bunbeauty.data.model.BaseModel
+import com.bunbeauty.data.model.CartProduct
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

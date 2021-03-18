@@ -6,9 +6,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.bunbeauty.fooddeliveryadmin.data.local.db.BaseDao
-import com.bunbeauty.fooddeliveryadmin.data.model.Address
-import com.bunbeauty.fooddeliveryadmin.data.model.Cafe
-import com.bunbeauty.fooddeliveryadmin.data.model.CafeEntity
+import com.bunbeauty.data.model.Address
+import com.bunbeauty.data.model.Cafe
+import com.bunbeauty.data.model.CafeEntity
 
 @Dao
 interface CafeDao : BaseDao<CafeEntity> {

@@ -4,7 +4,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.fooddeliveryadmin.data.local.db.cafe.CafeRepo
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.data.model.Address
+import com.bunbeauty.data.model.Address
 import com.bunbeauty.fooddeliveryadmin.ui.address_list.AddressListNavigator
 import com.bunbeauty.fooddeliveryadmin.utils.string.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel

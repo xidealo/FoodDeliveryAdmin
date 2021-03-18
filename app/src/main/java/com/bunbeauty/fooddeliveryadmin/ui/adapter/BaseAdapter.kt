@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
+import com.bunbeauty.data.model.BaseModel
 
 abstract class BaseAdapter<T : RecyclerView.ViewHolder, E : BaseModel> : RecyclerView.Adapter<T>() {
 

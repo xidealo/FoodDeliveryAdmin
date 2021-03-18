@@ -1,10 +1,10 @@
 package com.bunbeauty.fooddeliveryadmin.utils.string
 
-import com.bunbeauty.fooddeliveryadmin.data.model.Address
-import com.bunbeauty.fooddeliveryadmin.data.model.CartProduct
-import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
-import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
+import com.bunbeauty.data.model.Address
+import com.bunbeauty.data.model.CartProduct
+import com.bunbeauty.data.model.Statistic
+import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.data.model.order.OrderEntity
 
 interface IStringHelper {
     fun toString(address: Address): String

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
+import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticAdapter

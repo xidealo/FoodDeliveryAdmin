@@ -3,8 +3,8 @@ package com.bunbeauty.fooddeliveryadmin.view_model
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.IApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers.IO

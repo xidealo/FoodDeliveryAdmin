@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.db.address
 
-import com.bunbeauty.fooddeliveryadmin.data.model.Address
+import com.bunbeauty.data.model.Address
 import javax.inject.Inject
 
 class AddressRepository @Inject constructor(private val addressDao: AddressDao): AddressRepo {

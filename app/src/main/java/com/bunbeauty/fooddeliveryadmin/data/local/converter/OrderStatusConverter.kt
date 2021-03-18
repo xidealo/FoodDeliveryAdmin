@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.converter
 
 import androidx.room.TypeConverter
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.data.enums.OrderStatus
 
 class OrderStatusConverter {
     @TypeConverter

@@ -4,8 +4,8 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.data.model.BaseModel
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.data.model.BaseModel
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.BaseAdapter
 import com.google.android.material.card.MaterialCardView
 

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.data.model
+package com.bunbeauty.data.model
 
 import android.os.Parcelable
 import android.os.SystemClock

@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.data.api.firebase
 
 import androidx.lifecycle.LiveData
-import com.bunbeauty.fooddeliveryadmin.data.model.Cafe
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
-import com.bunbeauty.fooddeliveryadmin.enums.OrderStatus
+import com.bunbeauty.data.model.Cafe
+import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.data.enums.OrderStatus
 import kotlinx.coroutines.flow.SharedFlow
 
 interface IApiRepository {

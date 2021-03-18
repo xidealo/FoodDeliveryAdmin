@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.data.model
+package com.bunbeauty.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

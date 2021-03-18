@@ -16,7 +16,7 @@
 
         <variable
             name="order"
-            type="com.bunbeauty.fooddeliveryadmin.data.model.order.Order" />
+            type="com.bunbeauty.data.model.order.Order" />
 
         <variable
             name="stringHelper"

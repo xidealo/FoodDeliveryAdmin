@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.data.local.db.order
 
-import com.bunbeauty.fooddeliveryadmin.data.model.order.OrderEntity
+import com.bunbeauty.data.model.order.OrderEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext

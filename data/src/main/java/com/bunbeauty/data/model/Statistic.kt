@@ -1,7 +1,7 @@
-package com.bunbeauty.fooddeliveryadmin.data.model
+package com.bunbeauty.data.model
 
 import android.os.Parcelable
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.data.model.order.Order
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

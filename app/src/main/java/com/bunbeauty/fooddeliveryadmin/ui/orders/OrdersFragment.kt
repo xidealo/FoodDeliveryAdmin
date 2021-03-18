@@ -1,12 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.ui.orders
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.data.model.order.Order
+import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter

@@ -5,8 +5,8 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.fooddeliveryadmin.data.api.firebase.ApiRepository
 import com.bunbeauty.fooddeliveryadmin.data.local.storage.IDataStoreHelper
-import com.bunbeauty.fooddeliveryadmin.data.model.Statistic
-import com.bunbeauty.fooddeliveryadmin.data.model.Time
+import com.bunbeauty.data.model.Statistic
+import com.bunbeauty.data.model.Time
 import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticNavigator
 import com.bunbeauty.fooddeliveryadmin.view_model.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
