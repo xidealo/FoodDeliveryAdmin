@@ -19,15 +19,4 @@ interface CafeDao : BaseDao<CafeEntity> {
     @Transaction
     @Query("DELETE FROM CafeEntity")
     suspend fun deleteAll()
-
-    @Insert
-    suspend fun insert(address: Address)
-
-    @Transaction
-    suspend fun insertCafe(cafe: Cafe) {
-        insert(cafe.cafeEntity)
-
-        cafe.address.cafeId = cafe.cafeEntity.id
-        insert(cafe.address)
-    }
 }

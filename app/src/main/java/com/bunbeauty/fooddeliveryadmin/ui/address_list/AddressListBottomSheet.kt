@@ -42,7 +42,9 @@ class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBindi
             false
         }
         viewModel.cafeAddressListLiveData.observe(viewLifecycleOwner) { addressList ->
-            val addressItemList = addressList.map { AddressItem(it, stringHelper) }
+            val addressItemList = addressList.map { address ->
+                AddressItem(address, stringHelper)
+            }
             itemAdapter.add(addressItemList)
         }
     }

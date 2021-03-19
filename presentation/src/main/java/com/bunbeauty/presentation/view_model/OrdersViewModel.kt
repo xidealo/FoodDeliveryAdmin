@@ -22,23 +22,23 @@ class OrdersViewModel @Inject constructor(
     override var navigator: WeakReference<OrdersNavigator>? = null
 
     private val cafeListLiveData = cafeRepo.cafeListLiveData
-    val cafeAddressLiveData: LiveData<String> = switchMap(dataStoreHelper.cafeId.asLiveData()) { cafeId ->
-        map(cafeListLiveData) { cafeList ->
-            val cafe = cafeList.find { cafe ->
-                cafe.cafeEntity.id == cafeId
-            }
-            if (cafe == null) {
-                ""
-            } else {
-                stringHelper.toString(cafe.address)
+    val cafeAddressLiveData: LiveData<String> =
+        switchMap(dataStoreHelper.cafeId.asLiveData()) { cafeId ->
+            map(cafeListLiveData) { cafeList ->
+                val address = cafeList.find { cafe ->
+                    cafe.cafeEntity.id == cafeId
+                }?.address
+                if (address == null) {
+                    ""
+                } else {
+                    stringHelper.toString(address)
+                }
             }
         }
-    }
 
     val addedOrderListLiveData = switchMap(dataStoreHelper.cafeId.asLiveData()) { cafeId ->
         apiRepository.getAddedOrderListLiveData(cafeId)
     }
     val updatedOrderListLiveData = apiRepository.updatedOrderListLiveData
-
 
 }

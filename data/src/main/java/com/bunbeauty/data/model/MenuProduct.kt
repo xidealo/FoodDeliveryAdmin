@@ -3,7 +3,6 @@ package com.bunbeauty.data.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bunbeauty.data.enums.ProductCode
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,7 +17,7 @@ data class MenuProduct(
     var photoLink: String = "",
     var onFire: Boolean = false,
     var inOven: Boolean = false,
-    var productCode: ProductCode = ProductCode.ALL,
+    var productCode: String = "",
     var barcode: Int = 0
 ) : BaseModel(), Parcelable {
     companion object {
