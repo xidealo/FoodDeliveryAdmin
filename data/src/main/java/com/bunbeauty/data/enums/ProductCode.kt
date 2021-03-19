@@ -13,5 +13,6 @@ enum class ProductCode : Parcelable {
     POTATO,
     SPICE,
     BAKERY,
+    COMBO,
     OVEN
 }
