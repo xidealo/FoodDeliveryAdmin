@@ -4,7 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.bunbeauty.data.OrderStatusConverter
-import com.bunbeauty.data.ProductCodeConverter
 import com.bunbeauty.data.model.Address
 import com.bunbeauty.data.model.CafeEntity
 import com.bunbeauty.data.model.CartProduct
@@ -21,9 +20,9 @@ import com.bunbeauty.domain.repository.order.OrderDao
             OrderEntity::class,
             Address::class,
             CafeEntity::class,
-        ], version = 8
+        ], version = 9
 )
-@TypeConverters(ProductCodeConverter::class, OrderStatusConverter::class)
+@TypeConverters(OrderStatusConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
     abstract fun addressDao(): AddressDao

@@ -10,7 +10,7 @@ class OrderStatusConverter {
     }
 
     @TypeConverter
-    fun convertToProductCode(name: String): OrderStatus {
+    fun convertToOrderStatus(name: String): OrderStatus {
         return OrderStatus.valueOf(name)
     }
 }

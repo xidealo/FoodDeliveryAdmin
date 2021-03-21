@@ -8,7 +8,7 @@ data class Cafe(
         val cafeEntity: CafeEntity = CafeEntity(),
 
         @Relation(parentColumn = "id", entityColumn = "cafeId")
-        val address: Address = Address()
+        val address: Address? = Address()
 ) {
 
         companion object {

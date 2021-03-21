@@ -20,14 +20,14 @@ class AddressListViewModel @Inject constructor(
 
     private val cafeListLiveData = cafeRepo.cafeListLiveData
     val cafeAddressListLiveData = Transformations.map(cafeListLiveData) { cafeList ->
-        cafeList.map { cafe ->
+        cafeList.mapNotNull { cafe ->
             cafe.address
         }
     }
 
     fun setCafe(address: Address) {
         val cafeId = cafeListLiveData.value?.find { cafe ->
-            cafe.address.id == address.id
+            cafe.address?.id == address.id
         }?.cafeEntity?.id
         cafeId?.let {
             viewModelScope.launch(Dispatchers.IO) {
