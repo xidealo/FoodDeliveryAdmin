@@ -12,7 +12,7 @@ import com.bunbeauty.presentation.view_model.SelectedStatisticViewModel
 import javax.inject.Inject
 
 class SelectedStatisticBottomSheet :
-    BaseBottomSheetDialog<BottomSheetSelectedStatisticBinding, com.bunbeauty.presentation.view_model.SelectedStatisticViewModel>() {
+    BaseBottomSheetDialog<BottomSheetSelectedStatisticBinding, SelectedStatisticViewModel>() {
 
     override var layoutId = R.layout.bottom_sheet_selected_statistic
     override var viewModelVariable = BR.viewModel

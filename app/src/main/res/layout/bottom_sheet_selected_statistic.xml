@@ -19,26 +19,31 @@
             type="com.bunbeauty.domain.string_helper.IStringHelper" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/medium_padding"
-        tools:context=".ui.statistic.SelectedStatisticBottomSheet">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/bottom_sheet_statistic_tv_date"
-            style="@style/MainTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{statistic.date}" />
+            android:orientation="vertical"
+            android:padding="@dimen/medium_padding"
+            tools:context=".ui.statistic.SelectedStatisticBottomSheet">
 
-        <TextView
-            android:id="@+id/bottom_sheet_statistic_tv_products"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/MainText"
-            android:text="@{iStringHelper.toString(statistic)}" />
+            <TextView
+                android:id="@+id/bottom_sheet_statistic_tv_date"
+                style="@style/MainTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{statistic.date}" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/bottom_sheet_statistic_tv_products"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{iStringHelper.toString(statistic)}" />
+
+        </LinearLayout>
+    </ScrollView>
 </layout>

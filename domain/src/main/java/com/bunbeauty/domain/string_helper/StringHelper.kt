@@ -27,7 +27,7 @@ class StringHelper @Inject constructor() : IStringHelper {
         var structure = ""
 
         for (cartProduct in cartProducts)
-            structure += "${cartProduct.menuProduct.name} ${cartProduct.count}шт.;\n"
+            structure += "${cartProduct.menuProduct.name}: ${cartProduct.count}\n"
 
         return checkLastSymbol(
             "В заказе: \n${structure}",
