@@ -1,9 +1,6 @@
 package com.bunbeauty.domain.string_helper
 
-import com.bunbeauty.data.model.Address
-import com.bunbeauty.data.model.CartProduct
-import com.bunbeauty.data.model.Statistic
-import com.bunbeauty.data.model.Time
+import com.bunbeauty.data.model.*
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
 import java.lang.StringBuilder
@@ -27,7 +24,7 @@ class StringHelper @Inject constructor() : IStringHelper {
         var structure = ""
 
         for (cartProduct in cartProducts)
-            structure += "${cartProduct.menuProduct.name}: ${cartProduct.count}\n"
+            structure += "${getPositionName(cartProduct.menuProduct)}: ${cartProduct.count}\n"
 
         return checkLastSymbol(
             "В заказе: \n${structure}",
@@ -83,6 +80,14 @@ class StringHelper @Inject constructor() : IStringHelper {
 
     override fun toStringTime(order: Order): String {
         return Time(order.timestamp, 3).toStringTimeHHMM()
+    }
+
+    fun getPositionName(menuProduct: MenuProduct): String {
+        return if (menuProduct.comboDescription.isEmpty()) {
+            menuProduct.name
+        } else {
+            menuProduct.comboDescription
+        }
     }
 
     fun checkLastSymbol(data: String, symbol: Char): String {
