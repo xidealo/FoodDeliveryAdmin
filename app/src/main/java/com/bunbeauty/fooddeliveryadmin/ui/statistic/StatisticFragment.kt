@@ -10,15 +10,19 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.presentation.navigator.StatisticNavigator
+import com.bunbeauty.presentation.view_model.StatisticViewModel
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class StatisticFragment : BaseFragment<FragmentStatisticBinding, com.bunbeauty.presentation.view_model.StatisticViewModel>(),
-    com.bunbeauty.presentation.navigator.StatisticNavigator {
+class StatisticFragment :
+    BaseFragment<FragmentStatisticBinding, StatisticViewModel>(),
+    StatisticNavigator {
 
     override var viewModelVariable: Int = BR.viewModel
     override var layoutId: Int = R.layout.fragment_statistic
-    override var viewModelClass = com.bunbeauty.presentation.view_model.StatisticViewModel::class.java
+    override var viewModelClass = StatisticViewModel::class.java
+
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
     }
@@ -31,10 +35,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, com.bunbeauty.p
         viewModel.navigator = WeakReference(this)
         statisticAdapter.statisticNavigator = WeakReference(this)
         viewDataBinding.fragmentStatisticRvResult.adapter = statisticAdapter
+
+        viewDataBinding.fragmentStatisticBtnGetStatistic.setOnClickListener {
+            getStatistic()
+        }
     }
 
     override fun getStatistic() {
-
         val daysCountString = viewDataBinding.fragmentStatisticEtDaysCount.text.toString()
         if (daysCountString.isEmpty()) {
             viewDataBinding.fragmentStatisticEtDaysCount.error =
@@ -43,7 +50,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, com.bunbeauty.p
             viewModel.isLoadingField.set(false)
             return
         }
-        viewModel.getStatistic(viewDataBinding.fragmentStatisticEtDaysCount.text.toString().toInt())
+        viewModel.getStatistic(
+            viewDataBinding.fragmentStatisticEtDaysCount.text.toString().toInt(),
+            viewDataBinding.fragmentStatisticCbAllCafes.isChecked,
+            viewDataBinding.fragmentStatisticCbAllTime.isChecked
+        )
     }
 
     override fun goToSelectedStatistic(statistic: Statistic) {

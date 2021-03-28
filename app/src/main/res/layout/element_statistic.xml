@@ -23,17 +23,45 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/element_order_mvc_main"
-        android:padding="@dimen/small_padding"
-        style="@style/DefaultMaterialCard">
+        android:id="@+id/element_statistic_mvc_main"
+        style="@style/DefaultMaterialCard"
+        android:layout_margin="@dimen/small_padding">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/element_statistic_tv_date"
                 style="@style/MainTitle"
                 android:layout_margin="@dimen/small_margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@{statistic.date}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/element_statistic_tv_count"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/element_statistic_tv_count"
+                style="@style/MainTitle"
+                android:layout_margin="@dimen/small_margin"
+                android:text="@{iStringHelper.toStringOrdersCount(statistic)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/element_statistic_tv_cost"
+                app:layout_constraintStart_toEndOf="@id/element_statistic_tv_date"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/element_statistic_tv_cost"
+                style="@style/MainTitle"
+                android:layout_margin="@dimen/small_margin"
+                android:text="@{iStringHelper.toStringCost(statistic)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/element_statistic_tv_count"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

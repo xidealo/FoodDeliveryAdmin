@@ -37,11 +37,11 @@ class ApiRepository @Inject constructor(
         addedOrderListLiveData = object : MutableLiveData<List<Order>>() {
             private var orderListener: ChildEventListener? = null
             private val ordersReference = firebaseInstance
-                    .getReference(OrderEntity.ORDERS)
-                    .child(APP_ID)
-                    .child(cafeId)
-                    .orderByChild(OrderEntity.TIMESTAMP)
-                    .startAt(DateTime.now().minusDays(2).millis.toDouble())
+                .getReference(OrderEntity.ORDERS)
+                .child(APP_ID)
+                .child(cafeId)
+                .orderByChild(OrderEntity.TIMESTAMP)
+                .startAt(DateTime.now().minusDays(2).millis.toDouble())
 
             override fun onActive() {
                 super.onActive()
@@ -65,9 +65,9 @@ class ApiRepository @Inject constructor(
     override fun getCafeList(): SharedFlow<List<Cafe>> {
         val cafeListSharedFlow = MutableSharedFlow<List<Cafe>>()
         val contactInfoRef = firebaseInstance
-                .getReference(COMPANY)
-                .child(APP_ID)
-                .child(Cafe.CAFES)
+            .getReference(COMPANY)
+            .child(APP_ID)
+            .child(Cafe.CAFES)
 
         contactInfoRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -168,7 +168,10 @@ class ApiRepository @Inject constructor(
         })
     }
 
-    override fun getOrderWithCartProductsList(cafeId: String, daysCount: Int): LiveData<List<Order>> {
+    override fun getOrderWithCartProductsList(
+        cafeId: String,
+        daysCount: Int
+    ): SharedFlow<List<Order>> {
         val ordersRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
@@ -176,7 +179,7 @@ class ApiRepository @Inject constructor(
             .orderByChild(OrderEntity.TIMESTAMP)
             .startAt(DateTime.now().minusDays(daysCount).millis.toDouble())
 
-        val ordersWithCartProductsLiveData = MutableLiveData<List<Order>>()
+        val ordersWithCartProductsShareFlow = MutableSharedFlow<List<Order>>()
         ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(ordersSnapshot: DataSnapshot) {
                 launch {
@@ -187,14 +190,42 @@ class ApiRepository @Inject constructor(
                         )
                     }
                     withContext(Dispatchers.Main) {
-                        ordersWithCartProductsLiveData.value = ordersWithCartProductsList
+                        ordersWithCartProductsShareFlow.emit(ordersWithCartProductsList)
                     }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-        return ordersWithCartProductsLiveData
+        return ordersWithCartProductsShareFlow
+    }
+
+    override fun getOrderWithCartProductsAllCafesList(daysCount: Int): SharedFlow<List<Order>> {
+        val ordersRef = firebaseInstance
+            .getReference(OrderEntity.ORDERS)
+            .child(APP_ID)
+
+        val ordersWithCartProductsShareFlow = MutableSharedFlow<List<Order>>()
+        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(cafeOrdersSnapshot: DataSnapshot) {
+                launch {
+                    val ordersWithCartProductsList = arrayListOf<Order>()
+                    for (ordersSnapshot in cafeOrdersSnapshot.children.reversed()) {
+                        for (orderSnapshot in ordersSnapshot.children) {
+                            ordersWithCartProductsList.add(
+                                getOrderValue(orderSnapshot)
+                            )
+                        }
+                    }
+                    withContext(Dispatchers.Main) {
+                        ordersWithCartProductsShareFlow.emit(ordersWithCartProductsList)
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+        return ordersWithCartProductsShareFlow
     }
 
     fun getOrderValue(orderSnapshot: DataSnapshot): Order {

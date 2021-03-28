@@ -11,6 +11,8 @@ interface IStringHelper {
     fun toString(orderEntity: OrderEntity): String
     fun toString(cartProducts: List<CartProduct>): String
     fun toString(statistic: Statistic): String
+    fun toStringCost(statistic: Statistic): String
+    fun toStringOrdersCount(statistic: Statistic): String
     fun toStringTime(orderEntity: OrderEntity): String
     fun toStringTime(order: Order): String
 }

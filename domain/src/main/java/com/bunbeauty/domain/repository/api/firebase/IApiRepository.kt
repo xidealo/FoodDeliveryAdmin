@@ -14,6 +14,14 @@ interface IApiRepository {
     fun updateToken(login: String)
     fun login(login: String, passwordHash: String): LiveData<Boolean>
     fun updateOrder(cafeId: String, uuid: String, newStatus: OrderStatus)
-    fun getOrderWithCartProductsList(cafeId: String, daysCount:Int):LiveData<List<Order>>
+    fun getOrderWithCartProductsList(
+        cafeId: String,
+        daysCount: Int
+    ): SharedFlow<List<Order>>
+
+    fun getOrderWithCartProductsAllCafesList(
+        daysCount: Int
+    ): SharedFlow<List<Order>>
+
     fun getCafeList(): SharedFlow<List<Cafe>>
 }

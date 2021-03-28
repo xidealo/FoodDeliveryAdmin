@@ -38,14 +38,34 @@
                 android:padding="@dimen/medium_padding" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/fragment_statistic_cb_all_cafes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/hint_statics_all_cafes"
+            app:layout_constraintEnd_toStartOf="@id/fragment_statistic_cb_all_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_til_days_count" />
+
+        <CheckBox
+            android:id="@+id/fragment_statistic_cb_all_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:visibility="invisible"
+            android:text="@string/hint_statics_all_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fragment_statistic_cb_all_cafes"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_til_days_count" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fragment_statistic_btn_get_statistic"
             style="@style/MainButton"
-            android:onClick="@{()->viewModel.getStatisticClick()}"
             android:text="@string/action_statics_get_statistic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_til_days_count" />
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_cb_all_time" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_statistic_rv_result"

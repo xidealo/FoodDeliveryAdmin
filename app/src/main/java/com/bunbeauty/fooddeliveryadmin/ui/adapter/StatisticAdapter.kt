@@ -36,7 +36,7 @@ class StatisticAdapter @Inject constructor(
     inner class StatisticViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = DataBindingUtil.bind<ElementStatisticBinding>(view)
         fun setListener(statistic: Statistic) {
-            binding?.elementOrderMvcMain?.setOnClickListener {
+            binding?.elementStatisticMvcMain?.setOnClickListener {
                 statisticNavigator.get()?.goToSelectedStatistic(statistic)
             }
         }

@@ -58,8 +58,7 @@ class StringHelper @Inject constructor() : IStringHelper {
         val statisticStringBuilder = StringBuilder()
 
         statisticStringBuilder.append("Выручка: ${
-            statistic.orderList.sumBy
-            { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
+            statistic.orderList.sumBy { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
         } ₽")
         statisticStringBuilder.append("\n")
         statisticStringBuilder.append("Количество заказов: ${statistic.orderList.size}x")
@@ -72,6 +71,16 @@ class StringHelper @Inject constructor() : IStringHelper {
             statisticStringBuilder.append("\n")
         }
         return statisticStringBuilder.toString()
+    }
+
+    override fun toStringCost(statistic: Statistic): String {
+        return "${
+            statistic.orderList.sumBy { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
+        } ₽"
+    }
+
+    override fun toStringOrdersCount(statistic: Statistic): String {
+        return "${statistic.orderList.size}x"
     }
 
     override fun toStringTime(orderEntity: OrderEntity): String {
