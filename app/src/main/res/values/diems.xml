@@ -41,7 +41,7 @@
     <dimen name="image_element_height">80dp</dimen>
 
     <!-- RADIUS -->
-    <dimen name="small_radius">2dp</dimen>
-    <dimen name="default_radius">4dp</dimen>
-    <dimen name="large_radius">8dp</dimen>
+    <dimen name="large_radius">16dp</dimen>
+    <dimen name="medium_radius">8dp</dimen>
+    <dimen name="small_radius">4dp</dimen>
 </resources>

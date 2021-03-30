@@ -44,7 +44,6 @@
         <item name="android:layout_width">@dimen/small_button_width</item>
     </style>
 
-
     <style name="SmallSecondaryButton" parent="SmallButton">
         <item name="strokeColor">@color/grey</item>
         <item name="strokeWidth">1dp</item>
@@ -60,7 +59,7 @@
         <item name="background">@color/cardViewBackground</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">5dp</item>
+        <item name="cardCornerRadius">@dimen/medium_radius</item>
     </style>
 
     <!--TEXT-->
@@ -77,6 +76,11 @@
 
     <style name="MainText" parent="BaseText">
         <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="fontFamily">@font/font_roboto_regular</item>
+    </style>
+
+    <style name="LargeMainText" parent="BaseText">
+        <item name="android:textSize">@dimen/large_text_size</item>
         <item name="fontFamily">@font/font_roboto_regular</item>
     </style>
 

@@ -26,6 +26,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
         style="@style/DefaultMaterialCard"
+        android:layout_marginBottom="@dimen/small_margin"
         bind:status="@{order.orderEntity.orderStatus}">
 
         <androidx.constraintlayout.widget.ConstraintLayout

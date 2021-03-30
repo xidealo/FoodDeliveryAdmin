@@ -18,6 +18,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_address_mcv_main"
+        app:cardCornerRadius="0dp"
         style="@style/DefaultMaterialCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,8 +26,8 @@
             android:layout_height="match_parent">
 
             <TextView
-                style="@style/MainText"
-                android:layout_margin="@dimen/small_margin"
+                style="@style/LargeMainText"
+                android:padding="@dimen/medium_padding"
                 android:text="@{stringHelper.toString(address)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
