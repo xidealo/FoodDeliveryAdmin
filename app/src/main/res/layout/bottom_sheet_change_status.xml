@@ -76,10 +76,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_address" />
 
                 <TextView
-                    android:id="@+id/dialog_change_status_tv_full_price"
+                    android:id="@+id/dialog_change_status_tv_full_cost"
                     style="@style/MainText"
                     android:layout_marginTop="@dimen/very_small_margin"
-                    android:text="@{order.getFullPrice()}"
+                    android:text="@{order.getFullCost()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_structure" />
 

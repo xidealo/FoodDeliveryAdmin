@@ -23,10 +23,15 @@ data class Order(
     var timestamp: Long = 0
 
 ) : BaseModel(), Parcelable {
-    fun getFullPrice(): String {
+    fun getFullCost(): String {
         var fullPrice = 0
-        for (cartProduct in cartProducts)
-            fullPrice += cartProduct.count * cartProduct.menuProduct.cost
+        for (cartProduct in cartProducts){
+            fullPrice += if(cartProduct.menuProduct.discountCost != null){
+                cartProduct.count * cartProduct.menuProduct.discountCost!!
+            }else{
+                cartProduct.count * cartProduct.menuProduct.cost
+            }
+        }
 
         return "Стоимость заказа: $fullPrice ₽"
     }

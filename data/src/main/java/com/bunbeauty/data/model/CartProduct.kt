@@ -15,13 +15,4 @@ data class CartProduct(
     var count: Int = 1,
     var discount: Float = 0f,
     var orderId: Long? = null
-) : BaseModel(), Parcelable {
-
-    companion object {
-        const val CART_PRODUCT = "cart product"
-        const val CART_PRODUCTS = "cartProducts"
-
-        const val COUNT = "count"
-        const val DISCOUNT = "discount"
-    }
-}
+) : BaseModel(), Parcelable
