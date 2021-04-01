@@ -3,10 +3,11 @@ package com.bunbeauty.domain.string_helper
 import com.bunbeauty.data.model.*
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
+import com.bunbeauty.domain.cost_helper.ICostHelper
 import java.lang.StringBuilder
 import javax.inject.Inject
 
-class StringHelper @Inject constructor() : IStringHelper {
+class StringHelper @Inject constructor(private val iCostHelper: ICostHelper) : IStringHelper {
     //TODO(Get strings from resources)
     override fun toString(address: Address): String {
         return checkLastSymbol(
@@ -56,9 +57,13 @@ class StringHelper @Inject constructor() : IStringHelper {
 
     override fun toString(statistic: Statistic): String {
         val statisticStringBuilder = StringBuilder()
-
+        //TODO (change calculating)
         statisticStringBuilder.append("Выручка: ${
-            statistic.orderList.sumBy { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
+            statistic.orderList.sumBy { order ->
+                order.cartProducts.sumBy {
+                    iCostHelper.getCost(it)
+                }
+            }
         } ₽")
         statisticStringBuilder.append("\n")
         statisticStringBuilder.append("Количество заказов: ${statistic.orderList.size}x")
@@ -75,8 +80,25 @@ class StringHelper @Inject constructor() : IStringHelper {
 
     override fun toStringCost(statistic: Statistic): String {
         return "${
-            statistic.orderList.sumBy { order -> order.cartProducts.sumBy { it.count * it.menuProduct.cost } }
+            statistic.orderList.sumBy { order ->
+                order.cartProducts.sumBy {
+                    iCostHelper.getCost(it)
+                }
+            }
         } ₽"
+    }
+
+    override fun toStringCost(order: Order): String {
+        var fullPrice = 0
+        for (cartProduct in order.cartProducts){
+            fullPrice += if(cartProduct.menuProduct.discountCost != null){
+                cartProduct.count * cartProduct.menuProduct.discountCost!!
+            }else{
+                cartProduct.count * cartProduct.menuProduct.cost
+            }
+        }
+
+        return "Стоимость заказа: $fullPrice ₽"
     }
 
     override fun toStringOrdersCount(statistic: Statistic): String {

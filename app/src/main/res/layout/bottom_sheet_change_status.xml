@@ -34,6 +34,7 @@
                 android:id="@+id/dialog_change_status_cl_order_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -79,7 +80,7 @@
                     android:id="@+id/dialog_change_status_tv_full_cost"
                     style="@style/MainText"
                     android:layout_marginTop="@dimen/very_small_margin"
-                    android:text="@{order.getFullCost()}"
+                    android:text="@{iStringHelper.toStringCost(order)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_structure" />
 

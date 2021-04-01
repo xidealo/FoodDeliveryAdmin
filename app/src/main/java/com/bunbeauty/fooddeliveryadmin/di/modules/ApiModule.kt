@@ -3,6 +3,8 @@ package com.bunbeauty.fooddeliveryadmin.di.modules
 import com.bunbeauty.domain.repository.api.firebase.ApiRepository
 import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.domain.cost_helper.CostHelper
+import com.bunbeauty.domain.cost_helper.ICostHelper
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.domain.string_helper.StringHelper
@@ -15,6 +17,7 @@ abstract class ApiModule {
 
     //NETWORK
 
+    @Singleton
     @Binds
     abstract fun bindApiRepository(apiRepository: ApiRepository): IApiRepository
 
@@ -26,5 +29,8 @@ abstract class ApiModule {
 
     @Binds
     abstract fun bindStringHelper(stringHelper: StringHelper): IStringHelper
+
+    @Binds
+    abstract fun bindCostHelper(costHelper: CostHelper): ICostHelper
 
 }

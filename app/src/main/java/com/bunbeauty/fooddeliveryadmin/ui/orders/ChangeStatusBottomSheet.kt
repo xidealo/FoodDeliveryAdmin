@@ -10,6 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetChangeStatusBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
+import com.bunbeauty.presentation.navigator.ChangeStatusNavigator
 import com.bunbeauty.presentation.view_model.ChangeStatusViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 class ChangeStatusBottomSheet :
     BaseBottomSheetDialog<BottomSheetChangeStatusBinding, ChangeStatusViewModel>(),
-    com.bunbeauty.presentation.navigator.ChangeStatusNavigator {
+    ChangeStatusNavigator {
 
     override var layoutId = R.layout.bottom_sheet_change_status
     override var viewModelVariable = BR.viewModel
