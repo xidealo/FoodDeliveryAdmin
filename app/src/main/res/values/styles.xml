@@ -74,6 +74,11 @@
         <item name="fontFamily">@font/font_roboto_bold</item>
     </style>
 
+    <style name="SmallTitle" parent="BaseText">
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="fontFamily">@font/font_roboto_bold</item>
+    </style>
+
     <style name="MainText" parent="BaseText">
         <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="fontFamily">@font/font_roboto_regular</item>

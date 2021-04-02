@@ -9,11 +9,14 @@ import com.bunbeauty.data.model.Company.Companion.COMPANY
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.enums.OrderStatus
+import com.bunbeauty.data.model.MenuProduct
+import com.bunbeauty.domain.BuildConfig
 import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import org.joda.time.DateTime
@@ -87,32 +90,37 @@ class ApiRepository @Inject constructor(
         return cafeListSharedFlow
     }
 
-    override fun login(login: String, passwordHash: String): LiveData<Boolean> {
-        val isAuthorized = MutableLiveData<Boolean>()
+    override fun login(login: String, passwordHash: String): SharedFlow<Boolean> {
+        val isAuthorizedSharedFlow = MutableSharedFlow<Boolean>()
 
         val companyRef = firebaseInstance.getReference(COMPANY).child(login)
         companyRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(companySnapshot: DataSnapshot) {
-                if (companySnapshot.childrenCount == 0L) {
-                    isAuthorized.value = false
-                    return
-                }
+                launch(IO) {
 
-                val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
-                if (passwordHash == companyPassword) {
-                    updateToken(login)
-                    isAuthorized.value = true
-                } else {
-                    isAuthorized.value = false
+                    if (companySnapshot.childrenCount == 0L) {
+                        isAuthorizedSharedFlow.emit(false)
+                        return@launch
+                    }
+
+                    val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
+                    if (passwordHash == companyPassword) {
+                        updateToken(login)
+                        isAuthorizedSharedFlow.emit(true)
+                    } else {
+                        isAuthorizedSharedFlow.emit(false)
+                    }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                isAuthorized.value = false
+                launch(IO) {
+                    isAuthorizedSharedFlow.emit(false)
+                }
             }
         })
 
-        return isAuthorized
+        return isAuthorizedSharedFlow
     }
 
     override fun updateToken(login: String) {
@@ -228,10 +236,40 @@ class ApiRepository @Inject constructor(
         return ordersWithCartProductsShareFlow
     }
 
+    override fun getMenuProductList(): Flow<List<MenuProduct>> {
+        val menuProductListSharedFlow = MutableSharedFlow<List<MenuProduct>>()
+        val menuProductsRef = firebaseInstance
+            .getReference(COMPANY)
+            .child(APP_ID)
+            .child(MENU_PRODUCTS)
+
+        menuProductsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val menuProductList = snapshot.children.map { menuProductSnapshot ->
+                    menuProductSnapshot.getValue(MenuProduct::class.java)!!.also { it.uuid = menuProductSnapshot.key!! }
+
+                }
+                launch(IO) {
+                    menuProductListSharedFlow.emit(menuProductList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+        return menuProductListSharedFlow
+    }
+
     fun getOrderValue(orderSnapshot: DataSnapshot): Order {
         return orderSnapshot.getValue(Order::class.java).apply {
             this?.uuid = orderSnapshot.key.toString()
         } ?: Order()
+    }
+
+    companion object {
+        private const val COMPANY = "COMPANY"
+        private const val MENU_PRODUCTS: String = "menu_products"
+        private const val DELIVERY: String = "delivery"
     }
 
 }

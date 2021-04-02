@@ -1,13 +1,12 @@
 package com.bunbeauty.presentation.view_model
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
-import com.bunbeauty.presentation.navigator.LoginNavigator
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -16,13 +15,14 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val apiRepository: IApiRepository,
-    private val iDataStoreHelper: IDataStoreHelper
-) : BaseViewModel<LoginNavigator>() {
-    override var navigator: WeakReference<LoginNavigator>? = null
+) : BaseViewModel() {
 
     val isLoading = ObservableField(true)
     val tokenLiveData = iDataStoreHelper.token.asLiveData()
 
+    /**
+     * For test login
+     */
     fun clear() {
         viewModelScope.launch {
             iDataStoreHelper.clearCache()
@@ -47,14 +47,10 @@ class LoginViewModel @Inject constructor(
         return true
     }
 
-    fun login(login: String, password: String): LiveData<Boolean> {
+    fun login(login: String, password: String): SharedFlow<Boolean> {
         val passwordHash = getMd5(password)
 
         return apiRepository.login(login, passwordHash)
-    }
-
-    fun loginClick() {
-        navigator?.get()?.login()
     }
 
     private fun getMd5(input: String): String {

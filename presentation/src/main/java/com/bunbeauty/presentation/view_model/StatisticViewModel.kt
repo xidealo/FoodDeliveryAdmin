@@ -5,13 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.data.model.Time
-import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.domain.repository.api.firebase.ApiRepository
-import com.bunbeauty.presentation.navigator.StatisticNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
@@ -19,16 +16,15 @@ import javax.inject.Inject
 
 class StatisticViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
-    private val dataStoreHelper: IDataStoreHelper
-) : BaseViewModel<StatisticNavigator>() {
-    override var navigator: WeakReference<StatisticNavigator>? = null
+) : BaseViewModel() {
+
     val statisticField = ObservableField<List<Statistic>>()
     val isLoadingField = ObservableField(false)
 
     fun getStatistic(daysCount: Int, isAllCafes: Boolean, isAllTime: Boolean) {
         isLoadingField.set(true)
         viewModelScope.launch {
-            val cafeId = dataStoreHelper.cafeId.first()
+            val cafeId = iDataStoreHelper.cafeId.first()
 
             if (isAllCafes)
                 apiRepository.getOrderWithCartProductsAllCafesList(daysCount)

@@ -1,13 +1,17 @@
 package com.bunbeauty.domain.string_helper
 
+import android.content.res.loader.ResourcesProvider
 import com.bunbeauty.data.model.*
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
+import com.bunbeauty.domain.R
 import com.bunbeauty.domain.cost_helper.ICostHelper
 import java.lang.StringBuilder
 import javax.inject.Inject
 
-class StringHelper @Inject constructor(private val iCostHelper: ICostHelper) : IStringHelper {
+class StringHelper @Inject constructor(
+    private val iCostHelper: ICostHelper
+) : IStringHelper {
     //TODO(Get strings from resources)
     override fun toString(address: Address): String {
         return checkLastSymbol(
@@ -90,10 +94,10 @@ class StringHelper @Inject constructor(private val iCostHelper: ICostHelper) : I
 
     override fun toStringCost(order: Order): String {
         var fullPrice = 0
-        for (cartProduct in order.cartProducts){
-            fullPrice += if(cartProduct.menuProduct.discountCost != null){
+        for (cartProduct in order.cartProducts) {
+            fullPrice += if (cartProduct.menuProduct.discountCost != null) {
                 cartProduct.count * cartProduct.menuProduct.discountCost!!
-            }else{
+            } else {
                 cartProduct.count * cartProduct.menuProduct.cost
             }
         }
@@ -111,6 +115,10 @@ class StringHelper @Inject constructor(private val iCostHelper: ICostHelper) : I
 
     override fun toStringTime(order: Order): String {
         return Time(order.timestamp, 3).toStringTimeHHMM()
+    }
+
+    override fun toStringCost(cost: Order): String {
+        return "$cost ₽"
     }
 
     fun getPositionName(menuProduct: MenuProduct): String {

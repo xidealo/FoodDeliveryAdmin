@@ -15,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
 
-abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : com.bunbeauty.presentation.view_model.BaseViewModel<*>> :
+abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
     BottomSheetDialogFragment() {
 
     abstract var layoutId: Int

@@ -13,11 +13,9 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.toAddressListBottomSheet
 import com.bunbeauty.presentation.view_model.OrdersViewModel
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(),
-    com.bunbeauty.presentation.navigator.OrdersNavigator {
+class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(){
 
     override var viewModelVariable: Int = BR.viewModel
     override var layoutId: Int = R.layout.fragment_orders
@@ -31,8 +29,10 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ordersAdapter.onItemClickListener = {
+            showChangeStatus(it)
+        }
 
-        ordersAdapter.ordersNavigator = WeakReference(this)
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter
         viewDataBinding.fragmentOrdersMcvAddress.setOnClickListener {
             findNavController().navigate(toAddressListBottomSheet())
@@ -50,7 +50,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(),
         }
     }
 
-    override fun showChangeStatus(order: Order) {
+    fun showChangeStatus(order: Order) {
         findNavController().currentDestination?.getAction(
             actionOrdersFragmentToChangeStatusDialog(
                 order

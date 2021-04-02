@@ -10,14 +10,11 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.presentation.navigator.StatisticNavigator
 import com.bunbeauty.presentation.view_model.StatisticViewModel
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class StatisticFragment :
-    BaseFragment<FragmentStatisticBinding, StatisticViewModel>(),
-    StatisticNavigator {
+    BaseFragment<FragmentStatisticBinding, StatisticViewModel>() {
 
     override var viewModelVariable: Int = BR.viewModel
     override var layoutId: Int = R.layout.fragment_statistic
@@ -32,8 +29,9 @@ class StatisticFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.navigator = WeakReference(this)
-        statisticAdapter.statisticNavigator = WeakReference(this)
+        statisticAdapter.onItemClickListener = {
+            goToSelectedStatistic(it)
+        }
         viewDataBinding.fragmentStatisticRvResult.adapter = statisticAdapter
 
         viewDataBinding.fragmentStatisticBtnGetStatistic.setOnClickListener {
@@ -41,7 +39,7 @@ class StatisticFragment :
         }
     }
 
-    override fun getStatistic() {
+    private fun getStatistic() {
         val daysCountString = viewDataBinding.fragmentStatisticEtDaysCount.text.toString()
         if (daysCountString.isEmpty()) {
             viewDataBinding.fragmentStatisticEtDaysCount.error =
@@ -57,7 +55,7 @@ class StatisticFragment :
         )
     }
 
-    override fun goToSelectedStatistic(statistic: Statistic) {
+    private fun goToSelectedStatistic(statistic: Statistic) {
         findNavController().navigate(
             StatisticFragmentDirections.actionStatisticFragmentToSelectedStatisticBottomSheet(
                 statistic

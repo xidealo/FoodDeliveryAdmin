@@ -7,6 +7,7 @@ import com.bunbeauty.data.model.BaseModel
 abstract class BaseAdapter<T : RecyclerView.ViewHolder, E : BaseModel> : RecyclerView.Adapter<T>() {
 
     protected val itemList: MutableList<E> = ArrayList()
+    var onItemClickListener: ((E) -> Unit)? = null
 
     open fun setItemList(items: List<E>) {
         val diffResult = DiffUtil.calculateDiff(MyDiffCallback(items, itemList))

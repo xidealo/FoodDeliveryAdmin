@@ -16,4 +16,5 @@ interface IStringHelper {
     fun toStringOrdersCount(statistic: Statistic): String
     fun toStringTime(orderEntity: OrderEntity): String
     fun toStringTime(order: Order): String
+    fun toStringCost(cost: Int): String
 }

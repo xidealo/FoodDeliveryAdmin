@@ -17,8 +17,6 @@ class OrdersAdapter @Inject constructor(
     private val stringHelper: IStringHelper
 ) : BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
 
-    lateinit var ordersNavigator: WeakReference<com.bunbeauty.presentation.navigator.OrdersNavigator>
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): OrderViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
         val binding = ElementOrderBinding.inflate(inflater, viewGroup, false)
@@ -29,17 +27,14 @@ class OrdersAdapter @Inject constructor(
     override fun onBindViewHolder(holder: OrderViewHolder, i: Int) {
         holder.binding?.context = context
         holder.binding?.stringHelper = stringHelper
-        holder.setListener(itemList[i])
+
+        holder.binding?.elementOrderMvcMain?.setOnClickListener{
+            onItemClickListener?.invoke(itemList[i])
+        }
         holder.binding?.order = itemList[i]
     }
 
     inner class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = DataBindingUtil.bind<ElementOrderBinding>(view)
-
-        fun setListener(order: Order) {
-            binding?.elementOrderMvcMain?.setOnClickListener {
-                ordersNavigator.get()?.showChangeStatus(order)
-            }
-        }
     }
 }

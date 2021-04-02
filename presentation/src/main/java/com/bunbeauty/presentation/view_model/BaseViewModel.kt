@@ -1,14 +1,16 @@
 package com.bunbeauty.presentation.view_model
 
 import androidx.lifecycle.ViewModel
+import com.bunbeauty.common.utils.IDataStoreHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel<N> : ViewModel(), CoroutineScope {
-
+abstract class BaseViewModel : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext = Job()
-    abstract var navigator: WeakReference<N>?
 
+    @Inject
+    lateinit var iDataStoreHelper: IDataStoreHelper
 }

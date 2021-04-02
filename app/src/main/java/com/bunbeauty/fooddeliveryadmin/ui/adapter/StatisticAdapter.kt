@@ -17,8 +17,6 @@ class StatisticAdapter @Inject constructor(
     private val iStringHelper: IStringHelper
 ) : BaseAdapter<StatisticAdapter.StatisticViewHolder, Statistic>() {
 
-    lateinit var statisticNavigator: WeakReference<com.bunbeauty.presentation.navigator.StatisticNavigator>
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StatisticViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
         val binding = ElementStatisticBinding.inflate(inflater, viewGroup, false)
@@ -30,15 +28,12 @@ class StatisticAdapter @Inject constructor(
         holder.binding?.context = context
         holder.binding?.iStringHelper = iStringHelper
         holder.binding?.statistic = itemList[i]
-        holder.setListener(itemList[i])
+        holder.binding?.elementStatisticMvcMain?.setOnClickListener{
+
+        }
     }
 
     inner class StatisticViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = DataBindingUtil.bind<ElementStatisticBinding>(view)
-        fun setListener(statistic: Statistic) {
-            binding?.elementStatisticMvcMain?.setOnClickListener {
-                statisticNavigator.get()?.goToSelectedStatistic(statistic)
-            }
-        }
     }
 }

@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.presentation.view_model.BaseViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
-abstract class BaseFragment<T : ViewDataBinding, V : com.bunbeauty.presentation.view_model.BaseViewModel<*>> : Fragment(){
+abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(){
 
     abstract var layoutId: Int
     abstract var viewModelVariable: Int
@@ -66,6 +69,12 @@ abstract class BaseFragment<T : ViewDataBinding, V : com.bunbeauty.presentation.
 
     protected fun <T> subscribe(liveData: LiveData<T>, observer: (T) -> Unit) {
         liveData.observe(viewLifecycleOwner, observer::invoke)
+    }
+
+    fun <T> Flow<T>.launchWhenStarted(lifecycleCoroutineScope: LifecycleCoroutineScope){
+        lifecycleCoroutineScope.launchWhenStarted {
+            this@launchWhenStarted.collect()
+        }
     }
 
 }

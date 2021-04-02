@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="context"
+            type="android.content.Context" />
+
+        <variable
+            name="menuProduct"
+            type="com.bunbeauty.data.model.MenuProduct" />
+
+        <variable
+            name="productHelper"
+            type="com.bunbeauty.domain.product.IProductHelper" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/element_menu_product_mcv_main"
+        style="@style/DefaultMaterialCard"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginTop="@dimen/very_small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/very_small_margin">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/element_menu_product_iv_photo"
+                android:layout_width="@dimen/image_element_width"
+                android:layout_height="@dimen/image_element_height"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:image="@{menuProduct.photoLink}" />
+
+            <TextView
+                android:id="@+id/element_menu_product_tv_title"
+                style="@style/SmallTitle"
+                android:layout_marginTop="@dimen/very_small_margin"
+                android:layout_marginStart="@dimen/very_small_margin"
+                android:layout_marginEnd="@dimen/very_small_margin"
+                android:text="@{menuProduct.name}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/element_menu_product_tv_cost"
+                style="@style/SmallText"
+                android:layout_marginStart="@dimen/very_small_margin"
+                android:text="@{productHelper.getMenuProductPriceString(menuProduct)}"
+                app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
+                app:layout_constraintTop_toBottomOf="@+id/element_menu_product_tv_title" />
+
+            <TextView
+                android:id="@+id/element_menu_product_tv_cost_old"
+                style="@style/SmallText"
+                android:layout_marginStart="@dimen/very_small_margin"
+                android:text="@{productHelper.getMenuProductOldPriceString(menuProduct)}"
+                android:textColor="@color/grey"
+                app:layout_constraintStart_toEndOf="@id/element_menu_product_tv_cost"
+                app:layout_constraintTop_toBottomOf="@+id/element_menu_product_tv_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

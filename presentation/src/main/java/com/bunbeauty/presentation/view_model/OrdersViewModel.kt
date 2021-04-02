@@ -8,7 +8,6 @@ import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.string_helper.IStringHelper
-import com.bunbeauty.presentation.navigator.OrdersNavigator
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -17,9 +16,7 @@ class OrdersViewModel @Inject constructor(
     private val stringHelper: IStringHelper,
     cafeRepo: CafeRepo,
     dataStoreHelper: IDataStoreHelper
-) : BaseViewModel<OrdersNavigator>() {
-
-    override var navigator: WeakReference<OrdersNavigator>? = null
+) : BaseViewModel() {
 
     private val cafeListLiveData = cafeRepo.cafeListLiveData
     val cafeAddressLiveData: LiveData<String> =
@@ -40,5 +37,4 @@ class OrdersViewModel @Inject constructor(
         apiRepository.getAddedOrderListLiveData(cafeId)
     }
     val updatedOrderListLiveData = apiRepository.updatedOrderListLiveData
-
 }

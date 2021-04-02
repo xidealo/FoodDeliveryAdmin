@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login_fragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.log_in.LoginFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -16,6 +16,7 @@
             app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/mainFragment"
         tools:layout="@layout/fragment_main"

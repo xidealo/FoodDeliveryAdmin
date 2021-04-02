@@ -21,7 +21,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import javax.inject.Inject
 
-abstract class BaseDialog<T : ViewDataBinding, V : com.bunbeauty.presentation.view_model.BaseViewModel<*>> : DialogFragment() {
+abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragment() {
 
     abstract var layoutId: Int
     abstract var dataBindingVariable: Int

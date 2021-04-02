@@ -15,9 +15,9 @@ import javax.inject.Inject
 class ChangeStatusViewModel @Inject constructor(
     private val apiRepository: IApiRepository,
     private val dataStoreHelper: IDataStoreHelper
-) : BaseViewModel<ChangeStatusNavigator>() {
+) : BaseViewModel() {
 
-    override var navigator: WeakReference<ChangeStatusNavigator>? = null
+    var navigator: WeakReference<ChangeStatusNavigator>? = null
 
     fun cancelClick() {
         navigator?.get()?.closeDialog()

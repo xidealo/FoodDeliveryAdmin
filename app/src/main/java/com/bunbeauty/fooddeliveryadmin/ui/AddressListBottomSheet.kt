@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.ui.address_list
+package com.bunbeauty.fooddeliveryadmin.ui
 
 import android.os.Bundle
 import android.view.View
@@ -15,8 +15,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>(),
-    com.bunbeauty.presentation.navigator.AddressListNavigator {
+class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>(){
 
     override var layoutId = R.layout.bottom_sheet_address_list
     override var viewModelVariable = BR.viewModel
@@ -30,8 +29,6 @@ class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBindi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.navigator = WeakReference(this)
 
         val itemAdapter = ItemAdapter<AddressItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
