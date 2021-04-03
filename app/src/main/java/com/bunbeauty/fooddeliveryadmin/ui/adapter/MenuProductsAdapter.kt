@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bunbeauty.common.extensions.toggleVisibility
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.domain.product.IProductHelper
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
@@ -32,9 +33,17 @@ class MenuProductsAdapter @Inject constructor(
             holder.binding.elementMenuProductTvCostOld.paintFlags =
                 holder.binding.elementMenuProductTvCostOld.paintFlags or STRIKE_THRU_TEXT_FLAG
         }
+        holder.binding?.elementMenuProductMcvMain?.setOnClickListener {
+            onItemClickListener?.invoke(itemList[i])
+        }
+        holder.checkVisible(itemList[i].visible)
     }
 
     inner class MenuProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = DataBindingUtil.bind<ElementMenuProductBinding>(view)
+
+        fun checkVisible(isVisible: Boolean) {
+            binding?.elementMenuProductIvVisible?.toggleVisibility(isVisible)
+        }
     }
 }

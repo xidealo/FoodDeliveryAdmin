@@ -51,7 +51,20 @@
         tools:layout="@layout/bottom_sheet_address_list" />
     <fragment
         android:id="@+id/edit_menu_fragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.EditMenuFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuFragment"
         android:label="EditMenuFragment"
-        tools:layout="@layout/fragment_edit_menu" />
+        tools:layout="@layout/fragment_edit_menu">
+        <action
+            android:id="@+id/to_editMenuProductFragment"
+            app:destination="@id/editMenuProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuProductFragment"
+        android:label="EditMenuProductFragment"
+        tools:layout="@layout/fragment_edit_menu_product">
+        <argument
+            android:name="menuProduct"
+            app:argType="com.bunbeauty.data.model.MenuProduct" />
+    </fragment>
 </navigation>

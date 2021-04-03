@@ -29,7 +29,7 @@ class StatisticAdapter @Inject constructor(
         holder.binding?.iStringHelper = iStringHelper
         holder.binding?.statistic = itemList[i]
         holder.binding?.elementStatisticMvcMain?.setOnClickListener{
-
+            onItemClickListener?.invoke(itemList[i])
         }
     }
 

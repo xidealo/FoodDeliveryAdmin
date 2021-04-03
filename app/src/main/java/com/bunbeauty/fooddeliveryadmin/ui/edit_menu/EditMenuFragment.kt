@@ -1,9 +1,10 @@
-package com.bunbeauty.fooddeliveryadmin.ui
+package com.bunbeauty.fooddeliveryadmin.ui.edit_menu
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.view.menu.MenuAdapter
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding
@@ -29,6 +30,9 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding, EditMenuViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        menuProductsAdapter.onItemClickListener = {
+            goToEditMenuProduct(it)
+        }
         viewDataBinding.fragmentEditMenuRvResult.adapter = menuProductsAdapter
         viewModel.getProducts()
 
@@ -37,4 +41,12 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding, EditMenuViewModel
         }.launchWhenStarted(lifecycleScope)
     }
 
+
+    fun goToEditMenuProduct(menuProduct: MenuProduct) {
+        findNavController().navigate(
+            EditMenuFragmentDirections.toEditMenuProductFragment(
+                menuProduct
+            )
+        )
+    }
 }

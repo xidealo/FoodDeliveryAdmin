@@ -71,6 +71,15 @@
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_tv_cost"
                 app:layout_constraintTop_toBottomOf="@+id/element_menu_product_tv_title" />
 
+            <ImageView
+                android:id="@+id/element_menu_product_iv_visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:src="@drawable/ic_eye_solid"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

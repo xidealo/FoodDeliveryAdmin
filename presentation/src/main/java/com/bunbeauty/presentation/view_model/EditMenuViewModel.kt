@@ -19,7 +19,7 @@ class EditMenuViewModel @Inject constructor(
         viewModelScope.launch {
             menuProductRepo.getMenuProductList()
                 .map { list ->
-                    list.sortedBy { it.name }.filter { it.visible }
+                    list.sortedBy { it.name }
                 }.collect { menuProductList ->
                     if (menuProductList.isNotEmpty()) {
                         productListSharedFlow.emit(menuProductList)
