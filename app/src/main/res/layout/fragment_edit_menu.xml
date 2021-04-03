@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/element_statistic" />
+            tools:listitem="@layout/element_menu_product" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

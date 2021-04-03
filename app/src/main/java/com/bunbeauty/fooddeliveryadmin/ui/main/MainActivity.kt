@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, modelFactory).get(MainViewModel::class.java)
         viewModel.refreshCafeList()
+        viewModel.refreshProductList()
     }
 
     fun showMessage(message: String) {

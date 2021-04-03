@@ -4,6 +4,8 @@ import com.bunbeauty.domain.repository.address.AddressRepo
 import com.bunbeauty.domain.repository.address.AddressRepository
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.repository.cafe.CafeRepository
+import com.bunbeauty.domain.repository.menu_product.MenuProductRepo
+import com.bunbeauty.domain.repository.menu_product.MenuProductRepository
 import com.bunbeauty.domain.repository.order.OrderRepo
 import com.bunbeauty.domain.repository.order.OrderRepository
 import dagger.Binds
@@ -19,4 +21,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCafeRepo(cafeRepository: CafeRepository): CafeRepo
+
+    @Binds
+    abstract fun bindMenuProductRepoRepo(menuProductRepository: MenuProductRepository): MenuProductRepo
 }

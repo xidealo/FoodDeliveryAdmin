@@ -5,6 +5,8 @@ import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.domain.cost_helper.CostHelper
 import com.bunbeauty.domain.cost_helper.ICostHelper
+import com.bunbeauty.domain.product.IProductHelper
+import com.bunbeauty.domain.product.ProductHelper
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.domain.string_helper.StringHelper
@@ -32,5 +34,8 @@ abstract class ApiModule {
 
     @Binds
     abstract fun bindCostHelper(costHelper: CostHelper): ICostHelper
+
+    @Binds
+    abstract fun bindProductHelper(productHelper: ProductHelper): IProductHelper
 
 }

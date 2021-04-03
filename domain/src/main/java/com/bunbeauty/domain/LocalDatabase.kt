@@ -11,6 +11,7 @@ import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.domain.repository.address.AddressDao
 import com.bunbeauty.domain.repository.cafe.CafeDao
+import com.bunbeauty.domain.repository.menu_product.MenuProductDao
 import com.bunbeauty.domain.repository.order.OrderDao
 
 @Database(
@@ -20,11 +21,12 @@ import com.bunbeauty.domain.repository.order.OrderDao
             OrderEntity::class,
             Address::class,
             CafeEntity::class,
-        ], version = 12
+        ], version = 13
 )
 @TypeConverters(OrderStatusConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
     abstract fun addressDao(): AddressDao
     abstract fun cafeDao(): CafeDao
+    abstract fun menuProductDao(): MenuProductDao
 }

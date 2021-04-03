@@ -28,4 +28,7 @@ class DataModule {
 
     @Provides
     fun provideCafeDao(localDatabase: LocalDatabase) = localDatabase.cafeDao()
+
+    @Provides
+    fun provideMenuProductDao(localDatabase: LocalDatabase) = localDatabase.menuProductDao()
 }

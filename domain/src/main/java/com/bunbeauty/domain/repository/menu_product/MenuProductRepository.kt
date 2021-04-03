@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.repository.menu_product
 
-import androidx.lifecycle.LiveData
-import com.bunbeauty.data.enums.ProductCode
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
@@ -23,11 +22,7 @@ class MenuProductRepository @Inject constructor(
         }
     }
 
-    override fun getMenuProductList(productCode: ProductCode): LiveData<List<MenuProduct>> {
-        return if (productCode == ProductCode.ALL) {
-            menuProductDao.getMenuProductListLiveData()
-        } else {
-            menuProductDao.getMenuProductListByCodeLiveData(productCode.name)
-        }
+    override fun getMenuProductList(): Flow<List<MenuProduct>> {
+        return menuProductDao.getMenuProductListFlow()
     }
 }

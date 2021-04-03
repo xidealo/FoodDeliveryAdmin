@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 class StatisticViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
+    private val iDataStoreHelper: IDataStoreHelper
 ) : BaseViewModel() {
 
     val statisticField = ObservableField<List<Statistic>>()

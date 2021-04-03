@@ -117,7 +117,7 @@ class StringHelper @Inject constructor(
         return Time(order.timestamp, 3).toStringTimeHHMM()
     }
 
-    override fun toStringCost(cost: Order): String {
+    override fun toStringCost(cost: Int): String {
         return "$cost ₽"
     }
 

@@ -49,4 +49,9 @@
         android:name="com.bunbeauty.fooddeliveryadmin.ui.AddressListBottomSheet"
         android:label="AddressListBottomSheet"
         tools:layout="@layout/bottom_sheet_address_list" />
+    <fragment
+        android:id="@+id/edit_menu_fragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.EditMenuFragment"
+        android:label="EditMenuFragment"
+        tools:layout="@layout/fragment_edit_menu" />
 </navigation>

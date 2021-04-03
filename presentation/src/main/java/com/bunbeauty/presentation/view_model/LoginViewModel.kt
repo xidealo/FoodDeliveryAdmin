@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val apiRepository: IApiRepository,
+    private val iDataStoreHelper: IDataStoreHelper
 ) : BaseViewModel() {
 
     val isLoading = ObservableField(true)

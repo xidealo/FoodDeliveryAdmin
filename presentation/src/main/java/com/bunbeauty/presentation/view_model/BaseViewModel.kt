@@ -10,7 +10,4 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext = Job()
-
-    @Inject
-    lateinit var iDataStoreHelper: IDataStoreHelper
 }

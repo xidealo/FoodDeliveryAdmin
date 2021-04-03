@@ -48,4 +48,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddressListViewModel::class)
     internal abstract fun provideAddressListViewModel(addressListViewModel: AddressListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditMenuViewModel::class)
+    internal abstract fun provideEditMenuViewModel(editMenuViewModel: EditMenuViewModel): ViewModel
 }

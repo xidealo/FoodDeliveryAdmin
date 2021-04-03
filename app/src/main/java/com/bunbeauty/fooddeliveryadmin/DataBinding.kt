@@ -8,6 +8,9 @@ import com.bunbeauty.data.model.BaseModel
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.BaseAdapter
 import com.google.android.material.card.MaterialCardView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 
 object DataBinding {
 
@@ -58,5 +61,18 @@ object DataBinding {
             OrderStatus.DONE -> R.drawable.ic_done
         }
         imageView.background = ContextCompat.getDrawable(imageView.context, backgroundIcon)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind:image")
+    fun setImage(imageView: ImageView, link: String?) {
+        if (!link.isNullOrEmpty()) {
+            Picasso.get()
+                .load(link)
+                .placeholder(R.drawable.default_product)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .into(imageView)
+        }
     }
 }

@@ -10,7 +10,8 @@ interface BaseDao<T> {
     suspend fun insert(obj: T): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(obj: List<T>): Long
+    @JvmSuppressWildcards
+    suspend fun insertAll(obj: List<T>)
 
     @Update
     suspend fun update(obj: T)
