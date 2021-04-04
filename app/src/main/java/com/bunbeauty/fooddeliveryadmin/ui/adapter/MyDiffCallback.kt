@@ -1,11 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.bunbeauty.data.model.BaseModel
+import com.bunbeauty.data.model.BaseDiffUtilModel
 
 class MyDiffCallback(
-    private val newList: List<BaseModel>,
-    private val oldList: List<BaseModel>
+    private val newList: List<BaseDiffUtilModel>,
+    private val oldList: List<BaseDiffUtilModel>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

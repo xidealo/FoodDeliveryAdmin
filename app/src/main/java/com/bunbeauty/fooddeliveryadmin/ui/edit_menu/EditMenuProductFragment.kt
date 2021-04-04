@@ -22,7 +22,13 @@ class EditMenuProductFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding.menuProduct = EditMenuProductFragmentArgs.fromBundle(requireArguments()).menuProduct
+        val menuProduct = EditMenuProductFragmentArgs.fromBundle(requireArguments()).menuProduct
+        viewDataBinding.menuProduct = menuProduct
+
+        viewDataBinding.fragmentEditMenuProductBtnUpdate.setOnClickListener {
+            menuProduct.visible = viewDataBinding.fragmentEditMenuProductRbShow.isChecked
+            viewModel.updateMenuProduct(menuProduct)
+        }
     }
 
 

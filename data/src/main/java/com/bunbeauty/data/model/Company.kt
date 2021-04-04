@@ -4,10 +4,9 @@ import androidx.room.PrimaryKey
 
 data class Company(
     @PrimaryKey(autoGenerate = true)
-    override var id: Long = 0,
-    override var uuid: String = "",
+    var id: Long = 0,
     var login: String
-) : BaseModel() {
+) {
 
     companion object {
         const val COMPANY: String = "COMPANY"

@@ -5,12 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.Company
-import com.bunbeauty.data.model.Company.Companion.COMPANY
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.MenuProduct
-import com.bunbeauty.domain.BuildConfig
+import com.bunbeauty.data.model.firebase.MenuProductFirebase
 import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
@@ -151,6 +150,15 @@ class ApiRepository @Inject constructor(
         orderRef.setValue(newStatus)
     }
 
+    override fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String) {
+        val menuProductRef = firebaseInstance
+            .getReference(COMPANY)
+            .child(APP_ID)
+            .child(MENU_PRODUCTS)
+            .child(uuid)
+        menuProductRef.setValue(menuProduct)
+    }
+
     private fun getOrderWithCartProducts(ordersReference: Query): ChildEventListener {
         return ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
@@ -246,7 +254,8 @@ class ApiRepository @Inject constructor(
         menuProductsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val menuProductList = snapshot.children.map { menuProductSnapshot ->
-                    menuProductSnapshot.getValue(MenuProduct::class.java)!!.also { it.uuid = menuProductSnapshot.key!! }
+                    menuProductSnapshot.getValue(MenuProduct::class.java)!!
+                        .also { it.uuid = menuProductSnapshot.key!! }
 
                 }
                 launch(IO) {

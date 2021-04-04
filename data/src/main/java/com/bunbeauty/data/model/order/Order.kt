@@ -4,12 +4,14 @@ import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Ignore
 import androidx.room.Relation
-import com.bunbeauty.data.model.BaseModel
+import com.bunbeauty.data.model.BaseDiffUtilModel
 import com.bunbeauty.data.model.CartProduct
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Order(
+    override var uuid: String = "",
+
     @Embedded
     var orderEntity: OrderEntity = OrderEntity(),
 
@@ -22,4 +24,4 @@ data class Order(
     @Ignore
     var timestamp: Long = 0
 
-) : BaseModel(), Parcelable
+) : BaseDiffUtilModel, Parcelable

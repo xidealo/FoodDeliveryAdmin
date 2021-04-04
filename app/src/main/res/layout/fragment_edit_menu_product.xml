@@ -20,7 +20,7 @@
         tools:context=".ui.edit_menu.EditMenuProductFragment">
 
         <TextView
-            android:id="@+id/element_menu_product_tv_title"
+            android:id="@+id/fragment_edit_menu_product_tv_title"
             style="@style/SmallTitle"
             android:layout_marginStart="@dimen/very_small_margin"
             android:layout_marginTop="@dimen/very_small_margin"
@@ -29,6 +29,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/fragment_edit_menu_product_rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_edit_menu_product_tv_title">
+
+            <RadioButton
+                android:id="@+id/fragment_edit_menu_product_rb_show"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checked="@{menuProduct.visible}"
+                android:text="@string/hint_edit_menu_product_show"
+                android:textColor="@color/mainTextColor" />
+
+            <RadioButton
+                android:id="@+id/fragment_edit_menu_product_rb_hide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{!menuProduct.visible}"
+                android:text="@string/hint_edit_menu_product_hide"
+                android:textColor="@color/mainTextColor" />
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_edit_menu_product_btn_update"
+            style="@style/MainButton"
+            android:text="@string/hint_edit_menu_product_update"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

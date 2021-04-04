@@ -21,7 +21,7 @@ import com.bunbeauty.domain.repository.order.OrderDao
             OrderEntity::class,
             Address::class,
             CafeEntity::class,
-        ], version = 13
+        ], version = 14
 )
 @TypeConverters(OrderStatusConverter::class)
 abstract class LocalDatabase : RoomDatabase() {

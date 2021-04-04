@@ -1,15 +1,6 @@
-package com.bunbeauty.data.model
+package com.bunbeauty.data.model.firebase
 
-import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-@Entity
-data class MenuProduct(
-    @PrimaryKey
-    override var uuid: String = "",
+data class MenuProductFirebase(
     var name: String = "",
     var cost: Int = 0,
     val discountCost: Int? = null,
@@ -22,4 +13,4 @@ data class MenuProduct(
     var productCode: String = "",
     var barcode: Int = 0,
     var visible: Boolean = true
-) : BaseDiffUtilModel, Parcelable
+)

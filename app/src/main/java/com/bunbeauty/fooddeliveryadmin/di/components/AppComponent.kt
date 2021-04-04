@@ -2,10 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di.components
 
 import android.content.Context
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
-import com.bunbeauty.fooddeliveryadmin.di.modules.ApiModule
-import com.bunbeauty.fooddeliveryadmin.di.modules.AppModule
-import com.bunbeauty.fooddeliveryadmin.di.modules.DataModule
-import com.bunbeauty.fooddeliveryadmin.di.modules.RepositoryModule
+import com.bunbeauty.fooddeliveryadmin.di.modules.*
 import com.bunbeauty.fooddeliveryadmin.notification.MessagingService
 import dagger.BindsInstance
 import dagger.Component
@@ -17,7 +14,8 @@ import javax.inject.Singleton
         AppModule::class,
         ApiModule::class,
         DataModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        MapperModule::class
     ]
 )
 interface AppComponent {

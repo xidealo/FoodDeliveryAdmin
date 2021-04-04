@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation project(":common")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
@@ -48,6 +49,14 @@ dependencies {
     implementation "androidx.room:room-runtime:$rootProject.roomDatabaseVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomDatabaseVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomDatabaseVersion"
+
+    //Dagger 2
+    implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+
     //Joda time
     implementation "joda-time:joda-time:$rootProject.jodaVersion"
 }

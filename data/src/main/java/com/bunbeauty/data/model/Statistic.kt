@@ -9,4 +9,4 @@ data class Statistic(
     override var uuid: String = "",
     var date: String,
     var orderList: List<Order>
-) : Parcelable, BaseModel()
+) : Parcelable, BaseDiffUtilModel
