@@ -19,24 +19,14 @@
         android:layout_height="match_parent"
         tools:context=".ui.edit_menu.EditMenuProductFragment">
 
-        <TextView
-            android:id="@+id/fragment_edit_menu_product_tv_title"
-            style="@style/SmallTitle"
-            android:layout_marginStart="@dimen/very_small_margin"
-            android:layout_marginTop="@dimen/very_small_margin"
-            android:layout_marginEnd="@dimen/very_small_margin"
-            android:text="@{menuProduct.name}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <RadioGroup
             android:id="@+id/fragment_edit_menu_product_rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_edit_menu_product_tv_title">
+            app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
                 android:id="@+id/fragment_edit_menu_product_rb_show"
@@ -62,6 +52,74 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_edit_menu_product_til_name"
+            style="@style/MaterialInputLayout"
+            android:layout_margin="@dimen/medium_margin"
+            android:hint="@string/hint_edit_menu_product_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_rg">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_edit_menu_product_et_name"
+                style="@style/MaterialInput"
+                android:text="@{menuProduct.name}"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_edit_menu_product_til_cost"
+            style="@style/MaterialInputLayout"
+            android:layout_margin="@dimen/medium_margin"
+            android:hint="@string/hint_edit_menu_product_cost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_edit_menu_product_et_cost"
+                style="@style/MaterialInput"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="@{String.valueOf(menuProduct.cost)}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_edit_menu_product_til_weight"
+            style="@style/MaterialInputLayout"
+            android:layout_margin="@dimen/medium_margin"
+            android:hint="@string/hint_edit_menu_product_weight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_cost">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_edit_menu_product_et_weight"
+                style="@style/MaterialInput"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="@{String.valueOf(menuProduct.weight)}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_edit_menu_product_til_description"
+            style="@style/MaterialInputLayout"
+            android:layout_margin="@dimen/medium_margin"
+            android:hint="@string/hint_edit_menu_product_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_weight">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_edit_menu_product_et_description"
+                style="@style/MaterialInput"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:text="@{String.valueOf(menuProduct.description)}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

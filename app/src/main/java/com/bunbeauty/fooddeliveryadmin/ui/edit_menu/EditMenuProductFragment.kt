@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.edit_menu
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
@@ -27,9 +28,14 @@ class EditMenuProductFragment :
 
         viewDataBinding.fragmentEditMenuProductBtnUpdate.setOnClickListener {
             menuProduct.visible = viewDataBinding.fragmentEditMenuProductRbShow.isChecked
+            menuProduct.name = viewDataBinding.fragmentEditMenuProductEtName.text.toString()
+            menuProduct.cost = viewDataBinding.fragmentEditMenuProductEtCost.text.toString().toInt()
+            menuProduct.weight =
+                viewDataBinding.fragmentEditMenuProductEtWeight.text.toString().toInt()
+            menuProduct.description =
+                viewDataBinding.fragmentEditMenuProductEtDescription.text.toString()
             viewModel.updateMenuProduct(menuProduct)
+            findNavController().navigateUp()
         }
     }
-
-
 }
