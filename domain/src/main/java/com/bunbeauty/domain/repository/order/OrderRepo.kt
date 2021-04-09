@@ -5,5 +5,4 @@ import kotlinx.coroutines.Deferred
 
 interface OrderRepo {
     suspend fun insertOrderAsync(orderEntity: OrderEntity): Deferred<OrderEntity>
-    //fun getOrdersWithCartProducts(): LiveData<List<Order>>
 }

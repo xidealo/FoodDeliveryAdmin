@@ -7,6 +7,4 @@ import com.bunbeauty.domain.repository.BaseDao
 @Dao
 interface OrderDao : BaseDao<OrderEntity> {
 
-    /*@Query("SELECT * FROM OrderEntity")
-    fun getOrders(): LiveData<List<Order>>*/
 }

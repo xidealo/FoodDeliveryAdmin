@@ -76,11 +76,11 @@ ext {
     appcompatV7Version = "28.0.0"
 
     // Test dependencies
-    mockitoVerchion = "3.3.3"
-    junitVerchion = "4.13.2"
-    testJunitVerchion = "1.1.2"
-    espressoVerchion = "3.3.0"
-    mockVerchion = "1.9.3"
-    runnerVerchion = "1.3.0"
-    rulesVerchion = "1.3.0"
+    mockitoVersion = "3.3.3"
+    junitVersion = "4.13.2"
+    testjunitVersion = "1.1.2"
+    espressoVersion = "3.3.0"
+    mockVersion = "1.10.6"
+    runnerVersion = "1.3.0"
+    rulesVersion = "1.3.0"
 }

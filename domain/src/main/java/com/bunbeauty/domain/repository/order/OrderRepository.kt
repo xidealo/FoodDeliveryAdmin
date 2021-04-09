@@ -16,8 +16,4 @@ class OrderRepository @Inject constructor(
             orderEntity
         }
     }
-
-    /*override fun getOrdersWithCartProducts(): LiveData<List<Order>> {
-        return orderDao.getOrders()
-    }*/
 }

@@ -41,9 +41,9 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
-    testImplementation "io.mockk:mockk:$rootProject.mockVerchion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVerchion"
-    androidTestImplementation "androidx.test:rules:$rootProject.rulesVerchion"
+    testImplementation "io.mockk:mockk:$rootProject.mockVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
 
     //Database
     implementation "androidx.room:room-runtime:$rootProject.roomDatabaseVersion"
