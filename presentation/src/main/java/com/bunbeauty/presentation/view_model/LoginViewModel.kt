@@ -4,34 +4,41 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 import java.math.BigInteger
 import java.security.MessageDigest
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val apiRepository: IApiRepository,
-    private val iDataStoreHelper: IDataStoreHelper
+    private val dataStoreHelper: IDataStoreHelper
 ) : BaseViewModel() {
 
     val isLoading = ObservableField(true)
-    val tokenLiveData = iDataStoreHelper.token.asLiveData()
+    val tokenLiveData = dataStoreHelper.token.asLiveData()
 
     /**
      * For test login
      */
     fun clear() {
-        viewModelScope.launch {
-            iDataStoreHelper.clearCache()
+        viewModelScope.launch(IO) {
+            dataStoreHelper.clearCache()
         }
     }
 
-    fun updateToken() {
-        apiRepository.updateToken(APP_ID)
+    fun turnOnNotification() {
+        viewModelScope.launch(IO) {
+            apiRepository.subscribeOnNotification()
+        }
+    }
+
+    fun turnOffNotification() {
+        viewModelScope.launch(IO) {
+            apiRepository.unsubscribeOnNotification()
+        }
     }
 
     fun isCorrectUsername(username: String): Boolean {

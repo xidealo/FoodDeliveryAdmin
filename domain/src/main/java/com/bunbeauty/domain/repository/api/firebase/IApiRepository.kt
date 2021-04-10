@@ -13,8 +13,9 @@ interface IApiRepository {
 
     val updatedOrderListLiveData: LiveData<List<Order>>
 
-    fun updateToken(login: String)
     fun login(login: String, passwordHash: String): SharedFlow<Boolean>
+    fun subscribeOnNotification()
+    fun unsubscribeOnNotification()
 
     fun updateOrder(cafeId: String, uuid: String, newStatus: OrderStatus)
     fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String)

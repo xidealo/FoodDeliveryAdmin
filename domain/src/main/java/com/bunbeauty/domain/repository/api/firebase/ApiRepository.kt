@@ -1,7 +1,9 @@
 package com.bunbeauty.domain.repository.api.firebase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.Company
@@ -12,7 +14,8 @@ import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.firebase.MenuProductFirebase
 import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.google.firebase.database.*
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -99,15 +102,18 @@ class ApiRepository @Inject constructor(
 
                     if (companySnapshot.childrenCount == 0L) {
                         isAuthorizedSharedFlow.emit(false)
+                        unsubscribeOnNotification()
                         return@launch
                     }
 
                     val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
                     if (passwordHash == companyPassword) {
-                        updateToken(login)
                         isAuthorizedSharedFlow.emit(true)
+                        dataStoreHelper.saveToken(UUID.randomUUID().toString())
+                        subscribeOnNotification()
                     } else {
                         isAuthorizedSharedFlow.emit(false)
+                        unsubscribeOnNotification()
                     }
                 }
             }
@@ -115,6 +121,7 @@ class ApiRepository @Inject constructor(
             override fun onCancelled(databaseError: DatabaseError) {
                 launch(IO) {
                     isAuthorizedSharedFlow.emit(false)
+                    unsubscribeOnNotification()
                 }
             }
         })
@@ -122,21 +129,26 @@ class ApiRepository @Inject constructor(
         return isAuthorizedSharedFlow
     }
 
-    override fun updateToken(login: String) {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                return@addOnCompleteListener
+    override fun subscribeOnNotification() {
+        Firebase.messaging.subscribeToTopic(NOTIFICATION_TOPIC)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("NotificationTag", "Subscribe to topic is successful")
+                } else {
+                    Log.d("NotificationTag", "Subscribe to topic is not successful")
+                }
             }
+    }
 
-            val token = task.result!!
-            firebaseInstance.getReference(COMPANY)
-                .child(login)
-                .child(Company.TOKEN)
-                .setValue(token)
-            launch(IO) {
-                dataStoreHelper.saveToken(token)
+    override fun unsubscribeOnNotification() {
+        Firebase.messaging.unsubscribeFromTopic(NOTIFICATION_TOPIC)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("NotificationTag", "Unsubscribe to topic is successful")
+                } else {
+                    Log.d("NotificationTag", "Unsubscribe to topic is not successful")
+                }
             }
-        }
     }
 
     override fun updateOrder(cafeId: String, uuid: String, newStatus: OrderStatus) {
@@ -278,6 +290,7 @@ class ApiRepository @Inject constructor(
     companion object {
         private const val COMPANY = "COMPANY"
         private const val MENU_PRODUCTS: String = "menu_products"
+        private const val NOTIFICATION_TOPIC: String = "notification"
         private const val DELIVERY: String = "delivery"
     }
 

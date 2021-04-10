@@ -5,10 +5,12 @@ admin.initializeApp(functions.config().firebase);
 
 exports.sendFollowingNotification =
     functions.database
-        .ref("/ORDERS/{appId}/{orderId}")
+        .ref("/ORDERS/{appId}/{cafeId}/{orderId}")
         .onCreate((snapshot, context) => {
           const appId = context.params.appId;
+          const cafeId = context.params.cafeId;
           console.log("appId: ", appId);
+          console.log("cafeId: ", cafeId);
 
           const orderId = context.params.orderId;
           console.log("orderId: ", orderId);
@@ -24,11 +26,13 @@ exports.sendFollowingNotification =
                   const payload = {
                     data: {
                       app_id: appId,
+                      cafe_id: cafeId,
                     },
+                    topic: "notification",
                   };
 
                   return admin.messaging()
-                      .sendToDevice(token, payload)
+                      .send(payload)
                       .then(function(response) {
                         console.log("Successfully sent message:", response);
                         return;
@@ -40,11 +44,3 @@ exports.sendFollowingNotification =
                 }
               });
         });
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });

@@ -27,11 +27,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.tokenLiveData.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
+        viewModel.tokenLiveData.observe(viewLifecycleOwner) { token ->
+            if (token.isEmpty()) {
                 viewModel.isLoading.set(false)
+                viewModel.turnOffNotification()
             } else {
-                viewModel.updateToken()
+                viewModel.turnOnNotification()
                 goToOrders()
             }
         }
