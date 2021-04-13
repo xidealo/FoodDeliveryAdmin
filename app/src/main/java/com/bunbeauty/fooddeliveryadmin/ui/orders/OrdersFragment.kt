@@ -2,10 +2,10 @@ package com.bunbeauty.fooddeliveryadmin.ui.orders
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bunbeauty.fooddeliveryadmin.BR
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
@@ -15,11 +15,11 @@ import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.toAddr
 import com.bunbeauty.presentation.view_model.OrdersViewModel
 import javax.inject.Inject
 
-class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>(){
+class OrdersFragment : BaseFragment<FragmentOrdersBinding>(){
 
-    override var viewModelVariable: Int = BR.viewModel
-    override var layoutId: Int = R.layout.fragment_orders
-    override var viewModelClass = OrdersViewModel::class.java
+    override var layoutId = R.layout.fragment_orders
+    override val viewModel: OrdersViewModel by viewModels { modelFactory }
+
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
     }

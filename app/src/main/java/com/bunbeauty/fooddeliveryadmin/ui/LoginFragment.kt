@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
@@ -11,15 +12,15 @@ import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.presentation.view_model.LoginViewModel
+import com.bunbeauty.presentation.view_model.MainViewModel
 import kotlinx.coroutines.flow.onEach
 import java.lang.ref.WeakReference
 import java.util.*
 
-class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
-    override var viewModelVariable: Int = BR.viewModel
-    override var layoutId: Int = R.layout.fragment_login
-    override var viewModelClass = LoginViewModel::class.java
+    override var layoutId = R.layout.fragment_login
+    override val viewModel: LoginViewModel by viewModels { modelFactory }
 
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)

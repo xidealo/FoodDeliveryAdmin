@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.edit_menu
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
@@ -9,13 +10,13 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBindin
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.EditMenuProductViewModel
+import com.bunbeauty.presentation.view_model.MainViewModel
 
 class EditMenuProductFragment :
-    BaseFragment<FragmentEditMenuProductBinding, EditMenuProductViewModel>() {
+    BaseFragment<FragmentEditMenuProductBinding>() {
 
-    override var viewModelVariable: Int = BR.viewModel
-    override var layoutId: Int = R.layout.fragment_edit_menu_product
-    override var viewModelClass = EditMenuProductViewModel::class.java
+    override var layoutId = R.layout.fragment_edit_menu_product
+    override val viewModel: EditMenuProductViewModel by viewModels { modelFactory }
 
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)

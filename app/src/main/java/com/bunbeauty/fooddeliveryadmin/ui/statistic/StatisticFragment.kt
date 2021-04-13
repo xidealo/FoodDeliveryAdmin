@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.statistic
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
@@ -13,12 +14,10 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.StatisticViewModel
 import javax.inject.Inject
 
-class StatisticFragment :
-    BaseFragment<FragmentStatisticBinding, StatisticViewModel>() {
+class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
-    override var viewModelVariable: Int = BR.viewModel
-    override var layoutId: Int = R.layout.fragment_statistic
-    override var viewModelClass = StatisticViewModel::class.java
+    override var layoutId = R.layout.fragment_statistic
+    override val viewModel: StatisticViewModel by viewModels { modelFactory }
 
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)

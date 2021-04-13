@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -11,12 +12,13 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMainBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.MainViewModel
+import com.bunbeauty.presentation.view_model.OrdersViewModel
 
-class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
+class MainFragment : BaseFragment<FragmentMainBinding>() {
 
-    override var viewModelVariable: Int = BR.viewModel
-    override var layoutId: Int = R.layout.fragment_main
-    override var viewModelClass = MainViewModel::class.java
+    override var layoutId = R.layout.fragment_main
+    override val viewModel: MainViewModel by viewModels { modelFactory }
+
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
     }

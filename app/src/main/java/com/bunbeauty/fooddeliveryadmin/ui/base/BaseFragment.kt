@@ -18,14 +18,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
-abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(){
+abstract class BaseFragment<B : ViewDataBinding> : Fragment(){
 
     abstract var layoutId: Int
-    abstract var viewModelVariable: Int
-    abstract var viewModelClass: Class<V>
-
-    lateinit var viewDataBinding: T
-    lateinit var viewModel: V
+    lateinit var viewDataBinding: B
+    abstract val viewModel: BaseViewModel
 
     @Inject
     lateinit var modelFactory: ViewModelProvider.Factory
@@ -38,8 +35,6 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
                 .getViewModelComponent()
                 .create(this)
         inject(viewModelComponent)
-
-        viewModel = ViewModelProvider(this, modelFactory).get(viewModelClass)
     }
 
     abstract fun inject(viewModelComponent: ViewModelComponent)
@@ -56,13 +51,13 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+
         return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.setVariable(viewModelVariable, viewModel)
         viewDataBinding.lifecycleOwner = this
         viewDataBinding.executePendingBindings()
     }
