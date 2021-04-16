@@ -9,6 +9,7 @@ import com.bunbeauty.data.model.order.OrderEntity
 interface IStringHelper {
     fun toString(address: Address): String
     fun toString(orderEntity: OrderEntity): String
+    fun toStringDeferred(orderEntity: OrderEntity): String
     fun toString(cartProducts: List<CartProduct>): String
     fun toString(statistic: Statistic): String
     fun toStringCost(statistic: Statistic): String

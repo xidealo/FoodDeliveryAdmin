@@ -21,6 +21,7 @@ object DataBinding {
             (recyclerView.adapter as BaseAdapter<out RecyclerView.ViewHolder, T>).setItemList(items)
         }
     }
+
     @JvmStatic
     @BindingAdapter("bind:addItemToTop")
     fun <T : BaseDiffUtilModel> addItemToTop(recyclerView: RecyclerView, item: T?) {
@@ -43,11 +44,18 @@ object DataBinding {
 
         val backgroundColor = when (orderStatus) {
             OrderStatus.NOT_ACCEPTED -> R.color.notAcceptedColor
+            OrderStatus.ACCEPTED -> R.color.notAcceptedColor
             OrderStatus.PREPARING -> R.color.preparingColor
+            OrderStatus.READY -> R.color.preparingColor
             OrderStatus.SENT_OUT -> R.color.sentOutColor
             OrderStatus.DONE -> R.color.deliveredColor
         }
-        materialCardView.setBackgroundColor(ContextCompat.getColor(materialCardView.context, backgroundColor))
+        materialCardView.setBackgroundColor(
+            ContextCompat.getColor(
+                materialCardView.context,
+                backgroundColor
+            )
+        )
     }
 
     @JvmStatic
@@ -56,7 +64,9 @@ object DataBinding {
 
         val backgroundIcon = when (orderStatus) {
             OrderStatus.NOT_ACCEPTED -> R.drawable.ic_not_accepted
+            OrderStatus.ACCEPTED -> R.drawable.ic_accepted
             OrderStatus.PREPARING -> R.drawable.ic_preparing
+            OrderStatus.READY -> R.drawable.ic_ready
             OrderStatus.SENT_OUT -> R.drawable.ic_sent_out
             OrderStatus.DONE -> R.drawable.ic_done
         }

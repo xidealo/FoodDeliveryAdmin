@@ -43,6 +43,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/element_order_tv_deferred"
+                style="@style/HelpText"
+                android:layout_margin="@dimen/very_small_margin"
+                android:text="@{stringHelper.toStringDeferred(order.orderEntity)}"
+                app:layout_constraintEnd_toStartOf="@id/element_order_tv_time"
+                app:layout_constraintStart_toEndOf="@id/element_order_tv_code"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/element_order_tv_time"
                 style="@style/MainText"
                 android:text="@{stringHelper.toStringTime(order)}"

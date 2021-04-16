@@ -42,7 +42,6 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding>() {
         }.launchWhenStarted(lifecycleScope)
     }
 
-
     fun goToEditMenuProduct(menuProduct: MenuProduct) {
         findNavController().navigate(
             EditMenuFragmentDirections.toEditMenuProductFragment(

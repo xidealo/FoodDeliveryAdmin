@@ -59,6 +59,14 @@ class StringHelper @Inject constructor(
         return orderString.toString()
     }
 
+    override fun toStringDeferred(orderEntity: OrderEntity): String {
+        return if (orderEntity.deferred.isNotEmpty())
+            return "Время доставки: ${orderEntity.deferred}"
+        else
+            ""
+    }
+
+
     override fun toString(statistic: Statistic): String {
         val statisticStringBuilder = StringBuilder()
         //TODO (change calculating)

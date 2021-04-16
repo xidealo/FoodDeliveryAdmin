@@ -25,7 +25,9 @@
     <!-- CHANGE STATUS -->
     <string name="hint_change_status_status">Статус заказа</string>
     <string name="hint_change_status_not_accepted">Не принят</string>
+    <string name="hint_change_status_accepted">Принят</string>
     <string name="hint_change_status_preparing">Готовится</string>
+    <string name="hint_change_status_ready">Готов</string>
     <string name="hint_change_status_sent_out">Отправлен</string>
     <string name="hint_change_status_delivered">Доставлен</string>
     <string name="hint_change_status_cancel">Отменить</string>

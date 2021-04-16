@@ -112,11 +112,27 @@
                     android:textColor="@color/mainTextColor" />
 
                 <RadioButton
+                    android:id="@+id/dialog_change_status_rb_accepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.ACCEPTED}"
+                    android:text="@string/hint_change_status_accepted"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
                     android:id="@+id/dialog_change_status_rb_preparing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{order.orderEntity.orderStatus == OrderStatus.PREPARING}"
                     android:text="@string/hint_change_status_preparing"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_ready"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.READY}"
+                    android:text="@string/hint_change_status_ready"
                     android:textColor="@color/mainTextColor" />
 
                 <RadioButton
