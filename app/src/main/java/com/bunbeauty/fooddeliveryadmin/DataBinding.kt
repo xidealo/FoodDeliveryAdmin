@@ -46,7 +46,6 @@ object DataBinding {
             OrderStatus.NOT_ACCEPTED -> R.color.notAcceptedColor
             OrderStatus.ACCEPTED -> R.color.notAcceptedColor
             OrderStatus.PREPARING -> R.color.preparingColor
-            OrderStatus.READY -> R.color.preparingColor
             OrderStatus.SENT_OUT -> R.color.sentOutColor
             OrderStatus.DONE -> R.color.deliveredColor
         }
@@ -66,7 +65,6 @@ object DataBinding {
             OrderStatus.NOT_ACCEPTED -> R.drawable.ic_not_accepted
             OrderStatus.ACCEPTED -> R.drawable.ic_accepted
             OrderStatus.PREPARING -> R.drawable.ic_preparing
-            OrderStatus.READY -> R.drawable.ic_ready
             OrderStatus.SENT_OUT -> R.drawable.ic_sent_out
             OrderStatus.DONE -> R.drawable.ic_done
         }

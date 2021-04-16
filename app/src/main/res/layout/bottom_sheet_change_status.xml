@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <import type="com.bunbeauty.data.enums.OrderStatus" />
 
         <variable
@@ -131,7 +129,6 @@
                     android:id="@+id/dialog_change_status_rb_ready"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.READY}"
                     android:text="@string/hint_change_status_ready"
                     android:textColor="@color/mainTextColor" />
 

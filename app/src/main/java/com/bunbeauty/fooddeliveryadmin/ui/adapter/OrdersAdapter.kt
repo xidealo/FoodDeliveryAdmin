@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
 import com.bunbeauty.domain.string_helper.IStringHelper
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class OrdersAdapter @Inject constructor(
-    private val context: Context,
-    private val stringHelper: IStringHelper
-) : BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
+class OrdersAdapter @Inject constructor(private val stringHelper: IStringHelper) :
+    BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): OrderViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
@@ -25,10 +21,9 @@ class OrdersAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, i: Int) {
-        holder.binding?.context = context
         holder.binding?.stringHelper = stringHelper
 
-        holder.binding?.elementOrderMvcMain?.setOnClickListener{
+        holder.binding?.elementOrderMvcMain?.setOnClickListener {
             onItemClickListener?.invoke(itemList[i])
         }
         holder.binding?.order = itemList[i]

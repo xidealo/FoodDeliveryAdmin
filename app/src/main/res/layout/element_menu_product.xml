@@ -5,13 +5,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="context"
-            type="android.content.Context" />
-
         <variable
             name="menuProduct"
             type="com.bunbeauty.data.model.MenuProduct" />

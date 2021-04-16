@@ -8,7 +8,6 @@ enum class OrderStatus : Parcelable {
     NOT_ACCEPTED,
     ACCEPTED,
     PREPARING,
-    READY,
     SENT_OUT,
     DONE
 }

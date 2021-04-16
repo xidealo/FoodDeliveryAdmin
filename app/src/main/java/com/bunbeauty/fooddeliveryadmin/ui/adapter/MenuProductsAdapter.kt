@@ -26,7 +26,6 @@ class MenuProductsAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: MenuProductViewHolder, i: Int) {
-        holder.binding?.context = context
         holder.binding?.productHelper = productHelper
         holder.binding?.menuProduct = itemList[i]
         if (holder.binding?.elementMenuProductTvCostOld != null) {

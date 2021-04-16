@@ -5,15 +5,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="context"
-            type="android.content.Context" />
-
-        <import type="androidx.core.content.ContextCompat" />
-
         <variable
             name="order"
             type="com.bunbeauty.data.model.order.Order" />

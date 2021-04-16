@@ -25,7 +25,6 @@ class StatisticAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: StatisticViewHolder, i: Int) {
-        holder.binding?.context = context
         holder.binding?.iStringHelper = iStringHelper
         holder.binding?.statistic = itemList[i]
         holder.binding?.elementStatisticMvcMain?.setOnClickListener{

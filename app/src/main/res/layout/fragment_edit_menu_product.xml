@@ -8,10 +8,6 @@
         <variable
             name="menuProduct"
             type="com.bunbeauty.data.model.MenuProduct" />
-
-        <variable
-            name="viewModel"
-            type="com.bunbeauty.presentation.view_model.EditMenuProductViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
