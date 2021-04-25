@@ -126,13 +126,6 @@
                     android:textColor="@color/mainTextColor" />
 
                 <RadioButton
-                    android:id="@+id/dialog_change_status_rb_ready"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_change_status_ready"
-                    android:textColor="@color/mainTextColor" />
-
-                <RadioButton
                     android:id="@+id/dialog_change_status_rb_sent_out"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

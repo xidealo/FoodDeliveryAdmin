@@ -117,5 +117,22 @@
                 android:text="@{String.valueOf(menuProduct.description)}" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_edit_menu_product_til_discount_cost"
+            style="@style/MaterialInputLayout"
+            android:layout_margin="@dimen/medium_margin"
+            android:hint="@string/hint_edit_menu_product_discount_cost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_description">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_edit_menu_product_et_discount_cost"
+                style="@style/MaterialInput"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:text="@{String.valueOf(menuProduct.discountCost)}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -12,7 +12,7 @@ data class MenuProduct(
     override var uuid: String = "",
     var name: String = "",
     var cost: Int = 0,
-    val discountCost: Int? = null,
+    var discountCost: Int? = null,
     var weight: Int = 0,
     var description: String = "",
     val comboDescription: String = "",

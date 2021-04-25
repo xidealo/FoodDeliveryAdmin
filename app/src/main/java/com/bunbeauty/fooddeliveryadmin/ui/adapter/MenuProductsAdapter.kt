@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
-import android.content.Context
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,8 @@ import com.bunbeauty.domain.product.IProductHelper
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
 import javax.inject.Inject
 
-class MenuProductsAdapter @Inject constructor(
-    private val context: Context,
-    private val productHelper: IProductHelper
-) : BaseAdapter<MenuProductsAdapter.MenuProductViewHolder, MenuProduct>() {
+class MenuProductsAdapter @Inject constructor(private val productHelper: IProductHelper) :
+    BaseAdapter<MenuProductsAdapter.MenuProductViewHolder, MenuProduct>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MenuProductViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)

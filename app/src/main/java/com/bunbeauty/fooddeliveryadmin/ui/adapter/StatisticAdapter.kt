@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class StatisticAdapter @Inject constructor(
-    private val context: Context,
     private val iStringHelper: IStringHelper
 ) : BaseAdapter<StatisticAdapter.StatisticViewHolder, Statistic>() {
 

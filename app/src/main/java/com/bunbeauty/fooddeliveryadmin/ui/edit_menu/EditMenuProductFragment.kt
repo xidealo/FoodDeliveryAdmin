@@ -35,6 +35,15 @@ class EditMenuProductFragment :
                 viewDataBinding.fragmentEditMenuProductEtWeight.text.toString().toInt()
             menuProduct.description =
                 viewDataBinding.fragmentEditMenuProductEtDescription.text.toString()
+            if (viewDataBinding.fragmentEditMenuProductEtDiscountCost.text.toString()
+                    .toInt() == 0
+            ) {
+                menuProduct.discountCost = null
+            } else {
+                menuProduct.discountCost =
+                    viewDataBinding.fragmentEditMenuProductEtDiscountCost.text.toString().toInt()
+            }
+
             viewModel.updateMenuProduct(menuProduct)
             findNavController().navigateUp()
         }
