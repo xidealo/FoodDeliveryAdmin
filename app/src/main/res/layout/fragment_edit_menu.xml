@@ -21,6 +21,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/element_menu_product" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_edit_menu_fab_add_new_product"
+            style="@style/BaseActionButton"
+            android:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

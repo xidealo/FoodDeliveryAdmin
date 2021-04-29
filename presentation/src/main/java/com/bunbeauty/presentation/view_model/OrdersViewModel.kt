@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.asLiveData
 import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.string_helper.IStringHelper
@@ -37,4 +38,8 @@ class OrdersViewModel @Inject constructor(
         apiRepository.getAddedOrderListLiveData(cafeId)
     }
     val updatedOrderListLiveData = apiRepository.updatedOrderListLiveData
+
+    fun removeOrder(order: Order){
+        apiRepository.delete(order)
+    }
 }

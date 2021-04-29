@@ -3,20 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="menuProduct"
-            type="com.bunbeauty.data.model.MenuProduct" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.edit_menu.EditMenuProductFragment">
+        tools:context=".ui.CreateNewMenuProductFragment">
 
         <RadioGroup
-            android:id="@+id/fragment_edit_menu_product_rg"
+            android:id="@+id/fragment_create_menu_product_rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
@@ -25,114 +18,103 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
-                android:id="@+id/fragment_edit_menu_product_rb_show"
+                android:id="@+id/fragment_create_menu_product_rb_show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checked="@{menuProduct.visible}"
-                android:text="@string/hint_edit_menu_product_show"
+                android:text="@string/hint_create_menu_product_show"
                 android:textColor="@color/mainTextColor" />
 
             <RadioButton
-                android:id="@+id/fragment_edit_menu_product_rb_hide"
+                android:id="@+id/fragment_create_menu_product_rb_hide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="@{!menuProduct.visible}"
-                android:text="@string/hint_edit_menu_product_hide"
+                android:text="@string/hint_create_menu_product_hide"
                 android:textColor="@color/mainTextColor" />
         </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_edit_menu_product_til_name"
+            android:id="@+id/fragment_create_menu_product_til_name"
             style="@style/MaterialInputLayout"
             android:layout_margin="@dimen/medium_margin"
-            android:hint="@string/hint_edit_menu_product_name"
+            android:hint="@string/hint_create_menu_product_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_rg">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_rg">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_edit_menu_product_et_name"
+                android:id="@+id/fragment_create_menu_product_et_name"
                 style="@style/MaterialInput"
-                android:text="@{menuProduct.name}"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences"/>
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_edit_menu_product_til_cost"
+            android:id="@+id/fragment_create_menu_product_til_cost"
             style="@style/MaterialInputLayout"
             android:layout_margin="@dimen/medium_margin"
-            android:hint="@string/hint_edit_menu_product_cost"
+            android:hint="@string/hint_create_menu_product_cost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_name">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_edit_menu_product_et_cost"
+                android:id="@+id/fragment_create_menu_product_et_cost"
                 style="@style/MaterialInput"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@{String.valueOf(menuProduct.cost)}"/>
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_edit_menu_product_til_weight"
+            android:id="@+id/fragment_create_menu_product_til_weight"
             style="@style/MaterialInputLayout"
             android:layout_margin="@dimen/medium_margin"
-            android:hint="@string/hint_edit_menu_product_weight"
+            android:hint="@string/hint_create_menu_product_weight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_cost">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_cost">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_edit_menu_product_et_weight"
+                android:id="@+id/fragment_create_menu_product_et_weight"
                 style="@style/MaterialInput"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@{String.valueOf(menuProduct.weight)}" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_edit_menu_product_til_description"
+            android:id="@+id/fragment_create_menu_product_til_description"
             style="@style/MaterialInputLayout"
             android:layout_margin="@dimen/medium_margin"
-            android:hint="@string/hint_edit_menu_product_description"
+            android:hint="@string/hint_create_menu_product_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_weight">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_weight">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_edit_menu_product_et_description"
+                android:id="@+id/fragment_create_menu_product_et_description"
                 style="@style/MaterialInput"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
-                android:text="@{String.valueOf(menuProduct.description)}" />
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_edit_menu_product_til_discount_cost"
+            android:id="@+id/fragment_create_menu_product_til_discount_cost"
             style="@style/MaterialInputLayout"
             android:layout_margin="@dimen/medium_margin"
-            android:hint="@string/hint_edit_menu_product_discount_cost"
+            android:hint="@string/hint_create_menu_product_discount_cost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_description">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_description">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_edit_menu_product_et_discount_cost"
+                android:id="@+id/fragment_create_menu_product_et_discount_cost"
                 style="@style/MaterialInput"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
-                android:text="@{String.valueOf(menuProduct.discountCost)}" />
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fragment_edit_menu_product_btn_update"
             style="@style/MainButton"
-            android:text="@string/action_edit_menu_product_update"
+            android:text="@string/action_create_menu_product_create"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

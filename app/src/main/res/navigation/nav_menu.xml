@@ -57,6 +57,9 @@
         <action
             android:id="@+id/to_editMenuProductFragment"
             app:destination="@id/editMenuProductFragment" />
+        <action
+            android:id="@+id/to_createNewMenuProductFragment"
+            app:destination="@id/createNewMenuProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/editMenuProductFragment"
@@ -67,4 +70,9 @@
             android:name="menuProduct"
             app:argType="com.bunbeauty.data.model.MenuProduct" />
     </fragment>
+    <fragment
+        tools:layout="@layout/fragment_create_new_menu_product"
+        android:id="@+id/createNewMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.CreateNewMenuProductFragment"
+        android:label="CreateNewMenuProductFragment" />
 </navigation>

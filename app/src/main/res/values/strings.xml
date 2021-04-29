@@ -50,11 +50,21 @@
     <!-- EDIT MENU PRODUCT -->
     <string name="hint_edit_menu_product_show">Показать</string>
     <string name="hint_edit_menu_product_hide">Убрать</string>
-    <string name="hint_edit_menu_product_update">Обновить</string>
     <string name="hint_edit_menu_product_name">Название</string>
     <string name="hint_edit_menu_product_cost">Цена</string>
     <string name="hint_edit_menu_product_weight">Вес</string>
     <string name="hint_edit_menu_product_description">Описание</string>
     <string name="hint_edit_menu_product_discount_cost">Цена со скидкой</string>
+    <string name="action_edit_menu_product_update">Обновить</string>
+
+    <!-- CREATE MENU PRODUCT -->
+    <string name="hint_create_menu_product_show">Показать</string>
+    <string name="hint_create_menu_product_hide">Убрать</string>
+    <string name="hint_create_menu_product_name">Название</string>
+    <string name="hint_create_menu_product_cost">Цена</string>
+    <string name="hint_create_menu_product_weight">Вес</string>
+    <string name="hint_create_menu_product_description">Описание</string>
+    <string name="hint_create_menu_product_discount_cost">Цена со скидкой</string>
+    <string name="action_create_menu_product_create">Добавить</string>
 
 </resources>

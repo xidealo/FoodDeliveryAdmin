@@ -15,7 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.toAddr
 import com.bunbeauty.presentation.view_model.OrdersViewModel
 import javax.inject.Inject
 
-class OrdersFragment : BaseFragment<FragmentOrdersBinding>(){
+class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     override var layoutId = R.layout.fragment_orders
     override val viewModel: OrdersViewModel by viewModels { modelFactory }
@@ -31,6 +31,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(){
         super.onViewCreated(view, savedInstanceState)
         ordersAdapter.onItemClickListener = {
             showChangeStatus(it)
+            //viewModel.removeOrder(it)
         }
 
         viewDataBinding.fragmentOrdersRvResult.adapter = ordersAdapter

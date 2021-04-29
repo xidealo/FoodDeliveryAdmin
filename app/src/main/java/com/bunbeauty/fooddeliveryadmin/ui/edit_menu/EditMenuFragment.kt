@@ -40,13 +40,22 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding>() {
         viewModel.productListSharedFlow.onEach {
             menuProductsAdapter.setItemList(it)
         }.launchWhenStarted(lifecycleScope)
+        viewDataBinding.fragmentEditMenuFabAddNewProduct.setOnClickListener {
+            goToCreateMenuProduct()
+        }
     }
 
-    fun goToEditMenuProduct(menuProduct: MenuProduct) {
+    private fun goToEditMenuProduct(menuProduct: MenuProduct) {
         findNavController().navigate(
             EditMenuFragmentDirections.toEditMenuProductFragment(
                 menuProduct
             )
+        )
+    }
+
+    private fun goToCreateMenuProduct() {
+        findNavController().navigate(
+            EditMenuFragmentDirections.toCreateNewMenuProductFragment()
         )
     }
 }

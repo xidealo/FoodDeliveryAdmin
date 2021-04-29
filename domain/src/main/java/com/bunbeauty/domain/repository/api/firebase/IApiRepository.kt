@@ -20,6 +20,8 @@ interface IApiRepository {
     fun updateOrder(cafeId: String, uuid: String, newStatus: OrderStatus)
     fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String)
 
+    fun delete(order: Order)
+
     fun getAddedOrderListLiveData(cafeId: String): LiveData<List<Order>>
     fun getOrderWithCartProductsList(
         cafeId: String,

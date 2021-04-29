@@ -62,6 +62,14 @@
         <item name="cardCornerRadius">@dimen/medium_radius</item>
     </style>
 
+    <style name="BaseActionButton" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">@dimen/medium_margin</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="tint">@color/white</item>
+        <item name="borderWidth">0dp</item>
+    </style>
+
     <!--TEXT-->
     <style name="BaseText">
         <item name="android:textColor">@color/mainTextColor</item>

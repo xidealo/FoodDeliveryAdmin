@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.fooddeliveryadmin.di.modules.ViewModelModule
 import com.bunbeauty.fooddeliveryadmin.ui.AddressListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.CreateNewMenuProductFragment
 import com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuFragment
 import com.bunbeauty.fooddeliveryadmin.ui.LoginFragment
 import com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuProductFragment
@@ -34,6 +35,7 @@ interface ViewModelComponent {
     fun inject(mainFragment: MainFragment)
     fun inject(editMenuFragment: EditMenuFragment)
     fun inject(editMenuProductFragment: EditMenuProductFragment)
+    fun inject(createNewMenuProductFragment: CreateNewMenuProductFragment)
 
     // bottom sheet
     fun inject(selectedStatisticBottomSheet: SelectedStatisticBottomSheet)

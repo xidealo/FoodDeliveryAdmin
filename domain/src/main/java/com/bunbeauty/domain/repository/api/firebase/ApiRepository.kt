@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.data.BuildConfig
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.Company
 import com.bunbeauty.data.model.order.OrderEntity
@@ -50,7 +51,7 @@ class ApiRepository @Inject constructor(
 
             override fun onActive() {
                 super.onActive()
-                orderListener = getOrderWithCartProducts(ordersReference)
+                orderListener = getOrderWithCartProducts(ordersReference, cafeId)
             }
 
             override fun onInactive() {
@@ -171,15 +172,28 @@ class ApiRepository @Inject constructor(
         menuProductRef.setValue(menuProduct)
     }
 
-    private fun getOrderWithCartProducts(ordersReference: Query): ChildEventListener {
+    override fun delete(order: Order) {
+        if(order.uuid.isEmpty()) return
+       /* val orderReference = firebaseInstance
+            .getReference(ORDERS)
+            .child(APP_ID)
+            .child(order.cafeId)
+            .child(order.uuid)
+        orderReference.removeValue()*/
+    }
+
+    private fun getOrderWithCartProducts(
+        ordersReference: Query,
+        cafeId: String
+    ): ChildEventListener {
         return ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
-                orderList.addFirst(getOrderValue(orderSnapshot))
+                orderList.addFirst(getOrderValue(orderSnapshot, cafeId))
                 addedOrderListLiveData.value = orderList
             }
 
             override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
-                val order = getOrderValue(orderSnapshot)
+                val order = getOrderValue(orderSnapshot, cafeId)
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
@@ -214,7 +228,7 @@ class ApiRepository @Inject constructor(
                     val ordersWithCartProductsList = arrayListOf<Order>()
                     for (orderSnapshot in ordersSnapshot.children.reversed()) {
                         ordersWithCartProductsList.add(
-                            getOrderValue(orderSnapshot)
+                            getOrderValue(orderSnapshot, cafeId)
                         )
                     }
                     withContext(Dispatchers.Main) {
@@ -241,7 +255,7 @@ class ApiRepository @Inject constructor(
                     for (ordersSnapshot in cafeOrdersSnapshot.children.reversed()) {
                         for (orderSnapshot in ordersSnapshot.children) {
                             ordersWithCartProductsList.add(
-                                getOrderValue(orderSnapshot)
+                                getOrderValue(orderSnapshot, "")
                             )
                         }
                     }
@@ -281,9 +295,10 @@ class ApiRepository @Inject constructor(
         return menuProductListSharedFlow
     }
 
-    fun getOrderValue(orderSnapshot: DataSnapshot): Order {
+    fun getOrderValue(orderSnapshot: DataSnapshot, cafeId: String): Order {
         return orderSnapshot.getValue(Order::class.java).apply {
             this?.uuid = orderSnapshot.key.toString()
+            this?.cafeId = cafeId
         } ?: Order()
     }
 
@@ -292,6 +307,7 @@ class ApiRepository @Inject constructor(
         private const val MENU_PRODUCTS: String = "menu_products"
         private const val NOTIFICATION_TOPIC: String = "notification"
         private const val DELIVERY: String = "delivery"
+        const val ORDERS = "ORDERS"
     }
 
 }
