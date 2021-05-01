@@ -12,6 +12,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.MenuProductsAdapter
+import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.EditMenuViewModel
 import com.bunbeauty.presentation.view_model.LoginViewModel
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class EditMenuFragment : BaseFragment<FragmentEditMenuBinding>() {
+class EditMenuFragment : BarsFragment<FragmentEditMenuBinding>() {
 
     override var layoutId = R.layout.fragment_edit_menu
     override val viewModel: EditMenuViewModel by viewModels { modelFactory }

@@ -8,16 +8,19 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
 import com.bunbeauty.presentation.view_model.LoginViewModel
 import kotlinx.coroutines.flow.onEach
 import java.util.*
 
-class LoginFragment : BaseFragment<FragmentLoginBinding>() {
+class LoginFragment : BarsFragment<FragmentLoginBinding>() {
 
     override var layoutId = R.layout.fragment_login
     override val viewModel: LoginViewModel by viewModels { modelFactory }
+
+    override val isBottomBarVisible: Boolean = false
 
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
@@ -67,7 +70,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun goToOrders() {
         findNavController().navigate(
-            LoginFragmentDirections.toMainFragment()
+            LoginFragmentDirections.toOrdersFragment()
         )
     }
 }

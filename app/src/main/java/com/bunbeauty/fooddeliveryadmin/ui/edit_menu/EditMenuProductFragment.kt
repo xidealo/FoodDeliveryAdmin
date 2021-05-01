@@ -8,12 +8,13 @@ import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.EditMenuProductViewModel
 import com.bunbeauty.presentation.view_model.MainViewModel
 
 class EditMenuProductFragment :
-    BaseFragment<FragmentEditMenuProductBinding>() {
+    BarsFragment<FragmentEditMenuProductBinding>() {
 
     override var layoutId = R.layout.fragment_edit_menu_product
     override val viewModel: EditMenuProductViewModel by viewModels { modelFactory }

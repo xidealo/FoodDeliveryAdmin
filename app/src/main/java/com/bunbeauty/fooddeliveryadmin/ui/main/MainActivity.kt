@@ -7,15 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.bunbeauty.common.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
+import com.bunbeauty.fooddeliveryadmin.ui.base.IBottomNavigationBar
 import com.bunbeauty.presentation.view_model.MainViewModel
 import com.bunbeauty.presentation.view_model.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IBottomNavigationBar {
 
     lateinit var viewDataBinding: ActivityMainBinding
     lateinit var viewModel: MainViewModel
@@ -38,6 +43,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, modelFactory).get(MainViewModel::class.java)
         viewModel.refreshCafeList()
         viewModel.refreshProductList()
+        setupBottomNavigationBar()
+    }
+
+    private fun setupBottomNavigationBar() {
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.activity_main_fcv_container) as NavHostFragment).findNavController()
+
+        viewDataBinding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
+        viewDataBinding.activityMainBnvBottomNavigationBar.setOnNavigationItemReselectedListener {}
+    }
+
+    override fun setupBottomNavigationBar(isVisible: Boolean) {
+        viewDataBinding.activityMainBnvBottomNavigationBar.toggleVisibility(isVisible)
     }
 
     fun showMessage(message: String) {

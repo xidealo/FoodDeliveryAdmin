@@ -10,10 +10,11 @@ import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateNewMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.CreateNewMenuProductViewModel
 
-class CreateNewMenuProductFragment : BaseFragment<FragmentCreateNewMenuProductBinding>() {
+class CreateNewMenuProductFragment : BarsFragment<FragmentCreateNewMenuProductBinding>() {
 
     override var layoutId = R.layout.fragment_create_new_menu_product
     override val viewModel: CreateNewMenuProductViewModel by viewModels { modelFactory }

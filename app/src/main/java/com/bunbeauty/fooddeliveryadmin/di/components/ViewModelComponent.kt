@@ -8,7 +8,6 @@ import com.bunbeauty.fooddeliveryadmin.ui.CreateNewMenuProductFragment
 import com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuFragment
 import com.bunbeauty.fooddeliveryadmin.ui.LoginFragment
 import com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuProductFragment
-import com.bunbeauty.fooddeliveryadmin.ui.main.MainFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragment
 import com.bunbeauty.fooddeliveryadmin.ui.statistic.SelectedStatisticBottomSheet
@@ -32,7 +31,6 @@ interface ViewModelComponent {
     fun inject(loginFragment: LoginFragment)
     fun inject(ordersFragment: OrdersFragment)
     fun inject(statisticFragment: StatisticFragment)
-    fun inject(mainFragment: MainFragment)
     fun inject(editMenuFragment: EditMenuFragment)
     fun inject(editMenuProductFragment: EditMenuProductFragment)
     fun inject(createNewMenuProductFragment: CreateNewMenuProductFragment)

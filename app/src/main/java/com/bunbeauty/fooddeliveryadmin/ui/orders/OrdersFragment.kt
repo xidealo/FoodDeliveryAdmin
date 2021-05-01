@@ -9,13 +9,14 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
+import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragmentDirections.toAddressListBottomSheet
 import com.bunbeauty.presentation.view_model.OrdersViewModel
 import javax.inject.Inject
 
-class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
+class OrdersFragment : BarsFragment<FragmentOrdersBinding>() {
 
     override var layoutId = R.layout.fragment_orders
     override val viewModel: OrdersViewModel by viewModels { modelFactory }

@@ -10,11 +10,12 @@ import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticAdapter
+import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.StatisticViewModel
 import javax.inject.Inject
 
-class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
+class StatisticFragment : BarsFragment<FragmentStatisticBinding>() {
 
     override var layoutId = R.layout.fragment_statistic
     override val viewModel: StatisticViewModel by viewModels { modelFactory }
