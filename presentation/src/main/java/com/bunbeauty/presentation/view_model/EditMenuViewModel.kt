@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.domain.repository.menu_product.MenuProductRepo
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ class EditMenuViewModel @Inject constructor(
     private val menuProductRepo: MenuProductRepo
 ) : BaseViewModel() {
 
-    val productListSharedFlow = MutableSharedFlow<List<MenuProduct>>()
+    val productListSharedFlow = MutableStateFlow<List<MenuProduct>>(listOf())
 
     fun getProducts() {
         viewModelScope.launch {

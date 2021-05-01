@@ -1,6 +1,7 @@
 package com.bunbeauty.data.model
 
 import android.os.Parcelable
+import android.view.View
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -15,7 +16,7 @@ data class MenuProduct(
     var discountCost: Int? = null,
     var weight: Int = 0,
     var description: String = "",
-    val comboDescription: String = "",
+    var comboDescription: String = "",
     var photoLink: String = "",
     var onFire: Boolean = false,
     var inOven: Boolean = false,
@@ -23,3 +24,8 @@ data class MenuProduct(
     var barcode: Int = 0,
     var visible: Boolean = true
 ) : BaseDiffUtilModel, Parcelable
+
+fun List<MenuProduct>.getNewMenuUuid(): String {
+    val menuProduct = this.maxByOrNull { it.uuid.replace("-", "").toInt() }!!
+    return "-${ menuProduct.uuid.replace("-", "").toInt() + 1}"
+}

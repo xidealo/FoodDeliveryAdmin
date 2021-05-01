@@ -58,4 +58,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(EditMenuProductViewModel::class)
     internal abstract fun provideEditMenuProductViewModel(editMenuProductViewModel: EditMenuProductViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateNewMenuProductViewModel::class)
+    internal abstract fun provideCreateNewMenuProductViewModel(createNewMenuProductViewModel: CreateNewMenuProductViewModel): ViewModel
 }

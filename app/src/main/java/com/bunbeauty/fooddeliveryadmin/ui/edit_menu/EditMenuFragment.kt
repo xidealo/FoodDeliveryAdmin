@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.data.model.MenuProduct
+import com.bunbeauty.data.model.getNewMenuUuid
 import com.bunbeauty.fooddeliveryadmin.BR
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding
@@ -14,6 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.adapter.MenuProductsAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.EditMenuViewModel
 import com.bunbeauty.presentation.view_model.LoginViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -40,6 +42,7 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding>() {
         viewModel.productListSharedFlow.onEach {
             menuProductsAdapter.setItemList(it)
         }.launchWhenStarted(lifecycleScope)
+
         viewDataBinding.fragmentEditMenuFabAddNewProduct.setOnClickListener {
             goToCreateMenuProduct()
         }
@@ -55,7 +58,7 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding>() {
 
     private fun goToCreateMenuProduct() {
         findNavController().navigate(
-            EditMenuFragmentDirections.toCreateNewMenuProductFragment()
+            EditMenuFragmentDirections.toCreateNewMenuProductFragment(viewModel.productListSharedFlow.value.getNewMenuUuid())
         )
     }
 }

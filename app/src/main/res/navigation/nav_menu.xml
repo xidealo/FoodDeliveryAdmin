@@ -74,5 +74,9 @@
         tools:layout="@layout/fragment_create_new_menu_product"
         android:id="@+id/createNewMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.CreateNewMenuProductFragment"
-        android:label="CreateNewMenuProductFragment" />
+        android:label="CreateNewMenuProductFragment" >
+        <argument
+            android:name="uuid"
+            app:argType="string" />
+    </fragment>
 </navigation>
