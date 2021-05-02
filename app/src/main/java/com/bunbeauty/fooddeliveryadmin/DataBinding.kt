@@ -49,7 +49,9 @@ object DataBinding {
             OrderStatus.ACCEPTED -> R.color.notAcceptedColor
             OrderStatus.PREPARING -> R.color.preparingColor
             OrderStatus.SENT_OUT -> R.color.sentOutColor
-            OrderStatus.DONE -> R.color.deliveredColor
+            OrderStatus.DONE -> R.color.doneColor
+            OrderStatus.CANCELED -> R.color.canceledColor
+            else -> R.color.notAcceptedColor
         }
         materialCardView.setBackgroundColor(
             ContextCompat.getColor(
@@ -62,13 +64,14 @@ object DataBinding {
     @JvmStatic
     @BindingAdapter("bind:status")
     fun setStatus(imageView: ImageView, orderStatus: OrderStatus) {
-
         val backgroundIcon = when (orderStatus) {
             OrderStatus.NOT_ACCEPTED -> R.drawable.ic_not_accepted
             OrderStatus.ACCEPTED -> R.drawable.ic_accepted
             OrderStatus.PREPARING -> R.drawable.ic_preparing
             OrderStatus.SENT_OUT -> R.drawable.ic_sent_out
             OrderStatus.DONE -> R.drawable.ic_done
+            OrderStatus.CANCELED -> R.drawable.ic_canceled
+            else -> R.drawable.ic_not_accepted
         }
         imageView.background = ContextCompat.getDrawable(imageView.context, backgroundIcon)
     }

@@ -134,11 +134,19 @@
                     android:textColor="@color/mainTextColor" />
 
                 <RadioButton
-                    android:id="@+id/dialog_change_status_rb_delivered"
+                    android:id="@+id/dialog_change_status_rb_done"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{order.orderEntity.orderStatus == OrderStatus.DONE}"
                     android:text="@string/hint_change_status_delivered"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_canceled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{order.orderEntity.orderStatus == OrderStatus.CANCELED}"
+                    android:text="@string/hint_change_status_canceled"
                     android:textColor="@color/mainTextColor" />
             </RadioGroup>
 
@@ -146,8 +154,7 @@
                 android:id="@+id/dialog_change_status_btn_cancel"
                 style="@style/SmallSecondaryButton"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:onClick="@{()->viewModel.cancelClick()}"
-                android:text="@string/hint_change_status_cancel"
+                android:text="@string/action_change_status_cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_btn_confirm"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
@@ -155,8 +162,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dialog_change_status_btn_confirm"
                 style="@style/SmallMainButton"
-                android:onClick="@{()->viewModel.updateClick()}"
-                android:text="@string/hint_change_status_confirm"
+                android:text="@string/action_change_status_confirm"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />

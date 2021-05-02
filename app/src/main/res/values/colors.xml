@@ -12,7 +12,8 @@
     <color name="acceptedColor">#e8e8e6</color>
     <color name="preparingColor">#feea8f</color>
     <color name="sentOutColor">#8CCCFF</color>
-    <color name="deliveredColor">#A2FBA5</color>
+    <color name="doneColor">#A2FBA5</color>
+    <color name="canceledColor">#93969A</color>
 
     <!-- BACKGROUND -->
     <color name="backgroundPage">#f3f2f7</color>

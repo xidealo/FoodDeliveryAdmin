@@ -29,8 +29,13 @@
     <string name="hint_change_status_preparing">Готовится</string>
     <string name="hint_change_status_sent_out">Отправлен</string>
     <string name="hint_change_status_delivered">Доставлен</string>
-    <string name="hint_change_status_cancel">Отменить</string>
-    <string name="hint_change_status_confirm">Принять</string>
+    <string name="hint_change_status_canceled">Отменен</string>
+    <string name="action_change_status_cancel">Отменить</string>
+    <string name="action_change_status_confirm">Принять</string>
+    <string name="title_change_status_alert">Внимание!</string>
+    <string name="text_change_status_cancel">Отменить заказ?</string>
+    <string name="action_change_status_yes">Да</string>
+    <string name="action_change_status_no">Нет</string>
 
     <string name="notification_channel_name">Main channel</string>
     <string name="notification_channel_id">1</string>

@@ -8,6 +8,8 @@ import com.bunbeauty.domain.cost_helper.ICostHelper
 import com.bunbeauty.domain.product.IProductHelper
 import com.bunbeauty.domain.product.ProductHelper
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import com.bunbeauty.domain.resources.IResourcesProvider
+import com.bunbeauty.domain.resources.ResourcesProvider
 import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.domain.string_helper.StringHelper
 import dagger.Binds
@@ -37,5 +39,8 @@ abstract class ApiModule {
 
     @Binds
     abstract fun bindProductHelper(productHelper: ProductHelper): IProductHelper
+
+    @Binds
+    abstract fun bindResourcesProvider(resourcesProvider: ResourcesProvider): IResourcesProvider
 
 }
