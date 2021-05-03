@@ -1,18 +1,15 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.Transformations.switchMap
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
+import com.bunbeauty.common.extensions.toStateNullableSuccess
 import com.bunbeauty.common.extensions.toStateSuccess
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.enums.OrderStatus
+import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.repository.cafe.CafeRepo
-import com.bunbeauty.domain.string_helper.IStringHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -20,35 +17,21 @@ import javax.inject.Inject
 
 abstract class OrdersViewModel : BaseViewModel() {
 
-    abstract val cafeAddressLiveData: LiveData<String>
+    abstract val cafeStateFlow: StateFlow<State<Cafe>>
     abstract val addedOrderListStateFlow: StateFlow<State<List<Order>>>
     abstract val updatedOrderListStateFlow: StateFlow<State<List<Order>>>
 
-    abstract fun getOrders()
+    abstract fun getOrders(cafeId: String)
+    abstract fun getAddress()
 }
 
 class OrdersViewModelImpl @Inject constructor(
     private val apiRepository: IApiRepository,
-    private val stringHelper: IStringHelper,
-    cafeRepo: CafeRepo,
+    private val cafeRepo: CafeRepo,
     private val dataStoreHelper: IDataStoreHelper
 ) : OrdersViewModel() {
 
-    private val cafeListLiveData = cafeRepo.cafeListFlow.asLiveData()
-
-    override val cafeAddressLiveData: LiveData<String> =
-        switchMap(dataStoreHelper.cafeId.asLiveData()) { cafeId ->
-            map(cafeListLiveData) { cafeList ->
-                val address = cafeList.find { cafe ->
-                    cafe.cafeEntity.id == cafeId
-                }?.address
-                if (address == null) {
-                    ""
-                } else {
-                    stringHelper.toString(address)
-                }
-            }
-        }
+    override val cafeStateFlow: MutableStateFlow<State<Cafe>> = MutableStateFlow(State.Loading())
 
     override val addedOrderListStateFlow: MutableStateFlow<State<List<Order>>> =
         MutableStateFlow(State.Loading())
@@ -56,23 +39,32 @@ class OrdersViewModelImpl @Inject constructor(
     override val updatedOrderListStateFlow: MutableStateFlow<State<List<Order>>> =
         MutableStateFlow(State.Loading())
 
-    override fun getOrders() {
-        viewModelScope.launch(Dispatchers.IO) {
-            apiRepository.subscribeOnOrderList(dataStoreHelper.cafeId.first())
-            apiRepository.updatedOrderListStateFlow.onEach { orderList ->
-                updatedOrderListStateFlow.value =
-                    orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
-                        .toStateSuccess()
+    override fun getAddress() {
+        dataStoreHelper.cafeId.onEach { currentCafeId ->
+            cafeRepo.cafeListFlow.onEach { cafeList ->
+                val cafe = cafeList.find { cafe ->
+                    cafe.cafeEntity.id == currentCafeId
+                }
+                if (cafe != null)
+                    cafeStateFlow.value = cafe.toStateSuccess()
             }.launchIn(viewModelScope)
-
-            apiRepository.addedOrderListStateFlow.onEach { orderList ->
-                addedOrderListStateFlow.value =
-                    orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
-                        .toStateSuccess()
-            }.launchIn(viewModelScope)
-        }
+        }.launchIn(viewModelScope)
     }
 
+    override fun getOrders(cafeId: String) {
+        apiRepository.updatedOrderListStateFlow.onEach { orderList ->
+            updatedOrderListStateFlow.value =
+                orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
+                    .toStateSuccess()
+        }.launchIn(viewModelScope)
+
+        apiRepository.addedOrderListStateFlow.onEach { orderList ->
+            addedOrderListStateFlow.value =
+                orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
+                    .toStateSuccess()
+        }.launchIn(viewModelScope)
+        apiRepository.subscribeOnOrderList(cafeId)
+    }
 
     fun removeOrder(order: Order) {
         apiRepository.delete(order)

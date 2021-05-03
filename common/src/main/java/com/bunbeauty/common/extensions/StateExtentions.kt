@@ -1,5 +1,4 @@
 package com.bunbeauty.common.extensions
-
 import com.bunbeauty.common.State
 
 fun <T : Any> T.toStateSuccess(): State.Success<T> {

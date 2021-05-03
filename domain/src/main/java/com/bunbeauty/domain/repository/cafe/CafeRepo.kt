@@ -6,5 +6,4 @@ import kotlinx.coroutines.flow.Flow
 interface CafeRepo {
     val cafeListFlow: Flow<List<Cafe>>
     suspend fun refreshCafeList()
-
 }

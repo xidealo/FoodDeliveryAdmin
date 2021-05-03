@@ -22,7 +22,6 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class ApiRepository @Inject constructor(
-    private val dataStoreHelper: IDataStoreHelper,
     private val firebaseDatabase: FirebaseDatabase
 ) : IApiRepository, CoroutineScope {
     override val coroutineContext: CoroutineContext = Job() + IO

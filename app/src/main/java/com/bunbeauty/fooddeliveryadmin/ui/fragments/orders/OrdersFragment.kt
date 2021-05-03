@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.launchWhenStarted
 import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
@@ -25,6 +26,8 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
     @Inject
     lateinit var ordersAdapter: OrdersAdapter
 
+    @Inject
+    lateinit var iStringHelper: IStringHelper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ordersAdapter.onItemClickListener = { order ->
@@ -36,9 +39,18 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
             router.navigate(toAddressListBottomSheet())
         }
 
-        subscribe(viewModel.cafeAddressLiveData) { cafeAddress ->
-            viewDataBinding.fragmentOrdersTvAddress.text = cafeAddress
-        }
+        viewModel.cafeStateFlow.onEach { state ->
+            when (state) {
+                is State.Loading -> {
+                    //show loading
+                }
+                is State.Success -> {
+                        viewDataBinding.fragmentOrdersTvAddress.text = iStringHelper.toString(state.data!!.address!!)
+                        viewModel.getOrders(state.data!!.cafeEntity.id)
+                }
+            }
+
+        }.launchWhenStarted(lifecycleScope)
 
         viewModel.addedOrderListStateFlow.onEach { state ->
             when (state) {
@@ -49,7 +61,8 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                     viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
                     ordersAdapter.setItemList(state.data)
                 }
-                else ->{}
+                else -> {
+                }
             }
         }.launchWhenStarted(lifecycleScope)
 
@@ -61,9 +74,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                 is State.Success -> {
                     ordersAdapter.setItemList(state.data)
                 }
-                else ->{}
+                else -> {
+                }
             }
         }.launchWhenStarted(lifecycleScope)
+        viewModel.getAddress()
     }
 
     fun showChangeStatus(order: Order) {
