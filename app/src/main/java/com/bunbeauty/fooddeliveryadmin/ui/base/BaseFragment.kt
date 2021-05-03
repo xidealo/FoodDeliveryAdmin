@@ -5,27 +5,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.presentation.view_model.BaseViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
+import com.bunbeauty.fooddeliveryadmin.Router
+import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
+import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
 
-abstract class BaseFragment<B : ViewDataBinding> : Fragment(){
+abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment() {
 
-    abstract var layoutId: Int
-    lateinit var viewDataBinding: B
-    abstract val viewModel: BaseViewModel
+    private var _viewDataBinding: B? = null
+    protected val viewDataBinding get() = _viewDataBinding!!
+    protected lateinit var viewModel: VM
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    protected lateinit var router: Router
+
+    @Inject
+    lateinit var factory: ViewModelFactory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,42 +40,67 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment(){
             (requireActivity().application as FoodDeliveryAdminApplication).appComponent
                 .getViewModelComponent()
                 .create(this)
+
         inject(viewModelComponent)
     }
 
     abstract fun inject(viewModelComponent: ViewModelComponent)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(false)
-    }
-
+    @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        viewDataBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
 
-        return viewDataBinding.root
+        viewModel = ViewModelProvider(this, factory).get(getViewModelClass())
+
+        val viewBindingClass = getViewBindingClass()
+        val inflateMethod = viewBindingClass.getMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java,
+        )
+        _viewDataBinding = inflateMethod.invoke(viewBindingClass, inflater, container, false) as B
+        return _viewDataBinding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewDataBinding.lifecycleOwner = this
-        viewDataBinding.executePendingBindings()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewDataBinding = null
     }
 
     protected fun <T> subscribe(liveData: LiveData<T>, observer: (T) -> Unit) {
         liveData.observe(viewLifecycleOwner, observer::invoke)
     }
 
-    fun <T> Flow<T>.launchWhenStarted(lifecycleCoroutineScope: LifecycleCoroutineScope){
-        lifecycleCoroutineScope.launchWhenStarted {
-            this@launchWhenStarted.collect()
-        }
+    protected fun showError(errorMessage: String) {
+        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_LONG)
+            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.errorColor))
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
+            View.TEXT_ALIGNMENT_CENTER
+        snack.show()
     }
+
+    protected fun showMessage(errorMessage: String) {
+        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_LONG)
+            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
+            View.TEXT_ALIGNMENT_CENTER
+        snack.show()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getViewModelClass() =
+        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getViewBindingClass() =
+        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<B>
 
 }

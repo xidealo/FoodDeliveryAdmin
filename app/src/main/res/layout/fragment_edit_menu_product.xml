@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.edit_menu.EditMenuProductFragment">
+        tools:context=".ui.fragments.edit_menu.EditMenuProductFragment">
 
         <RadioGroup
             android:id="@+id/fragment_edit_menu_product_rg"

@@ -4,16 +4,17 @@ import android.util.Log
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.Company
-import com.bunbeauty.data.model.order.OrderEntity
-import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.firebase.MenuProductFirebase
+import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import org.joda.time.DateTime
 import java.util.*
@@ -21,7 +22,8 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class ApiRepository @Inject constructor(
-    private val dataStoreHelper: IDataStoreHelper
+    private val dataStoreHelper: IDataStoreHelper,
+    private val firebaseDatabase: FirebaseDatabase
 ) : IApiRepository, CoroutineScope {
     override val coroutineContext: CoroutineContext = Job() + IO
     private val firebaseInstance = FirebaseDatabase.getInstance()
@@ -44,7 +46,7 @@ class ApiRepository @Inject constructor(
     @ExperimentalCoroutinesApi
     override fun getCafeList(): SharedFlow<List<Cafe>> {
         val cafeListSharedFlow = MutableSharedFlow<List<Cafe>>()
-        val contactInfoRef = firebaseInstance
+        val contactInfoRef = firebaseDatabase
             .getReference(COMPANY)
             .child(APP_ID)
             .child(Cafe.CAFES)
@@ -67,40 +69,35 @@ class ApiRepository @Inject constructor(
         return cafeListSharedFlow
     }
 
-    override fun login(login: String, passwordHash: String): SharedFlow<Boolean> {
-        val isAuthorizedSharedFlow = MutableSharedFlow<Boolean>()
-
-        val companyRef = firebaseInstance.getReference(COMPANY).child(login)
-        companyRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    @ExperimentalCoroutinesApi
+    override fun login(login: String, passwordHash: String): Flow<Boolean> = callbackFlow {
+        val companyReference = firebaseDatabase.getReference(COMPANY).child(login)
+        val valueEventListener = object : ValueEventListener {
             override fun onDataChange(companySnapshot: DataSnapshot) {
                 launch(IO) {
                     if (companySnapshot.childrenCount == 0L) {
-                        isAuthorizedSharedFlow.emit(false)
-                        unsubscribeOnNotification()
+                        offer(false)
                         return@launch
                     }
 
                     val companyPassword = companySnapshot.child(Company.PASSWORD).value as String
                     if (passwordHash == companyPassword) {
-                        isAuthorizedSharedFlow.emit(true)
-                        dataStoreHelper.saveToken(UUID.randomUUID().toString())
-                        subscribeOnNotification()
+                        offer(true)
                     } else {
-                        isAuthorizedSharedFlow.emit(false)
-                        unsubscribeOnNotification()
+                        offer(false)
                     }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 launch(IO) {
-                    isAuthorizedSharedFlow.emit(false)
-                    unsubscribeOnNotification()
+                    offer(false)
                 }
             }
-        })
+        }
+        companyReference.addListenerForSingleValueEvent(valueEventListener)
 
-        return isAuthorizedSharedFlow
+        awaitClose { companyReference.removeEventListener(valueEventListener) }
     }
 
     override fun subscribeOnNotification() {
@@ -126,11 +123,11 @@ class ApiRepository @Inject constructor(
     }
 
     override fun insert(menuProduct: MenuProductFirebase) {
-        //
+        //TODO("Not yet implemented")
     }
 
     override fun updateOrder(order: Order) {
-        val orderRef = firebaseInstance
+        val orderRef = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
             .child(order.cafeId)
@@ -141,7 +138,7 @@ class ApiRepository @Inject constructor(
     }
 
     override fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String) {
-        val menuProductRef = firebaseInstance
+        val menuProductRef = firebaseDatabase
             .getReference(COMPANY)
             .child(APP_ID)
             .child(MENU_PRODUCTS)
@@ -191,7 +188,7 @@ class ApiRepository @Inject constructor(
         cafeId: String,
         daysCount: Int
     ): SharedFlow<List<Order>> {
-        val ordersRef = firebaseInstance
+        val ordersRef = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
             .child(cafeId)
@@ -220,7 +217,7 @@ class ApiRepository @Inject constructor(
     }
 
     override fun getOrderWithCartProductsAllCafesList(daysCount: Int): SharedFlow<List<Order>> {
-        val ordersRef = firebaseInstance
+        val ordersRef = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
 
@@ -249,7 +246,7 @@ class ApiRepository @Inject constructor(
 
     override fun getMenuProductList(): Flow<List<MenuProduct>> {
         val menuProductListSharedFlow = MutableSharedFlow<List<MenuProduct>>()
-        val menuProductsRef = firebaseInstance
+        val menuProductsRef = firebaseDatabase
             .getReference(COMPANY)
             .child(APP_ID)
             .child(MENU_PRODUCTS)
@@ -283,8 +280,6 @@ class ApiRepository @Inject constructor(
         private const val COMPANY = "COMPANY"
         private const val MENU_PRODUCTS: String = "menu_products"
         private const val NOTIFICATION_TOPIC: String = "notification"
-        private const val DELIVERY: String = "delivery"
-        const val ORDERS = "ORDERS"
     }
 
 }

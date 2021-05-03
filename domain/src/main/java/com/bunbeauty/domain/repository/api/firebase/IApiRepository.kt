@@ -13,7 +13,7 @@ interface IApiRepository {
     val addedOrderListStateFlow: MutableStateFlow<List<Order>>
     val updatedOrderListStateFlow: MutableStateFlow<List<Order>>
 
-    fun login(login: String, passwordHash: String): SharedFlow<Boolean>
+    fun login(login: String, passwordHash: String): Flow<Boolean>
     fun subscribeOnNotification()
     fun unsubscribeOnNotification()
 

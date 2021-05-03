@@ -1,17 +1,17 @@
 package com.bunbeauty.fooddeliveryadmin.di.components
 
 import androidx.lifecycle.ViewModelStoreOwner
-import com.bunbeauty.fooddeliveryadmin.ui.main.MainActivity
+import com.bunbeauty.fooddeliveryadmin.ui.activities.MainActivity
 import com.bunbeauty.fooddeliveryadmin.di.modules.ViewModelModule
-import com.bunbeauty.fooddeliveryadmin.ui.AddressListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.CreateNewMenuProductFragment
-import com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuFragment
-import com.bunbeauty.fooddeliveryadmin.ui.LoginFragment
-import com.bunbeauty.fooddeliveryadmin.ui.edit_menu.EditMenuProductFragment
-import com.bunbeauty.fooddeliveryadmin.ui.orders.ChangeStatusBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.orders.OrdersFragment
-import com.bunbeauty.fooddeliveryadmin.ui.statistic.SelectedStatisticBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.statistic.StatisticFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.AddressListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.CreateNewMenuProductFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.SelectedStatisticBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragment
 
 import dagger.BindsInstance
 import dagger.Subcomponent

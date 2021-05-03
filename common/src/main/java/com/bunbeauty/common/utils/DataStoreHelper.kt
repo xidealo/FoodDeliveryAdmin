@@ -1,6 +1,7 @@
 package com.bunbeauty.common.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -20,6 +21,7 @@ class DataStoreHelper @Inject constructor(private val context: Context) : IDataS
     }
 
     override suspend fun saveToken(token: String) {
+        Log.d("test", "saveToken $token")
         context.tokenDataStore.edit {
             it[TOKEN_KEY] = token
         }
