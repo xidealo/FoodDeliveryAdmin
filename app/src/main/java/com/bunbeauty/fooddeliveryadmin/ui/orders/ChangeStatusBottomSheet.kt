@@ -90,7 +90,8 @@ class ChangeStatusBottomSheet :
 
     private fun changeStatus(newStatus: OrderStatus, currentOrder: Order) {
         if (newStatus != currentOrder.orderEntity.orderStatus) {
-            viewModel.changeStatus(currentOrder, newStatus)
+            currentOrder.orderEntity.orderStatus = newStatus
+            viewModel.changeStatus(currentOrder)
         }
         dismiss()
     }

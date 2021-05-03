@@ -11,7 +11,7 @@ class CafeRepository @Inject constructor(
     private val apiRepository: IApiRepository
 ) : CafeRepo {
 
-    override val cafeListLiveData = cafeDao.getCafeListLiveData()
+    override val cafeListFlow = cafeDao.getCafeListFlow()
 
     override suspend fun refreshCafeList() {
         cafeDao.deleteAll()

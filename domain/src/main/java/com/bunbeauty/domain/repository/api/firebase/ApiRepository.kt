@@ -1,16 +1,11 @@
 package com.bunbeauty.domain.repository.api.firebase
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.data.BuildConfig
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.Company
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.firebase.MenuProductFirebase
 import com.bunbeauty.domain.BuildConfig.APP_ID
@@ -19,9 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.*
 import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
@@ -30,41 +23,22 @@ import kotlin.coroutines.CoroutineContext
 class ApiRepository @Inject constructor(
     private val dataStoreHelper: IDataStoreHelper
 ) : IApiRepository, CoroutineScope {
-
-    override val coroutineContext: CoroutineContext
-        get() = Job()
-    override val updatedOrderListLiveData = MutableLiveData<List<Order>>()
-
+    override val coroutineContext: CoroutineContext = Job() + IO
     private val firebaseInstance = FirebaseDatabase.getInstance()
+
     private val orderList = LinkedList<Order>()
-    private lateinit var addedOrderListLiveData: MutableLiveData<List<Order>>
+    override val addedOrderListStateFlow = MutableStateFlow<List<Order>>(listOf())
+    override val updatedOrderListStateFlow = MutableStateFlow<List<Order>>(listOf())
 
-    override fun getAddedOrderListLiveData(cafeId: String): LiveData<List<Order>> {
-        addedOrderListLiveData = object : MutableLiveData<List<Order>>() {
-            private var orderListener: ChildEventListener? = null
-            private val ordersReference = firebaseInstance
-                .getReference(OrderEntity.ORDERS)
-                .child(APP_ID)
-                .child(cafeId)
-                .orderByChild(OrderEntity.TIMESTAMP)
-                .startAt(DateTime.now().minusDays(2).millis.toDouble())
-
-            override fun onActive() {
-                super.onActive()
-                orderListener = getOrderWithCartProducts(ordersReference, cafeId)
-            }
-
-            override fun onInactive() {
-                orderList.clear()
-                orderListener?.let {
-                    ordersReference.removeEventListener(it)
-                }
-
-                super.onInactive()
-            }
-        }
-
-        return addedOrderListLiveData
+    @ExperimentalCoroutinesApi
+    override fun subscribeOnOrderList(cafeId: String) {
+        val ordersReference = firebaseInstance
+            .getReference(OrderEntity.ORDERS)
+            .child(APP_ID)
+            .child(cafeId)
+            .orderByChild(OrderEntity.TIMESTAMP)
+            .startAt(DateTime.now().minusDays(2).millis.toDouble())
+        getOrderWithCartProducts(ordersReference, cafeId)
     }
 
     @ExperimentalCoroutinesApi
@@ -100,7 +74,6 @@ class ApiRepository @Inject constructor(
         companyRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(companySnapshot: DataSnapshot) {
                 launch(IO) {
-
                     if (companySnapshot.childrenCount == 0L) {
                         isAuthorizedSharedFlow.emit(false)
                         unsubscribeOnNotification()
@@ -152,15 +125,19 @@ class ApiRepository @Inject constructor(
             }
     }
 
-    override fun updateOrder(cafeId: String, uuid: String, newStatus: OrderStatus) {
+    override fun insert(menuProduct: MenuProductFirebase) {
+        //
+    }
+
+    override fun updateOrder(order: Order) {
         val orderRef = firebaseInstance
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
-            .child(cafeId)
-            .child(uuid)
+            .child(order.cafeId)
+            .child(order.uuid)
             .child(OrderEntity.ORDER_ENTITY)
             .child(OrderEntity.ORDER_STATUS)
-        orderRef.setValue(newStatus)
+        orderRef.setValue(order.orderEntity.orderStatus)
     }
 
     override fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String) {
@@ -173,13 +150,13 @@ class ApiRepository @Inject constructor(
     }
 
     override fun delete(order: Order) {
-        if(order.uuid.isEmpty()) return
-       /* val orderReference = firebaseInstance
-            .getReference(ORDERS)
-            .child(APP_ID)
-            .child(order.cafeId)
-            .child(order.uuid)
-        orderReference.removeValue()*/
+        if (order.uuid.isEmpty()) return
+        /* val orderReference = firebaseInstance
+             .getReference(ORDERS)
+             .child(APP_ID)
+             .child(order.cafeId)
+             .child(order.uuid)
+         orderReference.removeValue()*/
     }
 
     private fun getOrderWithCartProducts(
@@ -189,7 +166,7 @@ class ApiRepository @Inject constructor(
         return ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
                 orderList.addFirst(getOrderValue(orderSnapshot, cafeId))
-                addedOrderListLiveData.value = orderList
+                addedOrderListStateFlow.value = orderList
             }
 
             override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
@@ -197,7 +174,7 @@ class ApiRepository @Inject constructor(
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
-                    updatedOrderListLiveData.value = orderList
+                    updatedOrderListStateFlow.value = orderList
                 }
             }
 

@@ -1,10 +1,10 @@
 package com.bunbeauty.domain.repository.cafe
 
-import androidx.lifecycle.LiveData
 import com.bunbeauty.data.model.Cafe
+import kotlinx.coroutines.flow.Flow
 
 interface CafeRepo {
-    val cafeListLiveData: LiveData<List<Cafe>>
+    val cafeListFlow: Flow<List<Cafe>>
     suspend fun refreshCafeList()
 
 }

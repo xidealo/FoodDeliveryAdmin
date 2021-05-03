@@ -11,7 +11,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateNewMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BarsFragment
-import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.view_model.CreateNewMenuProductViewModel
 
 class CreateNewMenuProductFragment : BarsFragment<FragmentCreateNewMenuProductBinding>() {
@@ -48,7 +47,6 @@ class CreateNewMenuProductFragment : BarsFragment<FragmentCreateNewMenuProductBi
                 menuProduct.discountCost =
                     viewDataBinding.fragmentCreateMenuProductEtDiscountCost.text.toString().toInt()
             }
-
             viewModel.createMenuProduct(menuProduct)
             findNavController().navigateUp()
         }
