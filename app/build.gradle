@@ -88,10 +88,10 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-    implementation 'com.google.firebase:firebase-database-ktx:19.7.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
     androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.navigationVersion"
 
-    implementation "com.google.firebase:firebase-messaging:21.1.0"
+    implementation "com.google.firebase:firebase-messaging:22.0.0"
     implementation "com.android.support:support-compat:28.0.0"
 
     testImplementation "io.mockk:mockk:$rootProject.mockVersion"
@@ -116,7 +116,6 @@ dependencies {
     //Dagger 2
     implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    implementation "com.google.dagger:dagger-android:$rootProject.dagger2Version"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
 
@@ -126,7 +125,6 @@ dependencies {
     //Design
     implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
-    implementation "com.miguelcatalan:materialsearchview:$rootProject.materialSerachVersion"
     implementation "com.github.Triggertrap:SeekArc:$rootProject.seekArcVersion"
 
     //Database
