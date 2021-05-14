@@ -7,6 +7,7 @@ import com.bunbeauty.data.model.firebase.MenuProductFirebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 interface IApiRepository {
 

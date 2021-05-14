@@ -59,6 +59,7 @@ class OrdersViewModelImpl @Inject constructor(
         }.launchIn(viewModelScope)
 
         apiRepository.addedOrderListStateFlow.onEach { orderList ->
+
             addedOrderListStateFlow.value =
                 orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
                     .toStateSuccess()

@@ -24,7 +24,6 @@ class ApiRepository @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase
 ) : IApiRepository, CoroutineScope {
     override val coroutineContext: CoroutineContext = Job() + IO
-    private val firebaseInstance = FirebaseDatabase.getInstance()
 
     private val orderList = LinkedList<Order>()
     override val addedOrderListStateFlow = MutableStateFlow<List<Order>>(listOf())
@@ -32,13 +31,43 @@ class ApiRepository @Inject constructor(
 
     @ExperimentalCoroutinesApi
     override fun subscribeOnOrderList(cafeId: String) {
-        val ordersReference = firebaseInstance
+        val ordersReference = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
             .child(cafeId)
             .orderByChild(OrderEntity.TIMESTAMP)
             .startAt(DateTime.now().minusDays(2).millis.toDouble())
-        getOrderWithCartProducts(ordersReference, cafeId)
+        //getOrderWithCartProducts(ordersReference, cafeId)
+
+        ordersReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                addedOrderListStateFlow.value = snapshot.children.map { getOrderValue(it, cafeId) }.reversed()
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
+        ordersReference.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
+                orderList.addFirst(getOrderValue(orderSnapshot, cafeId))
+            }
+
+            override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
+                val order = getOrderValue(orderSnapshot, cafeId)
+                val index = orderList.indexOfFirst { it.uuid == order.uuid }
+                if (index != -1) {
+                    orderList[index] = order
+                    updatedOrderListStateFlow.value = orderList
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {}
+
+        })
     }
 
     @ExperimentalCoroutinesApi

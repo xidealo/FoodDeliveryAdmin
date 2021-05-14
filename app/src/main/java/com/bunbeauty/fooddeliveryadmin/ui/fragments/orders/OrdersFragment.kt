@@ -45,8 +45,8 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                     //show loading
                 }
                 is State.Success -> {
-                        viewDataBinding.fragmentOrdersTvAddress.text = iStringHelper.toString(state.data!!.address!!)
-                        viewModel.getOrders(state.data!!.cafeEntity.id)
+                        viewDataBinding.fragmentOrdersTvAddress.text = iStringHelper.toString(state.data.address!!)
+                        viewModel.getOrders(state.data.cafeEntity.id)
                 }
             }
 
