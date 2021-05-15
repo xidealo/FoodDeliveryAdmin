@@ -28,6 +28,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
 
     @Inject
     lateinit var iStringHelper: IStringHelper
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ordersAdapter.onItemClickListener = { order ->
@@ -75,6 +76,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                     ordersAdapter.setItemList(state.data)
                 }
                 else -> {
+
                 }
             }
         }.launchWhenStarted(lifecycleScope)

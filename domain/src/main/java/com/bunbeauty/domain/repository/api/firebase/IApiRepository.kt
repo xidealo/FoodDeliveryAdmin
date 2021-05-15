@@ -4,15 +4,12 @@ import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.firebase.MenuProductFirebase
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 
 interface IApiRepository {
 
-    val addedOrderListStateFlow: MutableStateFlow<List<Order>>
-    val updatedOrderListStateFlow: MutableStateFlow<List<Order>>
+    val addedOrderListSharedFlow: MutableSharedFlow<List<Order>>
+    val updatedOrderListStateFlow: MutableSharedFlow<List<Order>>
 
     fun login(login: String, passwordHash: String): Flow<Boolean>
     fun subscribeOnNotification()

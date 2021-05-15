@@ -1,7 +1,9 @@
 package com.bunbeauty.domain.repository.cafe
 
+import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.domain.repository.address.AddressRepo
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
@@ -12,6 +14,10 @@ class CafeRepository @Inject constructor(
 ) : CafeRepo {
 
     override val cafeListFlow = cafeDao.getCafeListFlow()
+
+    override fun getCafeList(id: String): Flow<Cafe?> {
+        return cafeDao.getCafeListFlow(id)
+    }
 
     override suspend fun refreshCafeList() {
         cafeDao.deleteAll()

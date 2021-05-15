@@ -2,7 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
-import com.bunbeauty.common.extensions.toStateNullableSuccess
 import com.bunbeauty.common.extensions.toStateSuccess
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.enums.OrderStatus
@@ -10,9 +9,7 @@ import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.repository.cafe.CafeRepo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 abstract class OrdersViewModel : BaseViewModel() {
@@ -41,10 +38,7 @@ class OrdersViewModelImpl @Inject constructor(
 
     override fun getAddress() {
         dataStoreHelper.cafeId.onEach { currentCafeId ->
-            cafeRepo.cafeListFlow.onEach { cafeList ->
-                val cafe = cafeList.find { cafe ->
-                    cafe.cafeEntity.id == currentCafeId
-                }
+            cafeRepo.getCafeList(currentCafeId).onEach { cafe ->
                 if (cafe != null)
                     cafeStateFlow.value = cafe.toStateSuccess()
             }.launchIn(viewModelScope)
@@ -53,13 +47,12 @@ class OrdersViewModelImpl @Inject constructor(
 
     override fun getOrders(cafeId: String) {
         apiRepository.updatedOrderListStateFlow.onEach { orderList ->
-            updatedOrderListStateFlow.value =
-                orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
-                    .toStateSuccess()
+            val newList = orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
+                .toStateSuccess()
+            updatedOrderListStateFlow.value = newList
         }.launchIn(viewModelScope)
 
-        apiRepository.addedOrderListStateFlow.onEach { orderList ->
-
+        apiRepository.addedOrderListSharedFlow.onEach { orderList ->
             addedOrderListStateFlow.value =
                 orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
                     .toStateSuccess()

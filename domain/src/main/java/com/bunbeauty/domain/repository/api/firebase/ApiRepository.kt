@@ -26,8 +26,8 @@ class ApiRepository @Inject constructor(
     override val coroutineContext: CoroutineContext = Job() + IO
 
     private val orderList = LinkedList<Order>()
-    override val addedOrderListStateFlow = MutableStateFlow<List<Order>>(listOf())
-    override val updatedOrderListStateFlow = MutableStateFlow<List<Order>>(listOf())
+    override val addedOrderListSharedFlow = MutableSharedFlow<List<Order>>()
+    override val updatedOrderListStateFlow = MutableSharedFlow<List<Order>>()
 
     @ExperimentalCoroutinesApi
     override fun subscribeOnOrderList(cafeId: String) {
@@ -39,17 +39,10 @@ class ApiRepository @Inject constructor(
             .startAt(DateTime.now().minusDays(2).millis.toDouble())
         //getOrderWithCartProducts(ordersReference, cafeId)
 
-        ordersReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                addedOrderListStateFlow.value = snapshot.children.map { getOrderValue(it, cafeId) }.reversed()
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-
         ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
                 orderList.addFirst(getOrderValue(orderSnapshot, cafeId))
+                launch { addedOrderListSharedFlow.emit(orderList) }
             }
 
             override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
@@ -57,7 +50,7 @@ class ApiRepository @Inject constructor(
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
-                    updatedOrderListStateFlow.value = orderList
+                    launch { updatedOrderListStateFlow.emit(orderList) }
                 }
             }
 
@@ -190,7 +183,7 @@ class ApiRepository @Inject constructor(
         return ordersReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
                 orderList.addFirst(getOrderValue(orderSnapshot, cafeId))
-                addedOrderListStateFlow.value = orderList
+                //addedOrderListStateFlow.value = orderList
             }
 
             override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
@@ -198,7 +191,7 @@ class ApiRepository @Inject constructor(
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
-                    updatedOrderListStateFlow.value = orderList
+                    //updatedOrderListStateFlow.emit(orderList)
                 }
             }
 
