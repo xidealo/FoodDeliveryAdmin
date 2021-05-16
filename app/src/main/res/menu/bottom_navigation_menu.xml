@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/orders_fragment"
+        android:id="@+id/ordersFragment"
         android:icon="@drawable/ic_order"
         android:title="@string/title_bottom_navigation_menu_orders" />
     <item
-        android:id="@+id/statistic_fragment"
+        android:id="@+id/statisticFragment"
         android:icon="@drawable/ic_chart_bar_solid"
         android:title="@string/title_bottom_navigation_menu_statistic" />
 
     <item
-        android:id="@+id/edit_menu_fragment"
+        android:id="@+id/editMenuFragment"
         android:icon="@drawable/ic_menu"
         android:title="@string/title_bottom_navigation_menu_menu" />
 </menu>

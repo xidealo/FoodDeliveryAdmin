@@ -3,21 +3,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="statistic"
-            type="com.bunbeauty.data.model.Statistic" />
-
-        <variable
-            name="viewModel"
-            type="com.bunbeauty.fooddeliveryadmin.presentation.SelectedStatisticViewModel" />
-
-        <variable
-            name="stringHelper"
-            type="com.bunbeauty.domain.string_helper.IStringHelper" />
-    </data>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -30,18 +15,16 @@
             tools:context=".ui.fragments.statistic.SelectedStatisticBottomSheet">
 
             <TextView
-                android:id="@+id/bottom_sheet_statistic_tv_date"
+                android:id="@+id/bottom_sheet_statistic_tv_title"
                 style="@style/MainTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{statistic.date}" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/bottom_sheet_statistic_tv_products"
                 style="@style/MainText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{stringHelper.toString(statistic)}" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>

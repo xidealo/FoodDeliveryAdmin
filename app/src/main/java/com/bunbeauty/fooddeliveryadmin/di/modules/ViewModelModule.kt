@@ -16,6 +16,11 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(EmptyViewModel::class)
+    internal abstract fun provideEmptyViewModel(emptyViewModel: EmptyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(MainViewModel::class)
     internal abstract fun provideMainViewModel(mainViewModel: MainViewModel): ViewModel
 
@@ -37,17 +42,17 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(StatisticViewModel::class)
-    internal abstract fun provideStatisticViewModel(statisticViewModel: StatisticViewModel): ViewModel
+    internal abstract fun provideStatisticViewModel(statisticViewModel: StatisticViewModelImpl): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(SelectedStatisticViewModel::class)
-    internal abstract fun provideSelectedStatisticViewModel(selectedStatisticViewModel: SelectedStatisticViewModel): ViewModel
+    internal abstract fun provideSelectedStatisticViewModel(selectedStatisticViewModel: SelectedStatisticViewModelImpl): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(AddressListViewModel::class)
-    internal abstract fun provideAddressListViewModel(addressListViewModel: AddressListViewModel): ViewModel
+    internal abstract fun provideAddressListViewModel(addressListViewModel: AddressListViewModelImpl): ViewModel
 
     @Binds
     @IntoMap
@@ -63,4 +68,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateNewMenuProductViewModel::class)
     internal abstract fun provideCreateNewMenuProductViewModel(createNewMenuProductViewModel: CreateNewMenuProductViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(StatisticAddressListViewModel::class)
+    internal abstract fun provideStatisticAddressListViewModel(statisticAddressListViewModel: StatisticAddressListViewModelImpl): ViewModel
 }

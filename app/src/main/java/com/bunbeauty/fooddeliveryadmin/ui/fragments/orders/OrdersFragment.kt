@@ -9,11 +9,11 @@ import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.presentation.OrdersViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrdersAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.actionOrdersFragmentToChangeStatusDialog
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toAddressListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toChangeStatusDialog
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
     lateinit var ordersAdapter: OrdersAdapter
 
     @Inject
-    lateinit var iStringHelper: IStringHelper
+    lateinit var stringHelper: IStringHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,8 +46,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                     //show loading
                 }
                 is State.Success -> {
-                        viewDataBinding.fragmentOrdersTvAddress.text = iStringHelper.toString(state.data.address!!)
-                        viewModel.getOrders(state.data.cafeEntity.id)
+                    viewDataBinding.fragmentOrdersTvAddress.text =
+                        stringHelper.toString(state.data.address)
+                    viewModel.getOrders(state.data.cafeEntity.id)
                 }
             }
 
@@ -84,6 +85,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
     }
 
     fun showChangeStatus(order: Order) {
-        router.navigate(actionOrdersFragmentToChangeStatusDialog(order))
+        router.navigate(toChangeStatusDialog(order))
     }
 }

@@ -204,7 +204,7 @@ class ApiRepository @Inject constructor(
         })
     }
 
-    override fun getOrderWithCartProductsList(
+    /*override fun getOrderWithCartProductsList(
         cafeId: String,
         daysCount: Int
     ): SharedFlow<List<Order>> {
@@ -262,6 +262,60 @@ class ApiRepository @Inject constructor(
             override fun onCancelled(databaseError: DatabaseError) {}
         })
         return ordersWithCartProductsShareFlow
+    }*/
+
+    @ExperimentalCoroutinesApi
+    override fun getAllOrderList(): Flow<List<Order>> = callbackFlow {
+        val cafesReference = firebaseDatabase
+            .getReference(OrderEntity.ORDERS)
+            .child(APP_ID)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(cafesSnapshot: DataSnapshot) {
+                launch(IO) {
+                    val orderList = cafesSnapshot.children.flatMap { cafeSnapshot ->
+                        cafeSnapshot.children.map { orderSnapshot ->
+                            getOrderValue(orderSnapshot, cafeSnapshot.key!!)
+                        }
+                    }
+                    offer(orderList)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        cafesReference.addListenerForSingleValueEvent(valueEventListener)
+
+        awaitClose {
+            cafesReference.removeEventListener(valueEventListener)
+        }
+
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun getOrderListByCafeId(cafeId: String): Flow<List<Order>> = callbackFlow {
+        val cafeReference = firebaseDatabase
+            .getReference(OrderEntity.ORDERS)
+            .child(APP_ID)
+            .child(cafeId)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(cafeSnapshot: DataSnapshot) {
+                launch(IO) {
+                    val orderList = cafeSnapshot.children.map { orderSnapshot ->
+                        getOrderValue(orderSnapshot, cafeId)
+                    }
+                    offer(orderList)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        cafeReference.addListenerForSingleValueEvent(valueEventListener)
+
+        awaitClose {
+            cafeReference.removeEventListener(valueEventListener)
+        }
     }
 
     override fun getMenuProductList(): Flow<List<MenuProduct>> {

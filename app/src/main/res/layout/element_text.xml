@@ -2,18 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="address"
-            type="com.bunbeauty.data.model.Address" />
-
-        <variable
-            name="stringHelper"
-            type="com.bunbeauty.domain.string_helper.IStringHelper" />
-    </data>
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/element_address_mcv_main"
+        android:id="@+id/element_text_mcv_main"
         app:cardCornerRadius="0dp"
         style="@style/DefaultMaterialCard">
 
@@ -22,9 +12,9 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/element_text_tv_title"
                 style="@style/LargeMainText"
                 android:padding="@dimen/medium_padding"
-                android:text="@{stringHelper.toString(address)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -10,8 +10,12 @@
     title_registration_pass
     -->
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- COMMON -->
+    <string name="msg_ruble">&#160;₽</string>
+    <string name="msg_break">\n</string>
+    <string name="msg_parenthesis">)&#160;</string>
+    <string name="msg_colon">:&#160;</string>
+    <string name="msg_pieces">&#160;шт.</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -20,7 +24,6 @@
     <string name="error_login_enter_user_name">Введите логин</string>
     <string name="error_login_enter_user_password">Введите пароль</string>
     <string name="error_login_authorization">Неправильный логин или пароль</string>
-
 
     <!-- CHANGE STATUS -->
     <string name="hint_change_status_status">Статус заказа</string>
@@ -51,6 +54,9 @@
     <string name="hint_statics_all_time">Получить статистику за все время</string>
     <string name="action_statics_get_statistic">Получить статистику</string>
     <string name="error_statics_days_count">Введите количество дней</string>
+    <string name="msg_statistic_all_cafes">Все кафе</string>
+    <string name="msg_statistic_proceeds">Выручка:&#160;</string>
+    <string name="msg_statistic_orders_count">Кол-во заказов:&#160;</string>
 
     <!-- EDIT MENU PRODUCT -->
     <string name="hint_edit_menu_product_show">Показать</string>

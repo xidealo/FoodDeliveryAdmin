@@ -11,7 +11,9 @@ import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFra
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.SelectedStatisticBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticAddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodBottomSheet
 
 import dagger.BindsInstance
 import dagger.Subcomponent
@@ -38,6 +40,8 @@ interface ViewModelComponent {
     // bottom sheet
     fun inject(selectedStatisticBottomSheet: SelectedStatisticBottomSheet)
     fun inject(addressListBottomSheet: AddressListBottomSheet)
+    fun inject(statisticAddressListBottomSheet: StatisticAddressListBottomSheet)
+    fun inject(statisticPeriodBottomSheet: StatisticPeriodBottomSheet)
 
     // dialogs
     fun inject(changeStatusDialog: ChangeStatusBottomSheet)

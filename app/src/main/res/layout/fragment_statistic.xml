@@ -5,69 +5,89 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="viewModel"
-            type="com.bunbeauty.fooddeliveryadmin.presentation.StatisticViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragments.statistic.StatisticFragment">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_statistic_til_days_count"
-            style="@style/MaterialInputLayout"
-            android:layout_margin="@dimen/medium_margin"
-            android:layout_marginTop="@dimen/small_margin"
-            android:hint="@string/hint_statics_days_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_lpi_loading">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_statistic_et_days_count"
-                style="@style/MaterialInput"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:padding="@dimen/medium_padding" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/fragment_statistic_cb_all_cafes"
-            android:layout_width="0dp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/fragment_statistic_mcv_address"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/hint_statics_all_cafes"
-            app:layout_constraintEnd_toStartOf="@id/fragment_statistic_cb_all_time"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@color/backgroundComponent"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_til_days_count" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <CheckBox
-            android:id="@+id/fragment_statistic_cb_all_time"
-            android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/fragment_statistic_tv_address"
+                    style="@style/SmallText"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingVertical="@dimen/small_padding"
+                    app:layout_constraintEnd_toStartOf="@+id/fragment_statistic_iv_address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/fragment_statistic_iv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    android:contentDescription="Description"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@+id/fragment_statistic_tv_address"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/fragment_statistic_tv_address" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/fragment_statistic_mcv_period"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:visibility="invisible"
-            android:text="@string/hint_statics_all_time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/fragment_statistic_cb_all_cafes"
-            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_til_days_count" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fragment_statistic_btn_get_statistic"
-            style="@style/MainButton"
-            android:text="@string/action_statics_get_statistic"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@color/backgroundComponent"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_cb_all_time" />
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_mcv_address">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/fragment_statistic_tv_period"
+                    style="@style/SmallText"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingVertical="@dimen/small_padding"
+                    app:layout_constraintEnd_toStartOf="@+id/fragment_statistic_iv_period"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/fragment_statistic_iv_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    android:contentDescription="Description"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@+id/fragment_statistic_tv_period"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/fragment_statistic_tv_period" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_statistic_rv_result"
+            android:id="@+id/fragment_statistic_rv_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/small_margin"
@@ -76,8 +96,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_btn_get_statistic"
-            bind:items="@{viewModel.statisticField}"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistic_mcv_period"
             tools:listitem="@layout/element_statistic" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -85,7 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.isLoadingField ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

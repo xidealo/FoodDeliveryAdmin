@@ -5,6 +5,8 @@ import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.domain.cost_helper.CostHelper
 import com.bunbeauty.domain.cost_helper.ICostHelper
+import com.bunbeauty.domain.date_time.DateTimeUtil
+import com.bunbeauty.domain.date_time.IDateTimeUtil
 import com.bunbeauty.domain.product.IProductHelper
 import com.bunbeauty.domain.product.ProductHelper
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
@@ -42,5 +44,8 @@ abstract class ApiModule {
 
     @Binds
     abstract fun bindResourcesProvider(resourcesProvider: ResourcesProvider): IResourcesProvider
+
+    @Binds
+    abstract fun bindDateTimeUtil(dateTimeUtil: DateTimeUtil): IDateTimeUtil
 
 }

@@ -1,5 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin
 
+import com.bunbeauty.common.State
+import org.joda.time.DateTime
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -14,5 +16,17 @@ class ExampleUnitTest {
     fun statisticToStringCorrect() {
 
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun isEqual() {
+
+        assertEquals(State.Success(listOf(1)), State.Success(listOf(1)))
+    }
+
+    @Test
+    fun isDateCorrect() {
+        val dateTime = DateTime().withMonthOfYear(1).toString("dd MMMM YYYY")
+        assertEquals("", dateTime)
     }
 }

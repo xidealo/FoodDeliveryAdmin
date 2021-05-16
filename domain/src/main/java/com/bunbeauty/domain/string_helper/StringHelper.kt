@@ -1,28 +1,29 @@
 package com.bunbeauty.domain.string_helper
 
-import android.content.res.loader.ResourcesProvider
 import com.bunbeauty.data.model.*
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
-import com.bunbeauty.domain.R
 import com.bunbeauty.domain.cost_helper.ICostHelper
-import java.lang.StringBuilder
 import javax.inject.Inject
 
 class StringHelper @Inject constructor(
     private val iCostHelper: ICostHelper
 ) : IStringHelper {
     //TODO(Get strings from resources)
-    override fun toString(address: Address): String {
-        return checkLastSymbol(
-            "${address.street?.name}, " +
-                    "Дом:${address.house}, " +
-                    flatString(address) +
-                    entranceString(address) +
-                    intercomString(address) +
-                    floorString(address),
-            ','
-        )
+    override fun toString(address: Address?): String {
+        return if (address == null) {
+            ""
+        } else {
+            checkLastSymbol(
+                "${address.street?.name}, " +
+                        "Дом:${address.house}, " +
+                        flatString(address) +
+                        entranceString(address) +
+                        intercomString(address) +
+                        floorString(address),
+                ','
+            )
+        }
     }
 
     override fun toString(cartProducts: List<CartProduct>): String {
@@ -66,8 +67,7 @@ class StringHelper @Inject constructor(
             ""
     }
 
-
-    override fun toString(statistic: Statistic): String {
+    /*override fun toString(statistic: Statistic): String {
         val statisticStringBuilder = StringBuilder()
         //TODO (change calculating)
         statisticStringBuilder.append("Выручка: ${
@@ -88,7 +88,7 @@ class StringHelper @Inject constructor(
             statisticStringBuilder.append("\n")
         }
         return statisticStringBuilder.toString()
-    }
+    }*/
 
     override fun toStringCost(statistic: Statistic): String {
         return "${

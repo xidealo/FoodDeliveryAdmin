@@ -1,10 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.activities
 
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -18,7 +15,6 @@ import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
 import com.bunbeauty.fooddeliveryadmin.presentation.MainViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.ViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -58,13 +54,13 @@ class MainActivity : AppCompatActivity() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.activity_main_fcv_container) as NavHostFragment).findNavController()
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.orders_fragment, R.id.statistic_fragment, R.id.edit_menu_fragment)
+            setOf(R.id.ordersFragment, R.id.statisticFragment, R.id.editMenuFragment)
         )
 
         viewDataBinding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.orders_fragment, R.id.statistic_fragment, R.id.edit_menu_fragment ->
+                R.id.ordersFragment, R.id.statisticFragment, R.id.editMenuFragment ->
                     toggleBottomNavigationBarVisibility(true)
                 else -> toggleBottomNavigationBarVisibility(false)
             }

@@ -3,32 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_menu"
-    app:startDestination="@id/login_fragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/login_fragment"
+        android:id="@+id/loginFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/to_orders_fragment"
-            app:destination="@id/orders_fragment" />
+            app:destination="@id/ordersFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/orders_fragment"
+        android:id="@+id/ordersFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment"
         android:label="OrdersFragment"
         tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/to_addressListBottomSheet"
-            app:destination="@id/address_list_bottom_sheet" />
+            app:destination="@id/addressListBottomSheet" />
         <action
-            android:id="@+id/action_orders_fragment_to_changeStatusDialog"
-            app:destination="@id/change_status_dialog" />
+            android:id="@+id/to_changeStatusDialog"
+            app:destination="@id/changeStatusDialog" />
     </fragment>
     <dialog
-        android:id="@+id/change_status_dialog"
+        android:id="@+id/changeStatusDialog"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheet"
         android:label="ChangeStatusDialog"
         tools:layout="@layout/bottom_sheet_change_status">
@@ -37,42 +37,48 @@
             app:argType="com.bunbeauty.data.model.order.Order" />
     </dialog>
     <fragment
-        android:id="@+id/statistic_fragment"
+        android:id="@+id/statisticFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragment"
         android:label="StatisticFragment"
         tools:layout="@layout/fragment_statistic">
         <action
-            android:id="@+id/action_statistic_fragment_to_selectedStatisticBottomSheet"
-            app:destination="@id/selected_statistic_bottom_sheet" />
+            android:id="@+id/to_selectedStatisticBottomSheet"
+            app:destination="@id/selectedStatisticBottomSheet" />
+        <action
+            android:id="@+id/to_statisticAddressListBottomSheet"
+            app:destination="@id/statisticAddressListBottomSheet" />
+        <action
+            android:id="@+id/to_statisticPeriodBottomSheet"
+            app:destination="@id/statisticPeriodBottomSheet" />
     </fragment>
     <dialog
-        android:id="@+id/selected_statistic_bottom_sheet"
+        android:id="@+id/selectedStatisticBottomSheet"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.SelectedStatisticBottomSheet"
         android:label="SelectedStatisticBottomSheet"
         tools:layout="@layout/bottom_sheet_selected_statistic">
         <argument
-            android:name="statistic"
-            app:argType="com.bunbeauty.data.model.Statistic" />
+            android:name="statisticItem"
+            app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticItem" />
     </dialog>
     <dialog
-        android:id="@+id/address_list_bottom_sheet"
+        android:id="@+id/addressListBottomSheet"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.AddressListBottomSheet"
         android:label="AddressListBottomSheet"
         tools:layout="@layout/bottom_sheet_address_list" />
     <fragment
-        android:id="@+id/edit_menu_fragment"
+        android:id="@+id/editMenuFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragment"
         android:label="EditMenuFragment"
         tools:layout="@layout/fragment_edit_menu">
         <action
             android:id="@+id/to_editMenuProductFragment"
-            app:destination="@id/edit_menu_product_fragment" />
+            app:destination="@id/editMenuProductFragment" />
         <action
             android:id="@+id/to_createNewMenuProductFragment"
             app:destination="@id/createNewMenuProductFragment" />
     </fragment>
     <fragment
-        android:id="@+id/edit_menu_product_fragment"
+        android:id="@+id/editMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFragment"
         android:label="EditMenuProductFragment"
         tools:layout="@layout/fragment_edit_menu_product">
@@ -81,12 +87,22 @@
             app:argType="com.bunbeauty.data.model.MenuProduct" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_create_new_menu_product"
         android:id="@+id/createNewMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.CreateNewMenuProductFragment"
-        android:label="CreateNewMenuProductFragment" >
+        android:label="CreateNewMenuProductFragment"
+        tools:layout="@layout/fragment_create_new_menu_product">
         <argument
             android:name="uuid"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/statisticAddressListBottomSheet"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticAddressListBottomSheet"
+        android:label="StatisticAddressListBottomSheet"
+        tools:layout="@layout/bottom_sheet_statistic_address_list" />
+    <dialog
+        android:id="@+id/statisticPeriodBottomSheet"
+        tools:layout="@layout/bottom_sheet_statistic_period"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodBottomSheet"
+        android:label="StatisticPeriodBottomSheet" />
 </navigation>

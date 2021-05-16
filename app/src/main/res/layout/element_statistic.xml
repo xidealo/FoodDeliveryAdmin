@@ -25,7 +25,7 @@
                 android:id="@+id/element_statistic_tv_date"
                 style="@style/MainTitle"
                 android:layout_margin="@dimen/small_margin"
-                android:text="@{statistic.date}"
+                android:text="@{statistic.title}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/element_statistic_tv_count"
                 app:layout_constraintStart_toStartOf="parent"

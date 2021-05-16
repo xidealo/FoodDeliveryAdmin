@@ -23,14 +23,8 @@ interface IApiRepository {
     fun delete(order: Order)
     fun subscribeOnOrderList(cafeId: String)
 
-    fun getOrderWithCartProductsList(
-        cafeId: String,
-        daysCount: Int
-    ): SharedFlow<List<Order>>
-
-    fun getOrderWithCartProductsAllCafesList(
-        daysCount: Int
-    ): SharedFlow<List<Order>>
+    fun getAllOrderList(): Flow<List<Order>>
+    fun getOrderListByCafeId(cafeId: String): Flow<List<Order>>
 
     fun getCafeList(): SharedFlow<List<Cafe>>
     fun getMenuProductList(): Flow<List<MenuProduct>>

@@ -11,15 +11,14 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AddressItem(val address: String, val cafeId: String?) :
-    AbstractBindingItem<ElementTextBinding>(), Parcelable {
+data class PeriodItem(val period: String): AbstractBindingItem<ElementTextBinding>(), Parcelable {
 
     @IgnoredOnParcel
     @Ignore
     override val type = R.id.element_text_mcv_main
 
     override fun bindView(binding: ElementTextBinding, payloads: List<Any>) {
-        binding.elementTextTvTitle.text = address
+        binding.elementTextTvTitle.text = period
     }
 
     override fun createBinding(

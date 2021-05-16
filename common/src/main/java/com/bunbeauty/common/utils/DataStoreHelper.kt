@@ -21,7 +21,6 @@ class DataStoreHelper @Inject constructor(private val context: Context) : IDataS
     }
 
     override suspend fun saveToken(token: String) {
-        Log.d("test", "saveToken $token")
         context.tokenDataStore.edit {
             it[TOKEN_KEY] = token
         }

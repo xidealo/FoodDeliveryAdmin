@@ -1,73 +1,79 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.data.model.Statistic
-import com.bunbeauty.data.model.Time
-import com.bunbeauty.domain.repository.api.firebase.ApiRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
+import com.bunbeauty.common.State
+import com.bunbeauty.common.extensions.toStateSuccess
+import com.bunbeauty.data.enums.Period
+import com.bunbeauty.domain.repository.order.OrderRepo
+import com.bunbeauty.domain.resources.IResourcesProvider
+import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.PeriodItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticItem
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class StatisticViewModel @Inject constructor(
-    private val apiRepository: ApiRepository,
-    private val iDataStoreHelper: IDataStoreHelper
-) : BaseViewModel() {
+abstract class StatisticViewModel : BaseViewModel() {
 
-    val statisticField = ObservableField<List<Statistic>>()
-    val isLoadingField = ObservableField(false)
+    abstract val statisticState: StateFlow<State<List<StatisticItem>>>
+    abstract var selectedAddressItem: AddressItem
+    abstract var selectedPeriodItem: PeriodItem
 
-    fun getStatistic(daysCount: Int, isAllCafes: Boolean, isAllTime: Boolean) {
-        isLoadingField.set(true)
-        viewModelScope.launch {
-            val cafeId = iDataStoreHelper.cafeId.first()
+    abstract fun getStatistic(cafeId: String?, period: String)
+}
 
-            if (isAllCafes)
-                apiRepository.getOrderWithCartProductsAllCafesList(daysCount).onEach {
-                        ordersList ->
-                    val statistics = arrayListOf<Statistic>()
+class StatisticViewModelImpl @Inject constructor(
+    private val orderRepo: OrderRepo,
+    resourcesProvider: IResourcesProvider
+) : StatisticViewModel() {
 
-                    statistics.addAll(ordersList.groupBy {
-                        Time(it.timestamp, 3).toStringDateYYYYMMDD()
-                    }.map { Statistic(it.key, it.key, it.value) }.sortedByDescending { it.date }.take(daysCount))
+    override val statisticState = MutableStateFlow<State<List<StatisticItem>>>(State.Loading())
+    override var selectedAddressItem =
+        AddressItem(resourcesProvider.getString(R.string.msg_statistic_all_cafes), null)
+    override var selectedPeriodItem = PeriodItem(Period.DAY.text)
 
-                    val orderListForAllStatistic = ordersList.groupBy {
-                        Time(it.timestamp, 3).toStringDateYYYYMMDD()
-                    }.toSortedMap().toList().takeLast(daysCount).flatMap { it.second }
+    override fun getStatistic(cafeId: String?, period: String) {
+        statisticState.value = State.Loading()
 
-                    statistics.add(0,Statistic(date = "Все время", orderList = orderListForAllStatistic))
-                    //to check back users
-                    /*val t = ordersList.groupBy { it.orderEntity.phone }.toSortedMap()
-                    Log.d("asd", t.toString())*/
-
-                    statisticField.set(statistics)
-                    withContext(Dispatchers.Main) {
-                        isLoadingField.set(false)
-                    }
-                }.catch {  }.collect()
-
-
-            else
-                apiRepository.getOrderWithCartProductsList(cafeId, daysCount)
-                    .collect { ordersList ->
-                        val statistics =
-                            arrayListOf(Statistic(date = "Все время", orderList = ordersList))
-
-                        statistics.addAll(ordersList.groupBy {
-                            Time(it.timestamp, 3).toStringDateYYYYMMDD()
-                        }.map { Statistic(it.key, it.key, it.value) })
-
-                        statisticField.set(statistics)
-                        withContext(Dispatchers.Main) {
-                            isLoadingField.set(false)
-                        }
-                    }
+        val orderMapFlow = if (cafeId == null) {
+            when (period) {
+                Period.DAY.text -> {
+                    orderRepo.getAllCafeOrdersByDay()
+                }
+                Period.WEEK.text -> {
+                    orderRepo.getAllCafeOrdersByWeek()
+                }
+                Period.MONTH.text -> {
+                    orderRepo.getAllCafeOrdersByMonth()
+                }
+                else -> {
+                    null
+                }
+            }
+        } else {
+            when (period) {
+                Period.DAY.text -> {
+                    orderRepo.getCafeOrdersByCafeIdAndDay(cafeId)
+                }
+                Period.WEEK.text -> {
+                    orderRepo.getCafeOrdersByCafeIdAndWeek(cafeId)
+                }
+                Period.MONTH.text -> {
+                    orderRepo.getCafeOrdersByCafeIdAndMonth(cafeId)
+                }
+                else -> {
+                    null
+                }
+            }
         }
+
+        orderMapFlow?.onEach { orderMap ->
+            statisticState.value = orderMap.map { orderEntry ->
+                StatisticItem(orderEntry.key, orderEntry.value)
+            }.toStateSuccess()
+        }?.launchIn(viewModelScope)
     }
 }

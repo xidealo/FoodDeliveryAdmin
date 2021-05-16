@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.Flow
 interface CafeDao : BaseDao<CafeEntity> {
 
     @Query("SELECT * FROM CafeEntity")
-    fun getCafeListFlow(): Flow<List<Cafe>>
+    fun getCafeList(): Flow<List<Cafe>>
 
-    @Query("SELECT * FROM CafeEntity WHERE id = :id")
-    fun getCafeListFlow(id: String): Flow<Cafe?>
+    @Query("SELECT * FROM CafeEntity WHERE id = :cafeId")
+    fun getCafeById(cafeId: String): Flow<Cafe?>
 
     @Transaction
     @Query("DELETE FROM CafeEntity")

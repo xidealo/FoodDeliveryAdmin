@@ -13,10 +13,10 @@ class CafeRepository @Inject constructor(
     private val apiRepository: IApiRepository
 ) : CafeRepo {
 
-    override val cafeListFlow = cafeDao.getCafeListFlow()
+    override val cafeList = cafeDao.getCafeList()
 
     override fun getCafeList(id: String): Flow<Cafe?> {
-        return cafeDao.getCafeListFlow(id)
+        return cafeDao.getCafeById(id)
     }
 
     override suspend fun refreshCafeList() {
