@@ -33,8 +33,8 @@
         android:label="ChangeStatusDialog"
         tools:layout="@layout/bottom_sheet_change_status">
         <argument
-            android:name="Order"
-            app:argType="com.bunbeauty.data.model.order.Order" />
+            android:name="orderItem"
+            app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.OrderItem" />
     </dialog>
     <fragment
         android:id="@+id/statisticFragment"

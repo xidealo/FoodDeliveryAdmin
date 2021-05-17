@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.*
 
 interface IApiRepository {
 
-    val addedOrderListSharedFlow: MutableSharedFlow<List<Order>>
-    val updatedOrderListStateFlow: MutableSharedFlow<List<Order>>
-
     fun login(login: String, passwordHash: String): Flow<Boolean>
     fun subscribeOnNotification()
     fun unsubscribeOnNotification()
@@ -21,7 +18,8 @@ interface IApiRepository {
     fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String)
 
     fun delete(order: Order)
-    fun subscribeOnOrderList(cafeId: String)
+    fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>>
+    fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>>
 
     fun getAllOrderList(): Flow<List<Order>>
     fun getOrderListByCafeId(cafeId: String): Flow<List<Order>>

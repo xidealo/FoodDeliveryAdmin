@@ -23,34 +23,63 @@ import kotlin.coroutines.CoroutineContext
 class ApiRepository @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase
 ) : IApiRepository, CoroutineScope {
+
     override val coroutineContext: CoroutineContext = Job() + IO
 
     private val orderList = LinkedList<Order>()
-    override val addedOrderListSharedFlow = MutableSharedFlow<List<Order>>()
-    override val updatedOrderListStateFlow = MutableSharedFlow<List<Order>>()
 
     @ExperimentalCoroutinesApi
-    override fun subscribeOnOrderList(cafeId: String) {
+    override fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>> = callbackFlow {
+        orderList.clear()
+        offer(orderList)
+
         val ordersReference = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
             .child(cafeId)
             .orderByChild(OrderEntity.TIMESTAMP)
             .startAt(DateTime.now().minusDays(2).millis.toDouble())
-        //getOrderWithCartProducts(ordersReference, cafeId)
-
-        ordersReference.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(orderSnapshot: DataSnapshot, previousChildName: String?) {
-                orderList.addFirst(getOrderValue(orderSnapshot, cafeId))
-                launch { addedOrderListSharedFlow.emit(orderList) }
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                orderList.addFirst(getOrderValue(snapshot, cafeId))
+                offer(orderList)
             }
 
-            override fun onChildChanged(orderSnapshot: DataSnapshot, previousChildName: String?) {
-                val order = getOrderValue(orderSnapshot, cafeId)
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {}
+        }
+        ordersReference.addChildEventListener(childEventListener)
+
+        awaitClose {
+            ordersReference.removeEventListener(childEventListener)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>> = callbackFlow {
+        orderList.clear()
+        offer(orderList)
+
+        val ordersReference = firebaseDatabase
+            .getReference(OrderEntity.ORDERS)
+            .child(APP_ID)
+            .child(cafeId)
+            .orderByChild(OrderEntity.TIMESTAMP)
+            .startAt(DateTime.now().minusDays(2).millis.toDouble())
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val order = getOrderValue(snapshot, cafeId)
                 val index = orderList.indexOfFirst { it.uuid == order.uuid }
                 if (index != -1) {
                     orderList[index] = order
-                    launch { updatedOrderListStateFlow.emit(orderList) }
+                    offer(orderList)
                 }
             }
 
@@ -59,8 +88,12 @@ class ApiRepository @Inject constructor(
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
             override fun onCancelled(error: DatabaseError) {}
+        }
+        ordersReference.addChildEventListener(childEventListener)
 
-        })
+        awaitClose {
+            ordersReference.removeEventListener(childEventListener)
+        }
     }
 
     @ExperimentalCoroutinesApi
@@ -82,7 +115,6 @@ class ApiRepository @Inject constructor(
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
 
@@ -203,66 +235,6 @@ class ApiRepository @Inject constructor(
 
         })
     }
-
-    /*override fun getOrderWithCartProductsList(
-        cafeId: String,
-        daysCount: Int
-    ): SharedFlow<List<Order>> {
-        val ordersRef = firebaseDatabase
-            .getReference(OrderEntity.ORDERS)
-            .child(APP_ID)
-            .child(cafeId)
-            .orderByChild(OrderEntity.TIMESTAMP)
-            .startAt(DateTime.now().minusDays(daysCount).millis.toDouble())
-
-        val ordersWithCartProductsShareFlow = MutableSharedFlow<List<Order>>()
-        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(ordersSnapshot: DataSnapshot) {
-                launch {
-                    val ordersWithCartProductsList = arrayListOf<Order>()
-                    for (orderSnapshot in ordersSnapshot.children.reversed()) {
-                        ordersWithCartProductsList.add(
-                            getOrderValue(orderSnapshot, cafeId)
-                        )
-                    }
-                    withContext(Dispatchers.Main) {
-                        ordersWithCartProductsShareFlow.emit(ordersWithCartProductsList)
-                    }
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-        return ordersWithCartProductsShareFlow
-    }
-
-    override fun getOrderWithCartProductsAllCafesList(daysCount: Int): SharedFlow<List<Order>> {
-        val ordersRef = firebaseDatabase
-            .getReference(OrderEntity.ORDERS)
-            .child(APP_ID)
-
-        val ordersWithCartProductsShareFlow = MutableSharedFlow<List<Order>>()
-        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(cafeOrdersSnapshot: DataSnapshot) {
-                launch {
-                    val ordersWithCartProductsList = arrayListOf<Order>()
-                    for (ordersSnapshot in cafeOrdersSnapshot.children.reversed()) {
-                        for (orderSnapshot in ordersSnapshot.children) {
-                            ordersWithCartProductsList.add(
-                                getOrderValue(orderSnapshot, "")
-                            )
-                        }
-                    }
-                    withContext(Dispatchers.Main) {
-                        ordersWithCartProductsShareFlow.emit(ordersWithCartProductsList)
-                    }
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-        return ordersWithCartProductsShareFlow
-    }*/
 
     @ExperimentalCoroutinesApi
     override fun getAllOrderList(): Flow<List<Order>> = callbackFlow {

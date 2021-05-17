@@ -15,7 +15,10 @@ interface CafeDao : BaseDao<CafeEntity> {
     fun getCafeList(): Flow<List<Cafe>>
 
     @Query("SELECT * FROM CafeEntity WHERE id = :cafeId")
-    fun getCafeById(cafeId: String): Flow<Cafe?>
+    fun getCafeById(cafeId: String): Cafe?
+
+    @Query("SELECT * FROM CafeEntity WHERE id = :cafeId")
+    fun getCafeByIdFlow(cafeId: String): Flow<Cafe?>
 
     @Transaction
     @Query("DELETE FROM CafeEntity")

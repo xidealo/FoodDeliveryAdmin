@@ -5,8 +5,12 @@ import com.bunbeauty.data.model.order.OrderEntity
 import kotlinx.coroutines.flow.Flow
 
 interface OrderRepo {
+
     suspend fun insert(orderEntity: OrderEntity): Long
     fun update(order: Order)
+
+    fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>>
+    fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>>
 
     fun getAllCafeOrdersByDay(): Flow<Map<String, List<Order>>>
     fun getAllCafeOrdersByWeek(): Flow<Map<String, List<Order>>>

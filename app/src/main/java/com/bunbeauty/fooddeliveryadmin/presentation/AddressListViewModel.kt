@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.toStateSuccess

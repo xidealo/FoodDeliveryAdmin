@@ -13,6 +13,7 @@ import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetChangeStatusBindin
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.ChangeStatusViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheetArgs.fromBundle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -35,7 +36,7 @@ class ChangeStatusBottomSheet :
     lateinit var iResourcesProvider: IResourcesProvider
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewDataBinding.order = ChangeStatusBottomSheetArgs.fromBundle(requireArguments()).order
+        val orderItem = fromBundle(requireArguments()).orderItem
         viewDataBinding.iStringHelper = stringHelper
 
         viewDataBinding.dialogChangeStatusBtnCancel.setOnClickListener {
@@ -43,7 +44,7 @@ class ChangeStatusBottomSheet :
         }
 
         viewDataBinding.dialogChangeStatusBtnConfirm.setOnClickListener {
-            val currentOrder = ChangeStatusBottomSheetArgs.fromBundle(requireArguments()).order
+            val currentOrder = Order()
             val newStatus = when {
                 viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked -> NOT_ACCEPTED
                 viewDataBinding.dialogChangeStatusRbAccepted.isChecked -> ACCEPTED

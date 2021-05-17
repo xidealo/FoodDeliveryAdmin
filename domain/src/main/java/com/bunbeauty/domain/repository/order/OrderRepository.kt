@@ -1,5 +1,6 @@
 package com.bunbeauty.domain.repository.order
 
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.domain.date_time.IDateTimeUtil
@@ -18,6 +19,18 @@ class OrderRepository @Inject constructor(
 
     override fun update(order: Order) {
         apiRepository.updateOrder(order)
+    }
+
+    override fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>> {
+        return apiRepository.getAddedOrderListByCafeId(cafeId).map { orderList ->
+            orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
+        }
+    }
+
+    override fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>> {
+        return apiRepository.getUpdatedOrderListByCafeId(cafeId).map { orderList ->
+            orderList.filter { it.orderEntity.orderStatus != OrderStatus.CANCELED }
+        }
     }
 
     override fun getAllCafeOrdersByDay(): Flow<Map<String, List<Order>>> {

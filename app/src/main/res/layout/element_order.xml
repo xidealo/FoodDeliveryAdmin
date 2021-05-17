@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="order"
-            type="com.bunbeauty.data.model.order.Order" />
-
-        <variable
-            name="stringHelper"
-            type="com.bunbeauty.domain.string_helper.IStringHelper" />
-    </data>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
         style="@style/DefaultMaterialCard"
-        android:layout_marginBottom="@dimen/small_margin"
-        bind:status="@{order.orderEntity.orderStatus}">
+        android:layout_marginBottom="@dimen/small_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +17,6 @@
                 android:id="@+id/element_order_tv_code"
                 style="@style/MainTitle"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{order.orderEntity.code}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +24,6 @@
                 android:id="@+id/element_order_tv_deferred"
                 style="@style/HelpText"
                 android:layout_margin="@dimen/very_small_margin"
-                android:text="@{stringHelper.toStringDeferred(order.orderEntity)}"
                 app:layout_constraintEnd_toStartOf="@id/element_order_tv_time"
                 app:layout_constraintStart_toEndOf="@id/element_order_tv_code"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,18 +31,17 @@
             <TextView
                 android:id="@+id/element_order_tv_time"
                 style="@style/MainText"
-                android:text="@{stringHelper.toStringTime(order)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/element_order_iv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/element_order_tv_time"
-                bind:status="@{order.orderEntity.orderStatus}" />
+                app:layout_constraintTop_toBottomOf="@id/element_order_tv_time" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

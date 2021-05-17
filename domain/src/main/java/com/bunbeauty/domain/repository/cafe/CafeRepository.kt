@@ -15,8 +15,12 @@ class CafeRepository @Inject constructor(
 
     override val cafeList = cafeDao.getCafeList()
 
-    override fun getCafeList(id: String): Flow<Cafe?> {
+    override fun getCafeById(id: String): Cafe? {
         return cafeDao.getCafeById(id)
+    }
+
+    override fun getCafeByIdFlow(id: String): Flow<Cafe?> {
+        return cafeDao.getCafeByIdFlow(id)
     }
 
     override suspend fun refreshCafeList() {
