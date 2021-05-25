@@ -5,7 +5,7 @@ import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.toStateSuccess
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.domain.repository.cafe.CafeRepo
-import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +24,7 @@ abstract class AddressListViewModel : BaseViewModel() {
 
 class AddressListViewModelImpl @Inject constructor(
     private val cafeRepo: CafeRepo,
-    private val stringHelper: IStringHelper,
+    private val stringUtil: IStringUtil,
     private val dataStoreHelper: IDataStoreHelper,
 ) : AddressListViewModel() {
 
@@ -39,7 +39,7 @@ class AddressListViewModelImpl @Inject constructor(
             val addressItemList = ArrayList(
                 cafeList.map { cafe ->
                     AddressItem(
-                        stringHelper.toString(cafe.address),
+                        stringUtil.toString(cafe.address),
                         cafe.cafeEntity.id
                     )
                 }

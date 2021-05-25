@@ -11,7 +11,7 @@
 
         <variable
             name="productHelper"
-            type="com.bunbeauty.domain.product.IProductHelper" />
+            type="com.bunbeauty.domain.product.IProductUtil" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -51,7 +51,7 @@
                 android:id="@+id/element_menu_product_tv_cost"
                 style="@style/SmallText"
                 android:layout_marginStart="@dimen/very_small_margin"
-                android:text="@{productHelper.getMenuProductPriceString(menuProduct)}"
+                android:text="@{productHelper.getMenuProductNewPrice(menuProduct)}"
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_tv_title" />
 
@@ -59,7 +59,7 @@
                 android:id="@+id/element_menu_product_tv_cost_old"
                 style="@style/SmallText"
                 android:layout_marginStart="@dimen/very_small_margin"
-                android:text="@{productHelper.getMenuProductOldPriceString(menuProduct)}"
+                android:text="@{menuProduct.cost}"
                 android:textColor="@color/grey"
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_tv_cost"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_tv_title" />

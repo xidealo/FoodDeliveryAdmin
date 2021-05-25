@@ -1,21 +1,19 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.launchWhenStarted
-import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.OrdersViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrderItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toAddressListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toChangeStatusDialog
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toOrdersDetailsFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.onEach
@@ -28,7 +26,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
     }
 
     @Inject
-    lateinit var stringHelper: IStringHelper
+    lateinit var stringUtil: IStringUtil
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,18 +35,17 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentOrdersRvResult.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, orderItem, _ ->
-            router.navigate(toChangeStatusDialog(orderItem))
+            router.navigate(toOrdersDetailsFragment(orderItem.orderUI))
             false
         }
         viewDataBinding.fragmentOrdersMcvAddress.setOnClickListener {
             router.navigate(toAddressListBottomSheet())
         }
 
-        viewModel.cafeStateFlow.onEach { state ->
+        viewModel.cafeAddressStateFlow.onEach { state ->
             when (state) {
                 is State.Success -> {
-                    viewDataBinding.fragmentOrdersTvAddress.text =
-                        stringHelper.toString(state.data.address)
+                    viewDataBinding.fragmentOrdersTvAddress.text = state.data
                 }
                 else -> {
                 }

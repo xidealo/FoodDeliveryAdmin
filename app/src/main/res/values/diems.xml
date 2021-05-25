@@ -25,8 +25,8 @@
 
     <!-- MARGIN -->
     <dimen name="very_large_margin">40dp</dimen>
-    <dimen name="large_margin">24dp</dimen>
-    <dimen name="medium_margin">16dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+    <dimen name="medium_margin">12dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="very_small_margin">4dp</dimen>
 

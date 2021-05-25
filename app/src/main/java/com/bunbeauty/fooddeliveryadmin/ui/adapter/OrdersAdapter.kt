@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
 import javax.inject.Inject
 
-class OrdersAdapter @Inject constructor(private val stringHelper: IStringHelper) :
+class OrdersAdapter @Inject constructor(private val stringUtil: IStringUtil) :
     BaseAdapter<OrdersAdapter.OrderViewHolder, Order>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): OrderViewHolder {

@@ -2,6 +2,7 @@ package com.bunbeauty.domain.repository.api.firebase
 
 import android.util.Log
 import com.bunbeauty.data.model.Cafe
+import com.bunbeauty.data.model.Cafe.Companion.CAFES
 import com.bunbeauty.data.model.Company
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.firebase.MenuProductFirebase
@@ -322,10 +323,60 @@ class ApiRepository @Inject constructor(
         } ?: Order()
     }
 
+    /*suspend fun updateCafes() {
+        val fromReference = firebaseDatabase
+            .getReference(COMPANY)
+            .child(APP_ID)
+            .child(CAFES)
+            .child("1")
+            .child("districts")
+            .child("0")
+        val toReference = firebaseDatabase
+            .getReference(COMPANY)
+            .child(APP_ID)
+            .child(CAFES)
+            .child("0")
+            .child("districts")
+            .child("1")
+
+        fromReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                toReference.setValue(snapshot.value)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+    suspend fun updateCafes() {
+        val firstCafeReference = firebaseDatabase
+            .getReference(COMPANY)
+            .child(APP_ID)
+            .child(CAFES)
+            .child("0")
+            .child("districts")
+            .child("1")
+            .child("streets")
+
+        firstCafeReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(child in snapshot.children) {
+                    var id = child.child("id").value as String
+                    id = id.replace("1cafe-0district", "0cafe-1district")
+                    firstCafeReference.child(child.key!!).child("id").setValue(id)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }*/
+
     companion object {
         private const val COMPANY = "COMPANY"
-        private const val MENU_PRODUCTS: String = "menu_products"
-        private const val NOTIFICATION_TOPIC: String = "notification"
+        private const val MENU_PRODUCTS = "menu_products"
+        private const val NOTIFICATION_TOPIC = "notification"
     }
 
 }

@@ -9,7 +9,7 @@
 
         <variable
             name="iStringHelper"
-            type="com.bunbeauty.domain.string_helper.IStringHelper" />
+            type="com.bunbeauty.domain.string.IStringUtil" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

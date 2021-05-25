@@ -8,11 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.common.extensions.toggleVisibility
 import com.bunbeauty.data.model.MenuProduct
-import com.bunbeauty.domain.product.IProductHelper
+import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
 import javax.inject.Inject
 
-class MenuProductsAdapter @Inject constructor(private val productHelper: IProductHelper) :
+class MenuProductsAdapter @Inject constructor(private val productUtil: IProductUtil) :
     BaseAdapter<MenuProductsAdapter.MenuProductViewHolder, MenuProduct>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MenuProductViewHolder {
@@ -23,7 +23,7 @@ class MenuProductsAdapter @Inject constructor(private val productHelper: IProduc
     }
 
     override fun onBindViewHolder(holder: MenuProductViewHolder, i: Int) {
-        holder.binding?.productHelper = productHelper
+        holder.binding?.productHelper = productUtil
         holder.binding?.menuProduct = itemList[i]
         if (holder.binding?.elementMenuProductTvCostOld != null) {
             holder.binding.elementMenuProductTvCostOld.paintFlags =

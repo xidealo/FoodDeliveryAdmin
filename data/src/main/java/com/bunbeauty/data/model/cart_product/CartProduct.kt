@@ -1,11 +1,11 @@
-package com.bunbeauty.data.model
+package com.bunbeauty.data.model.cart_product
 
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.bunbeauty.data.model.MenuProduct
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 @Entity
 @Parcelize

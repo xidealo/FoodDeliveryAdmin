@@ -3,17 +3,17 @@ package com.bunbeauty.fooddeliveryadmin.di.modules
 import com.bunbeauty.domain.repository.api.firebase.ApiRepository
 import com.bunbeauty.common.utils.DataStoreHelper
 import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.domain.cost_helper.CostHelper
-import com.bunbeauty.domain.cost_helper.ICostHelper
+import com.bunbeauty.domain.cost.CostUtil
+import com.bunbeauty.domain.cost.ICostUtil
 import com.bunbeauty.domain.date_time.DateTimeUtil
 import com.bunbeauty.domain.date_time.IDateTimeUtil
-import com.bunbeauty.domain.product.IProductHelper
-import com.bunbeauty.domain.product.ProductHelper
+import com.bunbeauty.domain.product.IProductUtil
+import com.bunbeauty.domain.product.ProductUtil
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.domain.resources.ResourcesProvider
-import com.bunbeauty.domain.string_helper.IStringHelper
-import com.bunbeauty.domain.string_helper.StringHelper
+import com.bunbeauty.domain.string.IStringUtil
+import com.bunbeauty.domain.string.StringUtil
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -34,13 +34,13 @@ abstract class ApiModule {
     abstract fun bindDataStoreHelper(dataStoreHelper: DataStoreHelper): IDataStoreHelper
 
     @Binds
-    abstract fun bindStringHelper(stringHelper: StringHelper): IStringHelper
+    abstract fun bindStringHelper(stringUtil: StringUtil): IStringUtil
 
     @Binds
-    abstract fun bindCostHelper(costHelper: CostHelper): ICostHelper
+    abstract fun bindCostHelper(costHelper: CostUtil): ICostUtil
 
     @Binds
-    abstract fun bindProductHelper(productHelper: ProductHelper): IProductHelper
+    abstract fun bindProductHelper(productHelper: ProductUtil): IProductUtil
 
     @Binds
     abstract fun bindResourcesProvider(resourcesProvider: ResourcesProvider): IResourcesProvider

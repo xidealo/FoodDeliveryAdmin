@@ -1,46 +1,56 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import com.bunbeauty.common.extensions.gone
+import com.bunbeauty.common.extensions.strikeOutText
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.domain.resources.IResourcesProvider
-import com.bunbeauty.domain.string_helper.IStringHelper
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetChangeStatusBinding
+import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.presentation.ChangeStatusViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheetArgs.fromBundle
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.bunbeauty.fooddeliveryadmin.presentation.OrderDetailsViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersDetailsFragmentArgs.fromBundle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import javax.inject.Inject
 
-class ChangeStatusBottomSheet :
-    BaseBottomSheetDialog<BottomSheetChangeStatusBinding, ChangeStatusViewModel>() {
-
-    @Inject
-    lateinit var stringHelper: IStringHelper
+class OrdersDetailsFragment :
+    BaseFragment<FragmentOrderDetailsBinding, OrderDetailsViewModel>() {
 
     override fun inject(viewModelComponent: ViewModelComponent) {
         viewModelComponent.inject(this)
     }
 
-    @Inject
-    lateinit var iStringHelper: IStringHelper
-
-    @Inject
-    lateinit var iResourcesProvider: IResourcesProvider
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val orderItem = fromBundle(requireArguments()).orderItem
-        viewDataBinding.iStringHelper = stringHelper
+        val orderUI = fromBundle(requireArguments()).orderUI
+
+        viewDataBinding.dialogChangeStatusTvCode.text = viewModel.getCodeTitle(orderUI.code)
+        viewDataBinding.dialogChangeStatusTvTimeValue.text = orderUI.time
+        viewDataBinding.dialogChangeStatusTvPickupMethodValue.text =
+            viewModel.getPickupMethod(orderUI.isDelivery)
+        viewDataBinding.dialogChangeStatusTvDeferredTimeValue.text = orderUI.deferredTime
+        viewDataBinding.dialogChangeStatusTvAddressValue.text = orderUI.address
+        viewDataBinding.dialogChangeStatusTvCommentValue.text = orderUI.comment
+        viewDataBinding.dialogChangeStatusTvProductListValue.text =
+            viewModel.getProductsList(orderUI.cartProductList)
+
+        viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.strikeOutText()
+        viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.text = orderUI.oldTotalCost
+        viewDataBinding.dialogChangeStatusTvOrderNewTotalCost.text = orderUI.newTotalCost
+
+        if (orderUI.deferredTime.isEmpty()) {
+            viewDataBinding.dialogChangeStatusTvDeferredTimeValue.gone()
+            viewDataBinding.dialogChangeStatusTvDeferredTime.gone()
+        }
+
+        if (orderUI.comment.isEmpty()) {
+            viewDataBinding.dialogChangeStatusTvCommentValue.gone()
+            viewDataBinding.dialogChangeStatusTvComment.gone()
+        }
 
         viewDataBinding.dialogChangeStatusBtnCancel.setOnClickListener {
-            dismiss()
+            router.navigateUp()
         }
 
         viewDataBinding.dialogChangeStatusBtnConfirm.setOnClickListener {
@@ -65,26 +75,17 @@ class ChangeStatusBottomSheet :
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        dialog.behavior.skipCollapsed = true
-        return dialog
-    }
-
     private fun showCanceledAlert(newStatus: OrderStatus, currentOrder: Order) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(iResourcesProvider.getString(R.string.title_change_status_alert))
-            .setMessage(
-                iResourcesProvider.getString(R.string.text_change_status_cancel)
-            )
-            .setPositiveButton(iResourcesProvider.getString(R.string.action_change_status_yes)) { _, _ ->
+            .setTitle(R.string.title_change_status_alert)
+            .setMessage(R.string.text_change_status_cancel)
+            .setPositiveButton(R.string.action_change_status_yes) { _, _ ->
                 changeStatus(
                     newStatus,
                     currentOrder
                 )
             }
-            .setNegativeButton(iResourcesProvider.getString(R.string.action_change_status_no)) { _, _ ->
+            .setNegativeButton(R.string.action_change_status_no) { _, _ ->
             }.show()
     }
 
@@ -93,6 +94,5 @@ class ChangeStatusBottomSheet :
             currentOrder.orderEntity.orderStatus = newStatus
             viewModel.changeStatus(currentOrder)
         }
-        dismiss()
     }
 }

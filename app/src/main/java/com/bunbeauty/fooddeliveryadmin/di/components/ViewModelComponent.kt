@@ -8,7 +8,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.CreateNewMenuProdu
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.SelectedStatisticBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticAddressListBottomSheet
@@ -42,7 +42,5 @@ interface ViewModelComponent {
     fun inject(addressListBottomSheet: AddressListBottomSheet)
     fun inject(statisticAddressListBottomSheet: StatisticAddressListBottomSheet)
     fun inject(statisticPeriodBottomSheet: StatisticPeriodBottomSheet)
-
-    // dialogs
-    fun inject(changeStatusDialog: ChangeStatusBottomSheet)
+    fun inject(ordersDetailsFragment: OrdersDetailsFragment)
 }

@@ -1,8 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
-import android.util.Log
 import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.domain.cost_helper.ICostHelper
+import com.bunbeauty.domain.cost.ICostUtil
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import javax.inject.Inject
@@ -13,7 +12,7 @@ abstract class SelectedStatisticViewModel : BaseViewModel() {
 }
 
 class SelectedStatisticViewModelImpl @Inject constructor(
-    private val costHelper: ICostHelper,
+    private val costUtil: ICostUtil,
     private val resourcesProvider: IResourcesProvider,
 ) : SelectedStatisticViewModel() {
 
@@ -24,7 +23,7 @@ class SelectedStatisticViewModelImpl @Inject constructor(
         statisticStringBuilder.append(
             orderList.sumBy { order ->
                 order.cartProducts.sumBy { cartProduct ->
-                    costHelper.getCost(cartProduct)
+                    costUtil.getCost(cartProduct)
                 }
             }.toString()
         )

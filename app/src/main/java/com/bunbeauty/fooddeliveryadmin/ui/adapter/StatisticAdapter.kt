@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.data.model.Statistic
-import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
 import javax.inject.Inject
 
 class StatisticAdapter @Inject constructor(
-    private val iStringHelper: IStringHelper
+    private val iStringUtil: IStringUtil
 ) : BaseAdapter<StatisticAdapter.StatisticViewHolder, Statistic>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StatisticViewHolder {
@@ -22,7 +22,7 @@ class StatisticAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: StatisticViewHolder, i: Int) {
-        holder.binding?.iStringHelper = iStringHelper
+        holder.binding?.iStringHelper = iStringUtil
         holder.binding?.statistic = itemList[i]
         holder.binding?.elementStatisticMvcMain?.setOnClickListener{
             onItemClickListener?.invoke(itemList[i])

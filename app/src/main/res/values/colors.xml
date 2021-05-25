@@ -8,12 +8,12 @@
     <color name="white" tools:override="true">#FFFFFF</color>
     <color name="grey">#93969A</color>
 
-    <color name="notAcceptedColor">#FFFFFF</color>
-    <color name="acceptedColor">#e8e8e6</color>
-    <color name="preparingColor">#feea8f</color>
-    <color name="sentOutColor">#8CCCFF</color>
-    <color name="doneColor">#A2FBA5</color>
-    <color name="canceledColor">#93969A</color>
+    <color name="notAcceptedColor">#F2F2F2</color>
+    <color name="acceptedColor">#FFF4BA</color>
+    <color name="preparingColor">#FFDFBA</color>
+    <color name="sentOutColor">#BAE1FF</color>
+    <color name="doneColor">#B1FFCC</color>
+    <color name="canceledColor">#FFB3BA</color>
 
     <!-- BACKGROUND -->
     <color name="backgroundPage">#f3f2f7</color>

@@ -5,7 +5,7 @@ import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.toStateSuccess
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.resources.IResourcesProvider
-import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ abstract class StatisticAddressListViewModel : BaseViewModel() {
 
 class StatisticAddressListViewModelImpl @Inject constructor(
     private val cafeRepo: CafeRepo,
-    private val stringHelper: IStringHelper,
+    private val stringUtil: IStringUtil,
     private val resourcesProvider: IResourcesProvider
 ) : StatisticAddressListViewModel() {
 
@@ -36,7 +36,7 @@ class StatisticAddressListViewModelImpl @Inject constructor(
             val addressItemList = ArrayList(
                 cafeList.map { cafe ->
                     AddressItem(
-                        stringHelper.toString(cafe.address),
+                        stringUtil.toString(cafe.address),
                         cafe.cafeEntity.id
                     )
                 }

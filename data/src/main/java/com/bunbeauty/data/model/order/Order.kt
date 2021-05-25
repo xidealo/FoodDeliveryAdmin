@@ -5,7 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Ignore
 import androidx.room.Relation
 import com.bunbeauty.data.model.BaseDiffUtilModel
-import com.bunbeauty.data.model.CartProduct
+import com.bunbeauty.data.model.cart_product.CartProduct
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

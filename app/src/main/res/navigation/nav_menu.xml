@@ -24,18 +24,18 @@
             android:id="@+id/to_addressListBottomSheet"
             app:destination="@id/addressListBottomSheet" />
         <action
-            android:id="@+id/to_changeStatusDialog"
-            app:destination="@id/changeStatusDialog" />
+            android:id="@+id/to_OrdersDetailsFragment"
+            app:destination="@id/ordersDetailsFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/changeStatusDialog"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.ChangeStatusBottomSheet"
+    <fragment
+        android:id="@+id/ordersDetailsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersDetailsFragment"
         android:label="ChangeStatusDialog"
-        tools:layout="@layout/bottom_sheet_change_status">
+        tools:layout="@layout/fragment_order_details">
         <argument
-            android:name="orderItem"
-            app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.OrderItem" />
-    </dialog>
+            android:name="orderUI"
+            app:argType="com.bunbeauty.data.model.order.OrderUI" />
+    </fragment>
     <fragment
         android:id="@+id/statisticFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragment"

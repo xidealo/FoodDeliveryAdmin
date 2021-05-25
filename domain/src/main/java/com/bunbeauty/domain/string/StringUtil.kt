@@ -1,14 +1,15 @@
-package com.bunbeauty.domain.string_helper
+package com.bunbeauty.domain.string
 
 import com.bunbeauty.data.model.*
+import com.bunbeauty.data.model.cart_product.CartProduct
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
-import com.bunbeauty.domain.cost_helper.ICostHelper
+import com.bunbeauty.domain.cost.ICostUtil
 import javax.inject.Inject
 
-class StringHelper @Inject constructor(
-    private val iCostHelper: ICostHelper
-) : IStringHelper {
+class StringUtil @Inject constructor(
+    private val iCostUtil: ICostUtil
+) : IStringUtil {
     //TODO(Get strings from resources)
     override fun toString(address: Address?): String {
         return if (address == null) {
@@ -94,7 +95,7 @@ class StringHelper @Inject constructor(
         return "${
             statistic.orderList.sumBy { order ->
                 order.cartProducts.sumBy {
-                    iCostHelper.getCost(it)
+                    iCostUtil.getCost(it)
                 }
             }
         } ₽"

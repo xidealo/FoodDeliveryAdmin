@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding">
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_code"
+                style="@style/MainTitle"
+                android:layout_margin="@dimen/medium_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tool:text="Заказ M-30" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_time"
+                style="@style/GreyHelpText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_order_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_code" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_time_value"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/very_small_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_time"
+                tool:text="12:00" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_pickup_method"
+                style="@style/GreyHelpText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_pickup_method"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_time_value" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_pickup_method_value"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/very_small_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_pickup_method"
+                tool:text="Доставка" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/dialog_change_status_gl_center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_deferred_time"
+                style="@style/GreyHelpText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_deferred_time"
+                app:layout_constraintStart_toStartOf="@+id/dialog_change_status_gl_center"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_time_value" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_deferred_time_value"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/very_small_margin"
+                app:layout_constraintStart_toStartOf="@+id/dialog_change_status_gl_center"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_deferred_time"
+                tool:text="13:00" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_address"
+                style="@style/GreyHelpText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_address"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_pickup_method_value" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_address_value"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/very_small_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_address"
+                tool:text="улица Чапаева, д 22А, кв 15" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_comment"
+                style="@style/GreyHelpText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_address_value" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_comment_value"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/very_small_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_comment"
+                tool:text="Сделайте вкусно" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_product_list"
+                style="@style/GreyHelpText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_order_list"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_comment_value" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_product_list_value"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/very_small_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_product_list"
+                tool:text="Блюдо №1 \nБлюдо №2" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_order_total_cost"
+                style="@style/MainTitle"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_order_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_product_list_value" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_order_old_total_cost"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_order_price"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_tv_order_new_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_product_list_value"
+                tool:text="100₽" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_order_new_total_cost"
+                style="@style/MainText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_order_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_product_list_value"
+                tool:text="100₽" />
+
+            <TextView
+                android:id="@+id/dialog_change_status_tv_title"
+                style="@style/MainTitle"
+                android:layout_margin="@dimen/medium_margin"
+                android:text="@string/hint_change_status_status"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_order_total_cost" />
+
+            <RadioGroup
+                android:id="@+id/dialog_change_status_rg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialog_change_status_tv_title">
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_not_accepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/hint_change_status_not_accepted"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_accepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/hint_change_status_accepted"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_preparing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_change_status_preparing"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_sent_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_change_status_sent_out"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_change_status_delivered"
+                    android:textColor="@color/mainTextColor" />
+
+                <RadioButton
+                    android:id="@+id/dialog_change_status_rb_canceled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_change_status_canceled"
+                    android:textColor="@color/mainTextColor" />
+            </RadioGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dialog_change_status_btn_cancel"
+                style="@style/SmallSecondaryButton"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:text="@string/action_change_status_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_btn_confirm"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dialog_change_status_btn_confirm"
+                style="@style/SmallMainButton"
+                android:text="@string/action_change_status_confirm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_rg" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

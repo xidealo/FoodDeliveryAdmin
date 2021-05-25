@@ -36,8 +36,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ChangeStatusViewModel::class)
-    internal abstract fun provideChangeStatusViewModel(changeStatusViewModel: ChangeStatusViewModel): ViewModel
+    @ViewModelKey(OrderDetailsViewModel::class)
+    internal abstract fun provideOrderDetailsViewModel(orderDetailsViewModel: OrderDetailsViewModel): ViewModel
 
     @Binds
     @IntoMap

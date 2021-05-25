@@ -11,6 +11,15 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    signingConfigs {
+        release {
+            storeFile file('D:\\maxas\\Extra\\1.Apps\\FoodDeliveryAdmin\\keystore.jks')
+            storePassword 'itisBB15092019'
+            keyAlias 'papakarloKey'
+            keyPassword 'Itispapakarlo08062004'
+        }
+    }
+
     defaultConfig {
         applicationId "com.bunbeauty.fooddeleveryadmin"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -31,6 +40,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'FB_LINK', '"https://fooddelivery-ce2ef-default-rtdb.firebaseio.com/"'
+            signingConfig signingConfigs.release
         }
     }
     kotlinOptions {

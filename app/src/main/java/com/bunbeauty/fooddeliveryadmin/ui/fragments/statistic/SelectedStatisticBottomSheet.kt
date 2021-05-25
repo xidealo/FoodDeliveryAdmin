@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic
 
 import android.os.Bundle
 import android.view.View
-import com.bunbeauty.domain.string_helper.IStringHelper
+import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetSelectedStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.SelectedStatisticViewModel
@@ -18,7 +18,7 @@ class SelectedStatisticBottomSheet :
     }
 
     @Inject
-    lateinit var stringHelper: IStringHelper
+    lateinit var stringUtil: IStringUtil
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

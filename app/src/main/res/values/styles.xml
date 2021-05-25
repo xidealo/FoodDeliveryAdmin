@@ -79,6 +79,7 @@
 
     <style name="MainTitle" parent="BaseText">
         <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textAlignment">center</item>
         <item name="fontFamily">@font/font_roboto_bold</item>
     </style>
 
@@ -105,6 +106,10 @@
     <style name="HelpText" parent="BaseText">
         <item name="android:textSize">@dimen/very_small_text_size</item>
         <item name="fontFamily">@font/font_roboto_regular</item>
+    </style>
+
+    <style name="GreyHelpText" parent="HelpText">
+        <item name="android:textColor">@color/hintColor</item>
     </style>
 
     <style name="CenterText" parent="BaseText">

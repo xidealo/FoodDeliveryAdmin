@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.bunbeauty.data.OrderStatusConverter
 import com.bunbeauty.data.model.Address
 import com.bunbeauty.data.model.CafeEntity
-import com.bunbeauty.data.model.CartProduct
+import com.bunbeauty.data.model.cart_product.CartProduct
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.domain.repository.address.AddressDao

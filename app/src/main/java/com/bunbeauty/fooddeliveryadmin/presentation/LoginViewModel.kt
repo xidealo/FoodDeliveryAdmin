@@ -24,8 +24,7 @@ abstract class LoginViewModel : BaseViewModel() {
 
 class LoginViewModelImpl @Inject constructor(
     private val apiRepository: IApiRepository,
-    private val dataStoreHelper: IDataStoreHelper,
-    private val router: Router,
+    private val dataStoreHelper: IDataStoreHelper
 ) : LoginViewModel() {
 
     override val loginState = MutableStateFlow<State<String>>(State.Loading())
