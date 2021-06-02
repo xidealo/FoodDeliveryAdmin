@@ -10,8 +10,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.domain.repo.DataStoreRepo
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -27,8 +29,10 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     }
 
     override suspend fun saveToken(token: String) {
-        context.tokenDataStore.edit {
-            it[TOKEN_KEY] = token
+        withContext(IO) {
+            context.tokenDataStore.edit {
+                it[TOKEN_KEY] = token
+            }
         }
     }
 
@@ -37,8 +41,10 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     }
 
     override suspend fun saveCafeUuid(cafeUuid: String) {
-        context.cafeUuidDataStore.edit {
-            it[CAFE_UUID_KEY] = cafeUuid
+        withContext(IO) {
+            context.cafeUuidDataStore.edit {
+                it[CAFE_UUID_KEY] = cafeUuid
+            }
         }
     }
 
@@ -50,18 +56,22 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     }
 
     override suspend fun saveDelivery(delivery: Delivery) {
-        context.deliveryDataStore.edit {
-            it[DELIVERY_COST_KEY] = delivery.cost
-            it[DELIVERY_FOR_FREE_KEY] = delivery.forFree
+        withContext(IO) {
+            context.deliveryDataStore.edit {
+                it[DELIVERY_COST_KEY] = delivery.cost
+                it[DELIVERY_FOR_FREE_KEY] = delivery.forFree
+            }
         }
     }
 
     override suspend fun clearCache() {
-        context.tokenDataStore.edit {
-            it.clear()
-        }
-        context.cafeUuidDataStore.edit {
-            it.clear()
+        withContext(IO) {
+            context.tokenDataStore.edit {
+                it.clear()
+            }
+            context.cafeUuidDataStore.edit {
+                it.clear()
+            }
         }
     }
 

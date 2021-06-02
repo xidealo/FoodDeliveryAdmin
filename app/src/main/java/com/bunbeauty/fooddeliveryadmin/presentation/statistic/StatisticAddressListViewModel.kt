@@ -26,7 +26,7 @@ class StatisticAddressListViewModel @Inject constructor(
     private val _addressListState = MutableStateFlow<State<List<AddressItem>>>(State.Loading())
 
      fun getCafeList() {
-        cafeRepo.cafeList.onEach { cafeList ->
+        cafeRepo.cafeListFlow.onEach { cafeList ->
             val addressItemList = ArrayList(
                 cafeList.map { cafe ->
                     AddressItem(cafe.address, cafe.uuid)

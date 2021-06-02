@@ -11,9 +11,9 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
@@ -23,11 +23,11 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.flow.onEach
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
-    private var _viewDataBinding: B? = null
-    protected val viewDataBinding
-        get() = checkNotNull(_viewDataBinding)
+    private var mutableBinding: B? = null
+    protected val binding
+        get() = mutableBinding!!
     protected val textInputMap = HashMap<String, TextInputLayout>()
     protected abstract val viewModel: BaseViewModel
 
@@ -37,15 +37,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewBindingClass = getViewBindingClass()
-        val inflateMethod = viewBindingClass.getMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java,
-        )
-        _viewDataBinding = inflateMethod.invoke(viewBindingClass, inflater, container, false) as B
-        return _viewDataBinding?.root
+        mutableBinding = createBindingInstance(inflater, container)
+        return mutableBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,21 +52,21 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
                 textInput.error = null
                 textInput.clearFocus()
             }
-             when (error) {
-                 is ErrorEvent.MessageError -> {
-                     showError(error.message)
-                 }
-                 is ErrorEvent.FieldError -> {
-                     textInputMap[error.key]?.error = error.message
-                     textInputMap[error.key]?.requestFocus()
-                 }
-             }
+            when (error) {
+                is ErrorEvent.MessageError -> {
+                    showError(error.message)
+                }
+                is ErrorEvent.FieldError -> {
+                    textInputMap[error.key]?.error = error.message
+                    textInputMap[error.key]?.requestFocus()
+                }
+            }
         }.startedLaunch(viewLifecycleOwner)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _viewDataBinding = null
+        mutableBinding = null
     }
 
     protected fun <T> subscribe(liveData: LiveData<T>, observer: (T) -> Unit) {
@@ -85,7 +78,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     private fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {
-        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_SHORT)
+        val snack = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), backgroundColorId))
             .setTextColor(ContextCompat.getColor(requireContext(), textColorId))
             .setActionTextColor(ContextCompat.getColor(requireContext(), textColorId))
@@ -101,7 +94,17 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getViewBindingClass() =
-        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<B>
+    protected open fun createBindingInstance(inflater: LayoutInflater, container: ViewGroup?): B {
+        val viewBindingClass =
+            (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<B>
+        val method = viewBindingClass.getMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+
+        return method.invoke(null, inflater, container, false) as B
+    }
 
 }

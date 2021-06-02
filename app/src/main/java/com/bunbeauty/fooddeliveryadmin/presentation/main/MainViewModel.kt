@@ -15,14 +15,14 @@ class MainViewModel @Inject constructor(
     private val deliveryRepo: DeliveryRepo,
 ) : BaseViewModel() {
 
-    fun subscribeOnCafes() {
-        viewModelScope.launch(IO) {
+    fun refreshCafeList() {
+        viewModelScope.launch {
             cafeRepo.refreshCafeList()
         }
     }
 
     fun refreshDelivery() {
-        viewModelScope.launch(IO) {
+        viewModelScope.launch {
             deliveryRepo.refreshDelivery()
         }
     }

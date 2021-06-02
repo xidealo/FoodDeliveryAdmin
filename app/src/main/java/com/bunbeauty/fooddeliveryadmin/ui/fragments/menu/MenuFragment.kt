@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.MenuViewModel
@@ -25,7 +24,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
         val itemAdapter = ItemAdapter<MenuProductItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.fragmentMenuRvList.adapter = fastAdapter
+        binding.fragmentMenuRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, menuProductItem, _ ->
             viewModel.goToEditMenuProduct(menuProductItem.menuProduct)
             false
@@ -40,7 +39,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
             }
         }.startedLaunch(viewLifecycleOwner)
 
-        viewDataBinding.fragmentMenuFabCreateProduct.setOnClickListener {
+        binding.fragmentMenuFabCreateProduct.setOnClickListener {
             viewModel.goToCreateMenuProduct()
         }
     }

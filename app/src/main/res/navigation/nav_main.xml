@@ -23,11 +23,11 @@
         android:label="OrdersFragment"
         tools:layout="@layout/fragment_orders">
         <action
-            android:id="@+id/to_addressListBottomSheet"
-            app:destination="@id/addressListBottomSheet" />
-        <action
             android:id="@+id/to_OrdersDetailsFragment"
             app:destination="@id/ordersDetailsFragment" />
+        <action
+            android:id="@+id/to_listBottomSheet"
+            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/ordersDetailsFragment"
@@ -142,6 +142,6 @@
             app:argType="string" />
         <argument
             android:name="list"
-            app:argType="com.bunbeauty.domain.model.ListModel[]" />
+            app:argType="com.bunbeauty.fooddeliveryadmin.ui.items.list.CafeAddress[]" />
     </dialog>
 </navigation>

@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.login
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
@@ -26,26 +25,26 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         viewModel.loginState.onEach { loginState ->
             when(loginState) {
                 is State.Loading -> {
-                    viewDataBinding.fragmentLoginPbLoading.visible()
-                    viewDataBinding.fragmentLoginGroupLogin.gone()
+                    binding.fragmentLoginPbLoading.visible()
+                    binding.fragmentLoginGroupLogin.gone()
                 }
                 is State.Empty -> {
-                    viewDataBinding.fragmentLoginPbLoading.gone()
-                    viewDataBinding.fragmentLoginGroupLogin.visible()
+                    binding.fragmentLoginPbLoading.gone()
+                    binding.fragmentLoginGroupLogin.visible()
                 }
                 is State.Error -> {
-                    viewDataBinding.fragmentLoginPbLoading.gone()
-                    viewDataBinding.fragmentLoginGroupLogin.visible()
+                    binding.fragmentLoginPbLoading.gone()
+                    binding.fragmentLoginGroupLogin.visible()
                     showError(loginState.message)
                 }
                 else -> {}
             }
         }.startedLaunch(viewLifecycleOwner)
 
-        viewDataBinding.fragmentLoginBtnLogin.setOnClickListener {
+        binding.fragmentLoginBtnLogin.setOnClickListener {
             viewModel.login(
-                viewDataBinding.fragmentLoginEtLogin.text.toString(),
-                viewDataBinding.fragmentLoginEtPassword.text.toString()
+                binding.fragmentLoginEtLogin.text.toString(),
+                binding.fragmentLoginEtPassword.text.toString()
             )
         }
     }

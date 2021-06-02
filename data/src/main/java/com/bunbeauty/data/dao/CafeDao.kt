@@ -12,7 +12,10 @@ import java.util.*
 interface CafeDao : BaseDao<CafeEntity> {
 
     @Query("SELECT * FROM CafeEntity")
-    fun getCafeList(): Flow<List<CafeEntity>>
+    fun getCafeListFlow(): Flow<List<CafeEntity>>
+
+    @Query("SELECT * FROM CafeEntity")
+    fun getCafeList(): List<CafeEntity>
 
     @Query("SELECT * FROM CafeEntity WHERE uuid = :uuid")
     fun getCafeByUuid(uuid: String): Flow<CafeEntity?>

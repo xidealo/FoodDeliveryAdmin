@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.model
+package com.bunbeauty.fooddeliveryadmin.ui.items.list
 
 import android.os.Parcelable
 

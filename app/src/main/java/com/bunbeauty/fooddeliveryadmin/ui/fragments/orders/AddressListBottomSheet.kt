@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
@@ -25,7 +24,7 @@ class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBindi
 
         val itemAdapter = ItemAdapter<AddressItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.bottomSheetAddressListRvList.adapter = fastAdapter
+        binding.bottomSheetAddressListRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, addressItem, _ ->
             viewModel.saveCafeId(addressItem.cafeUuid)
             false

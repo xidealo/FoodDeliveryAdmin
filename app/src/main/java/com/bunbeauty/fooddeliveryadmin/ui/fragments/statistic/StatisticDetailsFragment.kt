@@ -19,18 +19,18 @@ class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.fragmentStatisticDetailsBtnBack.setOnClickListener {
+        binding.fragmentStatisticDetailsBtnBack.setOnClickListener {
             viewModel.goBack()
         }
-        viewDataBinding.fragmentStatisticDetailsTvPeriod.text = viewModel.period
-        viewDataBinding.fragmentStatisticDetailsTvTotalProceedsValue.text = viewModel.proceeds
-        viewDataBinding.fragmentStatisticDetailsTvTotalCountValue.text = viewModel.orderCount
-        viewDataBinding.fragmentStatisticDetailsTvTotalAverageCheckValue.text = viewModel.averageCheck
+        binding.fragmentStatisticDetailsTvPeriod.text = viewModel.period
+        binding.fragmentStatisticDetailsTvTotalProceedsValue.text = viewModel.proceeds
+        binding.fragmentStatisticDetailsTvTotalCountValue.text = viewModel.orderCount
+        binding.fragmentStatisticDetailsTvTotalAverageCheckValue.text = viewModel.averageCheck
 
         val itemAdapter = ItemAdapter<ProductStatisticItem>().apply {
             set(viewModel.productStatisticList)
         }
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.fragmentStatisticDetailsRvList.adapter = fastAdapter
+        binding.fragmentStatisticDetailsRvList.adapter = fastAdapter
     }
 }

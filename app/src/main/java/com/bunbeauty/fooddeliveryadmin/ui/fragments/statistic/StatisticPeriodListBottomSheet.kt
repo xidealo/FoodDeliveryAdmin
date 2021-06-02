@@ -27,7 +27,7 @@ class StatisticPeriodListBottomSheet :
 
         val itemAdapter = ItemAdapter<PeriodItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.bottomSheetStatisticPeriodListRvList.adapter = fastAdapter
+        binding.bottomSheetStatisticPeriodListRvList.adapter = fastAdapter
         itemAdapter.set(
             Period.values().map { period ->
                 PeriodItem(period.text)

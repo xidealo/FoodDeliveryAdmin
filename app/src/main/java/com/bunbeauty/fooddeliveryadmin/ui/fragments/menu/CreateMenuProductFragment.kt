@@ -12,7 +12,7 @@ import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
-import com.bunbeauty.domain.model.menu_product.MenuProductCode
+import com.bunbeauty.fooddeliveryadmin.ui.items.list.MenuProductCode
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
@@ -30,15 +30,15 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageURI(uri)
-                viewModel.photo = viewDataBinding.fragmentCreateMenuProductIvPhoto.getBitmap()
+                binding.fragmentCreateMenuProductIvPhoto.setImageURI(uri)
+                viewModel.photo = binding.fragmentCreateMenuProductIvPhoto.getBitmap()
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(viewDataBinding) {
+        with(binding) {
             fragmentCreateMenuProductBtnBack.setOnClickListener {
                 viewModel.goBack()
             }
@@ -58,7 +58,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
                 bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
                     ?.let { menuProductCode ->
                         fragmentCreateMenuProductNcvProductCode.cardText = menuProductCode.title
-                        viewModel.setProductCode(menuProductCode.title)
+                        viewModel.setProductCode(menuProductCode)
                     }
             }
             fragmentCreateMenuProductNcvProductCode.setOnClickListener {

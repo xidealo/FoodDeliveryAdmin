@@ -44,7 +44,7 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
         return if (deferred.isNullOrEmpty()) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_order_item_deferred_time) + deferred
+            resourcesProvider.getString(R.string.msg_orders_deferred_time) + deferred
         }
     }
 

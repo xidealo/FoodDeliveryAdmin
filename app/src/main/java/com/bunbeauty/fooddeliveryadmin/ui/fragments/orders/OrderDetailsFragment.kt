@@ -28,57 +28,57 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.fragmentOrderDetailsBtnBack.setOnClickListener {
+        binding.fragmentOrderDetailsBtnBack.setOnClickListener {
             viewModel.goBack()
         }
-        viewDataBinding.fragmentOrderDetailsTvCode.text = viewModel.codeTitle
-        viewDataBinding.fragmentOrderDetailsTvPhoneValue.text = viewModel.phone
-        viewDataBinding.fragmentOrderDetailsTvTimeValue.text = viewModel.time
-        viewDataBinding.fragmentOrderDetailsTvPickupMethodValue.text = viewModel.pickupMethod
-        viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.text = viewModel.deferredTime
-        viewDataBinding.fragmentOrderDetailsTvAddressValue.text = viewModel.address
-        viewDataBinding.fragmentOrderDetailsTvCommentValue.text = viewModel.comment
-        viewDataBinding.fragmentOrderDetailsCvStatus.cardText = viewModel.status
-        viewDataBinding.fragmentOrderDetailsCvStatus.setOnClickListener {
+        binding.fragmentOrderDetailsTvCode.text = viewModel.codeTitle
+        binding.fragmentOrderDetailsTvPhoneValue.text = viewModel.phone
+        binding.fragmentOrderDetailsTvTimeValue.text = viewModel.time
+        binding.fragmentOrderDetailsTvPickupMethodValue.text = viewModel.pickupMethod
+        binding.fragmentOrderDetailsTvDeferredTimeValue.text = viewModel.deferredTime
+        binding.fragmentOrderDetailsTvAddressValue.text = viewModel.address
+        binding.fragmentOrderDetailsTvCommentValue.text = viewModel.comment
+        binding.fragmentOrderDetailsCvStatus.cardText = viewModel.status
+        binding.fragmentOrderDetailsCvStatus.setOnClickListener {
             viewModel.goToStatusList()
         }
         setFragmentResultListener(STATUS_REQUEST_KEY) { _, bundle ->
             bundle.getParcelable<StatusItem>(SELECTED_STATUS_KEY)?.let { statusItem ->
                 viewModel.status = statusItem.status
-                viewDataBinding.fragmentOrderDetailsCvStatus.cardText = statusItem.status
+                binding.fragmentOrderDetailsCvStatus.cardText = statusItem.status
             }
         }
         val itemAdapter = ItemAdapter<CartProductItem>().apply {
             set(viewModel.productList)
         }
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.fragmentOrderDetailsRvProductList.adapter = fastAdapter
-        viewDataBinding.fragmentOrderDetailsTvDeliveryCostValue.text = viewModel.deliveryCost
-        viewDataBinding.fragmentOrderDetailsTvBonusesValue.text = viewModel.bonuses
-        viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.strikeOutText()
-        viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.text = viewModel.oldOrderCost
-        viewDataBinding.fragmentOrderDetailsTvOrderNewTotalCost.text = viewModel.newOrderCost
+        binding.fragmentOrderDetailsRvProductList.adapter = fastAdapter
+        binding.fragmentOrderDetailsTvDeliveryCostValue.text = viewModel.deliveryCost
+        binding.fragmentOrderDetailsTvBonusesValue.text = viewModel.bonuses
+        binding.fragmentOrderDetailsTvOrderOldTotalCost.strikeOutText()
+        binding.fragmentOrderDetailsTvOrderOldTotalCost.text = viewModel.oldOrderCost
+        binding.fragmentOrderDetailsTvOrderNewTotalCost.text = viewModel.newOrderCost
         if (viewModel.deferredTime.isNullOrEmpty()) {
-            viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.gone()
-            viewDataBinding.fragmentOrderDetailsTvDeferredTime.gone()
+            binding.fragmentOrderDetailsTvDeferredTimeValue.gone()
+            binding.fragmentOrderDetailsTvDeferredTime.gone()
         }
         if (viewModel.comment.isEmpty()) {
-            viewDataBinding.fragmentOrderDetailsTvCommentValue.gone()
-            viewDataBinding.fragmentOrderDetailsTvComment.gone()
+            binding.fragmentOrderDetailsTvCommentValue.gone()
+            binding.fragmentOrderDetailsTvComment.gone()
         }
         if (!viewModel.isDelivery) {
-            viewDataBinding.fragmentOrderDetailsTvDeliveryCostValue.gone()
-            viewDataBinding.fragmentOrderDetailsTvDeliveryCost.gone()
+            binding.fragmentOrderDetailsTvDeliveryCostValue.gone()
+            binding.fragmentOrderDetailsTvDeliveryCost.gone()
         }
         if (viewModel.bonuses.isEmpty()) {
-            viewDataBinding.fragmentOrderDetailsTvBonusesValue.gone()
-            viewDataBinding.fragmentOrderDetailsTvBonuses.gone()
+            binding.fragmentOrderDetailsTvBonusesValue.gone()
+            binding.fragmentOrderDetailsTvBonuses.gone()
         }
-        viewDataBinding.fragmentOrderDetailsBtnCancel.setOnClickListener {
+        binding.fragmentOrderDetailsBtnCancel.setOnClickListener {
             viewModel.goBack()
         }
-        viewDataBinding.fragmentOrderDetailsBtnSave.setOnClickListener {
-            val status = viewDataBinding.fragmentOrderDetailsCvStatus.cardText
+        binding.fragmentOrderDetailsBtnSave.setOnClickListener {
+            val status = binding.fragmentOrderDetailsCvStatus.cardText
             if (viewModel.isStatusCanceled(status)) {
                 showCanceledAlert(status)
             } else {

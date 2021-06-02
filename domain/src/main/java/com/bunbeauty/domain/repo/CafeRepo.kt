@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface CafeRepo {
 
-    val cafeList: Flow<List<Cafe>>
+    val cafeListFlow: Flow<List<Cafe>>
 
     fun getCafeByUuid(uuid: String): Flow<Cafe?>
+
+    suspend fun getCafeList(): List<Cafe>
 
     suspend fun refreshCafeList()
 }

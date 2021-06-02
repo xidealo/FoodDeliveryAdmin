@@ -28,7 +28,7 @@ class StatisticAddressListBottomSheet: BaseBottomSheetDialog<BottomSheetAddressL
 
         val itemAdapter = ItemAdapter<AddressItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.bottomSheetAddressListRvList.adapter = fastAdapter
+        binding.bottomSheetAddressListRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, addressItem, _ ->
             val bundle = bundleOf(SELECTED_ADDRESS_KEY to addressItem)
             setFragmentResult(ADDRESS_REQUEST_KEY, bundle)

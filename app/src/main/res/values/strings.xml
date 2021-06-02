@@ -33,8 +33,9 @@
     <string name="error_login_enter_user_password">Введите пароль</string>
     <string name="error_login_authorization">Неправильный логин или пароль</string>
 
-    <!-- ORDER ITEM-->
-    <string name="msg_order_item_deferred_time">Ко времени:&#160;</string>
+    <!-- ORDERS-->
+    <string name="msg_orders_deferred_time">Ко времени:&#160;</string>
+    <string name="title_orders_select_cafe">Список кафе</string>
 
     <!-- ORDER STATUS-->
     <string name="msg_status_not_accepted">Обрабатывается</string>
@@ -123,6 +124,10 @@
     <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
     <string name="msg_product_updated">&#160;обновлён</string>
     <string name="msg_product_deleted">&#160;удалён</string>
+    <string name="title_edit_menu_product_alert">Удаление</string>
+    <string name="msg_edit_menu_product_alert">Удалить позицию?</string>
+    <string name="action_edit_menu_product_alert_yes">Да</string>
+    <string name="action_edit_menu_product_alert_cancel">Отмена</string>
 
     <!-- PRODUCT CODE -->
     <string name="msg_product_code_combo">Комбо</string>

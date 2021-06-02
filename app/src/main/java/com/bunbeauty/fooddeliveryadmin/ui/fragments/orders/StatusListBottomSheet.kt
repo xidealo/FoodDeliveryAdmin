@@ -32,6 +32,6 @@ class StatusListBottomSheet : BaseBottomSheetDialog<BottomSheetStatusListBinding
             viewModel.goBack()
             false
         }
-        viewDataBinding.bottomSheetStatusListRvList.adapter = fastAdapter
+        binding.bottomSheetStatusListRvList.adapter = fastAdapter
     }
 }

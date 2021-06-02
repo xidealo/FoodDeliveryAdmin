@@ -12,7 +12,8 @@ import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
-import com.bunbeauty.domain.model.menu_product.MenuProductCode
+import com.bunbeauty.fooddeliveryadmin.ui.items.list.MenuProductCode
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.setImage
@@ -20,6 +21,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.EditMenuProductViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -31,15 +33,15 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                viewDataBinding.fragmentEditMenuProductIvPhoto.setImageURI(uri)
-                viewModel.photo = viewDataBinding.fragmentEditMenuProductIvPhoto.getBitmap()
+                binding.fragmentEditMenuProductIvPhoto.setImageURI(uri)
+                viewModel.photo = binding.fragmentEditMenuProductIvPhoto.getBitmap()
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(viewDataBinding) {
+        with(binding) {
             fragmentEditMenuProductBtnBack.setOnClickListener {
                 viewModel.goBack()
             }
@@ -63,7 +65,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
                 bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
                     ?.let { menuProductCode ->
                         fragmentEditMenuProductNcvProductCode.cardText = menuProductCode.title
-                        viewModel.setProductCode(menuProductCode.title)
+                        viewModel.setProductCode(menuProductCode)
                     }
             }
             fragmentEditMenuProductNcvProductCode.setOnClickListener {
@@ -78,7 +80,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
                 fragmentEditMenuProductTilComboDescription.toggleVisibility(isVisible)
             }.startedLaunch(viewLifecycleOwner)
             fragmentEditMenuProductBtnDelete.setOnClickListener {
-                viewModel.deleteMenuProduct()
+                showDeleteDialog()
             }
             fragmentEditMenuProductBtnSave.setOnClickListener {
                 viewModel.saveMenuProduct(
@@ -98,5 +100,16 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
             textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] =
                 fragmentEditMenuProductTilComboDescription
         }
+    }
+
+    fun showDeleteDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.title_edit_menu_product_alert)
+            .setMessage(R.string.msg_edit_menu_product_alert)
+            .setPositiveButton(R.string.action_edit_menu_product_alert_yes) { _, _ ->
+                viewModel.deleteMenuProduct()
+            }
+            .setNegativeButton(R.string.action_edit_menu_product_alert_cancel) { _, _ -> }
+            .show()
     }
 }

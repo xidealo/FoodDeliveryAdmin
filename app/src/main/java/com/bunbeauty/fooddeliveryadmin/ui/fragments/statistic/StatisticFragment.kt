@@ -32,18 +32,18 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.fragmentStatisticMcvAddress.cardText = viewModel.selectedAddressItem.address
-        viewDataBinding.fragmentStatisticMcvPeriod.cardText = viewModel.selectedPeriodItem.period
-        viewDataBinding.fragmentStatisticMcvAddress.setOnClickListener {
+        binding.fragmentStatisticMcvAddress.cardText = viewModel.selectedAddressItem.address
+        binding.fragmentStatisticMcvPeriod.cardText = viewModel.selectedPeriodItem.period
+        binding.fragmentStatisticMcvAddress.setOnClickListener {
             viewModel.goToAddressList()
         }
-        viewDataBinding.fragmentStatisticMcvPeriod.setOnClickListener {
+        binding.fragmentStatisticMcvPeriod.setOnClickListener {
             viewModel.goToPeriodList()
         }
 
         val itemAdapter = ItemAdapter<StatisticItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        viewDataBinding.fragmentStatisticRvList.adapter = fastAdapter
+        binding.fragmentStatisticRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, statisticItem, _ ->
             viewModel.goToStatisticDetails(statisticItem.statistic)
             false
@@ -51,7 +51,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
         setFragmentResultListener(ADDRESS_REQUEST_KEY) { _, bundle ->
             bundle.getParcelable<AddressItem>(SELECTED_ADDRESS_KEY)?.let { addressItem ->
-                viewDataBinding.fragmentStatisticMcvAddress.cardText = addressItem.address
+                binding.fragmentStatisticMcvAddress.cardText = addressItem.address
                 viewModel.selectedAddressItem = addressItem
                 viewModel.getStatistic(
                     viewModel.selectedAddressItem.cafeUuid,
@@ -61,7 +61,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         }
         setFragmentResultListener(PERIOD_REQUEST_KEY) { _, bundle ->
             bundle.getParcelable<PeriodItem>(SELECTED_PERIOD_KEY)?.let { periodItem ->
-                viewDataBinding.fragmentStatisticMcvPeriod.cardText = periodItem.period
+                binding.fragmentStatisticMcvPeriod.cardText = periodItem.period
                 viewModel.selectedPeriodItem = periodItem
                 viewModel.getStatistic(
                     viewModel.selectedAddressItem.cafeUuid,
@@ -73,19 +73,19 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         viewModel.statisticState.onEach { state ->
             when (state) {
                 is State.Loading -> {
-                    viewDataBinding.fragmentStatisticRvList.gone()
-                    viewDataBinding.fragmentStatisticLpiLoading.visible()
+                    binding.fragmentStatisticRvList.gone()
+                    binding.fragmentStatisticLpiLoading.visible()
                 }
                 is State.Empty -> {
-                    viewDataBinding.fragmentStatisticLpiLoading.invisible()
+                    binding.fragmentStatisticLpiLoading.invisible()
                 }
                 is State.Success -> {
                     itemAdapter.set(state.data)
-                    viewDataBinding.fragmentStatisticRvList.visible()
-                    viewDataBinding.fragmentStatisticLpiLoading.invisible()
+                    binding.fragmentStatisticRvList.visible()
+                    binding.fragmentStatisticLpiLoading.invisible()
                 }
                 is State.Error -> {
-                    viewDataBinding.fragmentStatisticLpiLoading.invisible()
+                    binding.fragmentStatisticLpiLoading.invisible()
                 }
             }
         }.startedLaunch(viewLifecycleOwner)

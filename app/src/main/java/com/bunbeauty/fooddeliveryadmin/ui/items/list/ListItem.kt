@@ -1,9 +1,8 @@
-package com.bunbeauty.fooddeliveryadmin.ui.items
+package com.bunbeauty.fooddeliveryadmin.ui.items.list
 
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bunbeauty.domain.model.ListModel
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementTextBinding
 import com.mikepenz.fastadapter.binding.AbstractBindingItem

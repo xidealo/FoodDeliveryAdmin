@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router
@@ -25,22 +23,16 @@ class MainActivity : AppCompatActivity() {
 
     val viewModel: MainViewModel by viewModels()
 
-    lateinit var viewDataBinding: ActivityMainBinding
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         router.attach(this, R.id.activity_main_fcv_container)
-
-        viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewDataBinding.lifecycleOwner = this
-        viewDataBinding.executePendingBindings()
-
-        viewModel.subscribeOnCafes()
+        viewModel.refreshCafeList()
         viewModel.refreshDelivery()
-
         setupBottomNavigationBar()
     }
 
@@ -48,11 +40,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigationBar() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.activity_main_fcv_container) as NavHostFragment).findNavController()
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.ordersFragment, R.id.statisticFragment, R.id.menuFragment)
-        )
 
-        viewDataBinding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
+        binding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
@@ -70,10 +59,10 @@ class MainActivity : AppCompatActivity() {
                 else -> toggleBottomNavigationBarVisibility(false)
             }
         }
-        viewDataBinding.activityMainBnvBottomNavigationBar.setOnNavigationItemReselectedListener {}
+        binding.activityMainBnvBottomNavigationBar.setOnNavigationItemReselectedListener {}
     }
 
     private fun toggleBottomNavigationBarVisibility(isVisible: Boolean) {
-        viewDataBinding.activityMainBnvBottomNavigationBar.toggleVisibility(isVisible)
+        binding.activityMainBnvBottomNavigationBar.toggleVisibility(isVisible)
     }
 }
