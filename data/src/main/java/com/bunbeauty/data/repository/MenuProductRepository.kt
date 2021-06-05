@@ -25,4 +25,12 @@ class MenuProductRepository @Inject constructor(
                         menuProduct.visible
                     }
             }.flowOn(Default)
+
+    override fun saveMenuProductPhoto(photoByteArray: ByteArray): Flow<String> {
+        return apiRepo.saveMenuProductPhoto(photoByteArray)
+    }
+
+    override suspend fun saveMenuProduct(menuProduct: MenuProduct) {
+        apiRepo.saveMenuProduct(serverMenuProductMapper.to(menuProduct), menuProduct.uuid)
+    }
 }

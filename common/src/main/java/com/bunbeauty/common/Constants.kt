@@ -42,4 +42,9 @@ object Constants {
     const val LIST_ARGS_KEY = "list"
     const val SELECTED_KEY_ARGS_KEY = "selectedKey"
     const val REQUEST_KEY_ARGS_KEY = "requestKey"
+
+    // PATH
+
+    const val IMAGES_FOLDER = "image/*"
+    //const val FB_STORAGE = "gs://fooddelivery-ce2ef.appspot.com"
 }

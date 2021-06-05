@@ -5,7 +5,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:backgroundTint="@color/mainBackground"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         tools:context=".ui.fragments.menu.CreateMenuProductFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +38,22 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragment_create_menu_product_btn_back"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/fragment_create_menu_product_mcv_photo"
+                style="@style/DefaultMaterialCard"
+                android:layout_marginTop="@dimen/medium_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_btn_back">
+
+                <ImageView
+                    android:id="@+id/fragment_create_menu_product_iv_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/add_photo" />
+            </com.google.android.material.card.MaterialCardView>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_name"
                 style="@style/MaterialInputLayout"
@@ -43,7 +61,7 @@
                 android:hint="@string/hint_create_menu_product_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_btn_back">
+                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_mcv_photo">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_create_menu_product_et_name"
@@ -139,7 +157,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/fragment_create_menu_product_btn_update"
+                android:id="@+id/fragment_create_menu_product_btn_create"
                 style="@style/MainButton"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/action_create_menu_product_create"

@@ -40,6 +40,7 @@ class CafeRepository @Inject constructor(
             val cafeEntity = serverCafeList.map { serverCafe ->
                 serverCafeMapper.from(serverCafe)
             }
+
             cafeDao.insertAll(cafeEntity)
         }
     }

@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.menu
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.LIST_ARGS_KEY
@@ -11,7 +11,7 @@ import com.bunbeauty.common.Constants.SELECTED_KEY_ARGS_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.common.Constants.TITLE_ARGS_KEY
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.model.ServerMenuProduct
+import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.model.menu_product.MenuProductCode
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.util.resources.IResourcesProvider
@@ -19,11 +19,17 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,9 +68,46 @@ class CreateMenuProductViewModel @Inject constructor(
             (productCode == stringUtil.getProductCodeString(ProductCode.COMBO))
     }
 
-    fun createMenuProduct(serverMenuProduct: ServerMenuProduct) {
-        viewModelScope.launch(Dispatchers.Default) {
-            //menuProductRepo.insert(serverMenuProduct)
+    fun createMenuProduct(
+        bitmap: Bitmap,
+        name: String,
+        productCode: String,
+        cost: String,
+        discountCost: String,
+        weight: String,
+        description: String,
+        comboDescription: String
+    ) {
+        viewModelScope.launch(Default) {
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            val photoByteArray = outputStream.toByteArray()
+
+            withContext(IO) {
+                menuProductRepo.saveMenuProductPhoto(photoByteArray).collect { photoLink ->
+                    val uuid = UUID.randomUUID().toString()
+                    val menuProduct = MenuProduct(
+                        uuid = uuid,
+                        name = name,
+                        cost = cost.toInt(),
+                        discountCost = discountCost.toInt(),
+                        weight = weight.toInt(),
+                        description = description,
+                        comboDescription = comboDescription,
+                        photoLink = photoLink,
+                        onFire = false,
+                        inOven = false,
+                        productCode = stringUtil.getProductCode(productCode),
+                        barcode = null,
+                        visible = isVisible
+                    )
+                    menuProductRepo.saveMenuProduct(menuProduct)
+
+                    withContext(Main) {
+                        goBack()
+                    }
+                }
+            }
         }
     }
 

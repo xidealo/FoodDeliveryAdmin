@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface OrderRepo {
 
-    fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus)
+    suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus)
 
     fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>>
     fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>>

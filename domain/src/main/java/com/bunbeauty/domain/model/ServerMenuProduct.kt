@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.model
 
 data class ServerMenuProduct(
-    var uuid: String = "",
+    var uuid: String? = null,
     var name: String = "",
     var visible: Boolean = true,
     var productCode: String = "",

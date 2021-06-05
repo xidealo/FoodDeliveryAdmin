@@ -14,6 +14,7 @@ android {
 
     signingConfigs {
         release {
+            storeFile file("keystore.jks")
             storePassword 'itisBB15092019'
             keyAlias 'papakarloKey'
             keyPassword 'Itispapakarlo08062004'
@@ -25,7 +26,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,11 +39,13 @@ android {
         }
 
         debug {
+            debuggable true
             minifyEnabled false
-           buildConfigField 'String', 'FB_LINK', '"https://test-fooddelivery.firebaseio.com/"'
+            buildConfigField 'String', 'FB_LINK', '"https://test-fooddelivery.firebaseio.com/"'
         }
 
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'FB_LINK', '"https://fooddelivery-ce2ef-default-rtdb.firebaseio.com/"'
@@ -95,8 +98,10 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.navigationVersion"
 
+    //Firebase
     implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
     implementation "com.google.firebase:firebase-messaging:22.0.0"
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     //Tests
     testImplementation "io.mockk:mockk:$rootProject.mockVersion"

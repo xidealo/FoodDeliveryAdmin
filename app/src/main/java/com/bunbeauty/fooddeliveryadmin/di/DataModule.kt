@@ -3,8 +3,12 @@ package com.bunbeauty.fooddeliveryadmin.di
 import android.content.Context
 import androidx.room.Room
 import com.bunbeauty.data.LocalDatabase
+import com.bunbeauty.fooddeliveryadmin.BuildConfig.APP_ID
 import com.bunbeauty.fooddeliveryadmin.BuildConfig.FB_LINK
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +22,11 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseDatabase() = FirebaseDatabase.getInstance(FB_LINK)
+    fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance(FB_LINK)
+
+    @Singleton
+    @Provides
+    fun provideFirebaseStorage(): StorageReference = Firebase.storage.reference.child(APP_ID)
 
     @Singleton
     @Provides

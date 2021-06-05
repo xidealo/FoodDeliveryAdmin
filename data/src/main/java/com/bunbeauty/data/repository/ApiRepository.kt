@@ -1,5 +1,6 @@
 package com.bunbeauty.data.repository
 
+import android.net.Uri
 import android.util.Log
 import com.bunbeauty.common.Constants.CAFES
 import com.bunbeauty.common.Constants.COMPANY
@@ -18,9 +19,14 @@ import com.bunbeauty.domain.model.ServerMenuProduct
 import com.bunbeauty.domain.model.cafe.server.ServerCafe
 import com.bunbeauty.domain.model.order.server.ServerOrder
 import com.bunbeauty.domain.repo.ApiRepo
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,7 +41,8 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class ApiRepository @Inject constructor(
-    private val firebaseDatabase: FirebaseDatabase
+    private val firebaseDatabase: FirebaseDatabase,
+    private val firebaseStorage: StorageReference
 ) : ApiRepo, CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Job() + IO
@@ -155,17 +162,31 @@ class ApiRepository @Inject constructor(
             }
         }
 
-    override fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
-        val menuProductRef = firebaseDatabase
+    @ExperimentalCoroutinesApi
+    override fun saveMenuProductPhoto(photoByteArray: ByteArray): Flow<String> = callbackFlow {
+        val photoName = UUID.randomUUID().toString()
+        val photoReference = firebaseStorage.child(photoName)
+        val task = photoReference.putBytes(photoByteArray)
+
+        val onSuccessListener = OnSuccessListener<UploadTask.TaskSnapshot> {
+            photoReference.downloadUrl.addOnSuccessListener { uri ->
+                trySend(uri.toString())
+            }
+        }
+        task.addOnSuccessListener(onSuccessListener)
+
+        awaitClose {
+            task.removeOnSuccessListener(onSuccessListener)
+        }
+    }
+
+    override fun saveMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
+        val menuProductReference = firebaseDatabase
             .getReference(COMPANY)
             .child(APP_ID)
             .child(MENU_PRODUCTS)
             .child(uuid)
-        menuProductRef.setValue(menuProduct)
-    }
-
-    override fun saveMenuProduct(menuProduct: ServerMenuProduct) {
-        //TODO("Not yet implemented")
+        menuProductReference.setValue(menuProduct)
     }
 
     @ExperimentalCoroutinesApi

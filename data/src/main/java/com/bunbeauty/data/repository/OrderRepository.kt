@@ -23,7 +23,7 @@ class OrderRepository @Inject constructor(
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
 
-    override fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus) {
+    override suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus) {
         apiRepo.updateOrderStatus(cafeUuid, orderUuid, status)
     }
 

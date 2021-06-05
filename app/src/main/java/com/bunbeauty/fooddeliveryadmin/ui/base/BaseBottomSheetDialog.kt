@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
 
@@ -39,6 +41,14 @@ abstract class BaseBottomSheetDialog<B : ViewDataBinding> : BottomSheetDialogFra
         _viewDataBinding = inflateMethod.invoke(viewBindingClass, inflater, container, false) as B
 
         return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

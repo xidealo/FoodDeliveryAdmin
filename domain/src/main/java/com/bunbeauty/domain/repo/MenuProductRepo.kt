@@ -6,4 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface MenuProductRepo {
 
     val menuProductList: Flow<List<MenuProduct>>
+
+    fun saveMenuProductPhoto(photoByteArray: ByteArray): Flow<String>
+    suspend fun saveMenuProduct(menuProduct: MenuProduct)
 }
