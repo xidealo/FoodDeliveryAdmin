@@ -2,6 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.*
+import com.bunbeauty.domain.enums.ProductCode
+import com.bunbeauty.domain.enums.ProductCode.*
 import com.bunbeauty.domain.model.order.UserAddress
 import com.bunbeauty.domain.util.resources.ResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
@@ -112,6 +114,36 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
             resourcesProvider.getString(R.string.msg_order_details_delivery_free)
         } else {
             getCostString(deliveryCost)
+        }
+    }
+
+    override fun getProductCodeString(productCode: ProductCode): String {
+        return when (productCode) {
+            COMBO -> resourcesProvider.getString(R.string.msg_product_code_combo)
+            PIZZA -> resourcesProvider.getString(R.string.msg_product_code_pizza)
+            BARBECUE -> resourcesProvider.getString(R.string.msg_product_code_barbecue)
+            BURGER -> resourcesProvider.getString(R.string.msg_product_code_burger)
+            DRINK -> resourcesProvider.getString(R.string.msg_product_code_drink)
+            POTATO -> resourcesProvider.getString(R.string.msg_product_code_potato)
+            SPICE -> resourcesProvider.getString(R.string.msg_product_code_spice)
+            BAKERY -> resourcesProvider.getString(R.string.msg_product_code_bakery)
+            OVEN -> resourcesProvider.getString(R.string.msg_product_code_oven)
+            else -> ""
+        }
+    }
+
+    override fun getProductCode(productCode: String): ProductCode {
+        return when (productCode) {
+            resourcesProvider.getString(R.string.msg_product_code_combo) -> COMBO
+            resourcesProvider.getString(R.string.msg_product_code_pizza) -> PIZZA
+            resourcesProvider.getString(R.string.msg_product_code_barbecue) -> BARBECUE
+            resourcesProvider.getString(R.string.msg_product_code_burger) -> BURGER
+            resourcesProvider.getString(R.string.msg_product_code_drink) -> DRINK
+            resourcesProvider.getString(R.string.msg_product_code_potato) -> POTATO
+            resourcesProvider.getString(R.string.msg_product_code_spice) -> SPICE
+            resourcesProvider.getString(R.string.msg_product_code_bakery) -> BAKERY
+            resourcesProvider.getString(R.string.msg_product_code_oven) -> OVEN
+            else -> COMBO
         }
     }
 }

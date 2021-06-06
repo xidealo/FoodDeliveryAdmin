@@ -5,57 +5,36 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.menu.CreateMenuProductFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small_padding"
-            tools:context=".ui.fragments.menu.CreateMenuProductFragment">
+            android:padding="@dimen/small_padding">
 
-            <RadioGroup
-                android:id="@+id/fragment_create_menu_product_rg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fragment_create_menu_product_btn_back"
+                style="@style/TransparentCircleButton"
+                android:layout_margin="@dimen/small_margin"
+                app:icon="@drawable/ic_left_arrow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/fragment_create_menu_product_rb_show"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/hint_create_menu_product_show"
-                    android:textColor="@color/mainTextColor" />
+            <TextView
+                style="@style/LargeBoldCenterText"
+                android:text="@string/hint_create_menu_product_title"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_create_menu_product_btn_back"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_create_menu_product_btn_visibility"
+                app:layout_constraintStart_toEndOf="@+id/fragment_create_menu_product_btn_back" />
 
-                <RadioButton
-                    android:id="@+id/fragment_create_menu_product_rb_hide"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/hint_create_menu_product_hide"
-                    android:textColor="@color/mainTextColor" />
-            </RadioGroup>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/fragment_create_menu_product_til_product_code"
-                style="@style/MaterialInputLayout"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:hint="@string/hint_create_menu_product_product_code"
-                app:endIconMode="dropdown_menu"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_rg">
-
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/fragment_creation_address_et_product_code"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:padding="@dimen/large_padding" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fragment_create_menu_product_btn_visibility"
+                style="@style/IconOnlyButton"
+                android:layout_marginEnd="@dimen/small_margin"
+                app:icon="@drawable/ic_visible"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_create_menu_product_btn_back"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_name"
@@ -64,13 +43,23 @@
                 android:hint="@string/hint_create_menu_product_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_product_code">
+                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_btn_back">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_create_menu_product_et_name"
                     style="@style/MaterialInput"
                     android:inputType="textCapSentences" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
+                android:id="@+id/fragment_create_menu_product_ncv_product_code"
+                android:layout_width="0dp"
+                android:icon="@drawable/ic_right_arrow"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_name" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_cost"
@@ -79,7 +68,7 @@
                 android:hint="@string/hint_create_menu_product_cost"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_name">
+                app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_ncv_product_code">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_create_menu_product_et_cost"
@@ -135,6 +124,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_combo_description"
                 style="@style/MaterialInputLayout"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_combo_description"
                 app:layout_constraintEnd_toEndOf="parent"

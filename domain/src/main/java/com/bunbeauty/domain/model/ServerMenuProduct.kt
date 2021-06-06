@@ -3,15 +3,15 @@ package com.bunbeauty.domain.model
 data class ServerMenuProduct(
     var uuid: String = "",
     var name: String = "",
+    var visible: Boolean = true,
+    var productCode: String = "",
     var cost: Int = 0,
     var discountCost: Int? = null,
-    var weight: Int = 0,
+    var weight: Int? = null,
     var description: String = "",
-    var comboDescription: String = "",
+    var comboDescription: String? = null,
     var photoLink: String = "",
     var onFire: Boolean = false,
     var inOven: Boolean = false,
-    var productCode: String = "",
-    var barcode: Int = 0,
-    var visible: Boolean = true
+    var barcode: Int? = 0
 )

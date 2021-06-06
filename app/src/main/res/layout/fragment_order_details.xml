@@ -28,8 +28,7 @@
                     android:layout_margin="@dimen/small_margin"
                     app:icon="@drawable/ic_left_arrow"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayCircle" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/fragment_order_details_gl_left"

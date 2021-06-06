@@ -43,7 +43,7 @@ class MenuViewModel @Inject constructor(
     }
 
     fun goToCreateMenuProduct() {
-        router.navigate(R.id.to_editMenuProductFragment, null)
+        router.navigate(R.id.to_createMenuProductFragment, null)
     }
 
     private fun subscribeOnProducts() {

@@ -24,11 +24,11 @@
     <!--BUTTONS-->
 
     <style name="BaseButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">@dimen/default_button_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/font_roboto_medium</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:layout_width">@dimen/default_button_width</item>
     </style>
 
     <style name="MainButton" parent="BaseButton">
@@ -63,17 +63,30 @@
         <item name="android:layout_width">@dimen/small_button_width</item>
     </style>
 
-    <style name="ActionButton" parent="Widget.Design.FloatingActionButton">
+    <style name="IconOnlyButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:minWidth">@dimen/small_button_size</item>
+        <item name="android:minHeight">@dimen/small_button_size</item>
+        <item name="iconTint">@color/darkIconColor</item>
+        <item name="strokeWidth">@dimen/zero_stroke_width</item>
+        <item name="rippleColor">@color/rippleColor</item>
+    </style>
+
+    <style name="ActionButton" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">@dimen/small_button_size</item>
+        <item name="android:layout_height">@dimen/small_button_size</item>
+        <item name="fabCustomSize">@dimen/small_button_size</item>
         <item name="tint">@color/lightIconColor</item>
-        <item name="borderWidth">0dp</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
     </style>
 
     <style name="TransparentCircleButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="android:layout_width">@dimen/circle_button_size</item>
-        <item name="android:layout_height">@dimen/circle_button_size</item>
+        <item name="android:layout_width">@dimen/small_button_size</item>
+        <item name="android:layout_height">@dimen/small_button_size</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetRight">0dp</item>

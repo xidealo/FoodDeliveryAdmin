@@ -1,5 +1,6 @@
 package com.bunbeauty.data.mapper.menu_product
 
+import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.model.MenuProduct
 import com.bunbeauty.domain.model.ServerMenuProduct
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class ServerMenuProductMapper @Inject constructor() : IServerMenuProductMapper {
             photoLink = model.photoLink,
             onFire = model.onFire,
             inOven = model.inOven,
-            productCode = model.productCode,
+            productCode = ProductCode.valueOf(model.productCode),
             barcode = model.barcode,
             visible = model.visible
         )
@@ -36,7 +37,7 @@ class ServerMenuProductMapper @Inject constructor() : IServerMenuProductMapper {
             photoLink = model.photoLink,
             onFire = model.onFire,
             inOven = model.inOven,
-            productCode = model.productCode,
+            productCode = model.productCode.name,
             barcode = model.barcode,
             visible = model.visible
         )

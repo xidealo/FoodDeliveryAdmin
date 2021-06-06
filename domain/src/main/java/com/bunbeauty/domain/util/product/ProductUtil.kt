@@ -1,10 +1,16 @@
 package com.bunbeauty.domain.util.product
 
+import com.bunbeauty.domain.R
+import com.bunbeauty.domain.enums.ProductCode
+import com.bunbeauty.domain.enums.ProductCode.*
 import com.bunbeauty.domain.model.MenuProduct
 import com.bunbeauty.domain.model.cart_product.CartProduct
+import com.bunbeauty.domain.util.resources.IResourcesProvider
 import javax.inject.Inject
 
-class ProductUtil @Inject constructor() : IProductUtil {
+class ProductUtil @Inject constructor(
+    private val resourceProvider: IResourcesProvider
+) : IProductUtil {
 
     override fun getNewTotalCost(cartProductList: List<CartProduct>): Int {
         return cartProductList.map { cartProduct ->
@@ -51,10 +57,6 @@ class ProductUtil @Inject constructor() : IProductUtil {
     }
 
     override fun getPositionName(menuProduct: MenuProduct): String {
-        return if (menuProduct.comboDescription.isEmpty()) {
-            menuProduct.name
-        } else {
-            menuProduct.comboDescription
-        }
+        return menuProduct.comboDescription ?: menuProduct.name
     }
 }

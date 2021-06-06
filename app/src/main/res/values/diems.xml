@@ -14,7 +14,7 @@
     <dimen name="very_small_margin">4dp</dimen>
 
     <!-- PADDING -->
-    <dimen name="large_padding">24dp</dimen>
+    <dimen name="large_padding">36dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="drawable_padding">4dp</dimen>
@@ -35,7 +35,7 @@
     <dimen name="small_button_width">136dp</dimen>
     <dimen name="status_button_width">152dp</dimen>
     <dimen name="button_height">48dp</dimen>
-    <dimen name="circle_button_size">48dp</dimen>
+    <dimen name="small_button_size">48dp</dimen>
     <dimen name="button_progress_bar_size">36dp</dimen>
 
     <!-- INPUT -->

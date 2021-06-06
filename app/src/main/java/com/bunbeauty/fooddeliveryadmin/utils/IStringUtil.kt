@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.model.order.UserAddress
 
 interface IStringUtil {
@@ -14,4 +15,6 @@ interface IStringUtil {
     fun getOrderStatusString(orderStatus: OrderStatus): String
     fun getOrderStatusByString(orderStatus:String): OrderStatus
     fun getDeliveryString(deliveryCost: Int): String
+    fun getProductCodeString(productCode: ProductCode): String
+    fun getProductCode(productCode: String): ProductCode
 }

@@ -98,15 +98,27 @@
     <string name="action_edit_menu_product_update">Обновить</string>
 
     <!-- CREATE MENU PRODUCT -->
+    <string name="hint_create_menu_product_title">Новая позиция</string>
     <string name="hint_create_menu_product_show">Показать</string>
     <string name="hint_create_menu_product_hide">Убрать</string>
     <string name="hint_create_menu_product_name">Название</string>
-    <string name="hint_create_menu_product_cost">Цена</string>
-    <string name="hint_create_menu_product_weight">Вес</string>
+    <string name="hint_create_menu_product_cost">Цена, ₽</string>
+    <string name="hint_create_menu_product_discount_cost">Цена со скидкой, ₽</string>
+    <string name="hint_create_menu_product_weight">Вес, г</string>
     <string name="hint_create_menu_product_description">Описание</string>
     <string name="hint_create_menu_product_combo_description">Описание комбо</string>
-    <string name="hint_create_menu_product_discount_cost">Цена со скидкой</string>
     <string name="hint_create_menu_product_product_code">Категория</string>
-    <string name="action_create_menu_product_create">Добавить</string>
+    <string name="action_create_menu_product_create">Создать</string>
+
+    <!-- PRODUCT CODE -->
+    <string name="msg_product_code_combo">Комбо</string>
+    <string name="msg_product_code_pizza">Пицца</string>
+    <string name="msg_product_code_barbecue">На мангале</string>
+    <string name="msg_product_code_burger">Бургеры</string>
+    <string name="msg_product_code_drink">Напитки</string>
+    <string name="msg_product_code_potato">Картошка</string>
+    <string name="msg_product_code_spice">Соусы</string>
+    <string name="msg_product_code_bakery">Выпечка</string>
+    <string name="msg_product_code_oven">В печи</string>
 
 </resources>
