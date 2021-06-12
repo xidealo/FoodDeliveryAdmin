@@ -22,13 +22,16 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDetailsViewModel>() {
+class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
     override val viewModel: OrderDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewDataBinding.fragmentOrderDetailsBtnBack.setOnClickListener {
+            viewModel.goBack()
+        }
         viewDataBinding.fragmentOrderDetailsTvCode.text = viewModel.codeTitle
         viewDataBinding.fragmentOrderDetailsTvTimeValue.text = viewModel.time
         viewDataBinding.fragmentOrderDetailsTvPickupMethodValue.text = viewModel.pickupMethod

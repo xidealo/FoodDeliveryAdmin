@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override val viewModel: LoginViewModel by viewModels()
 

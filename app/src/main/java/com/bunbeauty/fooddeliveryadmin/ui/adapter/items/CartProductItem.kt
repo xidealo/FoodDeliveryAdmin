@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.bunbeauty.domain.model.cart_product.CartProductUI
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementCartProductBinding
+import com.bunbeauty.fooddeliveryadmin.extensions.setImage
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.squareup.picasso.MemoryPolicy
@@ -23,13 +24,7 @@ data class CartProductItem(
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementCartProductBinding, payloads: List<Any>) {
-        Picasso.get()
-            .load(cartProductUI.photoLink)
-            .fit()
-            .placeholder(R.drawable.default_product)
-            .networkPolicy(NetworkPolicy.NO_CACHE)
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .into(binding.elementCartProductIvPhoto)
+        binding.elementCartProductIvPhoto.setImage(cartProductUI.photoLink)
         binding.elementCartProductTvTitle.text = cartProductUI.name
         binding.elementCartProductTvCount.text = cartProductUI.count
         binding.elementCartProductTvOldCost.strikeOutText()

@@ -15,13 +15,13 @@
             style="@style/MediumRegularText"
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/fragment_statistic_details_gl_center"
+            app:layout_constraintEnd_toEndOf="@+id/element_product_statistic_gl_center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="Бургер" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fragment_statistic_details_gl_center"
+            android:id="@+id/element_product_statistic_gl_center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -36,7 +36,7 @@
             android:layout_marginBottom="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/element_product_statistic_tv_count_value"
-            app:layout_constraintStart_toStartOf="@+id/fragment_statistic_details_gl_center"
+            app:layout_constraintStart_toStartOf="@+id/element_product_statistic_gl_center"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="10" />
 

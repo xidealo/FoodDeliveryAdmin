@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MenuFragment : BaseFragment<FragmentEditMenuBinding, MenuViewModel>() {
+class MenuFragment : BaseFragment<FragmentEditMenuBinding>() {
 
     override val viewModel: MenuViewModel by viewModels()
 

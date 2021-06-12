@@ -20,8 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class StatisticAddressListBottomSheet:
-    BaseBottomSheetDialog<BottomSheetAddressListBinding, StatisticAddressListViewModel>() {
+class StatisticAddressListBottomSheet: BaseBottomSheetDialog<BottomSheetAddressListBinding>() {
 
     override val viewModel: StatisticAddressListViewModel by viewModels()
 

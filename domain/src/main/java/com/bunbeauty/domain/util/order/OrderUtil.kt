@@ -60,6 +60,7 @@ class OrderUtil @Inject constructor(
                 productStatisticList.add(
                     ProductStatistic(
                         name = positionName,
+                        photoLink = cartProduct.menuProduct.photoLink,
                         orderCount = 1,
                         count = cartProduct.count,
                         cost = productUtil.getCartProductNewCost(cartProduct),

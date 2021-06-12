@@ -18,6 +18,7 @@
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="drawable_padding">4dp</dimen>
+    <dimen name="zero_padding">0dp</dimen>
 
     <!-- RADIUS -->
     <dimen name="large_radius">16dp</dimen>
@@ -25,6 +26,7 @@
     <dimen name="small_radius">4dp</dimen>
 
     <!-- STROKE -->
+    <dimen name="zero_stroke_width">0dp</dimen>
     <dimen name="button_stroke_width">2dp</dimen>
 
     <!-- BUTTON -->
@@ -33,6 +35,7 @@
     <dimen name="small_button_width">126dp</dimen>
     <dimen name="status_button_width">152dp</dimen>
     <dimen name="button_height">48dp</dimen>
+    <dimen name="circle_button_size">48dp</dimen>
     <dimen name="button_progress_bar_size">36dp</dimen>
 
     <!-- INPUT -->

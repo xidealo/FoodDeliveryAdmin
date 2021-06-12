@@ -11,22 +11,17 @@ import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
-    BottomSheetDialogFragment() {
+abstract class BaseBottomSheetDialog<B : ViewDataBinding> : BottomSheetDialogFragment() {
 
     private var _viewDataBinding: B? = null
     protected val viewDataBinding get() = _viewDataBinding!!
-    protected abstract val viewModel: VM
+    protected abstract val viewModel: BaseViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         setStyle(STYLE_NORMAL, R.style.BottomSheetTheme)
-
-        //inject((requireActivity() as MainActivity).activityComponent)
     }
-
-    //abstract fun inject(activityComponent: ActivityComponent)
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
@@ -45,10 +40,6 @@ abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
 
         return viewDataBinding.root
     }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getViewModelClass() =
-        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
 
     @Suppress("UNCHECKED_CAST")
     private fun getViewBindingClass() =

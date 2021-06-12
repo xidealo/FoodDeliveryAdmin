@@ -13,8 +13,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateMenuProductFragment :
-    BaseFragment<FragmentCreateMenuProductBinding, CreateMenuProductViewModel>() {
+class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>() {
 
     override val viewModel: CreateMenuProductViewModel by viewModels()
 

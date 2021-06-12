@@ -16,8 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class AddressListBottomSheet :
-    BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>() {
+class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBinding>() {
 
     override val viewModel: AddressListViewModel by viewModels()
 

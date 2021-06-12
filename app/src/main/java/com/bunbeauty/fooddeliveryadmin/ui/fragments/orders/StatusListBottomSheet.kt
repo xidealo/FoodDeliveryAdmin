@@ -16,8 +16,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StatusListBottomSheet :
-    BaseBottomSheetDialog<BottomSheetStatusListBinding, StatusListViewModel>() {
+class StatusListBottomSheet : BaseBottomSheetDialog<BottomSheetStatusListBinding>() {
 
     override val viewModel: StatusListViewModel by viewModels()
 

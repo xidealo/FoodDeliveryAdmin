@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>() {
+class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
     override val viewModel: StatisticViewModel by viewModels()
 

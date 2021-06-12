@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.di.modules
+package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.data.mapper.IMenuProductMapper
 import com.bunbeauty.data.mapper.MenuProductMapper

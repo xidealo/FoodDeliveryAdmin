@@ -79,6 +79,7 @@
     <string name="msg_statistic_total_proceeds">Выручка</string>
     <string name="msg_statistic_total_count">Количество заказов</string>
     <string name="msg_statistic_average_check">Средний чек</string>
+    <string name="msg_product_statistic_name">Название</string>
     <string name="msg_product_statistic_order_count">Количество заказов</string>
     <string name="msg_product_statistic_count">Количество</string>
     <string name="msg_product_statistic_cost">Стоимость</string>

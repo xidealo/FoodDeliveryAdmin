@@ -66,9 +66,29 @@
     <style name="ActionButton" parent="Widget.Design.FloatingActionButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/medium_margin</item>
         <item name="tint">@color/lightIconColor</item>
         <item name="borderWidth">0dp</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="TransparentCircleButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:layout_width">@dimen/circle_button_size</item>
+        <item name="android:layout_height">@dimen/circle_button_size</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="rippleColor">@color/rippleColor</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/zero_padding</item>
+        <item name="iconTint">@color/darkIconColor</item>
+        <item name="strokeWidth">@dimen/zero_stroke_width</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlayCircle</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlayCircle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100%</item>
     </style>
 
     <!--CARD VIEW-->

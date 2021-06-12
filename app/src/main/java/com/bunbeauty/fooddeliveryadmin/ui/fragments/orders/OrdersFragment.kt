@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
+class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     override val viewModel: OrdersViewModel by viewModels()
 

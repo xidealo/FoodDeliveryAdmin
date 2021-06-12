@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StatisticPeriodListBottomSheet :
-    BaseBottomSheetDialog<BottomSheetStatisticPeriodListBinding, EmptyViewModel>() {
+    BaseBottomSheetDialog<BottomSheetStatisticPeriodListBinding>() {
 
     override val viewModel: EmptyViewModel by viewModels()
 

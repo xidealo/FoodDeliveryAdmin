@@ -11,6 +11,7 @@
     <!-- BACKGROUND -->
     <color name="mainBackground">#F2F1F6</color>
     <color name="elementBackground">#FFFFFF</color>
+    <color name="rippleColor">#ADADAD</color>
 
     <!-- TEXT -->
     <color name="mainTextColor">#000000</color>

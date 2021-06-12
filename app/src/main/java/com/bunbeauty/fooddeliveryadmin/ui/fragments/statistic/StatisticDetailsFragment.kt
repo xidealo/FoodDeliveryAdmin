@@ -15,14 +15,16 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StatisticDetailsFragment :
-    BaseFragment<FragmentStatisticDetailsBinding, StatisticDetailsViewModel>() {
+class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>() {
 
     override val viewModel: StatisticDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewDataBinding.fragmentStatisticDetailsBtnBack.setOnClickListener {
+            viewModel.goBack()
+        }
         viewDataBinding.fragmentStatisticDetailsTvPeriod.text = viewModel.period
         viewDataBinding.fragmentStatisticDetailsTvTotalProceedsValue.text = viewModel.proceeds
         viewDataBinding.fragmentStatisticDetailsTvTotalCountValue.text = viewModel.orderCount

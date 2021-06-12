@@ -51,6 +51,7 @@ class StatisticDetailsViewModel @Inject constructor(
             .map { productStatistic ->
                 ProductStatisticItem(
                     name = productStatistic.name,
+                    photoLink = productStatistic.photoLink,
                     orderCount = productStatistic.orderCount.toString(),
                     count = productStatistic.count.toString(),
                     cost = stringUtil.getCostString(productStatistic.cost)

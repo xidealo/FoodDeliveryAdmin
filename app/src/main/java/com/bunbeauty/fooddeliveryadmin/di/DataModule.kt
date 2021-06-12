@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.di.modules
+package com.bunbeauty.fooddeliveryadmin.di
 
 import android.content.Context
 import androidx.room.Room

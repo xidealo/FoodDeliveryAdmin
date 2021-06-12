@@ -9,8 +9,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EditMenuProductFragment :
-    BaseFragment<FragmentEditMenuProductBinding, EditMenuProductViewModel>() {
+class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
 
     override val viewModel: EditMenuProductViewModel by viewModels()
 

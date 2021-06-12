@@ -14,12 +14,12 @@ import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     private var _viewDataBinding: B? = null
     protected val viewDataBinding
         get() = checkNotNull(_viewDataBinding)
-    protected abstract val viewModel: VM
+    protected abstract val viewModel: BaseViewModel
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
@@ -66,10 +66,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
             View.TEXT_ALIGNMENT_CENTER
         snack.show()
     }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getViewModelClass() =
-        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
 
     @Suppress("UNCHECKED_CAST")
     private fun getViewBindingClass() =

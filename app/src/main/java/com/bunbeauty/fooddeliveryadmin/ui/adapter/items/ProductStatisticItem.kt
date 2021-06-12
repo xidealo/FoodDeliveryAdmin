@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementProductStatisticBinding
+import com.bunbeauty.fooddeliveryadmin.extensions.setImage
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -12,6 +13,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ProductStatisticItem(
     val name: String,
+    val photoLink: String,
     val orderCount: String,
     val count: String,
     val cost: String

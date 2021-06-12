@@ -8,10 +8,20 @@
         android:layout_height="match_parent"
         android:background="@color/mainBackground">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_statistic_details_btn_back"
+            style="@style/TransparentCircleButton"
+            android:layout_margin="@dimen/small_margin"
+            app:icon="@drawable/ic_left_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayCircle" />
+
         <TextView
             android:id="@+id/fragment_statistic_details_tv_period"
             style="@style/LargeBoldCenterText"
             android:layout_marginTop="@dimen/medium_margin"
+            app:layout_constraintBaseline_toBaselineOf="@+id/fragment_statistic_details_btn_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +33,7 @@
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_details_tv_period">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_details_btn_back">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -112,8 +122,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_details_mcv_main">
 
+            <TextView
+                android:id="@+id/fragment_statistic_details_tv_name"
+                style="@style/SmallSecondaryCenterText"
+                android:layout_margin="@dimen/small_margin"
+                android:text="@string/msg_product_statistic_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/fragment_statistic_details_gl_center"
+                android:id="@+id/element_product_statistic_gl_center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -127,7 +146,7 @@
                 android:text="@string/msg_product_statistic_order_count"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_statistic_details_tv_count"
-                app:layout_constraintStart_toStartOf="@+id/fragment_statistic_details_gl_center"
+                app:layout_constraintStart_toStartOf="@+id/element_product_statistic_gl_center"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
