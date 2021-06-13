@@ -6,8 +6,8 @@ import com.bunbeauty.data.model.Statistic
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
 
+@Deprecated("")
 interface IStringUtil {
-    fun toString(address: Address?): String
     fun toString(orderEntity: OrderEntity): String
     fun toStringDeferred(orderEntity: OrderEntity): String
     fun toString(cartProducts: List<CartProduct>): String

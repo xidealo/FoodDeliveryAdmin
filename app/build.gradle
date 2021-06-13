@@ -13,7 +13,6 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('D:\\maxas\\Extra\\1.Apps\\FoodDeliveryAdmin\\keystore.jks')
             storePassword 'itisBB15092019'
             keyAlias 'papakarloKey'
             keyPassword 'Itispapakarlo08062004'
@@ -33,7 +32,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField 'String', 'FB_LINK', '"https://test-fooddelivery.firebaseio.com/"'
+           buildConfigField 'String', 'FB_LINK', '"https://test-fooddelivery.firebaseio.com/"'
         }
 
         release {

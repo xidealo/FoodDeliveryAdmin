@@ -8,14 +8,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
+import androidx.core.view.setPadding
+import com.bunbeauty.domain.resources.ResourcesProvider
+import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.google.android.material.card.MaterialCardView
+import javax.inject.Inject
 
 class NavigationCardView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : MaterialCardView(context, attributeSet, defStyleAttr), Customizable {
+
+    @Inject
+    lateinit var resourcesProvider: ResourcesProvider
 
     var cardText = getString(
         context,
@@ -24,11 +31,10 @@ class NavigationCardView @JvmOverloads constructor(
         R.styleable.NavigationCardView,
         ""
     )
-    set(value) {
-        field = value
-        textView.text = value
-        //invalidate()
-    }
+        set(value) {
+            field = value
+            _textView?.text = value
+        }
 
     private val icon = getDrawable(
         context,
@@ -38,14 +44,21 @@ class NavigationCardView @JvmOverloads constructor(
     )
 
     private val imageViewId = generateViewId()
-    //private val textViewId = generateViewId()
 
-    private val constraintLayout = createConstraintLayout(context)
-    private val imageView = createImageView(context)
-    private val textView = createTextView(context)
+    private var _textView: TextView? = null
+    private val textView: TextView
+        get() = checkNotNull(_textView)
 
     init {
-        constraintLayout.addView(imageView)
+        (context.applicationContext as FoodDeliveryAdminApplication).appComponent.inject(this)
+
+        strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke)
+        strokeColor = resourcesProvider.getColor(R.color.colorPrimary)
+        radius = resourcesProvider.getDimensionFloat(R.dimen.medium_radius)
+
+        val constraintLayout = createConstraintLayout(context)
+        constraintLayout.addView(createImageView(context))
+        _textView = createTextView(context)
         constraintLayout.addView(textView)
         addView(constraintLayout)
     }
@@ -53,6 +66,7 @@ class NavigationCardView @JvmOverloads constructor(
     private fun createConstraintLayout(context: Context): ConstraintLayout {
         return ConstraintLayout(context).apply {
             layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            setPadding(resourcesProvider.getDimension(R.dimen.small_padding))
         }
     }
 
@@ -64,6 +78,7 @@ class NavigationCardView @JvmOverloads constructor(
                 bottomToBottom = PARENT_ID
                 endToEnd = PARENT_ID
             }
+            setColorFilter(resourcesProvider.getColor(R.color.colorPrimary))
             setImageDrawable(icon)
         }
     }

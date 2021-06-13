@@ -20,7 +20,7 @@ data class OrderItem(
 
     @IgnoredOnParcel
     @Ignore
-    override val type = R.id.element_text_mcv_main
+    override val type = R.id.element_text_tv_title
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {
         binding.elementOrderMvcMain.setBackgroundColor(

@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
-import com.bunbeauty.common.extensions.gone
-import com.bunbeauty.common.extensions.launchWhenStarted
-import com.bunbeauty.common.extensions.visible
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment

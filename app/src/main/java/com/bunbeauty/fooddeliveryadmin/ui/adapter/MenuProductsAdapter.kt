@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.common.extensions.toggleVisibility
+import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding

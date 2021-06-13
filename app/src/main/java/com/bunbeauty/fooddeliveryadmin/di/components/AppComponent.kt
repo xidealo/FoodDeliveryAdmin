@@ -4,6 +4,7 @@ import android.content.Context
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.di.modules.*
 import com.bunbeauty.fooddeliveryadmin.notification.MessagingService
+import com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -29,4 +30,5 @@ interface AppComponent {
 
     fun inject(application: FoodDeliveryAdminApplication)
     fun inject(messagingService: MessagingService)
+    fun inject(navigationCardView: NavigationCardView)
 }

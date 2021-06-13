@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
-import com.bunbeauty.common.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.AddressListViewModel

@@ -18,4 +18,12 @@ class ResourcesProvider @Inject constructor(private val context: Context): IReso
     override fun getColor(colorId: Int): Int {
         return ContextCompat.getColor(context, colorId)
     }
+
+    override fun getDimension(dimensionId: Int): Int {
+        return context.resources.getDimensionPixelSize(dimensionId)
+    }
+
+    override fun getDimensionFloat(dimensionId: Int): Float {
+        return getDimension(dimensionId).toFloat()
+    }
 }

@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.bunbeauty.common.extensions.toggleVisibility
+import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router

@@ -17,7 +17,7 @@ data class StatisticItem(var title: String, var orderList: List<Order>): Abstrac
 
     @IgnoredOnParcel
     @Ignore
-    override val type = R.id.element_text_mcv_main
+    override val type = R.id.element_text_tv_title
 
     override fun bindView(binding: ElementTextBinding, payloads: List<Any>) {
         binding.elementTextTvTitle.text = title

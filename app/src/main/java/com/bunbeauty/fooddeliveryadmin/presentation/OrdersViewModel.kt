@@ -1,11 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State
-import com.bunbeauty.common.extensions.toStateAddedSuccess
-import com.bunbeauty.common.extensions.toStateSuccess
-import com.bunbeauty.common.extensions.toStateUpdatedSuccess
+import com.bunbeauty.fooddeliveryadmin.extensions.toStateAddedSuccess
+import com.bunbeauty.fooddeliveryadmin.extensions.toStateUpdatedSuccess
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.data.model.cart_product.CartProductUI
 import com.bunbeauty.data.model.order.Order
@@ -17,9 +17,10 @@ import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.repository.order.OrderRepo
 import com.bunbeauty.domain.resources.IResourcesProvider
-import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrderItem
+import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -39,6 +40,7 @@ class OrdersViewModelImpl @Inject constructor(
     private val orderRepo: OrderRepo,
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
+    private val sstringUtil: com.bunbeauty.domain.string.IStringUtil,
     private val dateTimeUtil: DateTimeUtil,
     private val dataStoreHelper: IDataStoreHelper,
     private val productUtil: IProductUtil,
@@ -47,8 +49,17 @@ class OrdersViewModelImpl @Inject constructor(
 ) : OrdersViewModel() {
 
     override val cafeAddressStateFlow = MutableStateFlow<State<String>>(State.Loading())
+    get() {
+        //subscribeOnAddress()
+        return field
+    }
+
     override val orderListState =
         MutableStateFlow<ExtendedState<List<OrderItem>>>(ExtendedState.Loading())
+        get() {
+            //subscribeOnOrders()
+            return field
+        }
 
     override fun subscribeOnAddress() {
         dataStoreHelper.cafeId.flatMapLatest { cafeId ->
@@ -114,7 +125,7 @@ class OrdersViewModelImpl @Inject constructor(
                 OrderUI(
                     status = order.orderEntity.orderStatus,
                     code = order.orderEntity.code,
-                    deferredTime = stringUtil.toStringDeferred(order.orderEntity),
+                    deferredTime = sstringUtil.toStringDeferred(order.orderEntity),
                     time = dateTimeUtil.getTimeHHMM(order.timestamp),
                     isDelivery = order.orderEntity.isDelivery,
                     pickupMethod = pickupMethod,

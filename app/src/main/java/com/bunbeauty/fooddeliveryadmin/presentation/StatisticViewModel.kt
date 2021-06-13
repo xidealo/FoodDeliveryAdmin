@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
-import com.bunbeauty.common.extensions.toStateSuccess
+import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.data.enums.Period
 import com.bunbeauty.domain.repository.order.OrderRepo
 import com.bunbeauty.domain.resources.IResourcesProvider

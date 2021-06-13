@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State
-import com.bunbeauty.common.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent

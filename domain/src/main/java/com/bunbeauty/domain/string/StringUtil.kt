@@ -1,31 +1,18 @@
 package com.bunbeauty.domain.string
 
-import com.bunbeauty.data.model.*
+import com.bunbeauty.data.model.MenuProduct
+import com.bunbeauty.data.model.Statistic
+import com.bunbeauty.data.model.Time
 import com.bunbeauty.data.model.cart_product.CartProduct
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
 import com.bunbeauty.domain.cost.ICostUtil
 import javax.inject.Inject
 
+@Deprecated("")
 class StringUtil @Inject constructor(
-    private val iCostUtil: ICostUtil
+    private val costUtil: ICostUtil
 ) : IStringUtil {
-    //TODO(Get strings from resources)
-    override fun toString(address: Address?): String {
-        return if (address == null) {
-            ""
-        } else {
-            checkLastSymbol(
-                "${address.street?.name}, " +
-                        "Дом:${address.house}, " +
-                        flatString(address) +
-                        entranceString(address) +
-                        intercomString(address) +
-                        floorString(address),
-                ','
-            )
-        }
-    }
 
     override fun toString(cartProducts: List<CartProduct>): String {
         var structure = ""
@@ -95,7 +82,7 @@ class StringUtil @Inject constructor(
         return "${
             statistic.orderList.sumBy { order ->
                 order.cartProducts.sumBy {
-                    iCostUtil.getCost(it)
+                    costUtil.getCost(it)
                 }
             }
         } ₽"
@@ -143,33 +130,5 @@ class StringUtil @Inject constructor(
             return data.substringBeforeLast(symbol)
 
         return data
-    }
-
-    fun flatString(address: Address): String {
-        return if (address.flat.isNotEmpty())
-            "Квартира:${address.flat}, "
-        else
-            ""
-    }
-
-    fun entranceString(address: Address): String {
-        return if (address.entrance.isNotEmpty())
-            "Подъезд:${address.entrance}, "
-        else
-            ""
-    }
-
-    fun intercomString(address: Address): String {
-        return if (address.intercom.isNotEmpty())
-            "Домофон:${address.intercom}, "
-        else
-            ""
-    }
-
-    fun floorString(address: Address): String {
-        return if (address.floor.isNotEmpty())
-            "Этаж:${address.floor}"
-        else
-            ""
     }
 }

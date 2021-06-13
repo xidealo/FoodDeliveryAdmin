@@ -1,4 +1,4 @@
-package com.bunbeauty.common.extensions
+package com.bunbeauty.fooddeliveryadmin.extensions
 
 import android.graphics.Paint
 import android.view.View

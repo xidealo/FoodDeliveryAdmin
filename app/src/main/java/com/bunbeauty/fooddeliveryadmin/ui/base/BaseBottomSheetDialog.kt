@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
@@ -32,6 +33,8 @@ abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        setStyle(STYLE_NORMAL, R.style.BottomSheetTheme)
 
         inject((requireActivity() as MainActivity).activityComponent)
     }

@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import com.bunbeauty.common.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.getNewMenuUuid
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding

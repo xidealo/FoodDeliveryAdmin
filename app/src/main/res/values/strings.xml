@@ -16,6 +16,14 @@
     <string name="msg_parenthesis">)&#160;</string>
     <string name="msg_colon">:&#160;</string>
     <string name="msg_pieces">&#160;шт</string>
+    <string name="msg_comma">,&#160;</string>
+
+    <!-- ADDRESS -->
+    <string name="msg_address_house">, д.&#160;</string>
+    <string name="msg_address_flat">, кв.&#160;</string>
+    <string name="msg_address_entrance">, подъезд&#160;</string>
+    <string name="msg_address_intercom">, код:&#160;</string>
+    <string name="msg_address_floor">, этаж&#160;</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>

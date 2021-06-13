@@ -44,4 +44,8 @@
     <dimen name="large_radius">16dp</dimen>
     <dimen name="medium_radius">8dp</dimen>
     <dimen name="small_radius">4dp</dimen>
+
+    <!-- RADIUS -->
+    <dimen name="button_stroke">2dp</dimen>
+
 </resources>

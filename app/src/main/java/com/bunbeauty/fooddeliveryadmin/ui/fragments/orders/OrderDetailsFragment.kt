@@ -2,8 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
 import android.view.View
-import com.bunbeauty.common.extensions.gone
-import com.bunbeauty.common.extensions.strikeOutText
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.data.model.order.Order

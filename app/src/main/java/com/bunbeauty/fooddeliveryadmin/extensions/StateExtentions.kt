@@ -1,4 +1,4 @@
-package com.bunbeauty.common.extensions
+package com.bunbeauty.fooddeliveryadmin.extensions
 
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State

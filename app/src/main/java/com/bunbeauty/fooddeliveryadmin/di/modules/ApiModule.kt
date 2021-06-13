@@ -12,8 +12,8 @@ import com.bunbeauty.domain.product.ProductUtil
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.domain.resources.ResourcesProvider
-import com.bunbeauty.domain.string.IStringUtil
-import com.bunbeauty.domain.string.StringUtil
+import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
+import com.bunbeauty.fooddeliveryadmin.utils.StringUtil
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -34,7 +34,10 @@ abstract class ApiModule {
     abstract fun bindDataStoreHelper(dataStoreHelper: DataStoreHelper): IDataStoreHelper
 
     @Binds
-    abstract fun bindStringHelper(stringUtil: StringUtil): IStringUtil
+    abstract fun bindStringHelperNew(stringUtil: StringUtil): IStringUtil
+
+    @Binds
+    abstract fun bindStringHelper(stringUtil: com.bunbeauty.domain.string.StringUtil): com.bunbeauty.domain.string.IStringUtil
 
     @Binds
     abstract fun bindCostHelper(costHelper: CostUtil): ICostUtil

@@ -18,7 +18,7 @@ data class Address(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     @Embedded(prefix = "street_")
-    var street: Street? = Street(),
+    var street: Street = Street(),
     var house: String = "",
     var flat: String = "",
     var entrance: String = "",
