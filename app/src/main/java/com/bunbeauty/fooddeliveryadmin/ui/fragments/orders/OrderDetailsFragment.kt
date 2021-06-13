@@ -9,42 +9,38 @@ import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.OrderDetailsViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersDetailsFragmentArgs.fromBundle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class OrdersDetailsFragment :
-    BaseFragment<FragmentOrderDetailsBinding, OrderDetailsViewModel>() {
+class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDetailsViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.getOrderDetailsComponent()
+            .create(this)
+            .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val orderUI = fromBundle(requireArguments()).orderUI
-
-        viewDataBinding.dialogChangeStatusTvCode.text = viewModel.getCodeTitle(orderUI.code)
-        viewDataBinding.dialogChangeStatusTvTimeValue.text = orderUI.time
-        viewDataBinding.dialogChangeStatusTvPickupMethodValue.text =
-            viewModel.getPickupMethod(orderUI.isDelivery)
-        viewDataBinding.dialogChangeStatusTvDeferredTimeValue.text = orderUI.deferredTime
-        viewDataBinding.dialogChangeStatusTvAddressValue.text = orderUI.address
-        viewDataBinding.dialogChangeStatusTvCommentValue.text = orderUI.comment
-        viewDataBinding.dialogChangeStatusTvProductListValue.text =
-            viewModel.getProductsList(orderUI.cartProductList)
+        viewDataBinding.dialogChangeStatusTvCode.text = viewModel.codeTitle
+        viewDataBinding.dialogChangeStatusTvTimeValue.text = viewModel.time
+        viewDataBinding.dialogChangeStatusTvPickupMethodValue.text = viewModel.pickupMethod
+        viewDataBinding.dialogChangeStatusTvDeferredTimeValue.text = viewModel.deferredTime
+        viewDataBinding.dialogChangeStatusTvAddressValue.text = viewModel.address
+        viewDataBinding.dialogChangeStatusTvCommentValue.text = viewModel.comment
+        viewDataBinding.dialogChangeStatusTvProductListValue.text = viewModel.productList
 
         viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.strikeOutText()
-        viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.text = orderUI.oldTotalCost
-        viewDataBinding.dialogChangeStatusTvOrderNewTotalCost.text = orderUI.newTotalCost
+        viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.text = viewModel.oldTotalCost
+        viewDataBinding.dialogChangeStatusTvOrderNewTotalCost.text = viewModel.newTotalCost
 
-        if (orderUI.deferredTime.isEmpty()) {
+        if (viewModel.deferredTime.isEmpty()) {
             viewDataBinding.dialogChangeStatusTvDeferredTimeValue.gone()
             viewDataBinding.dialogChangeStatusTvDeferredTime.gone()
         }
 
-        if (orderUI.comment.isEmpty()) {
+        if (viewModel.comment.isEmpty()) {
             viewDataBinding.dialogChangeStatusTvCommentValue.gone()
             viewDataBinding.dialogChangeStatusTvComment.gone()
         }

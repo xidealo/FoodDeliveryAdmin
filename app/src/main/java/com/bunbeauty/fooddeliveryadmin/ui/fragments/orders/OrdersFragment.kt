@@ -8,7 +8,7 @@ import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.launchWhenStarted
 import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.OrdersViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrderItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     @Inject
@@ -45,7 +45,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
         viewModel.cafeAddressStateFlow.onEach { state ->
             when (state) {
                 is State.Success -> {
-                    viewDataBinding.fragmentOrdersTvAddress.text = state.data
+                    viewDataBinding.fragmentOrdersMcvAddress.cardText = state.data
                 }
                 else -> {
                 }

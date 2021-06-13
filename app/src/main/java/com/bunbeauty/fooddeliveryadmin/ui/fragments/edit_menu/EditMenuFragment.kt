@@ -7,7 +7,7 @@ import com.bunbeauty.common.extensions.launchWhenStarted
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.data.model.getNewMenuUuid
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.MenuProductsAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragmentDirections.toCreateNewMenuProductFragment
@@ -18,8 +18,8 @@ import javax.inject.Inject
 
 class EditMenuFragment : BaseFragment<FragmentEditMenuBinding, EditMenuViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     @Inject

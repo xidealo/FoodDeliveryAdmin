@@ -13,7 +13,7 @@ import com.bunbeauty.fooddeliveryadmin.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.StatisticViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.PeriodItem
@@ -26,8 +26,8 @@ import kotlinx.coroutines.flow.onEach
 
 class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/ordersDetailsFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersDetailsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragment"
         android:label="ChangeStatusDialog"
         tools:layout="@layout/fragment_order_details">
         <argument

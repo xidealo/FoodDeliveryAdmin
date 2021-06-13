@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_order_mvc_main"
@@ -13,35 +14,40 @@
             android:layout_height="match_parent"
             android:padding="@dimen/small_padding">
 
-            <TextView
-                android:id="@+id/element_order_tv_code"
-                style="@style/MainTitle"
-                android:layout_margin="@dimen/very_small_margin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/element_order_tv_deferred"
-                style="@style/HelpText"
-                android:layout_margin="@dimen/very_small_margin"
-                app:layout_constraintEnd_toStartOf="@id/element_order_tv_time"
-                app:layout_constraintStart_toEndOf="@id/element_order_tv_code"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/element_order_tv_time"
-                style="@style/MainText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:id="@+id/element_order_iv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tool:src="@drawable/ic_cancel" />
+
+            <TextView
+                android:id="@+id/element_order_tv_code"
+                style="@style/MainTitle"
+                android:layout_marginStart="@dimen/small_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"
+                app:layout_constraintTop_toTopOf="parent"
+                tool:text="A-90" />
+
+            <TextView
+                android:id="@+id/element_order_tv_deferred"
+                style="@style/MainText"
+                android:layout_marginStart="@dimen/very_small_margin"
+                tool:text="(к 12:34)"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/element_order_tv_code"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/element_order_tv_time"
+                style="@style/MainText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/element_order_tv_time" />
+                tool:text="5 мая  12:34"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

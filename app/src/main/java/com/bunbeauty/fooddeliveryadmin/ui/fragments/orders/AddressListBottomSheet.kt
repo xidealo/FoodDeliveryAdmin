@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
 import com.bunbeauty.common.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.AddressListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.onEach
 class AddressListBottomSheet :
     BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

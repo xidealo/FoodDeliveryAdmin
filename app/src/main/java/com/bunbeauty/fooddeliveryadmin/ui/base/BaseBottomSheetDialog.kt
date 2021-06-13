@@ -9,9 +9,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.Router
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.ViewModelFactory
+import com.bunbeauty.fooddeliveryadmin.ui.activities.MainActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
@@ -32,15 +33,10 @@ abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val viewModelComponent =
-            (requireActivity().application as FoodDeliveryAdminApplication).appComponent
-                .getViewModelComponent()
-                .create(this)
-
-        inject(viewModelComponent)
+        inject((requireActivity() as MainActivity).activityComponent)
     }
 
-    abstract fun inject(viewModelComponent: ViewModelComponent)
+    abstract fun inject(activityComponent: ActivityComponent)
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(

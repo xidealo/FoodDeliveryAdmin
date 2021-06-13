@@ -7,15 +7,15 @@ import com.bunbeauty.data.enums.ProductCode
 import com.bunbeauty.data.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateNewMenuProductBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.CreateNewMenuProductViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 
 class CreateNewMenuProductFragment :
     BaseFragment<FragmentCreateNewMenuProductBinding, CreateNewMenuProductViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

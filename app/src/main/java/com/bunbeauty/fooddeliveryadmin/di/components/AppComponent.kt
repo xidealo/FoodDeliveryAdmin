@@ -25,7 +25,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun getViewModelComponent(): ViewModelComponent.Factory
+    fun getActivityComponent(): ActivityComponent.Factory
 
     fun inject(application: FoodDeliveryAdminApplication)
     fun inject(messagingService: MessagingService)

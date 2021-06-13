@@ -8,7 +8,20 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.orders.OrdersFragment">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
+            android:id="@+id/fragment_orders_mcv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@color/backgroundComponent"
+            app:cardElevation="0dp"
+            android:icon="@drawable/ic_right_arrow"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_orders_rv_result"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!--<com.google.android.material.card.MaterialCardView
             android:id="@+id/fragment_orders_mcv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +42,8 @@
                     style="@style/SmallText"
                     android:layout_width="0dp"
                     android:layout_gravity="center_vertical"
-                    android:paddingVertical="@dimen/small_padding"
+                    android:layout_margin="@dimen/small_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/fragment_orders_iv_address"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -38,14 +52,14 @@
                     android:id="@+id/fragment_orders_iv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/small_margin"
+                    android:layout_margin="@dimen/small_margin"
                     android:contentDescription="Description"
                     android:src="@drawable/ic_right_arrow"
                     app:layout_constraintBottom_toBottomOf="@+id/fragment_orders_tv_address"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/fragment_orders_tv_address" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_orders_rv_result"

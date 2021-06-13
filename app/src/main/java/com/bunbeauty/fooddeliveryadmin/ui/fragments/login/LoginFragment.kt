@@ -8,17 +8,15 @@ import com.bunbeauty.common.extensions.gone
 import com.bunbeauty.common.extensions.launchWhenStarted
 import com.bunbeauty.common.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragmentDirections.toOrdersFragment
 import com.bunbeauty.fooddeliveryadmin.presentation.LoginViewModel
 import kotlinx.coroutines.flow.onEach
-import java.util.*
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

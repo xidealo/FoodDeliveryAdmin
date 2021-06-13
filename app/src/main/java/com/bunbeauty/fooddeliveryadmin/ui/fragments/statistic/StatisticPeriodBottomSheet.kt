@@ -8,7 +8,7 @@ import com.bunbeauty.data.enums.Period
 import com.bunbeauty.fooddeliveryadmin.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetStatisticPeriodBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.EmptyViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.PeriodItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
@@ -18,8 +18,8 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 class StatisticPeriodBottomSheet :
     BaseBottomSheetDialog<BottomSheetStatisticPeriodBinding, EmptyViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

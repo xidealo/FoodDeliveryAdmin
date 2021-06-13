@@ -10,9 +10,7 @@ import com.bunbeauty.common.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.Constants.ADDRESS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
-import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetSelectedStatisticBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
-import com.bunbeauty.fooddeliveryadmin.presentation.EmptyViewModel
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.StatisticAddressListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
@@ -23,8 +21,8 @@ import kotlinx.coroutines.flow.onEach
 class StatisticAddressListBottomSheet:
     BaseBottomSheetDialog<BottomSheetAddressListBinding, StatisticAddressListViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -3,15 +3,15 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu
 import android.os.Bundle
 import android.view.View
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.presentation.EditMenuProductViewModel
 
 class EditMenuProductFragment :
     BaseFragment<FragmentEditMenuProductBinding, EditMenuProductViewModel>() {
 
-    override fun inject(viewModelComponent: ViewModelComponent) {
-        viewModelComponent.inject(this)
+    override fun inject(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

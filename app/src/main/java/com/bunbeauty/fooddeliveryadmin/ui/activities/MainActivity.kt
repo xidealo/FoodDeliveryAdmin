@@ -13,6 +13,7 @@ import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.MainViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.ViewModelFactory
 import javax.inject.Inject
@@ -29,14 +30,15 @@ class MainActivity : AppCompatActivity() {
     lateinit var router: Router
 
     lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var activityComponent: ActivityComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as FoodDeliveryAdminApplication).appComponent
-            .getViewModelComponent()
+        activityComponent = (application as FoodDeliveryAdminApplication).appComponent
+            .getActivityComponent()
             .create(this)
-            .inject(this)
+        activityComponent.inject(this)
 
         viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewDataBinding.lifecycleOwner = this

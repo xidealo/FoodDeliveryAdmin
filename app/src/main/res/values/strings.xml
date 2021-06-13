@@ -32,7 +32,7 @@
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order">Заказ&#160;</string>
     <string name="msg_order_details_in_order">В заказе:</string>
-    <string name="msg_order_details_order_time">Время заказа</string>
+    <string name="msg_order_details_order_time">Дата и время заказа</string>
     <string name="msg_order_details_pickup_method">Способ получения</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>

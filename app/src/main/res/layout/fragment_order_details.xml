@@ -36,7 +36,7 @@
                 android:layout_marginTop="@dimen/very_small_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_change_status_tv_time"
-                tool:text="12:00" />
+                tool:text="5 мая 12:00" />
 
             <TextView
                 android:id="@+id/dialog_change_status_tv_pickup_method"
@@ -136,6 +136,7 @@
             <TextView
                 android:id="@+id/dialog_change_status_tv_order_old_total_cost"
                 style="@style/MainText"
+                android:layout_marginEnd="@dimen/small_margin"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_order_price"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_change_status_tv_order_new_total_cost"

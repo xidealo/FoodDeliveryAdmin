@@ -2,11 +2,11 @@ package com.bunbeauty.fooddeliveryadmin.di.modules
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bunbeauty.fooddeliveryadmin.di.components.ViewModelComponent
+import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import dagger.Module
 import dagger.Provides
 
-@Module(subcomponents = [ViewModelComponent::class])
+@Module(subcomponents = [ActivityComponent::class])
 class AppModule {
 
     @Provides
