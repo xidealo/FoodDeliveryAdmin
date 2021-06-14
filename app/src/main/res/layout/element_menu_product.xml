@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/fragment_edit_menu_product_tv_title"
-                style="@style/SmallTitle"
+                style="@style/MediumBoldText"
                 android:layout_marginTop="@dimen/very_small_margin"
                 android:layout_marginStart="@dimen/very_small_margin"
                 android:layout_marginEnd="@dimen/very_small_margin"
@@ -49,7 +49,7 @@
 
             <TextView
                 android:id="@+id/element_menu_product_tv_cost"
-                style="@style/SmallText"
+                style="@style/MediumRegularText"
                 android:layout_marginStart="@dimen/very_small_margin"
                 android:text="@{productHelper.getMenuProductNewPrice(menuProduct)}"
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/element_menu_product_tv_cost_old"
-                style="@style/SmallText"
+                style="@style/MediumRegularText"
                 android:layout_marginStart="@dimen/very_small_margin"
                 android:text="@{menuProduct.cost}"
                 android:textColor="@color/grey"

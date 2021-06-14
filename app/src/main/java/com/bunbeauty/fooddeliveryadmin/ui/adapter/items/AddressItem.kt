@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.ui.adapter
+package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -11,14 +11,15 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PeriodItem(val period: String): AbstractBindingItem<ElementTextBinding>(), Parcelable {
+data class AddressItem(val address: String, val cafeId: String?) :
+    AbstractBindingItem<ElementTextBinding>(), Parcelable {
 
     @IgnoredOnParcel
     @Ignore
     override val type = R.id.element_text_tv_title
 
     override fun bindView(binding: ElementTextBinding, payloads: List<Any>) {
-        binding.elementTextTvTitle.text = period
+        binding.elementTextTvTitle.text = address
     }
 
     override fun createBinding(

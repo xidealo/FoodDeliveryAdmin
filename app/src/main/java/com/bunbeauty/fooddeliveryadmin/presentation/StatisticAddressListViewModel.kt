@@ -6,7 +6,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -6,27 +6,22 @@ import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
-import com.bunbeauty.domain.string.IStringUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.OrdersViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.OrderItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.OrderItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toAddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toOrdersDetailsFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
 
     override fun inject(activityComponent: ActivityComponent) {
         activityComponent.inject(this)
     }
-
-    @Inject
-    lateinit var stringUtil: IStringUtil
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -2,10 +2,10 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/hintColor</item>
+        <item name="colorAccent">@color/secondaryTextColor</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
         <item name="android:textColor">@color/mainTextColor</item>
-        <item name="android:textSize">@dimen/very_small_text_size</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
     </style>
 
     <style name="MaterialInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -79,46 +79,43 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="MainTitle" parent="BaseText">
-        <item name="android:textSize">@dimen/medium_text_size</item>
-        <item name="android:textAlignment">center</item>
-        <item name="fontFamily">@font/font_roboto_bold</item>
+    <style name="SecondaryText" parent="BaseText">
+        <item name="android:textColor">@color/secondaryTextColor</item>
     </style>
 
-    <style name="SmallTitle" parent="BaseText">
-        <item name="android:textSize">@dimen/small_text_size</item>
-        <item name="fontFamily">@font/font_roboto_bold</item>
-    </style>
-
-    <style name="MainText" parent="BaseText">
-        <item name="android:textSize">@dimen/medium_text_size</item>
-        <item name="fontFamily">@font/font_roboto_regular</item>
-    </style>
-
-    <style name="LargeMainText" parent="BaseText">
+    <style name="LargeRegularText" parent="BaseText">
         <item name="android:textSize">@dimen/large_text_size</item>
         <item name="fontFamily">@font/font_roboto_regular</item>
     </style>
 
-    <style name="SmallText" parent="BaseText">
+    <style name="LargeBoldCenterText" parent="BaseText">
+        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:textAlignment">center</item>
+        <item name="fontFamily">@font/font_roboto_bold</item>
+    </style>
+
+    <style name="MediumRegularText" parent="BaseText">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="fontFamily">@font/font_roboto_regular</item>
+    </style>
+
+    <style name="MediumBoldText" parent="BaseText">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="fontFamily">@font/font_roboto_bold</item>
+    </style>
+
+    <style name="MediumSecondaryBoldText" parent="SecondaryText">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="fontFamily">@font/font_roboto_bold</item>
+    </style>
+
+    <style name="SmallRegularText" parent="BaseText">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="fontFamily">@font/font_roboto_regular</item>
     </style>
 
-    <style name="HelpText" parent="BaseText">
-        <item name="android:textSize">@dimen/very_small_text_size</item>
-        <item name="fontFamily">@font/font_roboto_regular</item>
-    </style>
-
-    <style name="GreyHelpText" parent="HelpText">
-        <item name="android:textColor">@color/hintColor</item>
-    </style>
-
-    <style name="CenterText" parent="BaseText">
-        <item name="android:textSize">@dimen/medium_text_size</item>
-        <item name="fontFamily">@font/font_roboto_regular</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">@dimen/medium_margin</item>
+    <style name="SmallSecondaryText" parent="SmallRegularText">
+        <item name="android:textColor">@color/secondaryTextColor</item>
     </style>
 
     <!-- BOTTOM BAR -->

@@ -15,9 +15,9 @@ import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.StatisticViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.PeriodItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.*
 import com.mikepenz.fastadapter.FastAdapter

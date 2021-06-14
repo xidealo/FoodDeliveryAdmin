@@ -27,7 +27,7 @@
 
                 <TextView
                     android:id="@+id/fragment_statistic_tv_address"
-                    style="@style/SmallText"
+                    style="@style/MediumRegularText"
                     android:layout_width="0dp"
                     android:layout_gravity="center_vertical"
                     android:paddingVertical="@dimen/small_padding"
@@ -65,7 +65,7 @@
 
                 <TextView
                     android:id="@+id/fragment_statistic_tv_period"
-                    style="@style/SmallText"
+                    style="@style/MediumRegularText"
                     android:layout_width="0dp"
                     android:layout_gravity="center_vertical"
                     android:paddingVertical="@dimen/small_padding"

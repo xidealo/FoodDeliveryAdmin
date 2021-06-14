@@ -6,10 +6,10 @@ import com.bunbeauty.data.model.MenuProduct
 interface IProductUtil {
 
     fun getNewTotalCost(cartProductList: List<CartProduct>): Int
-    fun getOldTotalCost(cartProductList: List<CartProduct>): Int
+    fun getOldTotalCost(cartProductList: List<CartProduct>): Int?
 
     fun getCartProductNewCost(cartProduct: CartProduct): Int
-    fun getCartProductOldCost(cartProduct: CartProduct): Int
+    fun getCartProductOldCost(cartProduct: CartProduct): Int?
 
     fun getMenuProductNewPrice(menuProduct: MenuProduct): Int
 

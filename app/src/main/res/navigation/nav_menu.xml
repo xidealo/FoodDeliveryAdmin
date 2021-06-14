@@ -58,7 +58,7 @@
         tools:layout="@layout/bottom_sheet_selected_statistic">
         <argument
             android:name="statisticItem"
-            app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticItem" />
+            app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem" />
     </dialog>
     <dialog
         android:id="@+id/addressListBottomSheet"

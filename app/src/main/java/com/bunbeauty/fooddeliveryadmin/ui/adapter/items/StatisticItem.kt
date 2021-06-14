@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.ui.adapter
+package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 
 import android.os.Parcelable
 import android.view.LayoutInflater

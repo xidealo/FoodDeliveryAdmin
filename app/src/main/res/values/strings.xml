@@ -36,6 +36,7 @@
     <!-- ORDER -->
     <string name="msg_order_delivery">Доставка</string>
     <string name="msg_order_pickup">Самовывоз</string>
+    <string name="msg_order_deferred_time">Ко времени:&#160;</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order">Заказ&#160;</string>

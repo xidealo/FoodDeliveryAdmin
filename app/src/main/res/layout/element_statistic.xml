@@ -6,10 +6,6 @@
         <variable
             name="statistic"
             type="com.bunbeauty.data.model.Statistic" />
-
-        <variable
-            name="iStringHelper"
-            type="com.bunbeauty.domain.string.IStringUtil" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -23,7 +19,7 @@
 
             <TextView
                 android:id="@+id/element_statistic_tv_date"
-                style="@style/MainTitle"
+                style="@style/LargeBoldCenterText"
                 android:layout_margin="@dimen/small_margin"
                 android:text="@{statistic.title}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -33,9 +29,8 @@
 
             <TextView
                 android:id="@+id/element_statistic_tv_count"
-                style="@style/MainTitle"
+                style="@style/LargeBoldCenterText"
                 android:layout_margin="@dimen/small_margin"
-                android:text="@{iStringHelper.toStringOrdersCount(statistic)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/element_statistic_tv_cost"
                 app:layout_constraintStart_toEndOf="@id/element_statistic_tv_date"
@@ -43,9 +38,8 @@
 
             <TextView
                 android:id="@+id/element_statistic_tv_cost"
-                style="@style/MainTitle"
+                style="@style/LargeBoldCenterText"
                 android:layout_margin="@dimen/small_margin"
-                android:text="@{iStringHelper.toStringCost(statistic)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/element_statistic_tv_count"

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.ui.adapter
+package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -33,7 +33,7 @@ data class OrderItem(
         binding.elementOrderTvDeferred.text = orderUI.deferredTime
         binding.elementOrderTvTime.text = orderUI.time
         binding.elementOrderIvStatus.background =
-            ContextCompat.getDrawable(binding.elementOrderIvStatus.context, getIcon())
+            ContextCompat.getDrawable(binding.root.context, getIcon())
     }
 
     override fun createBinding(

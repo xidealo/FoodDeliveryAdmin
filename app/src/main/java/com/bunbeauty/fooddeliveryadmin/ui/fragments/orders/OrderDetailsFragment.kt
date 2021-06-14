@@ -2,17 +2,21 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
 import android.view.View
-import com.bunbeauty.fooddeliveryadmin.extensions.gone
-import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.enums.OrderStatus.*
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.fooddeliveryadmin.presentation.OrderDetailsViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.CartProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.utils.DefaultItemList
 
 class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDetailsViewModel>() {
 
@@ -23,41 +27,47 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewDataBinding.dialogChangeStatusTvCode.text = viewModel.codeTitle
-        viewDataBinding.dialogChangeStatusTvTimeValue.text = viewModel.time
-        viewDataBinding.dialogChangeStatusTvPickupMethodValue.text = viewModel.pickupMethod
-        viewDataBinding.dialogChangeStatusTvDeferredTimeValue.text = viewModel.deferredTime
-        viewDataBinding.dialogChangeStatusTvAddressValue.text = viewModel.address
-        viewDataBinding.dialogChangeStatusTvCommentValue.text = viewModel.comment
-        viewDataBinding.dialogChangeStatusTvProductListValue.text = viewModel.productList
+        super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.strikeOutText()
-        viewDataBinding.dialogChangeStatusTvOrderOldTotalCost.text = viewModel.oldTotalCost
-        viewDataBinding.dialogChangeStatusTvOrderNewTotalCost.text = viewModel.newTotalCost
+        viewDataBinding.fragmentOrderDetailsTvCode.text = viewModel.codeTitle
+        viewDataBinding.fragmentOrderDetailsTvTimeValue.text = viewModel.time
+        viewDataBinding.fragmentOrderDetailsTvPickupMethodValue.text = viewModel.pickupMethod
+        viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.text = viewModel.deferredTime
+        viewDataBinding.fragmentOrderDetailsTvAddressValue.text = viewModel.address
+        viewDataBinding.fragmentOrderDetailsTvCommentValue.text = viewModel.comment
+        val itemAdapter = ItemAdapter<CartProductItem>().apply {
+            set(viewModel.productList)
+        }
+        val fastAdapter = FastAdapter.with(itemAdapter)
+        viewDataBinding.fragmentOrderDetailsRvProductList.adapter = fastAdapter
+
+        viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.strikeOutText()
+        viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.text = viewModel.oldTotalCost
+        viewDataBinding.fragmentOrderDetailsTvOrderNewTotalCost.text = viewModel.newTotalCost
 
         if (viewModel.deferredTime.isEmpty()) {
-            viewDataBinding.dialogChangeStatusTvDeferredTimeValue.gone()
-            viewDataBinding.dialogChangeStatusTvDeferredTime.gone()
+            viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.gone()
+            viewDataBinding.fragmentOrderDetailsTvDeferredTime.gone()
         }
 
         if (viewModel.comment.isEmpty()) {
-            viewDataBinding.dialogChangeStatusTvCommentValue.gone()
-            viewDataBinding.dialogChangeStatusTvComment.gone()
+            viewDataBinding.fragmentOrderDetailsTvCommentValue.gone()
+            viewDataBinding.fragmentOrderDetailsTvComment.gone()
         }
 
-        viewDataBinding.dialogChangeStatusBtnCancel.setOnClickListener {
+        viewDataBinding.fragmentOrderDetailsBtnCancel.setOnClickListener {
             router.navigateUp()
         }
 
-        viewDataBinding.dialogChangeStatusBtnConfirm.setOnClickListener {
+        viewDataBinding.fragmentOrderDetailsBtnConfirm.setOnClickListener {
             val currentOrder = Order()
             val newStatus = when {
-                viewDataBinding.dialogChangeStatusRbNotAccepted.isChecked -> NOT_ACCEPTED
-                viewDataBinding.dialogChangeStatusRbAccepted.isChecked -> ACCEPTED
-                viewDataBinding.dialogChangeStatusRbPreparing.isChecked -> PREPARING
-                viewDataBinding.dialogChangeStatusRbSentOut.isChecked -> SENT_OUT
-                viewDataBinding.dialogChangeStatusRbDone.isChecked -> DONE
-                viewDataBinding.dialogChangeStatusRbCanceled.isChecked -> CANCELED
+                /*viewDataBinding.fragmentOrderDetailsRbNotAccepted.isChecked -> NOT_ACCEPTED
+                viewDataBinding.fragmentOrderDetailsRbAccepted.isChecked -> ACCEPTED
+                viewDataBinding.fragmentOrderDetailsRbPreparing.isChecked -> PREPARING
+                viewDataBinding.fragmentOrderDetailsRbSentOut.isChecked -> SENT_OUT
+                viewDataBinding.fragmentOrderDetailsRbDone.isChecked -> DONE
+                viewDataBinding.fragmentOrderDetailsRbCanceled.isChecked -> CANCELED*/
                 else -> NOT_ACCEPTED
             }
 
@@ -67,8 +77,6 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
                 changeStatus(newStatus, currentOrder)
             }
         }
-
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun showCanceledAlert(newStatus: OrderStatus, currentOrder: Order) {

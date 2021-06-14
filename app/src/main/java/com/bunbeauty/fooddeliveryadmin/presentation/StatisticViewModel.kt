@@ -7,9 +7,9 @@ import com.bunbeauty.data.enums.Period
 import com.bunbeauty.domain.repository.order.OrderRepo
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.AddressItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.PeriodItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.StatisticItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
