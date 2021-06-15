@@ -73,8 +73,8 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
     protected fun showError(errorMessage: String) {
         val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_LONG)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.errorColor))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
         snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
             View.TEXT_ALIGNMENT_CENTER
         snack.show()
@@ -83,8 +83,8 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
     protected fun showMessage(errorMessage: String) {
         val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_LONG)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
         snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
             View.TEXT_ALIGNMENT_CENTER
         snack.show()

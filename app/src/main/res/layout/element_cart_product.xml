@@ -3,11 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/element_cart_product_mcv_main"
-    style="@style/DefaultMaterialCard"
-    android:layout_marginStart="@dimen/small_margin"
-    android:layout_marginTop="@dimen/very_small_margin"
-    android:layout_marginEnd="@dimen/small_margin"
-    android:layout_marginBottom="@dimen/very_small_margin">
+    style="@style/ElementMaterialCard">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,7 +21,7 @@
         <TextView
             android:id="@+id/element_cart_product_tv_title"
             style="@style/MediumBoldText"
-            android:layout_margin="@dimen/very_small_margin"
+            android:layout_margin="@dimen/small_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/element_cart_product_iv_photo"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,16 +30,16 @@
         <TextView
             android:id="@+id/element_cart_product_tv_count"
             style="@style/MediumRegularText"
-            android:layout_margin="@dimen/very_small_margin"
+            android:layout_marginTop="@dimen/very_small_margin"
+            android:layout_marginStart="@dimen/small_margin"
             app:layout_constraintStart_toEndOf="@+id/element_cart_product_iv_photo"
             app:layout_constraintTop_toBottomOf="@id/element_cart_product_tv_title"
             tool:text="2 x" />
 
         <TextView
             android:id="@+id/element_cart_product_tv_old_cost"
-            style="@style/MediumRegularText"
+            style="@style/MediumSecondaryRegularText"
             android:layout_margin="@dimen/very_small_margin"
-            android:textColor="@color/grey"
             app:layout_constraintEnd_toStartOf="@id/element_cart_product_tv_new_cost"
             app:layout_constraintTop_toBottomOf="@id/element_cart_product_tv_title"
             tool:text="100 ₽" />
@@ -51,7 +47,8 @@
         <TextView
             android:id="@+id/element_cart_product_tv_new_cost"
             style="@style/MediumRegularText"
-            android:layout_margin="@dimen/very_small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginTop="@dimen/very_small_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/element_cart_product_tv_title"
             tool:text="100 ₽" />

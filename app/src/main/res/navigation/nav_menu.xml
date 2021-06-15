@@ -35,6 +35,9 @@
         <argument
             android:name="orderUI"
             app:argType="com.bunbeauty.data.model.order.OrderUI" />
+        <action
+            android:id="@+id/to_statusListBottomSheet"
+            app:destination="@id/statusListBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/statisticFragment"
@@ -102,7 +105,19 @@
         tools:layout="@layout/bottom_sheet_statistic_address_list" />
     <dialog
         android:id="@+id/statisticPeriodBottomSheet"
-        tools:layout="@layout/bottom_sheet_statistic_period"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodBottomSheet"
-        android:label="StatisticPeriodBottomSheet" />
+        android:label="StatisticPeriodBottomSheet"
+        tools:layout="@layout/bottom_sheet_statistic_period" />
+    <dialog
+        android:id="@+id/statusListBottomSheet"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.StatusListBottomSheet"
+        android:label="StatusListBottomSheet"
+        tools:layout="@layout/bottom_sheet_status_list" >
+        <argument
+            android:name="isDelivery"
+            app:argType="boolean" />
+        <argument
+            android:name="isDeferred"
+            app:argType="boolean" />
+    </dialog>
 </navigation>

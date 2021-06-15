@@ -23,10 +23,10 @@ data class OrderEntity(
     var phone: String = "",
     var time: Long = DateTime.now().millis,
     var orderStatus: OrderStatus = OrderStatus.NOT_ACCEPTED,
-    var isDelivery: Boolean = true,
+    var isDelivery: Boolean = false,
     var code: String = "",
     var email: String = "",
-    var deferred: String = ""
+    var deferred: String? = null
 ) : BaseDiffUtilModel, Parcelable {
 
     companion object {

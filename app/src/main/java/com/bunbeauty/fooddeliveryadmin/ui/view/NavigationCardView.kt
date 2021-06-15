@@ -52,9 +52,10 @@ class NavigationCardView @JvmOverloads constructor(
     init {
         (context.applicationContext as FoodDeliveryAdminApplication).appComponent.inject(this)
 
-        strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke)
+        strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke_width)
         strokeColor = resourcesProvider.getColor(R.color.colorPrimary)
         radius = resourcesProvider.getDimensionFloat(R.dimen.medium_radius)
+        cardElevation = 0f
 
         val constraintLayout = createConstraintLayout(context)
         constraintLayout.addView(createImageView(context))
@@ -85,6 +86,7 @@ class NavigationCardView @JvmOverloads constructor(
 
     private fun createTextView(context: Context): TextView {
         return TextView(context).apply {
+            textSize = 16f
             layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
                 topToTop = PARENT_ID
                 startToStart = PARENT_ID

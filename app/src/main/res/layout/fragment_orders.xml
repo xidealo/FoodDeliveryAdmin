@@ -6,25 +6,24 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/mainBackground"
+        android:padding="@dimen/small_padding"
         tools:context=".ui.fragments.orders.OrdersFragment">
 
         <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
             android:id="@+id/fragment_orders_mcv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:background="@color/backgroundComponent"
-            app:cardElevation="0dp"
             android:icon="@drawable/ic_right_arrow"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_orders_rv_result"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_orders_rv_result"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/small_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

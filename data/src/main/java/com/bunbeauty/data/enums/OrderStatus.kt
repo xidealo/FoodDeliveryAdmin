@@ -9,6 +9,7 @@ enum class OrderStatus : Parcelable {
     ACCEPTED,
     PREPARING,
     SENT_OUT,
+    DELIVERED,
     DONE,
     CANCELED
 }

@@ -2,8 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.di.order_details
 
 import androidx.lifecycle.ViewModel
 import com.bunbeauty.fooddeliveryadmin.di.ViewModelKey
-import com.bunbeauty.fooddeliveryadmin.presentation.OrderDetailsViewModel
-import com.bunbeauty.fooddeliveryadmin.presentation.OrderDetailsViewModelImpl
+import com.bunbeauty.fooddeliveryadmin.presentation.order.OrderDetailsViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.order.OrderDetailsViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

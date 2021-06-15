@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.presentation
+package com.bunbeauty.fooddeliveryadmin.presentation.order
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ExtendedState
@@ -17,6 +17,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateAddedSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateUpdatedSuccess
+import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.OrderItem
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,8 +40,7 @@ class OrdersViewModelImpl @Inject constructor(
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: DateTimeUtil,
     private val dataStoreHelper: IDataStoreHelper,
-    private val productUtil: IProductUtil,
-    private val resourcesProvider: IResourcesProvider,
+    private val productUtil: IProductUtil
 ) : OrdersViewModel() {
 
     override val cafeAddressStateFlow = MutableStateFlow<State<String>>(State.Loading())
@@ -84,24 +84,6 @@ class OrdersViewModelImpl @Inject constructor(
 
     fun toOrderItemList(orderList: List<Order>): List<OrderItem> {
         return orderList.map { order ->
-            val pickupMethod = if (order.orderEntity.isDelivery) {
-                resourcesProvider.getString(R.string.msg_order_delivery)
-            } else {
-                resourcesProvider.getString(R.string.msg_order_pickup)
-            }
-            val cartProductUIList = order.cartProducts.map { cartProduct ->
-                val oldCost = productUtil.getCartProductOldCost(cartProduct)
-                val newCost = productUtil.getCartProductNewCost(cartProduct)
-                val oldCostString = stringUtil.getCostString(oldCost)
-                val newCostString = stringUtil.getCostString(newCost)
-                CartProductUI(
-                    name = productUtil.getPositionName(cartProduct.menuProduct),
-                    photoLink = cartProduct.menuProduct.photoLink,
-                    count = cartProduct.count.toString() + resourcesProvider.getString(R.string.msg_pieces),
-                    oldCost = oldCostString,
-                    newCost = newCostString
-                )
-            }
             val oldCost = productUtil.getOldTotalCost(order.cartProducts)
             val newCost = productUtil.getNewTotalCost(order.cartProducts)
             val oldTotalCostString = stringUtil.getCostString(oldCost)
@@ -113,12 +95,11 @@ class OrdersViewModelImpl @Inject constructor(
                     deferredTime = stringUtil.getDeferredTimeString(order.orderEntity.deferred),
                     time = dateTimeUtil.getTimeHHMM(order.timestamp),
                     isDelivery = order.orderEntity.isDelivery,
-                    pickupMethod = pickupMethod,
                     comment = order.orderEntity.comment,
                     email = order.orderEntity.email,
                     phone = order.orderEntity.phone,
                     address = stringUtil.toString(order.orderEntity.address),
-                    cartProductList = cartProductUIList,
+                    cartProductList = order.cartProducts,
                     oldTotalCost = oldTotalCostString,
                     newTotalCost = newTotalCostString
                 )

@@ -23,7 +23,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fragment_edit_menu_fab_add_new_product"
-            style="@style/BaseActionButton"
+            style="@style/ActionButton"
             android:backgroundTint="@color/colorPrimary"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"

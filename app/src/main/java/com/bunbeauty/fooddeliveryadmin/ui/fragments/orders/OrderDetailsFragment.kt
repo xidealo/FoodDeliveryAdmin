@@ -10,7 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
-import com.bunbeauty.fooddeliveryadmin.presentation.OrderDetailsViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.order.OrderDetailsViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.CartProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -35,6 +35,10 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
         viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.text = viewModel.deferredTime
         viewDataBinding.fragmentOrderDetailsTvAddressValue.text = viewModel.address
         viewDataBinding.fragmentOrderDetailsTvCommentValue.text = viewModel.comment
+        viewDataBinding.fragmentOrderDetailsCvStatus.cardText = viewModel.status
+        viewDataBinding.fragmentOrderDetailsCvStatus.setOnClickListener {
+            viewModel.goToStatusList()
+        }
         val itemAdapter = ItemAdapter<CartProductItem>().apply {
             set(viewModel.productList)
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.di.ViewModelKey
 import com.bunbeauty.fooddeliveryadmin.presentation.*
+import com.bunbeauty.fooddeliveryadmin.presentation.order.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -1,54 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/element_order_mvc_main"
+    style="@style/ElementMaterialCard"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/element_order_mvc_main"
-        style="@style/DefaultMaterialCard"
-        android:layout_marginBottom="@dimen/small_margin">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_padding">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/small_padding">
+        <ImageView
+            android:id="@+id/element_order_iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tint="@color/darkIconColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:src="@drawable/ic_cancel" />
 
-            <ImageView
-                android:id="@+id/element_order_iv_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tool:src="@drawable/ic_cancel" />
+        <TextView
+            android:id="@+id/element_order_tv_code"
+            style="@style/LargeBoldCenterText"
+            android:layout_marginStart="@dimen/small_margin"
+            app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:text="A-90" />
 
-            <TextView
-                android:id="@+id/element_order_tv_code"
-                style="@style/LargeBoldCenterText"
-                android:layout_marginStart="@dimen/small_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"
-                app:layout_constraintTop_toTopOf="parent"
-                tool:text="A-90" />
+        <TextView
+            android:id="@+id/element_order_tv_deferred"
+            style="@style/SmallSecondaryText"
+            android:layout_marginStart="@dimen/small_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"
+            app:layout_constraintTop_toBottomOf="@+id/element_order_tv_code"
+            tool:text="Ко времени: 12:34" />
 
-            <TextView
-                android:id="@+id/element_order_tv_deferred"
-                style="@style/MediumRegularText"
-                android:layout_marginStart="@dimen/very_small_margin"
-                tool:text="(к 12:34)"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/element_order_tv_code"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/element_order_tv_time"
+            style="@style/SmallRegularText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:text="5 мая  12:34" />
 
-            <TextView
-                android:id="@+id/element_order_tv_time"
-                style="@style/MediumRegularText"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tool:text="5 мая  12:34"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

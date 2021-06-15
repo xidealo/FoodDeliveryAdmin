@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <color name="colorPrimary">#ff6900</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="errorColor">#B1021D</color>
+    <color name="colorPrimaryLight">#FFD2B0</color>
 
-    <color name="black" tools:override="true">#000000</color>
-    <color name="white" tools:override="true">#FFFFFF</color>
-    <color name="grey">#93969A</color>
-
-    <color name="notAcceptedColor">#F2F2F2</color>
-    <color name="acceptedColor">#FFF4BA</color>
-    <color name="preparingColor">#FFDFBA</color>
-    <color name="sentOutColor">#BAE1FF</color>
-    <color name="doneColor">#B1FFCC</color>
-    <color name="canceledColor">#FFB3BA</color>
+    <!-- ICON -->
+    <color name="darkIconColor">#000000</color>
+    <color name="lightIconColor">#FFFFFF</color>
 
     <!-- BACKGROUND -->
-    <color name="backgroundPage">#f3f2f7</color>
-    <color name="backgroundComponent">#F3F2F3</color>
-    <color name="cardViewBackground">#FFFFFF</color>
-    <color name="fragmentBackground">#FFFFFF</color>
-    <color name="dialogBackground">#FFFFFF</color>
-    <color name="tabLayoutBackground">#FFFFFF</color>
-    <color name="actionChipBackground">#F3F2F3</color>
-    <color name="backgroundRed">#FF8572</color>
-    <color name="backgroundYellow">#FFD57C</color>
+    <color name="mainBackground">#F2F1F6</color>
+    <color name="elementBackground">#FFFFFF</color>
 
     <!-- TEXT -->
     <color name="mainTextColor">#000000</color>
     <color name="secondaryTextColor">#A7A5A5</color>
     <color name="lightTextColor">#FFFFFF</color>
+
+    <!-- SPECIAL -->
+    <color name="errorColor">#B1021D</color>
+    <color name="notAcceptedColor">#FFFFFF</color>
+    <color name="acceptedColor">#FFF4BA</color>
+    <color name="preparingColor">#FFDFBA</color>
+    <color name="sentOutColor">#BAE1FF</color>
+    <color name="doneColor">#B1FFCC</color>
+    <color name="canceledColor">#FFB3BA</color>
 </resources>

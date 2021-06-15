@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di.components
 
 import com.bunbeauty.fooddeliveryadmin.di.modules.ViewModelBinding
 import com.bunbeauty.fooddeliveryadmin.di.order_details.OrderDetailsComponent
+import com.bunbeauty.fooddeliveryadmin.di.status_list.StatusListComponent
 import com.bunbeauty.fooddeliveryadmin.ui.activities.MainActivity
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.CreateNewMenuProductFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragment
@@ -42,4 +43,5 @@ interface ActivityComponent {
     fun inject(statisticPeriodBottomSheet: StatisticPeriodBottomSheet)
 
     fun getOrderDetailsComponent(): OrderDetailsComponent.Factory
+    fun getStatusListComponent(): StatusListComponent.Factory
 }

@@ -23,11 +23,8 @@ data class OrderItem(
     override val type = R.id.element_text_tv_title
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {
-        binding.elementOrderMvcMain.setBackgroundColor(
-            ContextCompat.getColor(
-                binding.elementOrderMvcMain.context,
-                getBackgroundColor()
-            )
+        binding.elementOrderMvcMain.background.setTint(
+            ContextCompat.getColor(binding.root.context, getBackgroundColor())
         )
         binding.elementOrderTvCode.text = orderUI.code
         binding.elementOrderTvDeferred.text = orderUI.deferredTime

@@ -15,7 +15,7 @@
     <string name="msg_break">\n</string>
     <string name="msg_parenthesis">)&#160;</string>
     <string name="msg_colon">:&#160;</string>
-    <string name="msg_pieces">&#160;шт</string>
+    <string name="msg_pieces">x&#160;</string>
     <string name="msg_comma">,&#160;</string>
 
     <!-- ADDRESS -->
@@ -38,6 +38,15 @@
     <string name="msg_order_pickup">Самовывоз</string>
     <string name="msg_order_deferred_time">Ко времени:&#160;</string>
 
+    <!-- ORDER STATUS-->
+    <string name="msg_status_not_accepted">Обрабатывается</string>
+    <string name="msg_status_accepted">Принят</string>
+    <string name="msg_status_preparing">Готовится</string>
+    <string name="msg_status_sent_out">В пути</string>
+    <string name="msg_status_delivered">Выдан</string>
+    <string name="msg_status_ready">Готов</string>
+    <string name="msg_status_canceled">Отменен</string>
+
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order">Заказ&#160;</string>
     <string name="msg_order_details_in_order">В заказе:</string>
@@ -46,20 +55,15 @@
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
     <string name="msg_order_details_comment">Комментарий</string>
+    <string name="msg_order_details_order_status">Статус</string>
     <string name="msg_order_details_order_list">Список заказанных блюд</string>
     <string name="msg_order_details_order_price">Сумма заказа</string>
 
 
     <!-- CHANGE STATUS -->
     <string name="hint_change_status_status">Статус заказа</string>
-    <string name="hint_change_status_not_accepted">Не принят</string>
-    <string name="hint_change_status_accepted">Принят</string>
-    <string name="hint_change_status_preparing">Готовится</string>
-    <string name="hint_change_status_sent_out">Отправлен</string>
-    <string name="hint_change_status_delivered">Доставлен</string>
-    <string name="hint_change_status_canceled">Отменен</string>
     <string name="action_change_status_cancel">Отменить</string>
-    <string name="action_change_status_confirm">Принять</string>
+    <string name="action_change_status_save">Сохранить</string>
     <string name="title_change_status_alert">Внимание!</string>
     <string name="text_change_status_cancel">Отменить заказ?</string>
     <string name="action_change_status_yes">Да</string>

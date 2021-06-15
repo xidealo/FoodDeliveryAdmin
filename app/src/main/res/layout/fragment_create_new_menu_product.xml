@@ -10,13 +10,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/small_padding"
             tools:context=".ui.fragments.edit_menu.CreateNewMenuProductFragment">
 
             <RadioGroup
                 android:id="@+id/fragment_create_menu_product_rg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -40,7 +40,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_product_code"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_product_code"
                 app:endIconMode="dropdown_menu"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_name"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_cost"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_cost"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_discount_cost"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_discount_cost"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +105,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_weight"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_weight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_description"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +135,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_create_menu_product_til_combo_description"
                 style="@style/MaterialInputLayout"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:hint="@string/hint_create_menu_product_combo_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -150,6 +150,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fragment_create_menu_product_btn_update"
                 style="@style/MainButton"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/action_create_menu_product_create"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

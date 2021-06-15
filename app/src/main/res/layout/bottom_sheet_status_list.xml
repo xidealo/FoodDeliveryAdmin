@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -8,10 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/DefaultBottomSheet"
-        tools:context=".ui.fragments.orders.AddressListBottomSheet">
+        tools:context=".ui.fragments.orders.StatusListBottomSheet">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bottom_sheet_address_list_rv_list"
+            android:id="@+id/bottom_sheet_status_list_rv_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

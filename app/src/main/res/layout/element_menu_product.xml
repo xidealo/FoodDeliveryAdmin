@@ -47,20 +47,19 @@
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--android:text="@{productHelper.getMenuProductNewPrice(menuProduct)}"-->
             <TextView
                 android:id="@+id/element_menu_product_tv_cost"
                 style="@style/MediumRegularText"
                 android:layout_marginStart="@dimen/very_small_margin"
-                android:text="@{productHelper.getMenuProductNewPrice(menuProduct)}"
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_tv_title" />
 
+            <!--android:text="@{menuProduct.cost}"-->
             <TextView
                 android:id="@+id/element_menu_product_tv_cost_old"
-                style="@style/MediumRegularText"
+                style="@style/MediumSecondaryRegularText"
                 android:layout_marginStart="@dimen/very_small_margin"
-                android:text="@{menuProduct.cost}"
-                android:textColor="@color/grey"
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_tv_cost"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_tv_title" />
 
