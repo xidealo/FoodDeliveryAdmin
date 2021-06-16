@@ -33,10 +33,11 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
     @Inject
     lateinit var factory: ViewModelFactory
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         inject((requireActivity() as MainActivity).activityComponent)
+        viewModel = ViewModelProvider(this, factory).get(getViewModelClass())
     }
 
     abstract fun inject(activityComponent: ActivityComponent)
@@ -47,9 +48,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
-        viewModel = ViewModelProvider(this, factory).get(getViewModelClass())
-
         val viewBindingClass = getViewBindingClass()
         val inflateMethod = viewBindingClass.getMethod(
             "inflate",

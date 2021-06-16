@@ -1,5 +1,6 @@
 package com.bunbeauty.domain.repository.order
 
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface OrderRepo {
 
     suspend fun insert(orderEntity: OrderEntity): Long
-    fun update(order: Order)
+    fun updateStatus(cafeId: String, orderUuid: String, status: OrderStatus)
 
     fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>>
     fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>>

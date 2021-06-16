@@ -4,16 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State
 import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.data.model.cart_product.CartProductUI
 import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.data.model.order.OrderUI
-import com.bunbeauty.domain.cost.ICostUtil
 import com.bunbeauty.domain.date_time.DateTimeUtil
-import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.repository.order.OrderRepo
-import com.bunbeauty.domain.resources.IResourcesProvider
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateAddedSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateUpdatedSuccess
@@ -29,8 +23,8 @@ abstract class OrdersViewModel : BaseViewModel() {
     abstract val cafeAddressStateFlow: StateFlow<State<String>>
     abstract val orderListState: StateFlow<ExtendedState<List<OrderItem>>>
 
-    abstract fun subscribeOnAddress()
-    abstract fun subscribeOnOrders()
+//    abstract fun subscribeOnAddress()
+//    abstract fun subscribeOnOrders()
 }
 
 @ExperimentalCoroutinesApi
@@ -39,24 +33,21 @@ class OrdersViewModelImpl @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: DateTimeUtil,
-    private val dataStoreHelper: IDataStoreHelper,
-    private val productUtil: IProductUtil
+    private val dataStoreHelper: IDataStoreHelper
 ) : OrdersViewModel() {
 
-    override val cafeAddressStateFlow = MutableStateFlow<State<String>>(State.Loading())
-    get() {
-        //subscribeOnAddress()
-        return field
-    }
+    override val cafeAddressStateFlow =
+        MutableStateFlow<State<String>>(State.Loading())
 
     override val orderListState =
         MutableStateFlow<ExtendedState<List<OrderItem>>>(ExtendedState.Loading())
-        get() {
-            //subscribeOnOrders()
-            return field
-        }
 
-    override fun subscribeOnAddress() {
+    init {
+        subscribeOnAddress()
+        subscribeOnOrders()
+    }
+
+    fun subscribeOnAddress() {
         dataStoreHelper.cafeId.flatMapLatest { cafeId ->
             cafeRepo.getCafeByIdFlow(cafeId)
         }.onEach { cafe ->
@@ -68,7 +59,7 @@ class OrdersViewModelImpl @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    override fun subscribeOnOrders() {
+    fun subscribeOnOrders() {
         dataStoreHelper.cafeId.flatMapLatest { cafeId ->
             orderRepo.getAddedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
@@ -84,25 +75,12 @@ class OrdersViewModelImpl @Inject constructor(
 
     fun toOrderItemList(orderList: List<Order>): List<OrderItem> {
         return orderList.map { order ->
-            val oldCost = productUtil.getOldTotalCost(order.cartProducts)
-            val newCost = productUtil.getNewTotalCost(order.cartProducts)
-            val oldTotalCostString = stringUtil.getCostString(oldCost)
-            val newTotalCostString = stringUtil.getCostString(newCost)
             OrderItem(
-                OrderUI(
-                    status = order.orderEntity.orderStatus,
-                    code = order.orderEntity.code,
-                    deferredTime = stringUtil.getDeferredTimeString(order.orderEntity.deferred),
-                    time = dateTimeUtil.getTimeHHMM(order.timestamp),
-                    isDelivery = order.orderEntity.isDelivery,
-                    comment = order.orderEntity.comment,
-                    email = order.orderEntity.email,
-                    phone = order.orderEntity.phone,
-                    address = stringUtil.toString(order.orderEntity.address),
-                    cartProductList = order.cartProducts,
-                    oldTotalCost = oldTotalCostString,
-                    newTotalCost = newTotalCostString
-                )
+                status = order.orderEntity.orderStatus,
+                code = order.orderEntity.code,
+                deferredTime = stringUtil.getDeferredTimeString(order.orderEntity.deferred),
+                time = dateTimeUtil.getTimeHHMM(order.timestamp),
+                order = order
             )
         }
     }

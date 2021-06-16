@@ -243,11 +243,11 @@
                 android:layout_margin="@dimen/medium_margin"
                 android:text="@string/action_change_status_cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fragment_order_details_btn_confirm"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_order_details_btn_save"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_new_total_cost" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/fragment_order_details_btn_confirm"
+                android:id="@+id/fragment_order_details_btn_save"
                 style="@style/SmallMainButton"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/medium_margin"

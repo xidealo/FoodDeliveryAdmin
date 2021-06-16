@@ -17,8 +17,8 @@ class OrderRepository @Inject constructor(
 
     override suspend fun insert(orderEntity: OrderEntity) = orderDao.insert(orderEntity)
 
-    override fun update(order: Order) {
-        apiRepository.updateOrder(order)
+    override fun updateStatus(cafeId: String, orderUuid: String, status: OrderStatus) {
+        apiRepository.updateOrderStatus(cafeId, orderUuid, status)
     }
 
     override fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>> {

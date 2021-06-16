@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.repository.api.firebase
 
 import android.util.Log
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.Cafe.Companion.CAFES
 import com.bunbeauty.data.model.Company
@@ -32,7 +33,7 @@ class ApiRepository @Inject constructor(
     @ExperimentalCoroutinesApi
     override fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>> = callbackFlow {
         orderList.clear()
-        offer(orderList)
+        offer(emptyList())
 
         val ordersReference = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
@@ -179,15 +180,15 @@ class ApiRepository @Inject constructor(
         //TODO("Not yet implemented")
     }
 
-    override fun updateOrder(order: Order) {
+    override fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus) {
         val orderRef = firebaseDatabase
             .getReference(OrderEntity.ORDERS)
             .child(APP_ID)
-            .child(order.cafeId)
-            .child(order.uuid)
+            .child(cafeId)
+            .child(orderUuid)
             .child(OrderEntity.ORDER_ENTITY)
             .child(OrderEntity.ORDER_STATUS)
-        orderRef.setValue(order.orderEntity.orderStatus)
+        orderRef.setValue(status)
     }
 
     override fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String) {

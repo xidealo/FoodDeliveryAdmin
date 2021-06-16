@@ -18,7 +18,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tool:src="@drawable/ic_cancel" />
+            tool:src="@drawable/ic_canceled" />
 
         <TextView
             android:id="@+id/element_order_tv_code"
@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/element_order_tv_deferred"
-            style="@style/SmallSecondaryText"
+            style="@style/SmallRegularText"
             android:layout_marginStart="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"

@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.data.enums.OrderStatus.CANCELED
 import com.bunbeauty.data.model.cart_product.CartProductUI
-import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.domain.date_time.IDateTimeUtil
 import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.domain.repository.order.OrderRepo
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
@@ -12,8 +12,9 @@ import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragmentA
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragmentDirections.toStatusListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 abstract class OrderDetailsViewModel : BaseViewModel() {
@@ -21,48 +22,49 @@ abstract class OrderDetailsViewModel : BaseViewModel() {
     abstract val codeTitle: String
     abstract val time: String
     abstract val pickupMethod: String
-    abstract val deferredTime: String
+    abstract val deferredTime: String?
     abstract val address: String
     abstract val comment: String
-    abstract val status: String
+    abstract var status: String
     abstract val productList: List<CartProductItem>
     abstract val oldTotalCost: String
     abstract val newTotalCost: String
 
-    abstract fun changeStatus(order: Order)
+    abstract fun isStatusCanceled(status: String): Boolean
+    abstract fun changeStatus(status: String)
     abstract fun goToStatusList()
 }
 
 class OrderDetailsViewModelImpl @Inject constructor(
     private val args: OrderDetailsFragmentArgs,
     private val orderRepo: OrderRepo,
-    private val dataStoreHelper: IDataStoreHelper,
     private val productUtil: IProductUtil,
     private val stringUtil: IStringUtil,
+    private val dateTimeUtil: IDateTimeUtil,
 ) : OrderDetailsViewModel() {
 
     override val codeTitle: String
-        get() = stringUtil.getOrderCodeString(args.orderUI.code)
+        get() = stringUtil.getOrderCodeString(args.order.orderEntity.code)
 
     override val time: String
-        get() = args.orderUI.time
+        get() = dateTimeUtil.getTimeHHMM(args.order.timestamp)
 
     override val pickupMethod: String
-        get() = stringUtil.getReceivingMethodString(args.orderUI.isDelivery)
+        get() = stringUtil.getReceivingMethodString(args.order.orderEntity.isDelivery)
 
-    override val deferredTime: String
-        get() = args.orderUI.deferredTime
+    override val deferredTime: String?
+        get() = args.order.orderEntity.deferred
 
     override val address: String
-        get() = args.orderUI.address
+        get() = stringUtil.toString(args.order.orderEntity.address)
 
     override val comment: String
-        get() = args.orderUI.comment
+        get() = args.order.orderEntity.comment
 
-    override var status = stringUtil.getOrderStatusString(args.orderUI.status)
+    override var status = stringUtil.getOrderStatusString(args.order.orderEntity.orderStatus)
 
     override val productList: List<CartProductItem>
-        get() = args.orderUI.cartProductList.map { cartProduct ->
+        get() = args.order.cartProducts.map { cartProduct ->
             val oldCost = productUtil.getCartProductOldCost(cartProduct)
             val newCost = productUtil.getCartProductNewCost(cartProduct)
 
@@ -78,25 +80,37 @@ class OrderDetailsViewModelImpl @Inject constructor(
         }
 
     override val oldTotalCost: String
-        get() = args.orderUI.oldTotalCost
+        get() {
+            val oldTotalCost = productUtil.getOldTotalCost(args.order.cartProducts)
+            return stringUtil.getCostString(oldTotalCost)
+        }
 
     override val newTotalCost: String
-        get() = args.orderUI.newTotalCost
+        get() {
+            val newTotalCost = productUtil.getNewTotalCost(args.order.cartProducts)
+            return stringUtil.getCostString(newTotalCost)
+        }
 
-    override fun changeStatus(order: Order) {
+    override fun isStatusCanceled(status: String): Boolean {
+        return stringUtil.getOrderStatusByString(status) == CANCELED
+    }
+
+    override fun changeStatus(status: String) {
         viewModelScope.launch(IO) {
-            order.cafeId = dataStoreHelper.cafeId.first()
-            orderRepo.update(order)
+            val orderStatus = stringUtil.getOrderStatusByString(status)
+            orderRepo.updateStatus(args.order.cafeId, args.order.uuid, orderStatus)
 
-            router.navigateUp()
+            withContext(Main) {
+                router.navigateUp()
+            }
         }
     }
 
     override fun goToStatusList() {
         router.navigate(
             toStatusListBottomSheet(
-                args.orderUI.isDelivery,
-                args.orderUI.deferredTime.isNotEmpty()
+                args.order.orderEntity.isDelivery,
+                !args.order.orderEntity.deferred.isNullOrEmpty()
             )
         )
     }

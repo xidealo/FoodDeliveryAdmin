@@ -26,7 +26,6 @@ data class CartProductItem(
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementCartProductBinding, payloads: List<Any>) {
-        Log.d("test", "bindView")
         Picasso.get()
             .load(cartProductUI.photoLink)
             .fit()
@@ -45,7 +44,6 @@ data class CartProductItem(
         inflater: LayoutInflater,
         parent: ViewGroup?
     ): ElementCartProductBinding {
-        Log.d("test", "createBinding")
         return ElementCartProductBinding.inflate(inflater, parent, false)
     }
 }

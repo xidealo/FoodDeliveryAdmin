@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.room.Ignore
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.enums.OrderStatus.*
+import com.bunbeauty.data.model.cart_product.CartProduct
+import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderUI
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
@@ -15,7 +18,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OrderItem(
-    val orderUI: OrderUI
+    val status: OrderStatus,
+    val code: String,
+    val deferredTime: String,
+    val time: String,
+    val order: Order,
 ) : AbstractBindingItem<ElementOrderBinding>(), Parcelable {
 
     @IgnoredOnParcel
@@ -24,13 +31,13 @@ data class OrderItem(
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {
         binding.elementOrderMvcMain.background.setTint(
-            ContextCompat.getColor(binding.root.context, getBackgroundColor())
+            ContextCompat.getColor(binding.root.context, getBackgroundColor(status))
         )
-        binding.elementOrderTvCode.text = orderUI.code
-        binding.elementOrderTvDeferred.text = orderUI.deferredTime
-        binding.elementOrderTvTime.text = orderUI.time
+        binding.elementOrderTvCode.text = code
+        binding.elementOrderTvDeferred.text = deferredTime
+        binding.elementOrderTvTime.text = time
         binding.elementOrderIvStatus.background =
-            ContextCompat.getDrawable(binding.root.context, getIcon())
+            ContextCompat.getDrawable(binding.root.context, getIcon(status))
     }
 
     override fun createBinding(
@@ -40,8 +47,8 @@ data class OrderItem(
         return ElementOrderBinding.inflate(inflater, parent, false)
     }
 
-    private fun getBackgroundColor(): Int {
-        return when (orderUI.status) {
+    private fun getBackgroundColor(status: OrderStatus): Int {
+        return when (status) {
             NOT_ACCEPTED -> R.color.notAcceptedColor
             ACCEPTED -> R.color.acceptedColor
             PREPARING -> R.color.preparingColor
@@ -52,8 +59,8 @@ data class OrderItem(
         }
     }
 
-    private fun getIcon(): Int {
-        return when (orderUI.status) {
+    private fun getIcon(status: OrderStatus): Int {
+        return when (status) {
             NOT_ACCEPTED -> R.drawable.ic_not_accepted
             ACCEPTED -> R.drawable.ic_accepted
             PREPARING -> R.drawable.ic_preparing

@@ -8,4 +8,8 @@ abstract class BaseViewModel : ViewModel() {
 
     @Inject
     lateinit var router: Router
+
+    fun goBack() {
+        router.navigateUp()
+    }
 }

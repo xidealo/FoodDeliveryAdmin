@@ -1,5 +1,6 @@
 package com.bunbeauty.domain.repository.api.firebase
 
+import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.Cafe
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.MenuProduct
@@ -14,7 +15,7 @@ interface IApiRepository {
 
     fun insert(menuProduct: MenuProductFirebase)
 
-    fun updateOrder(order: Order)
+    fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus)
     fun updateMenuProduct(menuProduct: MenuProductFirebase, uuid: String)
 
     fun delete(order: Order)

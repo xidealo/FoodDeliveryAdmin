@@ -30,7 +30,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentOrdersRvResult.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, orderItem, _ ->
-            router.navigate(toOrdersDetailsFragment(orderItem.orderUI))
+            router.navigate(toOrdersDetailsFragment(orderItem.order))
             false
         }
         viewDataBinding.fragmentOrdersMcvAddress.setOnClickListener {
@@ -60,8 +60,5 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                 }
             }
         }.launchWhenStarted(lifecycleScope)
-
-        viewModel.subscribeOnAddress()
-        viewModel.subscribeOnOrders()
     }
 }
