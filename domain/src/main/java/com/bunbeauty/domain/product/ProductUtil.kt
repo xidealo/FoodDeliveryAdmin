@@ -49,8 +49,6 @@ class ProductUtil @Inject constructor() : IProductUtil {
         return priceForFreeDelivery - getNewTotalCost(cartProductList)
     }
 
-
-
     override fun getPositionName(menuProduct: MenuProduct): String {
         return if (menuProduct.comboDescription.isEmpty()) {
             menuProduct.name

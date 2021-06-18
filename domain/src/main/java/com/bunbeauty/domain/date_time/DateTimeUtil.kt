@@ -33,6 +33,12 @@ class DateTimeUtil @Inject constructor(): IDateTimeUtil {
         return dateTime.toString("HH:mm")
     }
 
+    override fun getDateTimeDDMMHHMM(millis: Long): String {
+        val dateTime = DateTime(millis)
+
+        return dateTime.toString("dd MMMM HH:mm")
+    }
+
     companion object {
         private val MONTH_NAME_LIST = listOf(
             "январь",

@@ -11,8 +11,10 @@
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/to_orders_fragment"
-            app:destination="@id/ordersFragment" />
+            android:id="@+id/to_ordersFragment"
+            app:destination="@id/ordersFragment"
+            app:popUpTo="@id/nav_menu"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -45,20 +47,20 @@
         android:label="StatisticFragment"
         tools:layout="@layout/fragment_statistic">
         <action
-            android:id="@+id/to_selectedStatisticBottomSheet"
-            app:destination="@id/selectedStatisticBottomSheet" />
+            android:id="@+id/to_statisticDetailsBottomSheet"
+            app:destination="@id/statisticDetailsBottomSheet" />
         <action
             android:id="@+id/to_statisticAddressListBottomSheet"
             app:destination="@id/statisticAddressListBottomSheet" />
         <action
-            android:id="@+id/to_statisticPeriodBottomSheet"
-            app:destination="@id/statisticPeriodBottomSheet" />
+            android:id="@+id/to_statisticPeriodListBottomSheet"
+            app:destination="@id/statisticPeriodListBottomSheet" />
     </fragment>
     <dialog
-        android:id="@+id/selectedStatisticBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.SelectedStatisticBottomSheet"
+        android:id="@+id/statisticDetailsBottomSheet"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsBottomSheet"
         android:label="SelectedStatisticBottomSheet"
-        tools:layout="@layout/bottom_sheet_selected_statistic">
+        tools:layout="@layout/bottom_sheet_statistic_details">
         <argument
             android:name="statisticItem"
             app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem" />
@@ -104,10 +106,10 @@
         android:label="StatisticAddressListBottomSheet"
         tools:layout="@layout/bottom_sheet_statistic_address_list" />
     <dialog
-        android:id="@+id/statisticPeriodBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodBottomSheet"
-        android:label="StatisticPeriodBottomSheet"
-        tools:layout="@layout/bottom_sheet_statistic_period" />
+        android:id="@+id/statisticPeriodListBottomSheet"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodListBottomSheet"
+        android:label="StatisticPeriodListBottomSheet"
+        tools:layout="@layout/bottom_sheet_statistic_period_list" />
     <dialog
         android:id="@+id/statusListBottomSheet"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.StatusListBottomSheet"

@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-        <variable
-            name="statistic"
-            type="com.bunbeauty.data.model.Statistic" />
-    </data>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_statistic_mvc_main"
-        style="@style/DefaultMaterialCard"
-        android:layout_margin="@dimen/small_margin">
+        style="@style/ElementMaterialCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/element_statistic_tv_date"
-                style="@style/LargeBoldCenterText"
+                android:id="@+id/element_statistic_tv_period"
+                style="@style/LargeRegularText"
                 android:layout_margin="@dimen/small_margin"
-                android:text="@{statistic.title}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/element_statistic_tv_count"
                 app:layout_constraintStart_toStartOf="parent"
+                tool:text="16 мая 2021"
                 app:layout_constraintTop_toTopOf="parent" />
+
+<!--            <ImageView-->
+<!--                app:layout_constraintTop_toTopOf="@+id/element_statistic_tv_count"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/element_statistic_tv_count"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/element_statistic_tv_count"-->
+<!--                android:layout_marginEnd="@dimen/very_small_margin"-->
+<!--                android:src="@drawable/ic_count"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content" />-->
 
             <TextView
                 android:id="@+id/element_statistic_tv_count"
-                style="@style/LargeBoldCenterText"
+                style="@style/SmallRegularText"
                 android:layout_margin="@dimen/small_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/element_statistic_tv_cost"
-                app:layout_constraintStart_toEndOf="@id/element_statistic_tv_date"
+                tool:text="Заказов: 15"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+<!--            <ImageView-->
+<!--                app:layout_constraintTop_toTopOf="@+id/element_statistic_tv_proceeds"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/element_statistic_tv_proceeds"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/element_statistic_tv_proceeds"-->
+<!--                android:layout_marginEnd="@dimen/very_small_margin"-->
+<!--                android:src="@drawable/ic_money"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content" />-->
 
             <TextView
-                android:id="@+id/element_statistic_tv_cost"
+                android:id="@+id/element_statistic_tv_proceeds"
                 style="@style/LargeBoldCenterText"
                 android:layout_margin="@dimen/small_margin"
+                tool:text="15000 ₽"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/element_statistic_tv_count"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
+                app:layout_constraintTop_toBottomOf="@+id/element_statistic_tv_count" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

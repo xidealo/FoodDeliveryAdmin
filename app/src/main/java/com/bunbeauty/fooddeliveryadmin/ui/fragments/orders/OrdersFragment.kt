@@ -1,13 +1,17 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.ExtendedState
 import com.bunbeauty.common.State
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.presentation.order.OrdersViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.OrderItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
@@ -30,11 +34,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentOrdersRvResult.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, orderItem, _ ->
-            router.navigate(toOrdersDetailsFragment(orderItem.order))
+            viewModel.goToOrderDetails(orderItem.order)
             false
         }
         viewDataBinding.fragmentOrdersMcvAddress.setOnClickListener {
-            router.navigate(toAddressListBottomSheet())
+            viewModel.goToAddressList()
         }
 
         viewModel.cafeAddressStateFlow.onEach { state ->
@@ -42,23 +46,29 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding, OrdersViewModel>() {
                 is State.Success -> {
                     viewDataBinding.fragmentOrdersMcvAddress.cardText = state.data
                 }
-                else -> {
-                }
+                else -> Unit
             }
         }.launchWhenStarted(lifecycleScope)
 
         viewModel.orderListState.onEach { state ->
             when (state) {
+                is ExtendedState.Loading -> {
+                    viewDataBinding.fragmentOrdersLpiLoading.visible()
+                }
                 is ExtendedState.AddedSuccess -> {
+                    viewDataBinding.fragmentOrdersLpiLoading.invisible()
                     viewDataBinding.fragmentOrdersRvResult.smoothScrollToPosition(0)
                     itemAdapter.set(state.data)
                 }
                 is ExtendedState.UpdatedSuccess -> {
+                    viewDataBinding.fragmentOrdersLpiLoading.invisible()
                     itemAdapter.set(state.data)
                 }
-                else -> {
-                }
+                else -> Unit
             }
         }.launchWhenStarted(lifecycleScope)
+
+        viewModel.subscribeOnAddress()
+        viewModel.subscribeOnOrders()
     }
 }

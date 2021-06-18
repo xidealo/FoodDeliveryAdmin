@@ -13,6 +13,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateUpdatedSuccess
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.OrderItem
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.*
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -23,8 +24,10 @@ abstract class OrdersViewModel : BaseViewModel() {
     abstract val cafeAddressStateFlow: StateFlow<State<String>>
     abstract val orderListState: StateFlow<ExtendedState<List<OrderItem>>>
 
-//    abstract fun subscribeOnAddress()
-//    abstract fun subscribeOnOrders()
+    abstract fun subscribeOnAddress()
+    abstract fun subscribeOnOrders()
+    abstract fun goToAddressList()
+    abstract fun goToOrderDetails(order: Order)
 }
 
 @ExperimentalCoroutinesApi
@@ -36,30 +39,23 @@ class OrdersViewModelImpl @Inject constructor(
     private val dataStoreHelper: IDataStoreHelper
 ) : OrdersViewModel() {
 
-    override val cafeAddressStateFlow =
-        MutableStateFlow<State<String>>(State.Loading())
+    override val cafeAddressStateFlow: MutableStateFlow<State<String>> =
+        MutableStateFlow(State.Loading())
 
-    override val orderListState =
-        MutableStateFlow<ExtendedState<List<OrderItem>>>(ExtendedState.Loading())
+    override val orderListState: MutableStateFlow<ExtendedState<List<OrderItem>>> =
+        MutableStateFlow(ExtendedState.Loading())
 
-    init {
-        subscribeOnAddress()
-        subscribeOnOrders()
-    }
-
-    fun subscribeOnAddress() {
+    override fun subscribeOnAddress() {
         dataStoreHelper.cafeId.flatMapLatest { cafeId ->
             cafeRepo.getCafeByIdFlow(cafeId)
         }.onEach { cafe ->
-            orderListState.value = ExtendedState.Loading()
-
             if (cafe != null) {
                 cafeAddressStateFlow.value = stringUtil.toString(cafe.address).toStateSuccess()
             }
         }.launchIn(viewModelScope)
     }
 
-    fun subscribeOnOrders() {
+    override fun subscribeOnOrders() {
         dataStoreHelper.cafeId.flatMapLatest { cafeId ->
             orderRepo.getAddedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
@@ -77,11 +73,20 @@ class OrdersViewModelImpl @Inject constructor(
         return orderList.map { order ->
             OrderItem(
                 status = order.orderEntity.orderStatus,
+                statusString = stringUtil.getOrderStatusString(order.orderEntity.orderStatus),
                 code = order.orderEntity.code,
                 deferredTime = stringUtil.getDeferredTimeString(order.orderEntity.deferred),
-                time = dateTimeUtil.getTimeHHMM(order.timestamp),
+                time = dateTimeUtil.getDateTimeDDMMHHMM(order.timestamp),
                 order = order
             )
         }
+    }
+
+    override fun goToAddressList() {
+        router.navigate(toAddressListBottomSheet())
+    }
+
+    override fun goToOrderDetails(order: Order) {
+        router.navigate(toOrdersDetailsFragment(order))
     }
 }

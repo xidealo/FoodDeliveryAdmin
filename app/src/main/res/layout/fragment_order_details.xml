@@ -10,14 +10,33 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/small_padding">
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fragment_order_details_gl_left"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/small_margin" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fragment_order_details_gl_center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fragment_order_details_gl_right"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/small_margin" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_code"
                 style="@style/LargeBoldCenterText"
-                android:layout_margin="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -28,14 +47,14 @@
                 style="@style/SmallSecondaryText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_order_time"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_code" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_time_value"
                 style="@style/MediumRegularText"
                 android:layout_marginTop="@dimen/very_small_margin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_time"
                 tool:text="5 мая 12:00" />
 
@@ -44,23 +63,16 @@
                 style="@style/SmallSecondaryText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_pickup_method"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_time_value" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_pickup_method_value"
                 style="@style/MediumRegularText"
                 android:layout_marginTop="@dimen/very_small_margin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_pickup_method"
                 tool:text="Доставка" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/fragment_order_details_gl_center"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_deferred_time"
@@ -83,14 +95,14 @@
                 style="@style/SmallSecondaryText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_address"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_pickup_method_value" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_address_value"
                 style="@style/MediumRegularText"
                 android:layout_marginTop="@dimen/very_small_margin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_address"
                 tool:text="улица Чапаева, д 22А, кв 15" />
 
@@ -99,14 +111,14 @@
                 style="@style/SmallSecondaryText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_comment"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_address_value" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_comment_value"
                 style="@style/MediumRegularText"
                 android:layout_marginTop="@dimen/very_small_margin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_comment"
                 tool:text="Сделайте вкусно" />
 
@@ -115,17 +127,17 @@
                 style="@style/SmallSecondaryText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_order_status"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_comment_value" />
 
             <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
                 android:id="@+id/fragment_order_details_cv_status"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/very_small_margin"
                 android:icon="@drawable/ic_right_arrow"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_status" />
 
             <TextView
@@ -133,7 +145,7 @@
                 style="@style/SmallSecondaryText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_order_list"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_cv_status" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -154,7 +166,7 @@
                 style="@style/MediumBoldText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_order_price"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_rv_product_list" />
 
             <TextView
@@ -173,69 +185,9 @@
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginEnd="@dimen/small_margin"
                 android:text="@string/msg_order_details_order_price"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_rv_product_list"
                 tool:text="100 ₽" />
-
-            <!--<TextView
-                android:id="@+id/fragment_order_details_tv_title"
-                style="@style/MainTitle"
-                android:layout_margin="@dimen/medium_margin"
-                android:text="@string/hint_change_status_status"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_total_cost" />
-
-            <RadioGroup
-                android:id="@+id/fragment_order_details_rg"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_order_details_tv_title">
-
-                <RadioButton
-                    android:id="@+id/fragment_order_details_rb_not_accepted"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/hint_change_status_not_accepted"
-                    android:textColor="@color/mainTextColor" />
-
-                <RadioButton
-                    android:id="@+id/fragment_order_details_rb_accepted"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/hint_change_status_accepted"
-                    android:textColor="@color/mainTextColor" />
-
-                <RadioButton
-                    android:id="@+id/fragment_order_details_rb_preparing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_change_status_preparing"
-                    android:textColor="@color/mainTextColor" />
-
-                <RadioButton
-                    android:id="@+id/fragment_order_details_rb_sent_out"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_change_status_sent_out"
-                    android:textColor="@color/mainTextColor" />
-
-                <RadioButton
-                    android:id="@+id/fragment_order_details_rb_done"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_change_status_delivered"
-                    android:textColor="@color/mainTextColor" />
-
-                <RadioButton
-                    android:id="@+id/fragment_order_details_rb_canceled"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_change_status_canceled"
-                    android:textColor="@color/mainTextColor" />
-            </RadioGroup>-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fragment_order_details_btn_cancel"
@@ -253,7 +205,7 @@
                 android:layout_marginBottom="@dimen/medium_margin"
                 android:text="@string/action_change_status_save"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_new_total_cost" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

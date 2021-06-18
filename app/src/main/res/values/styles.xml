@@ -78,12 +78,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="cardCornerRadius">@dimen/medium_radius</item>
-        <item name="android:layout_marginBottom">@dimen/very_small_margin</item>
-        <item name="android:layout_marginTop">@dimen/very_small_margin</item>
     </style>
 
     <style name="ElementMaterialCard" parent="DefaultMaterialCard">
         <item name="cardElevation">0dp</item>
+        <item name="android:layout_marginTop">@dimen/very_small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/very_small_margin</item>
+        <item name="android:layout_marginStart">@dimen/small_margin</item>
+        <item name="android:layout_marginEnd">@dimen/small_margin</item>
     </style>
 
     <!--TEXT-->
@@ -162,5 +164,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/background_bottom_sheet</item>
     </style>
+
+    <style name="LoadingProgressIndicator">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+
 
 </resources>

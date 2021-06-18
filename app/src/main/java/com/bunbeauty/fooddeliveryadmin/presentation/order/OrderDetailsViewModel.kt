@@ -72,7 +72,7 @@ class OrderDetailsViewModelImpl @Inject constructor(
                 CartProductUI(
                     name = productUtil.getPositionName(cartProduct.menuProduct),
                     photoLink = cartProduct.menuProduct.photoLink,
-                    count = stringUtil.getCountString(cartProduct.count),
+                    count = stringUtil.getProductCountString(cartProduct.count),
                     oldCost = stringUtil.getCostString(oldCost),
                     newCost = stringUtil.getCostString(newCost)
                 )

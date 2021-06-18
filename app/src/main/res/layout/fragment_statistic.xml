@@ -2,15 +2,22 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/mainBackground"
         tools:context=".ui.fragments.statistic.StatisticFragment">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/fragment_statistic_lpi_loading"
+            style="@style/LoadingProgressIndicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--<com.google.android.material.card.MaterialCardView
             android:id="@+id/fragment_statistic_mcv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,7 +25,7 @@
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_lpi_loading">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -45,9 +52,30 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/fragment_statistic_tv_address" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
 
-        <com.google.android.material.card.MaterialCardView
+
+        <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
+            android:id="@+id/fragment_statistic_mcv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_right_arrow"
+            android:layout_margin="@dimen/small_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_lpi_loading" />
+
+        <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
+            android:id="@+id/fragment_statistic_mcv_period"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_right_arrow"
+            android:layout_margin="@dimen/small_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_mcv_address" />
+
+        <!--<com.google.android.material.card.MaterialCardView
             android:id="@+id/fragment_statistic_mcv_period"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,11 +110,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/fragment_statistic_tv_period" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_statistic_rv_list"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/small_margin"
             android:scrollbars="none"
@@ -96,14 +124,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_statistic_mcv_period"
             tools:listitem="@layout/element_statistic" />
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/fragment_statistic_lpi_loading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

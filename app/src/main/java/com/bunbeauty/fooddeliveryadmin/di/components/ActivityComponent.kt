@@ -10,10 +10,10 @@ import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFra
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.AddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.SelectedStatisticBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticAddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodListBottomSheet
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -37,10 +37,10 @@ interface ActivityComponent {
     fun inject(createNewMenuProductFragment: CreateNewMenuProductFragment)
 
     // bottom sheet
-    fun inject(selectedStatisticBottomSheet: SelectedStatisticBottomSheet)
+    fun inject(statisticDetailsBottomSheet: StatisticDetailsBottomSheet)
     fun inject(addressListBottomSheet: AddressListBottomSheet)
     fun inject(statisticAddressListBottomSheet: StatisticAddressListBottomSheet)
-    fun inject(statisticPeriodBottomSheet: StatisticPeriodBottomSheet)
+    fun inject(statisticPeriodListBottomSheet: StatisticPeriodListBottomSheet)
 
     fun getOrderDetailsComponent(): OrderDetailsComponent.Factory
     fun getStatusListComponent(): StatusListComponent.Factory

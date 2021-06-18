@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 else -> toggleBottomNavigationBarVisibility(false)
             }
         }
+        viewDataBinding.activityMainBnvBottomNavigationBar.setOnNavigationItemReselectedListener {}
     }
 
     private fun toggleBottomNavigationBarVisibility(isVisible: Boolean) {

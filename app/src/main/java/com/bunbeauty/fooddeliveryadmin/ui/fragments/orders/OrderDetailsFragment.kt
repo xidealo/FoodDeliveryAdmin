@@ -62,7 +62,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
             viewDataBinding.fragmentOrderDetailsTvComment.gone()
         }
         viewDataBinding.fragmentOrderDetailsBtnCancel.setOnClickListener {
-            router.navigateUp()
+            viewModel.goBack()
         }
         viewDataBinding.fragmentOrderDetailsBtnSave.setOnClickListener {
             val status = viewDataBinding.fragmentOrderDetailsCvStatus.cardText

@@ -1,14 +1,15 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
 import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
-import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragmentDirections.toOrdersFragment
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -19,6 +20,7 @@ abstract class LoginViewModel : BaseViewModel() {
 
     abstract val loginState: StateFlow<State<String>>
 
+    abstract fun startCheckingToken()
     abstract fun login(username: String, password: String)
 }
 
@@ -29,11 +31,7 @@ class LoginViewModelImpl @Inject constructor(
 
     override val loginState = MutableStateFlow<State<String>>(State.Loading())
 
-    init {
-        startCheckingToken()
-    }
-
-    fun startCheckingToken() {
+    override fun startCheckingToken() {
         dataStoreHelper.token.onEach { token ->
             if (token.isEmpty()) {
                 apiRepository.unsubscribeOnNotification()

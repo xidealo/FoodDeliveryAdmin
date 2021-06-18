@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
@@ -22,6 +23,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.startCheckingToken()
         viewModel.loginState.onEach { loginState ->
             when(loginState) {
                 is State.Loading -> {

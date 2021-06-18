@@ -19,6 +19,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class OrderItem(
     val status: OrderStatus,
+    val statusString: String,
     val code: String,
     val deferredTime: String,
     val time: String,
@@ -30,14 +31,11 @@ data class OrderItem(
     override val type = R.id.element_text_tv_title
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {
-        binding.elementOrderMvcMain.background.setTint(
-            ContextCompat.getColor(binding.root.context, getBackgroundColor(status))
-        )
         binding.elementOrderTvCode.text = code
         binding.elementOrderTvDeferred.text = deferredTime
         binding.elementOrderTvTime.text = time
-        binding.elementOrderIvStatus.background =
-            ContextCompat.getDrawable(binding.root.context, getIcon(status))
+        binding.elementOrderChipStatus.text = statusString
+        binding.elementOrderChipStatus.setChipBackgroundColorResource(getBackgroundColor(status))
     }
 
     override fun createBinding(
@@ -54,7 +52,7 @@ data class OrderItem(
             PREPARING -> R.color.preparingColor
             SENT_OUT -> R.color.sentOutColor
             DONE -> R.color.doneColor
-            CANCELED -> R.color.canceledColor
+            DELIVERED -> R.color.deliveredColor
             else -> R.color.notAcceptedColor
         }
     }

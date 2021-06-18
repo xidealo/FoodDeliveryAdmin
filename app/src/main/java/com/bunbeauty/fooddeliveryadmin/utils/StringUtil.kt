@@ -54,6 +54,12 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
         }
     }
 
+    override fun getProceedsString(proceeds: Int): String {
+        return resourcesProvider.getString(R.string.msg_statistic_proceeds) +
+                proceeds +
+                resourcesProvider.getString(R.string.msg_ruble)
+    }
+
     override fun getOrderCodeString(orderCode: String): String {
         return resourcesProvider.getString(R.string.msg_order_details_order) + orderCode
     }
@@ -66,8 +72,12 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
         }
     }
 
-    override fun getCountString(count: Int): String {
+    override fun getProductCountString(count: Int): String {
         return resourcesProvider.getString(R.string.msg_pieces) + count
+    }
+
+    override fun getOrderCountString(count: Int): String {
+        return resourcesProvider.getString(R.string.msg_statistic_orders) + count
     }
 
     override fun getOrderStatusString(orderStatus: OrderStatus): String {

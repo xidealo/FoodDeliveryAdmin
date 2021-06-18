@@ -14,6 +14,7 @@ import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
+import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.presentation.StatisticViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
@@ -33,26 +34,26 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.fragmentStatisticTvAddress.text = viewModel.selectedAddressItem.address
-        viewDataBinding.fragmentStatisticTvPeriod.text = viewModel.selectedPeriodItem.period
+        viewDataBinding.fragmentStatisticMcvAddress.cardText = viewModel.selectedAddressItem.address
+        viewDataBinding.fragmentStatisticMcvPeriod.cardText = viewModel.selectedPeriodItem.period
         viewDataBinding.fragmentStatisticMcvAddress.setOnClickListener {
-            router.navigate(toStatisticAddressListBottomSheet())
+            viewModel.goToAddressList()
         }
         viewDataBinding.fragmentStatisticMcvPeriod.setOnClickListener {
-            router.navigate(toStatisticPeriodBottomSheet())
+            viewModel.goToPeriodList()
         }
 
         val itemAdapter = ItemAdapter<StatisticItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentStatisticRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, statisticItem, _ ->
-            router.navigate(toSelectedStatisticBottomSheet(statisticItem))
+            viewModel.goToStatisticDetails(statisticItem)
             false
         }
 
         setFragmentResultListener(ADDRESS_REQUEST_KEY) { _, bundle ->
             bundle.getParcelable<AddressItem>(SELECTED_ADDRESS_KEY)?.let { addressItem ->
-                viewDataBinding.fragmentStatisticTvAddress.text = addressItem.address
+                viewDataBinding.fragmentStatisticMcvAddress.cardText = addressItem.address
                 viewModel.selectedAddressItem = addressItem
                 viewModel.getStatistic(
                     viewModel.selectedAddressItem.cafeId,
@@ -62,7 +63,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         }
         setFragmentResultListener(PERIOD_REQUEST_KEY) { _, bundle ->
             bundle.getParcelable<PeriodItem>(SELECTED_PERIOD_KEY)?.let { periodItem ->
-                viewDataBinding.fragmentStatisticTvPeriod.text = periodItem.period
+                viewDataBinding.fragmentStatisticMcvPeriod.cardText = periodItem.period
                 viewModel.selectedPeriodItem = periodItem
                 viewModel.getStatistic(
                     viewModel.selectedAddressItem.cafeId,
@@ -78,15 +79,15 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     viewDataBinding.fragmentStatisticLpiLoading.visible()
                 }
                 is State.Empty -> {
-                    viewDataBinding.fragmentStatisticLpiLoading.gone()
+                    viewDataBinding.fragmentStatisticLpiLoading.invisible()
                 }
                 is State.Success -> {
                     itemAdapter.set(state.data)
                     viewDataBinding.fragmentStatisticRvList.visible()
-                    viewDataBinding.fragmentStatisticLpiLoading.gone()
+                    viewDataBinding.fragmentStatisticLpiLoading.invisible()
                 }
                 is State.Error -> {
-                    viewDataBinding.fragmentStatisticLpiLoading.gone()
+                    viewDataBinding.fragmentStatisticLpiLoading.invisible()
                 }
             }
         }.launchWhenStarted(lifecycleScope)

@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/DefaultBottomSheet"
         tools:context=".ui.statistic.StatisticAddressListBottomSheet">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bottom_sheet_statistic_period_rv_list"
+            android:id="@+id/bottom_sheet_statistic_period_list_rv_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

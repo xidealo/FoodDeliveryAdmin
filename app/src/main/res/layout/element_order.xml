@@ -7,42 +7,46 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/small_padding">
-
-        <ImageView
-            android:id="@+id/element_order_iv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tint="@color/darkIconColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tool:src="@drawable/ic_canceled" />
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/element_order_tv_code"
             style="@style/LargeBoldCenterText"
-            android:layout_marginStart="@dimen/small_margin"
-            app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"
+            android:layout_margin="@dimen/small_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="A-90" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/element_order_chip_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:layout_margin="@dimen/small_margin"
+            app:chipMinTouchTargetSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/element_order_tv_code"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tool:text="Готов" />
+
+        <TextView
+            android:id="@+id/element_order_tv_time"
+            style="@style/SmallSecondaryText"
+            android:layout_margin="@dimen/small_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:text="5 мая  12:34" />
 
         <TextView
             android:id="@+id/element_order_tv_deferred"
             style="@style/SmallRegularText"
+            android:layout_margin="@dimen/small_margin"
             android:layout_marginStart="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/element_order_iv_status"
-            app:layout_constraintTop_toBottomOf="@+id/element_order_tv_code"
-            tool:text="Ко времени: 12:34" />
-
-        <TextView
-            android:id="@+id/element_order_tv_time"
-            style="@style/SmallRegularText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tool:text="5 мая  12:34" />
+            app:layout_constraintTop_toBottomOf="@+id/element_order_tv_time"
+            tool:text="Ко времени: 12:34" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
