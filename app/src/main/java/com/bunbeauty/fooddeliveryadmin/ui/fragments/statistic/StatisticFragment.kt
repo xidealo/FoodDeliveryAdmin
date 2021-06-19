@@ -5,22 +5,21 @@ import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
-import com.bunbeauty.fooddeliveryadmin.extensions.gone
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
-import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.Constants.ADDRESS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
-import com.bunbeauty.fooddeliveryadmin.presentation.StatisticViewModel
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.visible
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.*
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.onEach
@@ -47,7 +46,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentStatisticRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, statisticItem, _ ->
-            viewModel.goToStatisticDetails(statisticItem)
+            viewModel.goToStatisticDetails(statisticItem.statistic)
             false
         }
 

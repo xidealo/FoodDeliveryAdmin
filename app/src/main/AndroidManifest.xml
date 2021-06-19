@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
-            android:name="com.bunbeauty.fooddeliveryadmin.ui.activities.MainActivity"
+            android:name="com.bunbeauty.fooddeliveryadmin.ui.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

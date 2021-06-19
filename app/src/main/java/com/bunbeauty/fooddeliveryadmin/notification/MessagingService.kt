@@ -10,7 +10,7 @@ import com.bunbeauty.common.utils.IDataStoreHelper
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.ui.activities.MainActivity
+import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope

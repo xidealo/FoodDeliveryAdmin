@@ -7,6 +7,8 @@ import com.bunbeauty.domain.cost.CostUtil
 import com.bunbeauty.domain.cost.ICostUtil
 import com.bunbeauty.domain.date_time.DateTimeUtil
 import com.bunbeauty.domain.date_time.IDateTimeUtil
+import com.bunbeauty.domain.order.IOrderUtil
+import com.bunbeauty.domain.order.OrderUtil
 import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.domain.product.ProductUtil
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
@@ -47,5 +49,8 @@ abstract class ApiModule {
 
     @Binds
     abstract fun bindDateTimeUtil(dateTimeUtil: DateTimeUtil): IDateTimeUtil
+
+    @Binds
+    abstract fun bindOrderUtil(orderUtil: OrderUtil): IOrderUtil
 
 }

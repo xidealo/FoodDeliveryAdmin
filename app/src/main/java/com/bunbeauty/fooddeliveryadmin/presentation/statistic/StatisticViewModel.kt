@@ -1,13 +1,16 @@
-package com.bunbeauty.fooddeliveryadmin.presentation
+package com.bunbeauty.fooddeliveryadmin.presentation.statistic
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
-import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
-import com.bunbeauty.data.enums.Period
+import com.bunbeauty.data.enums.Period.*
+import com.bunbeauty.data.model.order.Statistic
+import com.bunbeauty.domain.order.IOrderUtil
 import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.domain.repository.order.OrderRepo
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
+import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
@@ -28,64 +31,61 @@ abstract class StatisticViewModel : BaseViewModel() {
     abstract fun getStatistic(cafeId: String?, period: String)
     abstract fun goToAddressList()
     abstract fun goToPeriodList()
-    abstract fun goToStatisticDetails(statisticItem: StatisticItem)
+    abstract fun goToStatisticDetails(statistic: Statistic)
 }
 
 class StatisticViewModelImpl @Inject constructor(
     private val orderRepo: OrderRepo,
     private val stringUtil: IStringUtil,
     private val productUtil: IProductUtil,
-    resourcesProvider: IResourcesProvider
+    private val orderUtil: IOrderUtil,
+    resourcesProvider: IResourcesProvider,
 ) : StatisticViewModel() {
 
     override val statisticState = MutableStateFlow<State<List<StatisticItem>>>(State.Loading())
     override var selectedAddressItem =
         AddressItem(resourcesProvider.getString(R.string.msg_statistic_all_cafes), null)
-    override var selectedPeriodItem = PeriodItem(Period.DAY.text)
+    override var selectedPeriodItem = PeriodItem(DAY.text)
 
     override fun getStatistic(cafeId: String?, period: String) {
         statisticState.value = State.Loading()
 
-        val orderMapFlow = if (cafeId == null) {
+        val statisticListFlow = if (cafeId == null) {
             when (period) {
-                Period.DAY.text -> {
+                DAY.text -> {
                     orderRepo.getAllCafeOrdersByDay()
                 }
-                Period.WEEK.text -> {
+                WEEK.text -> {
                     orderRepo.getAllCafeOrdersByWeek()
                 }
-                Period.MONTH.text -> {
+                MONTH.text -> {
                     orderRepo.getAllCafeOrdersByMonth()
                 }
                 else -> null
             }
         } else {
             when (period) {
-                Period.DAY.text -> {
+                DAY.text -> {
                     orderRepo.getCafeOrdersByCafeIdAndDay(cafeId)
                 }
-                Period.WEEK.text -> {
+                WEEK.text -> {
                     orderRepo.getCafeOrdersByCafeIdAndWeek(cafeId)
                 }
-                Period.MONTH.text -> {
+                MONTH.text -> {
                     orderRepo.getCafeOrdersByCafeIdAndMonth(cafeId)
                 }
                 else -> null
             }
         }
 
-        orderMapFlow?.onEach { orderMap ->
-            statisticState.value = orderMap.map { orderEntry ->
-                val cartProductList = orderEntry.value.flatMap { order ->
-                    order.cartProducts
-                }
-                val proceeds = productUtil.getNewTotalCost(cartProductList)
+        statisticListFlow?.onEach { statisticList ->
+            statisticState.value = statisticList.map { statistic ->
+                val proceeds = orderUtil.getProceeds(statistic.orderList)
                 val proceedsString = stringUtil.getCostString(proceeds)
                 StatisticItem(
-                    period = orderEntry.key,
-                    count = stringUtil.getOrderCountString(orderEntry.value.size),
-                    proceeds = proceedsString,
-                    orderList = orderEntry.value
+                    statistic = statistic,
+                    count = stringUtil.getOrderCountString(statistic.orderList.size),
+                    proceeds = proceedsString
                 )
             }.toStateSuccess()
         }?.launchIn(viewModelScope)
@@ -99,7 +99,7 @@ class StatisticViewModelImpl @Inject constructor(
         router.navigate(toStatisticPeriodListBottomSheet())
     }
 
-    override fun goToStatisticDetails(statisticItem: StatisticItem) {
-        router.navigate(toStatisticDetailsBottomSheet(statisticItem))
+    override fun goToStatisticDetails(statistic: Statistic) {
+        router.navigate(toStatisticDetailsFragment(statistic))
     }
 }

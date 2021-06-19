@@ -47,8 +47,8 @@
         android:label="StatisticFragment"
         tools:layout="@layout/fragment_statistic">
         <action
-            android:id="@+id/to_statisticDetailsBottomSheet"
-            app:destination="@id/statisticDetailsBottomSheet" />
+            android:id="@+id/to_statisticDetailsFragment"
+            app:destination="@id/statisticDetailsFragment" />
         <action
             android:id="@+id/to_statisticAddressListBottomSheet"
             app:destination="@id/statisticAddressListBottomSheet" />
@@ -56,15 +56,15 @@
             android:id="@+id/to_statisticPeriodListBottomSheet"
             app:destination="@id/statisticPeriodListBottomSheet" />
     </fragment>
-    <dialog
-        android:id="@+id/statisticDetailsBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsBottomSheet"
-        android:label="SelectedStatisticBottomSheet"
-        tools:layout="@layout/bottom_sheet_statistic_details">
+    <fragment
+        android:id="@+id/statisticDetailsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsFragment"
+        android:label="StatisticDetailsFragment"
+        tools:layout="@layout/fragment_statistic_details">
         <argument
-            android:name="statisticItem"
-            app:argType="com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem" />
-    </dialog>
+            android:name="statistic"
+            app:argType="com.bunbeauty.data.model.order.Statistic" />
+    </fragment>
     <dialog
         android:id="@+id/addressListBottomSheet"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.AddressListBottomSheet"

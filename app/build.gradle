@@ -30,6 +30,12 @@ android {
     }
 
     buildTypes {
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "Admin_${variant.name}_${versionName}.apk"
+            }
+        }
+
         debug {
             minifyEnabled false
            buildConfigField 'String', 'FB_LINK', '"https://test-fooddelivery.firebaseio.com/"'

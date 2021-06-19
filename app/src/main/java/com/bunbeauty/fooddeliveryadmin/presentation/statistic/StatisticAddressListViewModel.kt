@@ -1,11 +1,12 @@
-package com.bunbeauty.fooddeliveryadmin.presentation
+package com.bunbeauty.fooddeliveryadmin.presentation.statistic
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
-import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.domain.repository.cafe.CafeRepo
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
+import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,8 @@ import javax.inject.Inject
 abstract class StatisticAddressListViewModel : BaseViewModel() {
 
     abstract val addressListState: StateFlow<State<List<AddressItem>>>
+
+    abstract fun getCafeList()
 }
 
 class StatisticAddressListViewModelImpl @Inject constructor(
@@ -27,11 +30,7 @@ class StatisticAddressListViewModelImpl @Inject constructor(
 
     override val addressListState = MutableStateFlow<State<List<AddressItem>>>(State.Loading())
 
-    init {
-        getCafeList()
-    }
-
-    fun getCafeList() {
+    override fun getCafeList() {
         cafeRepo.cafeList.onEach { cafeList ->
             val addressItemList = ArrayList(
                 cafeList.map { cafe ->

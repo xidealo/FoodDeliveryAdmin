@@ -2,15 +2,16 @@ package com.bunbeauty.fooddeliveryadmin.di.components
 
 import com.bunbeauty.fooddeliveryadmin.di.modules.ViewModelBinding
 import com.bunbeauty.fooddeliveryadmin.di.order_details.OrderDetailsComponent
+import com.bunbeauty.fooddeliveryadmin.di.statistic_details.StatisticDetailsComponent
 import com.bunbeauty.fooddeliveryadmin.di.status_list.StatusListComponent
-import com.bunbeauty.fooddeliveryadmin.ui.activities.MainActivity
+import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.CreateNewMenuProductFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.AddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticAddressListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodListBottomSheet
@@ -37,11 +38,12 @@ interface ActivityComponent {
     fun inject(createNewMenuProductFragment: CreateNewMenuProductFragment)
 
     // bottom sheet
-    fun inject(statisticDetailsBottomSheet: StatisticDetailsBottomSheet)
+    fun inject(statisticDetailsFragment: StatisticDetailsFragment)
     fun inject(addressListBottomSheet: AddressListBottomSheet)
     fun inject(statisticAddressListBottomSheet: StatisticAddressListBottomSheet)
     fun inject(statisticPeriodListBottomSheet: StatisticPeriodListBottomSheet)
 
     fun getOrderDetailsComponent(): OrderDetailsComponent.Factory
     fun getStatusListComponent(): StatusListComponent.Factory
+    fun getStatisticDetailsComponent(): StatisticDetailsComponent.Factory
 }

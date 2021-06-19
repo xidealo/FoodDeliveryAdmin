@@ -263,7 +263,6 @@ class ApiRepository @Inject constructor(
         awaitClose {
             cafesReference.removeEventListener(valueEventListener)
         }
-
     }
 
     @ExperimentalCoroutinesApi
@@ -323,56 +322,6 @@ class ApiRepository @Inject constructor(
             this?.cafeId = cafeId
         } ?: Order()
     }
-
-    /*suspend fun updateCafes() {
-        val fromReference = firebaseDatabase
-            .getReference(COMPANY)
-            .child(APP_ID)
-            .child(CAFES)
-            .child("1")
-            .child("districts")
-            .child("0")
-        val toReference = firebaseDatabase
-            .getReference(COMPANY)
-            .child(APP_ID)
-            .child(CAFES)
-            .child("0")
-            .child("districts")
-            .child("1")
-
-        fromReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                toReference.setValue(snapshot.value)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-    }
-
-    suspend fun updateCafes() {
-        val firstCafeReference = firebaseDatabase
-            .getReference(COMPANY)
-            .child(APP_ID)
-            .child(CAFES)
-            .child("0")
-            .child("districts")
-            .child("1")
-            .child("streets")
-
-        firstCafeReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for(child in snapshot.children) {
-                    var id = child.child("id").value as String
-                    id = id.replace("1cafe-0district", "0cafe-1district")
-                    firstCafeReference.child(child.key!!).child("id").setValue(id)
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-    }*/
 
     companion object {
         private const val COMPANY = "COMPANY"

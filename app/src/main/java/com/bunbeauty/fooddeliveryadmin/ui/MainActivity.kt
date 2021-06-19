@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.ui.activities
+package com.bunbeauty.fooddeliveryadmin.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

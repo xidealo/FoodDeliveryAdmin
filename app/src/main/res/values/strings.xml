@@ -87,6 +87,9 @@
     <string name="msg_statistic_proceeds">Выручка:&#160;</string>
     <string name="msg_statistic_orders_count">Кол-во заказов:&#160;</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
+    <string name="msg_statistic_total_proceeds">Выручка</string>
+    <string name="msg_statistic_total_count">Количество заказов</string>
+    <string name="msg_statistic_average_check">Средний чек</string>
 
     <!-- EDIT MENU PRODUCT -->
     <string name="hint_edit_menu_product_show">Показать</string>

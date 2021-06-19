@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.room.Ignore
 import com.bunbeauty.data.model.order.Order
+import com.bunbeauty.data.model.order.Statistic
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementTextBinding
@@ -14,10 +15,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class StatisticItem(
-    var period: String,
+    var statistic: Statistic,
     var count: String,
-    var proceeds: String,
-    var orderList: List<Order>
+    var proceeds: String
 ) : AbstractBindingItem<ElementStatisticBinding>(), Parcelable {
 
     @IgnoredOnParcel
@@ -25,7 +25,7 @@ data class StatisticItem(
     override val type = R.id.element_statistic_mvc_main
 
     override fun bindView(binding: ElementStatisticBinding, payloads: List<Any>) {
-        binding.elementStatisticTvPeriod.text = period
+        binding.elementStatisticTvPeriod.text = statistic.period
         binding.elementStatisticTvCount.text = count
         binding.elementStatisticTvProceeds.text = proceeds
     }

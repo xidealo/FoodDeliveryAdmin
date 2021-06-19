@@ -6,12 +6,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.State
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.Constants.ADDRESS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
-import com.bunbeauty.fooddeliveryadmin.presentation.StatisticAddressListViewModel
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticAddressListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.mikepenz.fastadapter.FastAdapter
@@ -38,12 +38,15 @@ class StatisticAddressListBottomSheet:
             false
         }
         viewModel.addressListState.onEach { state ->
-            when(state) {
+            when (state) {
                 is State.Success -> {
                     itemAdapter.set(state.data)
                 }
-                else -> {}
+                else -> {
+                }
             }
         }.launchWhenStarted(lifecycleScope)
+
+        viewModel.getCafeList()
     }
 }

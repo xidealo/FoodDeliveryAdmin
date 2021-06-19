@@ -3,9 +3,13 @@ package com.bunbeauty.domain.repository.order
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
+import com.bunbeauty.data.model.order.Statistic
 import com.bunbeauty.domain.date_time.IDateTimeUtil
 import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -33,33 +37,33 @@ class OrderRepository @Inject constructor(
         }
     }
 
-    override fun getAllCafeOrdersByDay(): Flow<Map<String, List<Order>>> {
+    override fun getAllCafeOrdersByDay(): Flow<List<Statistic>> {
         return mapToStatisticList(apiRepository.getAllOrderList(), dateTimeUtil::getDateDDMMMMYYYY)
     }
 
-    override fun getAllCafeOrdersByWeek(): Flow<Map<String, List<Order>>> {
+    override fun getAllCafeOrdersByWeek(): Flow<List<Statistic>> {
         return mapToStatisticList(apiRepository.getAllOrderList(), dateTimeUtil::getWeekPeriod)
     }
 
-    override fun getAllCafeOrdersByMonth(): Flow<Map<String, List<Order>>> {
+    override fun getAllCafeOrdersByMonth(): Flow<List<Statistic>> {
         return mapToStatisticList(apiRepository.getAllOrderList(), dateTimeUtil::getDateMMMMYYYY)
     }
 
-    override fun getCafeOrdersByCafeIdAndDay(cafeId: String): Flow<Map<String, List<Order>>> {
+    override fun getCafeOrdersByCafeIdAndDay(cafeId: String): Flow<List<Statistic>> {
         return mapToStatisticList(
             apiRepository.getOrderListByCafeId(cafeId),
             dateTimeUtil::getDateDDMMMMYYYY
         )
     }
 
-    override fun getCafeOrdersByCafeIdAndWeek(cafeId: String): Flow<Map<String, List<Order>>> {
+    override fun getCafeOrdersByCafeIdAndWeek(cafeId: String): Flow<List<Statistic>> {
         return mapToStatisticList(
             apiRepository.getOrderListByCafeId(cafeId),
             dateTimeUtil::getWeekPeriod
         )
     }
 
-    override fun getCafeOrdersByCafeIdAndMonth(cafeId: String): Flow<Map<String, List<Order>>> {
+    override fun getCafeOrdersByCafeIdAndMonth(cafeId: String): Flow<List<Statistic>> {
         return mapToStatisticList(
             apiRepository.getOrderListByCafeId(cafeId),
             dateTimeUtil::getDateMMMMYYYY
@@ -69,12 +73,22 @@ class OrderRepository @Inject constructor(
     fun mapToStatisticList(
         orderListFlow: Flow<List<Order>>,
         timestampConverter: (Long) -> String
-    ): Flow<Map<String, List<Order>>> {
-        return orderListFlow.map { orderList ->
-            orderList.reversed()
-                .groupBy { order ->
+    ): Flow<List<Statistic>> {
+        return orderListFlow.flowOn(IO)
+            .map { orderList ->
+                val orderMap = orderList.filter { order ->
+                    order.orderEntity.orderStatus != OrderStatus.CANCELED
+                }.groupBy { order ->
                     timestampConverter.invoke(order.timestamp)
                 }
-        }
+                orderMap.map { orderEntry ->
+                    Statistic(
+                        period = orderEntry.key,
+                        orderList = orderEntry.value
+                    )
+                }.sortedByDescending { statistic ->
+                    statistic.orderList.first().timestamp
+                }
+            }.flowOn(Default)
     }
 }

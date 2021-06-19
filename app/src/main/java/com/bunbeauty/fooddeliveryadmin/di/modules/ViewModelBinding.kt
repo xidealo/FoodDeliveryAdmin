@@ -4,7 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.di.ViewModelKey
 import com.bunbeauty.fooddeliveryadmin.presentation.*
-import com.bunbeauty.fooddeliveryadmin.presentation.order.*
+import com.bunbeauty.fooddeliveryadmin.presentation.order.AddressListViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.order.AddressListViewModelImpl
+import com.bunbeauty.fooddeliveryadmin.presentation.order.OrdersViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.order.OrdersViewModelImpl
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticAddressListViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticAddressListViewModelImpl
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -39,11 +46,6 @@ abstract class ViewModelBinding {
     @IntoMap
     @ViewModelKey(StatisticViewModel::class)
     internal abstract fun provideStatisticViewModel(statisticViewModel: StatisticViewModelImpl): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(SelectedStatisticViewModel::class)
-    internal abstract fun provideSelectedStatisticViewModel(selectedStatisticViewModel: SelectedStatisticViewModelImpl): ViewModel
 
     @Binds
     @IntoMap
