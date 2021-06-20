@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.presentation.statistic
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.State
 import com.bunbeauty.data.enums.Period.*
-import com.bunbeauty.data.model.order.Statistic
+import com.bunbeauty.data.model.statistic.Statistic
 import com.bunbeauty.domain.order.IOrderUtil
 import com.bunbeauty.domain.product.IProductUtil
 import com.bunbeauty.domain.repository.order.OrderRepo

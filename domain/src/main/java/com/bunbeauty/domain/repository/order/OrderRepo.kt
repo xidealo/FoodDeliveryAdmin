@@ -3,7 +3,7 @@ package com.bunbeauty.domain.repository.order
 import com.bunbeauty.data.enums.OrderStatus
 import com.bunbeauty.data.model.order.Order
 import com.bunbeauty.data.model.order.OrderEntity
-import com.bunbeauty.data.model.order.Statistic
+import com.bunbeauty.data.model.statistic.Statistic
 import kotlinx.coroutines.flow.Flow
 
 interface OrderRepo {

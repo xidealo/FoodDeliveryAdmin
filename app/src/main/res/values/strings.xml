@@ -113,4 +113,9 @@
     <string name="hint_create_menu_product_product_code">Категория</string>
     <string name="action_create_menu_product_create">Добавить</string>
 
+    <!-- CREATE MENU PRODUCT -->
+    <string name="msg_product_statistic_order_count">Количество заказов</string>
+    <string name="msg_product_statistic_count">Количество</string>
+    <string name="msg_product_statistic_cost">Стоимость</string>
+
 </resources>

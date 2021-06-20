@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.order
+package com.bunbeauty.data.model.statistic
 
 import android.os.Parcelable
 import com.bunbeauty.data.model.order.Order

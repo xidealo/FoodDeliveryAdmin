@@ -6,6 +6,7 @@ import com.bunbeauty.domain.order.IOrderUtil
 import com.bunbeauty.domain.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.ProductStatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsFragmentArgs
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import javax.inject.Inject
@@ -16,6 +17,7 @@ abstract class StatisticDetailsViewModel : BaseViewModel() {
     abstract val proceeds: String
     abstract val orderCount: String
     abstract val averageCheck: String
+    abstract val productStatisticList: List<ProductStatisticItem>
 
     abstract fun getStatisticInfo(orderList: List<Order>): String
 }
@@ -45,6 +47,17 @@ class StatisticDetailsViewModelImpl @Inject constructor(
             val averageCheck = orderUtil.getAverageCheck(args.statistic.orderList)
             return stringUtil.getCostString(averageCheck)
         }
+
+    override val productStatisticList: List<ProductStatisticItem>
+        get() = orderUtil.getProductStatisticList(args.statistic.orderList)
+            .map { productStatistic ->
+                ProductStatisticItem(
+                    name = productStatistic.name,
+                    orderCount = productStatistic.orderCount.toString(),
+                    count = productStatistic.count.toString(),
+                    cost = stringUtil.getCostString(productStatistic.cost)
+                )
+            }
 
     override fun getStatisticInfo(orderList: List<Order>): String {
         val statisticStringBuilder = StringBuilder()

@@ -120,6 +120,12 @@
         <item name="fontFamily">@font/font_roboto_bold</item>
     </style>
 
+    <style name="MediumBoldCenterText" parent="BaseText">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textAlignment">center</item>
+        <item name="fontFamily">@font/font_roboto_bold</item>
+    </style>
+
     <style name="MediumSecondaryRegularText" parent="SecondaryText">
         <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="fontFamily">@font/font_roboto_regular</item>
@@ -141,8 +147,15 @@
         <item name="fontFamily">@font/font_roboto_regular</item>
     </style>
 
-    <style name="SmallSecondaryText" parent="SmallRegularText">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+    <style name="SmallSecondaryText" parent="SecondaryText">
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="fontFamily">@font/font_roboto_regular</item>
+    </style>
+
+    <style name="SmallSecondaryCenterText" parent="SecondaryText">
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="fontFamily">@font/font_roboto_regular</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <!-- BOTTOM BAR -->

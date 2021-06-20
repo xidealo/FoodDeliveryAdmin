@@ -63,7 +63,7 @@
         tools:layout="@layout/fragment_statistic_details">
         <argument
             android:name="statistic"
-            app:argType="com.bunbeauty.data.model.order.Statistic" />
+            app:argType="com.bunbeauty.data.model.statistic.Statistic" />
     </fragment>
     <dialog
         android:id="@+id/addressListBottomSheet"

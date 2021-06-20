@@ -11,8 +11,10 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AddressItem(val address: String, val cafeId: String?) :
-    AbstractBindingItem<ElementTextBinding>(), Parcelable {
+data class AddressItem(
+    val address: String,
+    val cafeId: String?
+) : AbstractBindingItem<ElementTextBinding>(), Parcelable {
 
     @IgnoredOnParcel
     @Ignore
