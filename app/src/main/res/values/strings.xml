@@ -33,10 +33,8 @@
     <string name="error_login_enter_user_password">Введите пароль</string>
     <string name="error_login_authorization">Неправильный логин или пароль</string>
 
-    <!-- ORDER -->
-    <string name="msg_order_delivery">Доставка</string>
-    <string name="msg_order_pickup">Самовывоз</string>
-    <string name="msg_order_deferred_time">Ко времени:&#160;</string>
+    <!-- ORDER ITEM-->
+    <string name="msg_order_item_deferred_time">Ко времени:&#160;</string>
 
     <!-- ORDER STATUS-->
     <string name="msg_status_not_accepted">Обрабатывается</string>
@@ -49,28 +47,24 @@
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order">Заказ&#160;</string>
-    <string name="msg_order_details_in_order">В заказе:</string>
     <string name="msg_order_details_order_time">Дата и время заказа</string>
     <string name="msg_order_details_pickup_method">Способ получения</string>
+    <string name="msg_order_details_delivery">Доставка</string>
+    <string name="msg_order_details_pickup">Самовывоз</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
     <string name="msg_order_details_comment">Комментарий</string>
     <string name="msg_order_details_order_status">Статус</string>
     <string name="msg_order_details_order_list">Список заказанных блюд</string>
-    <string name="msg_order_details_order_price">Сумма заказа</string>
-
-
-    <!-- CHANGE STATUS -->
-    <string name="hint_change_status_status">Статус заказа</string>
-    <string name="action_change_status_cancel">Отменить</string>
-    <string name="action_change_status_save">Сохранить</string>
-    <string name="title_change_status_alert">Внимание!</string>
-    <string name="text_change_status_cancel">Отменить заказ?</string>
-    <string name="action_change_status_yes">Да</string>
-    <string name="action_change_status_no">Нет</string>
-
-    <string name="notification_channel_name">Main channel</string>
-    <string name="notification_channel_id">1</string>
+    <string name="msg_order_details_order_cost">Сумма заказа</string>
+    <string name="msg_order_details_delivery_cost">Доставка</string>
+    <string name="msg_order_details_delivery_free">Бесплатно</string>
+    <string name="action_order_details_cancel">Отменить</string>
+    <string name="action_order_details_save">Сохранить</string>
+    <string name="title_order_details_alert">Внимание!</string>
+    <string name="msg_order_details_alert">Отменить заказ?</string>
+    <string name="action_order_details_yes">Да</string>
+    <string name="action_order_details_no">Нет</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_menu_orders">Заказы</string>
@@ -78,18 +72,16 @@
     <string name="title_bottom_navigation_menu_menu">Меню</string>
 
     <!-- STATISTICS -->
-    <string name="hint_statics_days_count">Количество дней</string>
-    <string name="hint_statics_all_cafes">Получить статистику со всех кафе</string>
-    <string name="hint_statics_all_time">Получить статистику за все время</string>
-    <string name="action_statics_get_statistic">Получить статистику</string>
-    <string name="error_statics_days_count">Введите количество дней</string>
     <string name="msg_statistic_all_cafes">Все кафе</string>
-    <string name="msg_statistic_proceeds">Выручка:&#160;</string>
-    <string name="msg_statistic_orders_count">Кол-во заказов:&#160;</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
+
+    <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
     <string name="msg_statistic_total_count">Количество заказов</string>
     <string name="msg_statistic_average_check">Средний чек</string>
+    <string name="msg_product_statistic_order_count">Количество заказов</string>
+    <string name="msg_product_statistic_count">Количество</string>
+    <string name="msg_product_statistic_cost">Стоимость</string>
 
     <!-- EDIT MENU PRODUCT -->
     <string name="hint_edit_menu_product_show">Показать</string>
@@ -112,10 +104,5 @@
     <string name="hint_create_menu_product_discount_cost">Цена со скидкой</string>
     <string name="hint_create_menu_product_product_code">Категория</string>
     <string name="action_create_menu_product_create">Добавить</string>
-
-    <!-- CREATE MENU PRODUCT -->
-    <string name="msg_product_statistic_order_count">Количество заказов</string>
-    <string name="msg_product_statistic_count">Количество</string>
-    <string name="msg_product_statistic_cost">Стоимость</string>
 
 </resources>

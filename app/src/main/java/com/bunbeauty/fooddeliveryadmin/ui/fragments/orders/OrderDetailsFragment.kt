@@ -50,9 +50,10 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
         }
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentOrderDetailsRvProductList.adapter = fastAdapter
+        viewDataBinding.fragmentOrderDetailsTvDeliveryCostValue.text = viewModel.deliveryCost
         viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.strikeOutText()
-        viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.text = viewModel.oldTotalCost
-        viewDataBinding.fragmentOrderDetailsTvOrderNewTotalCost.text = viewModel.newTotalCost
+        viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.text = viewModel.oldOrderCost
+        viewDataBinding.fragmentOrderDetailsTvOrderNewTotalCost.text = viewModel.newOrderCost
         if (viewModel.deferredTime.isNullOrEmpty()) {
             viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.gone()
             viewDataBinding.fragmentOrderDetailsTvDeferredTime.gone()
@@ -60,6 +61,10 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
         if (viewModel.comment.isEmpty()) {
             viewDataBinding.fragmentOrderDetailsTvCommentValue.gone()
             viewDataBinding.fragmentOrderDetailsTvComment.gone()
+        }
+        if (!viewModel.isDelivery) {
+            viewDataBinding.fragmentOrderDetailsTvDeliveryCostValue.gone()
+            viewDataBinding.fragmentOrderDetailsTvDeliveryCost.gone()
         }
         viewDataBinding.fragmentOrderDetailsBtnCancel.setOnClickListener {
             viewModel.goBack()
@@ -76,12 +81,12 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
 
     private fun showCanceledAlert(status: String) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.title_change_status_alert)
-            .setMessage(R.string.text_change_status_cancel)
-            .setPositiveButton(R.string.action_change_status_yes) { _, _ ->
+            .setTitle(R.string.title_order_details_alert)
+            .setMessage(R.string.msg_order_details_alert)
+            .setPositiveButton(R.string.action_order_details_yes) { _, _ ->
                 viewModel.changeStatus(status)
             }
-            .setNegativeButton(R.string.action_change_status_no) { _, _ -> }
+            .setNegativeButton(R.string.action_order_details_no) { _, _ -> }
             .show()
     }
 }

@@ -1,11 +1,13 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.data.enums.OrderStatus.CANCELED
-import com.bunbeauty.data.model.cart_product.CartProductUI
-import com.bunbeauty.domain.date_time.IDateTimeUtil
-import com.bunbeauty.domain.product.IProductUtil
-import com.bunbeauty.domain.repository.order.OrderRepo
+import com.bunbeauty.domain.enums.OrderStatus.CANCELED
+import com.bunbeauty.domain.model.cart_product.CartProductUI
+import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.domain.util.date_time.IDateTimeUtil
+import com.bunbeauty.domain.util.order.IOrderUtil
+import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.CartProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragmentArgs
@@ -13,7 +15,9 @@ import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragmentD
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -27,8 +31,10 @@ abstract class OrderDetailsViewModel : BaseViewModel() {
     abstract val comment: String
     abstract var status: String
     abstract val productList: List<CartProductItem>
-    abstract val oldTotalCost: String
-    abstract val newTotalCost: String
+    abstract val isDelivery: Boolean
+    abstract val deliveryCost: String
+    abstract val oldOrderCost: String
+    abstract val newOrderCost: String
 
     abstract fun isStatusCanceled(status: String): Boolean
     abstract fun changeStatus(status: String)
@@ -39,9 +45,17 @@ class OrderDetailsViewModelImpl @Inject constructor(
     private val args: OrderDetailsFragmentArgs,
     private val orderRepo: OrderRepo,
     private val productUtil: IProductUtil,
+    private val orderUtil: IOrderUtil,
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: IDateTimeUtil,
+    dataStoreRepo: DataStoreRepo,
 ) : OrderDetailsViewModel() {
+
+    private val delivery by lazy {
+        runBlocking {
+            dataStoreRepo.delivery.first()
+        }
+    }
 
     override val codeTitle: String
         get() = stringUtil.getOrderCodeString(args.order.orderEntity.code)
@@ -79,16 +93,25 @@ class OrderDetailsViewModelImpl @Inject constructor(
             )
         }
 
-    override val oldTotalCost: String
+    override val isDelivery: Boolean
+        get() = args.order.orderEntity.isDelivery
+
+    override val deliveryCost: String
         get() {
-            val oldTotalCost = productUtil.getOldTotalCost(args.order.cartProducts)
-            return stringUtil.getCostString(oldTotalCost)
+            val deliveryCost = orderUtil.getDeliveryCost(args.order, delivery)
+            return stringUtil.getDeliveryString(deliveryCost)
         }
 
-    override val newTotalCost: String
+    override val oldOrderCost: String
         get() {
-            val newTotalCost = productUtil.getNewTotalCost(args.order.cartProducts)
-            return stringUtil.getCostString(newTotalCost)
+            val oldOrderCost = orderUtil.getOldOrderCost(args.order, delivery)
+            return stringUtil.getCostString(oldOrderCost)
+        }
+
+    override val newOrderCost: String
+        get() {
+            val newOrderCost = orderUtil.getNewOrderCost(args.order, delivery)
+            return stringUtil.getCostString(newOrderCost)
         }
 
     override fun isStatusCanceled(status: String): Boolean {

@@ -1,11 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.data.model.MenuProduct
-import com.bunbeauty.domain.repository.menu_product.MenuProductRepo
+import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

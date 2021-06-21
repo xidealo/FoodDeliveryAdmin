@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.di.modules
 
-import com.bunbeauty.common.Mapper
-import com.bunbeauty.data.model.MenuProduct
-import com.bunbeauty.data.model.firebase.MenuProductFirebase
-import com.bunbeauty.data.model.mapper.MenuProductMapper
+import com.bunbeauty.data.mapper.Mapper
+import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.firebase.MenuProductFirebase
+import com.bunbeauty.data.mapper.MenuProductMapper
 import dagger.Binds
 import dagger.Module
 

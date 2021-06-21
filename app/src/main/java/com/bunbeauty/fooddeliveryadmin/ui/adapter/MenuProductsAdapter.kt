@@ -7,15 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
-import com.bunbeauty.data.model.MenuProduct
-import com.bunbeauty.domain.product.IProductUtil
+import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
 import javax.inject.Inject
 
-class MenuProductsAdapter @Inject constructor(private val productUtil: IProductUtil) :
-    BaseAdapter<MenuProductsAdapter.MenuProductViewHolder, MenuProduct>() {
+class MenuProductsAdapter @Inject constructor(private val productUtil: IProductUtil) {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MenuProductViewHolder {
+    /*override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MenuProductViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
         val binding = ElementMenuProductBinding.inflate(inflater, viewGroup, false)
 
@@ -41,5 +40,5 @@ class MenuProductsAdapter @Inject constructor(private val productUtil: IProductU
         fun checkVisible(isVisible: Boolean) {
             binding?.elementMenuProductIvVisible?.toggleVisibility(isVisible)
         }
-    }
+    }*/
 }

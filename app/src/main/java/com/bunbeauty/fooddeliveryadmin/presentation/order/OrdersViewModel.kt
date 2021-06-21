@@ -1,13 +1,13 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.ExtendedState
-import com.bunbeauty.common.State
-import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.domain.date_time.DateTimeUtil
-import com.bunbeauty.domain.repository.cafe.CafeRepo
-import com.bunbeauty.domain.repository.order.OrderRepo
+import com.bunbeauty.fooddeliveryadmin.presentation.state.ExtendedState
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
+import com.bunbeauty.domain.model.order.Order
+import com.bunbeauty.domain.util.date_time.DateTimeUtil
+import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateAddedSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateUpdatedSuccess
@@ -36,7 +36,7 @@ class OrdersViewModelImpl @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: DateTimeUtil,
-    private val dataStoreHelper: IDataStoreHelper
+    private val dataStoreRepo: DataStoreRepo
 ) : OrdersViewModel() {
 
     override val cafeAddressStateFlow: MutableStateFlow<State<String>> =
@@ -46,7 +46,7 @@ class OrdersViewModelImpl @Inject constructor(
         MutableStateFlow(ExtendedState.Loading())
 
     override fun subscribeOnAddress() {
-        dataStoreHelper.cafeId.flatMapLatest { cafeId ->
+        dataStoreRepo.cafeId.flatMapLatest { cafeId ->
             cafeRepo.getCafeByIdFlow(cafeId)
         }.onEach { cafe ->
             if (cafe != null) {
@@ -56,13 +56,13 @@ class OrdersViewModelImpl @Inject constructor(
     }
 
     override fun subscribeOnOrders() {
-        dataStoreHelper.cafeId.flatMapLatest { cafeId ->
+        dataStoreRepo.cafeId.flatMapLatest { cafeId ->
             orderRepo.getAddedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
             orderListState.value = toOrderItemList(orderList).toStateAddedSuccess()
         }.launchIn(viewModelScope)
 
-        dataStoreHelper.cafeId.flatMapLatest { cafeId ->
+        dataStoreRepo.cafeId.flatMapLatest { cafeId ->
             orderRepo.getUpdatedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
             orderListState.value = toOrderItemList(orderList).toStateUpdatedSuccess()

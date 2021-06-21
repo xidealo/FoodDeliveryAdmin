@@ -10,4 +10,7 @@ object Constants {
 
     const val STATUS_REQUEST_KEY = "status request key"
     const val SELECTED_STATUS_KEY = "selected status key"
+
+    const val CHANNEL_ID = "1"
+    const val CHANNEL_NAME = "Main channel"
 }

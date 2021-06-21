@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
-import com.bunbeauty.data.enums.OrderStatus.*
+import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatusItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.StatusListBottomSheetArgs

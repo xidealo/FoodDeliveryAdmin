@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.extensions
 
-import com.bunbeauty.common.ExtendedState
-import com.bunbeauty.common.State
+import com.bunbeauty.fooddeliveryadmin.presentation.state.ExtendedState
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 
 fun <T : Any> T.toStateSuccess(): State.Success<T> {
     return State.Success(this)

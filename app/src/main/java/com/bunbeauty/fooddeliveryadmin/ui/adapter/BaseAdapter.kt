@@ -2,14 +2,13 @@ package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.data.model.BaseDiffUtilModel
 
-abstract class BaseAdapter<T : RecyclerView.ViewHolder, E : BaseDiffUtilModel> : RecyclerView.Adapter<T>() {
+abstract class BaseAdapter<T : RecyclerView.ViewHolder> : RecyclerView.Adapter<T>() {
 
-    protected val itemList: MutableList<E> = ArrayList()
-    var onItemClickListener: ((E) -> Unit)? = null
+    //protected val itemList: MutableList<E> = ArrayList()
+    //var onItemClickListener: ((E) -> Unit)? = null
 
-    open fun setItemList(items: List<E>) {
+    /*open fun setItemList(items: List<E>) {
         val diffResult = DiffUtil.calculateDiff(MyDiffCallback(items, itemList))
         itemList.clear()
         itemList.addAll(items)
@@ -39,5 +38,5 @@ abstract class BaseAdapter<T : RecyclerView.ViewHolder, E : BaseDiffUtilModel> :
         notifyItemChanged(index)
     }
 
-    override fun getItemCount() = itemList.size
+    override fun getItemCount() = itemList.size*/
 }

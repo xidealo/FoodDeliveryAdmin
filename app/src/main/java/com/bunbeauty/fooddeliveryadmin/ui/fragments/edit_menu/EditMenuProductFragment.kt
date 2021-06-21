@@ -16,11 +16,11 @@ class EditMenuProductFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val menuProduct = EditMenuProductFragmentArgs.fromBundle(requireArguments()).menuProduct
-        viewDataBinding.menuProduct = menuProduct
+        //val menuProduct = EditMenuProductFragmentArgs.fromBundle(requireArguments()).menuProduct
+        //viewDataBinding.menuProduct = menuProduct
 
         viewDataBinding.fragmentEditMenuProductBtnUpdate.setOnClickListener {
-            menuProduct.visible = viewDataBinding.fragmentEditMenuProductRbShow.isChecked
+            /*menuProduct.visible = viewDataBinding.fragmentEditMenuProductRbShow.isChecked
             menuProduct.name = viewDataBinding.fragmentEditMenuProductEtName.text.toString()
             menuProduct.cost = viewDataBinding.fragmentEditMenuProductEtCost.text.toString().toInt()
             menuProduct.weight =
@@ -37,7 +37,7 @@ class EditMenuProductFragment :
             }
 
             viewModel.updateMenuProduct(menuProduct)
-            router.navigateUp()
+            router.navigateUp()*/
         }
     }
 }

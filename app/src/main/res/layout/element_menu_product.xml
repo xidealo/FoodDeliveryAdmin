@@ -3,17 +3,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="menuProduct"
-            type="com.bunbeauty.data.model.MenuProduct" />
-
-        <variable
-            name="productHelper"
-            type="com.bunbeauty.domain.product.IProductUtil" />
-    </data>
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/element_menu_product_mcv_main"
         style="@style/DefaultMaterialCard"
@@ -41,7 +30,6 @@
                 android:layout_marginTop="@dimen/very_small_margin"
                 android:layout_marginStart="@dimen/very_small_margin"
                 android:layout_marginEnd="@dimen/very_small_margin"
-                android:text="@{menuProduct.name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/element_menu_product_iv_photo"
                 app:layout_constraintTop_toTopOf="parent" />

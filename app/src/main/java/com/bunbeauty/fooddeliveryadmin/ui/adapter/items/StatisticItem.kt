@@ -4,7 +4,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.room.Ignore
-import com.bunbeauty.data.model.statistic.Statistic
+import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
 import com.mikepenz.fastadapter.binding.AbstractBindingItem

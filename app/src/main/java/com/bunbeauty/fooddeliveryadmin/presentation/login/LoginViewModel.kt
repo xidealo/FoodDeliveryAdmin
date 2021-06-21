@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.State
-import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.domain.repository.api.firebase.IApiRepository
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
+import com.bunbeauty.domain.repo.ApiRepo
+import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragmentDirections.toOrdersFragment
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,19 +25,19 @@ abstract class LoginViewModel : BaseViewModel() {
 }
 
 class LoginViewModelImpl @Inject constructor(
-    private val apiRepository: IApiRepository,
-    private val dataStoreHelper: IDataStoreHelper
+    private val apiRepo: ApiRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) : LoginViewModel() {
 
     override val loginState = MutableStateFlow<State<String>>(State.Loading())
 
     override fun startCheckingToken() {
-        dataStoreHelper.token.onEach { token ->
+        dataStoreRepo.token.onEach { token ->
             if (token.isEmpty()) {
-                apiRepository.unsubscribeOnNotification()
+                apiRepo.unsubscribeOnNotification()
                 loginState.value = State.Empty()
             } else {
-                apiRepository.subscribeOnNotification()
+                apiRepo.subscribeOnNotification()
                 router.navigate(toOrdersFragment())
             }
         }.launchIn(viewModelScope)
@@ -56,9 +56,9 @@ class LoginViewModelImpl @Inject constructor(
         }
         val passwordHash = getMd5(processedPassword)
 
-        apiRepository.login(processedUsername, passwordHash).onEach { isLoginSuccess ->
+        apiRepo.login(processedUsername, passwordHash).onEach { isLoginSuccess ->
             if (isLoginSuccess) {
-                dataStoreHelper.saveToken(UUID.randomUUID().toString())
+                dataStoreRepo.saveToken(UUID.randomUUID().toString())
             } else {
                 loginState.value = State.Error("Неверный логин или пароль")
             }
@@ -91,7 +91,7 @@ class LoginViewModelImpl @Inject constructor(
      */
     fun clear() {
         viewModelScope.launch(IO) {
-            dataStoreHelper.clearCache()
+            dataStoreRepo.clearCache()
         }
     }
 }

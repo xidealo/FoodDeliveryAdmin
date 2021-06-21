@@ -1,11 +1,10 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.room.Ignore
-import com.bunbeauty.data.model.cart_product.CartProductUI
+import com.bunbeauty.domain.model.cart_product.CartProductUI
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementCartProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText

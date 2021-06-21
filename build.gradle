@@ -37,10 +37,7 @@ ext {
 
     // App dependencies
     dagger2Version = "2.35.1"
-    corountinesVersion = "1.4.2"
-
-    retrofitVersion = "2.9.0"
-    moshiVersion = "2.4.0"
+    corountinesVersion = "1.5.0"
 
     convertorGsonVersion = "2.8.1"
     convertorScalarsVersion = "2.0.1"
@@ -57,8 +54,8 @@ ext {
     bluetoothVersion = "1.3.9"
     jodaVersion = "2.10.9"
     picassoVersion = "2.71828"
-    coreKtxVersion = "1.3.2"
-    appcompatVersion = "1.2.0"
+    coreKtxVersion = "1.5.0"
+    appcompatVersion = "1.3.0"
     firebaseVersion = "26.7.0"
     fastAdapterVersion = "5.3.4"
     navigationVersion = "2.3.5"

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import com.bunbeauty.data.enums.Period
+import com.bunbeauty.domain.enums.Period
 import com.bunbeauty.fooddeliveryadmin.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetStatisticPeriodListBinding

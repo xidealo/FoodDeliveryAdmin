@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import com.bunbeauty.common.State
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted

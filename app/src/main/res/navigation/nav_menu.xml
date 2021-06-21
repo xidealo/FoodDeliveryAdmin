@@ -36,7 +36,7 @@
         tools:layout="@layout/fragment_order_details">
         <argument
             android:name="order"
-            app:argType="com.bunbeauty.data.model.order.Order" />
+            app:argType="com.bunbeauty.domain.model.order.Order" />
         <action
             android:id="@+id/to_statusListBottomSheet"
             app:destination="@id/statusListBottomSheet" />
@@ -63,7 +63,7 @@
         tools:layout="@layout/fragment_statistic_details">
         <argument
             android:name="statistic"
-            app:argType="com.bunbeauty.data.model.statistic.Statistic" />
+            app:argType="com.bunbeauty.domain.model.statistic.Statistic" />
     </fragment>
     <dialog
         android:id="@+id/addressListBottomSheet"
@@ -89,7 +89,7 @@
         tools:layout="@layout/fragment_edit_menu_product">
         <argument
             android:name="menuProduct"
-            app:argType="com.bunbeauty.data.model.MenuProduct" />
+            app:argType="com.bunbeauty.domain.model.MenuProduct" />
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"

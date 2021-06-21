@@ -3,13 +3,10 @@ package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.room.Ignore
-import com.bunbeauty.data.enums.OrderStatus
-import com.bunbeauty.data.enums.OrderStatus.*
-import com.bunbeauty.data.model.cart_product.CartProduct
-import com.bunbeauty.data.model.order.Order
-import com.bunbeauty.data.model.order.OrderUI
+import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.enums.OrderStatus.*
+import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderBinding
 import com.mikepenz.fastadapter.binding.AbstractBindingItem

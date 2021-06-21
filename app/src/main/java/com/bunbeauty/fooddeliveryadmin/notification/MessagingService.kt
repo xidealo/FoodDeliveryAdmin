@@ -6,8 +6,9 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.bunbeauty.common.utils.IDataStoreHelper
+import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
+import com.bunbeauty.fooddeliveryadmin.Constants.CHANNEL_ID
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class MessagingService : FirebaseMessagingService(), CoroutineScope {
 
     @Inject
-    lateinit var dataStoreHelper: IDataStoreHelper
+    lateinit var dataStoreRepo: DataStoreRepo
 
     override val coroutineContext = Job()
 
@@ -40,7 +41,7 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
         Log.d("NotificationTag", "onMessageReceived")
 
         launch(IO) {
-            val cafeId = dataStoreHelper.cafeId.first()
+            val cafeId = dataStoreRepo.cafeId.first()
             if (remoteMessage.data[APP_ID] == BuildConfig.APP_ID && remoteMessage.data[CAFE_ID] == cafeId) {
                 withContext(Main) {
                     showNotification()
@@ -55,8 +56,7 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        val channelId = resources.getString(R.string.notification_channel_id)
-        val builder = NotificationCompat.Builder(this, channelId)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_not_accepted)
             .setContentTitle(NOTIFICATION_TITLE)
             .setContentText(NOTIFICATION_TEXT)

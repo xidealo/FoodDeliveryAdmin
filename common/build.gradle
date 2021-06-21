@@ -38,6 +38,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
+    implementation project(path: ':data')
     testImplementation "io.mockk:mockk:$rootProject.mockVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
@@ -47,9 +48,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.livedataVersion"
     implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
-
-    //DataStore
-    implementation "androidx.datastore:datastore-preferences:$rootProject.datastoreVersion"
 
     //Сoroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.corountinesVersion"

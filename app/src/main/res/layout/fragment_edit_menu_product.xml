@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="menuProduct"
-            type="com.bunbeauty.data.model.MenuProduct" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +21,6 @@
                 android:id="@+id/fragment_edit_menu_product_rb_show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checked="@{menuProduct.visible}"
                 android:text="@string/hint_edit_menu_product_show"
                 android:textColor="@color/mainTextColor" />
 
@@ -36,7 +28,6 @@
                 android:id="@+id/fragment_edit_menu_product_rb_hide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="@{!menuProduct.visible}"
                 android:text="@string/hint_edit_menu_product_hide"
                 android:textColor="@color/mainTextColor" />
         </RadioGroup>
@@ -53,7 +44,6 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_edit_menu_product_et_name"
                 style="@style/MaterialInput"
-                android:text="@{menuProduct.name}"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,8 +61,7 @@
                 android:id="@+id/fragment_edit_menu_product_et_cost"
                 style="@style/MaterialInput"
                 android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@{String.valueOf(menuProduct.cost)}"/>
+                android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -88,8 +77,7 @@
                 android:id="@+id/fragment_edit_menu_product_et_weight"
                 style="@style/MaterialInput"
                 android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@{String.valueOf(menuProduct.weight)}" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -105,8 +93,7 @@
                 android:id="@+id/fragment_edit_menu_product_et_description"
                 style="@style/MaterialInput"
                 android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
-                android:text="@{String.valueOf(menuProduct.description)}" />
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -122,8 +109,7 @@
                 android:id="@+id/fragment_edit_menu_product_et_discount_cost"
                 style="@style/MaterialInput"
                 android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@{String.valueOf(menuProduct.discountCost)}" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton

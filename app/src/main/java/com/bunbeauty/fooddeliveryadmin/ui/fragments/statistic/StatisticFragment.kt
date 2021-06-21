@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
-import com.bunbeauty.common.State
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.Constants.ADDRESS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY

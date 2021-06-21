@@ -3,8 +3,8 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import com.bunbeauty.data.enums.ProductCode
-import com.bunbeauty.data.model.MenuProduct
+import com.bunbeauty.domain.enums.ProductCode
+import com.bunbeauty.domain.model.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateNewMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent

@@ -1,13 +1,13 @@
 package com.bunbeauty.fooddeliveryadmin.di.modules
 
-import com.bunbeauty.domain.repository.address.AddressRepo
-import com.bunbeauty.domain.repository.address.AddressRepository
-import com.bunbeauty.domain.repository.cafe.CafeRepo
-import com.bunbeauty.domain.repository.cafe.CafeRepository
-import com.bunbeauty.domain.repository.menu_product.MenuProductRepo
-import com.bunbeauty.domain.repository.menu_product.MenuProductRepository
-import com.bunbeauty.domain.repository.order.OrderRepo
-import com.bunbeauty.domain.repository.order.OrderRepository
+import com.bunbeauty.domain.repo.AddressRepo
+import com.bunbeauty.data.repository.AddressRepository
+import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.domain.repo.MenuProductRepo
+import com.bunbeauty.data.repository.MenuProductRepository
+import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.data.repository.OrderRepository
 import dagger.Binds
 import dagger.Module
 

@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.statistic
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.State
-import com.bunbeauty.domain.repository.cafe.CafeRepo
-import com.bunbeauty.domain.resources.IResourcesProvider
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
+import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.util.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel

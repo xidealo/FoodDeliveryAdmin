@@ -1,0 +1,82 @@
+package com.bunbeauty.data.repository
+
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import com.bunbeauty.domain.model.Delivery
+import com.bunbeauty.domain.repo.DataStoreRepo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class DataStoreRepository @Inject constructor(private val context: Context) : DataStoreRepo {
+
+    private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = TOKEN_DATA_STORE)
+    private val Context.cafeIdDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_ID_DATA_STORE)
+    private val Context.deliveryDataStore: DataStore<Preferences> by preferencesDataStore(name = DELIVERY_DATA_STORE)
+
+    override val token: Flow<String> = context.tokenDataStore.data.map {
+        it[TOKEN_KEY] ?: ""
+    }
+
+    override suspend fun saveToken(token: String) {
+        context.tokenDataStore.edit {
+            it[TOKEN_KEY] = token
+        }
+    }
+
+    override val cafeId: Flow<String> = context.cafeIdDataStore.data.map {
+        it[CAFE_ID_KEY] ?: ""
+    }
+
+    override suspend fun saveCafeId(cafeId: String) {
+        context.cafeIdDataStore.edit {
+            it[CAFE_ID_KEY] = cafeId
+        }
+    }
+
+    override val delivery: Flow<Delivery> = context.deliveryDataStore.data.map {
+        Delivery(
+            it[DELIVERY_COST_KEY] ?: 0,
+            it[DELIVERY_FOR_FREE_KEY] ?: 0
+        )
+    }
+
+    override suspend fun saveDelivery(delivery: Delivery) {
+        context.deliveryDataStore.edit {
+            it[DELIVERY_COST_KEY] = delivery.cost
+            it[DELIVERY_FOR_FREE_KEY] = delivery.forFree
+        }
+    }
+
+    override suspend fun clearCache() {
+        context.tokenDataStore.edit {
+            it.clear()
+        }
+        context.cafeIdDataStore.edit {
+            it.clear()
+        }
+    }
+
+    companion object {
+
+        // NAMES
+        private const val TOKEN_DATA_STORE = "token dataStore"
+        private const val CAFE_ID_DATA_STORE = "cafe id dataStore"
+        private const val DELIVERY_DATA_STORE = "delivery dataStore"
+        private const val TOKEN = "token"
+        private const val CAFE_ID = "cafe id"
+        private const val DELIVERY_COST = "delivery cost"
+        private const val DELIVERY_FOR_FREE = "delivery for free"
+
+        // KEYS
+        private val TOKEN_KEY = stringPreferencesKey(TOKEN)
+        private val CAFE_ID_KEY = stringPreferencesKey(CAFE_ID)
+        private val DELIVERY_COST_KEY = intPreferencesKey(DELIVERY_COST)
+        private val DELIVERY_FOR_FREE_KEY = intPreferencesKey(DELIVERY_FOR_FREE)
+    }
+}

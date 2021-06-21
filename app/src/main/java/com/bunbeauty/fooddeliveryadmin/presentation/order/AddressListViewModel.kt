@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.State
-import com.bunbeauty.common.utils.IDataStoreHelper
-import com.bunbeauty.domain.repository.cafe.CafeRepo
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
+import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
@@ -26,7 +26,7 @@ abstract class AddressListViewModel : BaseViewModel() {
 class AddressListViewModelImpl @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
-    private val dataStoreHelper: IDataStoreHelper,
+    private val dataStoreRepo: DataStoreRepo,
 ) : AddressListViewModel() {
 
     override val addressListState = MutableStateFlow<State<List<AddressItem>>>(State.Loading())
@@ -55,7 +55,7 @@ class AddressListViewModelImpl @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            dataStoreHelper.saveCafeId(cafeId)
+            dataStoreRepo.saveCafeId(cafeId)
         }
     }
 }

@@ -162,21 +162,37 @@
                 tool:listitem="@layout/element_cart_product" />
 
             <TextView
+                android:id="@+id/fragment_order_details_tv_delivery_cost"
+                style="@style/MediumRegularText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_delivery_cost"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_rv_product_list" />
+
+            <TextView
+                android:id="@+id/fragment_order_details_tv_delivery_cost_value"
+                style="@style/MediumRegularText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_delivery_cost"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
+                tool:text="Бесплатно" />
+
+            <TextView
                 android:id="@+id/fragment_order_details_tv_order_total_cost"
                 style="@style/MediumBoldText"
                 android:layout_marginTop="@dimen/medium_margin"
-                android:text="@string/msg_order_details_order_price"
+                android:text="@string/msg_order_details_order_cost"
                 app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_rv_product_list" />
+                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_delivery_cost" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_order_old_total_cost"
                 style="@style/MediumSecondaryBoldText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:text="@string/msg_order_details_order_price"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_order_total_cost"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_order_details_tv_order_new_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_rv_product_list"
                 tool:text="100 ₽" />
 
             <TextView
@@ -184,29 +200,29 @@
                 style="@style/MediumBoldText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:text="@string/msg_order_details_order_price"
+                android:text="@string/msg_order_details_order_cost"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_order_total_cost"
                 app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_rv_product_list"
                 tool:text="100 ₽" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fragment_order_details_btn_cancel"
                 style="@style/SmallSecondaryButton"
                 android:layout_margin="@dimen/medium_margin"
-                android:text="@string/action_change_status_cancel"
+                android:text="@string/action_order_details_cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_order_details_btn_save"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_new_total_cost" />
+                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_total_cost" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fragment_order_details_btn_save"
                 style="@style/SmallMainButton"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/medium_margin"
-                android:text="@string/action_change_status_save"
+                android:text="@string/action_order_details_save"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_new_total_cost" />
+                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_total_cost" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
