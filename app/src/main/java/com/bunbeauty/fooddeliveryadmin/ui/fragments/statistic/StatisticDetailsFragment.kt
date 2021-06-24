@@ -2,21 +2,23 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticDetailsBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticAddressListViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticDetailsViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.CartProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.ProductStatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
+import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StatisticDetailsFragment :
-    BaseBottomSheetDialog<FragmentStatisticDetailsBinding, StatisticDetailsViewModel>() {
+    BaseFragment<FragmentStatisticDetailsBinding, StatisticDetailsViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.getStatisticDetailsComponent().create(this).inject(this)
-    }
+    override val viewModel: StatisticDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,22 +1,20 @@
-package com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu
+package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.bunbeauty.domain.model.MenuProduct
-import com.bunbeauty.domain.model.getNewMenuUuid
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
-import com.bunbeauty.fooddeliveryadmin.presentation.EditMenuViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.menu.MenuViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.MenuProductsAdapter
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragmentDirections.toCreateNewMenuProductFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class EditMenuFragment : BaseFragment<FragmentEditMenuBinding, EditMenuViewModel>() {
+@AndroidEntryPoint
+class MenuFragment : BaseFragment<FragmentEditMenuBinding, MenuViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
+    override val viewModel: MenuViewModel by viewModels()
 
     @Inject
     lateinit var menuProductsAdapter: MenuProductsAdapter
@@ -43,6 +41,6 @@ class EditMenuFragment : BaseFragment<FragmentEditMenuBinding, EditMenuViewModel
     }
 
     private fun goToCreateMenuProduct() {
-        router.navigate(toCreateNewMenuProductFragment(viewModel.productListSharedFlow.value.getNewMenuUuid()))
+        //router.navigate(toCreateNewMenuProductFragment(viewModel.productListSharedFlow.value.getNewMenuUuid()))
     }
 }

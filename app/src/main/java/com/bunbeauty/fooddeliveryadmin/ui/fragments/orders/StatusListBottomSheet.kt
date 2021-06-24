@@ -4,22 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_STATUS_KEY
-import com.bunbeauty.fooddeliveryadmin.Constants.STATUS_REQUEST_KEY
+import androidx.fragment.app.viewModels
+import com.bunbeauty.common.Constants.SELECTED_STATUS_KEY
+import com.bunbeauty.common.Constants.STATUS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetStatusListBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.order.StatusListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatusItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StatusListBottomSheet :
     BaseBottomSheetDialog<BottomSheetStatusListBinding, StatusListViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.getStatusListComponent().create(this).inject(this)
-    }
+    override val viewModel: StatusListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

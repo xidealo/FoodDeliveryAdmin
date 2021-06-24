@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.room.Ignore
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
@@ -19,7 +18,6 @@ data class StatisticItem(
 ) : AbstractBindingItem<ElementStatisticBinding>(), Parcelable {
 
     @IgnoredOnParcel
-    @Ignore
     override val type = R.id.element_statistic_mvc_main
 
     override fun bindView(binding: ElementStatisticBinding, payloads: List<Any>) {

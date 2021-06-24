@@ -8,40 +8,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.Router
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.presentation.ViewModelFactory
-import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import java.lang.reflect.ParameterizedType
-import javax.inject.Inject
 
-abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(),
-    LifecycleObserver {
+abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment() {
 
     private var _viewDataBinding: B? = null
-    protected val viewDataBinding get() = _viewDataBinding!!
-    protected lateinit var viewModel: VM
-
-    @Inject
-    protected lateinit var router: Router
-
-    @Inject
-    lateinit var factory: ViewModelFactory
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        inject((requireActivity() as MainActivity).activityComponent)
-        viewModel = ViewModelProvider(this, factory).get(getViewModelClass())
-    }
-
-    abstract fun inject(activityComponent: ActivityComponent)
+    protected val viewDataBinding
+        get() = checkNotNull(_viewDataBinding)
+    protected abstract val viewModel: VM
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(

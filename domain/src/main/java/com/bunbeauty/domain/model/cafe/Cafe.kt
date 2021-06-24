@@ -10,9 +10,4 @@ data class Cafe(
 
     @Relation(parentColumn = "id", entityColumn = "cafeId")
     val address: Address? = Address()
-) {
-
-        companion object {
-                const val CAFES = "cafes"
-        }
-}
+)

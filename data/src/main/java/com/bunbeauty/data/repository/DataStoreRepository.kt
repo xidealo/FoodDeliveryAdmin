@@ -9,11 +9,14 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.domain.repo.DataStoreRepo
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class DataStoreRepository @Inject constructor(private val context: Context) : DataStoreRepo {
+
+class DataStoreRepository @Inject constructor(@ApplicationContext private val context: Context) :
+    DataStoreRepo {
 
     private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = TOKEN_DATA_STORE)
     private val Context.cafeIdDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_ID_DATA_STORE)

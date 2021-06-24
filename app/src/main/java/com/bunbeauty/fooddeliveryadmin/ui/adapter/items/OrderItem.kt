@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.room.Ignore
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.domain.model.order.Order
@@ -24,7 +23,6 @@ data class OrderItem(
 ) : AbstractBindingItem<ElementOrderBinding>(), Parcelable {
 
     @IgnoredOnParcel
-    @Ignore
     override val type = R.id.element_text_tv_title
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {

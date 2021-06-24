@@ -4,7 +4,7 @@ import com.bunbeauty.domain.model.MenuProduct
 import com.bunbeauty.domain.model.firebase.MenuProductFirebase
 import javax.inject.Inject
 
-class MenuProductMapper @Inject constructor() : Mapper<MenuProductFirebase, MenuProduct> {
+class MenuProductMapper @Inject constructor() : IMenuProductMapper {
 
     override fun from(e: MenuProduct): MenuProductFirebase {
         return MenuProductFirebase(

@@ -1,18 +1,18 @@
-package com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu
+package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
+import com.bunbeauty.fooddeliveryadmin.presentation.menu.EditMenuProductViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.presentation.EditMenuProductViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditMenuProductFragment :
     BaseFragment<FragmentEditMenuProductBinding, EditMenuProductViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
+    override val viewModel: EditMenuProductViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

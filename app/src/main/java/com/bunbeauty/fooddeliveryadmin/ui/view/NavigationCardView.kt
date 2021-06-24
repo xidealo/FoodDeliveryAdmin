@@ -10,11 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.view.setPadding
 import com.bunbeauty.domain.util.resources.ResourcesProvider
-import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.google.android.material.card.MaterialCardView
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class NavigationCardView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
@@ -50,8 +51,6 @@ class NavigationCardView @JvmOverloads constructor(
         get() = checkNotNull(_textView)
 
     init {
-        (context.applicationContext as FoodDeliveryAdminApplication).appComponent.inject(this)
-
         strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke_width)
         strokeColor = resourcesProvider.getColor(R.color.colorPrimary)
         radius = resourcesProvider.getDimensionFloat(R.dimen.medium_radius)

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_menu"
+    android:id="@+id/nav_main"
     app:startDestination="@id/loginFragment">
 
     <fragment
@@ -13,7 +13,7 @@
         <action
             android:id="@+id/to_ordersFragment"
             app:destination="@id/ordersFragment"
-            app:popUpTo="@id/nav_menu"
+            app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -72,7 +72,7 @@
         tools:layout="@layout/bottom_sheet_address_list" />
     <fragment
         android:id="@+id/editMenuFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.MenuFragment"
         android:label="EditMenuFragment"
         tools:layout="@layout/fragment_edit_menu">
         <action
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/editMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.EditMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.EditMenuProductFragment"
         android:label="EditMenuProductFragment"
         tools:layout="@layout/fragment_edit_menu_product">
         <argument
@@ -93,9 +93,9 @@
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.edit_menu.CreateNewMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.CreateMenuProductFragment"
         android:label="CreateNewMenuProductFragment"
-        tools:layout="@layout/fragment_create_new_menu_product">
+        tools:layout="@layout/fragment_create_menu_product">
         <argument
             android:name="uuid"
             app:argType="string" />

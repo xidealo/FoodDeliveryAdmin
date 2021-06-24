@@ -2,22 +2,22 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.login
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.presentation.LoginViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.login.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
+    override val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

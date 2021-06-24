@@ -25,12 +25,4 @@ data class OrderEntity(
     var code: String = "",
     var email: String = "",
     var deferred: String? = null
-) : Parcelable {
-
-    companion object {
-        const val ORDERS = "ORDERS"
-        const val ORDER_ENTITY = "orderEntity"
-        const val ORDER_STATUS = "orderStatus"
-        const val TIMESTAMP = "timestamp"
-    }
-}
+) : Parcelable

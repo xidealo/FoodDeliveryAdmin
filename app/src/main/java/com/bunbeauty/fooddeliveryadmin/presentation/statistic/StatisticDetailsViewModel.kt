@@ -1,56 +1,52 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.statistic
 
+import androidx.lifecycle.SavedStateHandle
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.order.IOrderUtil
+import com.bunbeauty.fooddeliveryadmin.extensions.navArgs
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.ProductStatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsFragmentArgs
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-abstract class StatisticDetailsViewModel : BaseViewModel() {
-
-    abstract val period: String
-    abstract val proceeds: String
-    abstract val orderCount: String
-    abstract val averageCheck: String
-    abstract val productStatisticList: List<ProductStatisticItem>
-}
-
-class StatisticDetailsViewModelImpl @Inject constructor(
-    private val args: StatisticDetailsFragmentArgs,
+@HiltViewModel
+class StatisticDetailsViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val orderUtil: IOrderUtil,
     dataStoreRepo: DataStoreRepo,
-) : StatisticDetailsViewModel() {
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
+    private val args: StatisticDetailsFragmentArgs by savedStateHandle.navArgs()
     private val delivery by lazy {
         runBlocking {
             dataStoreRepo.delivery.first()
         }
     }
 
-    override val period: String
+    val period: String
         get() = args.statistic.period
 
-    override val proceeds: String
+    val proceeds: String
         get() {
             val proceeds = orderUtil.getProceeds(args.statistic.orderList, delivery)
             return stringUtil.getCostString(proceeds)
         }
 
-    override val orderCount: String
+    val orderCount: String
         get() = args.statistic.orderList.size.toString()
 
-    override val averageCheck: String
+    val averageCheck: String
         get() {
             val averageCheck = orderUtil.getAverageCheck(args.statistic.orderList, delivery)
             return stringUtil.getCostString(averageCheck)
         }
 
-    override val productStatisticList: List<ProductStatisticItem>
+    val productStatisticList: List<ProductStatisticItem>
         get() = orderUtil.getProductStatisticList(args.statistic.orderList)
             .map { productStatistic ->
                 ProductStatisticItem(

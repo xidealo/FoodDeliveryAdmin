@@ -44,34 +44,28 @@ android {
         dataBinding true
         viewBinding true
     }
-
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
-    implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
-    testImplementation "io.mockk:mockk:$rootProject.mockVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
 
     //Dagger 2
     implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    implementation "com.google.dagger:dagger-android:$rootProject.dagger2Version"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
 
     //Database
     implementation "androidx.room:room-runtime:$rootProject.roomDatabaseVersion"
-    implementation "androidx.room:room-ktx:$rootProject.roomDatabaseVersion"
-    kapt "androidx.room:room-compiler:$rootProject.roomDatabaseVersion"
 
     //Сoroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.corountinesVersion"
 
     //Joda time
     implementation "joda-time:joda-time:$rootProject.jodaVersion"
-
 }

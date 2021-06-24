@@ -4,20 +4,15 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import com.bunbeauty.fooddeliveryadmin.Constants.CHANNEL_ID
-import com.bunbeauty.fooddeliveryadmin.Constants.CHANNEL_NAME
-import com.bunbeauty.fooddeliveryadmin.di.components.AppComponent
-import com.bunbeauty.fooddeliveryadmin.di.components.DaggerAppComponent
+import com.bunbeauty.common.Constants.CHANNEL_ID
+import com.bunbeauty.common.Constants.CHANNEL_NAME
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class FoodDeliveryAdminApplication: Application() {
-
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory().create(this)
-    }
 
     override fun onCreate() {
         super.onCreate()
-        appComponent.inject(this)
         createNotificationChannel()
     }
 

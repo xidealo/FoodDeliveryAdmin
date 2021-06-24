@@ -1,15 +1,20 @@
 package com.bunbeauty.fooddeliveryadmin.di.modules
 
-import com.bunbeauty.data.mapper.Mapper
-import com.bunbeauty.domain.model.MenuProduct
-import com.bunbeauty.domain.model.firebase.MenuProductFirebase
+import com.bunbeauty.data.mapper.IMenuProductMapper
 import com.bunbeauty.data.mapper.MenuProductMapper
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 abstract class MapperModule {
 
+    @Singleton
     @Binds
-    abstract fun bindsMovieDetailMapper(mapper: MenuProductMapper): Mapper<MenuProductFirebase, MenuProduct>
+    abstract fun bindMenuProductMapper(menuProductMapper: MenuProductMapper): IMenuProductMapper
+
 }

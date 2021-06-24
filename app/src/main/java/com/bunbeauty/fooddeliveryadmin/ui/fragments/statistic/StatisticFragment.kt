@@ -3,18 +3,19 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
-import com.bunbeauty.fooddeliveryadmin.Constants.ADDRESS_REQUEST_KEY
-import com.bunbeauty.fooddeliveryadmin.Constants.PERIOD_REQUEST_KEY
-import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_ADDRESS_KEY
-import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_PERIOD_KEY
+import com.bunbeauty.common.Constants.ADDRESS_REQUEST_KEY
+import com.bunbeauty.common.Constants.PERIOD_REQUEST_KEY
+import com.bunbeauty.common.Constants.SELECTED_ADDRESS_KEY
+import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
+import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticDetailsViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
@@ -22,13 +23,13 @@ import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
+    override val viewModel: StatisticViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

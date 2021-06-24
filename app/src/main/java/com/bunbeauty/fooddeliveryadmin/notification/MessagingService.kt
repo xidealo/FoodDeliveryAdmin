@@ -8,12 +8,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
-import com.bunbeauty.fooddeliveryadmin.Constants.CHANNEL_ID
+import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@AndroidEntryPoint
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class MessagingService : FirebaseMessagingService(), CoroutineScope {
 
@@ -30,12 +32,6 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
     lateinit var dataStoreRepo: DataStoreRepo
 
     override val coroutineContext = Job()
-
-    override fun onCreate() {
-        super.onCreate()
-
-        (application as FoodDeliveryAdminApplication).appComponent.inject(this)
-    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d("NotificationTag", "onMessageReceived")
@@ -52,6 +48,7 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
 
     private fun showNotification() {
         Log.d("NotificationTag", "showNotification")
+
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }

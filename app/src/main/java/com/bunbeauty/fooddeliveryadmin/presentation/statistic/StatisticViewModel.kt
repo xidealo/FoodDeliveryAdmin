@@ -16,29 +16,19 @@ import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.*
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-abstract class StatisticViewModel : BaseViewModel() {
-
-    abstract val statisticState: StateFlow<State<List<StatisticItem>>>
-    abstract var selectedAddressItem: AddressItem
-    abstract var selectedPeriodItem: PeriodItem
-
-    abstract fun getStatistic(cafeId: String?, period: String)
-    abstract fun goToAddressList()
-    abstract fun goToPeriodList()
-    abstract fun goToStatisticDetails(statistic: Statistic)
-}
-
-class StatisticViewModelImpl @Inject constructor(
+@HiltViewModel
+class StatisticViewModel @Inject constructor(
     private val orderRepo: OrderRepo,
     private val stringUtil: IStringUtil,
     private val orderUtil: IOrderUtil,
     dataStoreRepo: DataStoreRepo,
     resourcesProvider: IResourcesProvider,
-) : StatisticViewModel() {
+) : BaseViewModel() {
 
     private val delivery by lazy {
         runBlocking {
@@ -46,13 +36,16 @@ class StatisticViewModelImpl @Inject constructor(
         }
     }
 
-    override val statisticState = MutableStateFlow<State<List<StatisticItem>>>(State.Loading())
-    override var selectedAddressItem =
-        AddressItem(resourcesProvider.getString(R.string.msg_statistic_all_cafes), null)
-    override var selectedPeriodItem = PeriodItem(DAY.text)
+    val statisticState: StateFlow<State<List<StatisticItem>>>
+        get() = _statisticState
+    private val _statisticState = MutableStateFlow<State<List<StatisticItem>>>(State.Loading())
 
-    override fun getStatistic(cafeId: String?, period: String) {
-        statisticState.value = State.Loading()
+    var selectedAddressItem =
+        AddressItem(resourcesProvider.getString(R.string.msg_statistic_all_cafes), null)
+    var selectedPeriodItem = PeriodItem(DAY.text)
+
+    fun getStatistic(cafeId: String?, period: String) {
+        _statisticState.value = State.Loading()
 
         val statisticListFlow = if (cafeId == null) {
             when (period) {
@@ -83,7 +76,7 @@ class StatisticViewModelImpl @Inject constructor(
         }
 
         statisticListFlow?.onEach { statisticList ->
-            statisticState.value = statisticList.map { statistic ->
+            _statisticState.value = statisticList.map { statistic ->
                 val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
                 val proceedsString = stringUtil.getCostString(proceeds)
                 StatisticItem(
@@ -95,15 +88,15 @@ class StatisticViewModelImpl @Inject constructor(
         }?.launchIn(viewModelScope)
     }
 
-    override fun goToAddressList() {
+    fun goToAddressList() {
         router.navigate(toStatisticAddressListBottomSheet())
     }
 
-    override fun goToPeriodList() {
+    fun goToPeriodList() {
         router.navigate(toStatisticPeriodListBottomSheet())
     }
 
-    override fun goToStatisticDetails(statistic: Statistic) {
+    fun goToStatisticDetails(statistic: Statistic) {
         router.navigate(toStatisticDetailsFragment(statistic))
     }
 }

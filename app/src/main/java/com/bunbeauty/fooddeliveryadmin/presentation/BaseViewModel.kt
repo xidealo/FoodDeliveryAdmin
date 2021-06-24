@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavArgs
 import com.bunbeauty.fooddeliveryadmin.Router
 import javax.inject.Inject
 

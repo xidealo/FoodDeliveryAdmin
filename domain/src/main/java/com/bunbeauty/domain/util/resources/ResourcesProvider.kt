@@ -3,9 +3,11 @@ package com.bunbeauty.domain.util.resources
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class ResourcesProvider @Inject constructor(private val context: Context): IResourcesProvider {
+class ResourcesProvider @Inject constructor(@ApplicationContext private val context: Context) :
+    IResourcesProvider {
 
     override fun getString(stringId: Int): String {
         return context.resources.getString(stringId)

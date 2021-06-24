@@ -1,23 +1,24 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
+import androidx.lifecycle.SavedStateHandle
 import com.bunbeauty.domain.enums.OrderStatus.*
+import com.bunbeauty.fooddeliveryadmin.extensions.navArgs
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatusItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.StatusListBottomSheetArgs
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-abstract class StatusListViewModel : BaseViewModel() {
+@HiltViewModel
+class StatusListViewModel @Inject constructor(
+    private val stringUtil: IStringUtil,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
-    abstract val statusList: List<StatusItem>
-}
+    private val args: StatusListBottomSheetArgs by savedStateHandle.navArgs()
 
-class StatusListViewModelImpl @Inject constructor(
-    private val args: StatusListBottomSheetArgs,
-    private val stringUtil: IStringUtil
-) : StatusListViewModel() {
-
-    override val statusList: List<StatusItem>
+    val statusList: List<StatusItem>
         get() = when {
             args.isDeferred && args.isDelivery -> {
                 arrayListOf(

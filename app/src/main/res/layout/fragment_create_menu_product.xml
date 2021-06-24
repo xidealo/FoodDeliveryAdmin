@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/small_padding"
-            tools:context=".ui.fragments.edit_menu.CreateNewMenuProductFragment">
+            tools:context=".ui.fragments.menu.CreateMenuProductFragment">
 
             <RadioGroup
                 android:id="@+id/fragment_create_menu_product_rg"

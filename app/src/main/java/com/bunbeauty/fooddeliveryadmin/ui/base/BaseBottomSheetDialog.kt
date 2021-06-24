@@ -6,39 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProvider
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.Router
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.presentation.ViewModelFactory
-import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
-import javax.inject.Inject
 
 abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
     BottomSheetDialogFragment() {
 
     private var _viewDataBinding: B? = null
     protected val viewDataBinding get() = _viewDataBinding!!
-    protected lateinit var viewModel: VM
-
-    @Inject
-    protected lateinit var router: Router
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    protected abstract val viewModel: VM
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         setStyle(STYLE_NORMAL, R.style.BottomSheetTheme)
 
-        inject((requireActivity() as MainActivity).activityComponent)
+        //inject((requireActivity() as MainActivity).activityComponent)
     }
 
-    abstract fun inject(activityComponent: ActivityComponent)
+    //abstract fun inject(activityComponent: ActivityComponent)
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
@@ -46,9 +34,6 @@ abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
-        viewModel = ViewModelProvider(this, viewModelFactory).get(getViewModelClass())
-
         val viewBindingClass = getViewBindingClass()
         val inflateMethod = viewBindingClass.getMethod(
             "inflate",
@@ -57,6 +42,7 @@ abstract class BaseBottomSheetDialog<B : ViewDataBinding, VM : BaseViewModel> :
             Boolean::class.java,
         )
         _viewDataBinding = inflateMethod.invoke(viewBindingClass, inflater, container, false) as B
+
         return viewDataBinding.root
     }
 

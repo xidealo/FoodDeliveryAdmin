@@ -1,10 +1,10 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.domain.model.MenuProduct
-import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.domain.repo.ApiRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.data.dao.MenuProductDao
+import com.bunbeauty.data.mapper.IMenuProductMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class MenuProductRepository @Inject constructor(
     private val menuProductDao: MenuProductDao,
     private val apiRepo: ApiRepo,
-    private val mapper: MenuProductMapper
+    private val menuProductMapper: IMenuProductMapper
 ) : MenuProductRepo {
 
     override suspend fun insert(menuProduct: MenuProduct) {
@@ -20,11 +20,11 @@ class MenuProductRepository @Inject constructor(
     }
 
     override suspend fun updateRequest(menuProduct: MenuProduct) {
-        apiRepo.updateMenuProduct(mapper.from(menuProduct), menuProduct.uuid)
+        apiRepo.updateMenuProduct(menuProductMapper.from(menuProduct), menuProduct.uuid)
         menuProductDao.update(menuProduct)
     }
 
-    override suspend fun getMenuProductRequest() {
+    override suspend fun refreshProductList() {
         menuProductDao.deleteAll()
         apiRepo.getMenuProductList().collect { menuProductList ->
             menuProductDao.insertAll(menuProductList)

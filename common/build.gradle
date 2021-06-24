@@ -34,28 +34,5 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
-    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
-    implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
-    implementation project(path: ':data')
-    testImplementation "io.mockk:mockk:$rootProject.mockVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
 
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.extensionsVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.viewmodelVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.livedataVersion"
-    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
-    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
-
-    //Сoroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.corountinesVersion"
-
-    //Dagger 2
-    implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    implementation "com.google.dagger:dagger-android:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
 }

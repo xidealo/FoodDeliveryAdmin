@@ -2,24 +2,24 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.presentation.order.AddressListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class AddressListBottomSheet :
     BaseBottomSheetDialog<BottomSheetAddressListBinding, AddressListViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
+    override val viewModel: AddressListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +29,6 @@ class AddressListBottomSheet :
         viewDataBinding.bottomSheetAddressListRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, addressItem, _ ->
             viewModel.saveCafeId(addressItem.cafeId)
-            dismiss()
             false
         }
         viewModel.addressListState.onEach { state ->
@@ -37,9 +36,10 @@ class AddressListBottomSheet :
                 is State.Success -> {
                     itemAdapter.set(state.data)
                 }
-                else -> {
-                }
+                else -> Unit
             }
         }.launchWhenStarted(lifecycleScope)
+
+        viewModel.getCafeList()
     }
 }

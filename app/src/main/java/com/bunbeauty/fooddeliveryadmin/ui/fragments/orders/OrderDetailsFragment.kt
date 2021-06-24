@@ -1,13 +1,15 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
-import com.bunbeauty.fooddeliveryadmin.Constants.SELECTED_STATUS_KEY
-import com.bunbeauty.fooddeliveryadmin.Constants.STATUS_REQUEST_KEY
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import com.bunbeauty.common.Constants.SELECTED_STATUS_KEY
+import com.bunbeauty.common.Constants.STATUS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
-import com.bunbeauty.fooddeliveryadmin.di.components.ActivityComponent
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.fooddeliveryadmin.presentation.order.OrderDetailsViewModel
@@ -17,14 +19,12 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDetailsViewModel>() {
 
-    override fun inject(activityComponent: ActivityComponent) {
-        activityComponent.getOrderDetailsComponent()
-            .create(this)
-            .inject(this)
-    }
+    override val viewModel: OrderDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
