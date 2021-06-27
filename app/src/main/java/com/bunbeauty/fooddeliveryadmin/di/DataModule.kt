@@ -33,17 +33,5 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideOrderDao(localDatabase: LocalDatabase) = localDatabase.orderDao()
-
-    @Singleton
-    @Provides
-    fun provideAddressDao(localDatabase: LocalDatabase) = localDatabase.addressDao()
-
-    @Singleton
-    @Provides
     fun provideCafeDao(localDatabase: LocalDatabase) = localDatabase.cafeDao()
-
-    @Singleton
-    @Provides
-    fun provideMenuProductDao(localDatabase: LocalDatabase) = localDatabase.menuProductDao()
 }

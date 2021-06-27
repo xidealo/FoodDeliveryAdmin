@@ -10,7 +10,6 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
-import com.bunbeauty.fooddeliveryadmin.presentation.order.OrderDetailsViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.order.OrdersViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.OrderItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
@@ -38,7 +37,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             viewModel.goToAddressList()
         }
 
-        viewModel.cafeAddressStateFlow.onEach { state ->
+        viewModel.cafeAddressState.onEach { state ->
             when (state) {
                 is State.Success -> {
                     viewDataBinding.fragmentOrdersMcvAddress.cardText = state.data

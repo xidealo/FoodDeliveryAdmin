@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.menu
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.ServerMenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,9 +12,9 @@ import javax.inject.Inject
 class EditMenuProductViewModel @Inject constructor(private val menuProductRepo: MenuProductRepo) :
     BaseViewModel() {
 
-     fun updateMenuProduct(menuProduct: MenuProduct) {
+     fun updateMenuProduct(serverMenuProduct: ServerMenuProduct) {
         viewModelScope.launch {
-            menuProductRepo.updateRequest(menuProduct)
+            //menuProductRepo.updateRequest(serverMenuProduct)
         }
     }
 }

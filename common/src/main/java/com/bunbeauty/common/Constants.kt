@@ -30,4 +30,8 @@ object Constants {
     const val TIMESTAMP = "timestamp"
     const val DELIVERY = "delivery"
     const val PASSWORD = "password"
+
+    // ARGS_KEY
+
+    const val MENU_PRODUCT_ARGS_KEY = "menuProduct"
 }

@@ -1,9 +1,9 @@
 package com.bunbeauty.data.mapper
 
-interface Mapper<T, E> {
+interface Mapper<F, S> {
 
-    fun from(e: E): T
+    fun from(model: F): S
 
-    fun to(t: T): E
+    fun to(model: S): F
 
 }

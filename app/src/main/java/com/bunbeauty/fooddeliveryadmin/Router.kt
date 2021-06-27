@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin
 
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
@@ -39,6 +40,17 @@ class Router @Inject constructor() {
         try {
             hideKeyboard(activity?.get())
             activity?.get()?.findNavController(navHostId)?.navigate(navDirections)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
+
+    fun navigate(navDirectionsId: Int, args: Bundle?) {
+        val navHostId = navHostId ?: return
+
+        try {
+            hideKeyboard(activity?.get())
+            activity?.get()?.findNavController(navHostId)?.navigate(navDirectionsId)
         } catch (exception: Exception) {
             exception.printStackTrace()
         }

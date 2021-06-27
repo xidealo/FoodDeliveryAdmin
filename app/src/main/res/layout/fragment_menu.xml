@@ -9,7 +9,7 @@
         tools:context=".ui.fragments.menu.MenuFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_edit_menu_rv_result"
+            android:id="@+id/fragment_menu_rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/small_margin"
@@ -22,7 +22,7 @@
             tools:listitem="@layout/element_menu_product" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fragment_edit_menu_fab_add_new_product"
+            android:id="@+id/fragment_menu_fab_create_product"
             style="@style/ActionButton"
             android:layout_margin="@dimen/medium_margin"
             android:src="@drawable/ic_add"

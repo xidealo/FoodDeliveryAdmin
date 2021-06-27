@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.*
-import com.bunbeauty.domain.model.address.Address
+import com.bunbeauty.domain.model.order.UserAddress
 import com.bunbeauty.domain.util.resources.ResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import javax.inject.Inject
@@ -10,30 +10,30 @@ import javax.inject.Inject
 class StringUtil @Inject constructor(private val resourcesProvider: ResourcesProvider) :
     IStringUtil {
 
-    override fun toString(address: Address?): String {
-        return if (address == null) {
-            ""
+    override fun getUserAddressString(userAddress: UserAddress?): String? {
+        return if (userAddress == null) {
+            null
         } else {
-            address.street.name +
+            userAddress.street +
                     getStringPart(
                         resourcesProvider.getString(R.string.msg_address_house),
-                        address.house
+                        userAddress.house
                     ) +
                     getStringPart(
                         resourcesProvider.getString(R.string.msg_address_flat),
-                        address.flat
+                        userAddress.flat
                     ) +
                     getStringPart(
                         resourcesProvider.getString(R.string.msg_address_entrance),
-                        address.entrance
+                        userAddress.entrance
                     ) +
                     getStringPart(
                         resourcesProvider.getString(R.string.msg_address_intercom),
-                        address.intercom
+                        userAddress.intercom
                     ) +
                     getStringPart(
                         resourcesProvider.getString(R.string.msg_address_floor),
-                        address.floor
+                        userAddress.floor
                     )
         }
     }
@@ -99,8 +99,8 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
         }
     }
 
-    fun getStringPart(constant: String, possiblyEmpty: String): String {
-        return if (possiblyEmpty.isEmpty()) {
+    fun getStringPart(constant: String, possiblyEmpty: String?): String {
+        return if (possiblyEmpty.isNullOrEmpty()) {
             ""
         } else {
             constant + possiblyEmpty

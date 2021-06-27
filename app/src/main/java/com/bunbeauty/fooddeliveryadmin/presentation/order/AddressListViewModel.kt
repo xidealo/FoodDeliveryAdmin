@@ -22,22 +22,18 @@ import javax.inject.Inject
 @HiltViewModel
 class AddressListViewModel @Inject constructor(
     private val cafeRepo: CafeRepo,
-    private val stringUtil: IStringUtil,
     private val dataStoreRepo: DataStoreRepo,
 ) : BaseViewModel() {
 
     val addressListState: StateFlow<State<List<AddressItem>>>
         get() = _addressListState
-    val _addressListState = MutableStateFlow<State<List<AddressItem>>>(State.Loading())
+    private val _addressListState = MutableStateFlow<State<List<AddressItem>>>(State.Loading())
 
     fun getCafeList() {
         cafeRepo.cafeList.onEach { cafeList ->
             val addressItemList = ArrayList(
                 cafeList.map { cafe ->
-                    AddressItem(
-                        stringUtil.toString(cafe.address),
-                        cafe.cafeEntity.id
-                    )
+                    AddressItem(cafe.address, cafe.uuid)
                 }
             )
             _addressListState.value = addressItemList.toStateSuccess()
@@ -50,7 +46,7 @@ class AddressListViewModel @Inject constructor(
         }
 
         viewModelScope.launch(IO) {
-            dataStoreRepo.saveCafeId(cafeId)
+            dataStoreRepo.saveCafeUuid(cafeId)
             withContext(Main) {
                 goBack()
             }

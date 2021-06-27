@@ -1,12 +1,13 @@
-package com.bunbeauty.domain.model.firebase
+package com.bunbeauty.domain.model
 
-data class MenuProductFirebase(
+data class ServerMenuProduct(
+    var uuid: String = "",
     var name: String = "",
     var cost: Int = 0,
-    val discountCost: Int? = null,
+    var discountCost: Int? = null,
     var weight: Int = 0,
     var description: String = "",
-    val comboDescription: String = "",
+    var comboDescription: String = "",
     var photoLink: String = "",
     var onFire: Boolean = false,
     var inOven: Boolean = false,

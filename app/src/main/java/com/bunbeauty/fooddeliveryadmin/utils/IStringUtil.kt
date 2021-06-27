@@ -1,10 +1,10 @@
 package com.bunbeauty.fooddeliveryadmin.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.address.Address
+import com.bunbeauty.domain.model.order.UserAddress
 
 interface IStringUtil {
-    fun toString(address: Address?): String
+    fun getUserAddressString(userAddress: UserAddress?): String?
     fun getDeferredTimeString(deferred: String?): String
     fun getCostString(cost: Int?): String
     fun getOrderCodeString(orderCode: String): String

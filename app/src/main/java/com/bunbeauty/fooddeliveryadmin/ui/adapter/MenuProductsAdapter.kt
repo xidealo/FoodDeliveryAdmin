@@ -1,15 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.ui.adapter
 
-import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
-import com.bunbeauty.domain.model.MenuProduct
 import com.bunbeauty.domain.util.product.IProductUtil
-import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
 import javax.inject.Inject
 
 class MenuProductsAdapter @Inject constructor(private val productUtil: IProductUtil) {

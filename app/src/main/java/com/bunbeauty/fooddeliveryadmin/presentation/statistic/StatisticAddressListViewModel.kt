@@ -19,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StatisticAddressListViewModel @Inject constructor(
     private val cafeRepo: CafeRepo,
-    private val stringUtil: IStringUtil,
     private val resourcesProvider: IResourcesProvider
 ) : BaseViewModel() {
 
@@ -31,10 +30,7 @@ class StatisticAddressListViewModel @Inject constructor(
         cafeRepo.cafeList.onEach { cafeList ->
             val addressItemList = ArrayList(
                 cafeList.map { cafe ->
-                    AddressItem(
-                        stringUtil.toString(cafe.address),
-                        cafe.cafeEntity.id
-                    )
+                    AddressItem(cafe.address, cafe.uuid)
                 }
             )
             addressItemList.add(

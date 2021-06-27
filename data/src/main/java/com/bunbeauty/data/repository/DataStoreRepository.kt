@@ -19,7 +19,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     DataStoreRepo {
 
     private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = TOKEN_DATA_STORE)
-    private val Context.cafeIdDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_ID_DATA_STORE)
+    private val Context.cafeUuidDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_UUID_DATA_STORE)
     private val Context.deliveryDataStore: DataStore<Preferences> by preferencesDataStore(name = DELIVERY_DATA_STORE)
 
     override val token: Flow<String> = context.tokenDataStore.data.map {
@@ -32,13 +32,13 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
-    override val cafeId: Flow<String> = context.cafeIdDataStore.data.map {
-        it[CAFE_ID_KEY] ?: ""
+    override val cafeUuid: Flow<String> = context.cafeUuidDataStore.data.map {
+        it[CAFE_UUID_KEY] ?: ""
     }
 
-    override suspend fun saveCafeId(cafeId: String) {
-        context.cafeIdDataStore.edit {
-            it[CAFE_ID_KEY] = cafeId
+    override suspend fun saveCafeUuid(cafeUuid: String) {
+        context.cafeUuidDataStore.edit {
+            it[CAFE_UUID_KEY] = cafeUuid
         }
     }
 
@@ -60,7 +60,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         context.tokenDataStore.edit {
             it.clear()
         }
-        context.cafeIdDataStore.edit {
+        context.cafeUuidDataStore.edit {
             it.clear()
         }
     }
@@ -69,16 +69,16 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
 
         // NAMES
         private const val TOKEN_DATA_STORE = "token dataStore"
-        private const val CAFE_ID_DATA_STORE = "cafe id dataStore"
+        private const val CAFE_UUID_DATA_STORE = "cafe uuid dataStore"
         private const val DELIVERY_DATA_STORE = "delivery dataStore"
         private const val TOKEN = "token"
-        private const val CAFE_ID = "cafe id"
+        private const val CAFE_UUID = "cafe uuid"
         private const val DELIVERY_COST = "delivery cost"
         private const val DELIVERY_FOR_FREE = "delivery for free"
 
         // KEYS
         private val TOKEN_KEY = stringPreferencesKey(TOKEN)
-        private val CAFE_ID_KEY = stringPreferencesKey(CAFE_ID)
+        private val CAFE_UUID_KEY = stringPreferencesKey(CAFE_UUID)
         private val DELIVERY_COST_KEY = intPreferencesKey(DELIVERY_COST)
         private val DELIVERY_FOR_FREE_KEY = intPreferencesKey(DELIVERY_FOR_FREE)
     }

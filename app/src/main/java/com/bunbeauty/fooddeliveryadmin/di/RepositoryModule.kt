@@ -19,10 +19,6 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindAddressRepo(addressRepository: AddressRepository): AddressRepo
-
-    @Singleton
-    @Binds
     abstract fun bindCafeRepo(cafeRepository: CafeRepository): CafeRepo
 
     @Singleton

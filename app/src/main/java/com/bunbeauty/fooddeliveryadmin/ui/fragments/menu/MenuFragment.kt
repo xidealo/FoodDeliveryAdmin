@@ -3,16 +3,22 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.bunbeauty.domain.model.MenuProduct
-import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuBinding
+import androidx.lifecycle.lifecycleScope
+import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
+import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.MenuViewModel
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.MenuProductsAdapter
+import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MenuFragment : BaseFragment<FragmentEditMenuBinding>() {
+class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
     override val viewModel: MenuViewModel by viewModels()
 
@@ -21,26 +27,26 @@ class MenuFragment : BaseFragment<FragmentEditMenuBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /* menuProductsAdapter.onItemClickListener = {
-             goToEditMenuProduct(it)
-         }
-         viewDataBinding.fragmentEditMenuRvResult.adapter = menuProductsAdapter
-         viewModel.getProducts()
 
-         viewModel.productListSharedFlow.onEach {
-             menuProductsAdapter.setItemList(it)
-         }.launchWhenStarted(lifecycleScope)*/
-
-        viewDataBinding.fragmentEditMenuFabAddNewProduct.setOnClickListener {
-            goToCreateMenuProduct()
+        val itemAdapter = ItemAdapter<MenuProductItem>()
+        val fastAdapter = FastAdapter.with(itemAdapter)
+        viewDataBinding.fragmentMenuRvList.adapter = fastAdapter
+        fastAdapter.onClickListener = { _, _, menuProductItem, _ ->
+            viewModel.goToEditMenuProduct(menuProductItem.menuProduct)
+            false
         }
-    }
+        viewModel.productListState.onEach { productListState ->
+            when (productListState) {
+                is State.Loading -> Unit
+                is State.Success -> {
+                    itemAdapter.set(productListState.data)
+                }
+                else -> Unit
+            }
+        }.launchWhenStarted(lifecycleScope)
 
-    private fun goToEditMenuProduct(menuProduct: MenuProduct) {
-        //router.navigate(toEditMenuProductFragment(menuProduct))
-    }
-
-    private fun goToCreateMenuProduct() {
-        //router.navigate(toCreateNewMenuProductFragment(viewModel.productListSharedFlow.value.getNewMenuUuid()))
+        viewDataBinding.fragmentMenuFabCreateProduct.setOnClickListener {
+            viewModel.goToCreateMenuProduct()
+        }
     }
 }

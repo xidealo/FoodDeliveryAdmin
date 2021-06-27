@@ -2,15 +2,12 @@ package com.bunbeauty.fooddeliveryadmin.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router
@@ -41,8 +38,7 @@ class MainActivity : AppCompatActivity() {
         viewDataBinding.lifecycleOwner = this
         viewDataBinding.executePendingBindings()
 
-        viewModel.refreshCafeList()
-        viewModel.refreshProductList()
+        viewModel.subscribeOnCafes()
         viewModel.refreshDelivery()
 
         setupBottomNavigationBar()

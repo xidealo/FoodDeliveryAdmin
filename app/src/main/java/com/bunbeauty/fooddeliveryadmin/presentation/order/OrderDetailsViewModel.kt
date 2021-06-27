@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.presentation.order
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.OrderStatus.CANCELED
-import com.bunbeauty.domain.model.cart_product.CartProductUI
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
@@ -43,43 +42,41 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     val codeTitle: String
-        get() = stringUtil.getOrderCodeString(args.order.orderEntity.code)
+        get() = stringUtil.getOrderCodeString(args.order.code)
 
     val time: String
-        get() = dateTimeUtil.getTimeHHMM(args.order.timestamp)
+        get() = dateTimeUtil.getTimeHHMM(args.order.time)
 
     val pickupMethod: String
-        get() = stringUtil.getReceivingMethodString(args.order.orderEntity.isDelivery)
+        get() = stringUtil.getReceivingMethodString(args.order.delivery)
 
     val deferredTime: String?
-        get() = args.order.orderEntity.deferred
+        get() = args.order.deferred
 
-    val address: String
-        get() = stringUtil.toString(args.order.orderEntity.address)
+    val address: String?
+        get() = stringUtil.getUserAddressString(args.order.address)
 
     val comment: String
-        get() = args.order.orderEntity.comment
+        get() = args.order.comment ?: ""
 
-    var status = stringUtil.getOrderStatusString(args.order.orderEntity.orderStatus)
+    var status = stringUtil.getOrderStatusString(args.order.orderStatus)
 
     val productList: List<CartProductItem>
-        get() = args.order.cartProducts.map { cartProduct ->
+        get() = args.order.cartProductList.map { cartProduct ->
             val oldCost = productUtil.getCartProductOldCost(cartProduct)
             val newCost = productUtil.getCartProductNewCost(cartProduct)
 
             CartProductItem(
-                CartProductUI(
-                    name = productUtil.getPositionName(cartProduct.menuProduct),
-                    photoLink = cartProduct.menuProduct.photoLink,
-                    count = stringUtil.getProductCountString(cartProduct.count),
-                    oldCost = stringUtil.getCostString(oldCost),
-                    newCost = stringUtil.getCostString(newCost)
-                )
+                name = productUtil.getPositionName(cartProduct.menuProduct),
+                photoLink = cartProduct.menuProduct.photoLink,
+                count = stringUtil.getProductCountString(cartProduct.count),
+                oldCost = stringUtil.getCostString(oldCost),
+                newCost = stringUtil.getCostString(newCost)
             )
         }
 
     val isDelivery: Boolean
-        get() = args.order.orderEntity.isDelivery
+        get() = args.order.delivery
 
     val deliveryCost: String
         get() {
@@ -106,7 +103,7 @@ class OrderDetailsViewModel @Inject constructor(
     fun changeStatus(status: String) {
         viewModelScope.launch(IO) {
             val orderStatus = stringUtil.getOrderStatusByString(status)
-            orderRepo.updateStatus(args.order.cafeId, args.order.uuid, orderStatus)
+            orderRepo.updateStatus(args.order.cafeUuid, args.order.uuid, orderStatus)
 
             withContext(Main) {
                 router.navigateUp()
@@ -117,8 +114,8 @@ class OrderDetailsViewModel @Inject constructor(
     fun goToStatusList() {
         router.navigate(
             toStatusListBottomSheet(
-                args.order.orderEntity.isDelivery,
-                !args.order.orderEntity.deferred.isNullOrEmpty()
+                args.order.delivery,
+                !args.order.deferred.isNullOrEmpty()
             )
         )
     }

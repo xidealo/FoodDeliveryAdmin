@@ -109,6 +109,10 @@
     </style>
 
     <!--TEXT-->
+    <!-- Naming: [Size*][Secondary][FontWeight*][Center]Text -->
+    <!-- Size* : Large, Medium, Small -->
+    <!-- FontWeight* : Regular, Bold -->
+    <!-- * - required -->
     <style name="BaseText">
         <item name="android:textColor">@color/mainTextColor</item>
         <item name="android:layout_width">0dp</item>

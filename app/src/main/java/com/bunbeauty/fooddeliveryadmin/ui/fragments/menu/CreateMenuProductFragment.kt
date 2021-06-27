@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.ServerMenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.CreateMenuProductViewModel
@@ -21,7 +21,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         super.onViewCreated(view, savedInstanceState)
         setProductCodesAdapter()
         viewDataBinding.fragmentCreateMenuProductBtnUpdate.setOnClickListener {
-            val menuProduct = MenuProduct()
+            val menuProduct = ServerMenuProduct()
             //menuProduct.uuid = CreateNewMenuProductFragmentArgs.fromBundle(requireArguments()).uuid
             menuProduct.visible = viewDataBinding.fragmentCreateMenuProductRbShow.isChecked
             menuProduct.productCode =

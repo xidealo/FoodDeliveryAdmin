@@ -20,15 +20,6 @@
                 tool:text="16 мая 2021"
                 app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <ImageView-->
-<!--                app:layout_constraintTop_toTopOf="@+id/element_statistic_tv_count"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/element_statistic_tv_count"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/element_statistic_tv_count"-->
-<!--                android:layout_marginEnd="@dimen/very_small_margin"-->
-<!--                android:src="@drawable/ic_count"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content" />-->
-
             <TextView
                 android:id="@+id/element_statistic_tv_count"
                 style="@style/SmallRegularText"
@@ -36,15 +27,6 @@
                 tool:text="Заказов: 15"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-<!--            <ImageView-->
-<!--                app:layout_constraintTop_toTopOf="@+id/element_statistic_tv_proceeds"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/element_statistic_tv_proceeds"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/element_statistic_tv_proceeds"-->
-<!--                android:layout_marginEnd="@dimen/very_small_margin"-->
-<!--                android:src="@drawable/ic_money"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content" />-->
 
             <TextView
                 android:id="@+id/element_statistic_tv_proceeds"

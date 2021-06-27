@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.util.product
 
-import com.bunbeauty.domain.model.cart_product.CartProduct
 import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.cart_product.CartProduct
 import javax.inject.Inject
 
 class ProductUtil @Inject constructor() : IProductUtil {
@@ -40,6 +40,14 @@ class ProductUtil @Inject constructor() : IProductUtil {
 
     override fun getMenuProductNewPrice(menuProduct: MenuProduct): Int {
         return menuProduct.discountCost ?: menuProduct.cost
+    }
+
+    override fun getMenuProductOldPrice(menuProduct: MenuProduct): Int? {
+        return if (menuProduct.discountCost == null) {
+            null
+        } else {
+            menuProduct.cost
+        }
     }
 
     override fun getPositionName(menuProduct: MenuProduct): String {

@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bunbeauty.domain.model.cart_product.CartProduct
 import com.bunbeauty.domain.model.cart_product.CartProductUI
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementCartProductBinding
@@ -17,19 +18,23 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CartProductItem(
-    val cartProductUI: CartProductUI
+    val name: String,
+    val photoLink: String,
+    val count: String,
+    val oldCost: String,
+    val newCost: String,
 ) : AbstractBindingItem<ElementCartProductBinding>(), Parcelable {
 
     @IgnoredOnParcel
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementCartProductBinding, payloads: List<Any>) {
-        binding.elementCartProductIvPhoto.setImage(cartProductUI.photoLink)
-        binding.elementCartProductTvTitle.text = cartProductUI.name
-        binding.elementCartProductTvCount.text = cartProductUI.count
+        binding.elementCartProductIvPhoto.setImage(photoLink)
+        binding.elementCartProductTvTitle.text = name
+        binding.elementCartProductTvCount.text = count
         binding.elementCartProductTvOldCost.strikeOutText()
-        binding.elementCartProductTvOldCost.text = cartProductUI.oldCost
-        binding.elementCartProductTvNewCost.text = cartProductUI.newCost
+        binding.elementCartProductTvOldCost.text = oldCost
+        binding.elementCartProductTvNewCost.text = newCost
     }
 
     override fun createBinding(

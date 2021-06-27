@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.order
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.CafeRepo
@@ -30,10 +29,10 @@ class OrdersViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo
 ) : BaseViewModel() {
 
-    private val _cafeAddressStateFlow: MutableStateFlow<State<String>> =
+    private val _cafeAddressState: MutableStateFlow<State<String>> =
         MutableStateFlow(State.Loading())
-    val cafeAddressStateFlow: StateFlow<State<String>>
-        get() = _cafeAddressStateFlow.asStateFlow()
+    val cafeAddressState: StateFlow<State<String>>
+        get() = _cafeAddressState.asStateFlow()
 
     private val _orderListState: MutableStateFlow<ExtendedState<List<OrderItem>>> =
         MutableStateFlow(ExtendedState.Loading())
@@ -46,23 +45,23 @@ class OrdersViewModel @Inject constructor(
     }
 
     fun subscribeOnAddress() {
-        dataStoreRepo.cafeId.flatMapLatest { cafeId ->
-            cafeRepo.getCafeByIdFlow(cafeId)
+        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
+            cafeRepo.getCafeByUuid(cafeId)
         }.onEach { cafe ->
             if (cafe != null) {
-                _cafeAddressStateFlow.value = stringUtil.toString(cafe.address).toStateSuccess()
+                _cafeAddressState.value = cafe.address.toStateSuccess()
             }
         }.launchIn(viewModelScope)
     }
 
     fun subscribeOnOrders() {
-        dataStoreRepo.cafeId.flatMapLatest { cafeId ->
+        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             orderRepo.getAddedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
             _orderListState.value = toOrderItemList(orderList).toStateAddedSuccess()
         }.launchIn(viewModelScope)
 
-        dataStoreRepo.cafeId.flatMapLatest { cafeId ->
+        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             orderRepo.getUpdatedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
             _orderListState.value = toOrderItemList(orderList).toStateUpdatedSuccess()
@@ -72,11 +71,11 @@ class OrdersViewModel @Inject constructor(
     fun toOrderItemList(orderList: List<Order>): List<OrderItem> {
         return orderList.map { order ->
             OrderItem(
-                status = order.orderEntity.orderStatus,
-                statusString = stringUtil.getOrderStatusString(order.orderEntity.orderStatus),
-                code = order.orderEntity.code,
-                deferredTime = stringUtil.getDeferredTimeString(order.orderEntity.deferred),
-                time = dateTimeUtil.getDateTimeDDMMHHMM(order.timestamp),
+                status = order.orderStatus,
+                statusString = stringUtil.getOrderStatusString(order.orderStatus),
+                code = order.code,
+                deferredTime = stringUtil.getDeferredTimeString(order.deferred),
+                time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
                 order = order
             )
         }

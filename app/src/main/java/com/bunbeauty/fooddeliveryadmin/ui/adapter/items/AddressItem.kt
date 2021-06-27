@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AddressItem(
     val address: String,
-    val cafeId: String?
+    val cafeUuid: String?
 ) : AbstractBindingItem<ElementTextBinding>(), Parcelable {
 
     @IgnoredOnParcel

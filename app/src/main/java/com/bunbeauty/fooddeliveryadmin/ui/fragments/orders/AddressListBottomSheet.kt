@@ -27,7 +27,7 @@ class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBindi
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.bottomSheetAddressListRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, addressItem, _ ->
-            viewModel.saveCafeId(addressItem.cafeId)
+            viewModel.saveCafeId(addressItem.cafeUuid)
             false
         }
         viewModel.addressListState.onEach { state ->

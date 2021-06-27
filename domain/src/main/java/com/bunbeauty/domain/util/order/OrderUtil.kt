@@ -11,9 +11,9 @@ class OrderUtil @Inject constructor(
 ) : IOrderUtil {
 
     override fun getDeliveryCost(order: Order, delivery: Delivery): Int {
-        val orderCost = productUtil.getNewTotalCost(order.cartProducts)
+        val orderCost = productUtil.getNewTotalCost(order.cartProductList)
 
-        return if (order.orderEntity.isDelivery && orderCost < delivery.forFree) {
+        return if (order.delivery && orderCost < delivery.forFree) {
             delivery.cost
         } else {
             0
@@ -21,14 +21,14 @@ class OrderUtil @Inject constructor(
     }
 
     override fun getOldOrderCost(order: Order, delivery: Delivery): Int? {
-        val orderCost = productUtil.getOldTotalCost(order.cartProducts) ?: return null
+        val orderCost = productUtil.getOldTotalCost(order.cartProductList) ?: return null
         val deliveryCost = getDeliveryCost(order, delivery)
 
         return orderCost + deliveryCost
     }
 
     override fun getNewOrderCost(order: Order, delivery: Delivery): Int {
-        val orderCost = productUtil.getNewTotalCost(order.cartProducts)
+        val orderCost = productUtil.getNewTotalCost(order.cartProductList)
         val deliveryCost = getDeliveryCost(order, delivery)
 
         return orderCost + deliveryCost
@@ -48,7 +48,7 @@ class OrderUtil @Inject constructor(
 
     override fun getProductStatisticList(orderList: List<Order>): List<ProductStatistic> {
         val cartProductList = orderList.flatMap { order ->
-            order.cartProducts
+            order.cartProductList
         }
         val productStatisticList = ArrayList<ProductStatistic>()
         cartProductList.forEach { cartProduct ->
@@ -56,23 +56,19 @@ class OrderUtil @Inject constructor(
             val foundProductStatistic = productStatisticList.find { productStatistic ->
                 productStatistic.name == positionName
             }
-            if (foundProductStatistic == null) {
-                productStatisticList.add(
-                    ProductStatistic(
-                        name = positionName,
-                        photoLink = cartProduct.menuProduct.photoLink,
-                        orderCount = 1,
-                        count = cartProduct.count,
-                        cost = productUtil.getCartProductNewCost(cartProduct),
-                    )
+            foundProductStatistic?.apply {
+                orderCount++
+                count += cartProduct.count
+                cost += productUtil.getCartProductNewCost(cartProduct)
+            } ?: productStatisticList.add(
+                ProductStatistic(
+                    name = positionName,
+                    photoLink = cartProduct.menuProduct.photoLink,
+                    orderCount = 1,
+                    count = cartProduct.count,
+                    cost = productUtil.getCartProductNewCost(cartProduct),
                 )
-            } else {
-                foundProductStatistic.apply {
-                    orderCount++
-                    count += cartProduct.count
-                    cost += productUtil.getCartProductNewCost(cartProduct)
-                }
-            }
+            )
         }
 
         return productStatisticList.sortedByDescending { productStatistic ->

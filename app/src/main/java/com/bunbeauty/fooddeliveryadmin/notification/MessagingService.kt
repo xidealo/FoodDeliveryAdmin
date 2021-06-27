@@ -9,7 +9,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.common.Constants.CHANNEL_ID
-import com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -37,7 +36,7 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
         Log.d("NotificationTag", "onMessageReceived")
 
         launch(IO) {
-            val cafeId = dataStoreRepo.cafeId.first()
+            val cafeId = dataStoreRepo.cafeUuid.first()
             if (remoteMessage.data[APP_ID] == BuildConfig.APP_ID && remoteMessage.data[CAFE_ID] == cafeId) {
                 withContext(Main) {
                     showNotification()

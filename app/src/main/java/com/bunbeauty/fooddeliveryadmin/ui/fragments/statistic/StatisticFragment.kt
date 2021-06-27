@@ -15,7 +15,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
-import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticDetailsViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
@@ -56,7 +55,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                 viewDataBinding.fragmentStatisticMcvAddress.cardText = addressItem.address
                 viewModel.selectedAddressItem = addressItem
                 viewModel.getStatistic(
-                    viewModel.selectedAddressItem.cafeId,
+                    viewModel.selectedAddressItem.cafeUuid,
                     viewModel.selectedPeriodItem.period
                 )
             }
@@ -66,7 +65,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                 viewDataBinding.fragmentStatisticMcvPeriod.cardText = periodItem.period
                 viewModel.selectedPeriodItem = periodItem
                 viewModel.getStatistic(
-                    viewModel.selectedAddressItem.cafeId,
+                    viewModel.selectedAddressItem.cafeUuid,
                     viewModel.selectedPeriodItem.period
                 )
             }
@@ -93,7 +92,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         }.launchWhenStarted(lifecycleScope)
 
         viewModel.getStatistic(
-            viewModel.selectedAddressItem.cafeId,
+            viewModel.selectedAddressItem.cafeUuid,
             viewModel.selectedPeriodItem.period
         )
     }

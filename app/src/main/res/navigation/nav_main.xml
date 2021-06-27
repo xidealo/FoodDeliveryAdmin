@@ -71,15 +71,15 @@
         android:label="AddressListBottomSheet"
         tools:layout="@layout/bottom_sheet_address_list" />
     <fragment
-        android:id="@+id/editMenuFragment"
+        android:id="@+id/menuFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.MenuFragment"
         android:label="EditMenuFragment"
-        tools:layout="@layout/fragment_edit_menu">
+        tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/to_editMenuProductFragment"
             app:destination="@id/editMenuProductFragment" />
         <action
-            android:id="@+id/to_createNewMenuProductFragment"
+            android:id="@+id/to_createMenuProductFragment"
             app:destination="@id/createNewMenuProductFragment" />
     </fragment>
     <fragment
@@ -96,9 +96,6 @@
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.CreateMenuProductFragment"
         android:label="CreateNewMenuProductFragment"
         tools:layout="@layout/fragment_create_menu_product">
-        <argument
-            android:name="uuid"
-            app:argType="string" />
     </fragment>
     <dialog
         android:id="@+id/statisticAddressListBottomSheet"
