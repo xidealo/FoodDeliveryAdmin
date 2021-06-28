@@ -25,14 +25,14 @@ interface ApiRepo {
 
     // MENU PRODUCT
 
-    fun getMenuProductList(): Flow<List<ServerMenuProduct>>
+    val menuProductList: Flow<List<ServerMenuProduct>>
     fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
     fun saveMenuProduct(menuProduct: ServerMenuProduct)
 
     // ORDER
 
-    fun getAddedOrderListByCafeId(cafeId: String): Flow<List<ServerOrder>>
-    fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<ServerOrder>>
+    fun getAddedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>>
+    fun getUpdatedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>>
     fun getAllOrderList(): Flow<List<ServerOrder>>
     fun getOrderListByCafeId(cafeId: String): Flow<List<ServerOrder>>
     fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus)

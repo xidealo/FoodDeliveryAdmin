@@ -10,7 +10,7 @@
         android:title="@string/title_bottom_navigation_menu_statistic" />
 
     <item
-        android:id="@+id/editMenuFragment"
+        android:id="@+id/menuFragment"
         android:icon="@drawable/ic_menu"
         android:title="@string/title_bottom_navigation_menu_menu" />
 </menu>

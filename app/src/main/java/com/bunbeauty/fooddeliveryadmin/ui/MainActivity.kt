@@ -49,14 +49,14 @@ class MainActivity : AppCompatActivity() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.activity_main_fcv_container) as NavHostFragment).findNavController()
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.ordersFragment, R.id.statisticFragment, R.id.editMenuFragment)
+            setOf(R.id.ordersFragment, R.id.statisticFragment, R.id.menuFragment)
         )
 
         viewDataBinding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
-                R.id.ordersFragment, R.id.statisticFragment, R.id.editMenuFragment -> {
+                R.id.ordersFragment, R.id.statisticFragment, R.id.menuFragment -> {
                     toggleBottomNavigationBarVisibility(true)
 
                     val countDestination = navController.backStack.count { navBackStackEntry ->

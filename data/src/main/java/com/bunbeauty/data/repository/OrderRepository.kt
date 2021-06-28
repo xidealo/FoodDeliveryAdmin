@@ -34,6 +34,8 @@ class OrderRepository @Inject constructor(
                     serverOrderMapper.from(serverOrder)
                 }.filter { order ->
                     order.orderStatus != CANCELED
+                }.sortedByDescending { order ->
+                    order.time
                 }
             }.flowOn(Default)
     }
@@ -46,6 +48,8 @@ class OrderRepository @Inject constructor(
                     serverOrderMapper.from(serverOrder)
                 }.filter { order ->
                     order.orderStatus != CANCELED
+                }.sortedByDescending { order ->
+                    order.time
                 }
             }.flowOn(Default)
     }

@@ -17,9 +17,12 @@ class MenuProductRepository @Inject constructor(
 ) : MenuProductRepo {
 
     override val menuProductList: Flow<List<MenuProduct>>
-        get() = apiRepo.getMenuProductList()
+        get() = apiRepo.menuProductList
             .flowOn(IO)
             .map { serverMenuProductList ->
                 serverMenuProductList.map(serverMenuProductMapper::from)
+                    .sortedByDescending { menuProduct ->
+                        menuProduct.visible
+                    }
             }.flowOn(Default)
 }

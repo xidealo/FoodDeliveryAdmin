@@ -15,6 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,7 +48,7 @@ class MenuViewModel @Inject constructor(
 
     private fun subscribeOnProducts() {
         viewModelScope.launch {
-            menuProductRepo.menuProductList.onEach { menuProductList ->
+            menuProductRepo.menuProductList.collect { menuProductList ->
                 _productListState.value = menuProductList.map(::toMenuProductItem).toStateSuccess()
             }
         }

@@ -84,6 +84,9 @@
     <string name="msg_product_statistic_count">Количество</string>
     <string name="msg_product_statistic_cost">Стоимость</string>
 
+    <!-- MENU -->
+    <string name="action_menu_create">Создать</string>
+
     <!-- EDIT MENU PRODUCT -->
     <string name="hint_edit_menu_product_show">Показать</string>
     <string name="hint_edit_menu_product_hide">Убрать</string>

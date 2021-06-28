@@ -21,10 +21,14 @@ import com.bunbeauty.domain.repo.ApiRepo
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.channels.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
@@ -37,38 +41,26 @@ class ApiRepository @Inject constructor(
     override val coroutineContext: CoroutineContext = Job() + IO
 
     private val serverOrderList = LinkedList<ServerOrder>()
-    private val menuProductList = LinkedList<ServerMenuProduct>()
 
     @ExperimentalCoroutinesApi
     override fun login(login: String, passwordHash: String): Flow<Boolean> = callbackFlow {
-        val companyReference = firebaseDatabase.getReference(COMPANY).child(login)
+        val passwordReference = firebaseDatabase.getReference(COMPANY)
+            .child(login)
+            .child(PASSWORD)
         val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(companySnapshot: DataSnapshot) {
-                launch(IO) {
-                    if (companySnapshot.childrenCount == 0L) {
-                        trySend(false)
-                        return@launch
-                    }
-
-                    val companyPassword = companySnapshot.child(PASSWORD).value as String
-                    if (passwordHash == companyPassword) {
-                        trySend(true)
-                    } else {
-                        trySend(false)
-                    }
-                }
+            override fun onDataChange(passwordSnapshot: DataSnapshot) {
+                val password = passwordSnapshot.value
+                trySend(passwordHash == password)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                launch(IO) {
-                    trySend(false)
-                }
+                trySend(false)
             }
         }
-        companyReference.addListenerForSingleValueEvent(valueEventListener)
+        passwordReference.addListenerForSingleValueEvent(valueEventListener)
 
         awaitClose {
-            companyReference.removeEventListener(valueEventListener)
+            passwordReference.removeEventListener(valueEventListener)
         }
     }
 
@@ -141,26 +133,27 @@ class ApiRepository @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    override fun getMenuProductList(): Flow<List<ServerMenuProduct>> = callbackFlow {
-        val menuProductReference = firebaseDatabase
-            .getReference(COMPANY)
-            .child(APP_ID)
-            .child(MENU_PRODUCTS)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val menuProductList = snapshot.children.map(::getMenuProductValue)
-                trySend(menuProductList)
-            }
+    override val menuProductList: Flow<List<ServerMenuProduct>>
+        get() = callbackFlow {
+            val menuProductReference = firebaseDatabase
+                .getReference(COMPANY)
+                .child(APP_ID)
+                .child(MENU_PRODUCTS)
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val menuProductList = snapshot.children.map(::getMenuProductValue)
+                    trySend(menuProductList)
+                }
 
-            override fun onCancelled(error: DatabaseError) {
+                override fun onCancelled(error: DatabaseError) {
+                }
+            }
+            menuProductReference.addValueEventListener(valueEventListener)
+
+            awaitClose {
+                menuProductReference.removeEventListener(valueEventListener)
             }
         }
-        menuProductReference.addValueEventListener(valueEventListener)
-
-        awaitClose {
-            menuProductReference.removeEventListener(valueEventListener)
-        }
-    }
 
     override fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
         val menuProductRef = firebaseDatabase
@@ -176,37 +169,38 @@ class ApiRepository @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    override fun getAddedOrderListByCafeId(cafeUid: String): Flow<List<ServerOrder>> = callbackFlow {
-        serverOrderList.clear()
-        trySend(emptyList())
+    override fun getAddedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>> =
+        callbackFlow {
+            serverOrderList.clear()
+            trySend(emptyList())
 
-        val ordersReference = firebaseDatabase
-            .getReference(ORDERS)
-            .child(APP_ID)
-            .child(cafeUid)
-            .orderByChild(TIMESTAMP)
-            .startAt(DateTime.now().minusDays(2).millis.toDouble())
-        val childEventListener = object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                serverOrderList.add(getOrderValue(snapshot, cafeUid))
-                trySend(serverOrderList)
+            val ordersReference = firebaseDatabase
+                .getReference(ORDERS)
+                .child(APP_ID)
+                .child(cafeUuid)
+                .orderByChild(TIMESTAMP)
+                .startAt(DateTime.now().minusDays(2).millis.toDouble())
+            val childEventListener = object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    serverOrderList.add(getOrderValue(snapshot, cafeUuid))
+                    trySend(ArrayList(serverOrderList))
+                }
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onCancelled(error: DatabaseError) {}
             }
+            ordersReference.addChildEventListener(childEventListener)
+            Log.d("test1", "add addedListener")
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-            override fun onCancelled(error: DatabaseError) {}
-        }
-        ordersReference.addChildEventListener(childEventListener)
-        Log.d("test1", "add addedListener")
-
-        awaitClose {
-            Log.d("test1", "remove addedListener")
-            ordersReference.removeEventListener(childEventListener)
-        }
+            awaitClose {
+                Log.d("test1", "remove addedListener")
+                ordersReference.removeEventListener(childEventListener)
+            }
     }
 
     @ExperimentalCoroutinesApi
@@ -228,7 +222,7 @@ class ApiRepository @Inject constructor(
                 val index = serverOrderList.indexOfFirst { it.uuid == serverOrder.uuid }
                 if (index != -1) {
                     serverOrderList[index] = serverOrder
-                    trySend(serverOrderList)
+                    trySend(ArrayList(serverOrderList))
                 }
             }
 
@@ -325,8 +319,6 @@ class ApiRepository @Inject constructor(
     }
 
     fun getCafeValue(cafeSnapshot: DataSnapshot): ServerCafe {
-        return cafeSnapshot.getValue(ServerCafe::class.java)?.apply {
-            uuid = cafeSnapshot.key.toString()
-        } ?: ServerCafe()
+        return cafeSnapshot.getValue(ServerCafe::class.java) ?: ServerCafe()
     }
 }
