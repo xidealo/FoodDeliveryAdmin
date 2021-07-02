@@ -3,20 +3,19 @@ package com.bunbeauty.fooddeliveryadmin.presentation.menu
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.MENU_PRODUCT_ARGS_KEY
-import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.MenuProductItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

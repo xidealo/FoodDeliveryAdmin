@@ -1,8 +1,9 @@
-package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
+package com.bunbeauty.fooddeliveryadmin.ui.items
 
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bunbeauty.domain.model.ListModel
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementTextBinding
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
@@ -10,13 +11,15 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PeriodItem(val period: String): AbstractBindingItem<ElementTextBinding>(), Parcelable {
+data class ListItem(
+    val listModel: ListModel
+) : AbstractBindingItem<ElementTextBinding>(), Parcelable {
 
     @IgnoredOnParcel
-    override val type = R.id.element_text_tv_title
+    override val type = R.id.element_text_mvc_main
 
     override fun bindView(binding: ElementTextBinding, payloads: List<Any>) {
-        binding.elementTextTvTitle.text = period
+        binding.elementTextTvTitle.text = listModel.title
     }
 
     override fun createBinding(

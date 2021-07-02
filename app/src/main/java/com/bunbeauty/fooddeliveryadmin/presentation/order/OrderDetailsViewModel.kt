@@ -10,7 +10,7 @@ import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.extensions.navArgs
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.CartProductItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.CartProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragmentArgs
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrderDetailsFragmentDirections.toStatusListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil

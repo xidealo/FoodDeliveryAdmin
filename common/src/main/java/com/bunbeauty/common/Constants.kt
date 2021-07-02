@@ -13,6 +13,9 @@ object Constants {
     const val STATUS_REQUEST_KEY = "status request key"
     const val SELECTED_STATUS_KEY = "selected status key"
 
+    const val PRODUCT_CODE_REQUEST_KEY = "product code request key"
+    const val SELECTED_PRODUCT_CODE_KEY = "selected product code key"
+
     // NOTIFICATION
 
     const val NOTIFICATION_TOPIC = "notification"
@@ -34,4 +37,9 @@ object Constants {
     // ARGS_KEY
 
     const val MENU_PRODUCT_ARGS_KEY = "menuProduct"
+
+    const val TITLE_ARGS_KEY = "title"
+    const val LIST_ARGS_KEY = "list"
+    const val SELECTED_KEY_ARGS_KEY = "selectedKey"
+    const val REQUEST_KEY_ARGS_KEY = "requestKey"
 }

@@ -56,7 +56,8 @@
                 android:layout_width="0dp"
                 android:icon="@drawable/ic_right_arrow"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/large_margin"
+                android:text="@string/msg_create_menu_product_select_category"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_create_menu_product_til_name" />

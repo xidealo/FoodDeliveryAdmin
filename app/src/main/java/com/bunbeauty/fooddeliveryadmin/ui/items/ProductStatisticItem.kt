@@ -1,11 +1,10 @@
-package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
+package com.bunbeauty.fooddeliveryadmin.ui.items
 
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementProductStatisticBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.setImage
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize

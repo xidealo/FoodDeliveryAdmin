@@ -1,8 +1,9 @@
 package com.bunbeauty.data.repository
 
+import android.util.Log
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.enums.OrderStatus.CANCELED
+import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.server.ServerOrder
 import com.bunbeauty.domain.model.statistic.Statistic
@@ -111,7 +112,7 @@ class OrderRepository @Inject constructor(
         return orderListFlow.flowOn(IO)
             .map { orderList ->
                 val orderMap = orderList.filter { order ->
-                    order.orderStatus != CANCELED
+                    order.orderStatus == DELIVERED || order.orderStatus == DONE
                 }.groupBy { order ->
                     timestampConverter.invoke(order.time)
                 }

@@ -5,7 +5,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.fooddeliveryadmin.extensions.navArgs
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.ProductStatisticItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.ProductStatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsFragmentArgs
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel

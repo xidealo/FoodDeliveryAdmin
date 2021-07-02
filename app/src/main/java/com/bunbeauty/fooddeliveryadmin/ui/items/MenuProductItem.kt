@@ -1,15 +1,13 @@
-package com.bunbeauty.fooddeliveryadmin.ui.adapter.items
+package com.bunbeauty.fooddeliveryadmin.ui.items
 
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.setImage
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
-import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -21,13 +19,13 @@ data class MenuProductItem(
     val newCost: String,
     val oldCost: String,
     val menuProduct: MenuProduct
-) : AbstractBindingItem<ElementMenuProductBinding>(), Parcelable {
+) : ImageItem<ElementMenuProductBinding>(), Parcelable {
 
     @IgnoredOnParcel
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementMenuProductBinding, payloads: List<Any>) {
-        binding.elementMenuProductIvPhoto.setImage(photoLink)
+        setImage(binding.elementMenuProductIvPhoto, photoLink)
         binding.elementMenuProductTvTitle.text = name
         binding.elementMenuProductIvVisible.isVisible = visible
         binding.elementMenuProductTvOldCost.strikeOutText()

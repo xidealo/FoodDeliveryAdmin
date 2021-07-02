@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.util.product
 
-import com.bunbeauty.domain.model.MenuProduct
+import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.model.cart_product.CartProduct
 
 interface IProductUtil {

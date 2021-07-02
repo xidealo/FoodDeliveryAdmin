@@ -12,8 +12,8 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.fooddeliveryadmin.presentation.order.OrderDetailsViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.CartProductItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatusItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.CartProductItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.StatusItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter

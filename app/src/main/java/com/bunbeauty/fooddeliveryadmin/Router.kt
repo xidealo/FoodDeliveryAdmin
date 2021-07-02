@@ -50,7 +50,7 @@ class Router @Inject constructor() {
 
         try {
             hideKeyboard(activity?.get())
-            activity?.get()?.findNavController(navHostId)?.navigate(navDirectionsId)
+            activity?.get()?.findNavController(navHostId)?.navigate(navDirectionsId, args)
         } catch (exception: Exception) {
             exception.printStackTrace()
         }

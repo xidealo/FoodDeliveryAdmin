@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.fooddeliveryadmin.extensions.navArgs
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatusItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.StatusItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.StatusListBottomSheetArgs
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel

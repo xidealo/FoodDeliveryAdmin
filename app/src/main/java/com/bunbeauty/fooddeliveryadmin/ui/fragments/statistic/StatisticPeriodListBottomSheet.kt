@@ -10,7 +10,7 @@ import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.domain.enums.Period
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetStatisticPeriodListBinding
 import com.bunbeauty.fooddeliveryadmin.presentation.EmptyViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.PeriodItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter

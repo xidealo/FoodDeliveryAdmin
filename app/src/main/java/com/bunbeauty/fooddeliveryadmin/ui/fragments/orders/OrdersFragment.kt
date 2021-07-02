@@ -11,7 +11,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.presentation.order.OrdersViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.OrderItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter

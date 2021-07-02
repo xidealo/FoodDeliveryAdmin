@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.MenuFragment"
-        android:label="EditMenuFragment"
+        android:label="MenuFragment"
         tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/to_editMenuProductFragment"
@@ -89,13 +89,16 @@
         tools:layout="@layout/fragment_edit_menu_product">
         <argument
             android:name="menuProduct"
-            app:argType="com.bunbeauty.domain.model.MenuProduct" />
+            app:argType="com.bunbeauty.domain.model.menu_product.MenuProduct" />
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.CreateMenuProductFragment"
         android:label="CreateNewMenuProductFragment"
         tools:layout="@layout/fragment_create_menu_product">
+        <action
+            android:id="@+id/to_listBottomSheet"
+            app:destination="@id/listBottomSheet" />
     </fragment>
     <dialog
         android:id="@+id/statisticAddressListBottomSheet"
@@ -118,5 +121,25 @@
         <argument
             android:name="isDeferred"
             app:argType="boolean" />
+    </dialog>
+    <dialog
+        android:id="@+id/listBottomSheet"
+        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.ListBottomSheet"
+        tools:layout="@layout/bottom_sheet_list"
+        android:label="ListBottomSheet" >
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="selectedKey"
+            app:argType="string" />
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+        <argument
+            android:name="list"
+            app:argType="com.bunbeauty.domain.model.ListModel[]" />
     </dialog>
 </navigation>

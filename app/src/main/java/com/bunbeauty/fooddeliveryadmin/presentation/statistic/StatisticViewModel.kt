@@ -11,9 +11,9 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.PeriodItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.StatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.*
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel

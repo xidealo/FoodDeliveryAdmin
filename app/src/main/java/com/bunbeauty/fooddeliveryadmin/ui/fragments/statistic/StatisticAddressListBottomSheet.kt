@@ -12,7 +12,7 @@ import com.bunbeauty.common.Constants.SELECTED_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticAddressListViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -33,7 +33,7 @@ class StatisticAddressListBottomSheet: BaseBottomSheetDialog<BottomSheetAddressL
         fastAdapter.onClickListener = { _, _, addressItem, _ ->
             val bundle = bundleOf(SELECTED_ADDRESS_KEY to addressItem)
             setFragmentResult(ADDRESS_REQUEST_KEY, bundle)
-            dismiss()
+            viewModel.goBack()
             false
         }
         viewModel.addressListState.onEach { state ->

@@ -16,9 +16,9 @@ import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.AddressItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.PeriodItem
-import com.bunbeauty.fooddeliveryadmin.ui.adapter.items.StatisticItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.AddressItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.PeriodItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.StatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
