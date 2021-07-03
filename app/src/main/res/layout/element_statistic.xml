@@ -16,26 +16,28 @@
                 style="@style/LargeRegularText"
                 android:layout_margin="@dimen/small_margin"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/element_statistic_tv_proceeds"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                tool:text="16 мая 2021"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tool:text="16 мая 2021" />
 
             <TextView
                 android:id="@+id/element_statistic_tv_count"
                 style="@style/SmallRegularText"
                 android:layout_margin="@dimen/small_margin"
-                tool:text="Заказов: 15"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tool:text="Заказов: 15" />
 
             <TextView
                 android:id="@+id/element_statistic_tv_proceeds"
                 style="@style/LargeBoldCenterText"
                 android:layout_margin="@dimen/small_margin"
-                tool:text="15000 ₽"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/element_statistic_tv_count" />
+                app:layout_constraintTop_toBottomOf="@+id/element_statistic_tv_count"
+                tool:text="15000 ₽" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -24,7 +24,6 @@ data class CartProductItem(
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementCartProductBinding, payloads: List<Any>) {
-        binding.elementCartProductIvPhoto.setImage(photoLink)
         binding.elementCartProductTvTitle.text = name
         binding.elementCartProductTvCount.text = count
         binding.elementCartProductTvOldCost.strikeOutText()

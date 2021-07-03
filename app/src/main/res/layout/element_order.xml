@@ -22,12 +22,13 @@
             android:id="@+id/element_order_chip_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
             android:layout_margin="@dimen/small_margin"
+            android:layout_marginEnd="203dp"
+            android:clickable="false"
             app:chipMinTouchTargetSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/element_order_tv_code"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tool:text="Готов" />
 
         <TextView
@@ -42,7 +43,6 @@
             android:id="@+id/element_order_tv_deferred"
             style="@style/SmallRegularText"
             android:layout_margin="@dimen/small_margin"
-            android:layout_marginStart="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/element_order_tv_time"

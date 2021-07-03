@@ -14,6 +14,7 @@
             android:id="@+id/element_product_statistic_tv_name"
             style="@style/MediumRegularText"
             android:layout_margin="@dimen/small_margin"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/element_product_statistic_gl_center"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,20 +41,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tool:text="10" />
 
-        <!--<TextView
-            android:id="@+id/fragment_statistic_details_tv_order_count"
-            style="@style/SmallSecondaryCenterText"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginTop="@dimen/very_small_margin"
-            android:layout_marginEnd="@dimen/very_small_margin"
-            android:layout_marginBottom="@dimen/small_margin"
-            android:text="@string/msg_product_statistic_order_count"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_statistic_details_tv_total_count"
-            app:layout_constraintStart_toStartOf="@+id/fragment_statistic_details_gl_center"
-            app:layout_constraintTop_toBottomOf="@+id/element_product_statistic_tv_order_count_value"
-            app:layout_constraintVertical_bias="0" />-->
-
         <TextView
             android:id="@+id/element_product_statistic_tv_count_value"
             style="@style/MediumBoldCenterText"
@@ -67,20 +54,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tool:text="16" />
 
-        <!--<TextView
-            android:id="@+id/fragment_statistic_details_tv_total_count"
-            style="@style/SmallSecondaryCenterText"
-            android:layout_marginStart="@dimen/very_small_margin"
-            android:layout_marginTop="@dimen/very_small_margin"
-            android:layout_marginEnd="@dimen/very_small_margin"
-            android:layout_marginBottom="@dimen/small_margin"
-            android:text="@string/msg_product_statistic_count"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_statistic_details_tv_cost"
-            app:layout_constraintStart_toEndOf="@+id/fragment_statistic_details_tv_order_count"
-            app:layout_constraintTop_toBottomOf="@+id/element_product_statistic_tv_order_count_value"
-            app:layout_constraintVertical_bias="0" />-->
-
         <TextView
             android:id="@+id/element_product_statistic_tv_cost_value"
             style="@style/MediumBoldCenterText"
@@ -93,21 +66,5 @@
             app:layout_constraintStart_toEndOf="@+id/element_product_statistic_tv_count_value"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="4500 ₽" />
-
-       <!-- <TextView
-            android:id="@+id/fragment_statistic_details_tv_cost"
-            style="@style/SmallSecondaryCenterText"
-            android:layout_marginStart="@dimen/very_small_margin"
-            android:layout_marginTop="@dimen/very_small_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:layout_marginBottom="@dimen/small_margin"
-            android:text="@string/msg_product_statistic_cost"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_statistic_details_tv_total_count"
-            app:layout_constraintTop_toBottomOf="@+id/element_product_statistic_tv_cost_value"
-            app:layout_constraintVertical_bias="0" />-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

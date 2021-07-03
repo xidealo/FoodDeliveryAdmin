@@ -99,8 +99,9 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.navigationVersion"
 
     //Firebase
-    implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
-    implementation "com.google.firebase:firebase-messaging:22.0.0"
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseVersion")
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
 
     //Tests

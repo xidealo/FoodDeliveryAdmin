@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.items
 
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bunbeauty.domain.enums.OrderStatus
@@ -23,7 +24,7 @@ data class OrderItem(
 ) : AbstractBindingItem<ElementOrderBinding>(), Parcelable {
 
     @IgnoredOnParcel
-    override val type = R.id.element_text_tv_title
+    override val type = R.id.element_order_mvc_main
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {
         binding.elementOrderTvCode.text = code

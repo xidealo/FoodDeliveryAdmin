@@ -4,8 +4,8 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/fragment_order_details_nsv_main"
@@ -55,9 +55,8 @@
                     android:id="@+id/fragment_order_details_tv_code"
                     style="@style/LargeBoldCenterText"
                     app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_btn_back"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_right"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
                     tool:text="Заказ M-30" />
 
                 <TextView
