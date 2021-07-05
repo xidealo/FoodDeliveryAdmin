@@ -14,7 +14,7 @@
             android:layout_height="0dp"
             android:backgroundTint="@color/mainBackground"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_edit_menu_product_v_blur"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_edit_menu_product_cl_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -170,12 +170,12 @@
         <View
             android:id="@+id/fragment_edit_menu_product_v_blur"
             style="@style/BlurView"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_edit_menu_product_ll_bottom"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_edit_menu_product_cl_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fragment_edit_menu_product_ll_bottom"
+            android:id="@+id/fragment_edit_menu_product_cl_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

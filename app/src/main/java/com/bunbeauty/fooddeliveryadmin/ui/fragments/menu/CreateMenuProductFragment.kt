@@ -18,7 +18,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.CreateMenuProductViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
@@ -39,51 +38,53 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewDataBinding.fragmentCreateMenuProductBtnBack.setOnClickListener {
-            viewModel.goBack()
-        }
-        viewModel.visibilityIcon.onEach { icon ->
-            viewDataBinding.fragmentCreateMenuProductBtnVisibility.icon = icon
-        }.startedLaunch(viewLifecycleOwner)
-        viewDataBinding.fragmentCreateMenuProductBtnVisibility.setOnClickListener {
-            viewModel.switchVisibility()
-        }
-        if (viewModel.photo != null) {
-            viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageBitmap(viewModel.photo)
-        }
-        viewDataBinding.fragmentCreateMenuProductMcvPhoto.setOnClickListener {
-            imageLauncher.launch(IMAGES_FOLDER)
-        }
-        setFragmentResultListener(PRODUCT_CODE_REQUEST_KEY) { _, bundle ->
-            bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
-                ?.let { menuProductCode ->
-                    viewDataBinding.fragmentCreateMenuProductNcvProductCode.cardText =
-                        menuProductCode.title
-                    viewModel.setProductCode(menuProductCode.title)
-                }
-        }
-        viewDataBinding.fragmentCreateMenuProductNcvProductCode.setOnClickListener {
-            viewModel.goToProductCodeList()
-        }
-        viewModel.isComboDescriptionVisible.onEach { isVisible ->
-            viewDataBinding.fragmentCreateMenuProductTilComboDescription.toggleVisibility(isVisible)
-        }.startedLaunch(viewLifecycleOwner)
+        with(viewDataBinding) {
+            fragmentCreateMenuProductBtnBack.setOnClickListener {
+                viewModel.goBack()
+            }
+            fragmentCreateMenuProductBtnVisibility.setOnClickListener {
+                viewModel.switchVisibility()
+            }
+            viewModel.visibilityIcon.onEach { icon ->
+                fragmentCreateMenuProductBtnVisibility.icon = icon
+            }.startedLaunch(viewLifecycleOwner)
+            if (viewModel.photo != null) {
+                fragmentCreateMenuProductIvPhoto.setImageBitmap(viewModel.photo)
+            }
+            fragmentCreateMenuProductMcvPhoto.setOnClickListener {
+                imageLauncher.launch(IMAGES_FOLDER)
+            }
+            setFragmentResultListener(PRODUCT_CODE_REQUEST_KEY) { _, bundle ->
+                bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
+                    ?.let { menuProductCode ->
+                        fragmentCreateMenuProductNcvProductCode.cardText = menuProductCode.title
+                        viewModel.setProductCode(menuProductCode.title)
+                    }
+            }
+            fragmentCreateMenuProductNcvProductCode.setOnClickListener {
+                viewModel.goToProductCodeList()
+            }
+            viewModel.isComboDescriptionVisible.onEach { isVisible ->
+                fragmentCreateMenuProductTilComboDescription.toggleVisibility(isVisible)
+            }.startedLaunch(viewLifecycleOwner)
 
-        textInputMap[PRODUCT_NAME_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilName
-        textInputMap[PRODUCT_COST_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilCost
-        textInputMap[PRODUCT_DISCOUNT_COST_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilDiscountCost
-        textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilComboDescription
+            textInputMap[PRODUCT_NAME_ERROR_KEY] = fragmentCreateMenuProductTilName
+            textInputMap[PRODUCT_COST_ERROR_KEY] = fragmentCreateMenuProductTilCost
+            textInputMap[PRODUCT_DISCOUNT_COST_ERROR_KEY] = fragmentCreateMenuProductTilDiscountCost
+            textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] =
+                fragmentCreateMenuProductTilComboDescription
 
-        viewDataBinding.fragmentCreateMenuProductBtnCreate.setOnClickListener {
-            viewModel.createMenuProduct(
-                viewDataBinding.fragmentCreateMenuProductEtName.text.toString(),
-                viewDataBinding.fragmentCreateMenuProductNcvProductCode.cardText,
-                viewDataBinding.fragmentCreateMenuProductEtCost.text.toString(),
-                viewDataBinding.fragmentCreateMenuProductEtDiscountCost.text.toString(),
-                viewDataBinding.fragmentCreateMenuProductEtWeight.text.toString(),
-                viewDataBinding.fragmentCreateMenuProductEtDescription.text.toString(),
-                viewDataBinding.fragmentCreateMenuProductEtComboDescription.text.toString()
-            )
+            fragmentCreateMenuProductBtnCreate.setOnClickListener {
+                viewModel.createMenuProduct(
+                    fragmentCreateMenuProductEtName.text.toString(),
+                    fragmentCreateMenuProductNcvProductCode.cardText,
+                    fragmentCreateMenuProductEtCost.text.toString(),
+                    fragmentCreateMenuProductEtDiscountCost.text.toString(),
+                    fragmentCreateMenuProductEtWeight.text.toString(),
+                    fragmentCreateMenuProductEtDescription.text.toString(),
+                    fragmentCreateMenuProductEtComboDescription.text.toString()
+                )
+            }
         }
     }
 }
