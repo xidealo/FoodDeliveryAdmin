@@ -132,7 +132,7 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
         }
     }
 
-    override fun getProductCode(productCode: String): ProductCode {
+    override fun getProductCode(productCode: String): ProductCode? {
         return when (productCode) {
             resourcesProvider.getString(R.string.msg_product_code_combo) -> COMBO
             resourcesProvider.getString(R.string.msg_product_code_pizza) -> PIZZA
@@ -143,7 +143,15 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
             resourcesProvider.getString(R.string.msg_product_code_spice) -> SPICE
             resourcesProvider.getString(R.string.msg_product_code_bakery) -> BAKERY
             resourcesProvider.getString(R.string.msg_product_code_oven) -> OVEN
-            else -> COMBO
+            else -> null
+        }
+    }
+
+    override fun getBonusString(bonusCount: Int?): String {
+        return if(bonusCount == null) {
+            ""
+        } else {
+            "-" + getCostString(bonusCount)
         }
     }
 }

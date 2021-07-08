@@ -43,6 +43,13 @@ object Constants {
     const val SELECTED_KEY_ARGS_KEY = "selectedKey"
     const val REQUEST_KEY_ARGS_KEY = "requestKey"
 
+    // ERROR_KEY
+
+    const val PRODUCT_NAME_ERROR_KEY = "product name error key"
+    const val PRODUCT_COST_ERROR_KEY = "product cost error key"
+    const val PRODUCT_DISCOUNT_COST_ERROR_KEY = "product discount cost error key"
+    const val PRODUCT_COMBO_DESCRIPTION_ERROR_KEY = "product combo description error key"
+
     // PATH
 
     const val IMAGES_FOLDER = "image/*"

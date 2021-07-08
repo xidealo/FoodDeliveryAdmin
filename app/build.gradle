@@ -146,6 +146,9 @@ dependencies {
     //Picasso
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
 
+    //Joda time
+    implementation "joda-time:joda-time:$rootProject.jodaVersion"
+
     //FastAdapter
     implementation "com.mikepenz:fastadapter:$rootProject.fastAdapterVersion"
     implementation "com.mikepenz:fastadapter-extensions-binding:$rootProject.fastAdapterVersion"

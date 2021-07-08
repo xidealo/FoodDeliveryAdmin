@@ -32,6 +32,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             viewModel.goBack()
         }
         viewDataBinding.fragmentOrderDetailsTvCode.text = viewModel.codeTitle
+        viewDataBinding.fragmentOrderDetailsTvPhoneValue.text = viewModel.phone
         viewDataBinding.fragmentOrderDetailsTvTimeValue.text = viewModel.time
         viewDataBinding.fragmentOrderDetailsTvPickupMethodValue.text = viewModel.pickupMethod
         viewDataBinding.fragmentOrderDetailsTvDeferredTimeValue.text = viewModel.deferredTime
@@ -53,6 +54,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         val fastAdapter = FastAdapter.with(itemAdapter)
         viewDataBinding.fragmentOrderDetailsRvProductList.adapter = fastAdapter
         viewDataBinding.fragmentOrderDetailsTvDeliveryCostValue.text = viewModel.deliveryCost
+        viewDataBinding.fragmentOrderDetailsTvBonusesValue.text = viewModel.bonuses
         viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.strikeOutText()
         viewDataBinding.fragmentOrderDetailsTvOrderOldTotalCost.text = viewModel.oldOrderCost
         viewDataBinding.fragmentOrderDetailsTvOrderNewTotalCost.text = viewModel.newOrderCost
@@ -67,6 +69,10 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         if (!viewModel.isDelivery) {
             viewDataBinding.fragmentOrderDetailsTvDeliveryCostValue.gone()
             viewDataBinding.fragmentOrderDetailsTvDeliveryCost.gone()
+        }
+        if (viewModel.bonuses.isEmpty()) {
+            viewDataBinding.fragmentOrderDetailsTvBonusesValue.gone()
+            viewDataBinding.fragmentOrderDetailsTvBonuses.gone()
         }
         viewDataBinding.fragmentOrderDetailsBtnCancel.setOnClickListener {
             viewModel.goBack()

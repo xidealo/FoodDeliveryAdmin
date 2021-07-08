@@ -23,7 +23,7 @@
             android:id="@+id/element_cart_product_tv_title"
             style="@style/MediumBoldText"
             android:layout_margin="@dimen/small_margin"
-            app:layout_constraintEnd_toStartOf="@+id/element_cart_product_tv_old_cost"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,8 +33,8 @@
             android:id="@+id/element_cart_product_tv_count"
             style="@style/MediumRegularText"
             android:layout_margin="@dimen/small_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_title"
             tool:text="x 2" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_marginBottom="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/element_cart_product_tv_new_cost"
-            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_count"
+            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_title"
             tool:text="100 ₽" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_count"
+            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_title"
             tool:text="100 ₽" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

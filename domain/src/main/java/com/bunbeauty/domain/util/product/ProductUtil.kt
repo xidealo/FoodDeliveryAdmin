@@ -5,9 +5,7 @@ import com.bunbeauty.domain.model.cart_product.CartProduct
 import com.bunbeauty.domain.util.resources.IResourcesProvider
 import javax.inject.Inject
 
-class ProductUtil @Inject constructor(
-    private val resourceProvider: IResourcesProvider
-) : IProductUtil {
+class ProductUtil @Inject constructor() : IProductUtil {
 
     override fun getNewTotalCost(cartProductList: List<CartProduct>): Int {
         return cartProductList.map { cartProduct ->

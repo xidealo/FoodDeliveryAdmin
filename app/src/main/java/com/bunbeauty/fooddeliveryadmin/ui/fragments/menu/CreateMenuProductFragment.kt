@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
@@ -9,6 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
 import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
+import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
+import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
+import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
+import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.model.menu_product.MenuProductCode
 import com.bunbeauty.domain.util.resources.IResourcesProvider
@@ -16,9 +21,10 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBind
 import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.CreateMenuProductViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -32,7 +38,10 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
 
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageURI(uri)
+            if (uri != null) {
+                viewModel.isImageLoaded = true
+                viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageURI(uri)
+            }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +73,39 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         viewModel.isComboDescriptionVisible.onEach { isVisible ->
             viewDataBinding.fragmentCreateMenuProductTilComboDescription.toggleVisibility(isVisible)
         }.launchWhenStarted(lifecycleScope)
+        viewModel.error.onEach { error ->
+            if (error != null) {
+                viewDataBinding.fragmentCreateMenuProductTilName.error = null
+                viewDataBinding.fragmentCreateMenuProductTilCost.error = null
+                viewDataBinding.fragmentCreateMenuProductTilDiscountCost.error = null
+                viewDataBinding.fragmentCreateMenuProductTilComboDescription.error = null
+                when (error) {
+                    is ErrorEvent.MessageError -> {
+                        showError(error.message)
+                    }
+                    is ErrorEvent.FieldError -> {
+                        val textInputLayout = when (error.key) {
+                            PRODUCT_NAME_ERROR_KEY ->
+                                viewDataBinding.fragmentCreateMenuProductTilName
+                            PRODUCT_COST_ERROR_KEY ->
+                                viewDataBinding.fragmentCreateMenuProductTilCost
+                            PRODUCT_DISCOUNT_COST_ERROR_KEY ->
+                                viewDataBinding.fragmentCreateMenuProductTilDiscountCost
+                            PRODUCT_COMBO_DESCRIPTION_ERROR_KEY ->
+                                viewDataBinding.fragmentCreateMenuProductTilComboDescription
+                            else -> null
+                        }
+                        textInputLayout?.error = error.message
+                        textInputLayout?.requestFocus()
+                    }
+                }
+            }
+        }.launchIn(lifecycleScope)
+        viewModel.message.onEach { message ->
+            if (message != null) {
+                showMessage(message)
+            }
+        }.launchIn(lifecycleScope)
         viewDataBinding.fragmentCreateMenuProductBtnCreate.setOnClickListener {
             val bitmap =
                 (viewDataBinding.fragmentCreateMenuProductIvPhoto.drawable as BitmapDrawable).bitmap

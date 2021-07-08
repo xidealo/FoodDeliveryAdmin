@@ -48,7 +48,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     protected fun showError(errorMessage: String) {
-        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_LONG)
+        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_SHORT)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.errorColor))
             .setTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
             .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
@@ -58,7 +58,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     protected fun showMessage(errorMessage: String) {
-        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_LONG)
+        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_SHORT)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
             .setTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
             .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))

@@ -51,6 +51,7 @@
     <string name="msg_order_details_pickup_method">Способ получения</string>
     <string name="msg_order_details_delivery">Доставка</string>
     <string name="msg_order_details_pickup">Самовывоз</string>
+    <string name="msg_order_details_phone">Номер телефона</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
     <string name="msg_order_details_comment">Комментарий</string>
@@ -58,6 +59,7 @@
     <string name="msg_order_details_order_list">Список заказанных блюд</string>
     <string name="msg_order_details_order_cost">Сумма заказа</string>
     <string name="msg_order_details_delivery_cost">Доставка</string>
+    <string name="msg_order_details_bonuses">Бонусная скидка</string>
     <string name="msg_order_details_delivery_free">Бесплатно</string>
     <string name="action_order_details_cancel">Отменить</string>
     <string name="action_order_details_save">Сохранить</string>
@@ -107,6 +109,13 @@
     <string name="hint_create_menu_product_description">Описание</string>
     <string name="hint_create_menu_product_combo_description">Описание комбо</string>
     <string name="action_create_menu_product_create">Создать</string>
+    <string name="error_image_not_loaded">Не выбрано изображение</string>
+    <string name="error_empty_name">Название не может быть пустым</string>
+    <string name="error_category_not_selected">Не выбрана категория</string>
+    <string name="error_cost_incorrect">Некорректное значение</string>
+    <string name="error_discount_cost_incorrect">Должна быть меньше цены</string>
+    <string name="error_combo_description_incorrect">Описание комбо не может быть пустым</string>
+    <string name="msg_product_created">&#160;создан</string>
 
     <!-- PRODUCT CODE -->
     <string name="msg_product_code_combo">Комбо</string>

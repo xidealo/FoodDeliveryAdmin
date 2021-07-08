@@ -12,6 +12,7 @@
         <TextView
             android:id="@+id/element_order_tv_code"
             style="@style/LargeBoldCenterText"
+            android:layout_width="wrap_content"
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,14 +35,18 @@
         <TextView
             android:id="@+id/element_order_tv_time"
             style="@style/SmallSecondaryText"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/element_order_tv_deferred"
             tool:text="5 мая  12:34" />
 
         <TextView
             android:id="@+id/element_order_tv_deferred"
             style="@style/SmallRegularText"
+            android:layout_width="wrap_content"
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

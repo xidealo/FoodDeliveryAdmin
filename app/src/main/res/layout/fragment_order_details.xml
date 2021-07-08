@@ -60,19 +60,35 @@
                     tool:text="Заказ M-30" />
 
                 <TextView
+                    android:id="@+id/fragment_order_details_tv_phone"
+                    style="@style/SmallSecondaryText"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:text="@string/msg_order_details_phone"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_btn_back" />
+
+                <TextView
+                    android:id="@+id/fragment_order_details_tv_phone_value"
+                    style="@style/MediumRegularText"
+                    android:layout_marginTop="@dimen/very_small_margin"
+                    app:layout_constraintStart_toStartOf="@id/fragment_order_details_gl_left"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_phone"
+                    tool:text="+7 (900) 90-90" />
+
+                <TextView
                     android:id="@+id/fragment_order_details_tv_time"
                     style="@style/SmallSecondaryText"
                     android:layout_marginTop="@dimen/small_margin"
                     android:text="@string/msg_order_details_order_time"
-                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
-                    app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_btn_back" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_phone"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_center" />
 
                 <TextView
                     android:id="@+id/fragment_order_details_tv_time_value"
                     style="@style/MediumRegularText"
                     android:layout_marginTop="@dimen/very_small_margin"
-                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_left"
-                    app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_time"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_phone_value"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_center"
                     tool:text="5 мая 12:00" />
 
                 <TextView
@@ -96,13 +112,14 @@
                     style="@style/SmallSecondaryText"
                     android:layout_marginTop="@dimen/medium_margin"
                     android:text="@string/msg_order_details_deferred_time"
-                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_center"
-                    app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_time_value" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_pickup_method"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_center" />
 
                 <TextView
                     android:id="@+id/fragment_order_details_tv_deferred_time_value"
                     style="@style/MediumRegularText"
                     android:layout_marginTop="@dimen/very_small_margin"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_pickup_method_value"
                     app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_center"
                     app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_deferred_time"
                     tool:text="13:00" />
@@ -231,12 +248,29 @@
                 tool:text="Бесплатно" />
 
             <TextView
+                android:id="@+id/fragment_order_details_tv_bonuses"
+                style="@style/MediumRegularText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/msg_order_details_bonuses"
+                app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_bottom_left"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_delivery_cost" />
+
+            <TextView
+                android:id="@+id/fragment_order_details_tv_bonuses_value"
+                style="@style/MediumRegularText"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_bonuses"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_bottom_right"
+                tool:text="-10 ₽" />
+
+            <TextView
                 android:id="@+id/fragment_order_details_tv_order_total_cost"
                 style="@style/MediumBoldText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/msg_order_details_order_cost"
                 app:layout_constraintStart_toStartOf="@+id/fragment_order_details_gl_bottom_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_delivery_cost" />
+                app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_bonuses" />
 
             <TextView
                 android:id="@+id/fragment_order_details_tv_order_old_total_cost"
@@ -252,10 +286,9 @@
                 style="@style/MediumBoldText"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:text="@string/msg_order_details_order_cost"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragment_order_details_tv_order_total_cost"
                 app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_bottom_right"
-                tool:text="100 ₽" />
+                tool:text="90 ₽" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fragment_order_details_btn_cancel"

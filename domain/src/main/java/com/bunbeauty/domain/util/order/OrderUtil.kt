@@ -30,12 +30,13 @@ class OrderUtil @Inject constructor(
     override fun getNewOrderCost(order: Order, delivery: Delivery): Int {
         val orderCost = productUtil.getNewTotalCost(order.cartProductList)
         val deliveryCost = getDeliveryCost(order, delivery)
+        val bonusDiscount = order.bonus ?: 0
 
-        return orderCost + deliveryCost
+        return orderCost + deliveryCost - bonusDiscount
     }
 
     override fun getProceeds(orderList: List<Order>, delivery: Delivery): Int {
-        return orderList.sumBy { order ->
+        return orderList.sumOf { order ->
             getNewOrderCost(order, delivery)
         }
     }

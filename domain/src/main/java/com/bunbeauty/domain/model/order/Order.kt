@@ -15,6 +15,7 @@ data class Order(
     val comment: String?,
     val deferred: String?,
     val delivery: Boolean,
+    val bonus: Int?,
     val email: String,
     val orderStatus: OrderStatus,
     val phone: String,

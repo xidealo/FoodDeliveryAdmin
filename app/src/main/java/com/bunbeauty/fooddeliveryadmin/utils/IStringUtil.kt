@@ -16,5 +16,6 @@ interface IStringUtil {
     fun getOrderStatusByString(orderStatus:String): OrderStatus
     fun getDeliveryString(deliveryCost: Int): String
     fun getProductCodeString(productCode: ProductCode): String
-    fun getProductCode(productCode: String): ProductCode
+    fun getProductCode(productCode: String): ProductCode?
+    fun getBonusString(bonusCount: Int?): String
 }

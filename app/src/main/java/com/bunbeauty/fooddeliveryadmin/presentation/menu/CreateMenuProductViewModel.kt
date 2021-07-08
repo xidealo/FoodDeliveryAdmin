@@ -6,6 +6,10 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.LIST_ARGS_KEY
 import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
+import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
+import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
+import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
+import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.REQUEST_KEY_ARGS_KEY
 import com.bunbeauty.common.Constants.SELECTED_KEY_ARGS_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
@@ -17,9 +21,10 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.util.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
 import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,6 +59,15 @@ class CreateMenuProductViewModel @Inject constructor(
     val isComboDescriptionVisible: StateFlow<Boolean>
         get() = _isComboDescriptionVisible.asStateFlow()
 
+    var isImageLoaded = false
+    private val _error = MutableStateFlow<ErrorEvent?>(null)
+    val error: StateFlow<ErrorEvent?>
+        get() = _error.asStateFlow()
+
+    private val _message = MutableStateFlow<String?>(null)
+    val message: StateFlow<String?>
+        get() = _message.asStateFlow()
+
     fun switchVisibility() {
         isVisible = !isVisible
         if (isVisible) {
@@ -71,43 +85,102 @@ class CreateMenuProductViewModel @Inject constructor(
     fun createMenuProduct(
         bitmap: Bitmap,
         name: String,
-        productCode: String,
+        productCodeString: String,
         cost: String,
         discountCost: String,
         weight: String,
         description: String,
         comboDescription: String
     ) {
-        viewModelScope.launch(Default) {
-            val outputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            val photoByteArray = outputStream.toByteArray()
+        if (!isImageLoaded) {
+            _error.value =
+                ErrorEvent.MessageError(message = resourcesProvider.getString(R.string.error_image_not_loaded))
+            return
+        }
 
-            withContext(IO) {
-                menuProductRepo.saveMenuProductPhoto(photoByteArray).collect { photoLink ->
-                    val uuid = UUID.randomUUID().toString()
-                    val menuProduct = MenuProduct(
-                        uuid = uuid,
-                        name = name,
-                        cost = cost.toInt(),
-                        discountCost = discountCost.toInt(),
-                        weight = weight.toInt(),
-                        description = description,
-                        comboDescription = comboDescription,
-                        photoLink = photoLink,
-                        onFire = false,
-                        inOven = false,
-                        productCode = stringUtil.getProductCode(productCode),
-                        barcode = null,
-                        visible = isVisible
-                    )
-                    menuProductRepo.saveMenuProduct(menuProduct)
+        if (name.isEmpty()) {
+            _error.value =
+                ErrorEvent.FieldError(
+                    key = PRODUCT_NAME_ERROR_KEY,
+                    message = resourcesProvider.getString(R.string.error_empty_name)
+                )
+            return
+        }
 
-                    withContext(Main) {
-                        goBack()
-                    }
+        val productCode = stringUtil.getProductCode(productCodeString)
+        if (productCode == null) {
+            _error.value = ErrorEvent.MessageError(
+                message = resourcesProvider.getString(R.string.error_category_not_selected)
+            )
+            return
+        }
+
+        val costInt = cost.toIntOrNull()
+        if (costInt == null) {
+            _error.value = ErrorEvent.FieldError(
+                key = PRODUCT_COST_ERROR_KEY,
+                message = resourcesProvider.getString(R.string.error_cost_incorrect)
+            )
+            return
+        }
+
+        val discountCostInt = discountCost.toIntOrNull()
+        if (discountCostInt != null && discountCostInt >= costInt) {
+            _error.value = ErrorEvent.FieldError(
+                key = PRODUCT_DISCOUNT_COST_ERROR_KEY,
+                message = resourcesProvider.getString(R.string.error_discount_cost_incorrect)
+            )
+            return
+        }
+
+        if (productCode == ProductCode.COMBO && comboDescription.isEmpty()) {
+            _error.value = ErrorEvent.FieldError(
+                key = PRODUCT_COMBO_DESCRIPTION_ERROR_KEY,
+                message = resourcesProvider.getString(R.string.error_combo_description_incorrect)
+            )
+            return
+        }
+
+        val nullableComboDescription = if (productCode == ProductCode.COMBO) {
+            comboDescription
+        } else {
+            null
+        }
+
+        viewModelScope.launch(IO) {
+            val photoByteArray = covertPhotoToByteArray(bitmap)
+            menuProductRepo.saveMenuProductPhoto(photoByteArray).collect { photoLink ->
+                val uuid = UUID.randomUUID().toString()
+                val menuProduct = MenuProduct(
+                    uuid = uuid,
+                    name = name,
+                    cost = costInt,
+                    discountCost = discountCostInt,
+                    weight = weight.toIntOrNull(),
+                    description = description,
+                    comboDescription = nullableComboDescription,
+                    photoLink = photoLink,
+                    onFire = false,
+                    inOven = false,
+                    productCode = productCode,
+                    barcode = null,
+                    visible = isVisible
+                )
+                menuProductRepo.saveMenuProduct(menuProduct)
+                _message.value = name + resourcesProvider.getString(R.string.msg_product_created)
+
+                withContext(Main) {
+                    goBack()
                 }
             }
+        }
+    }
+
+    private suspend fun covertPhotoToByteArray(bitmap: Bitmap): ByteArray {
+        return withContext(Dispatchers.Default) {
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.toByteArray()
         }
     }
 
@@ -122,6 +195,4 @@ class CreateMenuProductViewModel @Inject constructor(
             )
         )
     }
-
-
 }

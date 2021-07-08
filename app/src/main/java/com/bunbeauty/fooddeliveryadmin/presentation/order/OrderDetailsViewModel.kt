@@ -44,6 +44,9 @@ class OrderDetailsViewModel @Inject constructor(
     val codeTitle: String
         get() = stringUtil.getOrderCodeString(args.order.code)
 
+    val phone: String
+        get() = args.order.phone
+
     val time: String
         get() = dateTimeUtil.getTimeHHMM(args.order.time)
 
@@ -83,6 +86,9 @@ class OrderDetailsViewModel @Inject constructor(
             val deliveryCost = orderUtil.getDeliveryCost(args.order, delivery)
             return stringUtil.getDeliveryString(deliveryCost)
         }
+
+    val bonuses: String
+        get() = stringUtil.getBonusString(args.order.bonus)
 
     val oldOrderCost: String
         get() {
