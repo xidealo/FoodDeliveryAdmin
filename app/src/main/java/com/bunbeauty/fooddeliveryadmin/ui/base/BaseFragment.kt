@@ -1,9 +1,14 @@
 package com.bunbeauty.fooddeliveryadmin.ui.base
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.TEXT_ALIGNMENT_CENTER
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
@@ -48,23 +53,27 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     protected fun showError(errorMessage: String) {
-        val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.errorColor))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
-            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
-        snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
-            View.TEXT_ALIGNMENT_CENTER
-        snack.show()
+        showSnackbar(errorMessage, R.color.lightTextColor, R.color.errorColor)
     }
 
-    protected fun showMessage(errorMessage: String) {
+    protected fun showMessage(message: String) {
+        showSnackbar(message, R.color.lightTextColor, R.color.colorPrimary)
+    }
+
+    private fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {
         val snack = Snackbar.make(viewDataBinding.root, errorMessage, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
-            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.lightTextColor))
-        snack.view.findViewById<TextView>(R.id.snackbar_text).textAlignment =
-            View.TEXT_ALIGNMENT_CENTER
-        snack.show()
+            .setBackgroundTint(ContextCompat.getColor(requireContext(), backgroundColorId))
+            .setTextColor(ContextCompat.getColor(requireContext(), textColorId))
+            .setActionTextColor(ContextCompat.getColor(requireContext(), textColorId))
+        val layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
+            gravity = Gravity.TOP
+            setMargins(16, 16, 16, 0)
+        }
+        with(snack) {
+            view.layoutParams = layoutParams
+            view.findViewById<TextView>(R.id.snackbar_text).textAlignment = TEXT_ALIGNMENT_CENTER
+            show()
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

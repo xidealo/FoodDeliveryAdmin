@@ -1,6 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.extensions
 
+import android.graphics.Bitmap
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -45,4 +47,8 @@ fun ImageView.setImage(photoLink: String) {
         .networkPolicy(NetworkPolicy.NO_CACHE)
         .memoryPolicy(MemoryPolicy.NO_CACHE)
         .into(this)
+}
+
+fun ImageView.getBitmap(): Bitmap {
+    return (this.drawable as BitmapDrawable).bitmap
 }

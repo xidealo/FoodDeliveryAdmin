@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.presentation.menu
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.LIST_ARGS_KEY
@@ -44,29 +43,33 @@ class CreateMenuProductViewModel @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
 ) : BaseViewModel() {
 
-    private val menuProductCodeList: Array<MenuProductCode>
-        get() = ProductCode.values().map { productCode ->
-            MenuProductCode(title = stringUtil.getProductCodeString(productCode))
-        }.toTypedArray()
+    private val menuProductCodeList = ProductCode.values().map { productCode ->
+        MenuProductCode(title = stringUtil.getProductCodeString(productCode))
+    }.toTypedArray()
 
     private var isVisible = true
     private val _visibilityIcon =
         MutableStateFlow(resourcesProvider.getDrawable(R.drawable.ic_visible))
-    val visibilityIcon: StateFlow<Drawable?>
-        get() = _visibilityIcon.asStateFlow()
+    val visibilityIcon = _visibilityIcon.asStateFlow()
 
     private val _isComboDescriptionVisible = MutableStateFlow(false)
-    val isComboDescriptionVisible: StateFlow<Boolean>
-        get() = _isComboDescriptionVisible.asStateFlow()
+    val isComboDescriptionVisible = _isComboDescriptionVisible.asStateFlow()
 
-    var isImageLoaded = false
+    var image: Bitmap? = null
+
     private val _error = MutableStateFlow<ErrorEvent?>(null)
     val error: StateFlow<ErrorEvent?>
-        get() = _error.asStateFlow()
+        get() {
+            _error.value = null
+            return _error.asStateFlow()
+        }
 
     private val _message = MutableStateFlow<String?>(null)
     val message: StateFlow<String?>
-        get() = _message.asStateFlow()
+        get() {
+            _message.value = null
+            return _message.asStateFlow()
+        }
 
     fun switchVisibility() {
         isVisible = !isVisible
@@ -92,7 +95,7 @@ class CreateMenuProductViewModel @Inject constructor(
         description: String,
         comboDescription: String
     ) {
-        if (!isImageLoaded) {
+        if (image == null) {
             _error.value =
                 ErrorEvent.MessageError(message = resourcesProvider.getString(R.string.error_image_not_loaded))
             return

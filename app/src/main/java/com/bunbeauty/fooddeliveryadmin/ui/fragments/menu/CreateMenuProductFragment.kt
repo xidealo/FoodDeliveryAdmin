@@ -1,8 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
@@ -18,7 +16,8 @@ import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.model.menu_product.MenuProductCode
 import com.bunbeauty.domain.util.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.CreateMenuProductViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
@@ -39,8 +38,8 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                viewModel.isImageLoaded = true
                 viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageURI(uri)
+                viewModel.image = viewDataBinding.fragmentCreateMenuProductIvPhoto.getBitmap()
             }
         }
 
@@ -52,9 +51,12 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         }
         viewModel.visibilityIcon.onEach { icon ->
             viewDataBinding.fragmentCreateMenuProductBtnVisibility.icon = icon
-        }.launchWhenStarted(lifecycleScope)
+        }.startedLaunch(lifecycle)
         viewDataBinding.fragmentCreateMenuProductBtnVisibility.setOnClickListener {
             viewModel.switchVisibility()
+        }
+        if (viewModel.image != null) {
+            viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageBitmap(viewModel.image)
         }
         viewDataBinding.fragmentCreateMenuProductMcvPhoto.setOnClickListener {
             imageLauncher.launch(IMAGES_FOLDER)
@@ -72,7 +74,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         }
         viewModel.isComboDescriptionVisible.onEach { isVisible ->
             viewDataBinding.fragmentCreateMenuProductTilComboDescription.toggleVisibility(isVisible)
-        }.launchWhenStarted(lifecycleScope)
+        }.startedLaunch(lifecycle)
         viewModel.error.onEach { error ->
             if (error != null) {
                 viewDataBinding.fragmentCreateMenuProductTilName.error = null
@@ -107,10 +109,8 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
             }
         }.launchIn(lifecycleScope)
         viewDataBinding.fragmentCreateMenuProductBtnCreate.setOnClickListener {
-            val bitmap =
-                (viewDataBinding.fragmentCreateMenuProductIvPhoto.drawable as BitmapDrawable).bitmap
             viewModel.createMenuProduct(
-                bitmap,
+                viewDataBinding.fragmentCreateMenuProductIvPhoto.getBitmap(),
                 viewDataBinding.fragmentCreateMenuProductEtName.text.toString(),
                 viewDataBinding.fragmentCreateMenuProductNcvProductCode.cardText,
                 viewDataBinding.fragmentCreateMenuProductEtCost.text.toString(),

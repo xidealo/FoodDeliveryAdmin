@@ -115,8 +115,7 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
 
     //Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.extensionsVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.viewmodelVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
     implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
 
