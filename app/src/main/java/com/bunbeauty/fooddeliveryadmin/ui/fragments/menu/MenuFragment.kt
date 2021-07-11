@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.presentation.menu.MenuViewModel
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
@@ -38,7 +38,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
                 }
                 else -> Unit
             }
-        }.launchWhenStarted(lifecycleScope)
+        }.startedLaunch(viewLifecycleOwner)
 
         viewDataBinding.fragmentMenuFabCreateProduct.setOnClickListener {
             viewModel.goToCreateMenuProduct()

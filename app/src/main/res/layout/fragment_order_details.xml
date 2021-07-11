@@ -13,7 +13,7 @@
             android:layout_height="0dp"
             android:background="@color/mainBackground"
             android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_order_details_cl_bottom"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_order_details_v_blur"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -200,10 +200,8 @@
         </androidx.core.widget.NestedScrollView>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="12dp"
-            android:background="@drawable/background_blur"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/fragment_order_details_v_blur"
+            style="@style/BlurView"
             app:layout_constraintBottom_toTopOf="@+id/fragment_order_details_cl_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -309,6 +307,5 @@
                 app:layout_constraintEnd_toEndOf="@+id/fragment_order_details_gl_bottom_right"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_details_tv_order_total_cost" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

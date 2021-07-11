@@ -25,7 +25,7 @@
 
             <TextView
                 style="@style/LargeBoldCenterText"
-                android:text="@string/hint_create_menu_product_title"
+                android:text="@string/title_create_menu_product_new_product"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragment_create_menu_product_btn_back"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_create_menu_product_btn_visibility"
                 app:layout_constraintStart_toEndOf="@+id/fragment_create_menu_product_btn_back" />

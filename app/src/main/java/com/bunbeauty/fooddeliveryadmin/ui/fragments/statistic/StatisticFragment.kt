@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.common.Constants.ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_ADDRESS_KEY
@@ -13,13 +11,14 @@ import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
+import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.items.PeriodItem
 import com.bunbeauty.fooddeliveryadmin.ui.items.StatisticItem
-import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +88,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                     viewDataBinding.fragmentStatisticLpiLoading.invisible()
                 }
             }
-        }.launchWhenStarted(lifecycleScope)
+        }.startedLaunch(viewLifecycleOwner)
 
         viewModel.getStatistic(
             viewModel.selectedAddressItem.cafeUuid,

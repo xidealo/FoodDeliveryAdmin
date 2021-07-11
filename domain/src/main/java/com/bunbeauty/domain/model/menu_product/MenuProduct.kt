@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MenuProduct(
-    val uuid: String,
+    val uuid: String?,
     val name: String,
     val cost: Int,
     val discountCost: Int?,

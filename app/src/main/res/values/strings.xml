@@ -89,18 +89,8 @@
     <!-- MENU -->
     <string name="action_menu_create">Создать</string>
 
-    <!-- EDIT MENU PRODUCT -->
-    <string name="hint_edit_menu_product_show">Показать</string>
-    <string name="hint_edit_menu_product_hide">Убрать</string>
-    <string name="hint_edit_menu_product_name">Название</string>
-    <string name="hint_edit_menu_product_cost">Цена</string>
-    <string name="hint_edit_menu_product_weight">Вес</string>
-    <string name="hint_edit_menu_product_description">Описание</string>
-    <string name="hint_edit_menu_product_discount_cost">Цена со скидкой</string>
-    <string name="action_edit_menu_product_update">Обновить</string>
-
     <!-- CREATE MENU PRODUCT -->
-    <string name="hint_create_menu_product_title">Новая позиция</string>
+    <string name="title_create_menu_product_new_product">Новая позиция</string>
     <string name="msg_create_menu_product_select_category">Выберите категорию</string>
     <string name="hint_create_menu_product_name">Название</string>
     <string name="hint_create_menu_product_cost">Цена, ₽</string>
@@ -109,13 +99,30 @@
     <string name="hint_create_menu_product_description">Описание</string>
     <string name="hint_create_menu_product_combo_description">Описание комбо</string>
     <string name="action_create_menu_product_create">Создать</string>
-    <string name="error_image_not_loaded">Не выбрано изображение</string>
-    <string name="error_empty_name">Название не может быть пустым</string>
-    <string name="error_category_not_selected">Не выбрана категория</string>
-    <string name="error_cost_incorrect">Некорректное значение</string>
-    <string name="error_discount_cost_incorrect">Должна быть меньше цены</string>
-    <string name="error_combo_description_incorrect">Описание комбо не может быть пустым</string>
+    <string name="error_create_menu_product_image_not_loaded">Не выбрано изображение</string>
+    <string name="error_create_menu_product_empty_name">Название не может быть пустым</string>
+    <string name="error_create_menu_product_category_not_selected">Не выбрана категория</string>
+    <string name="error_create_menu_product_cost_incorrect">Некорректное значение</string>
+    <string name="error_create_menu_product_discount_cost_incorrect">Должна быть меньше цены</string>
+    <string name="error_create_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
     <string name="msg_product_created">&#160;создан</string>
+
+    <!-- EDIT MENU PRODUCT -->
+    <string name="title_edit_menu_product_editing">Редактирование</string>
+    <string name="hint_edit_menu_product_name">Название</string>
+    <string name="hint_edit_menu_product_cost">Цена, ₽</string>
+    <string name="hint_edit_menu_product_discount_cost">Цена со скидкой, ₽</string>
+    <string name="hint_edit_menu_product_weight">Вес, г</string>
+    <string name="hint_edit_menu_product_description">Описание</string>
+    <string name="hint_edit_menu_product_combo_description">Описание комбо</string>
+    <string name="action_edit_menu_product_save">Сохранить</string>
+    <string name="action_edit_menu_product_delete">Удалить</string>
+    <string name="error_edit_menu_product_empty_name">Название не может быть пустым</string>
+    <string name="error_edit_menu_product_cost_incorrect">Некорректное значение</string>
+    <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть меньше цены</string>
+    <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
+    <string name="msg_product_updated">&#160;обновлён</string>
+    <string name="msg_product_deleted">&#160;удалён</string>
 
     <!-- PRODUCT CODE -->
     <string name="msg_product_code_combo">Комбо</string>

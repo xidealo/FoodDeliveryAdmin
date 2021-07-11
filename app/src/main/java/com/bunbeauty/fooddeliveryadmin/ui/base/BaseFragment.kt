@@ -15,8 +15,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
+import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.flow.onEach
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
@@ -24,6 +28,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     private var _viewDataBinding: B? = null
     protected val viewDataBinding
         get() = checkNotNull(_viewDataBinding)
+    protected val textInputMap = HashMap<String, TextInputLayout>()
     protected abstract val viewModel: BaseViewModel
 
     @Suppress("UNCHECKED_CAST")
@@ -43,6 +48,29 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
         return _viewDataBinding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.message.onEach { message ->
+            showSnackbar(message, R.color.lightTextColor, R.color.colorPrimary)
+        }.startedLaunch(viewLifecycleOwner)
+        viewModel.error.onEach { error ->
+            textInputMap.values.forEach { textInput ->
+                textInput.error = null
+                textInput.clearFocus()
+            }
+             when (error) {
+                 is ErrorEvent.MessageError -> {
+                     showError(error.message)
+                 }
+                 is ErrorEvent.FieldError -> {
+                     textInputMap[error.key]?.error = error.message
+                     textInputMap[error.key]?.requestFocus()
+                 }
+             }
+        }.startedLaunch(viewLifecycleOwner)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _viewDataBinding = null
@@ -54,10 +82,6 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     protected fun showError(errorMessage: String) {
         showSnackbar(errorMessage, R.color.lightTextColor, R.color.errorColor)
-    }
-
-    protected fun showMessage(message: String) {
-        showSnackbar(message, R.color.lightTextColor, R.color.colorPrimary)
     }
 
     private fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {

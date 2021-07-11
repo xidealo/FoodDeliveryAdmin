@@ -6,9 +6,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.presentation.login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +40,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
                 else -> {}
             }
-        }.launchWhenStarted(lifecycleScope)
+        }.startedLaunch(viewLifecycleOwner)
 
         viewDataBinding.fragmentLoginBtnLogin.setOnClickListener {
             viewModel.login(

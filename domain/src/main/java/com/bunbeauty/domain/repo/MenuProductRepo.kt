@@ -7,6 +7,9 @@ interface MenuProductRepo {
 
     val menuProductList: Flow<List<MenuProduct>>
 
+    suspend fun deleteMenuProductPhoto(photoLink: String)
     fun saveMenuProductPhoto(photoByteArray: ByteArray): Flow<String>
     suspend fun saveMenuProduct(menuProduct: MenuProduct)
+    suspend fun updateMenuProduct(menuProduct: MenuProduct)
+    suspend fun deleteMenuProduct(uuid: String)
 }

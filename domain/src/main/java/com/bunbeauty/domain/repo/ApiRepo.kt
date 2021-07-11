@@ -26,8 +26,11 @@ interface ApiRepo {
     // MENU PRODUCT
 
     val menuProductList: Flow<List<ServerMenuProduct>>
+    fun deleteMenuProductPhoto(photoName: String)
     fun saveMenuProductPhoto(photoByteArray: ByteArray): Flow<String>
-    fun saveMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
+    fun saveMenuProduct(menuProduct: ServerMenuProduct)
+    fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
+    fun deleteMenuProduct(uuid: String)
 
     // ORDER
 

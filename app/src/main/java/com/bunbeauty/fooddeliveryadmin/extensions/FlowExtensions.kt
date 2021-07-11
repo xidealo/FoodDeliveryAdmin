@@ -5,16 +5,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-fun <T> Flow<T>.launchWhenStarted(lifecycleCoroutineScope: LifecycleCoroutineScope){
-    lifecycleCoroutineScope.launchWhenStarted {
-        this@launchWhenStarted.collect()
-    }
-}
-
-fun <T> Flow<T>.startedLaunch(lifecycle: Lifecycle){
-    lifecycle.coroutineScope.launch {
+fun <T> Flow<T>.startedLaunch(lifecycleOwner: LifecycleOwner) {
+    lifecycleOwner.lifecycleScope.launch {
         this@startedLaunch
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .collect()
     }
 }

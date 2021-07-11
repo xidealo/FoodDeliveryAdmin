@@ -43,7 +43,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 }
                 else -> Unit
             }
-        }.startedLaunch(lifecycle)
+        }.startedLaunch(viewLifecycleOwner)
 
         viewModel.orderListState.onEach { state ->
             when (state) {
@@ -61,6 +61,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 }
                 else -> Unit
             }
-        }.startedLaunch(lifecycle)
+        }.startedLaunch(viewLifecycleOwner)
     }
 }

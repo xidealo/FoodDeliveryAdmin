@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.presentation.state.State
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetAddressListBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.launchWhenStarted
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.presentation.order.AddressListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.items.AddressItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
@@ -37,7 +37,7 @@ class AddressListBottomSheet : BaseBottomSheetDialog<BottomSheetAddressListBindi
                 }
                 else -> Unit
             }
-        }.launchWhenStarted(lifecycleScope)
+        }.startedLaunch(viewLifecycleOwner)
 
         viewModel.getCafeList()
     }

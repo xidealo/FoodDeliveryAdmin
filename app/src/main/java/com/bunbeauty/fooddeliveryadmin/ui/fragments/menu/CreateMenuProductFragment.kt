@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
 import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
@@ -14,7 +13,6 @@ import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.model.menu_product.MenuProductCode
-import com.bunbeauty.domain.util.resources.IResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
@@ -23,15 +21,10 @@ import com.bunbeauty.fooddeliveryadmin.presentation.menu.CreateMenuProductViewMo
 import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>() {
-
-    @Inject
-    lateinit var resourcesProvider: IResourcesProvider
 
     override val viewModel: CreateMenuProductViewModel by viewModels()
 
@@ -39,7 +32,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageURI(uri)
-                viewModel.image = viewDataBinding.fragmentCreateMenuProductIvPhoto.getBitmap()
+                viewModel.photo = viewDataBinding.fragmentCreateMenuProductIvPhoto.getBitmap()
             }
         }
 
@@ -51,12 +44,12 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         }
         viewModel.visibilityIcon.onEach { icon ->
             viewDataBinding.fragmentCreateMenuProductBtnVisibility.icon = icon
-        }.startedLaunch(lifecycle)
+        }.startedLaunch(viewLifecycleOwner)
         viewDataBinding.fragmentCreateMenuProductBtnVisibility.setOnClickListener {
             viewModel.switchVisibility()
         }
-        if (viewModel.image != null) {
-            viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageBitmap(viewModel.image)
+        if (viewModel.photo != null) {
+            viewDataBinding.fragmentCreateMenuProductIvPhoto.setImageBitmap(viewModel.photo)
         }
         viewDataBinding.fragmentCreateMenuProductMcvPhoto.setOnClickListener {
             imageLauncher.launch(IMAGES_FOLDER)
@@ -74,43 +67,15 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         }
         viewModel.isComboDescriptionVisible.onEach { isVisible ->
             viewDataBinding.fragmentCreateMenuProductTilComboDescription.toggleVisibility(isVisible)
-        }.startedLaunch(lifecycle)
-        viewModel.error.onEach { error ->
-            if (error != null) {
-                viewDataBinding.fragmentCreateMenuProductTilName.error = null
-                viewDataBinding.fragmentCreateMenuProductTilCost.error = null
-                viewDataBinding.fragmentCreateMenuProductTilDiscountCost.error = null
-                viewDataBinding.fragmentCreateMenuProductTilComboDescription.error = null
-                when (error) {
-                    is ErrorEvent.MessageError -> {
-                        showError(error.message)
-                    }
-                    is ErrorEvent.FieldError -> {
-                        val textInputLayout = when (error.key) {
-                            PRODUCT_NAME_ERROR_KEY ->
-                                viewDataBinding.fragmentCreateMenuProductTilName
-                            PRODUCT_COST_ERROR_KEY ->
-                                viewDataBinding.fragmentCreateMenuProductTilCost
-                            PRODUCT_DISCOUNT_COST_ERROR_KEY ->
-                                viewDataBinding.fragmentCreateMenuProductTilDiscountCost
-                            PRODUCT_COMBO_DESCRIPTION_ERROR_KEY ->
-                                viewDataBinding.fragmentCreateMenuProductTilComboDescription
-                            else -> null
-                        }
-                        textInputLayout?.error = error.message
-                        textInputLayout?.requestFocus()
-                    }
-                }
-            }
-        }.launchIn(lifecycleScope)
-        viewModel.message.onEach { message ->
-            if (message != null) {
-                showMessage(message)
-            }
-        }.launchIn(lifecycleScope)
+        }.startedLaunch(viewLifecycleOwner)
+
+        textInputMap[PRODUCT_NAME_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilName
+        textInputMap[PRODUCT_COST_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilCost
+        textInputMap[PRODUCT_DISCOUNT_COST_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilDiscountCost
+        textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] = viewDataBinding.fragmentCreateMenuProductTilComboDescription
+
         viewDataBinding.fragmentCreateMenuProductBtnCreate.setOnClickListener {
             viewModel.createMenuProduct(
-                viewDataBinding.fragmentCreateMenuProductIvPhoto.getBitmap(),
                 viewDataBinding.fragmentCreateMenuProductEtName.text.toString(),
                 viewDataBinding.fragmentCreateMenuProductNcvProductCode.cardText,
                 viewDataBinding.fragmentCreateMenuProductEtCost.text.toString(),

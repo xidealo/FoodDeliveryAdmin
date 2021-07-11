@@ -90,6 +90,9 @@
         <argument
             android:name="menuProduct"
             app:argType="com.bunbeauty.domain.model.menu_product.MenuProduct" />
+        <action
+            android:id="@+id/to_listBottomSheet"
+            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"
@@ -127,7 +130,6 @@
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.ListBottomSheet"
         tools:layout="@layout/bottom_sheet_list"
         android:label="ListBottomSheet" >
-
         <argument
             android:name="title"
             app:argType="string"
