@@ -1,16 +1,16 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetListBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
-import com.bunbeauty.fooddeliveryadmin.presentation.ListViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog
-import com.bunbeauty.fooddeliveryadmin.ui.items.list.ListItem
+import com.bunbeauty.fooddeliveryadmin.ui.items.ListItem
+import com.bunbeauty.presentation.view_model.ListViewModel
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,10 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ListBottomSheet: BaseBottomSheetDialog<BottomSheetListBinding>() {
 
+    private val args: ListBottomSheetArgs by navArgs()
     override val viewModel: ListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.listData = args.listData
 
         binding.bottomSheetListTvTitle.toggleVisibility(viewModel.isTitleVisible)
         binding.bottomSheetListTvTitle.text = viewModel.title
@@ -35,6 +38,9 @@ class ListBottomSheet: BaseBottomSheetDialog<BottomSheetListBinding>() {
             viewModel.goBack()
             false
         }
-        itemAdapter.set(viewModel.list)
+        val listItems = viewModel.list.map { listModel ->
+            ListItem(listModel)
+        }
+        itemAdapter.set(listItems)
     }
 }

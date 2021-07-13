@@ -15,13 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.ErrorEvent
+import com.bunbeauty.presentation.ErrorEvent
+import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.flow.onEach
 import java.lang.reflect.ParameterizedType
+import javax.inject.Inject
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
@@ -30,6 +32,9 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         get() = mutableBinding!!
     protected val textInputMap = HashMap<String, TextInputLayout>()
     protected abstract val viewModel: BaseViewModel
+
+    @Inject
+    lateinit var router: Router
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(

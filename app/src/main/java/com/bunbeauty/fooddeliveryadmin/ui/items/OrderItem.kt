@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.ui.items
 
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bunbeauty.domain.enums.OrderStatus

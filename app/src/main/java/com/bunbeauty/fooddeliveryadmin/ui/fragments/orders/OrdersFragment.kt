@@ -8,23 +8,20 @@ import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
-import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
-import com.bunbeauty.fooddeliveryadmin.presentation.order.OrdersViewModel
-import com.bunbeauty.fooddeliveryadmin.presentation.state.ExtendedState
-import com.bunbeauty.fooddeliveryadmin.presentation.state.State
+import com.bunbeauty.presentation.view_model.state.ExtendedState
+import com.bunbeauty.presentation.view_model.state.State
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
-import com.bunbeauty.fooddeliveryadmin.ui.items.list.CafeAddress
+import com.bunbeauty.presentation.list.CafeAddress
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
-    override val viewModel: OrdersViewModel by viewModels()
+    override val viewModel: com.bunbeauty.presentation.view_model.order.OrdersViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +45,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             }
             viewModel.addressState.onEach { state ->
                 when (state) {
-                    is State.Success -> {
+                    is com.bunbeauty.presentation.view_model.state.State.Success -> {
                         fragmentOrdersNcvAddress.cardText = state.data
                     }
                     else -> Unit
@@ -57,15 +54,15 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
             viewModel.orderListState.onEach { state ->
                 when (state) {
-                    is ExtendedState.Loading -> {
+                    is com.bunbeauty.presentation.view_model.state.ExtendedState.Loading -> {
                         fragmentOrdersLpiLoading.visible()
                     }
-                    is ExtendedState.AddedSuccess -> {
+                    is com.bunbeauty.presentation.view_model.state.ExtendedState.AddedSuccess -> {
                         fragmentOrdersLpiLoading.invisible()
                         fragmentOrdersRvResult.smoothScrollToPosition(0)
                         itemAdapter.set(state.data)
                     }
-                    is ExtendedState.UpdatedSuccess -> {
+                    is com.bunbeauty.presentation.view_model.state.ExtendedState.UpdatedSuccess -> {
                         fragmentOrdersLpiLoading.invisible()
                         itemAdapter.set(state.data)
                     }

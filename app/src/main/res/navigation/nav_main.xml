@@ -16,7 +16,6 @@
             app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
     </fragment>
-
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragment"
@@ -38,8 +37,8 @@
             android:name="order"
             app:argType="com.bunbeauty.domain.model.order.Order" />
         <action
-            android:id="@+id/to_statusListBottomSheet"
-            app:destination="@id/statusListBottomSheet" />
+            android:id="@+id/to_listBottomSheet"
+            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/statisticFragment"
@@ -50,11 +49,8 @@
             android:id="@+id/to_statisticDetailsFragment"
             app:destination="@id/statisticDetailsFragment" />
         <action
-            android:id="@+id/to_statisticAddressListBottomSheet"
-            app:destination="@id/statisticAddressListBottomSheet" />
-        <action
-            android:id="@+id/to_statisticPeriodListBottomSheet"
-            app:destination="@id/statisticPeriodListBottomSheet" />
+            android:id="@+id/to_listBottomSheet"
+            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/statisticDetailsFragment"
@@ -65,11 +61,6 @@
             android:name="statistic"
             app:argType="com.bunbeauty.domain.model.statistic.Statistic" />
     </fragment>
-    <dialog
-        android:id="@+id/addressListBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.AddressListBottomSheet"
-        android:label="AddressListBottomSheet"
-        tools:layout="@layout/bottom_sheet_address_list" />
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.MenuFragment"
@@ -104,44 +95,12 @@
             app:destination="@id/listBottomSheet" />
     </fragment>
     <dialog
-        android:id="@+id/statisticAddressListBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticAddressListBottomSheet"
-        android:label="StatisticAddressListBottomSheet"
-        tools:layout="@layout/bottom_sheet_statistic_address_list" />
-    <dialog
-        android:id="@+id/statisticPeriodListBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticPeriodListBottomSheet"
-        android:label="StatisticPeriodListBottomSheet"
-        tools:layout="@layout/bottom_sheet_statistic_period_list" />
-    <dialog
-        android:id="@+id/statusListBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.StatusListBottomSheet"
-        android:label="StatusListBottomSheet"
-        tools:layout="@layout/bottom_sheet_status_list" >
-        <argument
-            android:name="isDelivery"
-            app:argType="boolean" />
-        <argument
-            android:name="isDeferred"
-            app:argType="boolean" />
-    </dialog>
-    <dialog
         android:id="@+id/listBottomSheet"
         android:name="com.bunbeauty.fooddeliveryadmin.ui.fragments.ListBottomSheet"
         tools:layout="@layout/bottom_sheet_list"
         android:label="ListBottomSheet" >
         <argument
-            android:name="title"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="selectedKey"
-            app:argType="string" />
-        <argument
-            android:name="requestKey"
-            app:argType="string" />
-        <argument
-            android:name="list"
-            app:argType="com.bunbeauty.fooddeliveryadmin.ui.items.list.CafeAddress[]" />
+            android:name="listData"
+            app:argType="com.bunbeauty.presentation.ListData" />
     </dialog>
 </navigation>

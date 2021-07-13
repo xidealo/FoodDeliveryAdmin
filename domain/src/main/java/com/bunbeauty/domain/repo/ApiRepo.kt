@@ -2,7 +2,7 @@ package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.domain.model.ServerMenuProduct
+import com.bunbeauty.domain.model.menu_product.ServerMenuProduct
 import com.bunbeauty.domain.model.cafe.server.ServerCafe
 import com.bunbeauty.domain.model.order.server.ServerOrder
 import kotlinx.coroutines.flow.*

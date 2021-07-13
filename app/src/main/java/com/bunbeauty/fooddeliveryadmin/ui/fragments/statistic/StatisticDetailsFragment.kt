@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticDetailsBinding
-import com.bunbeauty.fooddeliveryadmin.presentation.statistic.StatisticDetailsViewModel
 import com.bunbeauty.fooddeliveryadmin.ui.items.ProductStatisticItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
@@ -14,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>() {
 
-    override val viewModel: StatisticDetailsViewModel by viewModels()
+    override val viewModel: com.bunbeauty.presentation.view_model.statistic.StatisticDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

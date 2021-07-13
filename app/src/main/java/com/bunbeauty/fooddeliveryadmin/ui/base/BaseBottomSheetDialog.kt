@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.presentation.BaseViewModel
+import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,7 +19,7 @@ abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragmen
     protected val binding by lazy {
         checkNotNull(mutableBinding)
     }
-    protected abstract val viewModel: BaseViewModel
+    protected abstract val viewModel: com.bunbeauty.presentation.view_model.BaseViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.presentation.menu.MenuViewModel
-import com.bunbeauty.fooddeliveryadmin.presentation.state.State
+import com.bunbeauty.presentation.view_model.state.State
 import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
-    override val viewModel: MenuViewModel by viewModels()
+    override val viewModel: com.bunbeauty.presentation.view_model.menu.MenuViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,8 +28,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         }
         viewModel.productListState.onEach { productListState ->
             when (productListState) {
-                is State.Loading -> Unit
-                is State.Success -> {
+                is com.bunbeauty.presentation.view_model.state.State.Loading -> Unit
+                is com.bunbeauty.presentation.view_model.state.State.Success -> {
                     itemAdapter.set(productListState.data)
                 }
                 else -> Unit

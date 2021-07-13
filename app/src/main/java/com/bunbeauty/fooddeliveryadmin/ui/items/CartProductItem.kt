@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementCartProductBinding
-import com.bunbeauty.fooddeliveryadmin.extensions.setImage
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import kotlinx.parcelize.IgnoredOnParcel

@@ -58,5 +58,4 @@ object Constants {
     // PATH
 
     const val IMAGES_FOLDER = "image/*"
-    //const val FB_STORAGE = "gs://fooddelivery-ce2ef.appspot.com"
 }

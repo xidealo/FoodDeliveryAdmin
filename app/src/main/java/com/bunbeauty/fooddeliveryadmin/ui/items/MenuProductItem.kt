@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.ui.items
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding

@@ -35,7 +35,7 @@
 
     <!-- ORDERS-->
     <string name="msg_orders_deferred_time">Ко времени:&#160;</string>
-    <string name="title_orders_select_cafe">Список кафе</string>
+    <string name="title_orders_select_cafe">Выберите кафе</string>
 
     <!-- ORDER STATUS-->
     <string name="msg_status_not_accepted">Обрабатывается</string>
@@ -68,6 +68,7 @@
     <string name="msg_order_details_alert">Отменить заказ?</string>
     <string name="action_order_details_yes">Да</string>
     <string name="action_order_details_no">Нет</string>
+    <string name="title_order_details_status">Статус заказа</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_menu_orders">Заказы</string>
@@ -75,8 +76,13 @@
     <string name="title_bottom_navigation_menu_menu">Меню</string>
 
     <!-- STATISTICS -->
-    <string name="msg_statistic_all_cafes">Все кафе</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
+    <string name="title_statistic_select_cafe">Выберите кафе</string>
+    <string name="msg_statistic_all_cafes">Все кафе</string>
+    <string name="title_statistic_select_period">Выберите период</string>
+    <string name="msg_statistic_day_period">По дням</string>
+    <string name="msg_statistic_week_period">По неделям</string>
+    <string name="msg_statistic_month_period">По месяцам</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
