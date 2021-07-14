@@ -6,4 +6,4 @@ import kotlinx.parcelize.Parcelize
 data class CafeAddress(
     override val title: String,
     val cafeUuid: String?
-): ListModel()
+): ListItemModel()

@@ -1,4 +1,3 @@
-
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.orders
 
 import android.os.Bundle
@@ -10,19 +9,24 @@ import com.bunbeauty.common.Constants.STATUS_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
-import com.bunbeauty.fooddeliveryadmin.ui.items.CartProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.*
+import com.bunbeauty.fooddeliveryadmin.ui.items.CartProductItem
 import com.bunbeauty.presentation.list.OrderStatus
+import com.bunbeauty.presentation.navigation_event.OrderDetailsNavigationEvent
+import com.bunbeauty.presentation.view_model.order.OrderDetailsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
-    override val viewModel: com.bunbeauty.presentation.view_model.order.OrderDetailsViewModel by viewModels()
+    override val viewModel: OrderDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,9 +52,11 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                     fragmentOrderDetailsCvStatus.cardText = orderStatus.title
                 }
             }
-            val itemAdapter = ItemAdapter<CartProductItem>().apply {
-                set(viewModel.productList)
+            val itemAdapter = ItemAdapter<CartProductItem>()
+            val items = viewModel.productList.map { cartProductItemModel ->
+                CartProductItem(cartProductItemModel)
             }
+            itemAdapter.set(items)
             val fastAdapter = FastAdapter.with(itemAdapter)
             fragmentOrderDetailsRvProductList.adapter = fastAdapter
             fragmentOrderDetailsTvDeliveryCostValue.text = viewModel.deliveryCost
@@ -86,6 +92,13 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 }
             }
         }
+        viewModel.navigation.onEach { navigationEvent ->
+            when (navigationEvent) {
+                is OrderDetailsNavigationEvent.ToStatusList ->
+                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                else -> Unit
+            }
+        }.startedLaunch(viewLifecycleOwner)
     }
 
     private fun showCanceledAlert(status: String) {

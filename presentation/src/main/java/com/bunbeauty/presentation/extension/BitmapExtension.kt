@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.extensions
+package com.bunbeauty.presentation.extension
 
 import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream

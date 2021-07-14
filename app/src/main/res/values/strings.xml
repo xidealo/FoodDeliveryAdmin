@@ -10,48 +10,16 @@
     title_registration_pass
     -->
 
-    <!-- COMMON -->
-    <string name="msg_ruble">&#160;₽</string>
-    <string name="msg_break">\n</string>
-    <string name="msg_parenthesis">)&#160;</string>
-    <string name="msg_colon">:&#160;</string>
-    <string name="msg_pieces">x&#160;</string>
-    <string name="msg_comma">,&#160;</string>
-
-    <!-- ADDRESS -->
-    <string name="msg_address_house">, д.&#160;</string>
-    <string name="msg_address_flat">, кв.&#160;</string>
-    <string name="msg_address_entrance">, подъезд&#160;</string>
-    <string name="msg_address_intercom">, код:&#160;</string>
-    <string name="msg_address_floor">, этаж&#160;</string>
-
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
     <string name="error_login_enter_user_name">Введите логин</string>
     <string name="error_login_enter_user_password">Введите пароль</string>
-    <string name="error_login_authorization">Неправильный логин или пароль</string>
-
-    <!-- ORDERS-->
-    <string name="msg_orders_deferred_time">Ко времени:&#160;</string>
-    <string name="title_orders_select_cafe">Выберите кафе</string>
-
-    <!-- ORDER STATUS-->
-    <string name="msg_status_not_accepted">Обрабатывается</string>
-    <string name="msg_status_accepted">Принят</string>
-    <string name="msg_status_preparing">Готовится</string>
-    <string name="msg_status_sent_out">В пути</string>
-    <string name="msg_status_delivered">Выдан</string>
-    <string name="msg_status_ready">Готов</string>
-    <string name="msg_status_canceled">Отменен</string>
 
     <!-- ORDER DETAILS -->
-    <string name="msg_order_details_order">Заказ&#160;</string>
     <string name="msg_order_details_order_time">Дата и время заказа</string>
     <string name="msg_order_details_pickup_method">Способ получения</string>
-    <string name="msg_order_details_delivery">Доставка</string>
-    <string name="msg_order_details_pickup">Самовывоз</string>
     <string name="msg_order_details_phone">Номер телефона</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
@@ -61,28 +29,17 @@
     <string name="msg_order_details_order_cost">Сумма заказа</string>
     <string name="msg_order_details_delivery_cost">Доставка</string>
     <string name="msg_order_details_bonuses">Бонусная скидка</string>
-    <string name="msg_order_details_delivery_free">Бесплатно</string>
     <string name="action_order_details_cancel">Отменить</string>
     <string name="action_order_details_save">Сохранить</string>
     <string name="title_order_details_alert">Внимание!</string>
     <string name="msg_order_details_alert">Отменить заказ?</string>
     <string name="action_order_details_yes">Да</string>
     <string name="action_order_details_no">Нет</string>
-    <string name="title_order_details_status">Статус заказа</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_menu_orders">Заказы</string>
     <string name="title_bottom_navigation_menu_statistic">Статистика</string>
     <string name="title_bottom_navigation_menu_menu">Меню</string>
-
-    <!-- STATISTICS -->
-    <string name="msg_statistic_orders">Заказов:&#160;</string>
-    <string name="title_statistic_select_cafe">Выберите кафе</string>
-    <string name="msg_statistic_all_cafes">Все кафе</string>
-    <string name="title_statistic_select_period">Выберите период</string>
-    <string name="msg_statistic_day_period">По дням</string>
-    <string name="msg_statistic_week_period">По неделям</string>
-    <string name="msg_statistic_month_period">По месяцам</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
@@ -98,21 +55,14 @@
 
     <!-- CREATE MENU PRODUCT -->
     <string name="title_create_menu_product_new_product">Новая позиция</string>
-    <string name="msg_create_menu_product_select_category">Выберите категорию</string>
     <string name="hint_create_menu_product_name">Название</string>
+    <string name="msg_create_menu_product_select_category">Выберите категорию</string>
     <string name="hint_create_menu_product_cost">Цена, ₽</string>
     <string name="hint_create_menu_product_discount_cost">Цена со скидкой, ₽</string>
     <string name="hint_create_menu_product_weight">Вес, г</string>
     <string name="hint_create_menu_product_description">Описание</string>
     <string name="hint_create_menu_product_combo_description">Описание комбо</string>
     <string name="action_create_menu_product_create">Создать</string>
-    <string name="error_create_menu_product_image_not_loaded">Не выбрано изображение</string>
-    <string name="error_create_menu_product_empty_name">Название не может быть пустым</string>
-    <string name="error_create_menu_product_category_not_selected">Не выбрана категория</string>
-    <string name="error_create_menu_product_cost_incorrect">Некорректное значение</string>
-    <string name="error_create_menu_product_discount_cost_incorrect">Должна быть меньше цены</string>
-    <string name="error_create_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
-    <string name="msg_product_created">&#160;создан</string>
 
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
@@ -124,26 +74,9 @@
     <string name="hint_edit_menu_product_combo_description">Описание комбо</string>
     <string name="action_edit_menu_product_save">Сохранить</string>
     <string name="action_edit_menu_product_delete">Удалить</string>
-    <string name="error_edit_menu_product_empty_name">Название не может быть пустым</string>
-    <string name="error_edit_menu_product_cost_incorrect">Некорректное значение</string>
-    <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть меньше цены</string>
-    <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
-    <string name="msg_product_updated">&#160;обновлён</string>
-    <string name="msg_product_deleted">&#160;удалён</string>
     <string name="title_edit_menu_product_alert">Удаление</string>
     <string name="msg_edit_menu_product_alert">Удалить позицию?</string>
     <string name="action_edit_menu_product_alert_yes">Да</string>
     <string name="action_edit_menu_product_alert_cancel">Отмена</string>
-
-    <!-- PRODUCT CODE -->
-    <string name="msg_product_code_combo">Комбо</string>
-    <string name="msg_product_code_pizza">Пицца</string>
-    <string name="msg_product_code_barbecue">На мангале</string>
-    <string name="msg_product_code_burger">Бургеры</string>
-    <string name="msg_product_code_drink">Напитки</string>
-    <string name="msg_product_code_potato">Картошка</string>
-    <string name="msg_product_code_spice">Соусы</string>
-    <string name="msg_product_code_bakery">Выпечка</string>
-    <string name="msg_product_code_oven">В печи</string>
 
 </resources>

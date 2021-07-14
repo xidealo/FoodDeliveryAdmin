@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
-import com.bunbeauty.presentation.view_model.state.State
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.MenuFragmentDirections.*
+import com.bunbeauty.presentation.state.State
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MenuFragment : BaseFragment<FragmentMenuBinding>() {
@@ -23,14 +27,17 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         val fastAdapter = FastAdapter.with(itemAdapter)
         binding.fragmentMenuRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, menuProductItem, _ ->
-            viewModel.goToEditMenuProduct(menuProductItem.menuProduct)
+            viewModel.goToEditMenuProduct(menuProductItem.menuProductItemModel)
             false
         }
         viewModel.productListState.onEach { productListState ->
             when (productListState) {
-                is com.bunbeauty.presentation.view_model.state.State.Loading -> Unit
-                is com.bunbeauty.presentation.view_model.state.State.Success -> {
-                    itemAdapter.set(productListState.data)
+                is State.Loading -> Unit
+                is State.Success -> {
+                    val items = productListState.data.map{ menuProductItemModel ->
+                        MenuProductItem(menuProductItemModel)
+                    }
+                    itemAdapter.set(items)
                 }
                 else -> Unit
             }
@@ -39,5 +46,14 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         binding.fragmentMenuFabCreateProduct.setOnClickListener {
             viewModel.goToCreateMenuProduct()
         }
+        viewModel.navigation.onEach { navigationEvent ->
+            when (navigationEvent) {
+                is MenuNavigationEvent.ToCreateMenuProduct ->
+                    router.navigate(toCreateMenuProductFragment())
+                is MenuNavigationEvent.ToEditMenuProduct ->
+                    router.navigate(toEditMenuProductFragment(navigationEvent.menuProduct))
+                else -> Unit
+            }
+        }.startedLaunch(viewLifecycleOwner)
     }
 }

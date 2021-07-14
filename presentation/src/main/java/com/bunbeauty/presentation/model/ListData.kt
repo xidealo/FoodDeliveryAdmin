@@ -1,13 +1,13 @@
-package com.bunbeauty.presentation
+package com.bunbeauty.presentation.model
 
 import android.os.Parcelable
-import com.bunbeauty.presentation.list.ListModel
+import com.bunbeauty.presentation.list.ListItemModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ListData(
     val title: String?,
-    val list: List<ListModel>,
+    val listItem: List<ListItemModel>,
     val requestKey: String,
     val selectedKey: String,
 ): Parcelable

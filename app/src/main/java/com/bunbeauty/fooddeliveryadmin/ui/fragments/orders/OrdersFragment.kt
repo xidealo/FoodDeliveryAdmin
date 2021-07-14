@@ -8,31 +8,36 @@ import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
-import com.bunbeauty.presentation.view_model.state.ExtendedState
-import com.bunbeauty.presentation.view_model.state.State
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
 import com.bunbeauty.presentation.list.CafeAddress
+import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
+import com.bunbeauty.presentation.state.ExtendedState
+import com.bunbeauty.presentation.state.State
+import com.bunbeauty.presentation.view_model.order.OrdersViewModel
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
-    override val viewModel: com.bunbeauty.presentation.view_model.order.OrdersViewModel by viewModels()
+    override val viewModel: OrdersViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val itemAdapter = ItemAdapter<OrderItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-
         with(binding) {
             fragmentOrdersRvResult.adapter = fastAdapter
             fastAdapter.onClickListener = { _, _, orderItem, _ ->
-                viewModel.goToOrderDetails(orderItem.order)
+                viewModel.goToOrderDetails(orderItem.orderItemModel)
                 false
             }
             setFragmentResultListener(CAFE_ADDRESS_REQUEST_KEY) { _, bundle ->
@@ -45,7 +50,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             }
             viewModel.addressState.onEach { state ->
                 when (state) {
-                    is com.bunbeauty.presentation.view_model.state.State.Success -> {
+                    is State.Success -> {
                         fragmentOrdersNcvAddress.cardText = state.data
                     }
                     else -> Unit
@@ -54,21 +59,38 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
             viewModel.orderListState.onEach { state ->
                 when (state) {
-                    is com.bunbeauty.presentation.view_model.state.ExtendedState.Loading -> {
+                    is ExtendedState.Loading -> {
                         fragmentOrdersLpiLoading.visible()
                     }
-                    is com.bunbeauty.presentation.view_model.state.ExtendedState.AddedSuccess -> {
+                    is ExtendedState.AddedSuccess -> {
                         fragmentOrdersLpiLoading.invisible()
                         fragmentOrdersRvResult.smoothScrollToPosition(0)
-                        itemAdapter.set(state.data)
+                        val items = state.data.map { orderItemModel ->
+                            OrderItem(orderItemModel)
+                        }
+                        itemAdapter.set(items)
                     }
-                    is com.bunbeauty.presentation.view_model.state.ExtendedState.UpdatedSuccess -> {
+                    is ExtendedState.UpdatedSuccess -> {
                         fragmentOrdersLpiLoading.invisible()
-                        itemAdapter.set(state.data)
+                        val items = state.data.map { orderItemModel ->
+                            OrderItem(orderItemModel)
+                        }
+                        itemAdapter.set(items)
                     }
                     else -> Unit
                 }
             }.startedLaunch(viewLifecycleOwner)
         }
+
+        viewModel.navigation.onEach { navigationEvent ->
+            when (navigationEvent) {
+                is OrdersNavigationEvent.ToOrderDetails ->
+                    router.navigate(toOrdersDetailsFragment(navigationEvent.order))
+                is OrdersNavigationEvent.ToCafeAddressList -> {
+                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                }
+                else -> Unit
+            }
+        }.startedLaunch(viewLifecycleOwner)
     }
 }

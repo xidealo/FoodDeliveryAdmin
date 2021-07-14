@@ -11,27 +11,37 @@ import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
-import com.bunbeauty.presentation.view_model.state.State
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.toListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.toStatisticDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.StatisticItem
 import com.bunbeauty.presentation.list.CafeAddress
 import com.bunbeauty.presentation.list.Period
+import com.bunbeauty.presentation.navigation_event.StatisticNavigationEvent
+import com.bunbeauty.presentation.state.State
+import com.bunbeauty.presentation.view_model.statistic.StatisticViewModel
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
-    override val viewModel: com.bunbeauty.presentation.view_model.statistic.StatisticViewModel by viewModels()
+    override val viewModel: StatisticViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            fragmentStatisticMcvAddress.cardText = viewModel.selectedCafeAddress.title
-            fragmentStatisticMcvPeriod.cardText = viewModel.selectedPeriod.title
+            viewModel.cafeAddress.onEach { cafeAddress ->
+                fragmentStatisticMcvAddress.cardText = cafeAddress.title
+            }.startedLaunch(viewLifecycleOwner)
+            viewModel.period.onEach { period ->
+                fragmentStatisticMcvPeriod.cardText = period.title
+            }.startedLaunch(viewLifecycleOwner)
             fragmentStatisticMcvAddress.setOnClickListener {
                 viewModel.goToAddressList()
             }
@@ -43,46 +53,55 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
             val fastAdapter = FastAdapter.with(itemAdapter)
             fragmentStatisticRvList.adapter = fastAdapter
             fastAdapter.onClickListener = { _, _, statisticItem, _ ->
-                viewModel.goToStatisticDetails(statisticItem.statistic)
+                viewModel.goToStatisticDetails(statisticItem.statisticItemModel)
                 false
             }
 
             setFragmentResultListener(CAFE_ADDRESS_REQUEST_KEY) { _, bundle ->
                 bundle.getParcelable<CafeAddress>(SELECTED_CAFE_ADDRESS_KEY)?.let { cafeAddress ->
-                    fragmentStatisticMcvAddress.cardText = cafeAddress.title
-                    viewModel.selectedCafeAddress = cafeAddress
-                    viewModel.getStatistic(viewModel.selectedCafeAddress, viewModel.selectedPeriod)
+                    viewModel.setCafeAddress(cafeAddress)
                 }
             }
             setFragmentResultListener(PERIOD_REQUEST_KEY) { _, bundle ->
                 bundle.getParcelable<Period>(SELECTED_PERIOD_KEY)?.let { period ->
-                    fragmentStatisticMcvPeriod.cardText = period.title
-                    viewModel.selectedPeriod = period
-                    viewModel.getStatistic(viewModel.selectedCafeAddress, viewModel.selectedPeriod)
+                    viewModel.setPeriod(period)
                 }
             }
 
             viewModel.statisticState.onEach { state ->
                 when (state) {
-                    is com.bunbeauty.presentation.view_model.state.State.Loading -> {
+                    is State.Loading -> {
                         fragmentStatisticRvList.gone()
                         fragmentStatisticLpiLoading.visible()
                     }
-                    is com.bunbeauty.presentation.view_model.state.State.Empty -> {
+                    is State.Empty -> {
                         fragmentStatisticLpiLoading.invisible()
                     }
-                    is com.bunbeauty.presentation.view_model.state.State.Success -> {
-                        itemAdapter.set(state.data)
+                    is State.Success -> {
+                        val items = state.data.map { statisticItemModel ->
+                            StatisticItem(statisticItemModel)
+                        }
+                        itemAdapter.set(items)
                         fragmentStatisticRvList.visible()
                         fragmentStatisticLpiLoading.invisible()
                     }
-                    is com.bunbeauty.presentation.view_model.state.State.Error -> {
+                    is State.Error -> {
                         fragmentStatisticLpiLoading.invisible()
                     }
                 }
             }.startedLaunch(viewLifecycleOwner)
         }
 
-        viewModel.getStatistic(viewModel.selectedCafeAddress, viewModel.selectedPeriod)
+        viewModel.navigation.onEach { navigationEvent ->
+            when (navigationEvent) {
+                is StatisticNavigationEvent.ToStatisticDetails ->
+                    router.navigate(toStatisticDetailsFragment(navigationEvent.statistic))
+                is StatisticNavigationEvent.ToCafeAddressList ->
+                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                is StatisticNavigationEvent.ToPeriodList ->
+                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                else -> Unit
+            }
+        }.startedLaunch(viewLifecycleOwner)
     }
 }

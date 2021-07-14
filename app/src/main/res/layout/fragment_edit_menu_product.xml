@@ -142,8 +142,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_edit_menu_product_et_description"
-                    style="@style/MaterialInput"
-                    android:inputType="textCapSentences" />
+                    style="@style/MultilineMaterialInput"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -157,8 +157,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_edit_menu_product_et_combo_description"
-                    style="@style/MaterialInput"
-                    android:inputType="textCapSentences" />
+                    style="@style/MultilineMaterialInput"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

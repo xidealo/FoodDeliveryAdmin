@@ -17,7 +17,7 @@ import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
-import com.bunbeauty.presentation.ErrorEvent
+import com.bunbeauty.presentation.navigation_event.NavigationEvent
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -27,14 +27,14 @@ import javax.inject.Inject
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
-    private var mutableBinding: B? = null
-    protected val binding
-        get() = mutableBinding!!
-    protected val textInputMap = HashMap<String, TextInputLayout>()
-    protected abstract val viewModel: BaseViewModel
-
     @Inject
     lateinit var router: Router
+
+    private var mutableBinding: B? = null
+    protected val binding
+        get() = checkNotNull(mutableBinding)
+    protected val textInputMap = HashMap<String, TextInputLayout>()
+    protected abstract val viewModel: BaseViewModel
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
@@ -53,18 +53,19 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
             showSnackbar(message, R.color.lightTextColor, R.color.colorPrimary)
         }.startedLaunch(viewLifecycleOwner)
         viewModel.error.onEach { error ->
+            showError(error)
+        }.startedLaunch(viewLifecycleOwner)
+        viewModel.fieldError.onEach { fieldError ->
             textInputMap.values.forEach { textInput ->
                 textInput.error = null
                 textInput.clearFocus()
             }
-            when (error) {
-                is ErrorEvent.MessageError -> {
-                    showError(error.message)
-                }
-                is ErrorEvent.FieldError -> {
-                    textInputMap[error.key]?.error = error.message
-                    textInputMap[error.key]?.requestFocus()
-                }
+            textInputMap[fieldError.key]?.error = fieldError.message
+            textInputMap[fieldError.key]?.requestFocus()
+        }.startedLaunch(viewLifecycleOwner)
+        viewModel.navigation.onEach { navigationEvent ->
+            if (navigationEvent is NavigationEvent.Back) {
+                router.navigateUp()
             }
         }.startedLaunch(viewLifecycleOwner)
     }

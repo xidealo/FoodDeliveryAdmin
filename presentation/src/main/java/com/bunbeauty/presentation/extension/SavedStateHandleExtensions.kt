@@ -1,32 +1,19 @@
-package com.bunbeauty.fooddeliveryadmin.extensions
+package com.bunbeauty.presentation.extension
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavArgs
-import androidx.navigation.NavArgsLazy
 
-inline fun <reified Args : NavArgs> SavedStateHandle.navArgs() = NavArgsLazy(Args::class) {
-    val bundle = Bundle()
-    keys().forEach {
-        val value = get<Any>(it)
-        when (value) {
-            is Parcelable -> {
-                bundle.putParcelable(it, value)
-            }
-            is Boolean -> {
-                bundle.putBoolean(it, value)
-            }
-            is String -> {
-                bundle.putString(it, value)
-            }
-            is Array<*> -> {
-                if (value.isArrayOf<Parcelable>()) {
-                    bundle.putParcelableArray(it, value as Array<out Parcelable>)
-                }
-            }
+inline fun <reified T> SavedStateHandle.navArg(key: String): T? {
+    return when {
+        Parcelable::class.java.isAssignableFrom(T::class.java) -> {
+            get<Parcelable>(key) as T
         }
+        T::class.java == Boolean::class.java -> {
+            get<Boolean>(key) as T
+        }
+        T::class.java == String::class.java -> {
+            get<String>(key) as T
+        }
+        else -> null
     }
-    bundle
 }

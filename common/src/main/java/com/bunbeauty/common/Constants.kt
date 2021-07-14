@@ -4,9 +4,6 @@ object Constants {
 
     // FRAGMENT FOR RESULT
 
-    const val ADDRESS_REQUEST_KEY = "address request key"
-    const val SELECTED_ADDRESS_KEY = "selected address key"
-
     const val PERIOD_REQUEST_KEY = "period request key"
     const val SELECTED_PERIOD_KEY = "selected period key"
 
@@ -40,13 +37,9 @@ object Constants {
     // ARGS_KEY
 
     const val MENU_PRODUCT_ARGS_KEY = "menuProduct"
-
-    const val TITLE_ARGS_KEY = "title"
-    const val LIST_ARGS_KEY = "list"
-    const val SELECTED_KEY_ARGS_KEY = "selectedKey"
-    const val REQUEST_KEY_ARGS_KEY = "requestKey"
-
+    const val LIST_DATA_ARGS_KEY = "listData"
     const val ORDER_ARGS_KEY = "order"
+    const val STATISTIC_ARGS_KEY = "statistic"
 
     // ERROR_KEY
 

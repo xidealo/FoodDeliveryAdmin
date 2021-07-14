@@ -2,7 +2,7 @@ package com.bunbeauty.presentation.list
 
 import android.os.Parcelable
 
-abstract class ListModel: Parcelable {
+abstract class ListItemModel: Parcelable {
 
     abstract val title: String
 }

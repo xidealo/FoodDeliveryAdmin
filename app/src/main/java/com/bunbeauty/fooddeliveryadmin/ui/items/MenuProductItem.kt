@@ -1,35 +1,28 @@
 package com.bunbeauty.fooddeliveryadmin.ui.items
 
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bunbeauty.domain.model.menu_product.MenuProduct
+import androidx.core.view.isVisible
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
+import com.bunbeauty.presentation.model.MenuProductItemModel
 
-@Parcelize
 data class MenuProductItem(
-    val name: String,
-    val photoLink: String,
-    val visible: Boolean,
-    val newCost: String,
-    val oldCost: String,
-    val menuProduct: MenuProduct
-) : ImageItem<ElementMenuProductBinding>(), Parcelable {
+    val menuProductItemModel: MenuProductItemModel
+) : ImageItem<ElementMenuProductBinding>() {
 
-    @IgnoredOnParcel
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementMenuProductBinding, payloads: List<Any>) {
-        setImage(binding.elementMenuProductIvPhoto, photoLink)
-        binding.elementMenuProductTvTitle.text = name
-        binding.elementMenuProductIvVisible.isVisible = visible
-        binding.elementMenuProductTvOldCost.strikeOutText()
-        binding.elementMenuProductTvOldCost.text = oldCost
-        binding.elementMenuProductTvNewCost.text = newCost
+        with(binding) {
+            setImage(elementMenuProductIvPhoto, menuProductItemModel.photoLink)
+            elementMenuProductTvTitle.text = menuProductItemModel.name
+            elementMenuProductIvVisible.isVisible = menuProductItemModel.visible
+            elementMenuProductTvOldCost.strikeOutText()
+            elementMenuProductTvOldCost.text = menuProductItemModel.oldCost
+            elementMenuProductTvNewCost.text = menuProductItemModel.newCost
+        }
     }
 
     override fun createBinding(

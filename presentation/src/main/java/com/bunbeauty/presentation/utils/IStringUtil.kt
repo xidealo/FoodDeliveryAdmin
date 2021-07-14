@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.utils
+package com.bunbeauty.presentation.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.ProductCode

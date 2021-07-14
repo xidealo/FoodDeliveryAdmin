@@ -1,13 +1,15 @@
 package com.bunbeauty.presentation.view_model.statistic
 
 import androidx.lifecycle.SavedStateHandle
+import com.bunbeauty.common.Constants
+import com.bunbeauty.common.Constants.STATISTIC_ARGS_KEY
+import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.order.IOrderUtil
-import com.bunbeauty.fooddeliveryadmin.extensions.navArgs
+import com.bunbeauty.presentation.extension.navArg
+import com.bunbeauty.presentation.model.ProductStatisticItemModel
+import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.items.ProductStatisticItem
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticDetailsFragmentArgs
-import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -21,35 +23,34 @@ class StatisticDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val args: StatisticDetailsFragmentArgs by savedStateHandle.navArgs()
+    private val statistic: Statistic = savedStateHandle.navArg(STATISTIC_ARGS_KEY)!!
+
     private val delivery by lazy {
         runBlocking {
             dataStoreRepo.delivery.first()
         }
     }
 
-    val period: String
-        get() = args.statistic.period
+    val period: String = statistic.period
 
     val proceeds: String
         get() {
-            val proceeds = orderUtil.getProceeds(args.statistic.orderList, delivery)
+            val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
             return stringUtil.getCostString(proceeds)
         }
 
-    val orderCount: String
-        get() = args.statistic.orderList.size.toString()
+    val orderCount: String = statistic.orderList.size.toString()
 
     val averageCheck: String
         get() {
-            val averageCheck = orderUtil.getAverageCheck(args.statistic.orderList, delivery)
+            val averageCheck = orderUtil.getAverageCheck(statistic.orderList, delivery)
             return stringUtil.getCostString(averageCheck)
         }
 
-    val productStatisticList: List<ProductStatisticItem>
-        get() = orderUtil.getProductStatisticList(args.statistic.orderList)
+    val productStatisticList: List<ProductStatisticItemModel>
+        get() = orderUtil.getProductStatisticList(statistic.orderList)
             .map { productStatistic ->
-                ProductStatisticItem(
+                ProductStatisticItemModel(
                     name = productStatistic.name,
                     photoLink = productStatistic.photoLink,
                     orderCount = productStatistic.orderCount.toString(),

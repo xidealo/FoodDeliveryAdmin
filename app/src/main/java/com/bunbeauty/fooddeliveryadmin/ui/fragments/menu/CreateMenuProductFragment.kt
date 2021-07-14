@@ -12,17 +12,22 @@ import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
-import com.bunbeauty.presentation.list.MenuProductCode
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.CreateMenuProductFragmentDirections.toListBottomSheet
+import com.bunbeauty.presentation.list.MenuProductCode
+import com.bunbeauty.presentation.navigation_event.CreateMenuProductNavigationEvent
+import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>() {
 
-    override val viewModel: com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel by viewModels()
+    override val viewModel: CreateMenuProductViewModel by viewModels()
 
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -83,5 +88,13 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
                 )
             }
         }
+
+        viewModel.navigation.onEach { navigationEvent ->
+            when (navigationEvent) {
+                is CreateMenuProductNavigationEvent.ToProductCodeList ->
+                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                else -> Unit
+            }
+        }.startedLaunch(viewLifecycleOwner)
     }
 }

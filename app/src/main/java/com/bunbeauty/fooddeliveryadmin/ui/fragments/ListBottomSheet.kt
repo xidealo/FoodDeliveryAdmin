@@ -18,13 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ListBottomSheet: BaseBottomSheetDialog<BottomSheetListBinding>() {
 
-    private val args: ListBottomSheetArgs by navArgs()
     override val viewModel: ListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.listData = args.listData
 
         binding.bottomSheetListTvTitle.toggleVisibility(viewModel.isTitleVisible)
         binding.bottomSheetListTvTitle.text = viewModel.title
@@ -33,12 +30,12 @@ class ListBottomSheet: BaseBottomSheetDialog<BottomSheetListBinding>() {
         val fastAdapter = FastAdapter.with(itemAdapter)
         binding.bottomSheetListRvList.adapter = fastAdapter
         fastAdapter.onClickListener = { _, _, listItem, _ ->
-            val bundle = bundleOf(viewModel.selectedKey to listItem.listModel)
+            val bundle = bundleOf(viewModel.selectedKey to listItem.listItemModel)
             setFragmentResult(viewModel.requestKey, bundle)
             viewModel.goBack()
             false
         }
-        val listItems = viewModel.list.map { listModel ->
+        val listItems = viewModel.listItem.map { listModel ->
             ListItem(listModel)
         }
         itemAdapter.set(listItems)

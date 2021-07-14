@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.view_model.login
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.repo.ApiRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -24,32 +25,25 @@ class LoginViewModel @Inject constructor(
     private val resourcesProvider: IResourcesProvider,
 ) : BaseViewModel() {
 
-    private val mutableLoginState: MutableStateFlow<State<String>> =
-        MutableStateFlow(State.Loading())
-    val loginState: StateFlow<State<String>> = mutableLoginState.asStateFlow()
+    private val mutableIsLoading: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = mutableIsLoading.asStateFlow()
 
-    fun startCheckingToken() {
-        dataStoreRepo.token.onEach { token ->
-            if (token.isEmpty()) {
-                apiRepo.unsubscribeOnNotification()
-                mutableLoginState.value = State.Empty()
-            } else {
-                apiRepo.subscribeOnNotification()
-                goTo(LoginNavigationEvent.ToOrders)
-            }
-        }.launchIn(viewModelScope)
+    init {
+        subscribeOnToken()
     }
 
     fun login(username: String, password: String) {
-        mutableLoginState.value = State.Loading()
+        mutableIsLoading.value = true
 
-        val processedUsername = username.toLowerCase(Locale.ROOT).trim()
-        val processedPassword = password.toLowerCase(Locale.ROOT).trim()
+        val processedUsername = username.lowercase().trim()
+        val processedPassword = password.lowercase().trim()
         if (!isCorrectUsername(processedUsername)) {
-            sendError(resourcesProvider.getString(R.string.error_login_wrong_data))
+            showWrongDataError()
+            return
         }
         if (!isCorrectPassword(processedPassword)) {
-            sendError(resourcesProvider.getString(R.string.error_login_wrong_data))
+            showWrongDataError()
+            return
         }
         val passwordHash = getMd5(processedPassword)
 
@@ -57,23 +51,34 @@ class LoginViewModel @Inject constructor(
             if (isLoginSuccess) {
                 dataStoreRepo.saveToken(UUID.randomUUID().toString())
             } else {
-                sendError(resourcesProvider.getString(R.string.error_login_wrong_data))
+                showWrongDataError()
             }
         }.launchIn(viewModelScope)
     }
 
+    private fun subscribeOnToken() {
+        dataStoreRepo.token.onEach { token ->
+            if (token == null) {
+                apiRepo.unsubscribeOnNotification()
+                mutableIsLoading.value = false
+            } else {
+                apiRepo.subscribeOnNotification()
+                goTo(LoginNavigationEvent.ToOrders)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun showWrongDataError() {
+        mutableIsLoading.value = false
+        sendError(resourcesProvider.getString(R.string.error_login_wrong_data))
+    }
+
     private fun isCorrectUsername(username: String): Boolean {
-        if (username.isEmpty()) {
-            return false
-        }
-        return true
+        return username.isNotEmpty()
     }
 
     private fun isCorrectPassword(password: String): Boolean {
-        if (password.isEmpty()) {
-            return false
-        }
-        return true
+        return password.isNotEmpty()
     }
 
     private fun getMd5(input: String): String {

@@ -101,6 +101,6 @@
         android:label="ListBottomSheet" >
         <argument
             android:name="listData"
-            app:argType="com.bunbeauty.presentation.ListData" />
+            app:argType="com.bunbeauty.presentation.model.ListData" />
     </dialog>
 </navigation>

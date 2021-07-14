@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
@@ -23,24 +24,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.startCheckingToken()
-        viewModel.loginState.onEach { loginState ->
-            when (loginState) {
-                is State.Loading -> {
-                    binding.fragmentLoginPbLoading.visible()
-                    binding.fragmentLoginGroupLogin.gone()
-                }
-                is State.Empty -> {
-                    binding.fragmentLoginPbLoading.gone()
-                    binding.fragmentLoginGroupLogin.visible()
-                }
-                is State.Error -> {
-                    binding.fragmentLoginPbLoading.gone()
-                    binding.fragmentLoginGroupLogin.visible()
-                    showError(loginState.message)
-                }
-                else -> {
-                }
+        viewModel.isLoading.onEach { isLoading ->
+            if (isLoading) {
+                binding.fragmentLoginPbLoading.visible()
+                binding.fragmentLoginGroupLogin.gone()
+            } else {
+                binding.fragmentLoginPbLoading.gone()
+                binding.fragmentLoginGroupLogin.visible()
             }
         }.startedLaunch(viewLifecycleOwner)
         binding.fragmentLoginBtnLogin.setOnClickListener {
@@ -55,6 +45,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 is LoginNavigationEvent.ToOrders -> router.navigate(toOrdersFragment())
                 else -> Unit
             }
-        }
+        }.startedLaunch(viewLifecycleOwner)
     }
 }

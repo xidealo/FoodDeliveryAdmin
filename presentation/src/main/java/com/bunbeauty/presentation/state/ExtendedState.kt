@@ -5,5 +5,5 @@ sealed class ExtendedState<T> {
     data class AddedSuccess<T>(val data: T) : ExtendedState<T>()
     data class UpdatedSuccess<T>(val data: T) : ExtendedState<T>()
     class Empty<T> : ExtendedState<T>()
-    data class Error<T>(val message: String) : ExtendedState<T>()
+    class Error<T> : ExtendedState<T>()
 }

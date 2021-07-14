@@ -12,20 +12,25 @@ import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
-import com.bunbeauty.presentation.list.MenuProductCode
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.setImage
+import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.EditMenuProductFragmentDirections.toListBottomSheet
+import com.bunbeauty.presentation.list.MenuProductCode
+import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
+import com.bunbeauty.presentation.view_model.menu.EditMenuProductViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
 
-    override val viewModel: com.bunbeauty.presentation.view_model.menu.EditMenuProductViewModel by viewModels()
+    override val viewModel: EditMenuProductViewModel by viewModels()
 
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -97,6 +102,14 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
             textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] =
                 fragmentEditMenuProductTilComboDescription
         }
+
+        viewModel.navigation.onEach { navigationEvent ->
+            when (navigationEvent) {
+                is EditMenuProductNavigationEvent.ToProductCodeList ->
+                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                else -> Unit
+            }
+        }.startedLaunch(viewLifecycleOwner)
     }
 
     fun showDeleteDialog() {

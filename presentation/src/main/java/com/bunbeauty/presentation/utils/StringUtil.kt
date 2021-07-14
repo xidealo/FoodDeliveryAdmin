@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.utils
+package com.bunbeauty.presentation.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.*
@@ -6,7 +6,7 @@ import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.enums.ProductCode.*
 import com.bunbeauty.domain.model.order.UserAddress
 import com.bunbeauty.domain.util.resources.ResourcesProvider
-import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
 class StringUtil @Inject constructor(private val resourcesProvider: ResourcesProvider) :
@@ -44,7 +44,7 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
         return if (deferred.isNullOrEmpty()) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_orders_deferred_time) + deferred
+            resourcesProvider.getString(R.string.msg_order_deferred_time) + deferred
         }
     }
 
@@ -57,14 +57,14 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
     }
 
     override fun getOrderCodeString(orderCode: String): String {
-        return resourcesProvider.getString(R.string.msg_order_details_order) + orderCode
+        return resourcesProvider.getString(R.string.msg_order) + orderCode
     }
 
     override fun getReceivingMethodString(isDelivery: Boolean): String {
         return if (isDelivery) {
-            resourcesProvider.getString(R.string.msg_order_details_delivery)
+            resourcesProvider.getString(R.string.msg_order_delivery)
         } else {
-            resourcesProvider.getString(R.string.msg_order_details_pickup)
+            resourcesProvider.getString(R.string.msg_order_pickup)
         }
     }
 
@@ -111,7 +111,7 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
 
     override fun getDeliveryString(deliveryCost: Int): String {
         return if (deliveryCost == 0) {
-            resourcesProvider.getString(R.string.msg_order_details_delivery_free)
+            resourcesProvider.getString(R.string.msg_order_delivery_free)
         } else {
             getCostString(deliveryCost)
         }

@@ -1,54 +1,49 @@
 package com.bunbeauty.presentation.view_model.order
 
-import androidx.core.os.bundleOf
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
-import com.bunbeauty.common.Constants.LIST_ARGS_KEY
-import com.bunbeauty.common.Constants.ORDER_ARGS_KEY
-import com.bunbeauty.common.Constants.REQUEST_KEY_ARGS_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
-import com.bunbeauty.common.Constants.SELECTED_KEY_ARGS_KEY
-import com.bunbeauty.common.Constants.TITLE_ARGS_KEY
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.domain.util.resources.IResourcesProvider
-import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.extensions.toStateAddedSuccess
-import com.bunbeauty.fooddeliveryadmin.extensions.toStateSuccess
-import com.bunbeauty.fooddeliveryadmin.extensions.toStateUpdatedSuccess
-import com.bunbeauty.presentation.view_model.BaseViewModel
+import com.bunbeauty.presentation.R
+import com.bunbeauty.presentation.extension.toStateAddedSuccess
+import com.bunbeauty.presentation.extension.toStateSuccess
+import com.bunbeauty.presentation.extension.toStateUpdatedSuccess
+import com.bunbeauty.presentation.list.CafeAddress
+import com.bunbeauty.presentation.model.ListData
+import com.bunbeauty.presentation.model.OrderItemModel
+import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
 import com.bunbeauty.presentation.state.ExtendedState
 import com.bunbeauty.presentation.state.State
-import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
-import com.bunbeauty.fooddeliveryadmin.ui.items.list.CafeAddress
-import com.bunbeauty.fooddeliveryadmin.utils.IStringUtil
+import com.bunbeauty.presentation.utils.IStringUtil
+import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class OrdersViewModel @Inject constructor(
     private val orderRepo: OrderRepo,
     private val cafeRepo: CafeRepo,
-    private val stringUtil: IStringUtil,
-    private val dateTimeUtil: IDateTimeUtil,
     private val resourcesProvider: IResourcesProvider,
     private val dataStoreRepo: DataStoreRepo,
+    private val stringUtil: IStringUtil,
+    private val dateTimeUtil: IDateTimeUtil,
 ) : BaseViewModel() {
 
     private val mutableAddressState: MutableStateFlow<State<String>> =
         MutableStateFlow(State.Loading())
     val addressState: StateFlow<State<String>> = mutableAddressState.asStateFlow()
 
-    private val mutableOrderListState: MutableStateFlow<ExtendedState<List<OrderItem>>> =
+    private val mutableOrderListState: MutableStateFlow<ExtendedState<List<OrderItemModel>>> =
         MutableStateFlow(ExtendedState.Loading())
-    val orderListState: StateFlow<ExtendedState<List<OrderItem>>> =
+    val orderListState: StateFlow<ExtendedState<List<OrderItemModel>>> =
         mutableOrderListState.asStateFlow()
 
     init {
@@ -68,27 +63,20 @@ class OrdersViewModel @Inject constructor(
         viewModelScope.launch {
             val addressList = cafeRepo.getCafeList().map { cafe ->
                 CafeAddress(title = cafe.address, cafeUuid = cafe.uuid)
-            }.toTypedArray()
-
-            withContext(Main) {
-                router.navigate(
-                    R.id.to_listBottomSheet,
-                    bundleOf(
-                        TITLE_ARGS_KEY to resourcesProvider.getString(R.string.title_orders_select_cafe),
-                        LIST_ARGS_KEY to addressList,
-                        SELECTED_KEY_ARGS_KEY to SELECTED_CAFE_ADDRESS_KEY,
-                        REQUEST_KEY_ARGS_KEY to CAFE_ADDRESS_REQUEST_KEY,
-                    )
-                )
             }
+
+            val listData = ListData(
+                title = resourcesProvider.getString(R.string.title_orders_select_cafe),
+                listItem = addressList,
+                requestKey = CAFE_ADDRESS_REQUEST_KEY,
+                selectedKey = SELECTED_CAFE_ADDRESS_KEY
+            )
+            goTo(OrdersNavigationEvent.ToCafeAddressList(listData))
         }
     }
 
-    fun goToOrderDetails(order: Order) {
-        router.navigate(
-            R.id.to_OrdersDetailsFragment,
-            bundleOf(ORDER_ARGS_KEY to order)
-        )
+    fun goToOrderDetails(orderItemModel: OrderItemModel) {
+        goTo(OrdersNavigationEvent.ToOrderDetails(orderItemModel.order))
     }
 
     private fun subscribeOnAddress() {
@@ -105,26 +93,24 @@ class OrdersViewModel @Inject constructor(
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             orderRepo.getAddedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
-            mutableOrderListState.value = toOrderItemList(orderList).toStateAddedSuccess()
+            mutableOrderListState.value = orderList.map(::toItemModel).toStateAddedSuccess()
         }.launchIn(viewModelScope)
 
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             orderRepo.getUpdatedOrderListByCafeId(cafeId)
         }.onEach { orderList ->
-            mutableOrderListState.value = toOrderItemList(orderList).toStateUpdatedSuccess()
+            mutableOrderListState.value = orderList.map(::toItemModel).toStateUpdatedSuccess()
         }.launchIn(viewModelScope)
     }
 
-    private fun toOrderItemList(orderList: List<Order>): List<OrderItem> {
-        return orderList.map { order ->
-            OrderItem(
-                status = order.orderStatus,
-                statusString = stringUtil.getOrderStatusString(order.orderStatus),
-                code = order.code,
-                deferredTime = stringUtil.getDeferredTimeString(order.deferred),
-                time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
-                order = order
-            )
-        }
+    private fun toItemModel(order: Order): OrderItemModel {
+        return OrderItemModel(
+            status = order.orderStatus,
+            statusString = stringUtil.getOrderStatusString(order.orderStatus),
+            code = order.code,
+            deferredTime = stringUtil.getDeferredTimeString(order.deferred),
+            time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
+            order = order
+        )
     }
 }
