@@ -6,7 +6,7 @@
         android:title="@string/title_bottom_navigation_menu_orders" />
     <item
         android:id="@+id/statisticFragment"
-        android:icon="@drawable/ic_chart_bar_solid"
+        android:icon="@drawable/ic_statistic"
         android:title="@string/title_bottom_navigation_menu_statistic" />
 
     <item

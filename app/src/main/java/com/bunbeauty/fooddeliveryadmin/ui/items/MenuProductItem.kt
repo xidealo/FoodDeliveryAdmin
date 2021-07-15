@@ -15,7 +15,7 @@ data class MenuProductItem(
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementMenuProductBinding, payloads: List<Any>) {
-        with(binding) {
+        binding.run {
             setImage(elementMenuProductIvPhoto, menuProductItemModel.photoLink)
             elementMenuProductTvTitle.text = menuProductItemModel.name
             elementMenuProductIvVisible.isVisible = menuProductItemModel.visible

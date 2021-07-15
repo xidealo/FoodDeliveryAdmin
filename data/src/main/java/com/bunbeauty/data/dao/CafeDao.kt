@@ -3,10 +3,8 @@ package com.bunbeauty.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.domain.model.cafe.CafeEntity
+import com.bunbeauty.data.entity.CafeEntity
 import kotlinx.coroutines.flow.Flow
-import java.util.*
 
 @Dao
 interface CafeDao : BaseDao<CafeEntity> {

@@ -14,7 +14,7 @@ data class StatisticItem(
     override val type = R.id.element_statistic_mvc_main
 
     override fun bindView(binding: ElementStatisticBinding, payloads: List<Any>) {
-        with(binding) {
+        binding.run {
             elementStatisticTvPeriod.text = statisticItemModel.period
             elementStatisticTvCount.text = statisticItemModel.count
             elementStatisticTvProceeds.text = statisticItemModel.proceeds

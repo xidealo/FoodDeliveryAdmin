@@ -1,13 +1,11 @@
 package com.bunbeauty.presentation.view_model.login
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.repo.ApiRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.util.resources.IResourcesProvider
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.navigation_event.LoginNavigationEvent
-import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO

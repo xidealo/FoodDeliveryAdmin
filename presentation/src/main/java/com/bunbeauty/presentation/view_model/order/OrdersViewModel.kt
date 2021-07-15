@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.view_model.order
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
@@ -9,12 +8,12 @@ import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.domain.util.resources.IResourcesProvider
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateAddedSuccess
 import com.bunbeauty.presentation.extension.toStateSuccess
 import com.bunbeauty.presentation.extension.toStateUpdatedSuccess
-import com.bunbeauty.presentation.list.CafeAddress
+import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.model.OrderItemModel
 import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent

@@ -14,35 +14,32 @@ import com.bunbeauty.common.Constants.TIMESTAMP
 import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.domain.model.menu_product.ServerMenuProduct
 import com.bunbeauty.domain.model.cafe.server.ServerCafe
+import com.bunbeauty.domain.model.menu_product.ServerMenuProduct
 import com.bunbeauty.domain.model.order.server.ServerOrder
 import com.bunbeauty.domain.repo.ApiRepo
+import com.bunbeauty.domain.util.date_time.DateTimeUtil
+import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 class ApiRepository @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase,
-    private val firebaseStorage: StorageReference
-) : ApiRepo, CoroutineScope {
-
-    override val coroutineContext: CoroutineContext = Job() + IO
+    private val firebaseStorage: StorageReference,
+    private val dateTimeUtil: IDateTimeUtil,
+) : ApiRepo {
 
     private val serverOrderList = LinkedList<ServerOrder>()
 
@@ -91,50 +88,52 @@ class ApiRepository @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    override fun getCafeList(): Flow<List<ServerCafe>> = callbackFlow {
-        val cafeReference = firebaseDatabase
-            .getReference(COMPANY)
-            .child(APP_ID)
-            .child(CAFES)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val serverCafeList = snapshot.children.map { cafeSnapshot ->
-                    getCafeValue(cafeSnapshot)
+    override val cafeList: Flow<List<ServerCafe>>
+        get() = callbackFlow {
+            val cafeReference = firebaseDatabase
+                .getReference(COMPANY)
+                .child(APP_ID)
+                .child(CAFES)
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val serverCafeList = snapshot.children.map { cafeSnapshot ->
+                        getCafeValue(cafeSnapshot)
+                    }
+                    trySend(serverCafeList)
                 }
-                trySend(serverCafeList)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
+                override fun onCancelled(error: DatabaseError) {
+                }
+            }
+            cafeReference.addValueEventListener(valueEventListener)
+
+            awaitClose {
+                cafeReference.removeEventListener(valueEventListener)
             }
         }
-        cafeReference.addValueEventListener(valueEventListener)
-
-        awaitClose {
-            cafeReference.removeEventListener(valueEventListener)
-        }
-    }
 
     @ExperimentalCoroutinesApi
-    override fun getDelivery(): Flow<Delivery> = callbackFlow {
-        val deliveryReference = firebaseDatabase
-            .getReference(COMPANY)
-            .child(APP_ID)
-            .child(DELIVERY)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val delivery = snapshot.getValue(Delivery::class.java)!!
-                trySend(delivery)
-            }
+    override val delivery: Flow<Delivery>
+        get() = callbackFlow {
+            val deliveryReference = firebaseDatabase
+                .getReference(COMPANY)
+                .child(APP_ID)
+                .child(DELIVERY)
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val delivery = snapshot.getValue(Delivery::class.java)!!
+                    trySend(delivery)
+                }
 
-            override fun onCancelled(error: DatabaseError) {
+                override fun onCancelled(error: DatabaseError) {
+                }
+            }
+            deliveryReference.addValueEventListener(valueEventListener)
+
+            awaitClose {
+                deliveryReference.removeEventListener(valueEventListener)
             }
         }
-        deliveryReference.addValueEventListener(valueEventListener)
-
-        awaitClose {
-            deliveryReference.removeEventListener(valueEventListener)
-        }
-    }
 
     @ExperimentalCoroutinesApi
     override val menuProductList: Flow<List<ServerMenuProduct>>
@@ -220,7 +219,7 @@ class ApiRepository @Inject constructor(
                 .child(APP_ID)
                 .child(cafeUuid)
                 .orderByChild(TIMESTAMP)
-                .startAt(DateTime.now().minusDays(2).millis.toDouble())
+                .startAt(dateTimeUtil.getMillisDaysAgo(2))
             val childEventListener = object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     serverOrderList.add(getOrderValue(snapshot, cafeUuid))
@@ -255,7 +254,7 @@ class ApiRepository @Inject constructor(
                 .child(APP_ID)
                 .child(cafeUuid)
                 .orderByChild(TIMESTAMP)
-                .startAt(DateTime.now().minusDays(2).millis.toDouble())
+                .startAt(dateTimeUtil.getMillisDaysAgo(2))
             val childEventListener = object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {}
 
@@ -284,31 +283,32 @@ class ApiRepository @Inject constructor(
         }
 
     @ExperimentalCoroutinesApi
-    override fun getAllOrderList(): Flow<List<ServerOrder>> = callbackFlow {
-        val cafesReference = firebaseDatabase
-            .getReference(ORDERS)
-            .child(APP_ID)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(cafesSnapshot: DataSnapshot) {
-                launch(IO) {
-                    val orderList = cafesSnapshot.children.flatMap { cafeSnapshot ->
-                        cafeSnapshot.children.map { orderSnapshot ->
-                            getOrderValue(orderSnapshot, cafeSnapshot.key!!)
+    override val orderList: Flow<List<ServerOrder>>
+        get() = callbackFlow {
+            val cafesReference = firebaseDatabase
+                .getReference(ORDERS)
+                .child(APP_ID)
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(cafesSnapshot: DataSnapshot) {
+                    launch(IO) {
+                        val orderList = cafesSnapshot.children.flatMap { cafeSnapshot ->
+                            cafeSnapshot.children.map { orderSnapshot ->
+                                getOrderValue(orderSnapshot, cafeSnapshot.key!!)
+                            }
                         }
+                        trySend(orderList)
                     }
-                    trySend(orderList)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
                 }
             }
+            cafesReference.addListenerForSingleValueEvent(valueEventListener)
 
-            override fun onCancelled(databaseError: DatabaseError) {
+            awaitClose {
+                cafesReference.removeEventListener(valueEventListener)
             }
         }
-        cafesReference.addListenerForSingleValueEvent(valueEventListener)
-
-        awaitClose {
-            cafesReference.removeEventListener(valueEventListener)
-        }
-    }
 
     @ExperimentalCoroutinesApi
     override fun getOrderListByCafeId(cafeId: String): Flow<List<ServerOrder>> = callbackFlow {

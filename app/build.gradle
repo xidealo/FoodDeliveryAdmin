@@ -2,10 +2,9 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs'
-    id 'com.google.gms.google-services'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -94,6 +93,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintlayoutVersion"
 
+    //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.navigationVersion"
@@ -115,38 +115,23 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
 
     //Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycleVersion"
     implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
-
-    //Dagger 2
-    implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltLifecycleVersion"
-    kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
 
-    //Сoroutines
+    //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.corountinesVersion"
 
     //Design
     implementation "com.google.android.material:material:$rootProject.materialDesignVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
 
-    //Database
-    implementation "androidx.room:room-runtime:$rootProject.roomDatabaseVersion"
-
     //Picasso
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
-
-    //Joda time
-    implementation "joda-time:joda-time:$rootProject.jodaVersion"
 
     //FastAdapter
     implementation "com.mikepenz:fastadapter:$rootProject.fastAdapterVersion"

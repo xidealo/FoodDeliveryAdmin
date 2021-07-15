@@ -48,7 +48,7 @@ class CafeRepository @Inject constructor(
 
     override suspend fun refreshCafeList() = withContext(IO) {
         cafeDao.deleteAll()
-        apiRepo.getCafeList().collect { serverCafeList ->
+        apiRepo.cafeList.collect { serverCafeList ->
             val cafeEntity = serverCafeList.map { serverCafe ->
                 serverCafeMapper.from(serverCafe)
             }

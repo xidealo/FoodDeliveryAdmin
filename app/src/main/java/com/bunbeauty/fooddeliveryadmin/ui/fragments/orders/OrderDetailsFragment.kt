@@ -14,7 +14,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.*
 import com.bunbeauty.fooddeliveryadmin.ui.items.CartProductItem
-import com.bunbeauty.presentation.list.OrderStatus
+import com.bunbeauty.presentation.model.list.OrderStatus
 import com.bunbeauty.presentation.navigation_event.OrderDetailsNavigationEvent
 import com.bunbeauty.presentation.view_model.order.OrderDetailsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -31,7 +31,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        binding.run {
             fragmentOrderDetailsBtnBack.setOnClickListener {
                 viewModel.goBack()
             }

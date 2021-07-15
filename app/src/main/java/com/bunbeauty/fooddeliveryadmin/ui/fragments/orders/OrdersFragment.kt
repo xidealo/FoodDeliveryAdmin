@@ -14,7 +14,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
-import com.bunbeauty.presentation.list.CafeAddress
+import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
 import com.bunbeauty.presentation.state.ExtendedState
 import com.bunbeauty.presentation.state.State
@@ -34,7 +34,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
         val itemAdapter = ItemAdapter<OrderItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        with(binding) {
+        binding.run {
             fragmentOrdersRvResult.adapter = fastAdapter
             fastAdapter.onClickListener = { _, _, orderItem, _ ->
                 viewModel.goToOrderDetails(orderItem.orderItemModel)

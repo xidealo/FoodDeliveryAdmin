@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementTextBinding
-import com.bunbeauty.presentation.list.ListItemModel
+import com.bunbeauty.presentation.model.list.ListItemModel
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 data class ListItem(

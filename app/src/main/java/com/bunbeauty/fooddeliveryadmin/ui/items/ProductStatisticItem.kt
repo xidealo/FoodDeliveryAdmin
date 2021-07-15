@@ -14,7 +14,7 @@ data class ProductStatisticItem(
     override val type = R.id.element_product_statistic_mcv_main
 
     override fun bindView(binding: ElementProductStatisticBinding, payloads: List<Any>) {
-        with(binding) {
+        binding.run {
             elementProductStatisticTvName.text = productStatisticItemModel.name
             elementProductStatisticTvOrderCountValue.text = productStatisticItemModel.orderCount
             elementProductStatisticTvCountValue.text = productStatisticItemModel.count

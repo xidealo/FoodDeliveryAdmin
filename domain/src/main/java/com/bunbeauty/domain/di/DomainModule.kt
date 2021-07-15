@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.di
+package com.bunbeauty.domain.di
 
 import com.bunbeauty.domain.util.cost.CostUtil
 import com.bunbeauty.domain.util.cost.ICostUtil
@@ -8,10 +8,6 @@ import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.domain.util.order.OrderUtil
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.domain.util.product.ProductUtil
-import com.bunbeauty.domain.util.resources.IResourcesProvider
-import com.bunbeauty.domain.util.resources.ResourcesProvider
-import com.bunbeauty.presentation.utils.IStringUtil
-import com.bunbeauty.presentation.utils.StringUtil
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,13 +16,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ApiModule {
+abstract class DomainModule {
 
-    // UTIL
-
-    @Singleton
-    @Binds
-    abstract fun bindStringUtil(stringUtil: StringUtil): IStringUtil
+    //UTIL
 
     @Singleton
     @Binds
@@ -43,11 +35,4 @@ abstract class ApiModule {
     @Singleton
     @Binds
     abstract fun bindOrderUtil(orderUtil: OrderUtil): IOrderUtil
-
-    // RESOURCE PROVIDER
-
-    @Singleton
-    @Binds
-    abstract fun bindResourcesProvider(resourcesProvider: ResourcesProvider): IResourcesProvider
-
 }

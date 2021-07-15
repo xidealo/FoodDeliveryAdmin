@@ -7,7 +7,6 @@ import com.bunbeauty.fooddeliveryadmin.databinding.ElementCartProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.presentation.model.CartProductItemModel
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
-import kotlinx.parcelize.IgnoredOnParcel
 
 data class CartProductItem(
     val cartProductItemModel: CartProductItemModel
@@ -16,7 +15,7 @@ data class CartProductItem(
     override val type = R.id.element_cart_product_mcv_main
 
     override fun bindView(binding: ElementCartProductBinding, payloads: List<Any>) {
-        with(binding) {
+        binding.run {
             elementCartProductTvTitle.text = cartProductItemModel.name
             elementCartProductTvCount.text = cartProductItemModel.count
             elementCartProductTvOldCost.strikeOutText()

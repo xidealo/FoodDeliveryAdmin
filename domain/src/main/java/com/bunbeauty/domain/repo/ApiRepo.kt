@@ -17,11 +17,11 @@ interface ApiRepo {
 
     // CAFE
 
-    fun getCafeList(): Flow<List<ServerCafe>>
+    val cafeList: Flow<List<ServerCafe>>
 
     // DELIVERY
 
-    fun getDelivery(): Flow<Delivery>
+    val delivery: Flow<Delivery>
 
     // MENU PRODUCT
 
@@ -36,7 +36,7 @@ interface ApiRepo {
 
     fun getAddedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>>
     fun getUpdatedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>>
-    fun getAllOrderList(): Flow<List<ServerOrder>>
+    val orderList: Flow<List<ServerOrder>>
     fun getOrderListByCafeId(cafeId: String): Flow<List<ServerOrder>>
     fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus)
 }

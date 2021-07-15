@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.bunbeauty.common.Constants.LIST_DATA_ARGS_KEY
 import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.model.ListData
-import com.bunbeauty.presentation.list.ListItemModel
+import com.bunbeauty.presentation.model.list.ListItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.model
 
 import android.os.Parcelable
-import com.bunbeauty.presentation.list.ListItemModel
+import com.bunbeauty.presentation.model.list.ListItemModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

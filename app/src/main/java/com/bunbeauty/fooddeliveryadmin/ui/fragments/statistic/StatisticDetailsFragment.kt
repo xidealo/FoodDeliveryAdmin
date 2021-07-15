@@ -19,7 +19,7 @@ class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        binding.run {
             fragmentStatisticDetailsBtnBack.setOnClickListener {
                 viewModel.goBack()
             }

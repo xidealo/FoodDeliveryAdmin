@@ -14,8 +14,6 @@
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
-    <string name="error_login_enter_user_name">Введите логин</string>
-    <string name="error_login_enter_user_password">Введите пароль</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>

@@ -17,8 +17,8 @@ import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.toListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.toStatisticDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.StatisticItem
-import com.bunbeauty.presentation.list.CafeAddress
-import com.bunbeauty.presentation.list.Period
+import com.bunbeauty.presentation.model.list.CafeAddress
+import com.bunbeauty.presentation.model.list.Period
 import com.bunbeauty.presentation.navigation_event.StatisticNavigationEvent
 import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.view_model.statistic.StatisticViewModel
@@ -35,7 +35,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        binding.run {
             viewModel.cafeAddress.onEach { cafeAddress ->
                 fragmentStatisticMcvAddress.cardText = cafeAddress.title
             }.startedLaunch(viewLifecycleOwner)

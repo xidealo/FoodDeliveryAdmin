@@ -37,6 +37,8 @@
     <string name="msg_status_canceled">Отменен</string>
 
     <!-- ORDERS -->
+    <string name="title_messaging_new_order">Новый заказ</string>
+    <string name="msg_messaging_new_order">Новый заказ</string>
     <string name="title_orders_select_cafe">Выберите кафе</string>
 
     <!-- STATISTIC -->

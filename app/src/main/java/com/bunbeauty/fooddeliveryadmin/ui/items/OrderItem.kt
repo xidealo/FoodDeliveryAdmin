@@ -16,7 +16,7 @@ data class OrderItem(
     override val type = R.id.element_order_mvc_main
 
     override fun bindView(binding: ElementOrderBinding, payloads: List<Any>) {
-        with(binding) {
+        binding.run {
             elementOrderTvCode.text = orderItemModel.code
             elementOrderTvDeferred.text = orderItemModel.deferredTime
             elementOrderTvTime.text = orderItemModel.time

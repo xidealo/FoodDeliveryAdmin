@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.di
+package com.bunbeauty.data.di
 
 import com.bunbeauty.data.mapper.cafe.EntityCafeMapper
 import com.bunbeauty.data.mapper.cafe.IEntityCafeMapper
@@ -45,5 +45,4 @@ abstract class MapperModule {
     @Singleton
     @Binds
     abstract fun bindUserAddressMapper(userAddressMapper: UserAddressMapper): IUserAddressMapper
-
 }

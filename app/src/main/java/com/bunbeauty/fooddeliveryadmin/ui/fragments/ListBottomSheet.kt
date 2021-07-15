@@ -23,12 +23,13 @@ class ListBottomSheet: BaseBottomSheetDialog<BottomSheetListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.bottomSheetListTvTitle.toggleVisibility(viewModel.isTitleVisible)
-        binding.bottomSheetListTvTitle.text = viewModel.title
-
         val itemAdapter = ItemAdapter<ListItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        binding.bottomSheetListRvList.adapter = fastAdapter
+        binding.run {
+            bottomSheetListTvTitle.toggleVisibility(viewModel.isTitleVisible)
+            bottomSheetListTvTitle.text = viewModel.title
+            bottomSheetListRvList.adapter = fastAdapter
+        }
         fastAdapter.onClickListener = { _, _, listItem, _ ->
             val bundle = bundleOf(viewModel.selectedKey to listItem.listItemModel)
             setFragmentResult(viewModel.requestKey, bundle)

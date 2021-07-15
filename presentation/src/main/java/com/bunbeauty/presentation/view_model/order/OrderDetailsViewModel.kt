@@ -12,11 +12,11 @@ import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.domain.util.product.IProductUtil
-import com.bunbeauty.domain.util.resources.IResourcesProvider
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.navArg
-import com.bunbeauty.presentation.list.OrderStatus
+import com.bunbeauty.presentation.model.list.OrderStatus
 import com.bunbeauty.presentation.model.CartProductItemModel
 import com.bunbeauty.presentation.navigation_event.OrderDetailsNavigationEvent
 import com.bunbeauty.presentation.utils.IStringUtil

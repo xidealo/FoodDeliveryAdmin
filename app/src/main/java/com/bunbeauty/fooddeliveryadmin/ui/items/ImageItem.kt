@@ -10,7 +10,6 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import kotlinx.parcelize.IgnoredOnParcel
 import java.lang.ref.SoftReference
 
 abstract class ImageItem<B : ViewBinding> : AbstractBindingItem<B>() {

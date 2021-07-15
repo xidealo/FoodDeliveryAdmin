@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.view.setPadding
-import com.bunbeauty.domain.util.resources.ResourcesProvider
+import com.bunbeauty.presentation.utils.ResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +34,7 @@ class NavigationCardView @JvmOverloads constructor(
     )
         set(value) {
             field = value
-            _textView?.text = value
+            textView?.text = value
         }
 
     private val icon = getDrawable(
@@ -46,9 +46,7 @@ class NavigationCardView @JvmOverloads constructor(
 
     private val imageViewId = generateViewId()
 
-    private var _textView: TextView? = null
-    private val textView: TextView
-        get() = checkNotNull(_textView)
+    private var textView: TextView? = null
 
     init {
         strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke_width)
@@ -58,7 +56,7 @@ class NavigationCardView @JvmOverloads constructor(
 
         val constraintLayout = createConstraintLayout(context)
         constraintLayout.addView(createImageView(context))
-        _textView = createTextView(context)
+        textView = createTextView(context)
         constraintLayout.addView(textView)
         addView(constraintLayout)
     }

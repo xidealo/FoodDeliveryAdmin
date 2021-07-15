@@ -39,6 +39,10 @@ class DateTimeUtil @Inject constructor(): IDateTimeUtil {
         return dateTime.toString("dd MMMM HH:mm")
     }
 
+    override fun getMillisDaysAgo(days: Int): Double {
+        return DateTime.now().minusDays(days).millis.toDouble()
+    }
+
     companion object {
         private val MONTH_NAME_LIST = listOf(
             "январь",

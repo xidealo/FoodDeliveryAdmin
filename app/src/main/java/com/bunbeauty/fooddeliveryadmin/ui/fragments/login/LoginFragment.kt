@@ -24,20 +24,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isLoading.onEach { isLoading ->
-            if (isLoading) {
-                binding.fragmentLoginPbLoading.visible()
-                binding.fragmentLoginGroupLogin.gone()
-            } else {
-                binding.fragmentLoginPbLoading.gone()
-                binding.fragmentLoginGroupLogin.visible()
+        binding.run {
+            viewModel.isLoading.onEach { isLoading ->
+                if (isLoading) {
+                    fragmentLoginPbLoading.visible()
+                    fragmentLoginGroupLogin.gone()
+                } else {
+                    fragmentLoginPbLoading.gone()
+                    fragmentLoginGroupLogin.visible()
+                }
+            }.startedLaunch(viewLifecycleOwner)
+            fragmentLoginBtnLogin.setOnClickListener {
+                viewModel.login(
+                    fragmentLoginEtLogin.text.toString(),
+                    fragmentLoginEtPassword.text.toString()
+                )
             }
-        }.startedLaunch(viewLifecycleOwner)
-        binding.fragmentLoginBtnLogin.setOnClickListener {
-            viewModel.login(
-                binding.fragmentLoginEtLogin.text.toString(),
-                binding.fragmentLoginEtPassword.text.toString()
-            )
         }
 
         viewModel.navigation.onEach { navigationEvent ->

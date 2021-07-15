@@ -12,20 +12,26 @@ import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.CreateMenuProductFragmentDirections.toListBottomSheet
-import com.bunbeauty.presentation.list.MenuProductCode
+import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.navigation_event.CreateMenuProductNavigationEvent
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>() {
+
+    @Inject
+    lateinit var resourcesProvider: IResourcesProvider
 
     override val viewModel: CreateMenuProductViewModel by viewModels()
 
@@ -40,15 +46,19 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        binding.run {
             fragmentCreateMenuProductBtnBack.setOnClickListener {
                 viewModel.goBack()
             }
             fragmentCreateMenuProductBtnVisibility.setOnClickListener {
                 viewModel.switchVisibility()
             }
-            viewModel.visibilityIcon.onEach { icon ->
-                fragmentCreateMenuProductBtnVisibility.icon = icon
+            viewModel.isVisible.onEach { isVisible ->
+                fragmentCreateMenuProductBtnVisibility.icon = if (isVisible) {
+                    resourcesProvider.getDrawable(R.drawable.ic_visible)
+                } else {
+                    resourcesProvider.getDrawable(R.drawable.ic_invisible)
+                }
             }.startedLaunch(viewLifecycleOwner)
             if (viewModel.photo != null) {
                 fragmentCreateMenuProductIvPhoto.setImageBitmap(viewModel.photo)

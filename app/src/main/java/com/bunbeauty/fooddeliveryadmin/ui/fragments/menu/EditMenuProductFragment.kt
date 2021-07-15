@@ -20,15 +20,20 @@ import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.EditMenuProductFragmentDirections.toListBottomSheet
-import com.bunbeauty.presentation.list.MenuProductCode
+import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.EditMenuProductViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
+
+    @Inject
+    lateinit var resourcesProvider: IResourcesProvider
 
     override val viewModel: EditMenuProductViewModel by viewModels()
 
@@ -43,15 +48,19 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        binding.run {
             fragmentEditMenuProductBtnBack.setOnClickListener {
                 viewModel.goBack()
             }
             fragmentEditMenuProductBtnVisibility.setOnClickListener {
                 viewModel.switchVisibility()
             }
-            viewModel.visibilityIcon.onEach { icon ->
-                fragmentEditMenuProductBtnVisibility.icon = icon
+            viewModel.isVisible.onEach { isVisible ->
+                fragmentEditMenuProductBtnVisibility.icon = if (isVisible) {
+                    resourcesProvider.getDrawable(R.drawable.ic_visible)
+                } else {
+                    resourcesProvider.getDrawable(R.drawable.ic_invisible)
+                }
             }.startedLaunch(viewLifecycleOwner)
             if (viewModel.photo == null) {
                 fragmentEditMenuProductIvPhoto.setImage(viewModel.photoLink)

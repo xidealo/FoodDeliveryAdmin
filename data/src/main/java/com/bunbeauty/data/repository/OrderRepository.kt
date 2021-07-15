@@ -57,21 +57,21 @@ class OrderRepository @Inject constructor(
 
     override fun getAllCafeOrdersByDay(): Flow<List<Statistic>> {
         return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.getAllOrderList()),
+            mapToOrderListFlow(apiRepo.orderList),
             dateTimeUtil::getDateDDMMMMYYYY
         )
     }
 
     override fun getAllCafeOrdersByWeek(): Flow<List<Statistic>> {
         return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.getAllOrderList()),
+            mapToOrderListFlow(apiRepo.orderList),
             dateTimeUtil::getWeekPeriod
         )
     }
 
     override fun getAllCafeOrdersByMonth(): Flow<List<Statistic>> {
         return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.getAllOrderList()),
+            mapToOrderListFlow(apiRepo.orderList),
             dateTimeUtil::getDateMMMMYYYY
         )
     }

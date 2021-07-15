@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.util.resources
+package com.bunbeauty.presentation.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable

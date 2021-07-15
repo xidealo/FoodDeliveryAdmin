@@ -25,10 +25,15 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
         val itemAdapter = ItemAdapter<MenuProductItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
-        binding.fragmentMenuRvList.adapter = fastAdapter
-        fastAdapter.onClickListener = { _, _, menuProductItem, _ ->
-            viewModel.goToEditMenuProduct(menuProductItem.menuProductItemModel)
-            false
+        binding.run {
+            fragmentMenuRvList.adapter = fastAdapter
+            fastAdapter.onClickListener = { _, _, menuProductItem, _ ->
+                viewModel.goToEditMenuProduct(menuProductItem.menuProductItemModel)
+                false
+            }
+            fragmentMenuFabCreateProduct.setOnClickListener {
+                viewModel.goToCreateMenuProduct()
+            }
         }
         viewModel.productListState.onEach { productListState ->
             when (productListState) {
@@ -42,10 +47,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)
-
-        binding.fragmentMenuFabCreateProduct.setOnClickListener {
-            viewModel.goToCreateMenuProduct()
-        }
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is MenuNavigationEvent.ToCreateMenuProduct ->

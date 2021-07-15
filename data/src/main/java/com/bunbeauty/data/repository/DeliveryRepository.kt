@@ -12,7 +12,7 @@ class DeliveryRepository @Inject constructor(
 ) : DeliveryRepo {
 
     override suspend fun refreshDelivery() {
-        apiRepo.getDelivery().collect { delivery ->
+        apiRepo.delivery.collect { delivery ->
             dataStoreRepo.saveDelivery(delivery)
         }
     }

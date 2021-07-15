@@ -10,11 +10,11 @@ import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.order.IOrderUtil
-import com.bunbeauty.domain.util.resources.IResourcesProvider
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateSuccess
-import com.bunbeauty.presentation.list.CafeAddress
-import com.bunbeauty.presentation.list.Period
+import com.bunbeauty.presentation.model.list.CafeAddress
+import com.bunbeauty.presentation.model.list.Period
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.model.StatisticItemModel
 import com.bunbeauty.presentation.navigation_event.StatisticNavigationEvent

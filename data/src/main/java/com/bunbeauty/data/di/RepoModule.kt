@@ -1,17 +1,16 @@
-package com.bunbeauty.fooddeliveryadmin.di
+package com.bunbeauty.data.di
 
 import com.bunbeauty.data.repository.*
 import com.bunbeauty.domain.repo.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+abstract class RepoModule {
 
     @Singleton
     @Binds
@@ -29,13 +28,9 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindDeliveryRepo(deliveryRepository: DeliveryRepository): DeliveryRepo
 
-    //NETWORK
-
     @Singleton
     @Binds
     abstract fun bindApiRepository(apiRepository: ApiRepository): ApiRepo
-
-    // DATA_STORE
 
     @Singleton
     @Binds

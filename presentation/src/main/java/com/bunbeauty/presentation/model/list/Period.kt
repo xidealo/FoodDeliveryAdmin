@@ -1,8 +1,8 @@
-package com.bunbeauty.presentation.list
+package com.bunbeauty.presentation.model.list
 
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MenuProductCode(
+data class Period(
     override val title: String
 ) : ListItemModel()

@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.list
+package com.bunbeauty.presentation.model.list
 
 import kotlinx.parcelize.Parcelize
 

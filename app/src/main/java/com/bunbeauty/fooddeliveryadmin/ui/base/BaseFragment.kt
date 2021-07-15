@@ -53,7 +53,7 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
             showSnackbar(message, R.color.lightTextColor, R.color.colorPrimary)
         }.startedLaunch(viewLifecycleOwner)
         viewModel.error.onEach { error ->
-            showError(error)
+            showSnackbar(error, R.color.lightTextColor, R.color.errorColor)
         }.startedLaunch(viewLifecycleOwner)
         viewModel.fieldError.onEach { fieldError ->
             textInputMap.values.forEach { textInput ->
@@ -77,10 +77,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
     protected fun <T> subscribe(liveData: LiveData<T>, observer: (T) -> Unit) {
         liveData.observe(viewLifecycleOwner, observer::invoke)
-    }
-
-    protected fun showError(errorMessage: String) {
-        showSnackbar(errorMessage, R.color.lightTextColor, R.color.errorColor)
     }
 
     private fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {

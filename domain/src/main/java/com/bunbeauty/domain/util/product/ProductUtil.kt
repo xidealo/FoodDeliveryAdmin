@@ -2,7 +2,6 @@ package com.bunbeauty.domain.util.product
 
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.model.cart_product.CartProduct
-import com.bunbeauty.domain.util.resources.IResourcesProvider
 import javax.inject.Inject
 
 class ProductUtil @Inject constructor() : IProductUtil {

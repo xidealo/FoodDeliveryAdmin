@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.model.cafe
+package com.bunbeauty.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

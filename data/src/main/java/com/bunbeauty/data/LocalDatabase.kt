@@ -3,7 +3,7 @@ package com.bunbeauty.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.bunbeauty.data.dao.CafeDao
-import com.bunbeauty.domain.model.cafe.CafeEntity
+import com.bunbeauty.data.entity.CafeEntity
 
 @Database(
     entities = [

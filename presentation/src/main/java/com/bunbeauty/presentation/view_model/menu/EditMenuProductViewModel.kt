@@ -13,12 +13,12 @@ import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.util.resources.IResourcesProvider
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.extension.toByteArray
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.navArg
-import com.bunbeauty.presentation.list.MenuProductCode
+import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
@@ -26,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -46,17 +47,8 @@ class EditMenuProductViewModel @Inject constructor(
         MenuProductCode(title = stringUtil.getProductCodeString(productCode))
     }
 
-    private var isVisible = menuProduct.visible
-    private val mutableVisibilityIcon = MutableStateFlow(
-        resourcesProvider.getDrawable(
-            if (isVisible) {
-                R.drawable.ic_visible
-            } else {
-                R.drawable.ic_invisible
-            }
-        )
-    )
-    val visibilityIcon = mutableVisibilityIcon.asStateFlow()
+    private val mutableIsVisible: MutableStateFlow<Boolean> = MutableStateFlow(menuProduct.visible)
+    val isVisible: StateFlow<Boolean> = mutableIsVisible.asStateFlow()
 
     private val mutableIsComboDescriptionVisible =
         MutableStateFlow(menuProduct.productCode == ProductCode.COMBO)
@@ -74,12 +66,7 @@ class EditMenuProductViewModel @Inject constructor(
     var photo: Bitmap? = null
 
     fun switchVisibility() {
-        isVisible = !isVisible
-        if (isVisible) {
-            mutableVisibilityIcon.value = resourcesProvider.getDrawable(R.drawable.ic_visible)
-        } else {
-            mutableVisibilityIcon.value = resourcesProvider.getDrawable(R.drawable.ic_invisible)
-        }
+        mutableIsVisible.value = !mutableIsVisible.value
     }
 
     fun setProductCode(productCode: MenuProductCode) {
@@ -158,7 +145,7 @@ class EditMenuProductViewModel @Inject constructor(
                 inOven = false,
                 productCode = productCode!!,
                 barcode = null,
-                visible = isVisible
+                visible = isVisible.value
             )
             viewModelScope.launch(IO) {
                 menuProductRepo.updateMenuProduct(menuProduct)
@@ -183,7 +170,7 @@ class EditMenuProductViewModel @Inject constructor(
                             inOven = false,
                             productCode = productCode!!,
                             barcode = null,
-                            visible = isVisible
+                            visible = isVisible.value
                         )
                         menuProductRepo.updateMenuProduct(menuProduct)
                         finishEditing(name)
