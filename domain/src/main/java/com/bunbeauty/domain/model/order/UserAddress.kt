@@ -9,6 +9,6 @@ data class UserAddress(
    val house: String,
    val flat: String?,
    val entrance: String?,
-   val intercom: String?,
+   val comment: String?,
    val floor: String?
 ): Parcelable

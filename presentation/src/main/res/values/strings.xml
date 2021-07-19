@@ -5,8 +5,8 @@
     <string name="msg_address_house">, д.&#160;</string>
     <string name="msg_address_flat">, кв.&#160;</string>
     <string name="msg_address_entrance">, подъезд&#160;</string>
-    <string name="msg_address_intercom">, код:&#160;</string>
     <string name="msg_address_floor">, этаж&#160;</string>
+    <string name="msg_address_comment">, комментарий:&#160;</string>
 
     <!-- COMMON -->
     <string name="msg_ruble">&#160;₽</string>

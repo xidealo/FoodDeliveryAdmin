@@ -29,12 +29,12 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
                         userAddress.entrance
                     ) +
                     getStringPart(
-                        resourcesProvider.getString(R.string.msg_address_intercom),
-                        userAddress.intercom
-                    ) +
-                    getStringPart(
                         resourcesProvider.getString(R.string.msg_address_floor),
                         userAddress.floor
+                    ) +
+                    getStringPart(
+                        resourcesProvider.getString(R.string.msg_address_comment),
+                        userAddress.comment
                     )
         }
     }
@@ -147,7 +147,7 @@ class StringUtil @Inject constructor(private val resourcesProvider: ResourcesPro
     }
 
     override fun getBonusString(bonusCount: Int?): String {
-        return if(bonusCount == null) {
+        return if (bonusCount == null) {
             ""
         } else {
             "-" + getCostString(bonusCount)

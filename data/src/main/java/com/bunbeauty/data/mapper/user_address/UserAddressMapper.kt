@@ -16,7 +16,7 @@ class UserAddressMapper @Inject constructor() : IUserAddressMapper {
                 house = model.house,
                 flat = model.flat,
                 entrance = model.entrance,
-                intercom = model.intercom,
+                comment = model.comment,
                 floor = model.floor,
             )
         }
@@ -31,7 +31,7 @@ class UserAddressMapper @Inject constructor() : IUserAddressMapper {
                 house = model.house,
                 flat = model.flat,
                 entrance = model.entrance,
-                intercom = model.intercom,
+                comment = model.comment,
                 floor = model.floor,
             )
         }

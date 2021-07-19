@@ -5,6 +5,6 @@ data class ServerUserAddress(
     val house: String = "",
     val flat: String? = null,
     val entrance: String? = null,
-    val intercom: String? = null,
+    val comment: String? = null,
     val floor: String? = null,
 )
