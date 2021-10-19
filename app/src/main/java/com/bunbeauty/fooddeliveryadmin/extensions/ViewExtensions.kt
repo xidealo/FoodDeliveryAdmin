@@ -35,17 +35,6 @@ fun TextView.strikeOutText() {
     this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 }
 
-fun ImageView.setImage(photoLink: String) {
-
-    /*Picasso.get()
-        .load(photoLink)
-        .fit()
-        .placeholder(R.drawable.default_product)
-        .networkPolicy(NetworkPolicy.NO_CACHE)
-        .memoryPolicy(MemoryPolicy.NO_CACHE)
-        .into(this)*/
-}
-
 fun ImageView.getBitmap(): Bitmap {
     return (this.drawable as BitmapDrawable).bitmap
 }

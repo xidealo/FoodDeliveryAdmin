@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
+import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
+import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
@@ -38,12 +41,15 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
         viewModel.productListState.onEach { productListState ->
             when (productListState) {
-                is State.Loading -> Unit
+                is State.Loading -> {
+                    binding.fragmentMenuLpiLoading.visible()
+                }
                 is State.Success -> {
-                    val items = productListState.data.map{ menuProductItemModel ->
+                    val items = productListState.data.map { menuProductItemModel ->
                         MenuProductItem(menuProductItemModel)
                     }
                     itemAdapter.set(items)
+                    binding.fragmentMenuLpiLoading.invisible()
                 }
                 else -> Unit
             }

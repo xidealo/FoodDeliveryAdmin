@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import coil.load
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
 import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
@@ -15,7 +16,6 @@ import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
-import com.bunbeauty.fooddeliveryadmin.extensions.setImage
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
@@ -62,7 +62,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
                 }
             }.startedLaunch(viewLifecycleOwner)
             if (viewModel.photo == null) {
-                fragmentEditMenuProductIvPhoto.setImage(viewModel.photoLink)
+                fragmentEditMenuProductIvPhoto.load(viewModel.photoLink)
             } else {
                 fragmentEditMenuProductIvPhoto.setImageBitmap(viewModel.photo)
             }
