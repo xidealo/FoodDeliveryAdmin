@@ -15,12 +15,11 @@ class CategoryMapper @Inject constructor() {
         )
     }
 
-    fun toEntity(categoryServer: CategoryServer, menuProductUuid: String): CategoryEntity {
+    fun toEntity(categoryServer: CategoryServer): CategoryEntity {
         return CategoryEntity(
             uuid = categoryServer.uuid,
             name = categoryServer.name,
             priority = categoryServer.priority,
-            menuProductUuid = menuProductUuid
         )
     }
 }

@@ -3,23 +3,19 @@ package com.bunbeauty.fooddeliveryadmin.ui.fragments.menu
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import coil.load
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
-import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
-import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.EditMenuProductViewModel
@@ -46,7 +42,6 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.run {
             fragmentEditMenuProductBtnBack.setOnClickListener {
                 viewModel.goBack()
@@ -70,17 +65,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
                 imageLauncher.launch(IMAGES_FOLDER)
             }
             fragmentEditMenuProductEtName.setText(viewModel.name)
-            fragmentEditMenuProductNcvProductCode.cardText = viewModel.productCodeString
-            setFragmentResultListener(PRODUCT_CODE_REQUEST_KEY) { _, bundle ->
-                bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
-                    ?.let { menuProductCode ->
-                        fragmentEditMenuProductNcvProductCode.cardText = menuProductCode.title
-                        viewModel.setProductCode(menuProductCode)
-                    }
-            }
-            fragmentEditMenuProductNcvProductCode.setOnClickListener {
-                viewModel.goToProductCodeList()
-            }
+
             fragmentEditMenuProductEtCost.setText(viewModel.cost)
             fragmentEditMenuProductEtDiscountCost.setText(viewModel.discountCost)
             fragmentEditMenuProductEtWeight.setText(viewModel.weight)
@@ -95,7 +80,8 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
             fragmentEditMenuProductBtnSave.setOnClickListener {
                 viewModel.saveMenuProduct(
                     fragmentEditMenuProductEtName.text.toString(),
-                    fragmentEditMenuProductNcvProductCode.cardText,
+                    "",
+                    //fragmentEditMenuProductNcvProductCode.cardText,
                     fragmentEditMenuProductEtCost.text.toString(),
                     fragmentEditMenuProductEtDiscountCost.text.toString(),
                     fragmentEditMenuProductEtWeight.text.toString(),
@@ -114,7 +100,11 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is EditMenuProductNavigationEvent.ToProductCodeList ->
-                    router.navigate(EditMenuProductFragmentDirections.toListBottomSheet(navigationEvent.listData))
+                    router.navigate(
+                        EditMenuProductFragmentDirections.toListBottomSheet(
+                            navigationEvent.listData
+                        )
+                    )
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

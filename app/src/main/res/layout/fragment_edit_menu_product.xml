@@ -76,15 +76,16 @@
                     android:inputType="textCapSentences" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
-                android:id="@+id/fragment_edit_menu_product_ncv_product_code"
+            <LinearLayout
+                android:id="@+id/fragment_edit_menu_product_ll_categories"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_margin"
-                android:icon="@drawable/ic_right_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_til_name" />
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_menu_product_til_name">
+
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_edit_menu_product_til_cost"
@@ -93,7 +94,7 @@
                 android:hint="@string/hint_edit_menu_product_cost"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_ncv_product_code">
+                app:layout_constraintTop_toBottomOf="@+id/fragment_edit_menu_product_ll_categories">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_edit_menu_product_et_cost"

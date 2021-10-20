@@ -1,6 +1,7 @@
 package com.bunbeauty.data
 
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.domain.enums.OrderStatus
@@ -63,4 +64,10 @@ interface NetworkConnector {
         orderUuid: String,
         status: OrderStatus
     ): ApiResult<ServerOrder>
+
+    // CATEGORIES
+    suspend fun getCategoriesByCompanyUuid(
+        token: String,
+        companyUuid: String
+    ): ApiResult<ListServer<CategoryServer>>
 }

@@ -8,6 +8,7 @@ import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -179,6 +180,18 @@ class NetworkConnectorImpl @Inject constructor(
             body = hashMapOf("status" to status.toString()),
             serializer = ServerOrder.serializer(),
             parameters = hashMapOf("uuid" to orderUuid),
+            token = token
+        )
+    }
+
+    override suspend fun getCategoriesByCompanyUuid(
+        token: String,
+        companyUuid: String
+    ): ApiResult<ListServer<CategoryServer>> {
+        return getData(
+            path = "category",
+            serializer = ListServer.serializer(CategoryServer.serializer()),
+            parameters = hashMapOf("companyUuid" to companyUuid),
             token = token
         )
     }

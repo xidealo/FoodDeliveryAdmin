@@ -5,9 +5,11 @@ import com.bunbeauty.common.Constants.RELOAD_DELAY
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.dao.CategoryDao
+import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.mapper.CategoryMapper
 import com.bunbeauty.data.mapper.MenuProductMapper
+import com.bunbeauty.data.model.entity.menu_product.MenuProductCategoryEntity
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.delay
@@ -19,22 +21,27 @@ class MenuProductRepository @Inject constructor(
     private val networkConnector: NetworkConnector,
     private val menuProductMapper: MenuProductMapper,
     private val menuProductDao: MenuProductDao,
-    private val categoryDao: CategoryDao,
-    private val categoryMapper: CategoryMapper
+    private val menuProductCategoryDao: MenuProductCategoryDao
 ) : MenuProductRepo {
 
     override suspend fun refreshMenuProductList(companyUuid: String) {
         when (val result = networkConnector.getMenuProductList(companyUuid)) {
             is ApiResult.Success -> {
+                menuProductDao.deleteAll()
                 result.data.let { listServer ->
                     menuProductDao.insertAll(
                         listServer.results.map { serverMenuProductList ->
                             menuProductMapper.toEntity(serverMenuProductList)
                         })
+
                     listServer.results.forEach { menuProductServer ->
-                        categoryDao.insertAll(menuProductServer.categories.map {
-                            categoryMapper.toEntity(it, menuProductServer.uuid)
-                        })
+                        menuProductServer.categories.forEach { category ->
+                            menuProductCategoryDao.insert(
+                                MenuProductCategoryEntity(
+                                    menuProductServer.uuid, category.uuid
+                                )
+                            )
+                        }
                     }
                 }
             }

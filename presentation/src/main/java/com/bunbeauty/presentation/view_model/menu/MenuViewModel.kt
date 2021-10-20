@@ -2,9 +2,9 @@ package com.bunbeauty.presentation.view_model.menu
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
+import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.presentation.extension.toStateSuccess
 import com.bunbeauty.presentation.model.MenuProductItemModel
 import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
@@ -24,7 +24,8 @@ import javax.inject.Inject
 class MenuViewModel @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val stringUtil: IStringUtil,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
+    private val categoryRepo: CategoryRepo
 ) : BaseViewModel() {
 
     private val mutableProductListState: MutableStateFlow<State<List<MenuProductItemModel>>> =
@@ -34,6 +35,10 @@ class MenuViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
+            categoryRepo.refreshCategories(
+                dataStoreRepo.token.first(),
+                dataStoreRepo.companyUuid.first()
+            )
             menuProductRepo.refreshMenuProductList(dataStoreRepo.companyUuid.first())
             subscribeOnProducts()
         }
