@@ -26,12 +26,10 @@ class OrderRepository @Inject constructor(
             is ApiResult.Success -> {
 
             }
-
             is ApiResult.Error -> {
 
             }
         }
-
     }
 
     override suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String) {

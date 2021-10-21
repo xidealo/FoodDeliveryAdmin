@@ -14,7 +14,7 @@ class ServerOrderMapper @Inject constructor(
         return Order(
             uuid = order.uuid,
             cafeUuid = order.cafeUuid,
-            oderProductList = order.oderProductServerList.map(cartProductMapper::toModel),
+            oderProductList = order.oderProductList.map(cartProductMapper::toModel),
             address = order.addressDescription,
             code = order.code,
             comment = order.comment,
