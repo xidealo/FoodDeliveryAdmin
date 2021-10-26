@@ -1,4 +1,3 @@
-
 plugins {
     kotlin(Plugin.android)
     id(Plugin.kotlinAndroid)
@@ -6,6 +5,7 @@ plugins {
     id(Plugin.kapt)
     id(Plugin.kotlinSerialization)
     id(Plugin.hiltPlugin)
+    id(Plugin.googleService)
 }
 
 android {
@@ -57,9 +57,7 @@ dependencies {
     implementation(Ktor.clientAndroid)
     implementation(Ktor.clientOkhttp)
 
-/*    //Firebase
+    //Firebase
     implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
-    implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")*/
 }

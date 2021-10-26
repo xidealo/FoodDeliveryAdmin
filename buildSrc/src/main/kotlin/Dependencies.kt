@@ -94,6 +94,7 @@ object Plugin {
     const val multiplatform = "multiplatform"
     const val nativeCocoapods = "native.cocoapods"
     const val hiltPlugin = "dagger.hilt.android.plugin"
+    const val googleService = "com.google.gms.google-services"
 }
 
 object AndroidX {

@@ -5,6 +5,7 @@ plugins {
     id(Plugin.kapt)
     id(Plugin.hiltPlugin)
     id(Plugin.navigation)
+    id(Plugin.googleService)
 }
 
 val versionMajor = 1
@@ -23,7 +24,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore.jks")
+            storeFile = file("keystore")
             storePassword = "itisBB15092019"
             keyAlias = "papakarloKey"
             keyPassword = "Itispapakarlo08062004"
@@ -96,12 +97,9 @@ dependencies {
     androidTestImplementation(Navigation.navigationTesting)
 
     //Firebase
-/*
     implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
-    implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")
-*/
+    //implementation("com.google.firebase:firebase-storage-ktx")
 
     //lifecycle
     implementation(Lifecycle.lifecycleExtensions)

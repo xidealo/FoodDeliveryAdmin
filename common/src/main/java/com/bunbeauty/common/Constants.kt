@@ -18,11 +18,9 @@ object Constants {
 
     // NOTIFICATION
 
-    const val NOTIFICATION_TOPIC = "notification"
     const val CHANNEL_ID = "1"
     const val CHANNEL_NAME = "Main channel"
-    const val APP_ID_KEY = "app_id"
-    const val CAFE_ID_KEY = "cafe_id"
+    const val ORDER_CODE = "orderCode"
     const val NOTIFICATION_ID = 1
 
 

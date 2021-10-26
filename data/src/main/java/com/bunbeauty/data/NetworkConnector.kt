@@ -18,7 +18,7 @@ interface NetworkConnector {
     // LOGIN
     suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
     suspend fun subscribeOnNotification()
-    suspend fun unsubscribeOnNotification()
+    suspend fun unsubscribeOnNotification(cafeId: String)
 
     // CAFE
     suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
@@ -49,7 +49,7 @@ interface NetworkConnector {
     ): Flow<ApiResult<ServerOrder>>
 
 
-    suspend fun unsubscribeOnOrderList()
+    suspend fun unsubscribeOnOrderList(cafeId: String)
 
     suspend fun getOrderListByCafeId(
         token: String,

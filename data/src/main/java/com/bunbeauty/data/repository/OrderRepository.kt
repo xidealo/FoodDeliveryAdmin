@@ -15,7 +15,6 @@ class OrderRepository @Inject constructor(
 ) : OrderRepo {
 
     override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
-    override val newOrder: MutableSharedFlow<Order> = MutableSharedFlow()
 
     private var cachedData: MutableMap<String, Order> = HashMap()
 
@@ -36,24 +35,21 @@ class OrderRepository @Inject constructor(
         }.map { resultApiResultSuccess ->
             serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
                 .let { order ->
-                    if (cachedData[order.uuid] == null)
-                        newOrder.emit(order)
-
                     cachedData[order.uuid] = order
                     ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
         }.collect()
     }
 
-    override suspend fun unsubscribeOnOrderList() {
-        cachedData.clear()
-        networkConnector.unsubscribeOnOrderList()
+    override suspend fun unsubscribeOnOrderList(cafeId: String) {
+        networkConnector.unsubscribeOnOrderList(cafeId)
     }
 
     override suspend fun loadOrderListByCafeId(
         token: String,
         cafeId: String
     ) {
+        cachedData.clear()
         when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
             is ApiResult.Success -> {
                 if (result.data.results.isEmpty()) {

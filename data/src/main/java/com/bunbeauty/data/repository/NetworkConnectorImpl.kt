@@ -16,6 +16,8 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.websocket.*
@@ -51,7 +53,7 @@ class NetworkConnectorImpl @Inject constructor(
 
     }
 
-    override suspend fun unsubscribeOnNotification() {
+    override suspend fun unsubscribeOnNotification(cafeId: String) {
 
     }
 
@@ -123,6 +125,16 @@ class NetworkConnectorImpl @Inject constructor(
         token: String,
         cafeId: String
     ): Flow<ApiResult<ServerOrder>> {
+
+        Firebase.messaging.subscribeToTopic(cafeId)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("NotificationTag", "Subscribe to topic is successful")
+                } else {
+                    Log.d("NotificationTag", "Subscribe to topic is not successful")
+                }
+            }
+
         return flow {
             try {
                 Log.d(WEB_SOCKET_TAG, "in socket")
@@ -154,7 +166,16 @@ class NetworkConnectorImpl @Inject constructor(
         }
     }
 
-    override suspend fun unsubscribeOnOrderList() {
+    override suspend fun unsubscribeOnOrderList(cafeId: String) {
+        Firebase.messaging.unsubscribeFromTopic(cafeId)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("NotificationTag", "Unsubscribe to topic is successful")
+                } else {
+                    Log.d("NotificationTag", "Unsubscribe to topic is not successful")
+                }
+            }
+
         if (webSocketSession != null) {
             webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "Change cafe"))
             webSocketSession = null

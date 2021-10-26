@@ -66,6 +66,10 @@ class OrdersViewModel @Inject constructor(
     fun saveSelectedCafeAddress(cafeAddress: CafeAddress) {
         viewModelScope.launch(Default) {
             cafeAddress.cafeUuid?.let { cafeUuid ->
+                //unsubscribe previous cafe from socket and firebase
+                if (cafeUuid != dataStoreRepo.cafeUuid.first())
+                    orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first())
+
                 dataStoreRepo.saveCafeUuid(cafeUuid)
             }
         }
@@ -109,10 +113,7 @@ class OrdersViewModel @Inject constructor(
                 if (cafeId.isNotEmpty()) {
                     mutableOrderListState.value = ExtendedState.Loading()
                     orderRepo.loadOrderListByCafeId(token, cafeId)
-
-                    //service
-                    //orderRepo.unsubscribeOnOrderList()
-                    //orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
+                    orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
                 } else {
                     mutableOrderListState.value = ExtendedState.Empty()
                 }
