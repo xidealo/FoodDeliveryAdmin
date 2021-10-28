@@ -5,7 +5,7 @@ data class ServerOrderEntity(
     val code: String = "",
     val bonus: Int? = null,
     val comment: String? = null,
-    val deferredTime: String? = null,
+    val deferred: String? = null,
     val delivery: Boolean = true,
     val email: String = "",
     val orderStatus: String = "",

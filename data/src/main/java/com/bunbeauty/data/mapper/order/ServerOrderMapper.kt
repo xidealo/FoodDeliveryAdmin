@@ -23,7 +23,7 @@ class ServerOrderMapper @Inject constructor(
             address = userAddressMapper.from(model.orderEntity.address),
             code = model.orderEntity.code,
             comment = model.orderEntity.comment,
-            deferred = model.orderEntity.deferredTime,
+            deferred = model.orderEntity.deferred,
             delivery = model.orderEntity.delivery,
             bonus = model.orderEntity.bonus,
             email = model.orderEntity.email,
