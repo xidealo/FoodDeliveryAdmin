@@ -3,6 +3,7 @@ package com.bunbeauty.data.repository
 import android.util.Log
 import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.Constants.COMPANY_UUID_PARAMETER
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
@@ -10,6 +11,7 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.CategoryServer
+import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -69,8 +71,16 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery> {
-        return ApiResult.Success(Delivery())
+    override suspend fun getDelivery(
+        token: String,
+        companyUuid: String
+    ): ApiResult<DeliveryServer> {
+        return getData(
+            token = token,
+            path = "delivery",
+            serializer = DeliveryServer.serializer(),
+            parameters = hashMapOf(COMPANY_UUID_PARAMETER to companyUuid)
+        )
         //return getData("")
     }
 

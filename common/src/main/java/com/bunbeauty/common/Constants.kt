@@ -47,6 +47,7 @@ object Constants {
     const val RELOAD_DELAY = 5000L
     //API
     const val WEB_SOCKET_TAG = "web_socket"
+    const val COMPANY_UUID_PARAMETER = "companyUuid"
 
 
     // SERVICE
