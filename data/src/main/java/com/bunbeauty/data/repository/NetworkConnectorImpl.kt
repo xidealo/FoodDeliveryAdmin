@@ -5,7 +5,7 @@ import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.data.model.server.cafe.ServerCafe
+import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
@@ -23,7 +23,6 @@ import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import java.util.*
 import javax.inject.Inject
@@ -51,12 +50,19 @@ class NetworkConnectorImpl @Inject constructor(
 
     }
 
-    override suspend fun getCafeList(): ApiResult<ListServer<ServerCafe>> {
-        return ApiResult.Success(ListServer(1, listOf(ServerCafe())))
-        //return getData("")
+    override suspend fun getCafeList(
+        token: String,
+        cityUuid: String
+    ): ApiResult<ListServer<CafeServer>> {
+        return getData(
+            path = "cafe",
+            serializer = ListServer.serializer(CafeServer.serializer()),
+            parameters = hashMapOf("cityUuid" to cityUuid),
+            token = token,
+        )
     }
 
-    override suspend fun getDelivery(): ApiResult<Delivery> {
+    override suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery> {
         return ApiResult.Success(Delivery())
         //return getData("")
 
@@ -103,7 +109,7 @@ class NetworkConnectorImpl @Inject constructor(
                     path = "user/order/subscribe",
                     request = {
                         header("Authorization", "Bearer $token")
-                        parameter("cafeUuid", "2efe19e0-4324-4c5f-b214-c5cc6da2dacf")
+                        parameter("cafeUuid", cafeId)
                     }
                 ) {
                     Log.d("aaa", "in socket")
@@ -133,7 +139,7 @@ class NetworkConnectorImpl @Inject constructor(
         return getData(
             path = "order",
             serializer = ListServer.serializer(ServerOrder.serializer()),
-            parameters = hashMapOf("cafeUuid" to "2efe19e0-4324-4c5f-b214-c5cc6da2dacf"),
+            parameters = hashMapOf("cafeUuid" to cafeId),
             token = token
         )
     }

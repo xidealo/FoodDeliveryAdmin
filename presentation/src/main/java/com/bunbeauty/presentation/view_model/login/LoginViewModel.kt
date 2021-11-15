@@ -2,7 +2,9 @@ package com.bunbeauty.presentation.view_model.login
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.DeliveryRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
@@ -29,6 +31,7 @@ class LoginViewModel @Inject constructor(
 
     init {
         subscribeOnToken()
+
     }
 
     fun login(username: String, password: String) {
@@ -48,7 +51,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = userAuthorizationRepo.login(username, password)) {
                 is ApiResult.Success -> {
-                    result.data?.let { token ->
+                    result.data.let { token ->
                         dataStoreRepo.saveToken(token)
                     }
                 }

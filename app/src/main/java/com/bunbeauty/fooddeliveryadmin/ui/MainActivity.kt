@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         router.attach(this, R.id.activity_main_fcv_container)
-        viewModel.refreshCafeList()
-        viewModel.refreshDelivery()
+
         setupBottomNavigationBar()
     }
 

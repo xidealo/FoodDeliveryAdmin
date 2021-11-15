@@ -2,16 +2,18 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants
+import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.dao.CafeDao
 import com.bunbeauty.data.mapper.cafe.IEntityCafeMapper
 import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -21,7 +23,8 @@ class CafeRepository @Inject constructor(
     private val networkConnector: NetworkConnector,
     private val serverCafeMapper: IServerCafeMapper,
     private val entityCafeMapper: IEntityCafeMapper,
-    private val cafeDao: CafeDao
+    private val cafeDao: CafeDao,
+    private val dataStoreRepo: DataStoreRepo
 ) : CafeRepo {
 
     override val cafeListFlow = cafeDao.getCafeListFlow()
@@ -48,22 +51,21 @@ class CafeRepository @Inject constructor(
         }
     }
 
-    override suspend fun refreshCafeList() {
-        //cafeDao.deleteAll()
-
-        when (val result = networkConnector.getCafeList()) {
+    override suspend fun refreshCafeList(token: String, cityUuid: String) {
+        when (val result = networkConnector.getCafeList(token, cityUuid)) {
             is ApiResult.Success -> {
-                result.data?.let { listServer ->
+                result.data.let { listServer ->
                     cafeDao.insertAll(
                         listServer.results.map { serverCafe ->
                             serverCafeMapper.from(serverCafe)
                         })
+                    if (dataStoreRepo.cafeUuid.first().isEmpty())
+                        dataStoreRepo.saveCafeUuid(listServer.results.first().uuid)
                 }
             }
             is ApiResult.Error -> {
                 delay(Constants.RELOAD_DELAY)
-                refreshCafeList()
-                //reload data
+                refreshCafeList(token, cityUuid)
             }
         }
     }

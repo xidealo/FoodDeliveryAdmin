@@ -14,8 +14,8 @@ class DeliveryRepository @Inject constructor(
     private val dataStoreRepo: DataStoreRepo
 ) : DeliveryRepo {
 
-    override suspend fun refreshDelivery() {
-        when (val result = networkConnector.getDelivery()) {
+    override suspend fun refreshDelivery(token: String, cityUuid: String) {
+        when (val result = networkConnector.getDelivery(token, cityUuid)) {
             is ApiResult.Success -> {
                 result.data?.let { delivery ->
                     dataStoreRepo.saveDelivery(delivery)
@@ -23,7 +23,7 @@ class DeliveryRepository @Inject constructor(
             }
             is ApiResult.Error -> {
                 delay(RELOAD_DELAY)
-                refreshDelivery()
+                refreshDelivery(token, cityUuid)
             }
         }
     }

@@ -9,20 +9,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val cafeRepo: CafeRepo,
-    private val deliveryRepo: DeliveryRepo,
-) : BaseViewModel() {
+class MainViewModel @Inject constructor() : BaseViewModel() {
 
-    fun refreshCafeList() {
-        viewModelScope.launch {
-            cafeRepo.refreshCafeList()
-        }
-    }
-
-    fun refreshDelivery() {
-        viewModelScope.launch {
-            deliveryRepo.refreshDelivery()
-        }
-    }
 }

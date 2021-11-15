@@ -7,7 +7,7 @@ import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.StatisticServer
 import com.bunbeauty.data.model.server.UserAuthorization
-import com.bunbeauty.data.model.server.cafe.ServerCafe
+import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
 import kotlinx.coroutines.flow.*
 
@@ -19,10 +19,10 @@ interface NetworkConnector {
     suspend fun unsubscribeOnNotification()
 
     // CAFE
-    suspend fun getCafeList(): ApiResult<ListServer<ServerCafe>>
+    suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
 
     // DELIVERY
-    suspend fun getDelivery(): ApiResult<Delivery>
+    suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery>
 
     // MENU PRODUCT
     suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>>

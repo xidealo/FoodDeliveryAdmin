@@ -6,6 +6,7 @@ import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.DeliveryRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.presentation.utils.IResourcesProvider
@@ -23,6 +24,7 @@ import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +35,7 @@ class OrdersViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: IDateTimeUtil,
+    private val deliveryRepo: DeliveryRepo
 ) : BaseViewModel() {
 
     private val mutableAddressState: MutableStateFlow<State<String>> =
@@ -44,10 +47,14 @@ class OrdersViewModel @Inject constructor(
     val orderListState: StateFlow<ExtendedState<List<OrderItemModel>>> =
         mutableOrderListState.asStateFlow()
 
-
     init {
         subscribeOnAddress()
         subscribeOnOrders()
+        val token = runBlocking {
+            dataStoreRepo.token.first() ?: ""
+        }
+        refreshCafeList(token, "5b671b20-4b7c-42e7-97ed-64036c75ed79")
+        refreshDelivery(token, "5b671b20-4b7c-42e7-97ed-64036c75ed79")
     }
 
     fun saveSelectedCafeAddress(cafeAddress: CafeAddress) {
@@ -93,14 +100,28 @@ class OrdersViewModel @Inject constructor(
     private fun subscribeOnOrders() {
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             dataStoreRepo.token.onEach { token ->
-                orderRepo.loadOrderListByCafeId(token ?: "", cafeId)
-                orderRepo.subscribeOnOrderListByCafeId(token ?: "", cafeId)
+                if (cafeId.isNotEmpty() && token != null) {
+                    orderRepo.loadOrderListByCafeId(token, cafeId)
+                    orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
+                }
             }
         }.launchIn(viewModelScope)
 
         orderRepo.ordersMapFlow.onEach { list ->
             mutableOrderListState.value = list.map(::toItemModel).toStateAddedSuccess()
         }.launchIn(viewModelScope)
+    }
+
+    fun refreshCafeList(token: String, cityUuid: String) {
+        viewModelScope.launch {
+            cafeRepo.refreshCafeList(token, cityUuid)
+        }
+    }
+
+    fun refreshDelivery(token: String, cityUuid: String) {
+        viewModelScope.launch {
+            deliveryRepo.refreshDelivery(token, cityUuid)
+        }
     }
 
     private fun toItemModel(order: Order): OrderItemModel {
@@ -113,4 +134,6 @@ class OrdersViewModel @Inject constructor(
             order = order
         )
     }
+
+
 }
