@@ -21,11 +21,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bunbeauty.fooddeleveryadmin"
+        applicationId "com.bunbeauty.fooddeliveryadmin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.2.0"
+        versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
