@@ -50,9 +50,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is MenuNavigationEvent.ToCreateMenuProduct ->
-                    router.navigate(toCreateMenuProductFragment())
+                    router.navigate(MenuFragmentDirections.toCreateMenuProductFragment())
                 is MenuNavigationEvent.ToEditMenuProduct ->
-                    router.navigate(toEditMenuProductFragment(navigationEvent.menuProduct))
+                    router.navigate(MenuFragmentDirections.toEditMenuProductFragment(navigationEvent.menuProduct))
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

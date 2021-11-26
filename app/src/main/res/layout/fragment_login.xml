@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragments.login.LoginFragment">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.login.LoginFragment">
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/fragment_login_group_login"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:constraint_referenced_ids="fragment_login_til_login, fragment_login_til_password, fragment_login_btn_login" />
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/fragment_login_group_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="fragment_login_til_login, fragment_login_til_password, fragment_login_btn_login" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_login_til_login"
-            style="@style/MaterialInputLayout"
-            android:layout_margin="@dimen/large_margin"
-            android:hint="@string/hint_login_login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/ic_user">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_login_til_login"
+        style="@style/MaterialInputLayout"
+        android:layout_margin="@dimen/large_margin"
+        android:hint="@string/hint_login_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_user">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_login_et_login"
-                style="@style/MaterialInput"
-                android:inputType="textCapSentences" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_login_et_login"
+            style="@style/MaterialInput"
+            android:inputType="textCapSentences" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_login_til_password"
-            style="@style/MaterialInputLayout"
-            android:layout_margin="@dimen/large_margin"
-            android:hint="@string/hint_login_password"
-            app:endIconMode="password_toggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_login_til_login"
-            app:startIconDrawable="@drawable/ic_locked">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_login_til_password"
+        style="@style/MaterialInputLayout"
+        android:layout_margin="@dimen/large_margin"
+        android:hint="@string/hint_login_password"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_til_login"
+        app:startIconDrawable="@drawable/ic_locked">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_login_et_password"
-                style="@style/MaterialInput"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_login_et_password"
+            style="@style/MaterialInput"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fragment_login_btn_login"
-            style="@style/MainButton"
-            android:layout_margin="@dimen/large_margin"
-            android:text="@string/action_login_enter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment_login_btn_login"
+        style="@style/MainButton"
+        android:layout_margin="@dimen/large_margin"
+        android:text="@string/action_login_enter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/fragment_login_pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/fragment_login_pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

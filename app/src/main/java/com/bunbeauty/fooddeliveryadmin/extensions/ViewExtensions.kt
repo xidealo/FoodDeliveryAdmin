@@ -7,9 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bunbeauty.fooddeliveryadmin.R
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
-import com.squareup.picasso.Picasso
 
 fun View.invisible(): View {
     visibility = View.INVISIBLE
@@ -40,13 +37,14 @@ fun TextView.strikeOutText() {
 }
 
 fun ImageView.setImage(photoLink: String) {
-    Picasso.get()
+
+    /*Picasso.get()
         .load(photoLink)
         .fit()
         .placeholder(R.drawable.default_product)
         .networkPolicy(NetworkPolicy.NO_CACHE)
         .memoryPolicy(MemoryPolicy.NO_CACHE)
-        .into(this)
+        .into(this)*/
 }
 
 fun ImageView.getBitmap(): Bitmap {

@@ -1,15 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.ui.items
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.viewbinding.ViewBinding
-import com.bunbeauty.fooddeliveryadmin.R
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import java.lang.ref.SoftReference
 
 abstract class ImageItem<B : ViewBinding> : AbstractBindingItem<B>() {
@@ -17,7 +11,7 @@ abstract class ImageItem<B : ViewBinding> : AbstractBindingItem<B>() {
     private var loadedBitmap: SoftReference<Bitmap?> = SoftReference(null)
 
     fun setImage(imageView: ImageView, photoLink: String) {
-        if (loadedBitmap.get() == null) {
+      /*  if (loadedBitmap.get() == null) {
             val target = object : Target {
                 override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                     if (bitmap != null) {
@@ -41,7 +35,7 @@ abstract class ImageItem<B : ViewBinding> : AbstractBindingItem<B>() {
                 .into(target)
         } else {
             imageView.setImageBitmap(loadedBitmap.get())
-        }
+        }*/
     }
 
 }

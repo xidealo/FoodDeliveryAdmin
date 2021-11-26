@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.ui.fragments.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
@@ -10,9 +9,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.navigation_event.LoginNavigationEvent
-import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.view_model.login.LoginViewModel
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.login.LoginFragmentDirections.toOrdersFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -44,7 +41,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
-                is LoginNavigationEvent.ToOrders -> router.navigate(toOrdersFragment())
+                is LoginNavigationEvent.ToOrders -> router.navigate(LoginFragmentDirections.toOrdersFragment())
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

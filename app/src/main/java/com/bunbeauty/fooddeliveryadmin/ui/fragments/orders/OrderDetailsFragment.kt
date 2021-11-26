@@ -95,7 +95,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is OrderDetailsNavigationEvent.ToStatusList ->
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(OrderDetailsFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

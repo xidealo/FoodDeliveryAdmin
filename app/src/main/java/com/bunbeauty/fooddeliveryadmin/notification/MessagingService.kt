@@ -44,7 +44,7 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
 
         launch(IO) {
             val cafeId = dataStoreRepo.cafeUuid.first()
-            if (remoteMessage.data[APP_ID_KEY] == BuildConfig.APP_ID &&
+            if (remoteMessage.data[APP_ID_KEY] == "PAPA_KARLO" &&
                 remoteMessage.data[CAFE_ID_KEY] == cafeId
             ) {
                 withContext(Main) {

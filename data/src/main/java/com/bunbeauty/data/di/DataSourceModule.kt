@@ -27,7 +27,7 @@ class DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseStorage(): StorageReference = Firebase.storage.reference.child(com.bunbeauty.domain.BuildConfig.APP_ID)
+    fun provideFirebaseStorage(): StorageReference = Firebase.storage.reference.child("PAPA_KARLO")
 
     // LOCAL DATABASE
 

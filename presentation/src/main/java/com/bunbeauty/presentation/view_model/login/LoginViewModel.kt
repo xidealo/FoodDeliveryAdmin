@@ -43,9 +43,8 @@ class LoginViewModel @Inject constructor(
             showWrongDataError()
             return
         }
-        val passwordHash = getMd5(processedPassword)
 
-        apiRepo.login(processedUsername, passwordHash).onEach { isLoginSuccess ->
+        apiRepo.login(processedUsername, getMd5(processedPassword)).onEach { isLoginSuccess ->
             if (isLoginSuccess) {
                 dataStoreRepo.saveToken(UUID.randomUUID().toString())
             } else {

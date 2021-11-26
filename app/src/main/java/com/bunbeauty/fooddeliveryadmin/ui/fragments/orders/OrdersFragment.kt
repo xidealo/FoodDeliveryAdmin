@@ -11,8 +11,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
 import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
@@ -85,9 +83,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is OrdersNavigationEvent.ToOrderDetails ->
-                    router.navigate(toOrdersDetailsFragment(navigationEvent.order))
+                    router.navigate(OrdersFragmentDirections.toOrdersDetailsFragment(navigationEvent.order))
                 is OrdersNavigationEvent.ToCafeAddressList -> {
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(OrdersFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 }
                 else -> Unit
             }

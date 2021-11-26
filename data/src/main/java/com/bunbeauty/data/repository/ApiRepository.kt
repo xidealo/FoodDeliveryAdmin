@@ -11,14 +11,12 @@ import com.bunbeauty.common.Constants.ORDER_ENTITY
 import com.bunbeauty.common.Constants.ORDER_STATUS
 import com.bunbeauty.common.Constants.PASSWORD
 import com.bunbeauty.common.Constants.TIMESTAMP
-import com.bunbeauty.domain.BuildConfig.APP_ID
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.domain.model.cafe.server.ServerCafe
 import com.bunbeauty.domain.model.menu_product.ServerMenuProduct
 import com.bunbeauty.domain.model.order.server.ServerOrder
 import com.bunbeauty.domain.repo.ApiRepo
-import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
@@ -42,6 +40,7 @@ class ApiRepository @Inject constructor(
 ) : ApiRepo {
 
     private val serverOrderList = LinkedList<ServerOrder>()
+    val APP_ID = "PAPA_KARLO"
 
     @ExperimentalCoroutinesApi
     override fun login(login: String, passwordHash: String): Flow<Boolean> = callbackFlow {
