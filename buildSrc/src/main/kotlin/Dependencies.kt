@@ -43,8 +43,8 @@ object Versions {
     const val googleMapUtils = "2.2.3"
     const val googleMapUtilsKTX = "3.1.0"
 
-    const val hilt = "2.40"
-    const val hiltService = "2.37"
+    const val hilt = "2.38.1"
+    const val hiltService = "2.38.1"
 
     const val fastAdapter = "5.3.4"
 
@@ -112,7 +112,7 @@ object Google {
 
 object Dagger {
     const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
-    const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hilt}"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 }
 
 object FastAdapter {

@@ -11,8 +11,6 @@ buildscript {
         classpath(ClassPath.kotlinSerialization)
         classpath(ClassPath.googleServices)
         classpath(ClassPath.hiltServices)
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
