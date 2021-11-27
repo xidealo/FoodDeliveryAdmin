@@ -98,10 +98,12 @@ dependencies {
     androidTestImplementation(Navigation.navigationTesting)
 
     //Firebase
+/*
     implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
+*/
 
     //lifecycle
     implementation(Lifecycle.lifecycleExtensions)

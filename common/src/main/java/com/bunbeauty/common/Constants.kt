@@ -54,4 +54,6 @@ object Constants {
     // PATH
 
     const val IMAGES_FOLDER = "image/*"
+
+    const val APP_ID = "PAPA_KARLO"
 }
