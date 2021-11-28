@@ -1,7 +1,7 @@
 package com.bunbeauty.data.mapper.cafe
 
-import com.bunbeauty.data.entity.CafeEntity
-import com.bunbeauty.domain.model.cafe.server.*
+import com.bunbeauty.data.model.entity.CafeEntity
+import com.bunbeauty.data.model.server.cafe.*
 import javax.inject.Inject
 
 class ServerCafeMapper @Inject constructor() : IServerCafeMapper {

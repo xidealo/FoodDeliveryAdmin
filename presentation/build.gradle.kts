@@ -44,6 +44,7 @@ dependencies {
     //Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
+    implementation("javax.inject:javax.inject:1")
 
     //DataStore
     implementation(DataStore.dataStorePreferences)

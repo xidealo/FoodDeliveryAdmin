@@ -6,8 +6,8 @@ import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
 import com.bunbeauty.data.mapper.cafe.ServerCafeMapper
 import com.bunbeauty.data.mapper.cart_product.CartProductMapper
 import com.bunbeauty.data.mapper.cart_product.ICartProductMapper
-import com.bunbeauty.data.mapper.menu_product.IServerMenuProductMapper
-import com.bunbeauty.data.mapper.menu_product.ServerMenuProductMapper
+import com.bunbeauty.data.mapper.menu_product.IMenuProductMapper
+import com.bunbeauty.data.mapper.menu_product.MenuProductMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.ServerOrderMapper
 import com.bunbeauty.data.mapper.user_address.IUserAddressMapper
@@ -36,7 +36,7 @@ abstract class MapperModule {
 
     @Singleton
     @Binds
-    abstract fun bindServerMenuProductMapper(serverMenuProductMapper: ServerMenuProductMapper): IServerMenuProductMapper
+    abstract fun bindServerMenuProductMapper(menuProductMapper: MenuProductMapper): IMenuProductMapper
 
     @Singleton
     @Binds

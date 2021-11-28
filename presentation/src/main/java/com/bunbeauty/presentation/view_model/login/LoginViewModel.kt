@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.view_model.login
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.repo.ApiRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val apiRepo: ApiRepo,
+    //private val apiRepo: ApiRepo,
     private val dataStoreRepo: DataStoreRepo,
     private val resourcesProvider: IResourcesProvider,
 ) : BaseViewModel() {
@@ -44,22 +43,22 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        apiRepo.login(processedUsername, getMd5(processedPassword)).onEach { isLoginSuccess ->
+       /* apiRepo.login(processedUsername, getMd5(processedPassword)).onEach { isLoginSuccess ->
             if (isLoginSuccess) {
                 dataStoreRepo.saveToken(UUID.randomUUID().toString())
             } else {
                 showWrongDataError()
             }
-        }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope)*/
     }
 
     private fun subscribeOnToken() {
         dataStoreRepo.token.onEach { token ->
             if (token == null) {
-                apiRepo.unsubscribeOnNotification()
+                //apiRepo.unsubscribeOnNotification()
                 mutableIsLoading.value = false
             } else {
-                apiRepo.subscribeOnNotification()
+                //apiRepo.subscribeOnNotification()
                 goTo(LoginNavigationEvent.ToOrders)
             }
         }.launchIn(viewModelScope)

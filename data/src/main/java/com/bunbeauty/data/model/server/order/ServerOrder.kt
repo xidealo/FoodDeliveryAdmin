@@ -1,7 +1,9 @@
-package com.bunbeauty.domain.model.order.server
+package com.bunbeauty.data.model.server.order
 
-import com.bunbeauty.domain.model.cart_product.ServerCartProduct
+import com.bunbeauty.data.model.server.ServerCartProduct
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ServerOrder(
     var uuid: String = "",
     var cafeUuid: String = "",

@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
     implementation(Coroutine.coroutineCore)

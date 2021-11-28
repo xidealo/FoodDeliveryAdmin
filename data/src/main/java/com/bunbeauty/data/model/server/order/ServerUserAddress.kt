@@ -1,5 +1,8 @@
-package com.bunbeauty.domain.model.order.server
+package com.bunbeauty.data.model.server.order
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ServerUserAddress(
     val street: ServerUserStreet = ServerUserStreet(),
     val house: String = "",

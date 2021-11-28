@@ -1,7 +1,8 @@
-package com.bunbeauty.domain.model.cart_product
+package com.bunbeauty.data.model.server
 
-import com.bunbeauty.domain.model.menu_product.ServerMenuProduct
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ServerCartProduct(
     val count: Int = 0,
     val menuProduct: ServerMenuProduct = ServerMenuProduct()

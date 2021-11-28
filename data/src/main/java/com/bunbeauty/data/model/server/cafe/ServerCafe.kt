@@ -1,5 +1,8 @@
-package com.bunbeauty.domain.model.cafe.server
+package com.bunbeauty.data.model.server.cafe
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ServerCafe(
     var uuid: String = "",
     val address: ServerCafeAddress = ServerCafeAddress(),

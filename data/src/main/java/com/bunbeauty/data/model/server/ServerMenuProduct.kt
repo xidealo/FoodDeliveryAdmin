@@ -1,5 +1,8 @@
-package com.bunbeauty.domain.model.menu_product
+package com.bunbeauty.data.model.server
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ServerMenuProduct(
     var uuid: String? = null,
     var name: String = "",

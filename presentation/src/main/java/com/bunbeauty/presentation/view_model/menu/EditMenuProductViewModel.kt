@@ -156,7 +156,9 @@ class EditMenuProductViewModel @Inject constructor(
                 val photoByteArray = photo!!.toByteArray()
                 withContext(IO) {
                     menuProductRepo.deleteMenuProductPhoto(photoLink)
-                    menuProductRepo.saveMenuProductPhoto(photoByteArray).collect { photoLink ->
+                    menuProductRepo.saveMenuProductPhoto(photoByteArray)
+
+                     /*   .collect { photoLink ->
                         val menuProduct = MenuProduct(
                             uuid = menuProduct.uuid,
                             name = name,
@@ -174,7 +176,7 @@ class EditMenuProductViewModel @Inject constructor(
                         )
                         menuProductRepo.updateMenuProduct(menuProduct)
                         finishEditing(name)
-                    }
+                    }*/
                 }
             }
         }

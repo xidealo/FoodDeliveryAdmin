@@ -44,7 +44,7 @@ class MenuViewModel @Inject constructor(
 
     private fun subscribeOnProducts() {
         viewModelScope.launch {
-            menuProductRepo.menuProductList.collect { menuProductList ->
+            menuProductRepo.getMenuProductList().collect { menuProductList ->
                 mutableProductListState.value = menuProductList.map(::toItemModel).toStateSuccess()
             }
         }

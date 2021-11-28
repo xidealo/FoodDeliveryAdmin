@@ -1,7 +1,7 @@
 object Versions {
-    const val kotlin = "1.5.31"
-    const val gradle = "7.0.2"
-    const val kotlinCoroutines = "1.5.2-native-mt"
+    const val kotlin = "1.6.0"
+    const val gradle = "7.0.3"
+    const val kotlinCoroutines = "1.5.2"
     const val ktor = "1.6.5"
     const val kotlinxSerialization = "1.3.0"
     const val koin = "3.1.2"
@@ -43,8 +43,8 @@ object Versions {
     const val googleMapUtils = "2.2.3"
     const val googleMapUtilsKTX = "3.1.0"
 
-    const val hilt = "2.38.1"
-    const val hiltService = "2.38.1"
+    const val hilt = "2.40.1"
+    const val hiltService = "2.40.1"
 
     const val fastAdapter = "5.3.4"
 

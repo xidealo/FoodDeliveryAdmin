@@ -55,5 +55,7 @@ object Constants {
 
     const val IMAGES_FOLDER = "image/*"
 
+    //OTHER
     const val APP_ID = "PAPA_KARLO"
+    const val RELOAD_DELAY = 5000L
 }

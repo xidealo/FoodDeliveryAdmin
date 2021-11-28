@@ -1,8 +1,8 @@
 package com.bunbeauty.data.mapper.user_address
 
 import com.bunbeauty.domain.model.order.UserAddress
-import com.bunbeauty.domain.model.order.server.ServerUserAddress
-import com.bunbeauty.domain.model.order.server.ServerUserStreet
+import com.bunbeauty.data.model.server.order.ServerUserAddress
+import com.bunbeauty.data.model.server.order.ServerUserStreet
 import javax.inject.Inject
 
 class UserAddressMapper @Inject constructor() : IUserAddressMapper {

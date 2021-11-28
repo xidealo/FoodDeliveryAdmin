@@ -122,7 +122,9 @@ class CreateMenuProductViewModel @Inject constructor(
             val photoByteArray = withContext(Default) {
                 photo!!.toByteArray()
             }
-            menuProductRepo.saveMenuProductPhoto(photoByteArray).collect { photoLink ->
+            menuProductRepo.saveMenuProductPhoto(photoByteArray)
+
+          /*      .collect { photoLink ->
                 val uuid = UUID.randomUUID().toString()
                 val menuProduct = MenuProduct(
                     uuid = uuid,
@@ -141,7 +143,7 @@ class CreateMenuProductViewModel @Inject constructor(
                 )
                 menuProductRepo.saveMenuProduct(menuProduct)
                 finishCreation(name)
-            }
+            }*/
         }
     }
 

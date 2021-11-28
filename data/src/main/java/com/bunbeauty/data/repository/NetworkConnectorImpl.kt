@@ -4,10 +4,11 @@ import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.domain.model.cafe.server.ServerCafe
-import com.bunbeauty.domain.model.menu_product.ServerMenuProduct
-import com.bunbeauty.domain.model.order.server.ServerOrder
-import com.bunbeauty.domain.repo.ApiRepo
+import com.bunbeauty.data.model.server.cafe.ServerCafe
+import com.bunbeauty.data.model.server.ServerMenuProduct
+import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -21,18 +22,16 @@ import kotlinx.serialization.json.Json
 import java.util.*
 import javax.inject.Inject
 
-class ApiRepository @Inject constructor(
+class NetworkConnectorImpl @Inject constructor(
     private val dateTimeUtil: IDateTimeUtil,
     private val client: HttpClient,
     private val json: Json
-) : ApiRepo {
+) : NetworkConnector {
 
     private val serverOrderList = LinkedList<ServerOrder>()
 
-    override fun login(login: String, passwordHash: String): Flow<Boolean> {
-        return flow {
-
-        }
+    override fun login(login: String, passwordHash: String): ApiResult<String> {
+        return ApiResult.Success("token")
     }
 
     override fun subscribeOnNotification() {
@@ -43,25 +42,28 @@ class ApiRepository @Inject constructor(
 
     }
 
-    override val cafeList: Flow<List<ServerCafe>>
-        get() = flow {
+    override fun getCafeList(): ApiResult<ListServer<ServerCafe>> {
+        return ApiResult.Success(ListServer(1, listOf(ServerCafe())))
+        //return getData("")
+    }
 
-        }
-    override val delivery: Flow<Delivery>
-        get() = flow {
+    override fun getDelivery(): ApiResult<Delivery> {
+        return ApiResult.Success(Delivery())
+        //return getData("")
 
-        }
-    override val menuProductList: Flow<List<ServerMenuProduct>>
-        get() = flow {
+    }
 
-        }
+    override fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
+        return ApiResult.Success(ListServer(1, listOf(ServerMenuProduct())))
+        //return getData("")
+    }
 
     override fun deleteMenuProductPhoto(photoName: String) {
 
     }
 
-    override fun saveMenuProductPhoto(photoByteArray: ByteArray): Flow<String> {
-        return flow { }
+    override fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> {
+        return ApiResult.Success(":")
     }
 
     override fun saveMenuProduct(menuProduct: ServerMenuProduct) {
@@ -76,21 +78,24 @@ class ApiRepository @Inject constructor(
 
     }
 
-    override fun getAddedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>> {
-        return flow { }
+    override fun getAddedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
+        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
+        //return getData("")
     }
 
-    override fun getUpdatedOrderListByCafeId(cafeUuid: String): Flow<List<ServerOrder>> {
-        return flow { }
+    override fun getUpdatedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
+        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
+        //return getData("")
     }
 
-    override val orderList: Flow<List<ServerOrder>>
-        get() = flow {
+    override fun getOrderList(): ApiResult<ListServer<ServerOrder>> {
+        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
+        //return getData("")
+    }
 
-        }
-
-    override fun getOrderListByCafeId(cafeId: String): Flow<List<ServerOrder>> {
-        return flow { }
+    override fun getOrderListByCafeId(cafeId: String): ApiResult<ListServer<ServerOrder>> {
+        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
+        //return getData("")
     }
 
     override fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus) {
