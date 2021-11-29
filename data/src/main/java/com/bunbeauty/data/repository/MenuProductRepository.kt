@@ -58,7 +58,7 @@ class MenuProductRepository @Inject constructor(
         return networkConnector.deleteMenuProductPhoto(photoName)
     }
 
-    override fun saveMenuProductPhoto(photoByteArray: ByteArray): String {
+    override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String {
         return when (val result = networkConnector.saveMenuProductPhoto(photoByteArray)) {
             is ApiResult.Success -> {
                 result.data ?: ""

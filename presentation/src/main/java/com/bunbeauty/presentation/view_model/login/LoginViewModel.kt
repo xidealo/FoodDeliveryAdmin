@@ -1,7 +1,9 @@
 package com.bunbeauty.presentation.view_model.login
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.navigation_event.LoginNavigationEvent
@@ -17,9 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    //private val apiRepo: ApiRepo,
     private val dataStoreRepo: DataStoreRepo,
     private val resourcesProvider: IResourcesProvider,
+    private val userAuthorizationRepo: UserAuthorizationRepo,
 ) : BaseViewModel() {
 
     private val mutableIsLoading: MutableStateFlow<Boolean> = MutableStateFlow(true)
@@ -43,13 +45,27 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-       /* apiRepo.login(processedUsername, getMd5(processedPassword)).onEach { isLoginSuccess ->
-            if (isLoginSuccess) {
-                dataStoreRepo.saveToken(UUID.randomUUID().toString())
-            } else {
-                showWrongDataError()
+        viewModelScope.launch {
+            when (val result = userAuthorizationRepo.login(username, password)) {
+                is ApiResult.Success -> {
+                    result.data?.let { token ->
+                        dataStoreRepo.saveToken(token)
+                    }
+                }
+
+                is ApiResult.Error -> {
+                    //show error
+                }
             }
-        }.launchIn(viewModelScope)*/
+        }
+
+        /* apiRepo.login(processedUsername, getMd5(processedPassword)).onEach { isLoginSuccess ->
+             if (isLoginSuccess) {
+                 dataStoreRepo.saveToken(UUID.randomUUID().toString())
+             } else {
+                 showWrongDataError()
+             }
+         }.launchIn(viewModelScope)*/
     }
 
     private fun subscribeOnToken() {
@@ -75,13 +91,6 @@ class LoginViewModel @Inject constructor(
 
     private fun isCorrectPassword(password: String): Boolean {
         return password.isNotEmpty()
-    }
-
-    private fun getMd5(input: String): String {
-        val messageDigest = MessageDigest.getInstance("MD5")
-        return BigInteger(1, messageDigest.digest(input.toByteArray()))
-            .toString(16)
-            .padStart(32, '0')
     }
 
     /**

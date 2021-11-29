@@ -36,4 +36,8 @@ abstract class RepoModule {
     @Singleton
     @Binds
     abstract fun bindDataStoreRepository(dataStoreRepository: DataStoreRepository): DataStoreRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindUserAuthorizationRepository(userAuthorizationRepository: UserAuthorizationRepository): UserAuthorizationRepo
 }

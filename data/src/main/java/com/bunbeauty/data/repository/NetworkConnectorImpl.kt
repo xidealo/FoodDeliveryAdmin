@@ -15,8 +15,6 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -30,75 +28,75 @@ class NetworkConnectorImpl @Inject constructor(
 
     private val serverOrderList = LinkedList<ServerOrder>()
 
-    override fun login(login: String, passwordHash: String): ApiResult<String> {
+    override suspend fun login(login: String, passwordHash: String): ApiResult<String> {
         return ApiResult.Success("token")
     }
 
-    override fun subscribeOnNotification() {
+    override suspend fun subscribeOnNotification() {
 
     }
 
-    override fun unsubscribeOnNotification() {
+    override suspend fun unsubscribeOnNotification() {
 
     }
 
-    override fun getCafeList(): ApiResult<ListServer<ServerCafe>> {
+    override suspend fun getCafeList(): ApiResult<ListServer<ServerCafe>> {
         return ApiResult.Success(ListServer(1, listOf(ServerCafe())))
         //return getData("")
     }
 
-    override fun getDelivery(): ApiResult<Delivery> {
+    override suspend fun getDelivery(): ApiResult<Delivery> {
         return ApiResult.Success(Delivery())
         //return getData("")
 
     }
 
-    override fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
+    override suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
         return ApiResult.Success(ListServer(1, listOf(ServerMenuProduct())))
         //return getData("")
     }
 
-    override fun deleteMenuProductPhoto(photoName: String) {
+    override suspend fun deleteMenuProductPhoto(photoName: String) {
 
     }
 
-    override fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> {
+    override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> {
         return ApiResult.Success(":")
     }
 
-    override fun saveMenuProduct(menuProduct: ServerMenuProduct) {
+    override suspend fun saveMenuProduct(menuProduct: ServerMenuProduct) {
 
     }
 
-    override fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
+    override suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
 
     }
 
-    override fun deleteMenuProduct(uuid: String) {
+    override suspend fun deleteMenuProduct(uuid: String) {
 
     }
 
-    override fun getAddedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
+    override suspend fun getAddedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
         return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
         //return getData("")
     }
 
-    override fun getUpdatedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
+    override suspend fun getUpdatedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
         return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
         //return getData("")
     }
 
-    override fun getOrderList(): ApiResult<ListServer<ServerOrder>> {
+    override suspend fun getOrderList(): ApiResult<ListServer<ServerOrder>> {
         return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
         //return getData("")
     }
 
-    override fun getOrderListByCafeId(cafeId: String): ApiResult<ListServer<ServerOrder>> {
+    override suspend fun getOrderListByCafeId(cafeId: String): ApiResult<ListServer<ServerOrder>> {
         return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
         //return getData("")
     }
 
-    override fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus) {
+    override suspend fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus) {
 
     }
 

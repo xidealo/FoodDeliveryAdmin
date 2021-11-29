@@ -6,7 +6,6 @@ import com.bunbeauty.data.dao.CafeDao
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.model.entity.CafeEntity
 import com.bunbeauty.data.model.entity.MenuProductEntity
-import com.bunbeauty.domain.model.menu_product.MenuProduct
 
 @Database(
     entities = [
