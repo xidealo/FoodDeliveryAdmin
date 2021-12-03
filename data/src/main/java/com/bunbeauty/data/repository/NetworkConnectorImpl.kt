@@ -28,7 +28,6 @@ class NetworkConnectorImpl @Inject constructor(
     private val json: Json
 ) : NetworkConnector {
 
-
     override suspend fun login(login: String, passwordHash: String): ApiResult<String> {
         return ApiResult.Success("token")
     }
@@ -75,11 +74,6 @@ class NetworkConnectorImpl @Inject constructor(
 
     override suspend fun deleteMenuProduct(uuid: String) {
 
-    }
-
-    override suspend fun getOrderList(): ApiResult<ListServer<ServerOrder>> {
-        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
-        //return getData("")
     }
 
     override suspend fun getOrderListByCafeId(cafeId: String): Flow<ApiResult<ListServer<ServerOrder>>> {

@@ -7,6 +7,7 @@ import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.cafe.ServerCafe
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.domain.model.statistic.Statistic
 import kotlinx.coroutines.flow.*
 
 interface NetworkConnector {
@@ -34,9 +35,10 @@ interface NetworkConnector {
     suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
     suspend fun deleteMenuProduct(uuid: String)
 
-    // ORDER
+    // STATISTIC
+    suspend fun getStatistic(period:String) : ApiResult<ListServer<Statistic>>
 
-    suspend fun getOrderList(): ApiResult<ListServer<ServerOrder>>
+    // ORDER
     suspend fun getOrderListByCafeId(cafeId: String): Flow<ApiResult<ListServer<ServerOrder>>>
     suspend fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus)
 }
