@@ -6,6 +6,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
@@ -50,6 +51,10 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 when (state) {
                     is State.Success -> {
                         fragmentOrdersNcvAddress.cardText = state.data
+                    }
+                    is State.Empty -> {
+                        fragmentOrdersNcvAddress.cardText =
+                            resources.getString(R.string.title_order_details_choice_cafe)
                     }
                     else -> Unit
                 }

@@ -134,26 +134,26 @@ class StatisticViewModel @Inject constructor(
         return if (cafeAddress.cafeUuid == null) {
             when (period) {
                 dayPeriod -> {
-                    orderRepo.getAllCafeOrdersByDay()
+                    flow {  }//orderRepo.getAllCafeOrdersByDay()
                 }
                 weekPeriod -> {
-                    orderRepo.getAllCafeOrdersByWeek()
+                    flow {  }//orderRepo.getAllCafeOrdersByWeek()
                 }
                 monthPeriod -> {
-                    orderRepo.getAllCafeOrdersByMonth()
+                    flow {  }//orderRepo.getAllCafeOrdersByMonth()
                 }
                 else -> null
             }
         } else {
             when (period) {
                 dayPeriod -> {
-                    orderRepo.getCafeOrdersByCafeIdAndDay(cafeAddress.cafeUuid)
+                    flow {  }//orderRepo.getCafeOrdersByCafeIdAndDay(cafeAddress.cafeUuid)
                 }
                 weekPeriod -> {
-                    orderRepo.getCafeOrdersByCafeIdAndWeek(cafeAddress.cafeUuid)
+                    flow {  }//orderRepo.getCafeOrdersByCafeIdAndWeek(cafeAddress.cafeUuid)
                 }
                 monthPeriod -> {
-                    orderRepo.getCafeOrdersByCafeIdAndMonth(cafeAddress.cafeUuid)
+                    flow {  }//orderRepo.getCafeOrdersByCafeIdAndMonth(cafeAddress.cafeUuid)
                 }
                 else -> null
             }

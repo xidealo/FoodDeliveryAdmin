@@ -33,6 +33,7 @@
     <string name="msg_order_details_alert">Отменить заказ?</string>
     <string name="action_order_details_yes">Да</string>
     <string name="action_order_details_no">Нет</string>
+    <string name="title_order_details_choice_cafe">Выбрать кафе</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_menu_orders">Заказы</string>

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ServerCafe(
-    var uuid: String = "",
+    var uuid: String = "cafe_uuid",
     val address: ServerCafeAddress = ServerCafeAddress(),
     val cafeEntity: ServerCafeEntity = ServerCafeEntity()
 )

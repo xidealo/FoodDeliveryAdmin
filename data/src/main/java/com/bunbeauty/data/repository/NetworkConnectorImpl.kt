@@ -15,6 +15,8 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -26,7 +28,6 @@ class NetworkConnectorImpl @Inject constructor(
     private val json: Json
 ) : NetworkConnector {
 
-    private val serverOrderList = LinkedList<ServerOrder>()
 
     override suspend fun login(login: String, passwordHash: String): ApiResult<String> {
         return ApiResult.Success("token")
@@ -76,23 +77,16 @@ class NetworkConnectorImpl @Inject constructor(
 
     }
 
-    override suspend fun getAddedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
-        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
-        //return getData("")
-    }
-
-    override suspend fun getUpdatedOrderListByCafeId(cafeUuid: String): ApiResult<ListServer<ServerOrder>> {
-        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
-        //return getData("")
-    }
-
     override suspend fun getOrderList(): ApiResult<ListServer<ServerOrder>> {
         return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
         //return getData("")
     }
 
-    override suspend fun getOrderListByCafeId(cafeId: String): ApiResult<ListServer<ServerOrder>> {
-        return ApiResult.Success(ListServer(1, listOf(ServerOrder())))
+    override suspend fun getOrderListByCafeId(cafeId: String): Flow<ApiResult<ListServer<ServerOrder>>> {
+        return flow {
+            emit(ApiResult.Success(ListServer(1, listOf(ServerOrder()))))
+            //emit(ApiResult.Error(ApiError(1, "ss")))
+        }
         //return getData("")
     }
 

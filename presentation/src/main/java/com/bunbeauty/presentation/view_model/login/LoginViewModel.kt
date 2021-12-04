@@ -54,18 +54,10 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is ApiResult.Error -> {
-                    //show error
+                    showWrongDataError()
                 }
             }
         }
-
-        /* apiRepo.login(processedUsername, getMd5(processedPassword)).onEach { isLoginSuccess ->
-             if (isLoginSuccess) {
-                 dataStoreRepo.saveToken(UUID.randomUUID().toString())
-             } else {
-                 showWrongDataError()
-             }
-         }.launchIn(viewModelScope)*/
     }
 
     private fun subscribeOnToken() {

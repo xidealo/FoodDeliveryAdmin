@@ -12,28 +12,25 @@ class ServerOrderMapper @Inject constructor(
     private val cartProductMapper: ICartProductMapper
 ) : IServerOrderMapper {
 
-    override fun from(model: ServerOrder): Order {
+    override fun toModel(order: ServerOrder): Order {
         return Order(
-            uuid = model.uuid,
-            cafeUuid = model.cafeUuid,
-            cartProductList = model.cartProducts.map { serverCartProduct ->
+            uuid = order.uuid,
+            cafeUuid = order.cafeUuid,
+            cartProductList = order.cartProducts.map { serverCartProduct ->
                 cartProductMapper.from(serverCartProduct)
             },
-            address = userAddressMapper.from(model.orderEntity.address),
-            code = model.orderEntity.code,
-            comment = model.orderEntity.comment,
-            deferred = model.orderEntity.deferred,
-            delivery = model.orderEntity.delivery,
-            bonus = model.orderEntity.bonus,
-            email = model.orderEntity.email,
-            orderStatus = OrderStatus.valueOf(model.orderEntity.orderStatus),
-            phone = model.orderEntity.phone,
-            time = model.timestamp,
-            userId = model.orderEntity.userId,
+            address = userAddressMapper.from(order.orderEntity.address),
+            code = order.orderEntity.code,
+            comment = order.orderEntity.comment,
+            deferred = order.orderEntity.deferred,
+            delivery = order.orderEntity.delivery,
+            bonus = order.orderEntity.bonus,
+            email = order.orderEntity.email,
+            orderStatus = OrderStatus.valueOf(order.orderEntity.orderStatus),
+            phone = order.orderEntity.phone,
+            time = order.timestamp,
+            userId = order.orderEntity.userId,
         )
     }
 
-    override fun to(model: Order): ServerOrder {
-        return ServerOrder()
-    }
 }

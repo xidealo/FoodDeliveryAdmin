@@ -9,13 +9,5 @@ interface OrderRepo {
 
     suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus)
 
-    fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>>
-    fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>>
-
-    fun getAllCafeOrdersByDay(): Flow<List<Statistic>>
-    fun getAllCafeOrdersByWeek(): Flow<List<Statistic>>
-    fun getAllCafeOrdersByMonth(): Flow<List<Statistic>>
-    fun getCafeOrdersByCafeIdAndDay(cafeId: String): Flow<List<Statistic>>
-    fun getCafeOrdersByCafeIdAndWeek(cafeId: String): Flow<List<Statistic>>
-    fun getCafeOrdersByCafeIdAndMonth(cafeId: String): Flow<List<Statistic>>
+    suspend fun getOrderListByCafeId(cafeId: String): Flow<List<Order>>
 }

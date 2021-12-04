@@ -84,21 +84,17 @@ class OrdersViewModel @Inject constructor(
         }.onEach { cafe ->
             if (cafe != null) {
                 mutableAddressState.value = cafe.address.toStateSuccess()
+            } else {
+                mutableAddressState.value = State.Empty()
             }
         }.launchIn(viewModelScope)
     }
 
     private fun subscribeOnOrders() {
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
-            orderRepo.getAddedOrderListByCafeId(cafeId)
+            orderRepo.getOrderListByCafeId(cafeId)
         }.onEach { orderList ->
             mutableOrderListState.value = orderList.map(::toItemModel).toStateAddedSuccess()
-        }.launchIn(viewModelScope)
-
-        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
-            orderRepo.getUpdatedOrderListByCafeId(cafeId)
-        }.onEach { orderList ->
-            mutableOrderListState.value = orderList.map(::toItemModel).toStateUpdatedSuccess()
         }.launchIn(viewModelScope)
     }
 

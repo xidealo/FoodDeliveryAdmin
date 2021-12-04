@@ -11,7 +11,7 @@ data class ServerOrderEntity(
     val deferred: String? = null,
     val delivery: Boolean = true,
     val email: String = "",
-    val orderStatus: String = "",
+    val orderStatus: String = "NOT_ACCEPTED",
     val phone: String = "",
     val time: Long = 0,
     val userId: String = ""
