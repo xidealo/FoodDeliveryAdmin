@@ -106,7 +106,6 @@ class OrdersViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-
         orderRepo.ordersMapFlow.onEach { list ->
             mutableOrderListState.value = list.map(::toItemModel).toStateAddedSuccess()
         }.launchIn(viewModelScope)
