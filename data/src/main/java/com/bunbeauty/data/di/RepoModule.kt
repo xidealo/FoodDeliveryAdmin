@@ -40,4 +40,8 @@ abstract class RepoModule {
     @Singleton
     @Binds
     abstract fun bindUserAuthorizationRepository(userAuthorizationRepository: UserAuthorizationRepository): UserAuthorizationRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindStatisticRepository(statisticRepository: StatisticRepository): StatisticRepo
 }

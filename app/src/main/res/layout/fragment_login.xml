@@ -26,6 +26,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_login_et_login"
             style="@style/MaterialInput"
+            android:text="kirill"
             android:inputType="textCapSentences" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,6 +44,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_login_et_password"
             style="@style/MaterialInput"
+            android:text="022001"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

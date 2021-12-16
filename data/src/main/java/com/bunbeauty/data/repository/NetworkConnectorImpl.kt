@@ -9,6 +9,8 @@ import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.ListServer
+import com.bunbeauty.data.model.server.StatisticServer
+import com.bunbeauty.data.model.server.UserAuthorization
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -18,6 +20,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import java.util.*
 import javax.inject.Inject
@@ -28,8 +31,12 @@ class NetworkConnectorImpl @Inject constructor(
     private val json: Json
 ) : NetworkConnector {
 
-    override suspend fun login(login: String, passwordHash: String): ApiResult<String> {
-        return ApiResult.Success("token")
+    override suspend fun login(userAuthorization: UserAuthorization): ApiResult<String> {
+        return postData(
+            path = "user/login",
+            postBody = userAuthorization,
+            serializer = String.serializer()
+        )
     }
 
     override suspend fun subscribeOnNotification() {
@@ -74,6 +81,10 @@ class NetworkConnectorImpl @Inject constructor(
 
     override suspend fun deleteMenuProduct(uuid: String) {
 
+    }
+
+    override suspend fun getStatistic(period: String): ApiResult<ListServer<StatisticServer>> {
+        return ApiResult.Success(ListServer(3, listOf(StatisticServer())))
     }
 
     override suspend fun getOrderListByCafeId(cafeId: String): Flow<ApiResult<ListServer<ServerOrder>>> {
@@ -136,7 +147,7 @@ class NetworkConnectorImpl @Inject constructor(
                 )
             )
         } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: "-"))
+            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
         } catch (exception: Exception) {
             ApiResult.Error(ApiError(0, exception.message ?: "-"))
         }

@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bunbeauty.fooddeliveryadmin">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name="com.bunbeauty.fooddeliveryadmin.FoodDeliveryAdminApplication"
         android:allowBackup="true"

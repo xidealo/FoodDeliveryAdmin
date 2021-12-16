@@ -12,7 +12,6 @@ val versionMinor = 2
 val versionPatch = 1
 
 android {
-
     compileSdk = AndroidSdk.compile
     defaultConfig {
         applicationId = Application.applicationId
@@ -21,6 +20,7 @@ android {
         versionCode = Application.versionCode
         versionName = Application.versionName
     }
+
     signingConfigs {
         create("release") {
             storeFile = file("keystore.jks")
