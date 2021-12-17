@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 interface NetworkConnector {
 
     // LOGIN
-    suspend fun login(userAuthorization: UserAuthorization): ApiResult<String>
+    suspend fun login(userAuthorization: UserAuthorization): ApiResult<UserAuthorization>
     suspend fun subscribeOnNotification()
     suspend fun unsubscribeOnNotification()
 

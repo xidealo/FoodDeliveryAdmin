@@ -31,11 +31,11 @@ class NetworkConnectorImpl @Inject constructor(
     private val json: Json
 ) : NetworkConnector {
 
-    override suspend fun login(userAuthorization: UserAuthorization): ApiResult<String> {
+    override suspend fun login(userAuthorization: UserAuthorization): ApiResult<UserAuthorization> {
         return postData(
             path = "user/login",
             postBody = userAuthorization,
-            serializer = String.serializer()
+            serializer = UserAuthorization.serializer()
         )
     }
 

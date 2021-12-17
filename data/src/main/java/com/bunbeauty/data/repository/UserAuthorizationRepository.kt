@@ -11,12 +11,20 @@ class UserAuthorizationRepository @Inject constructor(
 ) : UserAuthorizationRepo {
 
     override suspend fun login(username: String, password: String): ApiResult<String> {
-        return networkConnector.login(
+        return when (val result = networkConnector.login(
             UserAuthorization(
                 username = username,
                 password = password
             )
-        )
+        )) {
+            is ApiResult.Success -> {
+                ApiResult.Success(data = result.data?.token ?: "")
+            }
+
+            is ApiResult.Error -> {
+                ApiResult.Error(result.apiError)
+            }
+        }
     }
 
 }
