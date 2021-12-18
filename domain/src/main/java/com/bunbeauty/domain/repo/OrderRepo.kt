@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 interface OrderRepo {
 
-    val ordersMapFlow: MutableSharedFlow<MutableMap<String, Order>>
+    val ordersMapFlow: MutableSharedFlow<List<Order>>
 
     suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus)
 

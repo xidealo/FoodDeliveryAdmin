@@ -17,7 +17,7 @@ class OrderRepository @Inject constructor(
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
 
-    override val ordersMapFlow: MutableSharedFlow<MutableMap<String, Order>> = MutableSharedFlow()
+    override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
     private var cachedData: MutableMap<String, Order> = HashMap()
 
     override suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus) {
@@ -31,7 +31,7 @@ class OrderRepository @Inject constructor(
             serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
                 .let { order ->
                     cachedData[order.uuid] = order
-                    ordersMapFlow.emit(cachedData)
+                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
         }.collect()
     }
@@ -45,10 +45,7 @@ class OrderRepository @Inject constructor(
                 cachedData =
                     result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
                         .toMap() as MutableMap<String, Order>
-                ordersMapFlow.emit(
-                    result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
-                        .toMap() as MutableMap<String, Order>
-                )
+                ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
             }
             is ApiResult.Error -> {
                 //ApiResult.Error(result.apiError)

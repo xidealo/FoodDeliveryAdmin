@@ -98,8 +98,8 @@ class OrdersViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
-        orderRepo.ordersMapFlow.onEach { map ->
-            mutableOrderListState.value = map.values.map(::toItemModel).toStateAddedSuccess()
+        orderRepo.ordersMapFlow.onEach { list ->
+            mutableOrderListState.value = list.map(::toItemModel).toStateAddedSuccess()
         }.launchIn(viewModelScope)
     }
 
