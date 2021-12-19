@@ -28,7 +28,6 @@ class LoginViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = mutableIsLoading.asStateFlow()
 
     init {
-        clear()
         subscribeOnToken()
     }
 

@@ -5,7 +5,6 @@ import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.model.order.UserAddress
 
 interface IStringUtil {
-    fun getUserAddressString(userAddress: UserAddress?): String?
     fun getDeferredTimeString(deferred: String?): String
     fun getCostString(cost: Int?): String
     fun getOrderCodeString(orderCode: String): String

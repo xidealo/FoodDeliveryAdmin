@@ -1,14 +1,12 @@
 package com.bunbeauty.data.mapper.order
 
 import com.bunbeauty.data.mapper.cart_product.ICartProductMapper
-import com.bunbeauty.data.mapper.user_address.IUserAddressMapper
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.data.model.server.order.ServerOrder
 import javax.inject.Inject
 
 class ServerOrderMapper @Inject constructor(
-    private val userAddressMapper: IUserAddressMapper,
     private val cartProductMapper: ICartProductMapper
 ) : IServerOrderMapper {
 
@@ -19,17 +17,17 @@ class ServerOrderMapper @Inject constructor(
             cartProductList = order.cartProducts.map { serverCartProduct ->
                 cartProductMapper.from(serverCartProduct)
             },
-            address = userAddressMapper.from(order.orderEntity.address),
-            code = order.orderEntity.code,
-            comment = order.orderEntity.comment,
-            deferred = order.orderEntity.deferred,
-            delivery = order.orderEntity.delivery,
-            bonus = order.orderEntity.bonus,
-            email = order.orderEntity.email,
-            orderStatus = OrderStatus.valueOf(order.orderEntity.orderStatus),
-            phone = order.orderEntity.phone,
-            time = order.timestamp,
-            userId = order.orderEntity.userId,
+            address = order.addressDescription,
+            code = order.code,
+            comment = order.comment,
+            deferred = order.deferredTime,
+            delivery = order.isDelivery,
+            bonus = 0,
+            email = order.clientUser?.email ?: "",
+            orderStatus = OrderStatus.valueOf(order.status),
+            phone = order.clientUser?.phoneNumber ?: "",
+            time = order.time,
+            userId = order.clientUser?.uuid ?: "",
         )
     }
 

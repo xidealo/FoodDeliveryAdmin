@@ -12,7 +12,6 @@ import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateAddedSuccess
 import com.bunbeauty.presentation.extension.toStateSuccess
-import com.bunbeauty.presentation.extension.toStateUpdatedSuccess
 import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.model.OrderItemModel
@@ -44,6 +43,7 @@ class OrdersViewModel @Inject constructor(
         MutableStateFlow(ExtendedState.Loading())
     val orderListState: StateFlow<ExtendedState<List<OrderItemModel>>> =
         mutableOrderListState.asStateFlow()
+
 
     init {
         subscribeOnAddress()
@@ -92,9 +92,14 @@ class OrdersViewModel @Inject constructor(
 
     private fun subscribeOnOrders() {
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
-            orderRepo.getOrderListByCafeId(cafeId)
-        }.onEach { orderList ->
-            mutableOrderListState.value = orderList.map(::toItemModel).toStateAddedSuccess()
+            dataStoreRepo.token.onEach { token ->
+                orderRepo.loadOrderListByCafeId(token ?: "", cafeId)
+                orderRepo.subscribeOnOrderListByCafeId(token ?: "", cafeId)
+            }
+        }.launchIn(viewModelScope)
+
+        orderRepo.ordersMapFlow.onEach { map ->
+            mutableOrderListState.value = map.values.map(::toItemModel).toStateAddedSuccess()
         }.launchIn(viewModelScope)
     }
 

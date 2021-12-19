@@ -6,8 +6,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ServerOrder(
     var uuid: String = "",
-    var cafeUuid: String = "",
+    val code: String = "",
+    val status: String = "NOT_ACCEPTED",
+    val time: Long = 0,
+    val isDelivery: Boolean = true,
+    val deferredTime: String? = null,
+    val addressDescription: String = "",
+    val comment: String? = null,
+    val clientUser: ClientUserServer? = null,
     val cartProducts: List<ServerCartProduct> = emptyList(),
-    val orderEntity: ServerOrderEntity = ServerOrderEntity(),
-    val timestamp: Long = 0
+    var cafeUuid: String = "",
 )

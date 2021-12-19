@@ -56,6 +56,7 @@ dependencies {
     implementation(Ktor.clientLogging)
     implementation(Ktor.clientSerialization)
     implementation(Ktor.clientAndroid)
+    implementation(Ktor.clientOkhttp)
 
 /*    //Firebase
     implementation(platform("com.google.firebase:firebase-bom:26.7.0"))

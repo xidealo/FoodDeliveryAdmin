@@ -36,6 +36,15 @@ interface NetworkConnector {
     suspend fun getStatistic(period: String): ApiResult<ListServer<StatisticServer>>
 
     // ORDER
-    suspend fun getOrderListByCafeId(cafeId: String): Flow<ApiResult<ListServer<ServerOrder>>>
+    suspend fun subscribeOnOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ): Flow<ApiResult<ServerOrder>>
+
+    suspend fun getOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ): ApiResult<ListServer<ServerOrder>>
+
     suspend fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus)
 }

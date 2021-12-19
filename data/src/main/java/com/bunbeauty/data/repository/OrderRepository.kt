@@ -3,17 +3,12 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.data.model.server.order.ServerOrder
-import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import okhttp3.internal.notify
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(
@@ -22,16 +17,42 @@ class OrderRepository @Inject constructor(
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
 
+    override val ordersMapFlow: MutableSharedFlow<MutableMap<String, Order>> = MutableSharedFlow()
+    private var cachedData: MutableMap<String, Order> = HashMap()
+
     override suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus) {
         networkConnector.updateOrderStatus(cafeUuid, orderUuid, status)
     }
 
-    override suspend fun getOrderListByCafeId(cafeId: String): Flow<List<Order>> {
-        return networkConnector.getOrderListByCafeId(cafeId).filter {
+    override suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String) {
+        networkConnector.subscribeOnOrderListByCafeId(token, cafeId).filter {
             it is ApiResult.Success
         }.map { resultApiResultSuccess ->
-            (resultApiResultSuccess as ApiResult.Success).data?.results?.map(serverOrderMapper::toModel)
-                ?: emptyList()
+            serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
+                .let { order ->
+                    cachedData[order.uuid] = order
+                    ordersMapFlow.emit(cachedData)
+                }
+        }.collect()
+    }
+
+    override suspend fun loadOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ) {
+        when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
+            is ApiResult.Success -> {
+                cachedData =
+                    result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
+                        .toMap() as MutableMap<String, Order>
+                ordersMapFlow.emit(
+                    result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
+                        .toMap() as MutableMap<String, Order>
+                )
+            }
+            is ApiResult.Error -> {
+                //ApiResult.Error(result.apiError)
+            }
         }
     }
 }

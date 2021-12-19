@@ -11,34 +11,6 @@ import javax.inject.Inject
 class StringUtil @Inject constructor(private val resourcesProvider: ResourcesProvider) :
     IStringUtil {
 
-    override fun getUserAddressString(userAddress: UserAddress?): String? {
-        return if (userAddress == null) {
-            null
-        } else {
-            userAddress.street +
-                    getStringPart(
-                        resourcesProvider.getString(R.string.msg_address_house),
-                        userAddress.house
-                    ) +
-                    getStringPart(
-                        resourcesProvider.getString(R.string.msg_address_flat),
-                        userAddress.flat
-                    ) +
-                    getStringPart(
-                        resourcesProvider.getString(R.string.msg_address_entrance),
-                        userAddress.entrance
-                    ) +
-                    getStringPart(
-                        resourcesProvider.getString(R.string.msg_address_floor),
-                        userAddress.floor
-                    ) +
-                    getStringPart(
-                        resourcesProvider.getString(R.string.msg_address_comment),
-                        userAddress.comment
-                    )
-        }
-    }
-
     override fun getDeferredTimeString(deferred: String?): String {
         return if (deferred.isNullOrEmpty()) {
             ""

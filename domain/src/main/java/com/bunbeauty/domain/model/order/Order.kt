@@ -10,7 +10,7 @@ data class Order(
     val uuid: String,
     val cafeUuid: String,
     val cartProductList: List<CartProduct>,
-    val address: UserAddress?,
+    val address: String?,
     val code: String,
     val comment: String?,
     val deferred: String?,

@@ -58,7 +58,7 @@ class OrderDetailsViewModel @Inject constructor(
 
     val deferredTime: String? = order.deferred
 
-    val address: String? = stringUtil.getUserAddressString(order.address)
+    val address: String? = order.address
 
     val comment: String = order.comment ?: ""
 

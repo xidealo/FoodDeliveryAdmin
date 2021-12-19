@@ -11,11 +11,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
+import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.features.observer.*
+import io.ktor.client.features.websocket.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
@@ -55,16 +57,12 @@ class DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideKtorHttpClient(json: Json) = HttpClient(Android) {
-        val timeout = 60_000
+    fun provideKtorHttpClient(json: Json) = HttpClient(OkHttp) {
         install(JsonFeature) {
             serializer = KotlinxSerializer(json)
-
-            engine {
-                connectTimeout = timeout
-                socketTimeout = timeout
-            }
         }
+
+        install(WebSockets)
 
         install(Logging) {
             logger = object : Logger {
