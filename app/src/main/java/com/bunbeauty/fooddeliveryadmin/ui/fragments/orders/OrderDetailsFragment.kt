@@ -30,7 +30,6 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.run {
             fragmentOrderDetailsBtnBack.setOnClickListener {
                 viewModel.goBack()

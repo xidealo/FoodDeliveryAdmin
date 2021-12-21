@@ -25,8 +25,8 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     private val Context.cafeUuidDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_UUID_DATA_STORE)
     private val Context.deliveryDataStore: DataStore<Preferences> by preferencesDataStore(name = DELIVERY_DATA_STORE)
 
-    override val token: Flow<String?> = context.tokenDataStore.data.map {
-        it[TOKEN_KEY]
+    override val token: Flow<String> = context.tokenDataStore.data.map {
+        it[TOKEN_KEY] ?: ""
     }
 
     override suspend fun saveToken(token: String) {

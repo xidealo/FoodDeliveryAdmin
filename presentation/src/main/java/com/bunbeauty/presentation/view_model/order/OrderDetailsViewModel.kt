@@ -36,7 +36,7 @@ class OrderDetailsViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val resourcesProvider: IResourcesProvider,
     dateTimeUtil: IDateTimeUtil,
-    dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -152,9 +152,11 @@ class OrderDetailsViewModel @Inject constructor(
 
     fun changeStatus(status: String) {
         viewModelScope.launch(IO) {
-            val orderStatus = stringUtil.getOrderStatusByString(status)
-            orderRepo.updateStatus(order.cafeUuid, order.uuid, orderStatus)
-
+            orderRepo.updateStatus(
+                dataStoreRepo.token.first(),
+                order.uuid,
+                stringUtil.getOrderStatusByString(status)
+            )
             goBack()
         }
     }

@@ -47,5 +47,9 @@ interface NetworkConnector {
         cafeId: String
     ): ApiResult<ListServer<ServerOrder>>
 
-    suspend fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus)
+    suspend fun updateOrderStatus(
+        token: String,
+        orderUuid: String,
+        status: OrderStatus
+    ):ApiResult<ServerOrder>
 }

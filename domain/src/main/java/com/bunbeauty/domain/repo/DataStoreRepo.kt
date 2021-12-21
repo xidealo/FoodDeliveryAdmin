@@ -10,7 +10,7 @@ interface DataStoreRepo {
      * Need to verify user
      * Lifetime 14 days
      */
-    val token: Flow<String?>
+    val token: Flow<String>
     suspend fun saveToken(token: String)
 
     val managerCity: Flow<String>

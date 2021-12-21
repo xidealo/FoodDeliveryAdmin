@@ -13,15 +13,27 @@ import javax.inject.Inject
 
 class OrderRepository @Inject constructor(
     private val networkConnector: NetworkConnector,
-    private val dateTimeUtil: IDateTimeUtil,
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
 
     override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
     private var cachedData: MutableMap<String, Order> = HashMap()
 
-    override suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus) {
-        networkConnector.updateOrderStatus(cafeUuid, orderUuid, status)
+    override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
+        when (val result = networkConnector.updateOrderStatus(
+            token,
+            orderUuid,
+            status
+        )) {
+            is ApiResult.Success -> {
+
+            }
+
+            is ApiResult.Error -> {
+
+            }
+        }
+
     }
 
     override suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String) {
@@ -42,9 +54,9 @@ class OrderRepository @Inject constructor(
     ) {
         when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
             is ApiResult.Success -> {
-                if(result.data.results.isEmpty()){
+                if (result.data.results.isEmpty()) {
                     ordersMapFlow.emit(emptyList())
-                }else{
+                } else {
                     cachedData =
                         result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
                             .toMap() as MutableMap<String, Order>

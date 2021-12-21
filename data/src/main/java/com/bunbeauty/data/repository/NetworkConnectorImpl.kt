@@ -145,8 +145,18 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateOrderStatus(cafeId: String, orderUuid: String, status: OrderStatus) {
-
+    override suspend fun updateOrderStatus(
+        token: String,
+        orderUuid: String,
+        status: OrderStatus
+    ) :ApiResult<ServerOrder> {
+        return patchData(
+            path = "order",
+            body = hashMapOf("status" to status.toString()),
+            serializer = ServerOrder.serializer(),
+            parameters = hashMapOf("uuid" to orderUuid),
+            token = token
+        )
     }
 
     suspend fun <T : Any> getData(
@@ -230,7 +240,7 @@ class NetworkConnectorImpl @Inject constructor(
                 )
             )
         } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: "-"))
+            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
         } catch (exception: Exception) {
             ApiResult.Error(ApiError(0, exception.message ?: "-"))
         }

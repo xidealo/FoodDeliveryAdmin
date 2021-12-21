@@ -2,22 +2,17 @@ package com.bunbeauty.presentation.view_model.login
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.DeliveryRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.navigation_event.LoginNavigationEvent
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
