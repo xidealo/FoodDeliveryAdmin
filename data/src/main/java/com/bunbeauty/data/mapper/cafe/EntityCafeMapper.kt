@@ -4,7 +4,7 @@ import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.data.model.entity.CafeEntity
 import javax.inject.Inject
 
-class EntityCafeMapper @Inject constructor(): IEntityCafeMapper {
+class EntityCafeMapper @Inject constructor() : IEntityCafeMapper {
 
     override fun from(model: CafeEntity): Cafe {
         return Cafe(
@@ -16,6 +16,7 @@ class EntityCafeMapper @Inject constructor(): IEntityCafeMapper {
             toTime = model.toTime,
             phone = model.phone,
             visible = model.visible,
+            cityUuid = model.cityUuid
         )
     }
 
@@ -29,6 +30,7 @@ class EntityCafeMapper @Inject constructor(): IEntityCafeMapper {
             toTime = model.toTime,
             phone = model.phone,
             visible = model.visible,
+            cityUuid = model.cityUuid
         )
     }
 }

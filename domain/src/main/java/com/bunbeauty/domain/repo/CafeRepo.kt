@@ -11,5 +11,7 @@ interface CafeRepo {
 
     suspend fun getCafeList(): List<Cafe>
 
+    suspend fun getCafeList(cityUuid: String): List<Cafe>
+
     suspend fun refreshCafeList(token: String, cityUuid: String)
 }

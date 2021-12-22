@@ -17,13 +17,13 @@ class DeliveryRepository @Inject constructor(
     override suspend fun refreshDelivery(token: String, cityUuid: String) {
         when (val result = networkConnector.getDelivery(token, cityUuid)) {
             is ApiResult.Success -> {
-                result.data?.let { delivery ->
+                result.data.let { delivery ->
                     dataStoreRepo.saveDelivery(delivery)
                 }
             }
             is ApiResult.Error -> {
                 delay(RELOAD_DELAY)
-                refreshDelivery(token, cityUuid)
+                //refreshDelivery(token, cityUuid)
             }
         }
     }

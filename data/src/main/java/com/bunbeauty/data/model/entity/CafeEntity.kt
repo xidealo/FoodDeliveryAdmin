@@ -14,4 +14,5 @@ data class CafeEntity(
     val toTime: String,
     val phone: String,
     val visible: Boolean,
+    val cityUuid: String
 )

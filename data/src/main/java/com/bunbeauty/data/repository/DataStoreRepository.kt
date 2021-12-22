@@ -85,6 +85,9 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
             context.cafeUuidDataStore.edit {
                 it.clear()
             }
+            context.managerCityDataStore.edit {
+                it.clear()
+            }
         }
     }
 

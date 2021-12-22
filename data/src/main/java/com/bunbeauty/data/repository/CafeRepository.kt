@@ -50,6 +50,12 @@ class CafeRepository @Inject constructor(
         }
     }
 
+    override suspend fun getCafeList(cityUuid: String) = withContext(IO) {
+        cafeDao.getCafeList(cityUuid).map { cafeEntity ->
+            entityCafeMapper.from(cafeEntity)
+        }
+    }
+
     override suspend fun refreshCafeList(token: String, cityUuid: String) {
         when (val result = networkConnector.getCafeList(token, cityUuid)) {
             is ApiResult.Success -> {
@@ -62,7 +68,7 @@ class CafeRepository @Inject constructor(
             }
             is ApiResult.Error -> {
                 delay(Constants.RELOAD_DELAY)
-                refreshCafeList(token, cityUuid)
+                //refreshCafeList(token, cityUuid)
             }
         }
     }

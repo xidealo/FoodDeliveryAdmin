@@ -22,7 +22,7 @@ class UserAuthorizationRepository @Inject constructor(
             )
         )) {
             is ApiResult.Success -> {
-                ApiResult.Success(Pair(result.data.token, result.data.managerCity))
+                ApiResult.Success(Pair(result.data.token, result.data.cityUuid))
             }
 
             is ApiResult.Error -> {
