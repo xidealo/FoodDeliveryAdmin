@@ -23,8 +23,7 @@ class CafeRepository @Inject constructor(
     private val networkConnector: NetworkConnector,
     private val serverCafeMapper: IServerCafeMapper,
     private val entityCafeMapper: IEntityCafeMapper,
-    private val cafeDao: CafeDao,
-    private val dataStoreRepo: DataStoreRepo
+    private val cafeDao: CafeDao
 ) : CafeRepo {
 
     override val cafeListFlow = cafeDao.getCafeListFlow()
