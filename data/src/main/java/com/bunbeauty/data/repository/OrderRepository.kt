@@ -42,10 +42,15 @@ class OrderRepository @Inject constructor(
     ) {
         when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
             is ApiResult.Success -> {
-                cachedData =
-                    result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
-                        .toMap() as MutableMap<String, Order>
-                ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
+                if(result.data.results.isEmpty()){
+                    ordersMapFlow.emit(emptyList())
+                }else{
+                    cachedData =
+                        result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
+                            .toMap() as MutableMap<String, Order>
+
+                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
+                }
             }
             is ApiResult.Error -> {
                 //ApiResult.Error(result.apiError)

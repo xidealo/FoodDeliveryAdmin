@@ -11,7 +11,8 @@ import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.StatisticServer
-import com.bunbeauty.data.model.server.UserAuthorization
+import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
+import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -33,11 +34,11 @@ class NetworkConnectorImpl @Inject constructor(
     private val json: Json
 ) : NetworkConnector {
 
-    override suspend fun login(userAuthorization: UserAuthorization): ApiResult<UserAuthorization> {
+    override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> {
         return postData(
             path = "user/login",
-            postBody = userAuthorization,
-            serializer = UserAuthorization.serializer(),
+            postBody = userAuthorizationRequest,
+            serializer = UserAuthorizationResponse.serializer(),
             token = ""
         )
     }

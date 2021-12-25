@@ -42,11 +42,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-
             when (destination.id) {
                 R.id.ordersFragment, R.id.statisticFragment, R.id.menuFragment -> {
                     toggleBottomNavigationBarVisibility(true)
-
                     val countDestination = navController.backStack.count { navBackStackEntry ->
                         navBackStackEntry.destination.id == destination.id
                     }

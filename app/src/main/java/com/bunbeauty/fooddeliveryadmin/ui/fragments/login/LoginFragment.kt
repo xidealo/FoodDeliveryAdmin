@@ -22,15 +22,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-            viewModel.isLoading.onEach { isLoading ->
-                if (isLoading) {
-                    fragmentLoginPbLoading.visible()
-                    fragmentLoginGroupLogin.gone()
-                } else {
-                    fragmentLoginPbLoading.gone()
-                    fragmentLoginGroupLogin.visible()
-                }
-            }.startedLaunch(viewLifecycleOwner)
             fragmentLoginBtnLogin.setOnClickListener {
                 viewModel.login(
                     fragmentLoginEtLogin.text.toString(),
@@ -39,11 +30,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
         }
 
-        viewModel.navigation.onEach { navigationEvent ->
-            when (navigationEvent) {
-                is LoginNavigationEvent.ToOrders -> router.navigate(LoginFragmentDirections.toOrdersFragment())
-                else -> Unit
-            }
-        }.startedLaunch(viewLifecycleOwner)
+        viewModel.run {
+            isLoading.onEach { isLoading ->
+                if (isLoading) {
+                    binding.fragmentLoginPbLoading.visible()
+                    binding.fragmentLoginGroupLogin.gone()
+                } else {
+                    binding.fragmentLoginPbLoading.gone()
+                    binding.fragmentLoginGroupLogin.visible()
+                }
+            }.startedLaunch(viewLifecycleOwner)
+
+            navigation.onEach { navigationEvent ->
+                when (navigationEvent) {
+                    is LoginNavigationEvent.ToOrders -> router.navigate(LoginFragmentDirections.toOrdersFragment())
+                    else -> Unit
+                }
+            }.startedLaunch(viewLifecycleOwner)
+        }
     }
 }

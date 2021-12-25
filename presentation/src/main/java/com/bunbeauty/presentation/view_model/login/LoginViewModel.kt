@@ -11,6 +11,7 @@ import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.navigation_event.LoginNavigationEvent
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -30,8 +31,8 @@ class LoginViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = mutableIsLoading.asStateFlow()
 
     init {
+        clear()
         subscribeOnToken()
-
     }
 
     fun login(username: String, password: String) {
@@ -48,14 +49,14 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             when (val result = userAuthorizationRepo.login(username, password)) {
                 is ApiResult.Success -> {
-                    result.data.let { token ->
-                        dataStoreRepo.saveToken(token)
+                    result.data.let { pairTokenCity ->
+                        dataStoreRepo.saveToken(pairTokenCity.first)
+                        dataStoreRepo.saveManagerCity(pairTokenCity.second)
                     }
                 }
-
                 is ApiResult.Error -> {
                     showWrongDataError()
                 }

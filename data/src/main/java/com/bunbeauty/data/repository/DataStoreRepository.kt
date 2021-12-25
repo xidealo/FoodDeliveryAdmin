@@ -21,6 +21,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     DataStoreRepo {
 
     private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = TOKEN_DATA_STORE)
+    private val Context.managerCityDataStore: DataStore<Preferences> by preferencesDataStore(name = MANAGER_CITY_UUID_DATA_STORE)
     private val Context.cafeUuidDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_UUID_DATA_STORE)
     private val Context.deliveryDataStore: DataStore<Preferences> by preferencesDataStore(name = DELIVERY_DATA_STORE)
 
@@ -32,6 +33,18 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         withContext(IO) {
             context.tokenDataStore.edit {
                 it[TOKEN_KEY] = token
+            }
+        }
+    }
+
+    override val managerCity: Flow<String> = context.managerCityDataStore.data.map {
+        it[MANAGER_CITY_UUID_KEY] ?: ""
+    }
+
+    override suspend fun saveManagerCity(managerCity: String) {
+        withContext(IO) {
+            context.managerCityDataStore.edit {
+                it[MANAGER_CITY_UUID_KEY] = managerCity
             }
         }
     }
@@ -79,15 +92,18 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
 
         // NAMES
         private const val TOKEN_DATA_STORE = "token dataStore"
+        private const val MANAGER_CITY_UUID_DATA_STORE = "manager city uuid dataStore"
         private const val CAFE_UUID_DATA_STORE = "cafe uuid dataStore"
         private const val DELIVERY_DATA_STORE = "delivery dataStore"
         private const val TOKEN = "token"
+        private const val MANAGER_CITY_UUID = "manager city uuid"
         private const val CAFE_UUID = "cafe uuid"
         private const val DELIVERY_COST = "delivery cost"
         private const val DELIVERY_FOR_FREE = "delivery for free"
 
         // KEYS
         private val TOKEN_KEY = stringPreferencesKey(TOKEN)
+        private val MANAGER_CITY_UUID_KEY = stringPreferencesKey(MANAGER_CITY_UUID)
         private val CAFE_UUID_KEY = stringPreferencesKey(CAFE_UUID)
         private val DELIVERY_COST_KEY = intPreferencesKey(DELIVERY_COST)
         private val DELIVERY_FOR_FREE_KEY = intPreferencesKey(DELIVERY_FOR_FREE)

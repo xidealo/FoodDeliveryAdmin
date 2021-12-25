@@ -80,6 +80,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         }
                         itemAdapter.set(items)
                     }
+                    is ExtendedState.Empty -> {
+                        fragmentOrdersLpiLoading.invisible()
+                    }
                     else -> Unit
                 }
             }.startedLaunch(viewLifecycleOwner)

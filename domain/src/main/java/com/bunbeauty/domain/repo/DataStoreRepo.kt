@@ -13,6 +13,9 @@ interface DataStoreRepo {
     val token: Flow<String?>
     suspend fun saveToken(token: String)
 
+    val managerCity: Flow<String>
+    suspend fun saveManagerCity(managerCity: String)
+
     val cafeUuid: Flow<String>
     suspend fun saveCafeUuid(cafeUuid: String)
 

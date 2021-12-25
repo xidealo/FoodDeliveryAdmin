@@ -1,10 +1,9 @@
-package com.bunbeauty.data.model.server
+package com.bunbeauty.data.model.server.request
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserAuthorization(
+data class UserAuthorizationRequest(
     val username: String = "",
     val password: String = "",
-    val token: String = ""
 )

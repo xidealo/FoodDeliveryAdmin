@@ -59,8 +59,6 @@ class CafeRepository @Inject constructor(
                         listServer.results.map { serverCafe ->
                             serverCafeMapper.from(serverCafe)
                         })
-                    if (dataStoreRepo.cafeUuid.first().isEmpty())
-                        dataStoreRepo.saveCafeUuid(listServer.results.first().uuid)
                 }
             }
             is ApiResult.Error -> {

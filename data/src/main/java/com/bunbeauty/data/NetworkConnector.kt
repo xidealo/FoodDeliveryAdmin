@@ -6,15 +6,16 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.StatisticServer
-import com.bunbeauty.data.model.server.UserAuthorization
+import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import kotlinx.coroutines.flow.*
 
 interface NetworkConnector {
 
     // LOGIN
-    suspend fun login(userAuthorization: UserAuthorization): ApiResult<UserAuthorization>
+    suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
     suspend fun subscribeOnNotification()
     suspend fun unsubscribeOnNotification()
 
