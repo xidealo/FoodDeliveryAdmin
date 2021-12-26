@@ -26,6 +26,7 @@ class LoginViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = mutableIsLoading.asStateFlow()
 
     init {
+        //clear()
         subscribeOnToken()
     }
 
@@ -60,7 +61,7 @@ class LoginViewModel @Inject constructor(
 
     private fun subscribeOnToken() {
         dataStoreRepo.token.onEach { token ->
-            if (token == null) {
+            if (token.isEmpty()) {
                 //apiRepo.unsubscribeOnNotification()
                 mutableIsLoading.value = false
             } else {

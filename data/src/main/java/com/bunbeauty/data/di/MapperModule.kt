@@ -10,6 +10,8 @@ import com.bunbeauty.data.mapper.menu_product.IMenuProductMapper
 import com.bunbeauty.data.mapper.menu_product.MenuProductMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.ServerOrderMapper
+import com.bunbeauty.data.mapper.statistic.IStatisticMapper
+import com.bunbeauty.data.mapper.statistic.StatisticMapper
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,5 +41,9 @@ abstract class MapperModule {
     @Singleton
     @Binds
     abstract fun bindServerOrderMapper(serverOrderMapper: ServerOrderMapper): IServerOrderMapper
+
+  @Singleton
+    @Binds
+    abstract fun bindStatisticMapper(statisticMapper: StatisticMapper): IStatisticMapper
 
 }

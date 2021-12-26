@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.view_model.statistic
 
+import androidx.datastore.dataStore
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.PERIOD_REQUEST_KEY
@@ -9,6 +10,7 @@ import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
@@ -31,12 +33,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticViewModel @Inject constructor(
-    private val orderRepo: OrderRepo,
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
     private val orderUtil: IOrderUtil,
     private val resourcesProvider: IResourcesProvider,
-    dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo,
+    private val statisticRepo: StatisticRepo
 ) : BaseViewModel() {
 
     private val delivery by lazy {
@@ -111,52 +113,32 @@ class StatisticViewModel @Inject constructor(
     }
 
     private fun subscribeOnStatistic() {
-        cafeAddress.flatMapLatest { cafeAddress ->
-            period.flatMapLatest { period ->
-                getStatisticList(cafeAddress, period)!!.onEach { statisticList ->
-                    mutableStatisticState.value = statisticList
-                        .map { statistic ->
-                            val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
-                            val proceedsString = stringUtil.getCostString(proceeds)
-                            StatisticItemModel(
-                                period = statistic.period,
-                                count = stringUtil.getOrderCountString(statistic.orderList.size),
-                                proceeds = proceedsString,
-                                statistic = statistic
-                            )
-                        }.toStateSuccess()
+        dataStoreRepo.token.flatMapLatest { token ->
+            cafeAddress.flatMapLatest { cafeAddress ->
+                period.onEach { period ->
+                    getStatisticList(token, cafeAddress, period).let { statisticList ->
+                        mutableStatisticState.value = statisticList
+                            .map { statistic ->
+                                val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
+                                val proceedsString = stringUtil.getCostString(proceeds)
+                                StatisticItemModel(
+                                    period = statistic.period,
+                                    count = stringUtil.getOrderCountString(statistic.orderList.size),
+                                    proceeds = proceedsString,
+                                    statistic = statistic
+                                )
+                            }.toStateSuccess()
+                    }
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun getStatisticList(cafeAddress: CafeAddress, period: Period): Flow<List<Statistic>>? {
+    private suspend fun getStatisticList(token:String, cafeAddress: CafeAddress, period: Period): List<Statistic> {
         return if (cafeAddress.cafeUuid == null) {
-            when (period) {
-                dayPeriod -> {
-                    flow {  }//orderRepo.getAllCafeOrdersByDay()
-                }
-                weekPeriod -> {
-                    flow {  }//orderRepo.getAllCafeOrdersByWeek()
-                }
-                monthPeriod -> {
-                    flow {  }//orderRepo.getAllCafeOrdersByMonth()
-                }
-                else -> null
-            }
+            statisticRepo.getStatistic(token, "ALL", period.toString())
         } else {
-            when (period) {
-                dayPeriod -> {
-                    flow {  }//orderRepo.getCafeOrdersByCafeIdAndDay(cafeAddress.cafeUuid)
-                }
-                weekPeriod -> {
-                    flow {  }//orderRepo.getCafeOrdersByCafeIdAndWeek(cafeAddress.cafeUuid)
-                }
-                monthPeriod -> {
-                    flow {  }//orderRepo.getCafeOrdersByCafeIdAndMonth(cafeAddress.cafeUuid)
-                }
-                else -> null
-            }
+            statisticRepo.getStatistic(token, cafeAddress.cafeUuid, period.toString())
         }
     }
 }

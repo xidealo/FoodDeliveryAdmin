@@ -34,7 +34,11 @@ interface NetworkConnector {
     suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC
-    suspend fun getStatistic(period: String): ApiResult<ListServer<StatisticServer>>
+    suspend fun getStatistic(
+        token: String,
+        cafeUuid: String,
+        period: String
+    ): ApiResult<ListServer<StatisticServer>>
 
     // ORDER
     suspend fun subscribeOnOrderListByCafeId(
@@ -51,5 +55,5 @@ interface NetworkConnector {
         token: String,
         orderUuid: String,
         status: OrderStatus
-    ):ApiResult<ServerOrder>
+    ): ApiResult<ServerOrder>
 }

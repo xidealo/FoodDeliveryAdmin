@@ -94,8 +94,20 @@ class NetworkConnectorImpl @Inject constructor(
 
     }
 
-    override suspend fun getStatistic(period: String): ApiResult<ListServer<StatisticServer>> {
-        return ApiResult.Success(ListServer(3, listOf(StatisticServer())))
+    override suspend fun getStatistic(
+        token: String,
+        cafeUuid: String,
+        period: String
+    ): ApiResult<ListServer<StatisticServer>> {
+        return getData(
+            path = "statistic",
+            serializer = ListServer.serializer(StatisticServer.serializer()),
+            parameters = hashMapOf(
+                "cafeUuid" to cafeUuid,
+                "period" to period,
+            ),
+            token = token,
+        )
     }
 
     override suspend fun subscribeOnOrderListByCafeId(
@@ -149,7 +161,7 @@ class NetworkConnectorImpl @Inject constructor(
         token: String,
         orderUuid: String,
         status: OrderStatus
-    ) :ApiResult<ServerOrder> {
+    ): ApiResult<ServerOrder> {
         return patchData(
             path = "order",
             body = hashMapOf("status" to status.toString()),

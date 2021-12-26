@@ -12,16 +12,21 @@ class StatisticRepository @Inject constructor(
     private val statisticMapper: IStatisticMapper
 ) : StatisticRepo {
 
-    override suspend fun getStatistic(period: String): ApiResult<List<Statistic>> {
-        return when (val result = networkConnector.getStatistic(period)) {
+    override suspend fun getStatistic(
+        token: String,
+        cafeUuid: String,
+        period: String
+    ): List<Statistic> {
+        return when (val result = networkConnector.getStatistic(token, cafeUuid, period)) {
             is ApiResult.Success -> {
-                ApiResult.Success(
-                    result.data?.results?.map(statisticMapper::toModel) ?: emptyList()
-                )
+                result.data.results.map(statisticMapper::toModel)
             }
             is ApiResult.Error -> {
-                ApiResult.Error(result.apiError)
+                //ApiResult.Error(result.apiError)
+                emptyList()
             }
         }
     }
+
+
 }
