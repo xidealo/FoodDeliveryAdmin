@@ -4,5 +4,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Period(
-    override val title: String
+    override val title: String,
+    val key: String
 ) : ListItemModel()

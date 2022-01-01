@@ -5,7 +5,7 @@ import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.ServerMenuProduct
-import com.bunbeauty.data.model.server.StatisticServer
+import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder

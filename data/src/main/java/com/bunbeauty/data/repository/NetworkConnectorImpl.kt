@@ -10,7 +10,7 @@ import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.ListServer
-import com.bunbeauty.data.model.server.StatisticServer
+import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil

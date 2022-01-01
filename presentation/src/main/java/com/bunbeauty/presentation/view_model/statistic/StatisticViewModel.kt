@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.view_model.statistic
 
-import androidx.datastore.dataStore
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.PERIOD_REQUEST_KEY
@@ -9,7 +8,6 @@ import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.presentation.utils.IResourcesProvider
@@ -35,7 +33,6 @@ import javax.inject.Inject
 class StatisticViewModel @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
-    private val orderUtil: IOrderUtil,
     private val resourcesProvider: IResourcesProvider,
     private val dataStoreRepo: DataStoreRepo,
     private val statisticRepo: StatisticRepo
@@ -47,10 +44,21 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    private val dayPeriod = Period(resourcesProvider.getString(R.string.msg_statistic_day_period))
-    private val weekPeriod = Period(resourcesProvider.getString(R.string.msg_statistic_week_period))
+    enum class PeriodKey {
+        DAY,
+        WEEK,
+        MONTH,
+    }
+
+    private val dayPeriod =
+        Period(resourcesProvider.getString(R.string.msg_statistic_day_period), PeriodKey.DAY.name)
+    private val weekPeriod =
+        Period(resourcesProvider.getString(R.string.msg_statistic_week_period), PeriodKey.WEEK.name)
     private val monthPeriod =
-        Period(resourcesProvider.getString(R.string.msg_statistic_month_period))
+        Period(
+            resourcesProvider.getString(R.string.msg_statistic_month_period),
+            PeriodKey.MONTH.name
+        )
     private val allCafeAddress = CafeAddress(
         title = resourcesProvider.getString(R.string.msg_statistic_all_cafes),
         cafeUuid = null
@@ -75,7 +83,7 @@ class StatisticViewModel @Inject constructor(
         mutableCafeAddress.value = cafeAddress
     }
 
-    fun setPeriod(period:Period) {
+    fun setPeriod(period: Period) {
         mutablePeriod.value = period
     }
 
@@ -119,11 +127,10 @@ class StatisticViewModel @Inject constructor(
                     getStatisticList(token, cafeAddress, period).let { statisticList ->
                         mutableStatisticState.value = statisticList
                             .map { statistic ->
-                                val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
-                                val proceedsString = stringUtil.getCostString(proceeds)
+                                val proceedsString = stringUtil.getCostString(statistic.proceeds)
                                 StatisticItemModel(
                                     period = statistic.period,
-                                    count = stringUtil.getOrderCountString(statistic.orderList.size),
+                                    count = stringUtil.getOrderCountString(statistic.orderCount),
                                     proceeds = proceedsString,
                                     statistic = statistic
                                 )
@@ -134,11 +141,15 @@ class StatisticViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun getStatisticList(token:String, cafeAddress: CafeAddress, period: Period): List<Statistic> {
+    private suspend fun getStatisticList(
+        token: String,
+        cafeAddress: CafeAddress,
+        period: Period
+    ): List<Statistic> {
         return if (cafeAddress.cafeUuid == null) {
-            statisticRepo.getStatistic(token, "ALL", period.toString())
+            statisticRepo.getStatistic(token, "ALL", period.key)
         } else {
-            statisticRepo.getStatistic(token, cafeAddress.cafeUuid, period.toString())
+            statisticRepo.getStatistic(token, cafeAddress.cafeUuid, period.key)
         }
     }
 }

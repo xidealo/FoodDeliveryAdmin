@@ -35,45 +35,5 @@ class OrderUtil @Inject constructor(
         return orderCost + deliveryCost - bonusDiscount
     }
 
-    override fun getProceeds(orderList: List<Order>, delivery: Delivery): Int {
-        return orderList.sumOf { order ->
-            getNewOrderCost(order, delivery)
-        }
-    }
 
-    override fun getAverageCheck(orderList: List<Order>, delivery: Delivery): Int {
-        val proceeds = getProceeds(orderList, delivery)
-
-        return proceeds / orderList.size
-    }
-
-    override fun getProductStatisticList(orderList: List<Order>): List<ProductStatistic> {
-        val cartProductList = orderList.flatMap { order ->
-            order.cartProductList
-        }
-        val productStatisticList = ArrayList<ProductStatistic>()
-        cartProductList.forEach { cartProduct ->
-            val positionName = productUtil.getPositionName(cartProduct.menuProduct)
-            val foundProductStatistic = productStatisticList.find { productStatistic ->
-                productStatistic.name == positionName
-            }
-            foundProductStatistic?.apply {
-                orderCount++
-                count += cartProduct.count
-                cost += productUtil.getCartProductNewCost(cartProduct)
-            } ?: productStatisticList.add(
-                ProductStatistic(
-                    name = positionName,
-                    photoLink = cartProduct.menuProduct.photoLink,
-                    orderCount = 1,
-                    count = cartProduct.count,
-                    cost = productUtil.getCartProductNewCost(cartProduct),
-                )
-            )
-        }
-
-        return productStatisticList.sortedByDescending { productStatistic ->
-            productStatistic.count
-        }
-    }
 }

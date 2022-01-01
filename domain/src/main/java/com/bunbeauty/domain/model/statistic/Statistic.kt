@@ -6,6 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Statistic(
-    var period: String,
-    var orderList: List<Order>
+    val period: String,
+    val startPeriodTime: Long,
+    val orderCount: Int,
+    val proceeds: Int,
+    val averageCheck: Int,
+    val productStatisticList: List<ProductStatistic>
 ) : Parcelable
