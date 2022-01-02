@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bunbeauty.fooddeliveryadmin.R
 
 fun View.invisible(): View {
     visibility = View.INVISIBLE

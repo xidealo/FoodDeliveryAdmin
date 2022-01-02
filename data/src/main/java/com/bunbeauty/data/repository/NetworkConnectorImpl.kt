@@ -66,7 +66,6 @@ class NetworkConnectorImpl @Inject constructor(
     override suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery> {
         return ApiResult.Success(Delivery())
         //return getData("")
-
     }
 
     override suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
@@ -143,6 +142,13 @@ class NetworkConnectorImpl @Inject constructor(
                 Log.d("aaa", e.message ?: "")
             }
         }
+    }
+
+    override suspend fun unsubscribeOnOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ){
+        client.close()
     }
 
     override suspend fun getOrderListByCafeId(

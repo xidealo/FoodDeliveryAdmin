@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.view_model.statistic
 
 import androidx.lifecycle.SavedStateHandle
-import com.bunbeauty.common.Constants
 import com.bunbeauty.common.Constants.STATISTIC_ARGS_KEY
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.DataStoreRepo

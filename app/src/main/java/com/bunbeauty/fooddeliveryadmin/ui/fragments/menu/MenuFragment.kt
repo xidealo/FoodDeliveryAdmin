@@ -8,7 +8,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.MenuFragmentDirections.*
 import com.bunbeauty.presentation.state.State
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter

@@ -3,7 +3,6 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
-import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import javax.inject.Inject
 

@@ -22,11 +22,9 @@ import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,7 +52,7 @@ class OrdersViewModel @Inject constructor(
         subscribeOnOrders()
         viewModelScope.launch(Default) {
             cafeRepo.refreshCafeList(
-                token = dataStoreRepo.token.first() ?: "",
+                token = dataStoreRepo.token.first(),
                 cityUuid = dataStoreRepo.managerCity.first()
             )
             deliveryRepo.refreshDelivery(
@@ -98,7 +96,6 @@ class OrdersViewModel @Inject constructor(
         }.onEach { cafe ->
             if (cafe != null) {
                 mutableAddressState.value = cafe.address.toStateSuccess()
-                mutableOrderListState.value = ExtendedState.Loading()
             } else {
                 mutableAddressState.value = State.Empty()
             }
@@ -109,6 +106,7 @@ class OrdersViewModel @Inject constructor(
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             dataStoreRepo.token.onEach { token ->
                 if (cafeId.isNotEmpty() && token != null) {
+                    mutableOrderListState.value = ExtendedState.Loading()
                     orderRepo.loadOrderListByCafeId(token, cafeId)
                     orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
                 }else{

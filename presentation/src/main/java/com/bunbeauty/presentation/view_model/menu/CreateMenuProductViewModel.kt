@@ -9,14 +9,13 @@ import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.presentation.utils.IResourcesProvider
+import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toByteArray
 import com.bunbeauty.presentation.model.ListData
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.navigation_event.CreateMenuProductNavigationEvent
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,10 +24,8 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

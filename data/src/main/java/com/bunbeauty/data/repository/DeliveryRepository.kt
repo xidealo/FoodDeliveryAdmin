@@ -6,7 +6,6 @@ import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.DeliveryRepo
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class DeliveryRepository @Inject constructor(
