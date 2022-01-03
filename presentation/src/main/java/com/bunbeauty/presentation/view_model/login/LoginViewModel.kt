@@ -47,9 +47,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             when (val result = userAuthorizationRepo.login(username, password)) {
                 is ApiResult.Success -> {
-                    result.data.let { pairTokenCityUuid ->
-                        dataStoreRepo.saveManagerCity(pairTokenCityUuid.second)
-                        dataStoreRepo.saveToken(pairTokenCityUuid.first)
+                    result.data.let { tripleTokenCityUuidCompanyUuid ->
+                        dataStoreRepo.saveManagerCity(tripleTokenCityUuidCompanyUuid.second)
+                        dataStoreRepo.saveCompanyUuid(tripleTokenCityUuidCompanyUuid.third)
+                        dataStoreRepo.saveToken(tripleTokenCityUuidCompanyUuid.first)
                     }
                 }
                 is ApiResult.Error -> {

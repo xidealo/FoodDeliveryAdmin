@@ -56,7 +56,7 @@ class OrdersViewModel @Inject constructor(
                 cityUuid = dataStoreRepo.managerCity.first()
             )
             deliveryRepo.refreshDelivery(
-                token = dataStoreRepo.token.first() ?: "",
+                token = dataStoreRepo.token.first(),
                 cityUuid = dataStoreRepo.managerCity.first()
             )
         }

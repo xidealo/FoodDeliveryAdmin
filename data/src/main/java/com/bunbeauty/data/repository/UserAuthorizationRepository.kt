@@ -13,7 +13,7 @@ class UserAuthorizationRepository @Inject constructor(
     override suspend fun login(
         username: String,
         password: String
-    ): ApiResult<Pair<String, String>> {
+    ): ApiResult<Triple<String, String, String>> {
         return when (val result = networkConnector.login(
             UserAuthorizationRequest(
                 username = username,
@@ -21,7 +21,13 @@ class UserAuthorizationRepository @Inject constructor(
             )
         )) {
             is ApiResult.Success -> {
-                ApiResult.Success(Pair(result.data.token, result.data.cityUuid))
+                ApiResult.Success(
+                    Triple(
+                        result.data.token,
+                        result.data.cityUuid,
+                        result.data.companyUuid
+                    )
+                )
             }
 
             is ApiResult.Error -> {

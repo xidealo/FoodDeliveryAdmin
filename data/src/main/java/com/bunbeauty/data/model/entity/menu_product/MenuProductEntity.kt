@@ -10,7 +10,7 @@ data class MenuProductEntity(
     val uuid: String,
     val name: String,
     val newPrice: Int,
-    val oldPrice: Int,
+    val oldPrice: Int?,
     val utils: String,
     val nutrition: Int,
     val description: String,

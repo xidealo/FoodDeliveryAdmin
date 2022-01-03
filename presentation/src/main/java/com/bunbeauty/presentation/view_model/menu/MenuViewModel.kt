@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.view_model.menu
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
+import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.presentation.extension.toStateSuccess
@@ -15,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,7 @@ class MenuViewModel @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val productUtil: IProductUtil,
     private val stringUtil: IStringUtil,
+    private val dataStoreRepo: DataStoreRepo
 ) : BaseViewModel() {
 
     private val mutableProductListState: MutableStateFlow<State<List<MenuProductItemModel>>> =
@@ -31,7 +34,10 @@ class MenuViewModel @Inject constructor(
         mutableProductListState.asStateFlow()
 
     init {
-        subscribeOnProducts()
+        viewModelScope.launch {
+            menuProductRepo.refreshMenuProductList(dataStoreRepo.companyUuid.first())
+            subscribeOnProducts()
+        }
     }
 
     fun goToEditMenuProduct(menuProductItemModel: MenuProductItemModel) {
@@ -42,11 +48,9 @@ class MenuViewModel @Inject constructor(
         goTo(MenuNavigationEvent.ToCreateMenuProduct)
     }
 
-    private fun subscribeOnProducts() {
-        viewModelScope.launch(Dispatchers.Default) {
-            menuProductRepo.getMenuProductList().collect { menuProductList ->
-                mutableProductListState.value = menuProductList.map(::toItemModel).toStateSuccess()
-            }
+    private suspend fun subscribeOnProducts() {
+        menuProductRepo.getMenuProductList().collect { menuProductList ->
+            mutableProductListState.value = menuProductList.map(::toItemModel).toStateSuccess()
         }
     }
 

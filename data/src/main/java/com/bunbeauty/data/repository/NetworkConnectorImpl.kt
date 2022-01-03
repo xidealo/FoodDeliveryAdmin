@@ -153,7 +153,7 @@ class NetworkConnectorImpl @Inject constructor(
     override suspend fun unsubscribeOnOrderListByCafeId(
         token: String,
         cafeId: String
-    ){
+    ) {
         client.close()
     }
 
@@ -197,7 +197,9 @@ class NetworkConnectorImpl @Inject constructor(
                         url {
                             path(path)
                         }
-                        header("Authorization", "Bearer $token")
+                        if (token.isNotEmpty())
+                            header("Authorization", "Bearer $token")
+
                         parameters.forEach { parameterMap ->
                             parameter(parameterMap.key, parameterMap.value)
                         }

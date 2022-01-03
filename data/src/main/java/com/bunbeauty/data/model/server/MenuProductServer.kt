@@ -7,7 +7,7 @@ data class MenuProductServer(
     val uuid: String = "",
     val name: String = "",
     val newPrice: Int = 0,
-    val oldPrice: Int = 0,
+    val oldPrice: Int? = null,
     val utils: String = "",
     val nutrition: Int = 0,
     val description: String = "",
