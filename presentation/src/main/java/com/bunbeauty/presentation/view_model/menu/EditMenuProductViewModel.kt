@@ -46,19 +46,18 @@ class EditMenuProductViewModel @Inject constructor(
         MenuProductCode(title = stringUtil.getProductCodeString(productCode))
     }
 
-    private val mutableIsVisible: MutableStateFlow<Boolean> = MutableStateFlow(menuProduct.visible)
+    private val mutableIsVisible: MutableStateFlow<Boolean> = MutableStateFlow(menuProduct.isVisible)
     val isVisible: StateFlow<Boolean> = mutableIsVisible.asStateFlow()
 
-    private val mutableIsComboDescriptionVisible =
-        MutableStateFlow(menuProduct.productCode == ProductCode.COMBO)
+    private val mutableIsComboDescriptionVisible = MutableStateFlow(false ) //menuProduct.productCode == ProductCode.COMBO
     val isComboDescriptionVisible = mutableIsComboDescriptionVisible.asStateFlow()
 
     val photoLink: String = menuProduct.photoLink
     val name: String = menuProduct.name
-    val productCodeString: String = stringUtil.getProductCodeString(menuProduct.productCode)
-    val cost: String = menuProduct.cost.toString()
-    val discountCost: String = menuProduct.discountCost?.toString() ?: ""
-    val weight: String = menuProduct.weight?.toString() ?: ""
+    val productCodeString: String = ""//stringUtil.getProductCodeString(menuProduct.productCode)
+    val cost: String = menuProduct.newPrice.toString()
+    val discountCost: String = menuProduct.oldPrice?.toString() ?: ""
+    val weight: String = menuProduct.nutrition?.toString() ?: ""
     val description: String = menuProduct.description
     val comboDescription: String = menuProduct.comboDescription ?: ""
 
@@ -131,7 +130,7 @@ class EditMenuProductViewModel @Inject constructor(
             null
         }
         if (photo == null) {
-            val menuProduct = MenuProduct(
+      /*      val menuProduct = MenuProduct(
                 uuid = menuProduct.uuid,
                 name = name,
                 cost = costInt,
@@ -145,7 +144,7 @@ class EditMenuProductViewModel @Inject constructor(
                 productCode = productCode!!,
                 barcode = null,
                 visible = isVisible.value
-            )
+            )*/
             viewModelScope.launch(IO) {
                 menuProductRepo.updateMenuProduct(menuProduct)
                 finishEditing(name)

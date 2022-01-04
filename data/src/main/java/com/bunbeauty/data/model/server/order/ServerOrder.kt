@@ -1,6 +1,6 @@
 package com.bunbeauty.data.model.server.order
 
-import com.bunbeauty.data.model.server.ServerCartProduct
+import com.bunbeauty.data.model.server.CartProductServer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,6 +14,6 @@ data class ServerOrder(
     val addressDescription: String = "",
     val comment: String? = null,
     val clientUser: ClientUserServer? = null,
-    val oderProductList: List<ServerCartProduct> = emptyList(),
+    val oderProductServerList: List<CartProductServer> = emptyList(),
     var cafeUuid: String = "",
 )

@@ -4,7 +4,7 @@ import com.bunbeauty.domain.model.menu_product.MenuProduct
 import kotlinx.coroutines.flow.Flow
 
 interface MenuProductRepo {
-    suspend fun refreshMenuProductList()
+    suspend fun refreshMenuProductList(companyUuid:String)
     fun getMenuProductList(): Flow<List<MenuProduct>>
 
     suspend fun deleteMenuProductPhoto(photoLink: String)

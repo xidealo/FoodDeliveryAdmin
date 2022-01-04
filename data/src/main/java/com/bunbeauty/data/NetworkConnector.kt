@@ -2,6 +2,7 @@ package com.bunbeauty.data
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.ListServer
+import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -25,7 +26,7 @@ interface NetworkConnector {
     suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery>
 
     // MENU PRODUCT
-    //  suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>>
+    suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>>
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
 

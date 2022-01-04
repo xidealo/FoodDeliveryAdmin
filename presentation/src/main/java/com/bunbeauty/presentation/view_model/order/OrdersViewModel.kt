@@ -35,7 +35,7 @@ class OrdersViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: IDateTimeUtil,
-    private val deliveryRepo: DeliveryRepo
+    private val deliveryRepo: DeliveryRepo,
 ) : BaseViewModel() {
 
     private val mutableAddressState: MutableStateFlow<State<String>> =

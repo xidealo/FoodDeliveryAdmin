@@ -9,6 +9,7 @@ import com.bunbeauty.fooddeliveryadmin.ui.items.MenuProductItem
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
 import com.bunbeauty.presentation.state.State
+import com.bunbeauty.presentation.view_model.menu.MenuViewModel
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,13 +18,13 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
-    override val viewModel: com.bunbeauty.presentation.view_model.menu.MenuViewModel by viewModels()
+    override val viewModel: MenuViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val itemAdapter = ItemAdapter<MenuProductItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
+
         binding.run {
             fragmentMenuRvList.adapter = fastAdapter
             fastAdapter.onClickListener = { _, _, menuProductItem, _ ->
@@ -34,6 +35,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
                 viewModel.goToCreateMenuProduct()
             }
         }
+
         viewModel.productListState.onEach { productListState ->
             when (productListState) {
                 is State.Loading -> Unit
@@ -46,6 +48,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)
+
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is MenuNavigationEvent.ToCreateMenuProduct ->

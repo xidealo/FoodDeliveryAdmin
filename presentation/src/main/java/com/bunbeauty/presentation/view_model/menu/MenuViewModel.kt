@@ -11,10 +11,10 @@ import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class MenuViewModel @Inject constructor(
     }
 
     private fun subscribeOnProducts() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             menuProductRepo.getMenuProductList().collect { menuProductList ->
                 mutableProductListState.value = menuProductList.map(::toItemModel).toStateSuccess()
             }
@@ -59,7 +59,7 @@ class MenuViewModel @Inject constructor(
         return MenuProductItemModel(
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,
-            visible = menuProduct.visible,
+            visible = menuProduct.isVisible,
             newCost = "",//stringUtil.getCostString(newCost),
             oldCost = "",//stringUtil.getCostString(oldCost),
             menuProduct = menuProduct,

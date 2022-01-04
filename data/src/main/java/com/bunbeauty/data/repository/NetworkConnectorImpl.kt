@@ -9,6 +9,7 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.ListServer
+import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
@@ -67,10 +68,14 @@ class NetworkConnectorImpl @Inject constructor(
         //return getData("")
     }
 
- /*   override suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
-        return ApiResult.Success(ListServer(1, listOf(ServerMenuProduct())))
-        //return getData("")
-    }*/
+    override suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>> {
+        return getData(
+            path = "menu_product",
+            serializer = ListServer.serializer(MenuProductServer.serializer()),
+            parameters = hashMapOf("companyUuid" to companyUuid),
+            token = ""
+        )
+    }
 
     override suspend fun deleteMenuProductPhoto(photoName: String) {
 

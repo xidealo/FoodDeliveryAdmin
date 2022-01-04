@@ -1,11 +1,12 @@
-package com.bunbeauty.domain.model.menu_product
+package com.bunbeauty.data.model.entity.menu_product
 
-import android.os.Parcelable
-import com.bunbeauty.domain.model.Category
-import kotlinx.parcelize.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.bunbeauty.data.model.server.CategoryServer
 
-@Parcelize
-data class MenuProduct(
+@Entity
+data class MenuProductEntity(
+    @PrimaryKey
     val uuid: String,
     val name: String,
     val newPrice: Int,
@@ -17,5 +18,4 @@ data class MenuProduct(
     val photoLink: String,
     val barcode: Int,
     val isVisible: Boolean,
-    val categories: List<Category>,
-) : Parcelable
+)

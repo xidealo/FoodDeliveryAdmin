@@ -27,16 +27,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DataSourceModule {
 
-    // FIREBASE
-
-    /*  @Singleton
-      @Provides
-      fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance(BuildConfig.FB_LINK)
-
-      @Singleton
-      @Provides
-      fun provideFirebaseStorage(): StorageReference = Firebase.storage.reference.child("PAPA_KARLO")
-  */
     // LOCAL DATABASE
 
     @Singleton
@@ -95,4 +85,8 @@ class DataSourceModule {
     @Singleton
     @Provides
     fun provideMenuProductDao(localDatabase: LocalDatabase) = localDatabase.menuProductDao()
+
+    @Singleton
+    @Provides
+    fun provideCategoryDao(localDatabase: LocalDatabase) = localDatabase.categoryDao()
 }

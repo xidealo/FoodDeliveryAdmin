@@ -4,7 +4,6 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.enums.ProductCode.*
-import com.bunbeauty.domain.model.order.UserAddress
 import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.presentation.R
 import javax.inject.Inject
