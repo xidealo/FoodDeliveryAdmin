@@ -1,7 +1,5 @@
 package com.bunbeauty.domain.di
 
-import com.bunbeauty.domain.util.cost.CostUtil
-import com.bunbeauty.domain.util.cost.ICostUtil
 import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.domain.util.order.IOrderUtil
@@ -19,11 +17,6 @@ import javax.inject.Singleton
 abstract class DomainModule {
 
     //UTIL
-
-    @Singleton
-    @Binds
-    abstract fun bindCostUtil(costUtil: CostUtil): ICostUtil
-
     @Singleton
     @Binds
     abstract fun bindProductUtil(productUtil: ProductUtil): IProductUtil

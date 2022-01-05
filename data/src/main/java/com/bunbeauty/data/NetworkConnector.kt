@@ -4,7 +4,6 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.cafe.CafeServer
@@ -26,11 +25,12 @@ interface NetworkConnector {
     suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery>
 
     // MENU PRODUCT
-    suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>>
+    //  suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>>
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
-    suspend fun saveMenuProduct(menuProduct: ServerMenuProduct)
-    suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
+
+    //  suspend fun saveMenuProduct(menuProduct: ServerMenuProduct)
+    //  suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
     suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC

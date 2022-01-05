@@ -51,15 +51,17 @@ class MenuViewModel @Inject constructor(
     }
 
     private fun toItemModel(menuProduct: MenuProduct): MenuProductItemModel {
+/*
         val newCost = productUtil.getMenuProductNewPrice(menuProduct)
         val oldCost = productUtil.getMenuProductOldPrice(menuProduct)
+*/
 
         return MenuProductItemModel(
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,
             visible = menuProduct.visible,
-            newCost = stringUtil.getCostString(newCost),
-            oldCost = stringUtil.getCostString(oldCost),
+            newCost = "",//stringUtil.getCostString(newCost),
+            oldCost = "",//stringUtil.getCostString(oldCost),
             menuProduct = menuProduct,
         )
     }

@@ -2,13 +2,12 @@ package com.bunbeauty.data.mapper.menu_product
 
 import com.bunbeauty.data.model.entity.MenuProductEntity
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import javax.inject.Inject
 
 class MenuProductMapper @Inject constructor() : IMenuProductMapper {
 
-    override fun toEntityModel(serverMenuProduct: ServerMenuProduct): MenuProductEntity {
+/*    override fun toEntityModel(serverMenuProduct: ServerMenuProduct): MenuProductEntity {
         return MenuProductEntity(
             uuid = serverMenuProduct.uuid ?: "",
             name = serverMenuProduct.name,
@@ -24,7 +23,7 @@ class MenuProductMapper @Inject constructor() : IMenuProductMapper {
             barcode = serverMenuProduct.barcode,
             visible = serverMenuProduct.visible
         )
-    }
+    }*/
 
     override fun toModel(menuProductEntity: MenuProductEntity): MenuProduct {
         return MenuProduct(
@@ -44,7 +43,7 @@ class MenuProductMapper @Inject constructor() : IMenuProductMapper {
         )
     }
 
-    override fun toModel(serverMenuProduct: ServerMenuProduct): MenuProduct {
+   /* override fun toModel(serverMenuProduct: ServerMenuProduct): MenuProduct {
         return MenuProduct(
             uuid = serverMenuProduct.uuid ?: "",
             name = serverMenuProduct.name,
@@ -61,8 +60,8 @@ class MenuProductMapper @Inject constructor() : IMenuProductMapper {
             visible = serverMenuProduct.visible
         )
     }
-
-    override fun toServerModel(menuProduct: MenuProduct): ServerMenuProduct {
+*/
+   /* override fun toServerModel(menuProduct: MenuProduct): ServerMenuProduct {
         return ServerMenuProduct(
             uuid = menuProduct.uuid,
             name = menuProduct.name,
@@ -78,5 +77,5 @@ class MenuProductMapper @Inject constructor() : IMenuProductMapper {
             barcode = menuProduct.barcode,
             visible = menuProduct.visible
         )
-    }
+    }*/
 }

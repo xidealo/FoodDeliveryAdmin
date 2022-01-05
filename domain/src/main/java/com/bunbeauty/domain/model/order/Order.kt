@@ -9,11 +9,11 @@ import kotlinx.parcelize.Parcelize
 data class Order(
     val uuid: String,
     val cafeUuid: String,
-    val cartProductList: List<CartProduct>,
+    val oderProductList: List<CartProduct>,
     val address: String?,
     val code: String,
     val comment: String?,
-    val deferred: String?,
+    val deferred: Long?,
     val delivery: Boolean,
     val bonus: Int?,
     val email: String,

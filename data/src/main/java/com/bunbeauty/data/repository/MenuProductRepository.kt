@@ -19,7 +19,7 @@ class MenuProductRepository @Inject constructor(
 ) : MenuProductRepo {
 
     override suspend fun refreshMenuProductList() {
-        when (val result = networkConnector.getMenuProductList()) {
+        /*when (val result = networkConnector.getMenuProductList()) {
             is ApiResult.Success -> {
                 result.data?.let { listServer ->
                     menuProductDao.insertAll(
@@ -32,7 +32,7 @@ class MenuProductRepository @Inject constructor(
                 delay(RELOAD_DELAY)
                 refreshMenuProductList()
             }
-        }
+        }*/
     }
 
     override fun getMenuProductList(): Flow<List<MenuProduct>> {
@@ -70,14 +70,14 @@ class MenuProductRepository @Inject constructor(
     }
 
     override suspend fun saveMenuProduct(menuProduct: MenuProduct) {
-        networkConnector.saveMenuProduct(menuProductMapper.toServerModel(menuProduct))
+       // networkConnector.saveMenuProduct(menuProductMapper.toServerModel(menuProduct))
     }
 
     override suspend fun updateMenuProduct(menuProduct: MenuProduct) {
-        networkConnector.updateMenuProduct(
+     /*   networkConnector.updateMenuProduct(
             menuProductMapper.toServerModel(menuProduct),
             menuProduct.uuid!!
-        )
+        )*/
     }
 
     override suspend fun deleteMenuProduct(uuid: String) {

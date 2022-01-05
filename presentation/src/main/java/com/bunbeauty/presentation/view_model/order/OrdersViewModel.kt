@@ -105,7 +105,7 @@ class OrdersViewModel @Inject constructor(
     private fun subscribeOnOrders() {
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             dataStoreRepo.token.onEach { token ->
-                if (cafeId.isNotEmpty() && token != null) {
+                if (cafeId.isNotEmpty()) {
                     mutableOrderListState.value = ExtendedState.Loading()
                     orderRepo.loadOrderListByCafeId(token, cafeId)
                     orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
@@ -125,7 +125,7 @@ class OrdersViewModel @Inject constructor(
             status = order.orderStatus,
             statusString = stringUtil.getOrderStatusString(order.orderStatus),
             code = order.code,
-            deferredTime = stringUtil.getDeferredTimeString(order.deferred),
+            deferredTime = stringUtil.getDeferredTimeString(order.deferred) ?: "",
             time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
             order = order
         )

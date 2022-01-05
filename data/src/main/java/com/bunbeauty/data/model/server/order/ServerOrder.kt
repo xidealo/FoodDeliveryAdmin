@@ -10,10 +10,10 @@ data class ServerOrder(
     val status: String = "NOT_ACCEPTED",
     val time: Long = 0,
     val isDelivery: Boolean = true,
-    val deferredTime: String? = null,
+    val deferredTime: Long? = null,
     val addressDescription: String = "",
     val comment: String? = null,
     val clientUser: ClientUserServer? = null,
-    val cartProducts: List<ServerCartProduct> = emptyList(),
+    val oderProductList: List<ServerCartProduct> = emptyList(),
     var cafeUuid: String = "",
 )

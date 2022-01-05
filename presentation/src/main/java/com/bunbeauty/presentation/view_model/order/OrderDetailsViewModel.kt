@@ -56,7 +56,7 @@ class OrderDetailsViewModel @Inject constructor(
 
     val pickupMethod: String = stringUtil.getReceivingMethodString(order.delivery)
 
-    val deferredTime: String? = order.deferred
+    val deferredTime: String? = stringUtil.getDeferredTimeString(order.deferred)
 
     val address: String? = order.address
 
@@ -64,14 +64,14 @@ class OrderDetailsViewModel @Inject constructor(
 
     var status = stringUtil.getOrderStatusString(order.orderStatus)
 
-    val productList: List<CartProductItemModel> = order.cartProductList
+    val productList: List<CartProductItemModel> = order.oderProductList
         .map { cartProduct ->
             val oldCost = productUtil.getCartProductOldCost(cartProduct)
             val newCost = productUtil.getCartProductNewCost(cartProduct)
 
             CartProductItemModel(
-                name = productUtil.getPositionName(cartProduct.menuProduct),
-                photoLink = cartProduct.menuProduct.photoLink,
+                name = productUtil.getPositionName(cartProduct),
+                photoLink = "",//cartProduct.photoLink,
                 count = stringUtil.getProductCountString(cartProduct.count),
                 oldCost = stringUtil.getCostString(oldCost),
                 newCost = stringUtil.getCostString(newCost)
@@ -102,7 +102,7 @@ class OrderDetailsViewModel @Inject constructor(
 
     private val orderStatusList: List<OrderStatus>
         get() {
-            val isDeferred = !order.deferred.isNullOrEmpty()
+            val isDeferred = order.deferred != null
             return when {
                 isDeferred && isDelivery -> {
                     listOf(

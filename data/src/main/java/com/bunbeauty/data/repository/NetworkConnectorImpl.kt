@@ -6,7 +6,6 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.cafe.CafeServer
-import com.bunbeauty.data.model.server.ServerMenuProduct
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.ListServer
@@ -68,10 +67,10 @@ class NetworkConnectorImpl @Inject constructor(
         //return getData("")
     }
 
-    override suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
+ /*   override suspend fun getMenuProductList(): ApiResult<ListServer<ServerMenuProduct>> {
         return ApiResult.Success(ListServer(1, listOf(ServerMenuProduct())))
         //return getData("")
-    }
+    }*/
 
     override suspend fun deleteMenuProductPhoto(photoName: String) {
 
@@ -81,6 +80,7 @@ class NetworkConnectorImpl @Inject constructor(
         return ApiResult.Success(":")
     }
 
+/*
     override suspend fun saveMenuProduct(menuProduct: ServerMenuProduct) {
 
     }
@@ -88,6 +88,7 @@ class NetworkConnectorImpl @Inject constructor(
     override suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
 
     }
+*/
 
     override suspend fun deleteMenuProduct(uuid: String) {
 

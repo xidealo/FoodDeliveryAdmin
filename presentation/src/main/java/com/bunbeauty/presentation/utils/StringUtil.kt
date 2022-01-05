@@ -5,17 +5,22 @@ import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.enums.ProductCode.*
 import com.bunbeauty.domain.model.order.UserAddress
+import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
-class StringUtil @Inject constructor(private val resourcesProvider: ResourcesProvider) :
-    IStringUtil {
+class StringUtil @Inject constructor(
+    private val resourcesProvider: ResourcesProvider,
+    private val dateTimeUtil: DateTimeUtil
+) : IStringUtil {
 
-    override fun getDeferredTimeString(deferred: String?): String {
-        return if (deferred.isNullOrEmpty()) {
+    override fun getDeferredTimeString(deferred: Long?): String {
+        return if (deferred == null) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_order_deferred_time) + deferred
+            resourcesProvider.getString(R.string.msg_order_deferred_time) + dateTimeUtil.getTimeHHMM(
+                deferred
+            )
         }
     }
 

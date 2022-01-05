@@ -11,7 +11,7 @@ class OrderUtil @Inject constructor(
 ) : IOrderUtil {
 
     override fun getDeliveryCost(order: Order, delivery: Delivery): Int {
-        val orderCost = productUtil.getNewTotalCost(order.cartProductList)
+        val orderCost = productUtil.getNewTotalCost(order.oderProductList)
 
         return if (order.delivery && orderCost < delivery.forFree) {
             delivery.cost
@@ -21,14 +21,14 @@ class OrderUtil @Inject constructor(
     }
 
     override fun getOldOrderCost(order: Order, delivery: Delivery): Int? {
-        val orderCost = productUtil.getOldTotalCost(order.cartProductList) ?: return null
+        val orderCost = productUtil.getOldTotalCost(order.oderProductList) ?: return null
         val deliveryCost = getDeliveryCost(order, delivery)
 
         return orderCost + deliveryCost
     }
 
     override fun getNewOrderCost(order: Order, delivery: Delivery): Int {
-        val orderCost = productUtil.getNewTotalCost(order.cartProductList)
+        val orderCost = productUtil.getNewTotalCost(order.oderProductList)
         val deliveryCost = getDeliveryCost(order, delivery)
         val bonusDiscount = order.bonus ?: 0
 
