@@ -23,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
-    private val productUtil: IProductUtil,
     private val stringUtil: IStringUtil,
     private val dataStoreRepo: DataStoreRepo
 ) : BaseViewModel() {
@@ -34,7 +33,7 @@ class MenuViewModel @Inject constructor(
         mutableProductListState.asStateFlow()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             menuProductRepo.refreshMenuProductList(dataStoreRepo.companyUuid.first())
             subscribeOnProducts()
         }
@@ -55,17 +54,12 @@ class MenuViewModel @Inject constructor(
     }
 
     private fun toItemModel(menuProduct: MenuProduct): MenuProductItemModel {
-/*
-        val newCost = productUtil.getMenuProductNewPrice(menuProduct)
-        val oldCost = productUtil.getMenuProductOldPrice(menuProduct)
-*/
-
         return MenuProductItemModel(
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,
             visible = menuProduct.isVisible,
-            newCost = "",//stringUtil.getCostString(newCost),
-            oldCost = "",//stringUtil.getCostString(oldCost),
+            newCost = stringUtil.getCostString(menuProduct.newPrice),
+            oldCost = stringUtil.getCostString(menuProduct.oldPrice),
             menuProduct = menuProduct,
         )
     }
