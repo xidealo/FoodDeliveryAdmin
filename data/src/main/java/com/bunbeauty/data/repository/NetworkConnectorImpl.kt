@@ -156,7 +156,7 @@ class NetworkConnectorImpl @Inject constructor(
 
     override suspend fun unsubscribeOnOrderList() {
         if (webSocketSession != null) {
-            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "User logout"))
+            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "Change cafe"))
             webSocketSession = null
             Log.d(WEB_SOCKET_TAG, "webSocketSession closed")
         }

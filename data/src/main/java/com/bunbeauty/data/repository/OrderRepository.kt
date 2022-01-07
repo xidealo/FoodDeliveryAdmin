@@ -45,6 +45,7 @@ class OrderRepository @Inject constructor(
     }
 
     override suspend fun unsubscribeOnOrderList() {
+        cachedData.clear()
         networkConnector.unsubscribeOnOrderList()
     }
 

@@ -3,6 +3,7 @@ package com.bunbeauty.presentation.view_model.order
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
+import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -106,18 +107,20 @@ class OrdersViewModel @Inject constructor(
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             dataStoreRepo.token.onEach { token ->
                 if (cafeId.isNotEmpty()) {
-                    orderRepo.unsubscribeOnOrderList()
                     mutableOrderListState.value = ExtendedState.Loading()
+                    orderRepo.unsubscribeOnOrderList()
                     orderRepo.loadOrderListByCafeId(token, cafeId)
                     orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
-                }else{
+                } else {
                     mutableOrderListState.value = ExtendedState.Empty()
                 }
             }
         }.launchIn(viewModelScope)
 
         orderRepo.ordersMapFlow.onEach { list ->
-            mutableOrderListState.value = list.map(::toItemModel).toStateAddedSuccess()
+            mutableOrderListState.value =
+                list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }
+                    .toStateAddedSuccess()
         }.launchIn(viewModelScope)
     }
 
