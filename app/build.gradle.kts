@@ -47,7 +47,6 @@ android {
             isDebuggable = true
             isMinifyEnabled = false
             buildConfigField("String", "FB_LINK", "\"https://test-fooddelivery.firebaseio.com/\"")
-            //buildConfigField("String", "API_URL", "\"api.smart-eld.com/v1\"")
         }
 
         getByName("release") {
@@ -63,7 +62,6 @@ android {
                 "\"https://fooddelivery-ce2ef-default-rtdb.firebaseio.com/\""
             )
             signingConfig = signingConfigs.getByName("release")
-            //buildConfigField("String", "API_URL", "\"dev.api.smart-eld.com/v1\"")
         }
 
         buildFeatures {
