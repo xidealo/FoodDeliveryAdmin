@@ -106,6 +106,7 @@ class OrdersViewModel @Inject constructor(
         dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
             dataStoreRepo.token.onEach { token ->
                 if (cafeId.isNotEmpty()) {
+                    orderRepo.unsubscribeOnOrderList()
                     mutableOrderListState.value = ExtendedState.Loading()
                     orderRepo.loadOrderListByCafeId(token, cafeId)
                     orderRepo.subscribeOnOrderListByCafeId(token, cafeId)

@@ -11,5 +11,6 @@ interface OrderRepo {
     suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus)
 
     suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String)
+    suspend fun unsubscribeOnOrderList()
     suspend fun loadOrderListByCafeId(token: String, cafeId: String)
 }

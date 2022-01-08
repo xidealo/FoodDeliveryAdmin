@@ -58,4 +58,6 @@ object Constants {
     //OTHER
     const val APP_ID = "PAPA_KARLO"
     const val RELOAD_DELAY = 5000L
+    //API
+    const val WEB_SOCKET_TAG = "web socket"
 }

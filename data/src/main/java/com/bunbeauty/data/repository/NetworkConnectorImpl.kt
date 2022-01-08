@@ -3,6 +3,7 @@ package com.bunbeauty.data.repository
 import android.util.Log
 import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.data.model.server.cafe.CafeServer
@@ -34,6 +35,8 @@ class NetworkConnectorImpl @Inject constructor(
     private val client: HttpClient,
     private val json: Json
 ) : NetworkConnector {
+
+    private var webSocketSession: DefaultClientWebSocketSession? = null
 
     override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> {
         return postData(
@@ -122,7 +125,7 @@ class NetworkConnectorImpl @Inject constructor(
     ): Flow<ApiResult<ServerOrder>> {
         return flow {
             try {
-                Log.d("try", "in socket")
+                Log.d(WEB_SOCKET_TAG, "in socket")
                 client.webSocket(
                     HttpMethod.Get,
                     path = "user/order/subscribe",
@@ -131,10 +134,10 @@ class NetworkConnectorImpl @Inject constructor(
                         parameter("cafeUuid", cafeId)
                     }
                 ) {
-                    Log.d("aaa", "in socket")
+                    webSocketSession = this
                     while (true) {
                         val otherMessage = incoming.receive() as? Frame.Text ?: continue
-                        Log.d("aaa", otherMessage.readText())
+                        Log.d(WEB_SOCKET_TAG, otherMessage.readText())
                         emit(
                             ApiResult.Success(
                                 json.decodeFromString(
@@ -146,16 +149,17 @@ class NetworkConnectorImpl @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.d("aaa", e.message ?: "")
+                Log.d(WEB_SOCKET_TAG, e.message ?: "")
             }
         }
     }
 
-    override suspend fun unsubscribeOnOrderListByCafeId(
-        token: String,
-        cafeId: String
-    ) {
-        client.close()
+    override suspend fun unsubscribeOnOrderList() {
+        if (webSocketSession != null) {
+            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "User logout"))
+            webSocketSession = null
+            Log.d(WEB_SOCKET_TAG, "webSocketSession closed")
+        }
     }
 
     override suspend fun getOrderListByCafeId(
@@ -195,6 +199,7 @@ class NetworkConnectorImpl @Inject constructor(
             token = token
         )
     }
+
 
     suspend fun <T : Any> getData(
         path: String,

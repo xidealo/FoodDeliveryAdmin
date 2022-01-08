@@ -49,10 +49,7 @@ interface NetworkConnector {
     ): Flow<ApiResult<ServerOrder>>
 
 
-    suspend fun unsubscribeOnOrderListByCafeId(
-        token: String,
-        cafeId: String
-    )
+    suspend fun unsubscribeOnOrderList()
 
     suspend fun getOrderListByCafeId(
         token: String,
