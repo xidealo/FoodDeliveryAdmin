@@ -15,6 +15,8 @@ class OrderRepository @Inject constructor(
 ) : OrderRepo {
 
     override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
+    override val newOrder: MutableSharedFlow<Order> = MutableSharedFlow()
+
     private var cachedData: MutableMap<String, Order> = HashMap()
 
     override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
@@ -23,12 +25,8 @@ class OrderRepository @Inject constructor(
             orderUuid,
             status
         )) {
-            is ApiResult.Success -> {
-
-            }
-            is ApiResult.Error -> {
-
-            }
+            is ApiResult.Success -> {}
+            is ApiResult.Error -> {}
         }
     }
 
@@ -38,6 +36,9 @@ class OrderRepository @Inject constructor(
         }.map { resultApiResultSuccess ->
             serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
                 .let { order ->
+                    if (cachedData[order.uuid] == null)
+                        newOrder.emit(order)
+
                     cachedData[order.uuid] = order
                     ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }

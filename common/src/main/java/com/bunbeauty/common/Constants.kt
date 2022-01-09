@@ -25,17 +25,6 @@ object Constants {
     const val CAFE_ID_KEY = "cafe_id"
     const val NOTIFICATION_ID = 1
 
-    // REALTIME DATABASE
-
-    const val COMPANY = "COMPANY"
-    const val MENU_PRODUCTS = "menu_products"
-    const val CAFES = "cafes"
-    const val ORDERS = "ORDERS"
-    const val ORDER_ENTITY = "orderEntity"
-    const val ORDER_STATUS = "orderStatus"
-    const val TIMESTAMP = "timestamp"
-    const val DELIVERY = "delivery"
-    const val PASSWORD = "password"
 
     // ARGS_KEY
 
@@ -60,4 +49,10 @@ object Constants {
     const val RELOAD_DELAY = 5000L
     //API
     const val WEB_SOCKET_TAG = "web socket"
+
+
+    // SERVICE
+    const val ADMIN_SERVICE_CHANNEL_ID = "2"
+    const val ADMIN_SERVICE_CHANNEL_NAME = "Service"
+    const val ADMIN_SERVICE_ID = 2
 }

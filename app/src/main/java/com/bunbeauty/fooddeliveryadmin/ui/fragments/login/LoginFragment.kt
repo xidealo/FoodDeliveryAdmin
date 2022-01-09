@@ -9,7 +9,7 @@ import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
 import com.bunbeauty.presentation.navigation_event.LoginNavigationEvent
-import com.bunbeauty.presentation.view_model.login.LoginViewModel
+import com.bunbeauty.fooddeliveryadmin.view_model.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -38,13 +38,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 } else {
                     binding.fragmentLoginPbLoading.gone()
                     binding.fragmentLoginGroupLogin.visible()
-                }
-            }.startedLaunch(viewLifecycleOwner)
-
-            navigation.onEach { navigationEvent ->
-                when (navigationEvent) {
-                    is LoginNavigationEvent.ToOrders -> router.navigate(LoginFragmentDirections.toOrdersFragment())
-                    else -> Unit
                 }
             }.startedLaunch(viewLifecycleOwner)
         }

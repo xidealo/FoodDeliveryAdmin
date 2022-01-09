@@ -1,4 +1,3 @@
-import AndroidSdk.compile
 
 plugins {
     kotlin(Plugin.android)

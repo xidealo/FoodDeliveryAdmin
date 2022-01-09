@@ -60,7 +60,7 @@ object Application {
 }
 
 object AndroidSdk {
-    const val min = 24
+    const val min = 26
     const val compile = 31
     const val target = compile
 }
