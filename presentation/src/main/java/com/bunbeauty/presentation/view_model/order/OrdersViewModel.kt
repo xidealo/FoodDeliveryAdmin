@@ -10,16 +10,16 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.DeliveryRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateAddedSuccess
 import com.bunbeauty.presentation.extension.toStateSuccess
-import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.model.OrderItemModel
+import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
 import com.bunbeauty.presentation.state.ExtendedState
 import com.bunbeauty.presentation.state.State
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -108,8 +108,8 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun subscribeOnOrders() {
-        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
-            dataStoreRepo.token.onEach { token ->
+        dataStoreRepo.token.flatMapLatest { token ->
+            dataStoreRepo.cafeUuid.onEach { cafeId ->
                 if (cafeId.isNotEmpty()) {
                     mutableOrderListState.value = ExtendedState.Loading()
                     orderRepo.loadOrderListByCafeId(token, cafeId)
@@ -121,7 +121,9 @@ class OrdersViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         orderRepo.ordersMapFlow.onEach { list ->
-            mutableOrderListState.value = list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }.toStateAddedSuccess()
+            mutableOrderListState.value =
+                list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }
+                    .toStateAddedSuccess()
         }.launchIn(viewModelScope)
     }
 

@@ -1,12 +1,15 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.domain.repo.OrderRepo
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(
@@ -16,7 +19,7 @@ class OrderRepository @Inject constructor(
 
     override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
 
-    private var cachedData: MutableMap<String, Order> = HashMap()
+    private val cachedData: MutableMap<String, Order> = mutableMapOf()
 
     override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
         when (val result = networkConnector.updateOrderStatus(
@@ -55,10 +58,12 @@ class OrderRepository @Inject constructor(
                 if (result.data.results.isEmpty()) {
                     ordersMapFlow.emit(emptyList())
                 } else {
-                    cachedData =
-                        result.data.results.map(serverOrderMapper::toModel).map { it.uuid to it }
-                            .toMap() as MutableMap<String, Order>
-
+                    cachedData.clear()
+                    cachedData.putAll(
+                        result.data.results.map(serverOrderMapper::toModel)
+                            .map { it.uuid to it }
+                            .toMap()
+                    )
                     ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
             }
