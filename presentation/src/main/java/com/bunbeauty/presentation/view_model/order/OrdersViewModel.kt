@@ -121,9 +121,7 @@ class OrdersViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         orderRepo.ordersMapFlow.onEach { list ->
-            mutableOrderListState.value =
-                list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }
-                    .toStateAddedSuccess()
+            mutableOrderListState.value = list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }.toStateAddedSuccess()
         }.launchIn(viewModelScope)
     }
 

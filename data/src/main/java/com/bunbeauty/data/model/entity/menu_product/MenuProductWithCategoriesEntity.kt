@@ -2,7 +2,6 @@ package com.bunbeauty.data.model.entity.menu_product
 
 import androidx.room.*
 import com.bunbeauty.data.model.entity.CategoryEntity
-import com.bunbeauty.data.model.server.CategoryServer
 
 data class MenuProductWithCategoriesEntity(
     @Embedded

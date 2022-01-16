@@ -9,7 +9,6 @@ import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
-import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateSuccess

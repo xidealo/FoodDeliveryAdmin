@@ -2,7 +2,6 @@ package com.bunbeauty.data.model.entity.menu_product
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bunbeauty.data.model.server.CategoryServer
 
 @Entity
 data class MenuProductEntity(

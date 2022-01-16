@@ -2,15 +2,12 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.RELOAD_DELAY
-import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.data.NetworkConnector
-import com.bunbeauty.data.dao.CategoryDao
 import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
-import com.bunbeauty.data.mapper.CategoryMapper
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.model.entity.menu_product.MenuProductCategoryEntity
-import com.bunbeauty.domain.repo.CategoryRepo
+import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

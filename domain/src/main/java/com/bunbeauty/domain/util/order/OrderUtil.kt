@@ -2,7 +2,6 @@ package com.bunbeauty.domain.util.order
 
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.statistic.ProductStatistic
 import com.bunbeauty.domain.util.product.IProductUtil
 import javax.inject.Inject
 

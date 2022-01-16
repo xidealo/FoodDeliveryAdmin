@@ -14,6 +14,6 @@ data class ServerOrder(
     val addressDescription: String = "",
     val comment: String? = null,
     val clientUser: ClientUserServer? = null,
-    val oderProductList: List<CartProductServer> = emptyList(),
     var cafeUuid: String = "",
+    val oderProductList: List<CartProductServer> = emptyList(),
 )

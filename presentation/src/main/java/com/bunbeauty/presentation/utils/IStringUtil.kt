@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.model.order.UserAddress
 
 interface IStringUtil {
     fun getDeferredTimeString(deferred: Long?): String?

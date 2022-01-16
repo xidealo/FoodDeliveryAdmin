@@ -1,6 +1,5 @@
 package com.bunbeauty.data.di
 
-import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.cafe.EntityCafeMapper
 import com.bunbeauty.data.mapper.cafe.IEntityCafeMapper
 import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
@@ -27,15 +26,11 @@ abstract class MapperModule {
     @Binds
     abstract fun bindServerCafeMapper(serverCafeMapper: ServerCafeMapper): IServerCafeMapper
 
-/*    @Singleton
-    @Binds
-    abstract fun bindServerMenuProductMapper(menuProductMapper: MenuProductMapper): IMenuProductMapper*/
-
     @Singleton
     @Binds
     abstract fun bindServerOrderMapper(serverOrderMapper: ServerOrderMapper): IServerOrderMapper
 
-  @Singleton
+    @Singleton
     @Binds
     abstract fun bindStatisticMapper(statisticMapper: StatisticMapper): IStatisticMapper
 

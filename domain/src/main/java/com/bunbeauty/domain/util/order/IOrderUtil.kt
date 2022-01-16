@@ -2,7 +2,6 @@ package com.bunbeauty.domain.util.order
 
 import com.bunbeauty.domain.model.Delivery
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.statistic.ProductStatistic
 
 interface IOrderUtil {
 
