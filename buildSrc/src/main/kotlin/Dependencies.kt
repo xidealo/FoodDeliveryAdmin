@@ -54,9 +54,13 @@ object Versions {
 }
 
 object Application {
-    const val versionName = "1.0"
+    const val versionMajor = 1
+    const val versionMinor = 0
+    const val versionPatch = 0
+
+    const val versionName = "${versionMajor}_${versionMinor}_$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 1
+    const val versionCode = versionMajor + versionMinor + versionPatch
 }
 
 object AndroidSdk {
@@ -65,7 +69,7 @@ object AndroidSdk {
     const val target = compile
 }
 
-object Time{
+object Time {
     const val jobaTime = "joda-time:joda-time:${Versions.joba}"
 }
 
@@ -222,7 +226,8 @@ object Coroutine {
     const val coroutineCore =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
 }
-object RoomDatabase{
+
+object RoomDatabase {
     const val roomDatabaseRuntime = "androidx.room:room-runtime:${Versions.roomDatabaseVersion}"
     const val roomDatabaseKtx = "androidx.room:room-ktx:${Versions.roomDatabaseVersion}"
     const val roomDatabaseKapt = "androidx.room:room-compiler:${Versions.roomDatabaseVersion}"
