@@ -28,7 +28,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -47,19 +46,20 @@ class EditMenuProductViewModel @Inject constructor(
         MenuProductCode(title = stringUtil.getProductCodeString(productCode))
     }
 
-    private val mutableIsVisible: MutableStateFlow<Boolean> = MutableStateFlow(menuProduct.visible)
+    private val mutableIsVisible: MutableStateFlow<Boolean> =
+        MutableStateFlow(menuProduct.isVisible)
     val isVisible: StateFlow<Boolean> = mutableIsVisible.asStateFlow()
 
     private val mutableIsComboDescriptionVisible =
-        MutableStateFlow(menuProduct.productCode == ProductCode.COMBO)
+        MutableStateFlow(false) //menuProduct.productCode == ProductCode.COMBO
     val isComboDescriptionVisible = mutableIsComboDescriptionVisible.asStateFlow()
 
     val photoLink: String = menuProduct.photoLink
     val name: String = menuProduct.name
-    val productCodeString: String = stringUtil.getProductCodeString(menuProduct.productCode)
-    val cost: String = menuProduct.cost.toString()
-    val discountCost: String = menuProduct.discountCost?.toString() ?: ""
-    val weight: String = menuProduct.weight?.toString() ?: ""
+    val productCodeString: String = ""//stringUtil.getProductCodeString(menuProduct.productCode)
+    val cost: String = menuProduct.newPrice.toString()
+    val discountCost: String = menuProduct.oldPrice?.toString() ?: ""
+    val weight: String = menuProduct.nutrition?.toString() ?: ""
     val description: String = menuProduct.description
     val comboDescription: String = menuProduct.comboDescription ?: ""
 
@@ -77,7 +77,7 @@ class EditMenuProductViewModel @Inject constructor(
     fun deleteMenuProduct() {
         viewModelScope.launch(IO) {
             menuProductRepo.deleteMenuProductPhoto(photoLink)
-            menuProductRepo.deleteMenuProduct(menuProduct.uuid!!)
+            menuProductRepo.deleteMenuProduct(menuProduct.uuid)
             finishDeleting()
         }
     }
@@ -85,8 +85,8 @@ class EditMenuProductViewModel @Inject constructor(
     fun saveMenuProduct(
         name: String,
         productCodeString: String,
-        cost: String,
-        discountCost: String,
+        newPrice: String,
+        oldPrice: String,
         weight: String,
         description: String,
         comboDescription: String
@@ -99,7 +99,7 @@ class EditMenuProductViewModel @Inject constructor(
             return
         }
 
-        val costInt = cost.toIntOrNull()
+        val costInt = newPrice.toIntOrNull()
         if (costInt == null) {
             sendFieldError(
                 PRODUCT_COST_ERROR_KEY,
@@ -108,8 +108,8 @@ class EditMenuProductViewModel @Inject constructor(
             return
         }
 
-        val discountCostInt = discountCost.toIntOrNull()
-        if (discountCostInt != null && discountCostInt >= costInt) {
+        val oldPriceInt = oldPrice.toIntOrNull()
+        if (oldPriceInt != null && oldPriceInt <= costInt) {
             sendFieldError(
                 PRODUCT_DISCOUNT_COST_ERROR_KEY,
                 resourcesProvider.getString(R.string.error_edit_menu_product_discount_cost_incorrect)
@@ -131,21 +131,21 @@ class EditMenuProductViewModel @Inject constructor(
         } else {
             null
         }
+
         if (photo == null) {
             val menuProduct = MenuProduct(
                 uuid = menuProduct.uuid,
                 name = name,
-                cost = costInt,
-                discountCost = discountCostInt,
-                weight = weight.toIntOrNull(),
+                newPrice = costInt,
+                oldPrice = oldPriceInt,
+                nutrition = weight.toIntOrNull(),
                 description = description,
                 comboDescription = nullableComboDescription,
                 photoLink = photoLink,
-                onFire = false,
-                inOven = false,
-                productCode = productCode!!,
                 barcode = null,
-                visible = isVisible.value
+                isVisible = isVisible.value,
+                utils = "",
+                categories = emptyList()
             )
             viewModelScope.launch(IO) {
                 menuProductRepo.updateMenuProduct(menuProduct)
@@ -156,25 +156,26 @@ class EditMenuProductViewModel @Inject constructor(
                 val photoByteArray = photo!!.toByteArray()
                 withContext(IO) {
                     menuProductRepo.deleteMenuProductPhoto(photoLink)
-                    menuProductRepo.saveMenuProductPhoto(photoByteArray).collect { photoLink ->
-                        val menuProduct = MenuProduct(
-                            uuid = menuProduct.uuid,
-                            name = name,
-                            cost = costInt,
-                            discountCost = discountCostInt,
-                            weight = weight.toIntOrNull(),
-                            description = description,
-                            comboDescription = nullableComboDescription,
-                            photoLink = photoLink,
-                            onFire = false,
-                            inOven = false,
-                            productCode = productCode!!,
-                            barcode = null,
-                            visible = isVisible.value
-                        )
-                        menuProductRepo.updateMenuProduct(menuProduct)
-                        finishEditing(name)
-                    }
+                    menuProductRepo.saveMenuProductPhoto(photoByteArray)
+                    /*   .collect { photoLink ->
+                       val menuProduct = MenuProduct(
+                           uuid = menuProduct.uuid,
+                           name = name,
+                           cost = costInt,
+                           discountCost = discountCostInt,
+                           weight = weight.toIntOrNull(),
+                           description = description,
+                           comboDescription = nullableComboDescription,
+                           photoLink = photoLink,
+                           onFire = false,
+                           inOven = false,
+                           productCode = productCode!!,
+                           barcode = null,
+                           visible = isVisible.value
+                       )
+                       menuProductRepo.updateMenuProduct(menuProduct)
+                       finishEditing(name)
+                   }*/
                 }
             }
         }

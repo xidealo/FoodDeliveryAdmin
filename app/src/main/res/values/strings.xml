@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodDeliveryAdmin</string>
+    <string name="app_name">PapaKarloAdmin</string>
     <!--
     title — заголовки;
     hint — подсказки в edittext;
@@ -33,6 +33,7 @@
     <string name="msg_order_details_alert">Отменить заказ?</string>
     <string name="action_order_details_yes">Да</string>
     <string name="action_order_details_no">Нет</string>
+    <string name="title_order_details_choice_cafe">Выбрать кафе</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_menu_orders">Заказы</string>
@@ -66,7 +67,7 @@
     <string name="title_edit_menu_product_editing">Редактирование</string>
     <string name="hint_edit_menu_product_name">Название</string>
     <string name="hint_edit_menu_product_cost">Цена, ₽</string>
-    <string name="hint_edit_menu_product_discount_cost">Цена со скидкой, ₽</string>
+    <string name="hint_edit_menu_product_discount_cost">Цена без скидки, ₽</string>
     <string name="hint_edit_menu_product_weight">Вес, г</string>
     <string name="hint_edit_menu_product_description">Описание</string>
     <string name="hint_edit_menu_product_combo_description">Описание комбо</string>
@@ -76,5 +77,9 @@
     <string name="msg_edit_menu_product_alert">Удалить позицию?</string>
     <string name="action_edit_menu_product_alert_yes">Да</string>
     <string name="action_edit_menu_product_alert_cancel">Отмена</string>
+
+    <!-- SERVICE -->
+    <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
+    <string name="msg_notification_info">Ожидание заказов</string>
 
 </resources>

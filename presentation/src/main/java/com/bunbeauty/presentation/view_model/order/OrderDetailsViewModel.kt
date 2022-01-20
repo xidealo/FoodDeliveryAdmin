@@ -36,7 +36,7 @@ class OrderDetailsViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val resourcesProvider: IResourcesProvider,
     dateTimeUtil: IDateTimeUtil,
-    dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -56,22 +56,22 @@ class OrderDetailsViewModel @Inject constructor(
 
     val pickupMethod: String = stringUtil.getReceivingMethodString(order.delivery)
 
-    val deferredTime: String? = order.deferred
+    val deferredTime: String? = stringUtil.getDeferredTimeString(order.deferred)
 
-    val address: String? = stringUtil.getUserAddressString(order.address)
+    val address: String? = order.address
 
     val comment: String = order.comment ?: ""
 
     var status = stringUtil.getOrderStatusString(order.orderStatus)
 
-    val productList: List<CartProductItemModel> = order.cartProductList
+    val productList: List<CartProductItemModel> = order.oderProductList
         .map { cartProduct ->
             val oldCost = productUtil.getCartProductOldCost(cartProduct)
             val newCost = productUtil.getCartProductNewCost(cartProduct)
 
             CartProductItemModel(
-                name = productUtil.getPositionName(cartProduct.menuProduct),
-                photoLink = cartProduct.menuProduct.photoLink,
+                name = productUtil.getPositionName(cartProduct),
+                photoLink = "",//cartProduct.photoLink,
                 count = stringUtil.getProductCountString(cartProduct.count),
                 oldCost = stringUtil.getCostString(oldCost),
                 newCost = stringUtil.getCostString(newCost)
@@ -102,7 +102,7 @@ class OrderDetailsViewModel @Inject constructor(
 
     private val orderStatusList: List<OrderStatus>
         get() {
-            val isDeferred = !order.deferred.isNullOrEmpty()
+            val isDeferred = order.deferred != null
             return when {
                 isDeferred && isDelivery -> {
                     listOf(
@@ -152,9 +152,11 @@ class OrderDetailsViewModel @Inject constructor(
 
     fun changeStatus(status: String) {
         viewModelScope.launch(IO) {
-            val orderStatus = stringUtil.getOrderStatusByString(status)
-            orderRepo.updateStatus(order.cafeUuid, order.uuid, orderStatus)
-
+            orderRepo.updateStatus(
+                dataStoreRepo.token.first(),
+                order.uuid,
+                stringUtil.getOrderStatusByString(status)
+            )
             goBack()
         }
     }

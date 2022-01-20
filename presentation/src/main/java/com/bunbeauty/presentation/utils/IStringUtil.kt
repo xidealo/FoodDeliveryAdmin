@@ -2,11 +2,9 @@ package com.bunbeauty.presentation.utils
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.model.order.UserAddress
 
 interface IStringUtil {
-    fun getUserAddressString(userAddress: UserAddress?): String?
-    fun getDeferredTimeString(deferred: String?): String
+    fun getDeferredTimeString(deferred: Long?): String?
     fun getCostString(cost: Int?): String
     fun getOrderCodeString(orderCode: String): String
     fun getReceivingMethodString(isDelivery: Boolean): String

@@ -1,5 +1,6 @@
 package com.bunbeauty.data.di
 
+import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.repository.*
 import com.bunbeauty.domain.repo.*
 import dagger.Binds
@@ -30,9 +31,21 @@ abstract class RepoModule {
 
     @Singleton
     @Binds
-    abstract fun bindApiRepository(apiRepository: ApiRepository): ApiRepo
+    abstract fun bindApiRepository(networkConnectorImpl: NetworkConnectorImpl): NetworkConnector
 
     @Singleton
     @Binds
     abstract fun bindDataStoreRepository(dataStoreRepository: DataStoreRepository): DataStoreRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindUserAuthorizationRepository(userAuthorizationRepository: UserAuthorizationRepository): UserAuthorizationRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindStatisticRepository(statisticRepository: StatisticRepository): StatisticRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindCategoryRepository(categoryRepository: CategoryRepository): CategoryRepo
 }

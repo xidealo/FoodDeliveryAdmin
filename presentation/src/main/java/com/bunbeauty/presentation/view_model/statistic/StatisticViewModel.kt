@@ -8,8 +8,7 @@ import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.OrderRepo
-import com.bunbeauty.domain.util.order.IOrderUtil
+import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateSuccess
@@ -31,12 +30,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticViewModel @Inject constructor(
-    private val orderRepo: OrderRepo,
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
-    private val orderUtil: IOrderUtil,
     private val resourcesProvider: IResourcesProvider,
-    dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo,
+    private val statisticRepo: StatisticRepo
 ) : BaseViewModel() {
 
     private val delivery by lazy {
@@ -45,10 +43,21 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    private val dayPeriod = Period(resourcesProvider.getString(R.string.msg_statistic_day_period))
-    private val weekPeriod = Period(resourcesProvider.getString(R.string.msg_statistic_week_period))
+    enum class PeriodKey {
+        DAY,
+        WEEK,
+        MONTH,
+    }
+
+    private val dayPeriod =
+        Period(resourcesProvider.getString(R.string.msg_statistic_day_period), PeriodKey.DAY.name)
+    private val weekPeriod =
+        Period(resourcesProvider.getString(R.string.msg_statistic_week_period), PeriodKey.WEEK.name)
     private val monthPeriod =
-        Period(resourcesProvider.getString(R.string.msg_statistic_month_period))
+        Period(
+            resourcesProvider.getString(R.string.msg_statistic_month_period),
+            PeriodKey.MONTH.name
+        )
     private val allCafeAddress = CafeAddress(
         title = resourcesProvider.getString(R.string.msg_statistic_all_cafes),
         cafeUuid = null
@@ -73,7 +82,7 @@ class StatisticViewModel @Inject constructor(
         mutableCafeAddress.value = cafeAddress
     }
 
-    fun setPeriod(period:Period) {
+    fun setPeriod(period: Period) {
         mutablePeriod.value = period
     }
 
@@ -111,52 +120,35 @@ class StatisticViewModel @Inject constructor(
     }
 
     private fun subscribeOnStatistic() {
-        cafeAddress.flatMapLatest { cafeAddress ->
-            period.flatMapLatest { period ->
-                getStatisticList(cafeAddress, period)!!.onEach { statisticList ->
-                    mutableStatisticState.value = statisticList
-                        .map { statistic ->
-                            val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
-                            val proceedsString = stringUtil.getCostString(proceeds)
-                            StatisticItemModel(
-                                period = statistic.period,
-                                count = stringUtil.getOrderCountString(statistic.orderList.size),
-                                proceeds = proceedsString,
-                                statistic = statistic
-                            )
-                        }.toStateSuccess()
+        dataStoreRepo.token.flatMapLatest { token ->
+            cafeAddress.flatMapLatest { cafeAddress ->
+                period.onEach { period ->
+                    getStatisticList(token, cafeAddress, period).let { statisticList ->
+                        mutableStatisticState.value = statisticList
+                            .map { statistic ->
+                                val proceedsString = stringUtil.getCostString(statistic.proceeds)
+                                StatisticItemModel(
+                                    period = statistic.period,
+                                    count = stringUtil.getOrderCountString(statistic.orderCount),
+                                    proceeds = proceedsString,
+                                    statistic = statistic
+                                )
+                            }.toStateSuccess()
+                    }
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun getStatisticList(cafeAddress: CafeAddress, period: Period): Flow<List<Statistic>>? {
+    private suspend fun getStatisticList(
+        token: String,
+        cafeAddress: CafeAddress,
+        period: Period
+    ): List<Statistic> {
         return if (cafeAddress.cafeUuid == null) {
-            when (period) {
-                dayPeriod -> {
-                    orderRepo.getAllCafeOrdersByDay()
-                }
-                weekPeriod -> {
-                    orderRepo.getAllCafeOrdersByWeek()
-                }
-                monthPeriod -> {
-                    orderRepo.getAllCafeOrdersByMonth()
-                }
-                else -> null
-            }
+            statisticRepo.getStatistic(token, "ALL", period.key)
         } else {
-            when (period) {
-                dayPeriod -> {
-                    orderRepo.getCafeOrdersByCafeIdAndDay(cafeAddress.cafeUuid)
-                }
-                weekPeriod -> {
-                    orderRepo.getCafeOrdersByCafeIdAndWeek(cafeAddress.cafeUuid)
-                }
-                monthPeriod -> {
-                    orderRepo.getCafeOrdersByCafeIdAndMonth(cafeAddress.cafeUuid)
-                }
-                else -> null
-            }
+            statisticRepo.getStatistic(token, cafeAddress.cafeUuid, period.key)
         }
     }
 }

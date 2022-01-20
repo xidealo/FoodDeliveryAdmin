@@ -1,22 +1,21 @@
 package com.bunbeauty.domain.model.menu_product
 
 import android.os.Parcelable
-import com.bunbeauty.domain.enums.ProductCode
+import com.bunbeauty.domain.model.Category
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MenuProduct(
-    val uuid: String?,
+    val uuid: String,
     val name: String,
-    val cost: Int,
-    val discountCost: Int?,
-    val weight: Int?,
+    val newPrice: Int,
+    val oldPrice: Int?,
+    val utils: String,
+    val nutrition: Int?,
     val description: String,
     val comboDescription: String?,
     val photoLink: String,
-    val onFire: Boolean,
-    val inOven: Boolean,
-    val productCode: ProductCode,
     val barcode: Int?,
-    val visible: Boolean,
-): Parcelable
+    val isVisible: Boolean,
+    val categories: List<Category>,
+) : Parcelable

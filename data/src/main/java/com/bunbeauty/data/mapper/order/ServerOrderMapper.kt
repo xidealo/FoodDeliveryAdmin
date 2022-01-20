@@ -1,40 +1,32 @@
 package com.bunbeauty.data.mapper.order
 
-import com.bunbeauty.data.mapper.cart_product.ICartProductMapper
-import com.bunbeauty.data.mapper.user_address.IUserAddressMapper
+import com.bunbeauty.data.mapper.CartProductMapper
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.server.ServerOrder
-import com.bunbeauty.domain.util.date_time.IDateTimeUtil
+import com.bunbeauty.data.model.server.order.ServerOrder
 import javax.inject.Inject
 
 class ServerOrderMapper @Inject constructor(
-    private val userAddressMapper: IUserAddressMapper,
-    private val cartProductMapper: ICartProductMapper
+    private val cartProductMapper: CartProductMapper
 ) : IServerOrderMapper {
 
-    override fun from(model: ServerOrder): Order {
+    override fun toModel(order: ServerOrder): Order {
         return Order(
-            uuid = model.uuid,
-            cafeUuid = model.cafeUuid,
-            cartProductList = model.cartProducts.map { serverCartProduct ->
-                cartProductMapper.from(serverCartProduct)
-            },
-            address = userAddressMapper.from(model.orderEntity.address),
-            code = model.orderEntity.code,
-            comment = model.orderEntity.comment,
-            deferred = model.orderEntity.deferred,
-            delivery = model.orderEntity.delivery,
-            bonus = model.orderEntity.bonus,
-            email = model.orderEntity.email,
-            orderStatus = OrderStatus.valueOf(model.orderEntity.orderStatus),
-            phone = model.orderEntity.phone,
-            time = model.timestamp,
-            userId = model.orderEntity.userId,
+            uuid = order.uuid,
+            cafeUuid = order.cafeUuid,
+            oderProductList = order.oderProductList.map(cartProductMapper::toModel),
+            address = order.addressDescription,
+            code = order.code,
+            comment = order.comment,
+            deferred = order.deferredTime,
+            delivery = order.isDelivery,
+            bonus = 0,
+            email = order.clientUser?.email ?: "",
+            orderStatus = OrderStatus.valueOf(order.status),
+            phone = order.clientUser?.phoneNumber ?: "",
+            time = order.time,
+            userId = order.clientUser?.uuid ?: "",
         )
     }
 
-    override fun to(model: Order): ServerOrder {
-        return ServerOrder()
-    }
 }

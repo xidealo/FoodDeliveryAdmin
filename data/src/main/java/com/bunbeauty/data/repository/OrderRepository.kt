@@ -1,128 +1,75 @@
 package com.bunbeauty.data.repository
 
+import com.bunbeauty.common.ApiResult
+import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.enums.OrderStatus.*
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.server.ServerOrder
-import com.bunbeauty.domain.model.statistic.Statistic
-import com.bunbeauty.domain.repo.ApiRepo
 import com.bunbeauty.domain.repo.OrderRepo
-import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(
-    private val apiRepo: ApiRepo,
-    private val dateTimeUtil: IDateTimeUtil,
+    private val networkConnector: NetworkConnector,
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
 
-    override suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus) {
-        apiRepo.updateOrderStatus(cafeUuid, orderUuid, status)
-    }
+    override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
 
-    override fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>> {
-        return apiRepo.getAddedOrderListByCafeId(cafeId)
-            .flowOn(IO)
-            .map { serverOrderList ->
-                serverOrderList.map { serverOrder ->
-                    serverOrderMapper.from(serverOrder)
-                }.filter { order ->
-                    order.orderStatus != CANCELED
-                }.sortedByDescending { order ->
-                    order.time
-                }
-            }.flowOn(Default)
-    }
+    private val cachedData: MutableMap<String, Order> = mutableMapOf()
 
-    override fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>> {
-        return apiRepo.getUpdatedOrderListByCafeId(cafeId)
-            .flowOn(IO)
-            .map { serverOrderList ->
-                serverOrderList.map { serverOrder ->
-                    serverOrderMapper.from(serverOrder)
-                }.filter { order ->
-                    order.orderStatus != CANCELED
-                }.sortedByDescending { order ->
-                    order.time
-                }
-            }.flowOn(Default)
-    }
-
-    override fun getAllCafeOrdersByDay(): Flow<List<Statistic>> {
-        return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.orderList),
-            dateTimeUtil::getDateDDMMMMYYYY
-        )
-    }
-
-    override fun getAllCafeOrdersByWeek(): Flow<List<Statistic>> {
-        return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.orderList),
-            dateTimeUtil::getWeekPeriod
-        )
-    }
-
-    override fun getAllCafeOrdersByMonth(): Flow<List<Statistic>> {
-        return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.orderList),
-            dateTimeUtil::getDateMMMMYYYY
-        )
-    }
-
-    override fun getCafeOrdersByCafeIdAndDay(cafeId: String): Flow<List<Statistic>> {
-        return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.getOrderListByCafeId(cafeId)),
-            dateTimeUtil::getDateDDMMMMYYYY
-        )
-    }
-
-    override fun getCafeOrdersByCafeIdAndWeek(cafeId: String): Flow<List<Statistic>> {
-        return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.getOrderListByCafeId(cafeId)),
-            dateTimeUtil::getWeekPeriod
-        )
-    }
-
-    override fun getCafeOrdersByCafeIdAndMonth(cafeId: String): Flow<List<Statistic>> {
-        return mapToStatisticList(
-            mapToOrderListFlow(apiRepo.getOrderListByCafeId(cafeId)),
-            dateTimeUtil::getDateMMMMYYYY
-        )
-    }
-
-    fun mapToOrderListFlow(serverOrderListFlow: Flow<List<ServerOrder>>): Flow<List<Order>> {
-        return serverOrderListFlow.map { serverOrderList ->
-            serverOrderList.map { serverOrder ->
-                serverOrderMapper.from(serverOrder)
-            }
+    override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
+        when (val result = networkConnector.updateOrderStatus(
+            token,
+            orderUuid,
+            status
+        )) {
+            is ApiResult.Success -> {}
+            is ApiResult.Error -> {}
         }
     }
 
-    fun mapToStatisticList(
-        orderListFlow: Flow<List<Order>>,
-        timestampConverter: (Long) -> String
-    ): Flow<List<Statistic>> {
-        return orderListFlow.flowOn(IO)
-            .map { orderList ->
-                val orderMap = orderList.filter { order ->
-                    order.orderStatus == DELIVERED || order.orderStatus == DONE
-                }.groupBy { order ->
-                    timestampConverter.invoke(order.time)
+    override suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String) {
+        networkConnector.subscribeOnOrderListByCafeId(token, cafeId).filter {
+            it is ApiResult.Success
+        }.map { resultApiResultSuccess ->
+            serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
+                .let { order ->
+                    cachedData[order.uuid] = order
+                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
-                orderMap.map { orderEntry ->
-                    Statistic(
-                        period = orderEntry.key,
-                        orderList = orderEntry.value
+        }.collect()
+    }
+
+    override suspend fun unsubscribeOnOrderList(cafeId: String) {
+        networkConnector.unsubscribeOnOrderList(cafeId)
+    }
+
+    override suspend fun loadOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ) {
+        cachedData.clear()
+        when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
+            is ApiResult.Success -> {
+                if (result.data.results.isEmpty()) {
+                    ordersMapFlow.emit(emptyList())
+                } else {
+                    cachedData.clear()
+                    cachedData.putAll(
+                        result.data.results.map(serverOrderMapper::toModel)
+                            .map { it.uuid to it }
+                            .toMap()
                     )
-                }.sortedByDescending { statistic ->
-                    statistic.orderList.first().time
+                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
-            }.flowOn(Default)
+            }
+            is ApiResult.Error -> {
+                //ApiResult.Error(result.apiError)
+            }
+        }
     }
 }

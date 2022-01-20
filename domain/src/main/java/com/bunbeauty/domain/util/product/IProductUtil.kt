@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.util.product
 
-import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.model.cart_product.CartProduct
 
 interface IProductUtil {
@@ -11,8 +10,8 @@ interface IProductUtil {
     fun getCartProductNewCost(cartProduct: CartProduct): Int
     fun getCartProductOldCost(cartProduct: CartProduct): Int?
 
-    fun getMenuProductNewPrice(menuProduct: MenuProduct): Int
-    fun getMenuProductOldPrice(menuProduct: MenuProduct): Int?
+    fun getMenuProductNewPrice(cartProduct: CartProduct): Int
+    fun getMenuProductOldPrice(cartProduct: CartProduct): Int?
 
-    fun getPositionName(menuProduct: MenuProduct): String
+    fun getPositionName(cartProduct: CartProduct): String
 }

@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.view_model.statistic
 
 import androidx.lifecycle.SavedStateHandle
-import com.bunbeauty.common.Constants
 import com.bunbeauty.common.Constants.STATISTIC_ARGS_KEY
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -35,27 +34,24 @@ class StatisticDetailsViewModel @Inject constructor(
 
     val proceeds: String
         get() {
-            val proceeds = orderUtil.getProceeds(statistic.orderList, delivery)
-            return stringUtil.getCostString(proceeds)
+            return stringUtil.getCostString(statistic.proceeds)
         }
 
-    val orderCount: String = statistic.orderList.size.toString()
+    val orderCount: String = statistic.orderCount.toString()
 
     val averageCheck: String
         get() {
-            val averageCheck = orderUtil.getAverageCheck(statistic.orderList, delivery)
-            return stringUtil.getCostString(averageCheck)
+            return stringUtil.getCostString(statistic.averageCheck)
         }
 
     val productStatisticList: List<ProductStatisticItemModel>
-        get() = orderUtil.getProductStatisticList(statistic.orderList)
+        get() = statistic.productStatisticList
             .map { productStatistic ->
                 ProductStatisticItemModel(
                     name = productStatistic.name,
-                    photoLink = productStatistic.photoLink,
                     orderCount = productStatistic.orderCount.toString(),
-                    count = productStatistic.count.toString(),
-                    cost = stringUtil.getCostString(productStatistic.cost)
+                    count = productStatistic.productCount.toString(),
+                    cost = stringUtil.getCostString(productStatistic.proceeds)
                 )
             }
 }

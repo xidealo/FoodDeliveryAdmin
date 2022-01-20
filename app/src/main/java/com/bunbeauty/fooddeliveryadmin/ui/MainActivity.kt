@@ -11,6 +11,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
+import com.bunbeauty.presentation.view_model.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var router: Router
 
-    val viewModel: com.bunbeauty.presentation.view_model.main.MainViewModel by viewModels()
+    val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -30,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         router.attach(this, R.id.activity_main_fcv_container)
-        viewModel.refreshCafeList()
-        viewModel.refreshDelivery()
+
         setupBottomNavigationBar()
     }
 
@@ -42,11 +42,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.activityMainBnvBottomNavigationBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-
             when (destination.id) {
                 R.id.ordersFragment, R.id.statisticFragment, R.id.menuFragment -> {
                     toggleBottomNavigationBarVisibility(true)
-
                     val countDestination = navController.backStack.count { navBackStackEntry ->
                         navBackStackEntry.destination.id == destination.id
                     }

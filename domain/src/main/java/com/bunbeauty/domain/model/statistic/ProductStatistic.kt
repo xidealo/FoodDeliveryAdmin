@@ -1,9 +1,12 @@
 package com.bunbeauty.domain.model.statistic
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class ProductStatistic(
     val name: String,
-    val photoLink: String,
     var orderCount: Int,
-    var count: Int,
-    var cost: Int
-)
+    var productCount: Int,
+    var proceeds: Int
+) : Parcelable

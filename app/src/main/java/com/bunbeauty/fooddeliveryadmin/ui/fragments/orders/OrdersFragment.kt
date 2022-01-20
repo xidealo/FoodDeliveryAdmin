@@ -6,13 +6,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.OrderItem
 import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
@@ -53,6 +52,10 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                     is State.Success -> {
                         fragmentOrdersNcvAddress.cardText = state.data
                     }
+                    is State.Empty -> {
+                        fragmentOrdersNcvAddress.cardText =
+                            resources.getString(R.string.title_order_details_choice_cafe)
+                    }
                     else -> Unit
                 }
             }.startedLaunch(viewLifecycleOwner)
@@ -77,6 +80,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         }
                         itemAdapter.set(items)
                     }
+                    is ExtendedState.Empty -> {
+                        fragmentOrdersLpiLoading.invisible()
+                    }
                     else -> Unit
                 }
             }.startedLaunch(viewLifecycleOwner)
@@ -85,9 +91,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is OrdersNavigationEvent.ToOrderDetails ->
-                    router.navigate(toOrdersDetailsFragment(navigationEvent.order))
+                    router.navigate(OrdersFragmentDirections.toOrdersDetailsFragment(navigationEvent.order))
                 is OrdersNavigationEvent.ToCafeAddressList -> {
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(OrdersFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 }
                 else -> Unit
             }

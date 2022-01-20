@@ -14,8 +14,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.toListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.statistic.StatisticFragmentDirections.toStatisticDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.ui.items.StatisticItem
 import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.model.list.Period
@@ -95,11 +93,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is StatisticNavigationEvent.ToStatisticDetails ->
-                    router.navigate(toStatisticDetailsFragment(navigationEvent.statistic))
+                    router.navigate(StatisticFragmentDirections.toStatisticDetailsFragment(navigationEvent.statistic))
                 is StatisticNavigationEvent.ToCafeAddressList ->
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(StatisticFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 is StatisticNavigationEvent.ToPeriodList ->
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(StatisticFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

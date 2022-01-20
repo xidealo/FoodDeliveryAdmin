@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetListBinding
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseBottomSheetDialog

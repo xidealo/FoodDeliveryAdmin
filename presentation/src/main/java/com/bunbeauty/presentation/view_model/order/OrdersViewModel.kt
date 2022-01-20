@@ -3,25 +3,27 @@ package com.bunbeauty.presentation.view_model.order
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
+import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.DeliveryRepo
 import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toStateAddedSuccess
 import com.bunbeauty.presentation.extension.toStateSuccess
-import com.bunbeauty.presentation.extension.toStateUpdatedSuccess
-import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.model.OrderItemModel
+import com.bunbeauty.presentation.model.list.CafeAddress
 import com.bunbeauty.presentation.navigation_event.OrdersNavigationEvent
 import com.bunbeauty.presentation.state.ExtendedState
 import com.bunbeauty.presentation.state.State
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +36,7 @@ class OrdersViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
     private val stringUtil: IStringUtil,
     private val dateTimeUtil: IDateTimeUtil,
+    private val deliveryRepo: DeliveryRepo,
 ) : BaseViewModel() {
 
     private val mutableAddressState: MutableStateFlow<State<String>> =
@@ -48,18 +51,32 @@ class OrdersViewModel @Inject constructor(
     init {
         subscribeOnAddress()
         subscribeOnOrders()
+        viewModelScope.launch(Default) {
+            cafeRepo.refreshCafeList(
+                token = dataStoreRepo.token.first(),
+                cityUuid = dataStoreRepo.managerCity.first()
+            )
+            deliveryRepo.refreshDelivery(
+                token = dataStoreRepo.token.first(),
+                cityUuid = dataStoreRepo.managerCity.first()
+            )
+        }
     }
 
     fun saveSelectedCafeAddress(cafeAddress: CafeAddress) {
-        viewModelScope.launch {
+        viewModelScope.launch(Default) {
             cafeAddress.cafeUuid?.let { cafeUuid ->
+                //unsubscribe previous cafe from socket and firebase
+                if (cafeUuid != dataStoreRepo.cafeUuid.first())
+                    orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first())
+
                 dataStoreRepo.saveCafeUuid(cafeUuid)
             }
         }
     }
 
     fun goToAddressList() {
-        viewModelScope.launch {
+        viewModelScope.launch(Default) {
             val addressList = cafeRepo.getCafeList().map { cafe ->
                 CafeAddress(title = cafe.address, cafeUuid = cafe.uuid)
             }
@@ -84,21 +101,29 @@ class OrdersViewModel @Inject constructor(
         }.onEach { cafe ->
             if (cafe != null) {
                 mutableAddressState.value = cafe.address.toStateSuccess()
+            } else {
+                mutableAddressState.value = State.Empty()
             }
         }.launchIn(viewModelScope)
     }
 
     private fun subscribeOnOrders() {
-        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
-            orderRepo.getAddedOrderListByCafeId(cafeId)
-        }.onEach { orderList ->
-            mutableOrderListState.value = orderList.map(::toItemModel).toStateAddedSuccess()
+        dataStoreRepo.token.flatMapLatest { token ->
+            dataStoreRepo.cafeUuid.onEach { cafeId ->
+                if (cafeId.isNotEmpty()) {
+                    mutableOrderListState.value = ExtendedState.Loading()
+                    orderRepo.loadOrderListByCafeId(token, cafeId)
+                    orderRepo.subscribeOnOrderListByCafeId(token, cafeId)
+                } else {
+                    mutableOrderListState.value = ExtendedState.Empty()
+                }
+            }
         }.launchIn(viewModelScope)
 
-        dataStoreRepo.cafeUuid.flatMapLatest { cafeId ->
-            orderRepo.getUpdatedOrderListByCafeId(cafeId)
-        }.onEach { orderList ->
-            mutableOrderListState.value = orderList.map(::toItemModel).toStateUpdatedSuccess()
+        orderRepo.ordersMapFlow.onEach { list ->
+            mutableOrderListState.value =
+                list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }
+                    .toStateAddedSuccess()
         }.launchIn(viewModelScope)
     }
 
@@ -107,7 +132,7 @@ class OrdersViewModel @Inject constructor(
             status = order.orderStatus,
             statusString = stringUtil.getOrderStatusString(order.orderStatus),
             code = order.code,
-            deferredTime = stringUtil.getDeferredTimeString(order.deferred),
+            deferredTime = stringUtil.getDeferredTimeString(order.deferred) ?: "",
             time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
             order = order
         )

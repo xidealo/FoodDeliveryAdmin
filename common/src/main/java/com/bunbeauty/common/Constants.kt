@@ -18,24 +18,11 @@ object Constants {
 
     // NOTIFICATION
 
-    const val NOTIFICATION_TOPIC = "notification"
     const val CHANNEL_ID = "1"
     const val CHANNEL_NAME = "Main channel"
-    const val APP_ID_KEY = "app_id"
-    const val CAFE_ID_KEY = "cafe_id"
+    const val ORDER_CODE = "orderCode"
     const val NOTIFICATION_ID = 1
 
-    // REALTIME DATABASE
-
-    const val COMPANY = "COMPANY"
-    const val MENU_PRODUCTS = "menu_products"
-    const val CAFES = "cafes"
-    const val ORDERS = "ORDERS"
-    const val ORDER_ENTITY = "orderEntity"
-    const val ORDER_STATUS = "orderStatus"
-    const val TIMESTAMP = "timestamp"
-    const val DELIVERY = "delivery"
-    const val PASSWORD = "password"
 
     // ARGS_KEY
 
@@ -54,4 +41,16 @@ object Constants {
     // PATH
 
     const val IMAGES_FOLDER = "image/*"
+
+    //OTHER
+    const val APP_ID = "PAPA_KARLO"
+    const val RELOAD_DELAY = 5000L
+    //API
+    const val WEB_SOCKET_TAG = "web_socket"
+
+
+    // SERVICE
+    const val ADMIN_SERVICE_CHANNEL_ID = "2"
+    const val ADMIN_SERVICE_CHANNEL_NAME = "Service"
+    const val ADMIN_SERVICE_ID = 2
 }

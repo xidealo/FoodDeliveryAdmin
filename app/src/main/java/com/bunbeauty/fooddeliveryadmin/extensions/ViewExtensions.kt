@@ -6,10 +6,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bunbeauty.fooddeliveryadmin.R
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
-import com.squareup.picasso.Picasso
 
 fun View.invisible(): View {
     visibility = View.INVISIBLE
@@ -37,16 +33,6 @@ fun View.toggleVisibility(isVisible: Boolean): View {
 
 fun TextView.strikeOutText() {
     this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-}
-
-fun ImageView.setImage(photoLink: String) {
-    Picasso.get()
-        .load(photoLink)
-        .fit()
-        .placeholder(R.drawable.default_product)
-        .networkPolicy(NetworkPolicy.NO_CACHE)
-        .memoryPolicy(MemoryPolicy.NO_CACHE)
-        .into(this)
 }
 
 fun ImageView.getBitmap(): Bitmap {

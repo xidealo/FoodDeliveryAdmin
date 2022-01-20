@@ -18,7 +18,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.getBitmap
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.menu.CreateMenuProductFragmentDirections.toListBottomSheet
 import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.navigation_event.CreateMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IResourcesProvider
@@ -102,7 +101,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is CreateMenuProductNavigationEvent.ToProductCodeList ->
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(CreateMenuProductFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

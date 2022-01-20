@@ -12,7 +12,6 @@ import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.strikeOutText
 import com.bunbeauty.fooddeliveryadmin.ui.base.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.ui.fragments.orders.OrdersFragmentDirections.*
 import com.bunbeauty.fooddeliveryadmin.ui.items.CartProductItem
 import com.bunbeauty.presentation.model.list.OrderStatus
 import com.bunbeauty.presentation.navigation_event.OrderDetailsNavigationEvent
@@ -30,7 +29,6 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.run {
             fragmentOrderDetailsBtnBack.setOnClickListener {
                 viewModel.goBack()
@@ -95,7 +93,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is OrderDetailsNavigationEvent.ToStatusList ->
-                    router.navigate(toListBottomSheet(navigationEvent.listData))
+                    router.navigate(OrderDetailsFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

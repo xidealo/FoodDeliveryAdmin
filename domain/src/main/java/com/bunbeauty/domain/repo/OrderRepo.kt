@@ -2,20 +2,15 @@ package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.statistic.Statistic
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 interface OrderRepo {
 
-    suspend fun updateStatus(cafeUuid: String, orderUuid: String, status: OrderStatus)
+    val ordersMapFlow: MutableSharedFlow<List<Order>>
 
-    fun getAddedOrderListByCafeId(cafeId: String): Flow<List<Order>>
-    fun getUpdatedOrderListByCafeId(cafeId: String): Flow<List<Order>>
+    suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus)
 
-    fun getAllCafeOrdersByDay(): Flow<List<Statistic>>
-    fun getAllCafeOrdersByWeek(): Flow<List<Statistic>>
-    fun getAllCafeOrdersByMonth(): Flow<List<Statistic>>
-    fun getCafeOrdersByCafeIdAndDay(cafeId: String): Flow<List<Statistic>>
-    fun getCafeOrdersByCafeIdAndWeek(cafeId: String): Flow<List<Statistic>>
-    fun getCafeOrdersByCafeIdAndMonth(cafeId: String): Flow<List<Statistic>>
+    suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String)
+    suspend fun unsubscribeOnOrderList(cafeId: String)
+    suspend fun loadOrderListByCafeId(token: String, cafeId: String)
 }

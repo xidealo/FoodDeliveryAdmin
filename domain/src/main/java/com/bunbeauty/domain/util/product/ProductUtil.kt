@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.util.product
 
-import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.model.cart_product.CartProduct
 import javax.inject.Inject
 
@@ -14,7 +13,7 @@ class ProductUtil @Inject constructor() : IProductUtil {
 
     override fun getOldTotalCost(cartProductList: List<CartProduct>): Int? {
         val hasSomeDiscounts = cartProductList.any { cartProduct ->
-            cartProduct.menuProduct.discountCost != null
+            cartProduct.oldPrice != null
         }
 
         return if (hasSomeDiscounts) {
@@ -27,30 +26,25 @@ class ProductUtil @Inject constructor() : IProductUtil {
     }
 
     override fun getCartProductNewCost(cartProduct: CartProduct): Int {
-        return getMenuProductNewPrice(cartProduct.menuProduct) * cartProduct.count
+        return cartProduct.newPrice * cartProduct.count
     }
 
     override fun getCartProductOldCost(cartProduct: CartProduct): Int? {
-        return if (cartProduct.menuProduct.discountCost == null) {
-            null
-        } else {
-            cartProduct.menuProduct.cost * cartProduct.count
+        cartProduct.oldPrice?.let {
+            return it * cartProduct.count
         }
+        return null
     }
 
-    override fun getMenuProductNewPrice(menuProduct: MenuProduct): Int {
-        return menuProduct.discountCost ?: menuProduct.cost
+    override fun getMenuProductNewPrice(cartProduct: CartProduct): Int {
+        return cartProduct.newPrice
     }
 
-    override fun getMenuProductOldPrice(menuProduct: MenuProduct): Int? {
-        return if (menuProduct.discountCost == null) {
-            null
-        } else {
-            menuProduct.cost
-        }
+    override fun getMenuProductOldPrice(cartProduct: CartProduct): Int? {
+        return cartProduct.oldPrice
     }
 
-    override fun getPositionName(menuProduct: MenuProduct): String {
-        return menuProduct.comboDescription ?: menuProduct.name
+    override fun getPositionName(cartProduct: CartProduct): String {
+        return cartProduct.comboDescription ?: cartProduct.name
     }
 }
