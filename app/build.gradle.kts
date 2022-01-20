@@ -8,10 +8,6 @@ plugins {
     id(Plugin.googleService)
 }
 
-val versionMajor = 1
-val versionMinor = 2
-val versionPatch = 1
-
 android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
@@ -38,7 +34,7 @@ android {
                 .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
                 .forEach { output ->
                     val outputFileName =
-                        "Admin_${variant.baseName}_${versionMajor}_${versionMinor}_${versionPatch}.apk"
+                        "Admin_${variant.baseName}_${Application.versionName}.apk"
                     println("OutputFileName: $outputFileName")
                     output.outputFileName = outputFileName
                 }
