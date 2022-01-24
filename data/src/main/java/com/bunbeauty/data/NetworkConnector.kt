@@ -2,6 +2,7 @@ package com.bunbeauty.data
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.CategoryServer
+import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.domain.enums.OrderStatus
@@ -17,14 +18,12 @@ interface NetworkConnector {
 
     // LOGIN
     suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
-    suspend fun subscribeOnNotification()
-    suspend fun unsubscribeOnNotification(cafeId: String)
 
     // CAFE
     suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
 
     // DELIVERY
-    suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery>
+    suspend fun getDelivery(token: String, companyUuid: String): ApiResult<DeliveryServer>
 
     // MENU PRODUCT
     suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>>
@@ -43,11 +42,17 @@ interface NetworkConnector {
     ): ApiResult<ListServer<StatisticServer>>
 
     // ORDER
+
+    suspend fun subscribeOnNotification(
+        cafeId: String
+    )
+
     suspend fun subscribeOnOrderListByCafeId(
         token: String,
         cafeId: String
     ): Flow<ApiResult<ServerOrder>>
 
+    suspend fun unsubscribeOnNotification(cafeId: String)
 
     suspend fun unsubscribeOnOrderList(cafeId: String)
 

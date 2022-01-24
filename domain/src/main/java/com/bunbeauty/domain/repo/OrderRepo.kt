@@ -13,4 +13,7 @@ interface OrderRepo {
     suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String)
     suspend fun unsubscribeOnOrderList(cafeId: String)
     suspend fun loadOrderListByCafeId(token: String, cafeId: String)
+
+    suspend fun subscribeOnNotification(cafeId: String)
+    suspend fun unsubscribeOnNotification(cafeId: String)
 }

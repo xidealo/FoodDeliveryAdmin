@@ -72,4 +72,12 @@ class OrderRepository @Inject constructor(
             }
         }
     }
+
+    override suspend fun subscribeOnNotification(cafeId: String) {
+        networkConnector.subscribeOnNotification(cafeId)
+    }
+
+    override suspend fun unsubscribeOnNotification(cafeId: String) {
+        networkConnector.unsubscribeOnNotification(cafeId)
+    }
 }

@@ -3,6 +3,7 @@ package com.bunbeauty.data.repository
 import android.util.Log
 import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.Constants.COMPANY_UUID_PARAMETER
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.Delivery
@@ -10,6 +11,7 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.CategoryServer
+import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -25,8 +27,10 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -49,14 +53,6 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeOnNotification() {
-
-    }
-
-    override suspend fun unsubscribeOnNotification(cafeId: String) {
-
-    }
-
     override suspend fun getCafeList(
         token: String,
         cityUuid: String
@@ -69,8 +65,16 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun getDelivery(token: String, cityUuid: String): ApiResult<Delivery> {
-        return ApiResult.Success(Delivery())
+    override suspend fun getDelivery(
+        token: String,
+        companyUuid: String
+    ): ApiResult<DeliveryServer> {
+        return getData(
+            token = token,
+            path = "delivery",
+            serializer = DeliveryServer.serializer(),
+            parameters = hashMapOf(COMPANY_UUID_PARAMETER to companyUuid)
+        )
         //return getData("")
     }
 
@@ -121,11 +125,8 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeOnOrderListByCafeId(
-        token: String,
-        cafeId: String
-    ): Flow<ApiResult<ServerOrder>> {
 
+    override suspend fun subscribeOnNotification(cafeId: String) {
         Firebase.messaging.subscribeToTopic(cafeId)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -134,11 +135,16 @@ class NetworkConnectorImpl @Inject constructor(
                     Log.d("NotificationTag", "Subscribe to topic is not successful")
                 }
             }
+    }
 
+    override suspend fun subscribeOnOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ): Flow<ApiResult<ServerOrder>> {
         return flow {
             try {
                 Log.d(WEB_SOCKET_TAG, "in socket")
-                client.webSocket(
+                client.ws(
                     HttpMethod.Get,
                     path = "user/order/subscribe",
                     request = {
@@ -166,7 +172,7 @@ class NetworkConnectorImpl @Inject constructor(
         }
     }
 
-    override suspend fun unsubscribeOnOrderList(cafeId: String) {
+    override suspend fun unsubscribeOnNotification(cafeId: String) {
         Firebase.messaging.unsubscribeFromTopic(cafeId)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -175,7 +181,9 @@ class NetworkConnectorImpl @Inject constructor(
                     Log.d("NotificationTag", "Unsubscribe to topic is not successful")
                 }
             }
+    }
 
+    override suspend fun unsubscribeOnOrderList(cafeId: String) {
         if (webSocketSession != null) {
             webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "Change cafe"))
             webSocketSession = null
