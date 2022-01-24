@@ -27,8 +27,10 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -49,14 +51,6 @@ class NetworkConnectorImpl @Inject constructor(
             serializer = UserAuthorizationResponse.serializer(),
             token = ""
         )
-    }
-
-    override suspend fun subscribeOnNotification() {
-
-    }
-
-    override suspend fun unsubscribeOnNotification(cafeId: String) {
-
     }
 
     override suspend fun getCafeList(
@@ -131,11 +125,8 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeOnOrderListByCafeId(
-        token: String,
-        cafeId: String
-    ): Flow<ApiResult<ServerOrder>> {
 
+    override suspend fun subscribeOnNotification(cafeId: String) {
         Firebase.messaging.subscribeToTopic(cafeId)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -144,11 +135,16 @@ class NetworkConnectorImpl @Inject constructor(
                     Log.d("NotificationTag", "Subscribe to topic is not successful")
                 }
             }
+    }
 
+    override suspend fun subscribeOnOrderListByCafeId(
+        token: String,
+        cafeId: String
+    ): Flow<ApiResult<ServerOrder>> {
         return flow {
             try {
                 Log.d(WEB_SOCKET_TAG, "in socket")
-                client.webSocket(
+                client.ws(
                     HttpMethod.Get,
                     path = "user/order/subscribe",
                     request = {
@@ -176,7 +172,7 @@ class NetworkConnectorImpl @Inject constructor(
         }
     }
 
-    override suspend fun unsubscribeOnOrderList(cafeId: String) {
+    override suspend fun unsubscribeOnNotification(cafeId: String) {
         Firebase.messaging.unsubscribeFromTopic(cafeId)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -185,7 +181,9 @@ class NetworkConnectorImpl @Inject constructor(
                     Log.d("NotificationTag", "Unsubscribe to topic is not successful")
                 }
             }
+    }
 
+    override suspend fun unsubscribeOnOrderList(cafeId: String) {
         if (webSocketSession != null) {
             webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "Change cafe"))
             webSocketSession = null

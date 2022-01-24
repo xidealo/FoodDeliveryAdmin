@@ -99,4 +99,15 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             }
         }.startedLaunch(viewLifecycleOwner)
     }
+
+    override fun onStart() {
+        super.onStart()
+        //viewModel.subscribeOnOrders()
+    }
+
+    override fun onStop() {
+        //viewModel.unsubscribeOnOrderList()
+        //viewModel.cancelJobs()
+        super.onStop()
+    }
 }

@@ -23,7 +23,9 @@ import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -50,7 +52,6 @@ class OrdersViewModel @Inject constructor(
 
     init {
         subscribeOnAddress()
-        subscribeOnOrders()
         viewModelScope.launch(Default) {
             cafeRepo.refreshCafeList(
                 token = dataStoreRepo.token.first(),
@@ -61,14 +62,18 @@ class OrdersViewModel @Inject constructor(
                 companyUuid = dataStoreRepo.companyUuid.first()
             )
         }
+        subscribeOnNotification()
+        subscribeOnOrders()
     }
 
     fun saveSelectedCafeAddress(cafeAddress: CafeAddress) {
         viewModelScope.launch(Default) {
             cafeAddress.cafeUuid?.let { cafeUuid ->
                 //unsubscribe previous cafe from socket and firebase
-                if (cafeUuid != dataStoreRepo.cafeUuid.first())
+                if (cafeUuid != dataStoreRepo.cafeUuid.first()) {
                     orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first())
+                    orderRepo.unsubscribeOnNotification(dataStoreRepo.cafeUuid.first())
+                }
 
                 dataStoreRepo.saveCafeUuid(cafeUuid)
             }
@@ -107,7 +112,13 @@ class OrdersViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun subscribeOnOrders() {
+    private fun subscribeOnNotification() {
+        dataStoreRepo.cafeUuid.onEach { cafeId ->
+            orderRepo.subscribeOnNotification(cafeId)
+        }.launchIn(viewModelScope)
+    }
+
+    fun subscribeOnOrders() {
         dataStoreRepo.token.flatMapLatest { token ->
             dataStoreRepo.cafeUuid.onEach { cafeId ->
                 if (cafeId.isNotEmpty()) {
@@ -125,6 +136,13 @@ class OrdersViewModel @Inject constructor(
                 list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }
                     .toStateAddedSuccess()
         }.launchIn(viewModelScope)
+    }
+
+
+    fun unsubscribeOnOrderList() {
+        viewModelScope.launch(Default) {
+            orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first())
+        }
     }
 
     private fun toItemModel(order: Order): OrderItemModel {

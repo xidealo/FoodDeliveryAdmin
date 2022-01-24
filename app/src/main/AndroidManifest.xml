@@ -34,6 +34,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="com.bunbeauty.fooddeliveryadmin.WebSocketService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

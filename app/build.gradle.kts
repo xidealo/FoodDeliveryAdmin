@@ -43,6 +43,7 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = false
+            //TODO remove to (host = "food-delivery-api-bunbeauty.herokuapp.com")
             buildConfigField("String", "FB_LINK", "\"https://test-fooddelivery.firebaseio.com/\"")
         }
 
@@ -53,6 +54,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            //TODO remove to (host = "food-delivery-api-bunbeauty.herokuapp.com")
             buildConfigField(
                 "String",
                 "FB_LINK",

@@ -18,8 +18,6 @@ interface NetworkConnector {
 
     // LOGIN
     suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
-    suspend fun subscribeOnNotification()
-    suspend fun unsubscribeOnNotification(cafeId: String)
 
     // CAFE
     suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
@@ -44,11 +42,17 @@ interface NetworkConnector {
     ): ApiResult<ListServer<StatisticServer>>
 
     // ORDER
+
+    suspend fun subscribeOnNotification(
+        cafeId: String
+    )
+
     suspend fun subscribeOnOrderListByCafeId(
         token: String,
         cafeId: String
     ): Flow<ApiResult<ServerOrder>>
 
+    suspend fun unsubscribeOnNotification(cafeId: String)
 
     suspend fun unsubscribeOnOrderList(cafeId: String)
 
