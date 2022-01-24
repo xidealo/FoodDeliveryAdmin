@@ -36,6 +36,15 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope {
                     getServiceConnection(), BIND_AUTO_CREATE
                 )
         }.launchIn(this)*/
+        FirebaseApp.initializeApp(this);
+        createNotificationChannel()
+    }
+
+    private fun createNotificationChannel() {
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, importance)
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
    /* private fun getServiceConnection(): ServiceConnection {
