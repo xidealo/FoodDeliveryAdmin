@@ -50,22 +50,24 @@ object Versions {
 
     const val roomDatabaseVersion = "2.3.0"
 
+    const val crashlyticsClassPath = "2.8.1"
+
     const val joba = "2.10.9"
 }
 
 object Application {
     const val versionMajor = 1
     const val versionMinor = 0
-    const val versionPatch = 1
+    const val versionPatch = 2
 
     const val versionName = "${versionMajor}_${versionMinor}_$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 101
+    const val versionCode = 102
 }
 
 object AndroidSdk {
     const val min = 26
-    const val compile = 31
+    const val compile = 32
     const val target = compile
 }
 
@@ -84,6 +86,8 @@ object ClassPath {
 
     const val hiltServices =
         "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltService}"
+    const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlyticsClassPath}"
+
 }
 
 object Plugin {
@@ -99,6 +103,7 @@ object Plugin {
     const val nativeCocoapods = "native.cocoapods"
     const val hiltPlugin = "dagger.hilt.android.plugin"
     const val googleService = "com.google.gms.google-services"
+    const val crashlytics = "com.google.firebase.crashlytics"
 }
 
 object AndroidX {

@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.notification
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bunbeauty.common.Constants.CHANNEL_ID
@@ -48,11 +49,17 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
         }
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun showNotification(code: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        var pendingIntent: PendingIntent? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        }
+
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_new_order)
             .setContentTitle("${resourcesProvider.getString(R.string.title_messaging_new_order)} $code")

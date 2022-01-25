@@ -130,9 +130,9 @@ class NetworkConnectorImpl @Inject constructor(
         Firebase.messaging.subscribeToTopic(cafeId)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("NotificationTag", "Subscribe to topic is successful")
+                    Log.d("NotificationTag", "Subscribe to topic is successful cafeId: $cafeId")
                 } else {
-                    Log.d("NotificationTag", "Subscribe to topic is not successful")
+                    Log.d("NotificationTag", "Subscribe to topic is not successful cafeId: $cafeId")
                 }
             }
     }

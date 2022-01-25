@@ -6,6 +6,7 @@ plugins {
     id(Plugin.hiltPlugin)
     id(Plugin.navigation)
     id(Plugin.googleService)
+    id(Plugin.crashlytics)
 }
 
 android {
