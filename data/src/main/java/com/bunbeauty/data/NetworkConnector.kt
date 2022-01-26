@@ -54,7 +54,7 @@ interface NetworkConnector {
 
     suspend fun unsubscribeOnNotification(cafeId: String)
 
-    suspend fun unsubscribeOnOrderList(cafeId: String)
+    suspend fun unsubscribeOnOrderList(cafeId: String, message: String)
 
     suspend fun getOrderListByCafeId(
         token: String,

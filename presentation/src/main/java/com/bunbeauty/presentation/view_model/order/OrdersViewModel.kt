@@ -50,6 +50,10 @@ class OrdersViewModel @Inject constructor(
     val orderListState: StateFlow<ExtendedState<List<OrderItemModel>>> =
         mutableOrderListState.asStateFlow()
 
+
+    var dataStoreJob: Job? = null
+    var orderRepoJob: Job? = null
+
     init {
         subscribeOnAddress()
         viewModelScope.launch(Default) {
@@ -63,7 +67,6 @@ class OrdersViewModel @Inject constructor(
             )
         }
         subscribeOnNotification()
-        subscribeOnOrders()
     }
 
     fun saveSelectedCafeAddress(cafeAddress: CafeAddress) {
@@ -71,7 +74,7 @@ class OrdersViewModel @Inject constructor(
             cafeAddress.cafeUuid?.let { cafeUuid ->
                 //unsubscribe previous cafe from socket and firebase
                 if (cafeUuid != dataStoreRepo.cafeUuid.first()) {
-                    orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first())
+                    orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first(), "Change cafe")
                     orderRepo.unsubscribeOnNotification(dataStoreRepo.cafeUuid.first())
                 }
 
@@ -119,7 +122,7 @@ class OrdersViewModel @Inject constructor(
     }
 
     fun subscribeOnOrders() {
-        dataStoreRepo.token.flatMapLatest { token ->
+        dataStoreJob = dataStoreRepo.token.flatMapLatest { token ->
             dataStoreRepo.cafeUuid.onEach { cafeId ->
                 if (cafeId.isNotEmpty()) {
                     mutableOrderListState.value = ExtendedState.Loading()
@@ -131,7 +134,7 @@ class OrdersViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
-        orderRepo.ordersMapFlow.onEach { list ->
+        orderRepoJob = orderRepo.ordersMapFlow.onEach { list ->
             mutableOrderListState.value =
                 list.map(::toItemModel).filter { it.status != OrderStatus.CANCELED }
                     .toStateAddedSuccess()
@@ -140,9 +143,14 @@ class OrdersViewModel @Inject constructor(
 
 
     fun unsubscribeOnOrderList() {
-        viewModelScope.launch(Default) {
-            orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first())
+        viewModelScope.launch {
+            orderRepo.unsubscribeOnOrderList(dataStoreRepo.cafeUuid.first(), "onPause fragment")
         }
+    }
+
+    fun cancelJobs() {
+        dataStoreJob?.cancel()
+        orderRepoJob?.cancel()
     }
 
     private fun toItemModel(order: Order): OrderItemModel {
@@ -155,4 +163,5 @@ class OrdersViewModel @Inject constructor(
             order = order
         )
     }
+
 }

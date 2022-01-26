@@ -8,6 +8,7 @@ import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
+import com.bunbeauty.fooddeliveryadmin.extensions.gone
 import com.bunbeauty.fooddeliveryadmin.extensions.invisible
 import com.bunbeauty.fooddeliveryadmin.extensions.startedLaunch
 import com.bunbeauty.fooddeliveryadmin.extensions.visible
@@ -63,15 +64,17 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             viewModel.orderListState.onEach { state ->
                 when (state) {
                     is ExtendedState.Loading -> {
+                        fragmentOrdersRvResult.gone()
                         fragmentOrdersLpiLoading.visible()
                     }
                     is ExtendedState.AddedSuccess -> {
-                        fragmentOrdersLpiLoading.invisible()
                         fragmentOrdersRvResult.smoothScrollToPosition(0)
                         val items = state.data.map { orderItemModel ->
                             OrderItem(orderItemModel)
                         }
                         itemAdapter.set(items)
+                        fragmentOrdersLpiLoading.invisible()
+                        fragmentOrdersRvResult.visible()
                     }
                     is ExtendedState.UpdatedSuccess -> {
                         fragmentOrdersLpiLoading.invisible()
@@ -100,14 +103,14 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         }.startedLaunch(viewLifecycleOwner)
     }
 
-    override fun onStart() {
-        super.onStart()
-        //viewModel.subscribeOnOrders()
+    override fun onResume() {
+        super.onResume()
+        viewModel.subscribeOnOrders()
     }
 
-    override fun onStop() {
-        //viewModel.unsubscribeOnOrderList()
-        //viewModel.cancelJobs()
-        super.onStop()
+    override fun onPause() {
+        viewModel.unsubscribeOnOrderList()
+        viewModel.cancelJobs()
+        super.onPause()
     }
 }

@@ -125,7 +125,6 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-
     override suspend fun subscribeOnNotification(cafeId: String) {
         Firebase.messaging.subscribeToTopic(cafeId)
             .addOnCompleteListener { task ->
@@ -183,9 +182,9 @@ class NetworkConnectorImpl @Inject constructor(
             }
     }
 
-    override suspend fun unsubscribeOnOrderList(cafeId: String) {
+    override suspend fun unsubscribeOnOrderList(cafeId: String, message: String) {
         if (webSocketSession != null) {
-            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, "Change cafe"))
+            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, message))
             webSocketSession = null
             Log.d(WEB_SOCKET_TAG, "webSocketSession closed")
         }

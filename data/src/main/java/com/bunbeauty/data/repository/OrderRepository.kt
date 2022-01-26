@@ -44,8 +44,8 @@ class OrderRepository @Inject constructor(
         }.collect()
     }
 
-    override suspend fun unsubscribeOnOrderList(cafeId: String) {
-        networkConnector.unsubscribeOnOrderList(cafeId)
+    override suspend fun unsubscribeOnOrderList(cafeId: String, message: String) {
+        networkConnector.unsubscribeOnOrderList(cafeId, message)
     }
 
     override suspend fun loadOrderListByCafeId(
