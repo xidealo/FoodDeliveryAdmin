@@ -18,9 +18,6 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Job() + Dispatchers.Default
 
-    @Inject
-    lateinit var dataStoreRepo: DataStoreRepo
-
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
@@ -33,18 +30,4 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
-
-    /*      dataStoreRepo.companyUuid.onEach { companyUuid ->
-              if (companyUuid.isNotEmpty())
-                  bindService(
-                      Intent(this, WebSocketService::class.java),
-                      getServiceConnection(), BIND_AUTO_CREATE
-                  )
-          }.launchIn(this)*/
-   /* private fun getServiceConnection(): ServiceConnection {
-        return object : ServiceConnection {
-            override fun onServiceConnected(p0: ComponentName?, localBinder: IBinder) {}
-            override fun onServiceDisconnected(p0: ComponentName?) {}
-        }
-    }*/
 }
