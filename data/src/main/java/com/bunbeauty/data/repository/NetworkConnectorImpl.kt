@@ -254,12 +254,12 @@ class NetworkConnectorImpl @Inject constructor(
                 )
             )
         } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: "-"))
+            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
         }
         catch (exception: CancellationException) {
-            ApiResult.Error(ApiError(7, exception.message ?: "-"))
+            ApiResult.Error(ApiError(7, exception.message ?: ""))
         }catch (exception: Exception) {
-            ApiResult.Error(ApiError(0, exception.message ?: "-"))
+            ApiResult.Error(ApiError(0, exception.message ?: ""))
         }
     }
 
