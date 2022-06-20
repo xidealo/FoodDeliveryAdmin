@@ -48,6 +48,7 @@
     <string name="msg_product_statistic_order_count">Количество заказов</string>
     <string name="msg_product_statistic_count">Количество</string>
     <string name="msg_product_statistic_cost">Стоимость</string>
+    <string name="action_product_statistic_reload">Повторить</string>
 
     <!-- MENU -->
     <string name="action_menu_create">Создать</string>

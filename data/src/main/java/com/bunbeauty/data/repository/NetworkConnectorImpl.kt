@@ -27,6 +27,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -254,7 +255,10 @@ class NetworkConnectorImpl @Inject constructor(
             )
         } catch (exception: ClientRequestException) {
             ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: "-"))
-        } catch (exception: Exception) {
+        }
+        catch (exception: CancellationException) {
+            ApiResult.Error(ApiError(7, exception.message ?: "-"))
+        }catch (exception: Exception) {
             ApiResult.Error(ApiError(0, exception.message ?: "-"))
         }
     }

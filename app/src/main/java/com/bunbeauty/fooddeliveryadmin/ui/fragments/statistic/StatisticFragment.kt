@@ -55,6 +55,10 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                 false
             }
 
+            reloadButton.setOnClickListener {
+                viewModel.getStatistic()
+            }
+
             setFragmentResultListener(CAFE_ADDRESS_REQUEST_KEY) { _, bundle ->
                 bundle.getParcelable<CafeAddress>(SELECTED_CAFE_ADDRESS_KEY)?.let { cafeAddress ->
                     viewModel.setCafeAddress(cafeAddress)
@@ -71,9 +75,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                     is State.Loading -> {
                         fragmentStatisticRvList.gone()
                         fragmentStatisticLpiLoading.visible()
+                        reloadButton.gone()
                     }
                     is State.Empty -> {
                         fragmentStatisticLpiLoading.invisible()
+                        reloadButton.gone()
                     }
                     is State.Success -> {
                         val items = state.data.map { statisticItemModel ->
@@ -82,9 +88,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                         itemAdapter.set(items)
                         fragmentStatisticRvList.visible()
                         fragmentStatisticLpiLoading.invisible()
+                        reloadButton.gone()
                     }
                     is State.Error -> {
                         fragmentStatisticLpiLoading.invisible()
+                        reloadButton.visible()
                     }
                 }
             }.startedLaunch(viewLifecycleOwner)
@@ -93,7 +101,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         viewModel.navigation.onEach { navigationEvent ->
             when (navigationEvent) {
                 is StatisticNavigationEvent.ToStatisticDetails ->
-                    router.navigate(StatisticFragmentDirections.toStatisticDetailsFragment(navigationEvent.statistic))
+                    router.navigate(
+                        StatisticFragmentDirections.toStatisticDetailsFragment(
+                            navigationEvent.statistic
+                        )
+                    )
                 is StatisticNavigationEvent.ToCafeAddressList ->
                     router.navigate(StatisticFragmentDirections.toListBottomSheet(navigationEvent.listData))
                 is StatisticNavigationEvent.ToPeriodList ->

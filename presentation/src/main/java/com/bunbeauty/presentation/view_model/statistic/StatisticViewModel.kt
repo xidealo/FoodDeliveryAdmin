@@ -1,11 +1,12 @@
 package com.bunbeauty.presentation.view_model.statistic
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
 import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
-import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
@@ -21,12 +22,12 @@ import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+private const val ALL_CAFE = "ALL"
 
 @HiltViewModel
 class StatisticViewModel @Inject constructor(
@@ -60,7 +61,7 @@ class StatisticViewModel @Inject constructor(
         )
     private val allCafeAddress = CafeAddress(
         title = resourcesProvider.getString(R.string.msg_statistic_all_cafes),
-        cafeUuid = null
+        cafeUuid = ALL_CAFE
     )
 
     private val mutablePeriod: MutableStateFlow<Period> = MutableStateFlow(monthPeriod)
@@ -74,16 +75,59 @@ class StatisticViewModel @Inject constructor(
     val statisticState: StateFlow<State<List<StatisticItemModel>>> =
         mutableStatisticState.asStateFlow()
 
+    var requestJob: Job? = null
+
     init {
-        subscribeOnStatistic()
+        getStatistic()
     }
 
     fun setCafeAddress(cafeAddress: CafeAddress) {
         mutableCafeAddress.value = cafeAddress
+        getStatistic()
     }
 
     fun setPeriod(period: Period) {
         mutablePeriod.value = period
+        getStatistic()
+    }
+
+    fun getStatistic() {
+        requestJob?.cancel()
+        requestJob = viewModelScope.launch(Dispatchers.Default) {
+            mutableStatisticState.value = State.Loading()
+            statisticRepo.getStatistic(
+                dataStoreRepo.token.first(), cafeAddress.value.cafeUuid, period.value.key
+            ).let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        Log.d("statistic_test", "getStatistic:${result.data} ")
+                        mutableStatisticState.value = result.data
+                            .map { statistic ->
+                                val proceedsString =
+                                    stringUtil.getCostString(statistic.proceeds)
+                                StatisticItemModel(
+                                    period = statistic.period,
+                                    count = stringUtil.getOrderCountString(statistic.orderCount),
+                                    proceeds = proceedsString,
+                                    statistic = statistic
+                                )
+                            }.toStateSuccess()
+                    }
+                    is ApiResult.Error -> {
+
+                        if (result.apiError.code != 7) {
+                            sendError(result.apiError.message)
+                            mutableStatisticState.value = State.Error()
+                        }
+
+                        Log.e(
+                            "statistic_test",
+                            "getStatistic: code ${result.apiError.code} msg ${result.apiError.message}"
+                        )
+                    }
+                }
+            }
+        }
     }
 
     fun goToAddressList() {
@@ -117,38 +161,5 @@ class StatisticViewModel @Inject constructor(
 
     fun goToStatisticDetails(statisticItemModel: StatisticItemModel) {
         goTo(StatisticNavigationEvent.ToStatisticDetails(statisticItemModel.statistic))
-    }
-
-    private fun subscribeOnStatistic() {
-        dataStoreRepo.token.flatMapLatest { token ->
-            cafeAddress.flatMapLatest { cafeAddress ->
-                period.onEach { period ->
-                    getStatisticList(token, cafeAddress, period).let { statisticList ->
-                        mutableStatisticState.value = statisticList
-                            .map { statistic ->
-                                val proceedsString = stringUtil.getCostString(statistic.proceeds)
-                                StatisticItemModel(
-                                    period = statistic.period,
-                                    count = stringUtil.getOrderCountString(statistic.orderCount),
-                                    proceeds = proceedsString,
-                                    statistic = statistic
-                                )
-                            }.toStateSuccess()
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private suspend fun getStatisticList(
-        token: String,
-        cafeAddress: CafeAddress,
-        period: Period
-    ): List<Statistic> {
-        return if (cafeAddress.cafeUuid == null) {
-            statisticRepo.getStatistic(token, "ALL", period.key)
-        } else {
-            statisticRepo.getStatistic(token, cafeAddress.cafeUuid, period.key)
-        }
     }
 }

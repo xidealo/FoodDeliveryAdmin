@@ -55,6 +55,10 @@ class DataSourceModule {
             pingInterval = 10
         }
 
+        install(HttpTimeout) {
+            requestTimeoutMillis = 30_000
+        }
+
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
