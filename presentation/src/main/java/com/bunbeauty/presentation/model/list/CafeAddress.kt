@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CafeAddress(
     override val title: String,
-    val cafeUuid: String = "ALL"
+    val cafeUuid: String
 ): ListItemModel()
