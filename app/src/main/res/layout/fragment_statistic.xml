@@ -47,4 +47,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_statistic_mcv_period"
         tools:listitem="@layout/element_statistic" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_repeat"
+        android:text="@string/action_product_statistic_reload"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_mcv_period"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
