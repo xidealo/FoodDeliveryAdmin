@@ -17,6 +17,8 @@
     <string name="msg_comma">,&#160;</string>
 
     <!-- LOGIN -->
+    <string name="error_login_login">Некорректный логин</string>
+    <string name="error_login_password">Некорректный пароль</string>
     <string name="error_login_wrong_data">Неверный логин или пароль</string>
 
     <!-- ORDER -->

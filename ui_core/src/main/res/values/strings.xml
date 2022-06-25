@@ -1,0 +1,12 @@
+<resources>
+    <string name="msg_example_text">Пример тестового текста</string>
+    <!--COMMON-->
+    <string name="msg_comma">,&#160;</string>
+    <string name="part_ruble">&#160;₽</string>
+    <string name="description_ic_next">Переход</string>
+    <string name="description_ic_clear">Очистить</string>
+    <string name="description_ic_add">Добавить</string>
+    <string name="description_product">Фото блюда</string>
+    <string name="description_back_icon">Назад</string>
+    <string name="error_common">Ошибка</string>
+</resources>

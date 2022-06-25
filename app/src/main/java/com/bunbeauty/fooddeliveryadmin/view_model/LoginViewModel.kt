@@ -29,22 +29,10 @@ class LoginViewModel @Inject constructor(
 
     init {
         subscribeOnToken()
-        //clear()
     }
 
     fun login(username: String, password: String) {
         mutableIsLoading.value = true
-
-        val processedUsername = username.lowercase().trim()
-        val processedPassword = password.lowercase().trim()
-        if (!isCorrectUsername(processedUsername)) {
-            showWrongDataError()
-            return
-        }
-        if (!isCorrectPassword(processedPassword)) {
-            showWrongDataError()
-            return
-        }
 
         viewModelScope.launch(Dispatchers.Default) {
             when (val result = userAuthorizationRepo.login(username, password)) {
@@ -54,9 +42,11 @@ class LoginViewModel @Inject constructor(
                         dataStoreRepo.saveCompanyUuid(tripleTokenCityUuidCompanyUuid.third)
                         dataStoreRepo.saveToken(tripleTokenCityUuidCompanyUuid.first)
                     }
+                    mutableIsLoading.value = false
                 }
                 is ApiResult.Error -> {
-                    showWrongDataError()
+                    sendError("Some error")
+                    mutableIsLoading.value = false
                 }
             }
         }
@@ -65,27 +55,23 @@ class LoginViewModel @Inject constructor(
     fun subscribeOnToken() {
         dataStoreRepo.token.onEach { token ->
             if (token.isEmpty()) {
-                //apiRepo.unsubscribeOnNotification()
                 mutableIsLoading.value = false
             } else {
-                //apiRepo.subscribeOnNotification()
                 router.navigate(LoginFragmentDirections.toOrdersFragment())
-                //goTo(LoginNavigationEvent.ToOrders)
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun showWrongDataError() {
-        mutableIsLoading.value = false
-        sendError(resourcesProvider.getString(R.string.error_login_wrong_data))
+    fun isCorrectUsername(username: String): Int? {
+        return if (username.isEmpty())
+            R.string.error_login_login
+        else null
     }
 
-    private fun isCorrectUsername(username: String): Boolean {
-        return username.isNotEmpty()
-    }
-
-    private fun isCorrectPassword(password: String): Boolean {
-        return password.isNotEmpty()
+    fun isCorrectPassword(password: String): Int? {
+        return if (password.isEmpty())
+            R.string.error_login_password
+        else null
     }
 
     /**

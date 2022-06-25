@@ -66,6 +66,7 @@ android {
 
         buildFeatures {
             viewBinding = true
+            compose = true
         }
 
         compileOptions {
@@ -75,7 +76,9 @@ android {
         kotlinOptions {
             jvmTarget = "1.8"
         }
-
+        composeOptions {
+            kotlinCompilerExtensionVersion = Versions.compose
+        }
     }
 }
 
@@ -84,11 +87,20 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
     implementation(project(":presentation"))
+    implementation(project(":ui_core"))
 
     implementation(Google.material)
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
     implementation(AndroidX.constraintLayout)
+
+    //compose
+    implementation(Lifecycle.activityCompose)
+    implementation(Compose.material)
+    implementation(Compose.animation)
+    implementation(Compose.ui)
+    implementation(Lifecycle.viewmodelCompose)
+    implementation(Compose.materialThemeAdapter)
 
     //navigation
     implementation(Navigation.navigationFragment)

@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.6.0"
+    const val kotlin = "1.6.21"
     const val gradle = "7.0.3"
     const val kotlinCoroutines = "1.6.0"
     const val ktor = "1.6.5"
@@ -53,6 +53,9 @@ object Versions {
     const val crashlyticsClassPath = "2.8.1"
 
     const val joba = "2.10.9"
+
+    const val materialComposeThemeAdapter = "1.1.4"
+    const val compose = "1.2.0-rc02"
 }
 
 object Application {
@@ -76,7 +79,6 @@ object Time {
 }
 
 object ClassPath {
-    const val sqlDelight = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
     const val buildTool = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val googleServices = "com.google.gms:google-services:${Versions.googleServices}"
@@ -110,7 +112,7 @@ object AndroidX {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompact}"
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
-    const val coreKtx = "androidx.core:core-ktx:1.7.0"
+    const val coreKtx = "androidx.core:core-ktx:1.8.0"
 }
 
 object Google {
@@ -144,21 +146,6 @@ object SquareUp {
 object Test {
     const val junit = "junit:junit:${Versions.junit}"
 }
-
-/*object Compose {
-    const val ui = "androidx.compose.ui:ui:${Versions.compose}"
-    const val uiGraphics = "androidx.compose.ui:ui-graphics:${Versions.compose}"
-    const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
-    const val foundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
-    const val material = "androidx.compose.material:material:${Versions.compose}"
-    const val navigation = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
-    const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
-    const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
-    const val compiler = "androidx.compose.compiler:compiler:${Versions.compose}"
-    const val constraintLayout =
-        "androidx.constraintlayout:constraintlayout-compose:${Versions.constraintCompose}"
-    const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
-}*/
 
 object Koin {
     const val core = "io.insert-koin:koin-core:${Versions.koin}"
@@ -245,4 +232,16 @@ object Lifecycle {
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+    const val activityCompose = "androidx.activity:activity-compose:${Versions.activity}"
+    const val viewmodelCompose =
+        "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.viewmodel}"
 }
+
+object Compose {
+    const val material = "androidx.compose.material:material:${Versions.compose}"
+    const val animation = "androidx.compose.animation:animation:${Versions.compose}"
+    const val ui = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+    const val materialThemeAdapter =
+        "com.google.android.material:compose-theme-adapter:${Versions.materialComposeThemeAdapter}"
+}
+
