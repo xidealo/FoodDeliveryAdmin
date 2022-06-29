@@ -10,7 +10,7 @@ object Versions {
     const val slf4j = "1.7.30"
     const val constraintLayout = "2.1.1"
 
-    const val junit = "4.13"
+    const val junit = "4.13.2"
     const val testRunner = "1.3.0"
     const val material = "1.4.0"
     const val appCompact = "1.3.1"
@@ -56,6 +56,11 @@ object Versions {
 
     const val materialComposeThemeAdapter = "1.1.4"
     const val compose = "1.2.0-rc02"
+
+    const val mockitoVersion = "4.4.0"
+    const val mockVersion = "1.12.0"
+    const val coroutinesTest = "1.6.3"
+
 }
 
 object Application {
@@ -88,7 +93,8 @@ object ClassPath {
 
     const val hiltServices =
         "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltService}"
-    const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlyticsClassPath}"
+    const val crashlytics =
+        "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlyticsClassPath}"
 
 }
 
@@ -145,6 +151,10 @@ object SquareUp {
 
 object Test {
     const val junit = "junit:junit:${Versions.junit}"
+    const val mockk = "io.mockk:mockk:${Versions.mockVersion}"
+    const val mockitoCore = "org.mockito:mockito-core:${Versions.mockitoVersion}"
+    const val mockitoInline = "org.mockito:mockito-inline:${Versions.mockitoVersion}"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
 }
 
 object Koin {

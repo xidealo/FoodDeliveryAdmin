@@ -7,8 +7,8 @@ import com.bunbeauty.common.Constants.CAFE_ADDRESS_REQUEST_KEY
 import com.bunbeauty.common.Constants.PERIOD_REQUEST_KEY
 import com.bunbeauty.common.Constants.SELECTED_CAFE_ADDRESS_KEY
 import com.bunbeauty.common.Constants.SELECTED_PERIOD_KEY
+import com.bunbeauty.domain.GetStatisticUseCase
 import com.bunbeauty.domain.repo.CafeRepo
-import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.R
@@ -34,15 +34,8 @@ class StatisticViewModel @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val stringUtil: IStringUtil,
     private val resourcesProvider: IResourcesProvider,
-    private val dataStoreRepo: DataStoreRepo,
-    private val statisticRepo: StatisticRepo
+    private val getStatisticUseCase: GetStatisticUseCase
 ) : BaseViewModel() {
-
-    private val delivery by lazy {
-        runBlocking {
-            dataStoreRepo.delivery.first()
-        }
-    }
 
     enum class PeriodKey {
         DAY,
@@ -95,8 +88,8 @@ class StatisticViewModel @Inject constructor(
         requestJob?.cancel()
         requestJob = viewModelScope.launch(Dispatchers.Default) {
             mutableStatisticState.value = State.Loading()
-            statisticRepo.getStatistic(
-                dataStoreRepo.token.first(), cafeAddress.value.cafeUuid, period.value.key
+            getStatisticUseCase.invoke(
+                cafeAddress.value.cafeUuid, period.value.key, true, null
             ).let { result ->
                 when (result) {
                     is ApiResult.Success -> {

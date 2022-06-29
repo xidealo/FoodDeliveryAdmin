@@ -35,6 +35,12 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation(Test.junit)
+
+    testImplementation(Test.mockk)
+    testImplementation(Test.mockitoCore)
+    testImplementation(Test.mockitoInline)
+    testImplementation(Test.coroutines)
 
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
