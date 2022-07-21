@@ -37,28 +37,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             val isLoading by viewModel.isLoading.collectAsState()
             LoginScreen(isLoading)
         }
-
-
-        /*  binding.run {
-              fragmentLoginBtnLogin.setOnClickListener {
-                  viewModel.login(
-                      fragmentLoginEtLogin.text.toString(),
-                      fragmentLoginEtPassword.text.toString()
-                  )
-              }
-          }
-
-          viewModel.run {
-              isLoading.onEach { isLoading ->
-                  if (isLoading) {
-                      binding.fragmentLoginPbLoading.visible()
-                      binding.fragmentLoginGroupLogin.gone()
-                  } else {
-                      binding.fragmentLoginPbLoading.gone()
-                      binding.fragmentLoginGroupLogin.visible()
-                  }
-              }.startedLaunch(viewLifecycleOwner)
-          }*/
     }
 
 
