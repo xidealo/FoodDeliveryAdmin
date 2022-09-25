@@ -54,10 +54,8 @@ object ClassPath {
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val hiltServices =
         "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltService}"
-        const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
-
-    const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlyticsClassPath}"
-
+    const val crashlytics =
+        "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
 }
 
 object Plugin {
