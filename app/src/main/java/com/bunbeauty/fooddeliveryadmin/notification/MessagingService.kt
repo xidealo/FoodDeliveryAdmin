@@ -11,7 +11,7 @@ import com.bunbeauty.common.Constants.NOTIFICATION_ID
 import com.bunbeauty.common.Constants.ORDER_CODE
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.ui.MainActivity
+import com.bunbeauty.fooddeliveryadmin.core_ui.MainActivity
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage

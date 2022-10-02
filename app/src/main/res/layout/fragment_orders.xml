@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".ui.fragments.orders.OrdersFragment">
+    tools:context=".screen.orders.OrdersFragment">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/fragment_orders_lpi_loading"
@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
+    <com.bunbeauty.fooddeliveryadmin.view.NavigationCardView
         android:id="@+id/fragment_orders_ncv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

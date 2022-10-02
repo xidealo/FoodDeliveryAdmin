@@ -5,18 +5,17 @@ import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.COMPANY_UUID_PARAMETER
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
-import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.data.model.server.cafe.CafeServer
-import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
-import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
+import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
@@ -28,13 +27,10 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import java.util.*
 import javax.inject.Inject
 
 class NetworkConnectorImpl @Inject constructor(
@@ -112,7 +108,7 @@ class NetworkConnectorImpl @Inject constructor(
 
     override suspend fun getStatistic(
         token: String,
-        cafeUuid: String,
+        cafeUuid: String?,
         period: String
     ): ApiResult<ListServer<StatisticServer>> {
         return getData(
@@ -233,7 +229,7 @@ class NetworkConnectorImpl @Inject constructor(
     suspend fun <T : Any> getData(
         path: String,
         serializer: KSerializer<T>,
-        parameters: HashMap<String, String> = hashMapOf(),
+        parameters: HashMap<String, String?> = hashMapOf(),
         token: String
     ): ApiResult<T> {
         return try {
@@ -247,18 +243,19 @@ class NetworkConnectorImpl @Inject constructor(
                         if (token.isNotEmpty())
                             header("Authorization", "Bearer $token")
 
-                        parameters.forEach { parameterMap ->
-                            parameter(parameterMap.key, parameterMap.value)
+                        parameters.forEach { (key, parameter) ->
+                            if (parameter != null) {
+                                parameter(key, parameter)
+                            }
                         }
                     }.execute().readText()
                 )
             )
         } catch (exception: ClientRequestException) {
             ApiResult.Error(ApiError(exception.response.status.value, exception.message))
-        }
-        catch (exception: CancellationException) {
+        } catch (exception: CancellationException) {
             ApiResult.Error(ApiError(7, exception.message ?: ""))
-        }catch (exception: Exception) {
+        } catch (exception: Exception) {
             ApiResult.Error(ApiError(0, exception.message ?: ""))
         }
     }

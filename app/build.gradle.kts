@@ -7,6 +7,7 @@ plugins {
     id(Plugin.navigation)
     id(Plugin.googleService)
     id(Plugin.crashlytics)
+    id(Plugin.kotlinParcelize)
 }
 
 android {

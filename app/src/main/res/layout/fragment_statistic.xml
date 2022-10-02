@@ -5,38 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".ui.fragments.statistic.StatisticFragment">
+    tools:context=".screen.statistic.StatisticFragment">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/fragment_statistic_lpi_loading"
+        android:id="@+id/fragmentStatisticLpiLoading"
         style="@style/LoadingProgressIndicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
-        android:id="@+id/fragment_statistic_mcv_address"
+    <com.bunbeauty.fooddeliveryadmin.view.NavigationCardView
+        android:id="@+id/fragmentStatisticNcvCafe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
         android:icon="@drawable/ic_right_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_lpi_loading" />
+        app:layout_constraintTop_toBottomOf="@+id/fragmentStatisticLpiLoading" />
 
-    <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
-        android:id="@+id/fragment_statistic_mcv_period"
+    <com.bunbeauty.fooddeliveryadmin.view.NavigationCardView
+        android:id="@+id/fragmentStatisticNcvInterval"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
         android:icon="@drawable/ic_right_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_mcv_address" />
+        app:layout_constraintTop_toBottomOf="@+id/fragmentStatisticNcvCafe" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_statistic_rv_list"
+        android:id="@+id/fragmentStatisticRvList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/small_margin"
@@ -45,19 +44,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_statistic_mcv_period"
+        app:layout_constraintTop_toBottomOf="@id/fragmentStatisticNcvInterval"
         tools:listitem="@layout/element_statistic" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/reloadButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/fragmentStatisticBtnLoad"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:icon="@drawable/ic_repeat"
-        android:text="@string/action_product_statistic_reload"
-        android:visibility="gone"
+        android:text="@string/action_product_statistic_load"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_statistic_mcv_period"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/fragmentStatisticRvList" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,7 +37,7 @@ interface NetworkConnector {
     // STATISTIC
     suspend fun getStatistic(
         token: String,
-        cafeUuid: String,
+        cafeUuid: String?,
         period: String
     ): ApiResult<ListServer<StatisticServer>>
 

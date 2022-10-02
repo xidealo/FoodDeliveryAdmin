@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
-            android:name="com.bunbeauty.fooddeliveryadmin.ui.MainActivity"
+            android:name="com.bunbeauty.fooddeliveryadmin.core_ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

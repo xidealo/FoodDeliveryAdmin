@@ -43,9 +43,5 @@ abstract class RepoModule {
 
     @Singleton
     @Binds
-    abstract fun bindStatisticRepository(statisticRepository: StatisticRepository): StatisticRepo
-
-    @Singleton
-    @Binds
     abstract fun bindCategoryRepository(categoryRepository: CategoryRepository): CategoryRepo
 }

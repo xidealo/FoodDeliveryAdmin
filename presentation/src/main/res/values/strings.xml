@@ -44,11 +44,11 @@
     <!-- STATISTIC -->
     <string name="msg_statistic_orders">Заказов:&#160;</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
-    <string name="msg_statistic_all_cafes">Все кафе</string>
+    <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>
     <string name="title_statistic_select_period">Выберите период</string>
-    <string name="msg_statistic_day_period">По дням</string>
-    <string name="msg_statistic_week_period">По неделям</string>
-    <string name="msg_statistic_month_period">По месяцам</string>
+    <string name="msg_statistic_day_interval">По дням</string>
+    <string name="msg_statistic_week_interval">По неделям</string>
+    <string name="msg_statistic_month_interval">По месяцам</string>
 
     <!-- PRODUCT CODE -->
     <string name="msg_product_code_combo">Комбо</string>
