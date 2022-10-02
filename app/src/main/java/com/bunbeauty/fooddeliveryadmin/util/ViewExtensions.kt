@@ -1,12 +1,17 @@
 package com.bunbeauty.fooddeliveryadmin.util
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ShapeDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.DimenRes
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 
 fun View.invisible(): View {
     visibility = View.INVISIBLE
@@ -44,4 +49,18 @@ fun View.setLinearLayoutMargins(left: Int = 0, top: Int = 0, right: Int = 0, bot
     layoutParams = (layoutParams as LinearLayout.LayoutParams).apply {
         setMargins(left, top, right, bottom)
     }
+}
+
+fun RecyclerView.addSpaceItemDecorator(@DimenRes spaceId: Int) {
+    addItemDecoration(
+        DividerItemDecoration(
+            context,
+            LinearLayout.VERTICAL
+        ).apply {
+            val space = ShapeDrawable()
+            space.intrinsicHeight = resources.getDimensionPixelOffset(spaceId)
+            space.paint.color = Color.TRANSPARENT
+            setDrawable(space)
+        }
+    )
 }

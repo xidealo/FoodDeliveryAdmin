@@ -122,10 +122,10 @@ class StatisticViewModel @Inject constructor(
             if (statisticResult is ApiResult.Success) {
                 statisticResult.data.map { statistic ->
                     StatisticItemModel(
+                        startMillis = statistic.startPeriodTime,
                         period = statistic.period,
                         count = stringUtil.getOrderCountString(statistic.orderCount),
-                        proceeds = stringUtil.getCostString(statistic.proceeds),
-                        statistic = statistic
+                        proceeds = stringUtil.getCostString(statistic.proceeds)
                     )
                 }.let { statisticItemList ->
                     mutableStatisticState.update { statisticState ->

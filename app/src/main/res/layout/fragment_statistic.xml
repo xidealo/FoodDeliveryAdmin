@@ -63,6 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/small_margin"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/fragmentStatisticBtnLoad"
         app:layout_constraintEnd_toEndOf="parent"

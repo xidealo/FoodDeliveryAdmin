@@ -10,6 +10,7 @@
 
     <!-- COMMON -->
     <string name="msg_ruble">&#160;₽</string>
+    <string name="with_ruble">%s ₽</string>
     <string name="msg_break">\n</string>
     <string name="msg_parenthesis">)&#160;</string>
     <string name="msg_colon">:&#160;</string>
