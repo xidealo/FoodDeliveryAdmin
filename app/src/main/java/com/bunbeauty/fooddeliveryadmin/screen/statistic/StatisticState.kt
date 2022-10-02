@@ -4,9 +4,11 @@ import com.bunbeauty.presentation.model.StatisticItemModel
 
 data class StatisticState(
     val cafeList: List<Cafe> = emptyList(),
-    val timeInterval: TimeInterval = TimeInterval.MONTH,
+    val selectedTimeInterval: TimeInterval = TimeInterval.MONTH,
     val statisticList: List<StatisticItemModel> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isCafesOpen: Boolean = false,
+    val isTimeIntervalsOpen: Boolean = false
 ) {
 
     val selectedCafe: Cafe?

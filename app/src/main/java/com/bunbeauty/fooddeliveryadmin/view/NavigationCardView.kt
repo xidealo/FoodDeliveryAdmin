@@ -4,14 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import androidx.core.view.setPadding
-import com.bunbeauty.presentation.utils.ResourcesProvider
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.Customizable
+import com.bunbeauty.presentation.utils.ResourcesProvider
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -50,33 +50,25 @@ class NavigationCardView @JvmOverloads constructor(
     private var textView: TextView? = null
 
     init {
-        strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke_width)
-        strokeColor = resourcesProvider.getColor(R.color.colorPrimary)
+        //strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke_width)
+        //strokeColor = resourcesProvider.getColor(R.color.colorPrimary)
         radius = resourcesProvider.getDimensionFloat(R.dimen.medium_radius)
         cardElevation = 0f
 
-        val constraintLayout = createConstraintLayout(context)
-        constraintLayout.addView(createImageView(context))
         textView = createTextView(context)
-        constraintLayout.addView(textView)
-        addView(constraintLayout)
+        addView(textView)
     }
 
-    private fun createConstraintLayout(context: Context): ConstraintLayout {
-        return ConstraintLayout(context).apply {
+    private fun createLayout(context: Context): LinearLayout {
+        return LinearLayout(context).apply {
             layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-            setPadding(resourcesProvider.getDimension(R.dimen.small_padding))
         }
     }
 
     private fun createImageView(context: Context): ImageView {
         return ImageView(context).apply {
             id = imageViewId
-            layoutParams = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-                topToTop = PARENT_ID
-                bottomToBottom = PARENT_ID
-                endToEnd = PARENT_ID
-            }
+            layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
             setColorFilter(resourcesProvider.getColor(R.color.colorPrimary))
             setImageDrawable(icon)
         }
@@ -85,13 +77,14 @@ class NavigationCardView @JvmOverloads constructor(
     private fun createTextView(context: Context): TextView {
         return TextView(context).apply {
             textSize = 16f
-            layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
-                topToTop = PARENT_ID
-                startToStart = PARENT_ID
-                bottomToBottom = PARENT_ID
-                endToEnd = imageViewId
-            }
+            layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
             text = cardText
+            setCompoundDrawables(
+                null,
+                null,
+                icon,
+                null,
+            )
         }
     }
 

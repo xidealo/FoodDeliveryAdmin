@@ -13,7 +13,3 @@ fun <T> Flow<T>.startedLaunch(lifecycleOwner: LifecycleOwner) {
             .collect()
     }
 }
-
-fun <T> MutableStateFlow<T>.reduce(block: ((T) -> T)) {
-    this.value = block(this.value)
-}
