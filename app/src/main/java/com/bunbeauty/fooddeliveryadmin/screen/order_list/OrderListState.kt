@@ -16,5 +16,5 @@ data class OrderListState(
 
 data class SelectedCafe(
     val uuid: String,
-    val title: String
+    val address: String
 )

@@ -42,7 +42,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             }
             viewModel.orderListState.collectWithLifecycle { orderListState ->
                 loadingLpi.isInvisible = !orderListState.isLoading
-                cafeTv.text = orderListState.selectedCafe?.title
+                cafeTv.text = orderListState.selectedCafe?.address
                 orderAdapter.submitList(orderListState.orderList)
                 handleEvents(orderListState.eventList)
             }

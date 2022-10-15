@@ -10,9 +10,9 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.shared.cafe.CafeUi
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,26 +24,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
     override val viewModel: StatisticViewModel by viewModels()
 
+    private var cafeListBottomSheetJob: Job? = null
+    private var timeIntervalListBottomSheetJob: Job? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-            viewModel.statisticState.collectWithLifecycle { statisticState ->
-                fragmentStatisticLpiLoading.isInvisible = !statisticState.isLoading
-                fragmentStatisticTvCafe.text = statisticState.selectedCafe?.title
-                fragmentStatisticTvInterval.text =
-                    viewModel.getIntervalName(statisticState.selectedTimeInterval)
-                statisticAdapter.submitList(statisticState.statisticList)
-                if (statisticState.isCafesOpen) {
-                    openCafes(statisticState.cafeList)
-                    viewModel.cafesClosed()
-                }
-                if (statisticState.isTimeIntervalsOpen) {
-                    openTimeIntervals()
-                    viewModel.timeIntervalsClosed()
-                }
-            }
-
             fragmentStatisticRvList.adapter = statisticAdapter
             fragmentStatisticRvList.addSpaceItemDecorator(R.dimen.very_small_margin)
             fragmentStatisticMcvCafe.setOnClickListener {
@@ -55,39 +42,61 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
             fragmentStatisticBtnLoad.setOnClickListener {
                 viewModel.loadStatistic()
             }
-        }
-    }
 
-    private fun openCafes(cafeList: List<CafeUi>) {
-        lifecycleScope.launch {
-            OptionListBottomSheet.show(
-                parentFragmentManager,
-                resources.getString(R.string.title_statistic_select_cafe),
-                cafeList.map { cafe ->
-                    Option(
-                        id = cafe.uuid,
-                        title = cafe.title
-                    )
-                }
-            )?.let { result ->
-                viewModel.setCafe(result.value)
+            viewModel.statisticState.collectWithLifecycle { statisticState ->
+                fragmentStatisticLpiLoading.isInvisible = !statisticState.isLoading
+                fragmentStatisticTvCafe.text = statisticState.selectedCafe?.address
+                fragmentStatisticTvInterval.text = statisticState.selectedTimeInterval?.name
+                statisticAdapter.submitList(statisticState.statisticList)
+                handleEvents(statisticState.eventList)
             }
         }
     }
 
-    private fun openTimeIntervals() {
-        lifecycleScope.launch {
-            OptionListBottomSheet.show(
-                parentFragmentManager,
-                resources.getString(R.string.title_statistic_select_time_interval),
-                TimeInterval.values().map { timeInterval ->
-                    Option(
-                        id = timeInterval.name,
-                        title = viewModel.getIntervalName(timeInterval)
-                    )
+    private fun handleEvents(eventList: List<StatisticState.Event>) {
+        eventList.forEach { event ->
+            when (event) {
+                is StatisticState.Event.OpenCafeListEvent -> {
+                    openCafeListBottom(event.cafeList)
                 }
-            )?.value?.let { resultValue ->
-                viewModel.setTimeInterval(resultValue)
+                is StatisticState.Event.OpenTimeIntervalListEvent -> {
+                    openTimeIntervals(event.timeIntervalList)
+                }
+            }
+        }
+        viewModel.consumeEvents(eventList)
+    }
+
+    private fun openCafeListBottom(cafeList: List<Option>) {
+        val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->
+            !job.isActive
+        } ?: true
+        if (isPossibleToOpen) {
+            cafeListBottomSheetJob = lifecycleScope.launch {
+                OptionListBottomSheet.show(
+                    parentFragmentManager,
+                    resources.getString(R.string.title_statistic_select_cafe),
+                    cafeList
+                )?.let { result ->
+                    viewModel.onCafeSelected(result.value)
+                }
+            }
+        }
+    }
+
+    private fun openTimeIntervals(timeIntervalList: List<Option>) {
+        val isPossibleToOpen = timeIntervalListBottomSheetJob?.let { job ->
+            !job.isActive
+        } ?: true
+        if (isPossibleToOpen) {
+            timeIntervalListBottomSheetJob = lifecycleScope.launch {
+                OptionListBottomSheet.show(
+                    parentFragmentManager,
+                    resources.getString(R.string.title_statistic_select_time_interval),
+                    timeIntervalList
+                )?.value?.let { resultValue ->
+                    viewModel.onTimeIntervalSelected(resultValue)
+                }
             }
         }
     }

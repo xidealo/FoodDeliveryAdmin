@@ -45,7 +45,7 @@ class CafeRepository @Inject constructor(
             entityCafeMapper.from(cafeEntity)
         }
 
-    suspend fun getCafeList() = withContext(IO) {
+    suspend fun getCafeList(): List<Cafe> = withContext(IO) {
         cafeDao.getCafeList().map { cafeEntity ->
             entityCafeMapper.from(cafeEntity)
         }

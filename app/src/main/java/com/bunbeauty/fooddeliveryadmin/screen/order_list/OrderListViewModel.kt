@@ -53,8 +53,9 @@ class OrderListViewModel @Inject constructor(
                     title = cafe.address,
                 )
             }
+            val openCafeListEvent = OrderListState.Event.OpenCafeListEvent(cafeList)
+
             mutableOrderListState.update { orderListState ->
-                val openCafeListEvent = OrderListState.Event.OpenCafeListEvent(cafeList)
                 orderListState.copy(eventList = orderListState.eventList + openCafeListEvent)
             }
         }
@@ -125,14 +126,14 @@ class OrderListViewModel @Inject constructor(
             cafeRepository.getCafeByUuid(cafeUuid)?.address?.let { address ->
                 SelectedCafe(
                     uuid = cafeUuid,
-                    title = address
+                    address = address
                 )
             }
         } ?: run {
             cafeRepository.getCafeList().firstOrNull()?.let { firstCafe ->
                 SelectedCafe(
                     uuid = firstCafe.uuid,
-                    title = firstCafe.address
+                    address = firstCafe.address
                 )
             }
         }
