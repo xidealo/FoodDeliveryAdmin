@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.util
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.view.View
@@ -53,14 +54,29 @@ fun View.setLinearLayoutMargins(left: Int = 0, top: Int = 0, right: Int = 0, bot
 
 fun RecyclerView.addSpaceItemDecorator(@DimenRes spaceId: Int) {
     addItemDecoration(
-        DividerItemDecoration(
-            context,
-            LinearLayout.VERTICAL
-        ).apply {
-            val space = ShapeDrawable()
-            space.intrinsicHeight = resources.getDimensionPixelOffset(spaceId)
-            space.paint.color = Color.TRANSPARENT
-            setDrawable(space)
+        object : DividerItemDecoration(context, LinearLayout.VERTICAL) {
+
+            init {
+                val space = ShapeDrawable().apply {
+                    intrinsicHeight = resources.getDimensionPixelOffset(spaceId)
+                    paint.color = Color.TRANSPARENT
+                }
+                setDrawable(space)
+            }
+
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                val position = parent.getChildAdapterPosition(view)
+                if (position == state.itemCount - 1) {
+                    outRect.setEmpty()
+                } else {
+                    super.getItemOffsets(outRect, view, parent, state)
+                }
+            }
         }
     )
 }

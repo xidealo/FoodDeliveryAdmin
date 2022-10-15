@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
@@ -65,10 +64,6 @@ class OrderListViewModel @Inject constructor(
         val selectedCafeUuid = mutableOrderListState.value.selectedCafe?.uuid
 
         if (cafeUuid != null && cafeUuid != selectedCafeUuid) {
-            mutableOrderListState.update { orderListState ->
-                orderListState.copy(isLoading = true)
-            }
-
             viewModelScope.launch {
                 dataStoreRepo.saveCafeUuid(cafeUuid)
                 refreshSelectedCafe()
@@ -83,7 +78,6 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun unsubscribe(cafeUuid: String?, message: String) {
-        Log.d("testTag", "unsubscribe $cafeUuid")
         if (cafeUuid != null) {
             viewModelScope.launch {
                 orderRepo.unsubscribeOnOrderList(cafeId = cafeUuid, message = message)
@@ -93,7 +87,6 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun subscribe(cafeUuid: String?) {
-        Log.d("testTag", "subscribe $cafeUuid")
         if (cafeUuid != null) {
             viewModelScope.launch {
                 val token = dataStoreRepo.token.first()
@@ -124,6 +117,9 @@ class OrderListViewModel @Inject constructor(
     }
 
     private suspend fun refreshSelectedCafe() {
+        mutableOrderListState.update { orderListState ->
+            orderListState.copy(isLoading = true)
+        }
         unsubscribe(mutableOrderListState.value.selectedCafe?.uuid, "refresh selected cafe")
         val selectedCafe = dataStoreRepo.cafeUuid.first()?.let { cafeUuid ->
             cafeRepository.getCafeByUuid(cafeUuid)?.address?.let { address ->
@@ -147,10 +143,8 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun observeOrderList() {
-        Log.d("testTag", "observeOrderList")
         orderRepo.orderListFlow.onEach { orderList ->
             mutableOrderListState.update { orderListState ->
-                Log.d("testTag", "update orderList ${orderList.size}")
                 val processedOrderList = orderList.map(::toItemModel)
                     .filter { orderItemModel ->
                         orderItemModel.status != OrderStatus.CANCELED

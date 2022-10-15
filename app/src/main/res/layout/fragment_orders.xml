@@ -40,12 +40,17 @@
         android:id="@+id/orderListRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
         android:layout_marginTop="@dimen/small_margin"
+        android:paddingHorizontal="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cafeMcv"
+        tools:itemCount="15"
         tools:listitem="@layout/element_order" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
