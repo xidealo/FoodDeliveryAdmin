@@ -77,10 +77,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         mutableBinding = null
     }
 
-    protected fun <T> subscribe(liveData: LiveData<T>, observer: (T) -> Unit) {
-        liveData.observe(viewLifecycleOwner, observer::invoke)
-    }
-
     private fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {
         val snack = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), backgroundColorId))
@@ -111,9 +107,12 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         return method.invoke(null, inflater, container, false) as B
     }
 
-    fun <T> Flow<T>.startedObserve(block: (T) -> Unit) {
+    fun <T> Flow<T>.collectWithLifecycle(
+        lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
+        block: (T) -> Unit
+    ) {
         lifecycleScope.launch {
-            flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect{
+            flowWithLifecycle(lifecycle, lifecycleState).collect {
                 block(it)
             }
         }

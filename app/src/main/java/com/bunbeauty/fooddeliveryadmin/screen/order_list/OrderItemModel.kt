@@ -1,13 +1,12 @@
-package com.bunbeauty.presentation.model
+package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.order.Order
 
 data class OrderItemModel(
+    val uuid: String,
     val status: OrderStatus,
     val statusString: String,
     val code: String,
     val deferredTime: String,
-    val time: String,
-    val order: Order,
+    val time: String
 )

@@ -49,8 +49,8 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
-    override val cafeUuid: Flow<String> = context.cafeUuidDataStore.data.map {
-        it[CAFE_UUID_KEY] ?: ""
+    override val cafeUuid: Flow<String?> = context.cafeUuidDataStore.data.map {
+        it[CAFE_UUID_KEY]
     }
 
     override suspend fun saveCafeUuid(cafeUuid: String) {

@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.orders.OrdersFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragment"
         android:label="OrdersFragment"
         tools:layout="@layout/fragment_orders">
         <action

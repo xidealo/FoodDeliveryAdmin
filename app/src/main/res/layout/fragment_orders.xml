@@ -5,27 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".screen.orders.OrdersFragment">
+    tools:context=".screen.order_list.OrderListFragment">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/fragment_orders_lpi_loading"
+        android:id="@+id/loadingLpi"
         style="@style/LoadingProgressIndicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.bunbeauty.fooddeliveryadmin.view.NavigationCardView
-        android:id="@+id/fragment_orders_ncv_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cafeMcv"
+        style="@style/DefaultMaterialCard"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
         android:layout_margin="@dimen/small_margin"
-        android:icon="@drawable/ic_right_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_orders_lpi_loading" />
+        app:layout_constraintTop_toBottomOf="@+id/loadingLpi">
+
+        <TextView
+            android:id="@+id/cafeTv"
+            style="@style/LargeRegularText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/small_margin"
+            app:drawableEndCompat="@drawable/ic_right_arrow"
+            tools:text="@string/msg_statistic_all_cafes" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_orders_rv_result"
+        android:id="@+id/orderListRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/small_margin"
@@ -33,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_orders_ncv_address"
+        app:layout_constraintTop_toBottomOf="@+id/cafeMcv"
         tools:listitem="@layout/element_order" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

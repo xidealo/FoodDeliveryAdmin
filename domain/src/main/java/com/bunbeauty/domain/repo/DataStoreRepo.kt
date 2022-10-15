@@ -16,7 +16,7 @@ interface DataStoreRepo {
     val managerCity: Flow<String>
     suspend fun saveManagerCity(managerCity: String)
 
-    val cafeUuid: Flow<String>
+    val cafeUuid: Flow<String?>
     suspend fun saveCafeUuid(cafeUuid: String)
 
     val delivery: Flow<Delivery>

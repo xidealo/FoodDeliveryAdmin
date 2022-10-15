@@ -2,11 +2,12 @@ package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.StatisticRepository
-import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.fooddeliveryadmin.shared.cafe.CafeSelector
+import com.bunbeauty.fooddeliveryadmin.shared.cafe.CafeUi
 import com.bunbeauty.presentation.R
-import com.bunbeauty.presentation.model.StatisticItemModel
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
@@ -18,18 +19,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticViewModel @Inject constructor(
-    private val cafeRepo: CafeRepo,
+    private val cafeRepository: CafeRepository,
     private val stringUtil: IStringUtil,
     private val resourcesProvider: IResourcesProvider,
     private val dataStoreRepo: DataStoreRepo,
-    private val statisticRepository: StatisticRepository
+    private val statisticRepository: StatisticRepository,
+    private val cafeSelector: CafeSelector,
 ) : BaseViewModel() {
 
     private val mutableStatisticState: MutableStateFlow<StatisticState> =
         MutableStateFlow(StatisticState())
     val statisticState: StateFlow<StatisticState> = mutableStatisticState.asStateFlow()
 
-    private val allCafes = Cafe(
+    private val allCafes = CafeUi(
         uuid = null,
         title = resourcesProvider.getString(R.string.msg_statistic_all_cafes),
         isSelected = true
@@ -42,8 +44,8 @@ class StatisticViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val cafeList = cafeRepo.getCafeList().map { cafe ->
-                Cafe(
+            val cafeList = cafeRepository.getCafeList().map { cafe ->
+                CafeUi(
                     uuid = cafe.uuid,
                     title = cafe.address,
                     isSelected = false
@@ -56,7 +58,7 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun getIntervalName(timeInterval: TimeInterval): String {
-        return when(timeInterval) {
+        return when (timeInterval) {
             TimeInterval.DAY -> resourcesProvider.getString(R.string.msg_statistic_day_interval)
             TimeInterval.WEEK -> resourcesProvider.getString(R.string.msg_statistic_week_interval)
             TimeInterval.MONTH -> resourcesProvider.getString(R.string.msg_statistic_month_interval)
@@ -69,23 +71,17 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    fun cafesOpened() {
-        mutableStatisticState.update { statisticState ->
-            statisticState.copy(isCafesOpen = false)
-        }
-    }
-
     fun setCafe(cafeUuid: String?) {
         mutableStatisticState.update { statisticState ->
             statisticState.copy(
-                cafeList = statisticState.cafeList.map { cafe ->
-                    if (cafe.uuid == cafeUuid) {
-                        cafe.copy(isSelected = true)
-                    } else {
-                        cafe.copy(isSelected = false)
-                    }
-                }
+                cafeList = cafeSelector.selectCafe(statisticState.cafeList, cafeUuid)
             )
+        }
+    }
+
+    fun cafesClosed() {
+        mutableStatisticState.update { statisticState ->
+            statisticState.copy(isCafesOpen = false)
         }
     }
 
@@ -95,7 +91,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    fun timeIntervalsOpened() {
+    fun timeIntervalsClosed() {
         mutableStatisticState.update { statisticState ->
             statisticState.copy(isTimeIntervalsOpen = false)
         }

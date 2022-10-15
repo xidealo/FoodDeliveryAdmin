@@ -10,6 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.shared.cafe.CafeUi
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-            viewModel.statisticState.startedObserve { statisticState ->
+            viewModel.statisticState.collectWithLifecycle { statisticState ->
                 fragmentStatisticLpiLoading.isInvisible = !statisticState.isLoading
                 fragmentStatisticTvCafe.text = statisticState.selectedCafe?.title
                 fragmentStatisticTvInterval.text =
@@ -35,11 +36,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                 statisticAdapter.submitList(statisticState.statisticList)
                 if (statisticState.isCafesOpen) {
                     openCafes(statisticState.cafeList)
-                    viewModel.cafesOpened()
+                    viewModel.cafesClosed()
                 }
                 if (statisticState.isTimeIntervalsOpen) {
                     openTimeIntervals()
-                    viewModel.timeIntervalsOpened()
+                    viewModel.timeIntervalsClosed()
                 }
             }
 
@@ -57,7 +58,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         }
     }
 
-    private fun openCafes(cafeList: List<Cafe>) {
+    private fun openCafes(cafeList: List<CafeUi>) {
         lifecycleScope.launch {
             OptionListBottomSheet.show(
                 parentFragmentManager,
@@ -68,8 +69,8 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                         title = cafe.title
                     )
                 }
-            ).let { result ->
-                viewModel.setCafe(result)
+            )?.let { result ->
+                viewModel.setCafe(result.value)
             }
         }
     }
@@ -85,8 +86,8 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                         title = viewModel.getIntervalName(timeInterval)
                     )
                 }
-            )?.let { result ->
-                viewModel.setTimeInterval(result)
+            )?.value?.let { resultValue ->
+                viewModel.setTimeInterval(resultValue)
             }
         }
     }

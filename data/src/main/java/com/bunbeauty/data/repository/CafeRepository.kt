@@ -1,16 +1,14 @@
 package com.bunbeauty.data.repository
 
+import android.util.Log
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.common.Constants
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.dao.CafeDao
 import com.bunbeauty.data.mapper.cafe.IEntityCafeMapper
 import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.domain.repo.CafeRepo
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -22,9 +20,9 @@ class CafeRepository @Inject constructor(
     private val serverCafeMapper: IServerCafeMapper,
     private val entityCafeMapper: IEntityCafeMapper,
     private val cafeDao: CafeDao
-) : CafeRepo {
+) {
 
-    override val cafeListFlow = cafeDao.getCafeListFlow()
+    val cafeListFlow = cafeDao.getCafeListFlow()
         .flowOn(IO)
         .map { cafeEntityList ->
             cafeEntityList.map { cafeEntity ->
@@ -33,7 +31,7 @@ class CafeRepository @Inject constructor(
         }
         .flowOn(Default)
 
-    override fun getCafeByUuid(uuid: String): Flow<Cafe?> = cafeDao.getCafeByUuid(uuid)
+    fun observeCafeByUuid(uuid: String): Flow<Cafe?> = cafeDao.observeCafeByUuid(uuid)
         .flowOn(IO)
         .map { cafeEntity ->
             cafeEntity?.let {
@@ -42,19 +40,18 @@ class CafeRepository @Inject constructor(
         }
         .flowOn(Default)
 
-    override suspend fun getCafeList() = withContext(IO) {
+    suspend fun getCafeByUuid(uuid: String): Cafe? =
+        cafeDao.getCafeByUuid(uuid)?.let { cafeEntity ->
+            entityCafeMapper.from(cafeEntity)
+        }
+
+    suspend fun getCafeList() = withContext(IO) {
         cafeDao.getCafeList().map { cafeEntity ->
             entityCafeMapper.from(cafeEntity)
         }
     }
 
-    override suspend fun getCafeList(cityUuid: String) = withContext(IO) {
-        cafeDao.getCafeList(cityUuid).map { cafeEntity ->
-            entityCafeMapper.from(cafeEntity)
-        }
-    }
-
-    override suspend fun refreshCafeList(token: String, cityUuid: String) {
+    suspend fun refreshCafeList(token: String, cityUuid: String) {
         when (val result = networkConnector.getCafeList(token, cityUuid)) {
             is ApiResult.Success -> {
                 result.data.let { listServer ->
@@ -65,8 +62,10 @@ class CafeRepository @Inject constructor(
                 }
             }
             is ApiResult.Error -> {
-                delay(Constants.RELOAD_DELAY)
-                //refreshCafeList(token, cityUuid)
+                Log.e(
+                    "testTag",
+                    "refreshCafeList ${result.apiError.message} ${result.apiError.code}"
+                )
             }
         }
     }

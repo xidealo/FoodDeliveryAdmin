@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
-import com.bunbeauty.presentation.model.StatisticItemModel
 import javax.inject.Inject
 
 class StatisticAdapter @Inject constructor(

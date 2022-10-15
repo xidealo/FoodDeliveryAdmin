@@ -1,5 +1,6 @@
 package com.bunbeauty.data.repository
 
+import android.util.Log
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
@@ -17,29 +18,22 @@ class OrderRepository @Inject constructor(
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
 
-    override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
+    override val orderListFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
 
     private val cachedData: MutableMap<String, Order> = mutableMapOf()
 
     override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
-        when (val result = networkConnector.updateOrderStatus(
-            token,
-            orderUuid,
-            status
-        )) {
-            is ApiResult.Success -> {}
-            is ApiResult.Error -> {}
-        }
+        networkConnector.updateOrderStatus(token, orderUuid, status)
     }
 
-    override suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String) {
+    override suspend fun subscribeOnOrderList(token: String, cafeId: String) {
         networkConnector.subscribeOnOrderListByCafeId(token, cafeId).filter {
             it is ApiResult.Success
         }.map { resultApiResultSuccess ->
             serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
                 .let { order ->
                     cachedData[order.uuid] = order
-                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
+                    orderListFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
         }.collect()
     }
@@ -56,19 +50,17 @@ class OrderRepository @Inject constructor(
         when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
             is ApiResult.Success -> {
                 if (result.data.results.isEmpty()) {
-                    ordersMapFlow.emit(emptyList())
+                    orderListFlow.emit(emptyList())
                 } else {
                     cachedData.clear()
                     cachedData.putAll(
-                        result.data.results.map(serverOrderMapper::toModel)
-                            .map { it.uuid to it }
-                            .toMap()
+                        result.data.results.map(serverOrderMapper::toModel).associateBy { it.uuid }
                     )
-                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
+                    orderListFlow.emit(cachedData.values.sortedByDescending { it.time })
                 }
             }
             is ApiResult.Error -> {
-                //ApiResult.Error(result.apiError)
+                Log.e("testTag", "loadOrderListByCafeId ${result.apiError.message} ${result.apiError.code}")
             }
         }
     }

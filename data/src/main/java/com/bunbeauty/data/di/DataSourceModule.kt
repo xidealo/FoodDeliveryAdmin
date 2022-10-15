@@ -51,13 +51,7 @@ class DataSourceModule {
             serializer = KotlinxSerializer(json)
         }
 
-        install(WebSockets){
-            pingInterval = 10
-        }
-
-        install(HttpTimeout) {
-            requestTimeoutMillis = 30_000
-        }
+        install(WebSockets)
 
         install(Logging) {
             logger = object : Logger {

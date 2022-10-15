@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
-import com.bunbeauty.presentation.model.StatisticItemModel
+import com.bunbeauty.fooddeliveryadmin.shared.cafe.CafeUi
 
 data class StatisticState(
-    val cafeList: List<Cafe> = emptyList(),
+    val cafeList: List<CafeUi> = emptyList(),
     val selectedTimeInterval: TimeInterval = TimeInterval.MONTH,
     val statisticList: List<StatisticItemModel> = emptyList(),
     val isLoading: Boolean = false,
@@ -11,17 +11,11 @@ data class StatisticState(
     val isTimeIntervalsOpen: Boolean = false
 ) {
 
-    val selectedCafe: Cafe?
+    val selectedCafe: CafeUi?
         get() = cafeList.find { cafe ->
             cafe.isSelected
         }
 }
-
-data class Cafe(
-    val uuid: String?,
-    val title: String,
-    val isSelected: Boolean
-)
 
 enum class TimeInterval {
     DAY,

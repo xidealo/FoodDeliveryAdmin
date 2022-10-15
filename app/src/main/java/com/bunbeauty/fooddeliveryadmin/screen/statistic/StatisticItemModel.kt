@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.model
+package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
 data class StatisticItemModel(
     val startMillis: Long,

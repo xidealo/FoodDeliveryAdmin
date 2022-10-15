@@ -5,14 +5,13 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
-import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.data.model.server.statistic.StatisticServer
-import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
-import kotlinx.coroutines.flow.*
+import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.domain.enums.OrderStatus
+import kotlinx.coroutines.flow.Flow
 
 interface NetworkConnector {
 
@@ -43,9 +42,7 @@ interface NetworkConnector {
 
     // ORDER
 
-    suspend fun subscribeOnNotification(
-        cafeId: String
-    )
+    suspend fun subscribeOnNotification(cafeId: String)
 
     suspend fun subscribeOnOrderListByCafeId(
         token: String,

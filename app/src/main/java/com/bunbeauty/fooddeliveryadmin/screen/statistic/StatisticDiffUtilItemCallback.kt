@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
 import androidx.recyclerview.widget.DiffUtil
-import com.bunbeauty.presentation.model.StatisticItemModel
 import javax.inject.Inject
 
 class StatisticDiffUtilItemCallback @Inject constructor(): DiffUtil.ItemCallback<StatisticItemModel>() {

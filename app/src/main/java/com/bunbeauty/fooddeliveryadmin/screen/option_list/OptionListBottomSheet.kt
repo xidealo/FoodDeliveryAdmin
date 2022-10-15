@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.marginTop
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetOptionListBinding
@@ -14,8 +13,8 @@ import com.bunbeauty.fooddeliveryadmin.util.argument
 import com.bunbeauty.fooddeliveryadmin.util.setLinearLayoutMargins
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @AndroidEntryPoint
 class OptionListBottomSheet : BottomSheetDialogFragment() {
@@ -77,18 +76,20 @@ class OptionListBottomSheet : BottomSheetDialogFragment() {
         private const val TAG = "OptionListBottomSheet"
 
         suspend fun show(
-            fragmentManager: FragmentManager, title: String, options: List<Option>
-        ) = suspendCancellableCoroutine<String?> { continuation ->
+            fragmentManager: FragmentManager,
+            title: String,
+            options: List<Option>
+        ) = suspendCoroutine<OptionListResult?> { continuation ->
             OptionListBottomSheet().apply {
                 this.title = title
                 this.options = options
                 callback = object : Callback {
                     override fun onClicked(id: String?) {
-                        continuation.resume(id)
+                        continuation.resume(OptionListResult(id))
                     }
 
                     override fun onCancel() {
-                        continuation.cancel()
+                        continuation.resume(null)
                     }
                 }
                 show(fragmentManager, TAG)

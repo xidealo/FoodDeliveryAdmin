@@ -34,10 +34,6 @@
             </intent-filter>
         </service>
 
-        <service
-            android:name="com.bunbeauty.fooddeliveryadmin.WebSocketService"
-            android:exported="false"/>
-
         <receiver
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
             android:exported="true"
