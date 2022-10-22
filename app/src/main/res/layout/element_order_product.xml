@@ -8,21 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/element_cart_product_iv_photo"-->
-        <!--            android:layout_width="@dimen/image_element_width"-->
-        <!--            android:layout_height="@dimen/image_element_height"-->
-        <!--            android:src="@drawable/default_product"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_padding">
 
         <TextView
-            android:id="@+id/element_cart_product_tv_title"
+            android:id="@+id/titleTv"
             style="@style/MediumBoldText"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,31 +23,36 @@
             tool:text="Product" />
 
         <TextView
-            android:id="@+id/element_cart_product_tv_count"
+            android:id="@+id/countTv"
             style="@style/MediumRegularText"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/very_small_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/titleTv"
             tool:text="x 2" />
 
         <TextView
-            android:id="@+id/element_cart_product_tv_old_cost"
+            android:id="@+id/oldCostTv"
             style="@style/MediumSecondaryRegularText"
-            android:layout_marginTop="@dimen/small_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/very_small_margin"
-            android:layout_marginBottom="@dimen/small_margin"
+            app:layout_constraintBaseline_toBaselineOf="@+id/countTv"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/element_cart_product_tv_new_cost"
-            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_title"
+            app:layout_constraintEnd_toStartOf="@id/newCostTv"
+            app:layout_constraintTop_toBottomOf="@+id/titleTv"
             tool:text="100 ₽" />
 
         <TextView
-            android:id="@+id/element_cart_product_tv_new_cost"
+            android:id="@+id/newCostTv"
             style="@style/MediumRegularText"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBaseline_toBaselineOf="@+id/countTv"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/element_cart_product_tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/titleTv"
             tool:text="100 ₽" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

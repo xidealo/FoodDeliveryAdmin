@@ -20,12 +20,22 @@ class ServerOrderMapper @Inject constructor(
             comment = order.comment,
             deferred = order.deferredTime,
             delivery = order.isDelivery,
-            bonus = 0,
+            discount = 0,
             email = order.clientUser?.email ?: "",
             orderStatus = OrderStatus.valueOf(order.status),
             phone = order.clientUser?.phoneNumber ?: "",
             time = order.time,
             userId = order.clientUser?.uuid ?: "",
+            availableStatusList = order.availableStatusList.mapNotNull { status ->
+                val hasStatus = OrderStatus.values().any { orderStatus ->
+                    orderStatus.name == status
+                }
+                if (hasStatus) {
+                    OrderStatus.valueOf(status)
+                } else {
+                    null
+                }
+            }
         )
     }
 

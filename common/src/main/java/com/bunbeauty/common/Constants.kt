@@ -22,6 +22,7 @@ object Constants {
     const val MENU_PRODUCT_ARGS_KEY = "menuProduct"
     const val LIST_DATA_ARGS_KEY = "listData"
     const val ORDER_ARGS_KEY = "order"
+    const val ORDER_UUID_ARGS_KEY = "orderUuid"
     const val STATISTIC_ARGS_KEY = "statistic"
 
     // ERROR_KEY

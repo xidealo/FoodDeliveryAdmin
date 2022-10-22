@@ -5,10 +5,13 @@ import android.view.View
 import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
+import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -34,7 +37,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             orderListRv.addSpaceItemDecorator(R.dimen.very_small_margin)
             orderListRv.adapter = orderAdapter.apply {
                 onClickListener = { orderItemModel ->
-                    // TODO open order
+                    viewModel.onOrderClicked(orderItemModel.uuid)
                 }
             }
             cafeMcv.setOnClickListener {
@@ -53,23 +56,35 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
         eventList.forEach { event ->
             when (event) {
                 is OrderListState.Event.OpenCafeListEvent -> {
-                    val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->
-                        !job.isActive
-                    } ?: true
-                    if (isPossibleToOpen) {
-                        cafeListBottomSheetJob = lifecycleScope.launch {
-                            OptionListBottomSheet.show(
-                                parentFragmentManager,
-                                resources.getString(R.string.title_statistic_select_cafe),
-                                event.cafeList
-                            )?.let { result ->
-                                viewModel.onCafeSelected(result.value)
-                            }
-                        }
-                    }
+                    openCafeList(event.cafeList)
+                }
+                is OrderListState.Event.OpenOrderDetailsEvent -> {
+                    openOrderDetails(event.orderUuid)
                 }
             }
         }
         viewModel.consumeEvents(eventList)
     }
+
+    private fun openCafeList(cafeList: List<Option>) {
+        val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->
+            !job.isActive
+        } ?: true
+        if (isPossibleToOpen) {
+            cafeListBottomSheetJob = lifecycleScope.launch {
+                OptionListBottomSheet.show(
+                    parentFragmentManager,
+                    resources.getString(R.string.title_statistic_select_cafe),
+                    cafeList
+                )?.let { result ->
+                    viewModel.onCafeSelected(result.value)
+                }
+            }
+        }
+    }
+
+    private fun openOrderDetails(orderUuid: String) {
+        findNavController().navigate(toOrdersDetailsFragment(orderUuid))
+    }
+
 }

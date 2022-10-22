@@ -35,8 +35,8 @@
         android:label="ChangeStatusDialog"
         tools:layout="@layout/fragment_order_details">
         <argument
-            android:name="order"
-            app:argType="com.bunbeauty.domain.model.order.Order" />
+            android:name="orderUuid"
+            app:argType="string" />
         <action
             android:id="@+id/to_listBottomSheet"
             app:destination="@id/listBottomSheet" />

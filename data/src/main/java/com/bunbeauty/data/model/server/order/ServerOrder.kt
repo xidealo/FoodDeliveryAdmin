@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ServerOrder(
-    var uuid: String = "",
+    val uuid: String = "",
     val code: String = "",
     val status: String = "NOT_ACCEPTED",
     val time: Long = 0,
@@ -14,6 +14,8 @@ data class ServerOrder(
     val addressDescription: String = "",
     val comment: String? = null,
     val clientUser: ClientUserServer? = null,
-    var cafeUuid: String = "",
+    val cafeUuid: String = "",
+    val deliveryCost: Int? = null,
     val oderProductList: List<CartProductServer> = emptyList(),
+    val availableStatusList: List<String> = emptyList()
 )

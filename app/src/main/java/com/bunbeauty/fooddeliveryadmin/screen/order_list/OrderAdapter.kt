@@ -35,11 +35,13 @@ class OrderAdapter @Inject constructor(
     inner class OrderViewHolder(val binding: ElementOrderBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(orderItemModel: OrderItemModel) {
-            binding.codeTv.text = orderItemModel.code
-            binding.statusChip.text = orderItemModel.statusString
-            binding.statusChip.setChipBackgroundColorResource(getStatusColor(orderItemModel.status))
-            binding.timeTv.text = orderItemModel.time
-            binding.deferredTv.text = orderItemModel.deferredTime
+            binding.apply {
+                codeTv.text = orderItemModel.code
+                statusChip.text = orderItemModel.statusString
+                statusChip.setChipBackgroundColorResource(getStatusColor(orderItemModel.status))
+                timeTv.text = orderItemModel.time
+                deferredTv.text = orderItemModel.deferredTime
+            }
         }
 
         private fun getStatusColor(status: OrderStatus): Int {

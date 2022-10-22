@@ -4,10 +4,10 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.presentation.utils.IStringUtil
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
-    private val orderRepo: OrderRepo,
+    private val orderRepository: OrderRepository,
     private val cafeRepository: CafeRepository,
     private val dataStoreRepo: DataStoreRepo,
     private val stringUtil: IStringUtil,
@@ -72,6 +72,13 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
+    fun onOrderClicked(orderUuid: String) {
+        val openOrderDetailsEvent = OrderListState.Event.OpenOrderDetailsEvent(orderUuid)
+        mutableOrderListState.update { orderListState ->
+            orderListState.copy(eventList = orderListState.eventList + openOrderDetailsEvent)
+        }
+    }
+
     fun consumeEvents(events: List<OrderListState.Event>) {
         mutableOrderListState.update { orderListState ->
             orderListState.copy(eventList = orderListState.eventList - events.toSet())
@@ -81,8 +88,8 @@ class OrderListViewModel @Inject constructor(
     private fun unsubscribe(cafeUuid: String?, message: String) {
         if (cafeUuid != null) {
             viewModelScope.launch {
-                orderRepo.unsubscribeOnOrderList(cafeId = cafeUuid, message = message)
-                orderRepo.unsubscribeOnNotification(cafeId = cafeUuid)
+                orderRepository.unsubscribeOnOrderList(cafeId = cafeUuid, message = message)
+                orderRepository.unsubscribeOnNotification(cafeId = cafeUuid)
             }
         }
     }
@@ -92,13 +99,13 @@ class OrderListViewModel @Inject constructor(
             viewModelScope.launch {
                 val token = dataStoreRepo.token.first()
                 launch {
-                    orderRepo.subscribeOnOrderList(token = token, cafeId = cafeUuid)
+                    orderRepository.subscribeOnOrderList(token = token, cafeId = cafeUuid)
                 }
                 launch {
-                    orderRepo.subscribeOnNotification(cafeId = cafeUuid)
+                    orderRepository.subscribeOnNotification(cafeId = cafeUuid)
                 }
                 launch {
-                    orderRepo.loadOrderListByCafeId(token = token, cafeId = cafeUuid)
+                    orderRepository.loadOrderListByCafeUuid(token = token, cafeUuid = cafeUuid)
                 }
             }
         }
@@ -144,7 +151,7 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun observeOrderList() {
-        orderRepo.orderListFlow.onEach { orderList ->
+        orderRepository.orderListFlow.onEach { orderList ->
             mutableOrderListState.update { orderListState ->
                 val processedOrderList = orderList.map(::toItemModel)
                     .filter { orderItemModel ->

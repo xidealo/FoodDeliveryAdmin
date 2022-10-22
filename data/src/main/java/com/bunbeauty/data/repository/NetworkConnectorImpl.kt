@@ -189,12 +189,21 @@ class NetworkConnectorImpl @Inject constructor(
 
     override suspend fun getOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): ApiResult<ListServer<ServerOrder>> {
         return getData(
             path = "order",
             serializer = ListServer.serializer(ServerOrder.serializer()),
-            parameters = hashMapOf("cafeUuid" to cafeId),
+            parameters = hashMapOf("cafeUuid" to cafeUuid),
+            token = token
+        )
+    }
+
+    override suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<ServerOrder> {
+        return getData(
+            path = "order/details",
+            serializer = ServerOrder.serializer(),
+            parameters = hashMapOf("orderUuid" to orderUuid),
             token = token
         )
     }

@@ -55,8 +55,10 @@ interface NetworkConnector {
 
     suspend fun getOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): ApiResult<ListServer<ServerOrder>>
+
+    suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<ServerOrder>
 
     suspend fun updateOrderStatus(
         token: String,

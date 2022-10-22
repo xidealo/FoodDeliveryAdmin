@@ -22,7 +22,7 @@ class StatisticDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val statistic: Statistic = savedStateHandle.navArg(STATISTIC_ARGS_KEY)!!
+    private val statistic: Statistic by savedStateHandle.navArg(STATISTIC_ARGS_KEY)
 
     private val delivery by lazy {
         runBlocking {

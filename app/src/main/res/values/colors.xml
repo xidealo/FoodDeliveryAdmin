@@ -20,11 +20,11 @@
 
     <!-- SPECIAL -->
     <color name="errorColor">#B1021D</color>
-    <color name="notAcceptedColor">#AC92EC</color>
-    <color name="acceptedColor">#4FC1E9</color>
-    <color name="preparingColor">#5D9CEC</color>
-    <color name="sentOutColor">#FFCE54</color>
-    <color name="doneColor">#A0D451</color>
-    <color name="deliveredColor">#48CFAD</color>
-    <color name="canceledColor">#EC87C0</color>
+    <color name="notAcceptedColor">#815FB1</color>
+    <color name="acceptedColor">#5C82E0</color>
+    <color name="preparingColor">#DD6962</color>
+    <color name="sentOutColor">#ECA441</color>
+    <color name="doneColor">#86BD47</color>
+    <color name="deliveredColor">#62BC71</color>
+    <color name="canceledColor">#7B7A80</color>
 </resources>

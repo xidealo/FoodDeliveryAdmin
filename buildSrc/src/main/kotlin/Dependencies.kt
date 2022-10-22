@@ -20,6 +20,7 @@ object Versions {
     const val hilt = "2.40.1"
     const val hiltService = "2.40.1"
     const val fastAdapter = "5.3.4"
+    const val adapterDelegates = "4.3.2"
     const val roomDatabaseVersion = "2.4.2"
     const val joba = "2.10.9"
     const val crashlytics = "2.8.1"
@@ -92,6 +93,15 @@ object FastAdapter {
     const val fastAdapter = "com.mikepenz:fastadapter:${Versions.fastAdapter}"
     const val fastAdapterBinding =
         "com.mikepenz:fastadapter-extensions-binding:${Versions.fastAdapter}"
+}
+
+object AdapterDelegates {
+    const val adapterDelegates =
+        "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:${Versions.adapterDelegates}"
+    const val adapterDelegatesLayoutContainer =
+        "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:${Versions.adapterDelegates}"
+    const val adapterDelegatesViewbinding =
+        "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:${Versions.adapterDelegates}"
 }
 
 object Navigation {

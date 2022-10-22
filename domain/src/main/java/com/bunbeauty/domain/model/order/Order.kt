@@ -15,10 +15,12 @@ data class Order(
     val comment: String?,
     val deferred: Long?,
     val delivery: Boolean,
-    val bonus: Int?,
+    val discount: Int?,
     val email: String,
     val orderStatus: OrderStatus,
     val phone: String,
     val time: Long,
     val userId: String,
+    val deliveryCost: Int? = null,
+    val availableStatusList: List<OrderStatus>
 ) : Parcelable

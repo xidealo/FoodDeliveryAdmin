@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/element_order_mvc_main"
+    style="@style/DefaultMaterialCard"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/DefaultMaterialCard">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_padding">
 
         <TextView
             android:id="@+id/codeTv"
             style="@style/LargeBoldCenterText"
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -25,9 +26,9 @@
             android:id="@+id/statusChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:layout_marginEnd="203dp"
+            android:layout_marginStart="@dimen/small_margin"
             android:clickable="false"
+            android:textColor="@color/lightTextColor"
             app:chipMinTouchTargetSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/codeTv"
@@ -38,18 +39,19 @@
             android:id="@+id/timeTv"
             style="@style/SmallSecondaryText"
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/deferredTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             tool:text="5 мая 12:34" />
 
         <TextView
             android:id="@+id/deferredTv"
             style="@style/SmallRegularText"
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/very_small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timeTv"
