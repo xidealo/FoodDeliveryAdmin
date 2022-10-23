@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.core_ui.FIELD_ITEM_CALLBACK
@@ -27,6 +28,8 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
     override val viewModel: OrderDetailsViewModel by viewModels()
 
+    private var statusListJob: Job? = null
+
     private val adapter = AsyncListDifferDelegationAdapter(
         FIELD_ITEM_CALLBACK,
         getOrderDetailsDelegate { viewModel.onStatusClicked() },
@@ -39,6 +42,8 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         viewModel.orderDetailsState.onEach { orderDetailsState ->
             binding.apply {
                 codeTv.text = orderDetailsState.order?.code
+
+                adapter.items = orderDetailsState.itemModelList
 
                 val isDelivery = orderDetailsState.order?.delivery ?: false
                 deliveryCostTv.isVisible = isDelivery
@@ -60,11 +65,11 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
         binding.run {
             backBtn.setOnClickListener {
-                viewModel.goBack()
+                goBack()
             }
             detailsRv.adapter = adapter
             cancelBtn.setOnClickListener {
-                viewModel.goBack()
+                goBack()
             }
             saveBtn.setOnClickListener {
                 viewModel.onSaveClicked()
@@ -81,15 +86,16 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 OrderDetailsState.OpenWarningDialogEvent -> {
                     showCancellationWarning()
                 }
+                OrderDetailsState.GoBackEvent -> {
+                    goBack()
+                }
             }
         }
         viewModel.consumeEvents(eventList)
     }
 
-    private var statusListJob: Job? = null
-
     private fun openStatusList(statusList: List<Option>) {
-        if (statusListJob?.isActive != true) {
+        if (statusListJob?.isActive == true) {
             return
         }
         statusListJob = lifecycleScope.launch {
@@ -112,5 +118,9 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             }
             .setNegativeButton(R.string.action_order_details_no) { _, _ -> }
             .show()
+    }
+
+    private fun goBack() {
+        findNavController().navigateUp()
     }
 }

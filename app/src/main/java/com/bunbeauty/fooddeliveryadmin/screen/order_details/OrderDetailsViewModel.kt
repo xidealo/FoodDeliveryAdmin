@@ -80,7 +80,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     fun onStatusSelected(statusName: String) {
-        val orderStatus = stringUtil.getOrderStatusByString(statusName)
+        val orderStatus = OrderStatus.valueOf(statusName)
         mutableOrderDetailsState.update { orderDetailsState ->
             val order = orderDetailsState.order
             if (order == null) {
@@ -131,7 +131,7 @@ class OrderDetailsViewModel @Inject constructor(
                 discount = order.discount?.let { discount ->
                     resources.getString(R.string.with_ruble_negative, discount)
                 },
-                oldFinalCost = resources.getString(R.string.with_ruble, oldOrderCost),
+                oldFinalCost = oldOrderCost?.let { resources.getString(R.string.with_ruble, it) },
                 newFinalCost = resources.getString(R.string.with_ruble, newOrderCost),
                 selectedStatus = order.orderStatus,
                 isLoading = false
@@ -172,8 +172,13 @@ class OrderDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val token = dataStoreRepo.token.first()
             orderRepository.updateStatus(
-                token = token, orderUuid = orderUuid, status = selectedStatus
+                token = token,
+                orderUuid = orderUuid,
+                status = selectedStatus
             )
+            mutableOrderDetailsState.update { orderDetailsState ->
+                orderDetailsState.copy(eventList = orderDetailsState.eventList + OrderDetailsState.GoBackEvent)
+            }
         }
     }
 }

@@ -203,7 +203,7 @@ class NetworkConnectorImpl @Inject constructor(
         return getData(
             path = "order/details",
             serializer = ServerOrder.serializer(),
-            parameters = hashMapOf("orderUuid" to orderUuid),
+            parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
     }

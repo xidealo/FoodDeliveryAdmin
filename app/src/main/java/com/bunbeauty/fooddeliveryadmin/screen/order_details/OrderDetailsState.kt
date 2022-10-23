@@ -20,4 +20,5 @@ data class OrderDetailsState(
     sealed class Event
     class OpenStatusListEvent(val statusList: List<Option>) : Event()
     object OpenWarningDialogEvent : Event()
+    object GoBackEvent : Event()
 }

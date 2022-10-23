@@ -149,66 +149,46 @@
         app:layout_constraintTop_toBottomOf="@+id/commentTv"
         tools:text="Сделайте вкусно" />
 
+    <TextView
+        android:id="@+id/statusTv"
+        style="@style/SmallSecondaryText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:text="@string/msg_order_details_order_status"
+        app:layout_constraintStart_toStartOf="@+id/leftGl"
+        app:layout_constraintTop_toBottomOf="@+id/commentValueTv" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/statusMcv"
         style="@style/DefaultMaterialCard"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/very_small_margin"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/rightGl"
         app:layout_constraintStart_toStartOf="@+id/leftGl"
-        app:layout_constraintTop_toBottomOf="@+id/commentValueTv">
+        app:layout_constraintTop_toBottomOf="@+id/statusTv">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/statusValueTv"
+            style="@style/LargeRegularText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small_padding">
+            android:layout_margin="@dimen/small_margin"
+            tools:text="@string/msg_status_ready"
+            app:drawableEndCompat="@drawable/ic_right_arrow" />
 
-            <TextView
-                android:id="@+id/statusTv"
-                style="@style/SmallSecondaryText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/very_small_margin"
-                android:text="@string/msg_order_details_order_status"
-                app:layout_constraintEnd_toStartOf="@+id/statusIv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/statusValueTv"
-                style="@style/LargeRegularText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/very_small_margin"
-                android:layout_marginEnd="@dimen/very_small_margin"
-                app:layout_constraintEnd_toStartOf="@+id/statusIv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statusTv"
-                tools:text="@string/msg_status_ready" />
-
-            <ImageView
-                android:id="@+id/statusIv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_right_arrow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/productListTv"
         style="@style/SmallSecondaryText"
         android:layout_width="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/very_small_margin"
         android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginBottom="@dimen/very_small_margin"
         android:text="@string/msg_order_details_order_list"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/leftGl"
         app:layout_constraintTop_toBottomOf="@+id/statusMcv" />
 
