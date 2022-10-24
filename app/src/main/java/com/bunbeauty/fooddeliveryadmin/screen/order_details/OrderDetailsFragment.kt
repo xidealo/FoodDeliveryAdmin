@@ -50,9 +50,9 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 deliveryCostValueTv.isVisible = isDelivery
                 deliveryCostValueTv.text = orderDetailsState.deliveryCost
 
-                discountTv.isVisible = orderDetailsState.deliveryCost != null
-                discountValueTv.isVisible = orderDetailsState.deliveryCost != null
-                discountValueTv.text = orderDetailsState.deliveryCost
+                discountTv.isVisible = orderDetailsState.discount != null
+                discountValueTv.isVisible = orderDetailsState.discount != null
+                discountValueTv.text = orderDetailsState.discount
 
                 finalCostOldValueTv.isVisible = orderDetailsState.oldFinalCost != null
                 finalCostOldValueTv.text = orderDetailsState.oldFinalCost

@@ -6,6 +6,7 @@ import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
+import com.bunbeauty.domain.model.order.OrderDetails
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -59,7 +60,7 @@ class OrderRepository @Inject constructor(
         }
     }
 
-    suspend fun loadOrderByUuid(token: String, orderUuid: String): Order? {
+    suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
         return when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
             is ApiResult.Success -> {
                 serverOrderMapper.toModel(result.data)

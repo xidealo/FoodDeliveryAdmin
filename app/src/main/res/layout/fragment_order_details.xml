@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/large_margin"
             android:layout_marginEnd="@dimen/very_small_margin"
-            android:text="@string/action_order_details_cancel"
+            android:text="@string/action_order_details_do_not_save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/saveBtn"
             app:layout_constraintStart_toStartOf="@+id/bottomLeftGl"

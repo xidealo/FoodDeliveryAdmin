@@ -7,6 +7,7 @@ import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
+import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
@@ -168,7 +169,7 @@ class OrderListViewModel @Inject constructor(
             status = order.orderStatus,
             statusString = stringUtil.getOrderStatusString(order.orderStatus),
             code = order.code,
-            deferredTime = stringUtil.getDeferredTimeString(order.deferred) ?: "",
+            deferredTime = stringUtil.getDeferredTimeString(order.deferredTime) ?: "",
             time = dateTimeUtil.getDateTimeDDMMHHMM(order.time)
         )
     }

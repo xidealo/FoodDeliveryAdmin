@@ -8,7 +8,7 @@ import com.bunbeauty.common.Constants.ORDER_UUID_ARGS_KEY
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.CANCELED
-import com.bunbeauty.domain.model.order.Order
+import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.domain.util.order.IOrderUtil
@@ -118,7 +118,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     @SuppressLint("StringFormatMatches")
-    private fun updateOrderDetailsState(order: Order) {
+    private fun updateOrderDetailsState(order: OrderDetails) {
         val oldOrderCost = orderUtil.getOldOrderCost(order)
         val newOrderCost = orderUtil.getNewOrderCost(order)
         mutableOrderDetailsState.update { orderDetailsState ->
@@ -126,7 +126,11 @@ class OrderDetailsViewModel @Inject constructor(
                 order = order,
                 itemModelList = buildItemModelList(order),
                 deliveryCost = order.deliveryCost?.let { deliveryCost ->
-                    resources.getString(R.string.with_ruble, deliveryCost)
+                    if (deliveryCost == 0) {
+                        resources.getString(R.string.msg_order_delivery_free)
+                    } else {
+                        resources.getString(R.string.with_ruble, deliveryCost)
+                    }
                 },
                 discount = order.discount?.let { discount ->
                     resources.getString(R.string.with_ruble_negative, discount)
@@ -139,7 +143,7 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun buildItemModelList(order: Order): List<ListItem> = buildList {
+    private fun buildItemModelList(order: OrderDetails): List<ListItem> = buildList {
         add(
             OrderDetailsItem(
                 uuid = order.uuid,

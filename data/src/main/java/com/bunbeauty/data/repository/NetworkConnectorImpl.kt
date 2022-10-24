@@ -12,6 +12,7 @@ import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.ServerOrderDetails
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -199,10 +200,13 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<ServerOrder> {
+    override suspend fun getOrderByUuid(
+        token: String,
+        orderUuid: String
+    ): ApiResult<ServerOrderDetails> {
         return getData(
             path = "order/details",
-            serializer = ServerOrder.serializer(),
+            serializer = ServerOrderDetails.serializer(),
             parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
@@ -212,11 +216,11 @@ class NetworkConnectorImpl @Inject constructor(
         token: String,
         orderUuid: String,
         status: OrderStatus
-    ): ApiResult<ServerOrder> {
+    ): ApiResult<ServerOrderDetails> {
         return patchData(
             path = "order",
             body = hashMapOf("status" to status.toString()),
-            serializer = ServerOrder.serializer(),
+            serializer = ServerOrderDetails.serializer(),
             parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
