@@ -44,7 +44,7 @@
         android:layout_margin="@dimen/small_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statusMcv">
+        app:layout_constraintTop_toBottomOf="@+id/fragmentStatisticMcvCafe">
 
         <TextView
             android:id="@+id/fragmentStatisticTvInterval"
