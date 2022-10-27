@@ -11,6 +11,7 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,17 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             cafeMcv.setOnClickListener {
                 viewModel.onCafeClicked()
             }
+            toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.logout -> {
+                        openLogoutConfirmation()
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
             viewModel.orderListState.collectWithLifecycle { orderListState ->
                 loadingLpi.isInvisible = !orderListState.isLoading
                 cafeTv.text = orderListState.selectedCafe?.address
@@ -61,6 +73,9 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
                 is OrderListState.Event.OpenOrderDetailsEvent -> {
                     openOrderDetails(event.orderUuid)
                 }
+                OrderListState.Event.OpenLoginEvent -> {
+                    findNavController().navigate(toLoginFragment())
+                }
             }
         }
         viewModel.consumeEvents(eventList)
@@ -74,11 +89,34 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             cafeListBottomSheetJob = lifecycleScope.launch {
                 OptionListBottomSheet.show(
                     parentFragmentManager,
-                    resources.getString(R.string.title_statistic_select_cafe),
+                    resources.getString(R.string.title_orders_select_cafe),
                     cafeList
                 )?.let { result ->
                     viewModel.onCafeSelected(result.value)
                 }
+            }
+        }
+    }
+
+    private fun openLogoutConfirmation() {
+        lifecycleScope.launch {
+            OptionListBottomSheet.show(
+                fragmentManager = parentFragmentManager,
+                title = resources.getString(R.string.title_logout),
+                options = listOf(
+                    Option(
+                        id = LogoutOption.LOGOUT.name,
+                        title = resources.getString(R.string.action_logout),
+                        isPrimary = true
+                    ),
+                    Option(
+                        id = LogoutOption.CANCEL.name,
+                        title = resources.getString(R.string.action_cancel)
+                    )
+                ),
+                isCenter = true
+            )?.value?.let { resultValue ->
+                viewModel.onLogout(resultValue)
             }
         }
     }

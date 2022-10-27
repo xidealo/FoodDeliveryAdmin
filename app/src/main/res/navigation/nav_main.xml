@@ -23,11 +23,13 @@
         android:label="OrdersFragment"
         tools:layout="@layout/fragment_orders">
         <action
-            android:id="@+id/to_OrdersDetailsFragment"
+            android:id="@+id/to_ordersDetailsFragment"
             app:destination="@id/ordersDetailsFragment" />
         <action
-            android:id="@+id/to_listBottomSheet"
-            app:destination="@id/listBottomSheet" />
+            android:id="@+id/to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_main"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/ordersDetailsFragment"
@@ -37,9 +39,6 @@
         <argument
             android:name="orderUuid"
             app:argType="string" />
-        <action
-            android:id="@+id/to_listBottomSheet"
-            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/statisticFragment"
@@ -49,9 +48,6 @@
         <action
             android:id="@+id/to_statisticDetailsFragment"
             app:destination="@id/statisticDetailsFragment" />
-        <action
-            android:id="@+id/to_listBottomSheet"
-            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/statisticDetailsFragment"
@@ -98,8 +94,8 @@
     <dialog
         android:id="@+id/listBottomSheet"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet"
-        tools:layout="@layout/bottom_sheet_option_list"
-        android:label="ListBottomSheet" >
+        android:label="ListBottomSheet"
+        tools:layout="@layout/bottom_sheet_option_list">
         <argument
             android:name="listData"
             app:argType="com.bunbeauty.presentation.model.ListData" />

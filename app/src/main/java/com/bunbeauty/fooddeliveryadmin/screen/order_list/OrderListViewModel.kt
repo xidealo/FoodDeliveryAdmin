@@ -7,7 +7,6 @@ import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
@@ -48,7 +47,8 @@ class OrderListViewModel @Inject constructor(
 
     fun onCafeClicked() {
         viewModelScope.launch {
-            val cafeList = cafeRepository.getCafeList().map { cafe ->
+            val cityUuid = dataStoreRepo.managerCity.first()
+            val cafeList = cafeRepository.getCafeListByCityUuid(cityUuid).map { cafe ->
                 Option(
                     id = cafe.uuid,
                     title = cafe.address,
@@ -77,6 +77,17 @@ class OrderListViewModel @Inject constructor(
         val openOrderDetailsEvent = OrderListState.Event.OpenOrderDetailsEvent(orderUuid)
         mutableOrderListState.update { orderListState ->
             orderListState.copy(eventList = orderListState.eventList + openOrderDetailsEvent)
+        }
+    }
+
+    fun onLogout(logoutOption: String) {
+        if (LogoutOption.valueOf(logoutOption) == LogoutOption.LOGOUT) {
+            viewModelScope.launch {
+                dataStoreRepo.clearCache()
+                mutableOrderListState.update { orderListState ->
+                    orderListState.copy(eventList = orderListState.eventList + OrderListState.Event.OpenLoginEvent)
+                }
+            }
         }
     }
 
@@ -118,8 +129,7 @@ class OrderListViewModel @Inject constructor(
         }
         viewModelScope.launch {
             cafeRepository.refreshCafeList(
-                token = dataStoreRepo.token.first(),
-                cityUuid = dataStoreRepo.managerCity.first()
+                token = dataStoreRepo.token.first(), cityUuid = dataStoreRepo.managerCity.first()
             )
             refreshSelectedCafe()
         }
@@ -133,15 +143,14 @@ class OrderListViewModel @Inject constructor(
         val selectedCafe = dataStoreRepo.cafeUuid.first()?.let { cafeUuid ->
             cafeRepository.getCafeByUuid(cafeUuid)?.address?.let { address ->
                 SelectedCafe(
-                    uuid = cafeUuid,
-                    address = address
+                    uuid = cafeUuid, address = address
                 )
             }
         } ?: run {
-            cafeRepository.getCafeList().firstOrNull()?.let { firstCafe ->
+            val cityUuid = dataStoreRepo.managerCity.first()
+            cafeRepository.getCafeListByCityUuid(cityUuid).firstOrNull()?.let { firstCafe ->
                 SelectedCafe(
-                    uuid = firstCafe.uuid,
-                    address = firstCafe.address
+                    uuid = firstCafe.uuid, address = firstCafe.address
                 )
             }
         }
@@ -154,10 +163,9 @@ class OrderListViewModel @Inject constructor(
     private fun observeOrderList() {
         orderRepository.orderListFlow.onEach { orderList ->
             mutableOrderListState.update { orderListState ->
-                val processedOrderList = orderList.map(::toItemModel)
-                    .filter { orderItemModel ->
-                        orderItemModel.status != OrderStatus.CANCELED
-                    }
+                val processedOrderList = orderList.map(::toItemModel).filter { orderItemModel ->
+                    orderItemModel.status != OrderStatus.CANCELED
+                }
                 orderListState.copy(orderList = processedOrderList)
             }
         }.launchIn(viewModelScope)

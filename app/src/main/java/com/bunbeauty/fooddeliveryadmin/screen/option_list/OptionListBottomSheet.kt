@@ -4,10 +4,12 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.TEXT_ALIGNMENT_CENTER
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.BottomSheetOptionListBinding
+import com.bunbeauty.fooddeliveryadmin.databinding.ElementPrimaryTextBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementTextBinding
 import com.bunbeauty.fooddeliveryadmin.util.argument
 import com.bunbeauty.fooddeliveryadmin.util.setLinearLayoutMargins
@@ -21,6 +23,7 @@ class OptionListBottomSheet : BottomSheetDialogFragment() {
 
     private var title by argument<String>()
     private var options by argument<List<Option>>()
+    private var isCenter by argument<Boolean>()
     private var callback: Callback? = null
 
     private var mutableBinding: BottomSheetOptionListBinding? = null
@@ -44,20 +47,38 @@ class OptionListBottomSheet : BottomSheetDialogFragment() {
         binding.run {
             bottomSheetOptionListTvTitle.text = title
             options.onEachIndexed { i, option ->
-                ElementTextBinding.inflate(layoutInflater, bottomSheetOptionListLlList, false)
-                    .also { elementBinding ->
-                        bottomSheetOptionListLlList.addView(elementBinding.root)
-                        if (i > 0) {
-                            elementBinding.root.setLinearLayoutMargins(
-                                top = resources.getDimensionPixelOffset(R.dimen.small_margin)
-                            )
-                        }
-                        elementBinding.elementTextTvTitle.text = option.title
-                        elementBinding.root.setOnClickListener {
-                            callback?.onClicked(option.id)
-                            dismiss()
-                        }
+                val (binding, textView) = if (option.isPrimary) {
+                    val elementBinding = ElementPrimaryTextBinding.inflate(
+                        layoutInflater,
+                        bottomSheetOptionListLlList,
+                        false
+                    )
+                    elementBinding to elementBinding.elementTextTvTitle
+                } else {
+                    val elementBinding = ElementTextBinding.inflate(
+                        layoutInflater,
+                        bottomSheetOptionListLlList,
+                        false
+                    )
+                    elementBinding to elementBinding.elementTextTvTitle
+                }
+
+                binding.also { elementBinding ->
+                    bottomSheetOptionListLlList.addView(elementBinding.root)
+                    if (i > 0) {
+                        elementBinding.root.setLinearLayoutMargins(
+                            top = resources.getDimensionPixelOffset(R.dimen.small_margin)
+                        )
                     }
+                    if (isCenter) {
+                        textView.textAlignment = TEXT_ALIGNMENT_CENTER
+                    }
+                    textView.text = option.title
+                    elementBinding.root.setOnClickListener {
+                        callback?.onClicked(option.id)
+                        dismiss()
+                    }
+                }
             }
         }
     }
@@ -78,11 +99,13 @@ class OptionListBottomSheet : BottomSheetDialogFragment() {
         suspend fun show(
             fragmentManager: FragmentManager,
             title: String,
-            options: List<Option>
+            options: List<Option>,
+            isCenter: Boolean = false
         ) = suspendCoroutine<OptionListResult?> { continuation ->
             OptionListBottomSheet().apply {
                 this.title = title
                 this.options = options
+                this.isCenter = isCenter
                 callback = object : Callback {
                     override fun onClicked(id: String?) {
                         continuation.resume(OptionListResult(id))

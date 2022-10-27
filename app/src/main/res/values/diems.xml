@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- TOOLBAR -->
+    <dimen name="toolbar_height">56dp</dimen>
+
     <!-- TEXT -->
     <dimen name="large_text_size">16sp</dimen>
     <dimen name="medium_text_size">14sp</dimen>

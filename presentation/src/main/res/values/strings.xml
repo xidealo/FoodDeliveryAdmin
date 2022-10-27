@@ -39,9 +39,15 @@
     <string name="msg_status_canceled">Отменен</string>
 
     <!-- ORDERS -->
+    <string name="title_orders">Заказы</string>
     <string name="title_messaging_new_order">Новый заказ</string>
     <string name="msg_messaging_new_order">Новый заказ</string>
     <string name="title_orders_select_cafe">Выберите кафе</string>
+
+    <!-- LOGOUT -->
+    <string name="title_logout">Выйти из профиля?</string>
+    <string name="action_logout">Выйти</string>
+    <string name="action_cancel">Отмена</string>
 
     <!-- STATISTIC -->
     <string name="msg_statistic_orders">Заказов:&#160;</string>

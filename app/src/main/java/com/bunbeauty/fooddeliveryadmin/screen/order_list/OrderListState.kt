@@ -12,6 +12,7 @@ data class OrderListState(
     sealed class Event {
         class OpenCafeListEvent(val cafeList: List<Option>) : Event()
         class OpenOrderDetailsEvent(val orderUuid: String) : Event()
+        object OpenLoginEvent : Event()
     }
 }
 

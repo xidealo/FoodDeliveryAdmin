@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/ordersFragment"
-        android:icon="@drawable/ic_order"
+        android:icon="@drawable/ic_orders"
         android:title="@string/title_bottom_navigation_menu_orders" />
     <item
         android:id="@+id/statisticFragment"
