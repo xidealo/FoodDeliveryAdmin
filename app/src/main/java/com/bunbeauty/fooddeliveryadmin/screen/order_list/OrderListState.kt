@@ -10,6 +10,7 @@ data class OrderListState(
 ) {
 
     sealed class Event {
+        object ScrollToTop : Event()
         class OpenCafeListEvent(val cafeList: List<Option>) : Event()
         class OpenOrderDetailsEvent(val orderUuid: String) : Event()
         object OpenLoginEvent : Event()

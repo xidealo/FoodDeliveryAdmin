@@ -43,16 +43,16 @@ interface NetworkConnector {
 
     // ORDER
 
-    suspend fun subscribeOnNotification(cafeId: String)
+    suspend fun subscribeOnNotification(cafeUuid: String)
 
     suspend fun subscribeOnOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): Flow<ApiResult<ServerOrder>>
 
     suspend fun unsubscribeOnNotification(cafeId: String)
 
-    suspend fun unsubscribeOnOrderList(cafeId: String, message: String)
+    suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeId(
         token: String,

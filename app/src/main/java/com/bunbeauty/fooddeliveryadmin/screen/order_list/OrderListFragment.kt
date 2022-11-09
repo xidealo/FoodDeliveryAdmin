@@ -16,6 +16,7 @@ import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirect
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,6 +68,12 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
     private fun handleEvents(eventList: List<OrderListState.Event>) {
         eventList.forEach { event ->
             when (event) {
+                is OrderListState.Event.ScrollToTop -> {
+                    lifecycleScope.launch {
+                        delay(500)
+                        binding.orderListRv.smoothScrollToPosition(0)
+                    }
+                }
                 is OrderListState.Event.OpenCafeListEvent -> {
                     openCafeList(event.cafeList)
                 }

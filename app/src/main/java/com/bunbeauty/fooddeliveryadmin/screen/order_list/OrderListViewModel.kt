@@ -100,7 +100,7 @@ class OrderListViewModel @Inject constructor(
     private fun unsubscribe(cafeUuid: String?, message: String) {
         if (cafeUuid != null) {
             viewModelScope.launch {
-                orderRepository.unsubscribeOnOrderList(cafeId = cafeUuid, message = message)
+                orderRepository.unsubscribeOnOrderList(message = message)
                 orderRepository.unsubscribeOnNotification(cafeId = cafeUuid)
             }
         }
@@ -110,15 +110,9 @@ class OrderListViewModel @Inject constructor(
         if (cafeUuid != null) {
             viewModelScope.launch {
                 val token = dataStoreRepo.token.first()
-                launch {
-                    orderRepository.subscribeOnOrderList(token = token, cafeId = cafeUuid)
-                }
-                launch {
-                    orderRepository.subscribeOnNotification(cafeId = cafeUuid)
-                }
-                launch {
-                    orderRepository.loadOrderListByCafeUuid(token = token, cafeUuid = cafeUuid)
-                }
+                orderRepository.subscribeOnOrderList(token = token, cafeUuid = cafeUuid)
+                orderRepository.subscribeOnNotification(cafeUuid = cafeUuid)
+                orderRepository.loadOrderListByCafeUuid(token = token, cafeUuid = cafeUuid)
             }
         }
     }
@@ -166,7 +160,15 @@ class OrderListViewModel @Inject constructor(
                 val processedOrderList = orderList.map(::toItemModel).filter { orderItemModel ->
                     orderItemModel.status != OrderStatus.CANCELED
                 }
-                orderListState.copy(orderList = processedOrderList)
+                val newEventList = if (orderListState.orderList.size < orderList.size) {
+                    orderListState.eventList + OrderListState.Event.ScrollToTop
+                } else {
+                    orderListState.eventList
+                }
+                orderListState.copy(
+                    orderList = processedOrderList,
+                    eventList = newEventList
+                )
             }
         }.launchIn(viewModelScope)
     }

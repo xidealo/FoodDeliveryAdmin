@@ -50,12 +50,17 @@ dependencies {
 
     //DataStore
     implementation(DataStore.dataStorePreferences)
-    
-    implementation(Ktor.clientJson)
-    implementation(Ktor.clientLogging)
-    implementation(Ktor.clientSerialization)
-    implementation(Ktor.clientAndroid)
-    implementation(Ktor.clientOkhttp)
+
+    Ktor.run {
+        implementation(clientSerialization)
+        implementation(clientLogging)
+        implementation(clientWebsockets)
+        implementation(negotiation)
+        implementation(serializerJson)
+        implementation(clientJson)
+        implementation(clientAuth)
+        implementation(clientOkhttp)
+    }
 
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
