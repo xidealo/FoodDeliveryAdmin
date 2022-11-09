@@ -45,13 +45,5 @@ class StatisticDetailsViewModel @Inject constructor(
         }
 
     val productStatisticList: List<ProductStatisticItemModel>
-        get() = statistic.productStatisticList
-            .map { productStatistic ->
-                ProductStatisticItemModel(
-                    name = productStatistic.name,
-                    orderCount = productStatistic.orderCount.toString(),
-                    count = productStatistic.productCount.toString(),
-                    cost = stringUtil.getCostString(productStatistic.proceeds)
-                )
-            }
+        get() = emptyList()
 }
