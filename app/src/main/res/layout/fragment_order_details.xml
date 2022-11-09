@@ -6,39 +6,36 @@
     android:layout_height="match_parent"
     android:background="@color/mainBackground">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/backBtn"
-        style="@style/TransparentCircleButton"
-        android:layout_width="@dimen/small_button_size"
-        android:layout_height="@dimen/small_button_size"
-        android:layout_margin="@dimen/small_margin"
-        app:icon="@drawable/ic_left_arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/elementBackground"
+        app:layout_collapseMode="pin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_left">
 
-    <TextView
-        android:id="@+id/codeTv"
-        style="@style/LargeBoldCenterText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/elementBackground"
-        app:layout_constraintBaseline_toBaselineOf="@+id/backBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tool:text="M-30" />
+        <TextView
+            android:id="@+id/codeTv"
+            style="@style/LargeBoldCenterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tool:text="A-00" />
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detailsRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/medium_margin"
-        android:layout_marginBottom="@dimen/small_margin"
+        android:clipToPadding="false"
         android:overScrollMode="never"
+        android:paddingTop="@dimen/medium_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/bottomCl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/codeTv"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tool:itemCount="5"
         tool:listitem="@layout/element_order_product" />
 

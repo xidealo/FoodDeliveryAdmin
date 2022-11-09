@@ -64,7 +64,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         }.startedLaunch(viewLifecycleOwner)
 
         binding.run {
-            backBtn.setOnClickListener {
+            toolbar.setNavigationOnClickListener {
                 goBack()
             }
             detailsRv.adapter = adapter
