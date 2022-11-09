@@ -87,8 +87,8 @@ dependencies {
     implementation(Navigation.navigationUi)
 
     //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.messaging)
 
     // Lifecycle
     implementation(Lifecycle.lifecycleExtensions)

@@ -16,6 +16,7 @@ import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@Deprecated("Use MaterialCardView or compose")
 @AndroidEntryPoint
 class NavigationCardView @JvmOverloads constructor(
     context: Context,
@@ -50,8 +51,6 @@ class NavigationCardView @JvmOverloads constructor(
     private var textView: TextView? = null
 
     init {
-        //strokeWidth = resourcesProvider.getDimension(R.dimen.button_stroke_width)
-        //strokeColor = resourcesProvider.getColor(R.color.colorPrimary)
         radius = resourcesProvider.getDimensionFloat(R.dimen.medium_radius)
         cardElevation = 0f
 

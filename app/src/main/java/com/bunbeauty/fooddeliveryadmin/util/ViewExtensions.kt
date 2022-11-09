@@ -14,21 +14,25 @@ import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 
+@Deprecated("Use Kotlin ext")
 fun View.invisible(): View {
     visibility = View.INVISIBLE
     return this
 }
 
+@Deprecated("Use Kotlin ext")
 fun View.visible(): View {
     visibility = View.VISIBLE
     return this
 }
 
+@Deprecated("Use Kotlin ext")
 fun View.gone(): View {
     visibility = View.GONE
     return this
 }
 
+@Deprecated("Use Kotlin ext")
 fun View.toggleVisibility(isVisible: Boolean): View {
     if (isVisible) {
         this.visible()

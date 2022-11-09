@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.ordersFragment, R.id.statisticFragment, R.id.menuFragment -> {
                     toggleBottomNavigationBarVisibility(true)
-                    val countDestination = navController.backStack.count { navBackStackEntry ->
+                    val countDestination = navController.backQueue.count { navBackStackEntry ->
                         navBackStackEntry.destination.id == destination.id
                     }
                     if (countDestination > 1) {
