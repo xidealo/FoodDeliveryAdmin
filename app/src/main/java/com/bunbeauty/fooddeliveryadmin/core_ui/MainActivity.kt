@@ -4,22 +4,17 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
-import com.bunbeauty.fooddeliveryadmin.util.toggleVisibility
 import com.bunbeauty.presentation.view_model.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var router: Router
 
     val viewModel: MainViewModel by viewModels()
 
@@ -29,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        router.attach(this, R.id.activity_main_fcv_container)
 
         setupBottomNavigationBar()
     }
@@ -56,10 +49,10 @@ class MainActivity : AppCompatActivity() {
                 else -> toggleBottomNavigationBarVisibility(false)
             }
         }
-        binding.activityMainBnvBottomNavigationBar.setOnItemReselectedListener {  }
+        binding.activityMainBnvBottomNavigationBar.setOnItemReselectedListener { }
     }
 
     private fun toggleBottomNavigationBarVisibility(isVisible: Boolean) {
-        binding.activityMainBnvBottomNavigationBar.toggleVisibility(isVisible)
+        binding.activityMainBnvBottomNavigationBar.isVisible = isVisible
     }
 }

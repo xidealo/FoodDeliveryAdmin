@@ -41,10 +41,8 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
         //Log.d("NotificationTag", "onMessageReceived")
 
         launch(IO) {
-            dataStoreRepo.cafeUuid.first().let { cafeId ->
-                withContext(Main) {
-                    showNotification(remoteMessage.data[ORDER_CODE] ?: "")
-                }
+            withContext(Main) {
+                showNotification(remoteMessage.data[ORDER_CODE] ?: "")
             }
         }
     }

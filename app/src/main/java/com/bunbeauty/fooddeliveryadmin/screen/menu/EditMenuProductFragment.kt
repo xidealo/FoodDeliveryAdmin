@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import coil.load
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
@@ -14,9 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.util.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.EditMenuProductViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -44,7 +43,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.run {
             fragmentEditMenuProductBtnBack.setOnClickListener {
-                viewModel.goBack()
+
             }
             fragmentEditMenuProductBtnVisibility.setOnClickListener {
                 viewModel.switchVisibility()
@@ -72,7 +71,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
             fragmentEditMenuProductEtDescription.setText(viewModel.description)
             fragmentEditMenuProductEtComboDescription.setText(viewModel.comboDescription)
             viewModel.isComboDescriptionVisible.onEach { isVisible ->
-                fragmentEditMenuProductTilComboDescription.toggleVisibility(isVisible)
+                fragmentEditMenuProductTilComboDescription.isVisible = isVisible
             }.startedLaunch(viewLifecycleOwner)
             fragmentEditMenuProductBtnDelete.setOnClickListener {
                 showDeleteDialog()
@@ -96,18 +95,6 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
             textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] =
                 fragmentEditMenuProductTilComboDescription
         }
-
-        viewModel.navigation.onEach { navigationEvent ->
-            when (navigationEvent) {
-                is EditMenuProductNavigationEvent.ToProductCodeList ->
-                    router.navigate(
-                        EditMenuProductFragmentDirections.toListBottomSheet(
-                            navigationEvent.listData
-                        )
-                    )
-                else -> Unit
-            }
-        }.startedLaunch(viewLifecycleOwner)
     }
 
     fun showDeleteDialog() {

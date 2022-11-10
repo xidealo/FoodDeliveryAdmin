@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.navigation_event.NavigationEvent
 import com.bunbeauty.presentation.view_model.BaseViewModel
@@ -19,9 +18,6 @@ import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
 
 abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragment() {
-
-    @Inject
-    lateinit var router: Router
 
     private var mutableBinding: B? = null
     protected val binding
@@ -50,11 +46,6 @@ abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragmen
         (dialog as? BottomSheetDialog)?.behavior?.apply {
             state = BottomSheetBehavior.STATE_EXPANDED
         }
-        viewModel.navigation.onEach { navigationEvent ->
-            if (navigationEvent is NavigationEvent.Back) {
-                router.navigateUp()
-            }
-        }.startedLaunch(viewLifecycleOwner)
     }
 
     override fun onDestroyView() {

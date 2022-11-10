@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
@@ -16,10 +17,8 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.util.toggleVisibility
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.presentation.model.list.MenuProductCode
-import com.bunbeauty.presentation.navigation_event.CreateMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +46,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
 
         binding.run {
             fragmentCreateMenuProductBtnBack.setOnClickListener {
-                viewModel.goBack()
+
             }
             fragmentCreateMenuProductBtnVisibility.setOnClickListener {
                 viewModel.switchVisibility()
@@ -76,7 +75,7 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
                 viewModel.goToProductCodeList()
             }
             viewModel.isComboDescriptionVisible.onEach { isVisible ->
-                fragmentCreateMenuProductTilComboDescription.toggleVisibility(isVisible)
+                fragmentCreateMenuProductTilComboDescription.isVisible = isVisible
             }.startedLaunch(viewLifecycleOwner)
 
             textInputMap[PRODUCT_NAME_ERROR_KEY] = fragmentCreateMenuProductTilName
@@ -98,12 +97,5 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
             }
         }
 
-        viewModel.navigation.onEach { navigationEvent ->
-            when (navigationEvent) {
-                is CreateMenuProductNavigationEvent.ToProductCodeList ->
-                    router.navigate(CreateMenuProductFragmentDirections.toListBottomSheet(navigationEvent.listData))
-                else -> Unit
-            }
-        }.startedLaunch(viewLifecycleOwner)
     }
 }

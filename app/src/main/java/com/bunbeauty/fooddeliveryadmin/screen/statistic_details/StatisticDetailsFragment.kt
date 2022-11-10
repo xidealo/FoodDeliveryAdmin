@@ -20,7 +20,7 @@ class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>()
 
         binding.run {
             fragmentStatisticDetailsBtnBack.setOnClickListener {
-                viewModel.goBack()
+
             }
             fragmentStatisticDetailsTvPeriod.text = viewModel.period
             fragmentStatisticDetailsTvTotalProceedsValue.text = viewModel.proceeds

@@ -2,13 +2,11 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
-import com.bunbeauty.fooddeliveryadmin.util.invisible
-import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.util.visible
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
+import com.bunbeauty.fooddeliveryadmin.databinding.FragmentMenuBinding
+import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.view_model.menu.MenuViewModel
 import com.mikepenz.fastadapter.FastAdapter
@@ -40,25 +38,15 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         viewModel.productListState.onEach { productListState ->
             when (productListState) {
                 is State.Loading -> {
-                    binding.fragmentMenuLpiLoading.visible()
+                    binding.fragmentMenuLpiLoading.isVisible = true
                 }
                 is State.Success -> {
                     val items = productListState.data.map { menuProductItemModel ->
                         MenuProductItem(menuProductItemModel)
                     }
                     itemAdapter.set(items)
-                    binding.fragmentMenuLpiLoading.invisible()
+                    binding.fragmentMenuLpiLoading.isVisible = false
                 }
-                else -> Unit
-            }
-        }.startedLaunch(viewLifecycleOwner)
-
-        viewModel.navigation.onEach { navigationEvent ->
-            when (navigationEvent) {
-                is MenuNavigationEvent.ToCreateMenuProduct ->
-                    router.navigate(MenuFragmentDirections.toCreateMenuProductFragment())
-                is MenuNavigationEvent.ToEditMenuProduct ->
-                    router.navigate(MenuFragmentDirections.toEditMenuProductFragment(navigationEvent.menuProduct))
                 else -> Unit
             }
         }.startedLaunch(viewLifecycleOwner)

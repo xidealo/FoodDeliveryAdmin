@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.Router
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.navigation_event.NavigationEvent
 import com.bunbeauty.presentation.view_model.BaseViewModel
@@ -28,9 +27,6 @@ import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
-
-    @Inject
-    lateinit var router: Router
 
     private var mutableBinding: B? = null
     protected val binding
@@ -64,11 +60,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
             }
             textInputMap[fieldError.key]?.error = fieldError.message
             textInputMap[fieldError.key]?.requestFocus()
-        }.startedLaunch(viewLifecycleOwner)
-        viewModel.navigation.onEach { navigationEvent ->
-            if (navigationEvent is NavigationEvent.Back) {
-                router.navigateUp()
-            }
         }.startedLaunch(viewLifecycleOwner)
     }
 
