@@ -7,12 +7,29 @@
     android:background="@color/mainBackground"
     tools:context=".screen.order_list.OrderListFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/elementBackground"
+        app:layout_collapseMode="pin"
+        app:menu="@menu/top_menu"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/LargeBoldCenterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title_orders" />
+    </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/loadingLpi"
         style="@style/LoadingProgressIndicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cafeMcv"
@@ -40,9 +57,9 @@
         android:id="@+id/orderListRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/small_margin"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:layout_marginTop="@dimen/small_margin"
         android:paddingHorizontal="@dimen/small_padding"
         android:paddingBottom="@dimen/small_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -12,11 +12,8 @@ interface CafeDao : BaseDao<CafeEntity> {
     @Query("SELECT * FROM CafeEntity")
     fun getCafeListFlow(): Flow<List<CafeEntity>>
 
-    @Query("SELECT * FROM CafeEntity")
-    fun getCafeList(): List<CafeEntity>
-
     @Query("SELECT * FROM CafeEntity WHERE cityUuid =:cityUuid")
-    fun getCafeList(cityUuid:String): List<CafeEntity>
+    fun getCafeListByCityUuid(cityUuid:String): List<CafeEntity>
 
     @Query("SELECT * FROM CafeEntity WHERE uuid = :uuid")
     fun observeCafeByUuid(uuid: String): Flow<CafeEntity?>

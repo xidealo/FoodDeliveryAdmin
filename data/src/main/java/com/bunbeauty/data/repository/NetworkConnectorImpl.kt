@@ -12,21 +12,20 @@ import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.ServerOrderDetails
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.websocket.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.http.cio.websocket.*
-import kotlinx.coroutines.CancellationException
+import io.ktor.websocket.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.KSerializer
@@ -34,7 +33,6 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class NetworkConnectorImpl @Inject constructor(
-    private val dateTimeUtil: IDateTimeUtil,
     private val client: HttpClient,
     private val json: Json
 ) : NetworkConnector {
@@ -45,8 +43,7 @@ class NetworkConnectorImpl @Inject constructor(
         return postData(
             path = "user/login",
             postBody = userAuthorizationRequest,
-            serializer = UserAuthorizationResponse.serializer(),
-            token = ""
+            serializer = UserAuthorizationResponse.serializer()
         )
     }
 
@@ -72,7 +69,6 @@ class NetworkConnectorImpl @Inject constructor(
             serializer = DeliveryServer.serializer(),
             parameters = hashMapOf(COMPANY_UUID_PARAMETER to companyUuid)
         )
-        //return getData("")
     }
 
     override suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>> {
@@ -91,16 +87,6 @@ class NetworkConnectorImpl @Inject constructor(
     override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> {
         return ApiResult.Success(":")
     }
-
-/*
-    override suspend fun saveMenuProduct(menuProduct: ServerMenuProduct) {
-
-    }
-
-    override suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String) {
-
-    }
-*/
 
     override suspend fun deleteMenuProduct(uuid: String) {
 
@@ -122,48 +108,56 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeOnNotification(cafeId: String) {
-        Firebase.messaging.subscribeToTopic(cafeId)
+    override suspend fun subscribeOnNotification(cafeUuid: String) {
+        Firebase.messaging.subscribeToTopic(cafeUuid)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("NotificationTag", "Subscribe to topic is successful cafeId: $cafeId")
+                    Log.d("NotificationTag", "Subscribe to topic is successful cafeId: $cafeUuid")
                 } else {
-                    Log.d("NotificationTag", "Subscribe to topic is not successful cafeId: $cafeId")
+                    Log.d(
+                        "NotificationTag",
+                        "Subscribe to topic is not successful cafeId: $cafeUuid"
+                    )
                 }
             }
     }
 
     override suspend fun subscribeOnOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): Flow<ApiResult<ServerOrder>> {
         return flow {
             try {
-                Log.d(WEB_SOCKET_TAG, "in socket")
-                client.ws(
+                client.webSocket(
                     HttpMethod.Get,
                     path = "user/order/subscribe",
+                    port = 80,
                     request = {
                         header("Authorization", "Bearer $token")
-                        parameter("cafeUuid", cafeId)
+                        parameter("cafeUuid", cafeUuid)
                     }
                 ) {
+                    Log.d(WEB_SOCKET_TAG, "WebSocket connected")
                     webSocketSession = this
                     while (true) {
-                        val otherMessage = incoming.receive() as? Frame.Text ?: continue
-                        Log.d(WEB_SOCKET_TAG, otherMessage.readText())
-                        emit(
-                            ApiResult.Success(
-                                json.decodeFromString(
-                                    ServerOrder.serializer(),
-                                    otherMessage.readText()
-                                )
-                            ),
-                        )
+                        val message = incoming.receive() as? Frame.Text ?: continue
+                        Log.d(WEB_SOCKET_TAG, "Message: ${message.readText()}")
+                        val serverModel =
+                            json.decodeFromString(ServerOrder.serializer(), message.readText())
+                        emit(ApiResult.Success(serverModel))
                     }
                 }
+            } catch (e: WebSocketException) {
+                Log.e(WEB_SOCKET_TAG, "WebSocketException: ${e.message}")
             } catch (e: Exception) {
-                Log.d(WEB_SOCKET_TAG, e.message ?: "")
+                val stackTrace = e.stackTrace.joinToString("\n") {
+                    "${it.className} ${it.methodName} ${it.lineNumber}"
+                }
+                Log.e(
+                    WEB_SOCKET_TAG, "Exception: $e \n$stackTrace"
+                )
+            } finally {
+                unsubscribeOnOrderList("Unknown")
             }
         }
     }
@@ -179,22 +173,35 @@ class NetworkConnectorImpl @Inject constructor(
             }
     }
 
-    override suspend fun unsubscribeOnOrderList(cafeId: String, message: String) {
+    override suspend fun unsubscribeOnOrderList(message: String) {
         if (webSocketSession != null) {
             webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, message))
             webSocketSession = null
-            Log.d(WEB_SOCKET_TAG, "webSocketSession closed")
+
+            Log.d(WEB_SOCKET_TAG, "webSocketSession closed ($message)")
         }
     }
 
     override suspend fun getOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): ApiResult<ListServer<ServerOrder>> {
         return getData(
             path = "order",
             serializer = ListServer.serializer(ServerOrder.serializer()),
-            parameters = hashMapOf("cafeUuid" to cafeId),
+            parameters = hashMapOf("cafeUuid" to cafeUuid),
+            token = token
+        )
+    }
+
+    override suspend fun getOrderByUuid(
+        token: String,
+        orderUuid: String
+    ): ApiResult<ServerOrderDetails> {
+        return getData(
+            path = "order/details",
+            serializer = ServerOrderDetails.serializer(),
+            parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
     }
@@ -203,11 +210,11 @@ class NetworkConnectorImpl @Inject constructor(
         token: String,
         orderUuid: String,
         status: OrderStatus
-    ): ApiResult<ServerOrder> {
+    ): ApiResult<ServerOrderDetails> {
         return patchData(
             path = "order",
-            body = hashMapOf("status" to status.toString()),
-            serializer = ServerOrder.serializer(),
+            patchBody = hashMapOf("status" to status.toString()),
+            serializer = ServerOrderDetails.serializer(),
             parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
@@ -226,92 +233,123 @@ class NetworkConnectorImpl @Inject constructor(
     }
 
 
-    suspend fun <T : Any> getData(
+//    suspend fun <T : Any> getData(
+//        path: String,
+//        serializer: KSerializer<T>,
+//        parameters: HashMap<String, String?> = hashMapOf(),
+//        token: String
+//    ): ApiResult<T> {
+//        return try {
+//            ApiResult.Success(
+//                json.decodeFromString(
+//                    serializer,
+//                    client.get<HttpStatement> {
+//                        url {
+//                            path(path)
+//                        }
+//                        if (token.isNotEmpty())
+//                            header("Authorization", "Bearer $token")
+//
+//                        parameters.forEach { (key, parameter) ->
+//                            if (parameter != null) {
+//                                parameter(key, parameter)
+//                            }
+//                        }
+//                    }.execute().readText()
+//                )
+//            )
+//        } catch (exception: ClientRequestException) {
+//            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
+//        } catch (exception: CancellationException) {
+//            ApiResult.Error(ApiError(7, exception.message ?: ""))
+//        } catch (exception: Exception) {
+//            ApiResult.Error(ApiError(0, exception.message ?: ""))
+//        }
+//    }
+
+    suspend fun <T> getData(
         path: String,
         serializer: KSerializer<T>,
-        parameters: HashMap<String, String?> = hashMapOf(),
+        parameters: Map<String, String?> = mapOf(),
         token: String
     ): ApiResult<T> {
-        return try {
-            ApiResult.Success(
-                json.decodeFromString(
-                    serializer,
-                    client.get<HttpStatement> {
-                        url {
-                            path(path)
-                        }
-                        if (token.isNotEmpty())
-                            header("Authorization", "Bearer $token")
-
-                        parameters.forEach { (key, parameter) ->
-                            if (parameter != null) {
-                                parameter(key, parameter)
-                            }
-                        }
-                    }.execute().readText()
-                )
+        val request = client.get {
+            buildRequest(
+                path = path,
+                body = null,
+                parameters = parameters,
+                headers = mapOf("Authorization" to "Bearer $token")
             )
-        } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
-        } catch (exception: CancellationException) {
-            ApiResult.Error(ApiError(7, exception.message ?: ""))
-        } catch (exception: Exception) {
-            ApiResult.Error(ApiError(0, exception.message ?: ""))
+        }
+        return handleResponse(serializer, request)
+    }
+
+    suspend fun <T> postData(
+        path: String,
+        postBody: Any,
+        serializer: KSerializer<T>,
+        parameters: Map<String, String> = mapOf(),
+        token: String? = null
+    ): ApiResult<T> {
+        val request = client.post {
+            buildRequest(
+                path = path,
+                body = postBody,
+                parameters = parameters,
+                headers = token?.let {
+                    mapOf("Authorization" to "Bearer $token")
+                } ?: emptyMap()
+            )
+        }
+        return handleResponse(serializer, request)
+    }
+
+    suspend fun <T> patchData(
+        path: String,
+        patchBody: Any,
+        serializer: KSerializer<T>,
+        parameters: Map<String, String> = mapOf(),
+        token: String? = null
+    ): ApiResult<T> {
+        val request = client.patch {
+            buildRequest(
+                path = path,
+                body = patchBody,
+                parameters = parameters,
+                headers = token?.let {
+                    mapOf("Authorization" to "Bearer $token")
+                } ?: emptyMap()
+            )
+        }
+        return handleResponse(serializer, request)
+    }
+
+    fun HttpRequestBuilder.buildRequest(
+        path: String,
+        body: Any?,
+        parameters: Map<String, String?> = mapOf(),
+        headers: Map<String, String> = mapOf()
+    ) {
+        if (body != null) {
+            setBody(body)
+        }
+        url {
+            path(path)
+        }
+        parameters.forEach { parameterMap ->
+            parameter(parameterMap.key, parameterMap.value)
+        }
+        headers.forEach { headerEntry ->
+            header(headerEntry.key, headerEntry.value)
         }
     }
 
-    suspend fun <T : Any, R> postData(
-        path: String,
-        postBody: T,
-        serializer: KSerializer<R>,
-        parameters: HashMap<String, String> = hashMapOf(),
-        token: String
-    ): ApiResult<R> {
+    suspend fun <T> handleResponse(
+        serializer: KSerializer<T>,
+        request: HttpResponse
+    ): ApiResult<T> {
         return try {
-            ApiResult.Success(
-                json.decodeFromString(
-                    serializer,
-                    client.post<HttpStatement>(body = postBody) {
-                        contentType(ContentType.Application.Json)
-                        url {
-                            path(path)
-                        }
-                        header("Authorization", "Bearer $token")
-                        parameters.forEach { parameterMap ->
-                            parameter(parameterMap.key, parameterMap.value)
-                        }
-                    }.execute().readText()
-                )
-            )
-        } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
-        } catch (exception: Exception) {
-            ApiResult.Error(ApiError(0, exception.message ?: "-"))
-        }
-    }
-
-    suspend fun <T : Any, R> patchData(
-        path: String,
-        body: T,
-        serializer: KSerializer<R>,
-        parameters: HashMap<String, String> = hashMapOf(),
-        token: String
-    ): ApiResult<R> {
-        return try {
-            ApiResult.Success(
-                json.decodeFromString(
-                    serializer,
-                    client.patch<HttpStatement>(body = body) {
-                        url {
-                            path(path)
-                        }
-                        header("Authorization", "Bearer $token")
-                        parameters.forEach { parameterMap ->
-                            parameter(parameterMap.key, parameterMap.value)
-                        }
-                    }.execute().readText()
-                )
-            )
+            ApiResult.Success(json.decodeFromString(serializer, request.bodyAsText()))
         } catch (exception: ClientRequestException) {
             ApiResult.Error(ApiError(exception.response.status.value, exception.message))
         } catch (exception: Exception) {

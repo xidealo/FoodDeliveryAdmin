@@ -1,28 +1,29 @@
 object Versions {
-    const val kotlin = "1.6.0"
-    const val gradle = "7.0.3"
-    const val kotlinCoroutines = "1.6.0"
-    const val ktor = "1.6.5"
-    const val constraintLayout = "2.1.1"
-    const val material = "1.4.0"
-    const val appCompact = "1.3.1"
-    const val coil = "1.4.0"
+    const val kotlin = "1.7.21"
+    const val gradle = "7.3.1"
+    const val kotlinCoroutines = "1.6.4"
+    const val androidxCore = "1.8.0"
+    const val ktor = "2.1.2"
+    const val constraintLayout = "2.1.4"
+    const val material = "1.7.0"
+    const val appCompact = "1.5.1"
+    const val coil = "2.2.2"
     const val dataStorePreferencesVersion = "1.0.0"
-    const val dynamicLinks = "20.1.1"
-    const val googleServices = "4.3.10"
-    const val navigation = "2.3.5"
+    const val googleServices = "4.3.14"
+    const val navigation = "2.5.3"
     const val extensions = "2.2.0"
     const val viewmodel = "2.4.0"
     const val activity = "1.4.0"
-    const val fragment = "1.3.6"
+    const val fragment = "1.5.4"
     const val lifecycle = "2.4.0"
     const val googleMapUtils = "2.2.3"
-    const val hilt = "2.40.1"
-    const val hiltService = "2.40.1"
+    const val hilt = "2.44"
     const val fastAdapter = "5.3.4"
-    const val roomDatabaseVersion = "2.4.2"
-    const val joba = "2.10.9"
-    const val crashlytics = "2.8.1"
+    const val adapterDelegates = "4.3.2"
+    const val roomDatabaseVersion = "2.4.3"
+    const val joda = "2.12.1"
+    const val crashlytics = "2.9.2"
+    const val firebase = "31.0.2"
 }
 
 object Application {
@@ -42,7 +43,7 @@ object AndroidSdk {
 }
 
 object Time {
-    const val jobaTime = "joda-time:joda-time:${Versions.joba}"
+    const val jodaTime = "joda-time:joda-time:${Versions.joda}"
 }
 
 object ClassPath {
@@ -53,7 +54,7 @@ object ClassPath {
     const val navigationServices =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val hiltServices =
-        "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltService}"
+        "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
     const val crashlytics =
         "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
 }
@@ -76,7 +77,7 @@ object AndroidX {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompact}"
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
-    const val coreKtx = "androidx.core:core-ktx:1.7.0"
+    const val coreKtx = "androidx.core:core-ktx:${Versions.androidxCore}"
 }
 
 object Google {
@@ -94,6 +95,15 @@ object FastAdapter {
         "com.mikepenz:fastadapter-extensions-binding:${Versions.fastAdapter}"
 }
 
+object AdapterDelegates {
+    const val adapterDelegates =
+        "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:${Versions.adapterDelegates}"
+    const val adapterDelegatesLayoutContainer =
+        "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:${Versions.adapterDelegates}"
+    const val adapterDelegatesViewbinding =
+        "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:${Versions.adapterDelegates}"
+}
+
 object Navigation {
     const val navigationFragment =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
@@ -101,11 +111,14 @@ object Navigation {
 }
 
 object Ktor {
+    const val clientWebsockets = "io.ktor:ktor-client-websockets:${Versions.ktor}"
+    const val negotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktor}"
     const val clientJson = "io.ktor:ktor-client-json:${Versions.ktor}"
-    const val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
+    const val serializerJson = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktor}"
     const val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
+    const val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
+    const val clientAuth = "io.ktor:ktor-client-auth:${Versions.ktor}"
     const val clientOkhttp = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
-    const val clientAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
 }
 
 object Coil {
@@ -135,4 +148,9 @@ object Lifecycle {
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+}
+
+object Firebase {
+    const val bom = "com.google.firebase:firebase-bom:${Versions.firebase}"
+    const val messaging = "com.google.firebase:firebase-messaging-ktx"
 }

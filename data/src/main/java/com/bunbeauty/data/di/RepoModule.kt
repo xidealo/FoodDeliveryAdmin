@@ -15,10 +15,6 @@ abstract class RepoModule {
 
     @Singleton
     @Binds
-    abstract fun bindOrderRepo(orderRepository: OrderRepository): OrderRepo
-
-    @Singleton
-    @Binds
     abstract fun bindMenuProductRepo(menuProductRepository: MenuProductRepository): MenuProductRepo
 
     @Singleton

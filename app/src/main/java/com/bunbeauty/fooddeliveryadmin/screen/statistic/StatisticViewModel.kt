@@ -63,7 +63,8 @@ class StatisticViewModel @Inject constructor(
                         title = allCafes.address,
                     )
                 )
-                cafeRepository.getCafeList().map { cafe ->
+                val cityUuid = dataStoreRepo.managerCity.first()
+                cafeRepository.getCafeListByCityUuid(cityUuid).map { cafe ->
                     Option(
                         id = cafe.uuid,
                         title = cafe.address,

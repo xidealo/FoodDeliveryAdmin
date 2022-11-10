@@ -7,6 +7,7 @@ import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.ServerOrderDetails
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -42,27 +43,29 @@ interface NetworkConnector {
 
     // ORDER
 
-    suspend fun subscribeOnNotification(cafeId: String)
+    suspend fun subscribeOnNotification(cafeUuid: String)
 
     suspend fun subscribeOnOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): Flow<ApiResult<ServerOrder>>
 
     suspend fun unsubscribeOnNotification(cafeId: String)
 
-    suspend fun unsubscribeOnOrderList(cafeId: String, message: String)
+    suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): ApiResult<ListServer<ServerOrder>>
+
+    suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<ServerOrderDetails>
 
     suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
         status: OrderStatus
-    ): ApiResult<ServerOrder>
+    ): ApiResult<ServerOrderDetails>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(

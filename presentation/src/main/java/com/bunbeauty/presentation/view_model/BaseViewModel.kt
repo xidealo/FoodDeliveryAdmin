@@ -29,6 +29,7 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+    @Deprecated("Use navigation only in fragment")
     fun goBack() {
         viewModelScope.launch {
             mutableNavigation.emit(NavigationEvent.Back)

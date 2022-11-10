@@ -4,10 +4,10 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.presentation.utils.IStringUtil
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
-    private val orderRepo: OrderRepo,
+    private val orderRepository: OrderRepository,
     private val cafeRepository: CafeRepository,
     private val dataStoreRepo: DataStoreRepo,
     private val stringUtil: IStringUtil,
@@ -47,7 +47,8 @@ class OrderListViewModel @Inject constructor(
 
     fun onCafeClicked() {
         viewModelScope.launch {
-            val cafeList = cafeRepository.getCafeList().map { cafe ->
+            val cityUuid = dataStoreRepo.managerCity.first()
+            val cafeList = cafeRepository.getCafeListByCityUuid(cityUuid).map { cafe ->
                 Option(
                     id = cafe.uuid,
                     title = cafe.address,
@@ -72,6 +73,24 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
+    fun onOrderClicked(orderUuid: String) {
+        val openOrderDetailsEvent = OrderListState.Event.OpenOrderDetailsEvent(orderUuid)
+        mutableOrderListState.update { orderListState ->
+            orderListState.copy(eventList = orderListState.eventList + openOrderDetailsEvent)
+        }
+    }
+
+    fun onLogout(logoutOption: String) {
+        if (LogoutOption.valueOf(logoutOption) == LogoutOption.LOGOUT) {
+            viewModelScope.launch {
+                dataStoreRepo.clearCache()
+                mutableOrderListState.update { orderListState ->
+                    orderListState.copy(eventList = orderListState.eventList + OrderListState.Event.OpenLoginEvent)
+                }
+            }
+        }
+    }
+
     fun consumeEvents(events: List<OrderListState.Event>) {
         mutableOrderListState.update { orderListState ->
             orderListState.copy(eventList = orderListState.eventList - events.toSet())
@@ -81,8 +100,8 @@ class OrderListViewModel @Inject constructor(
     private fun unsubscribe(cafeUuid: String?, message: String) {
         if (cafeUuid != null) {
             viewModelScope.launch {
-                orderRepo.unsubscribeOnOrderList(cafeId = cafeUuid, message = message)
-                orderRepo.unsubscribeOnNotification(cafeId = cafeUuid)
+                orderRepository.unsubscribeOnOrderList(message = message)
+                orderRepository.unsubscribeOnNotification(cafeId = cafeUuid)
             }
         }
     }
@@ -91,15 +110,9 @@ class OrderListViewModel @Inject constructor(
         if (cafeUuid != null) {
             viewModelScope.launch {
                 val token = dataStoreRepo.token.first()
-                launch {
-                    orderRepo.subscribeOnOrderList(token = token, cafeId = cafeUuid)
-                }
-                launch {
-                    orderRepo.subscribeOnNotification(cafeId = cafeUuid)
-                }
-                launch {
-                    orderRepo.loadOrderListByCafeId(token = token, cafeId = cafeUuid)
-                }
+                orderRepository.subscribeOnOrderList(token = token, cafeUuid = cafeUuid)
+                orderRepository.subscribeOnNotification(cafeUuid = cafeUuid)
+                orderRepository.loadOrderListByCafeUuid(token = token, cafeUuid = cafeUuid)
             }
         }
     }
@@ -110,8 +123,7 @@ class OrderListViewModel @Inject constructor(
         }
         viewModelScope.launch {
             cafeRepository.refreshCafeList(
-                token = dataStoreRepo.token.first(),
-                cityUuid = dataStoreRepo.managerCity.first()
+                token = dataStoreRepo.token.first(), cityUuid = dataStoreRepo.managerCity.first()
             )
             refreshSelectedCafe()
         }
@@ -125,15 +137,14 @@ class OrderListViewModel @Inject constructor(
         val selectedCafe = dataStoreRepo.cafeUuid.first()?.let { cafeUuid ->
             cafeRepository.getCafeByUuid(cafeUuid)?.address?.let { address ->
                 SelectedCafe(
-                    uuid = cafeUuid,
-                    address = address
+                    uuid = cafeUuid, address = address
                 )
             }
         } ?: run {
-            cafeRepository.getCafeList().firstOrNull()?.let { firstCafe ->
+            val cityUuid = dataStoreRepo.managerCity.first()
+            cafeRepository.getCafeListByCityUuid(cityUuid).firstOrNull()?.let { firstCafe ->
                 SelectedCafe(
-                    uuid = firstCafe.uuid,
-                    address = firstCafe.address
+                    uuid = firstCafe.uuid, address = firstCafe.address
                 )
             }
         }
@@ -144,13 +155,20 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun observeOrderList() {
-        orderRepo.orderListFlow.onEach { orderList ->
+        orderRepository.orderListFlow.onEach { orderList ->
             mutableOrderListState.update { orderListState ->
-                val processedOrderList = orderList.map(::toItemModel)
-                    .filter { orderItemModel ->
-                        orderItemModel.status != OrderStatus.CANCELED
-                    }
-                orderListState.copy(orderList = processedOrderList)
+                val processedOrderList = orderList.map(::toItemModel).filter { orderItemModel ->
+                    orderItemModel.status != OrderStatus.CANCELED
+                }
+                val newEventList = if (orderListState.orderList.size < orderList.size) {
+                    orderListState.eventList + OrderListState.Event.ScrollToTop
+                } else {
+                    orderListState.eventList
+                }
+                orderListState.copy(
+                    orderList = processedOrderList,
+                    eventList = newEventList
+                )
             }
         }.launchIn(viewModelScope)
     }
@@ -161,7 +179,7 @@ class OrderListViewModel @Inject constructor(
             status = order.orderStatus,
             statusString = stringUtil.getOrderStatusString(order.orderStatus),
             code = order.code,
-            deferredTime = stringUtil.getDeferredTimeString(order.deferred) ?: "",
+            deferredTime = stringUtil.getDeferredTimeString(order.deferredTime) ?: "",
             time = dateTimeUtil.getDateTimeDDMMHHMM(order.time)
         )
     }

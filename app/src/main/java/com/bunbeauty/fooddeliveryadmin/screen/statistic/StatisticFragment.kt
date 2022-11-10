@@ -45,6 +45,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
             viewModel.statisticState.collectWithLifecycle { statisticState ->
                 fragmentStatisticLpiLoading.isInvisible = !statisticState.isLoading
+                fragmentStatisticBtnLoad.isEnabled = !statisticState.isLoading
                 fragmentStatisticTvCafe.text = statisticState.selectedCafe?.address
                 fragmentStatisticTvInterval.text = statisticState.selectedTimeInterval?.name
                 statisticAdapter.submitList(statisticState.statisticList)
