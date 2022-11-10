@@ -77,7 +77,7 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         mutableBinding = null
     }
 
-    private fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {
+    fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {
         val snack = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT)
             .setBackgroundTint(ContextCompat.getColor(requireContext(), backgroundColorId))
             .setTextColor(ContextCompat.getColor(requireContext(), textColorId))

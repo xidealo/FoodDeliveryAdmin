@@ -14,6 +14,7 @@
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
+    <string name="msg_login_version">Версия приложения %s</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>

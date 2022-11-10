@@ -10,7 +10,18 @@
         android:id="@+id/fragment_login_group_login"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:constraint_referenced_ids="fragment_login_til_login, fragment_login_til_password, fragment_login_btn_login" />
+        app:constraint_referenced_ids="fragment_login_til_login, fragment_login_til_password, fragment_login_btn_login, versionTextView" />
+
+    <TextView
+        android:id="@+id/versionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_login_btn_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Версия приложение 1.0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fragment_login_til_login"

@@ -4,9 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import com.bunbeauty.fooddeliveryadmin.Router
-import com.bunbeauty.presentation.R
-import com.bunbeauty.presentation.utils.IResourcesProvider
+import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,21 +16,28 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val resourcesProvider: IResourcesProvider,
     private val userAuthorizationRepo: UserAuthorizationRepo,
-    private val router: Router
 ) : BaseViewModel() {
 
-    private val mutableIsLoading: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = mutableIsLoading.asStateFlow()
+    private val mutableLoginViewState: MutableStateFlow<LoginViewState> = MutableStateFlow(
+        LoginViewState()
+    )
+    val loginViewState: StateFlow<LoginViewState> = mutableLoginViewState.asStateFlow()
 
     init {
         subscribeOnToken()
-        //clear()
+        mutableLoginViewState.update { oldState ->
+            oldState.copy(
+                isLoading = false,
+                appVersion = BuildConfig.VERSION_NAME
+            )
+        }
     }
 
     fun login(username: String, password: String) {
-        mutableIsLoading.value = true
+        mutableLoginViewState.update { oldState ->
+            oldState.copy(isLoading = true)
+        }
 
         val processedUsername = username.lowercase().trim()
         val processedPassword = password.lowercase().trim()
@@ -64,19 +69,24 @@ class LoginViewModel @Inject constructor(
     fun subscribeOnToken() {
         dataStoreRepo.token.onEach { token ->
             if (token.isEmpty()) {
-                //apiRepo.unsubscribeOnNotification()
-                mutableIsLoading.value = false
+                mutableLoginViewState.update { oldState ->
+                    oldState.copy(isLoading = false)
+                }
             } else {
-                //apiRepo.subscribeOnNotification()
-                router.navigate(LoginFragmentDirections.toOrdersFragment())
-                //goTo(LoginNavigationEvent.ToOrders)
+                mutableLoginViewState.update { oldState ->
+                    oldState.copy(events = oldState.events + LoginViewState.Event.OpenOrderListEvent)
+                }
             }
         }.launchIn(viewModelScope)
     }
 
     private fun showWrongDataError() {
-        mutableIsLoading.value = false
-        sendError(resourcesProvider.getString(R.string.error_login_wrong_data))
+        mutableLoginViewState.update { oldState ->
+            oldState.copy(
+                isLoading = false,
+                events = oldState.events + LoginViewState.Event.ShowLoginError
+            )
+        }
     }
 
     private fun isCorrectUsername(username: String): Boolean {
@@ -85,6 +95,12 @@ class LoginViewModel @Inject constructor(
 
     private fun isCorrectPassword(password: String): Boolean {
         return password.isNotEmpty()
+    }
+
+    fun consumeEvents(events: List<LoginViewState.Event>) {
+        mutableLoginViewState.update { orderListState ->
+            orderListState.copy(events = orderListState.events - events.toSet())
+        }
     }
 
     /**
