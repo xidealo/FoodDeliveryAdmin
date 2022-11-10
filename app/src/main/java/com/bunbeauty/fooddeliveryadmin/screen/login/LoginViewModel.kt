@@ -26,12 +26,6 @@ class LoginViewModel @Inject constructor(
 
     init {
         subscribeOnToken()
-        mutableLoginViewState.update { oldState ->
-            oldState.copy(
-                isLoading = false,
-                appVersion = BuildConfig.VERSION_NAME
-            )
-        }
     }
 
     fun login(username: String, password: String) {
@@ -70,7 +64,10 @@ class LoginViewModel @Inject constructor(
         dataStoreRepo.token.onEach { token ->
             if (token.isEmpty()) {
                 mutableLoginViewState.update { oldState ->
-                    oldState.copy(isLoading = false)
+                    oldState.copy(
+                        isLoading = false,
+                        appVersion = BuildConfig.VERSION_NAME
+                    )
                 }
             } else {
                 mutableLoginViewState.update { oldState ->

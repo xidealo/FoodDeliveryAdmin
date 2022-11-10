@@ -42,7 +42,7 @@ class OrderListViewModel @Inject constructor(
 
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
-        unsubscribe(mutableOrderListState.value.selectedCafe?.uuid, "fragment onStop")
+        unsubscribe(message = "fragment onStop")
     }
 
     fun onCafeClicked() {
@@ -83,6 +83,7 @@ class OrderListViewModel @Inject constructor(
     fun onLogout(logoutOption: String) {
         if (LogoutOption.valueOf(logoutOption) == LogoutOption.LOGOUT) {
             viewModelScope.launch {
+                unsubscribe(mutableOrderListState.value.selectedCafe?.uuid, "logout")
                 dataStoreRepo.clearCache()
                 mutableOrderListState.update { orderListState ->
                     orderListState.copy(eventList = orderListState.eventList + OrderListState.Event.OpenLoginEvent)
@@ -97,10 +98,10 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
-    private fun unsubscribe(cafeUuid: String?, message: String) {
-        if (cafeUuid != null) {
-            viewModelScope.launch {
-                orderRepository.unsubscribeOnOrderList(message = message)
+    private fun unsubscribe(cafeUuid: String? = null, message: String) {
+        viewModelScope.launch {
+            orderRepository.unsubscribeOnOrderList(message = message)
+            cafeUuid?.let {
                 orderRepository.unsubscribeOnNotification(cafeId = cafeUuid)
             }
         }
