@@ -95,8 +95,10 @@ class LoginViewModel @Inject constructor(
     }
 
     fun consumeEvents(events: List<LoginViewState.Event>) {
-        mutableLoginViewState.update { orderListState ->
-            orderListState.copy(events = orderListState.events - events.toSet())
+        mutableLoginViewState.update { loginState ->
+            loginState.copy(
+                events = loginState.events - events.toSet()
+            )
         }
     }
 
