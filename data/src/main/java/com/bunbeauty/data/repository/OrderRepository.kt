@@ -21,7 +21,11 @@ class OrderRepository @Inject constructor(
 ) {
 
     private val mutableOrderListFlow: MutableStateFlow<List<Order>> = MutableStateFlow(emptyList())
-    val orderListFlow: StateFlow<List<Order>> = mutableOrderListFlow.asStateFlow()
+    val orderListFlow: Flow<List<Order>> = mutableOrderListFlow.map { orderList ->
+        orderList.filter { order ->
+            order.orderStatus != OrderStatus.CANCELED
+        }
+    }
 
     suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
         networkConnector.updateOrderStatus(token, orderUuid, status)
@@ -45,9 +49,7 @@ class OrderRepository @Inject constructor(
             is ApiResult.Success -> {
                 mutableOrderListFlow.update {
                     result.data.results.map(serverOrderMapper::toModel)
-                        .filter { order ->
-                            order.orderStatus != OrderStatus.CANCELED
-                        }.sortedByDescending { order ->
+                        .sortedByDescending { order ->
                             order.time
                         }
                 }
