@@ -1,6 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectedCafe
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderItemModel
 
 data class OrderListState(
     val selectedCafe: SelectedCafe? = null,
@@ -16,8 +18,3 @@ data class OrderListState(
         object OpenLoginEvent : Event()
     }
 }
-
-data class SelectedCafe(
-    val uuid: String,
-    val address: String
-)
