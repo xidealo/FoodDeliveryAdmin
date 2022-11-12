@@ -1,83 +1,99 @@
 package com.bunbeauty.data.repository
 
+import android.util.Log
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.Constants.ORDER_TAG
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.repo.OrderRepo
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
+import com.bunbeauty.domain.model.order.OrderDetails
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class OrderRepository @Inject constructor(
     private val networkConnector: NetworkConnector,
     private val serverOrderMapper: IServerOrderMapper,
-) : OrderRepo {
+) {
 
-    override val ordersMapFlow: MutableSharedFlow<List<Order>> = MutableSharedFlow()
-
-    private val cachedData: MutableMap<String, Order> = mutableMapOf()
-
-    override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
-        when (val result = networkConnector.updateOrderStatus(
-            token,
-            orderUuid,
-            status
-        )) {
-            is ApiResult.Success -> {}
-            is ApiResult.Error -> {}
+    private val mutableOrderListFlow: MutableStateFlow<List<Order>> = MutableStateFlow(emptyList())
+    val orderListFlow: Flow<List<Order>> = mutableOrderListFlow.map { orderList ->
+        orderList.filter { order ->
+            order.orderStatus != OrderStatus.CANCELED
         }
     }
 
-    override suspend fun subscribeOnOrderListByCafeId(token: String, cafeId: String) {
-        networkConnector.subscribeOnOrderListByCafeId(token, cafeId).filter {
-            it is ApiResult.Success
-        }.map { resultApiResultSuccess ->
-            serverOrderMapper.toModel((resultApiResultSuccess as ApiResult.Success).data)
-                .let { order ->
-                    cachedData[order.uuid] = order
-                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
-                }
-        }.collect()
+    suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
+        networkConnector.updateOrderStatus(token, orderUuid, status)
     }
 
-    override suspend fun unsubscribeOnOrderList(cafeId: String, message: String) {
-        networkConnector.unsubscribeOnOrderList(cafeId, message)
+    suspend fun subscribeOnOrderList(token: String, cafeUuid: String) {
+        networkConnector.subscribeOnOrderListByCafeId(token, cafeUuid).map { result ->
+            if (result is ApiResult.Success) {
+                val order = serverOrderMapper.toModel(result.data)
+                updateOrderList(order)
+            }
+        }.launchIn(CoroutineScope(IO))
     }
 
-    override suspend fun loadOrderListByCafeId(
-        token: String,
-        cafeId: String
-    ) {
-        cachedData.clear()
-        when (val result = networkConnector.getOrderListByCafeId(token, cafeId)) {
+    suspend fun unsubscribeOnOrderList(message: String) {
+        networkConnector.unsubscribeOnOrderList(message)
+    }
+
+    suspend fun loadOrderListByCafeUuid(token: String, cafeUuid: String) {
+        when (val result = networkConnector.getOrderListByCafeId(token, cafeUuid)) {
             is ApiResult.Success -> {
-                if (result.data.results.isEmpty()) {
-                    ordersMapFlow.emit(emptyList())
-                } else {
-                    cachedData.clear()
-                    cachedData.putAll(
-                        result.data.results.map(serverOrderMapper::toModel)
-                            .map { it.uuid to it }
-                            .toMap()
-                    )
-                    ordersMapFlow.emit(cachedData.values.sortedByDescending { it.time })
+                mutableOrderListFlow.update {
+                    result.data.results.map(serverOrderMapper::toModel)
+                        .sortedByDescending { order ->
+                            order.time
+                        }
                 }
             }
             is ApiResult.Error -> {
-                //ApiResult.Error(result.apiError)
+                Log.e(
+                    ORDER_TAG,
+                    "loadOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}"
+                )
             }
         }
     }
 
-    override suspend fun subscribeOnNotification(cafeId: String) {
-        networkConnector.subscribeOnNotification(cafeId)
+    suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
+        return when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
+            is ApiResult.Success -> {
+                serverOrderMapper.toModel(result.data)
+            }
+            is ApiResult.Error -> {
+                Log.e(
+                    ORDER_TAG,
+                    "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}"
+                )
+                null
+            }
+        }
     }
 
-    override suspend fun unsubscribeOnNotification(cafeId: String) {
-        networkConnector.unsubscribeOnNotification(cafeId)
+    private fun updateOrderList(newOrder: Order) {
+        mutableOrderListFlow.update { orderList ->
+            val isExisted = orderList.any { order ->
+                order.uuid == newOrder.uuid
+            }
+            if (isExisted) {
+                orderList.map { order ->
+                    if (order.uuid == newOrder.uuid) {
+                        newOrder
+                    } else {
+                        order
+                    }
+                }
+            } else {
+                (orderList + newOrder).sortedByDescending { it.time }
+            }
+        }
     }
 }

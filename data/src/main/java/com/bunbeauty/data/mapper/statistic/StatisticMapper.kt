@@ -13,15 +13,7 @@ class StatisticMapper @Inject constructor() : IStatisticMapper {
             startPeriodTime = statisticServer.startPeriodTime,
             orderCount = statisticServer.orderCount,
             proceeds = statisticServer.proceeds,
-            averageCheck = statisticServer.averageCheck,
-            productStatisticList = statisticServer.productStatisticList.map {
-                ProductStatistic(
-                    name = it.name,
-                    orderCount = it.orderCount,
-                    productCount = it.productCount,
-                    proceeds = it.proceeds,
-                )
-            }
+            averageCheck = statisticServer.averageCheck
         )
     }
 

@@ -63,7 +63,7 @@ class StringUtil @Inject constructor(
         }
     }
 
-    override fun getOrderStatusByString(orderStatus: String): OrderStatus {
+    override fun getOrderStatusByString(orderStatus: String?): OrderStatus {
         return when (orderStatus) {
             resourcesProvider.getString(R.string.msg_status_not_accepted) -> NOT_ACCEPTED
             resourcesProvider.getString(R.string.msg_status_accepted) -> ACCEPTED

@@ -5,14 +5,14 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
-import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.Delivery
-import com.bunbeauty.data.model.server.statistic.StatisticServer
-import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.ServerOrderDetails
+import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
-import kotlinx.coroutines.flow.*
+import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.domain.enums.OrderStatus
+import kotlinx.coroutines.flow.Flow
 
 interface NetworkConnector {
 
@@ -37,35 +37,35 @@ interface NetworkConnector {
     // STATISTIC
     suspend fun getStatistic(
         token: String,
-        cafeUuid: String,
+        cafeUuid: String?,
         period: String
     ): ApiResult<ListServer<StatisticServer>>
 
     // ORDER
 
-    suspend fun subscribeOnNotification(
-        cafeId: String
-    )
+    suspend fun subscribeOnCafeTopic(cafeUuid: String)
 
     suspend fun subscribeOnOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): Flow<ApiResult<ServerOrder>>
 
-    suspend fun unsubscribeOnNotification(cafeId: String)
+    suspend fun unsubscribeFromCafeTopic(cafeUuid: String)
 
-    suspend fun unsubscribeOnOrderList(cafeId: String, message: String)
+    suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeId(
         token: String,
-        cafeId: String
+        cafeUuid: String
     ): ApiResult<ListServer<ServerOrder>>
+
+    suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<ServerOrderDetails>
 
     suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
         status: OrderStatus
-    ): ApiResult<ServerOrder>
+    ): ApiResult<ServerOrderDetails>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(

@@ -3,38 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/element_statistic_mvc_main"
-    style="@style/ElementMaterialCard">
+    style="@style/DefaultMaterialCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/element_statistic_tv_period"
+            android:id="@+id/elementStatisticTvPeriod"
             style="@style/LargeRegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/element_statistic_tv_proceeds"
+            app:layout_constraintEnd_toStartOf="@+id/elementStatisticTvProceeds"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="16 мая 2021" />
 
         <TextView
-            android:id="@+id/element_statistic_tv_count"
+            android:id="@+id/elementStatisticTvCount"
             style="@style/SmallRegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="Заказов: 15" />
 
         <TextView
-            android:id="@+id/element_statistic_tv_proceeds"
+            android:id="@+id/elementStatisticTvProceeds"
             style="@style/LargeBoldCenterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/element_statistic_tv_count"
+            app:layout_constraintTop_toBottomOf="@+id/elementStatisticTvCount"
             tool:text="15000 ₽" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

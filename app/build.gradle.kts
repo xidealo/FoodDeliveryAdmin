@@ -7,6 +7,7 @@ plugins {
     id(Plugin.navigation)
     id(Plugin.googleService)
     id(Plugin.crashlytics)
+    id(Plugin.kotlinParcelize)
 }
 
 android {
@@ -86,10 +87,11 @@ dependencies {
     implementation(Navigation.navigationUi)
 
     //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.messaging)
+    implementation(Firebase.crashlytics)
 
-    //lifecycle
+    // Lifecycle
     implementation(Lifecycle.lifecycleExtensions)
     implementation(Lifecycle.lifecycleViewModel)
     implementation(Lifecycle.activity)
@@ -109,4 +111,9 @@ dependencies {
     // FastAdapter
     implementation(FastAdapter.fastAdapter)
     implementation(FastAdapter.fastAdapterBinding)
+
+    // AdapterDelegates
+    implementation(AdapterDelegates.adapterDelegates)
+    implementation(AdapterDelegates.adapterDelegatesLayoutContainer)
+    implementation(AdapterDelegates.adapterDelegatesViewbinding)
 }

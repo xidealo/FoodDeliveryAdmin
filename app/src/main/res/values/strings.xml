@@ -14,6 +14,7 @@
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
+    <string name="msg_login_version">Версия приложения %s</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>
@@ -27,7 +28,7 @@
     <string name="msg_order_details_order_cost">Сумма заказа</string>
     <string name="msg_order_details_delivery_cost">Доставка</string>
     <string name="msg_order_details_bonuses">Бонусная скидка</string>
-    <string name="action_order_details_cancel">Отменить</string>
+    <string name="action_order_details_do_not_save">Не сохранять</string>
     <string name="action_order_details_save">Сохранить</string>
     <string name="title_order_details_alert">Внимание!</string>
     <string name="msg_order_details_alert">Отменить заказ?</string>
@@ -48,7 +49,7 @@
     <string name="msg_product_statistic_order_count">Количество заказов</string>
     <string name="msg_product_statistic_count">Количество</string>
     <string name="msg_product_statistic_cost">Стоимость</string>
-    <string name="action_product_statistic_reload">Повторить</string>
+    <string name="action_product_statistic_load">Загрузить</string>
 
     <!-- MENU -->
     <string name="action_menu_create">Создать</string>
