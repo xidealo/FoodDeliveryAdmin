@@ -28,11 +28,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
 
         viewModel.loginViewState.collectWithLifecycle { state ->
-            if (state.isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
+            binding.fragmentLoginPbLoading.isVisible = state.isLoading
+            binding.fragmentLoginGroupLogin.isVisible = !state.isLoading
             state.appVersion?.let { version ->
                 binding.versionTextView.text =
                     resources.getString(R.string.msg_login_version, version)
@@ -57,19 +54,5 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
         }
         viewModel.consumeEvents(eventList)
-    }
-
-    private fun showLoading() {
-        binding.apply {
-            fragmentLoginPbLoading.isVisible = true
-            fragmentLoginGroupLogin.isVisible = false
-        }
-    }
-
-    private fun hideLoading() {
-        binding.apply {
-            fragmentLoginPbLoading.isVisible = false
-            fragmentLoginGroupLogin.isVisible = true
-        }
     }
 }
