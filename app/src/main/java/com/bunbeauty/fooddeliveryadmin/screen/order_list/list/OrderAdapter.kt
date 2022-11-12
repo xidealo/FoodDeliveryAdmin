@@ -52,7 +52,7 @@ class OrderAdapter @Inject constructor(
                 OrderStatus.SENT_OUT -> R.color.sentOutColor
                 OrderStatus.DONE -> R.color.doneColor
                 OrderStatus.DELIVERED -> R.color.deliveredColor
-                OrderStatus.CANCELED -> 0
+                OrderStatus.CANCELED -> R.color.canceledColor
             }
         }
     }
