@@ -39,5 +39,5 @@ dependencies {
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
     implementation(Coroutine.coroutineCore)
-    implementation(Time.jobaTime)
+    implementation(Time.jodaTime)
 }

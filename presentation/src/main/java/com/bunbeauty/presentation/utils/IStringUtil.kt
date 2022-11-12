@@ -11,7 +11,7 @@ interface IStringUtil {
     fun getProductCountString(count: Int): String
     fun getOrderCountString(count: Int): String
     fun getOrderStatusString(orderStatus: OrderStatus): String
-    fun getOrderStatusByString(orderStatus:String): OrderStatus
+    fun getOrderStatusByString(orderStatus:String?): OrderStatus
     fun getDeliveryString(deliveryCost: Int): String
     fun getProductCodeString(productCode: ProductCode): String
     fun getProductCode(productCode: String): ProductCode?

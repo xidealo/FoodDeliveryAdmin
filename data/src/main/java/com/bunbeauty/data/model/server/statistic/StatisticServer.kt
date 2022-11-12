@@ -8,6 +8,5 @@ data class StatisticServer(
     val startPeriodTime: Long,
     val orderCount: Int,
     val proceeds: Int,
-    val averageCheck: Int,
-    val productStatisticList:List<ProductStatisticServer>
+    val averageCheck: Int
 )

@@ -40,7 +40,7 @@ class EditMenuProductViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val menuProduct: MenuProduct = savedStateHandle.navArg(MENU_PRODUCT_ARGS_KEY)!!
+    private val menuProduct: MenuProduct by savedStateHandle.navArg(MENU_PRODUCT_ARGS_KEY)
 
     private val menuProductCodeList = ProductCode.values().map { productCode ->
         MenuProductCode(title = stringUtil.getProductCodeString(productCode))

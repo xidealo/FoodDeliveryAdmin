@@ -11,9 +11,6 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val mutableNavigation = MutableSharedFlow<NavigationEvent>(0)
-    val navigation: SharedFlow<NavigationEvent> = mutableNavigation.asSharedFlow()
-
     private val mutableMessage = MutableSharedFlow<String>(0)
     val message: SharedFlow<String> = mutableMessage.asSharedFlow()
 
@@ -25,14 +22,13 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun goTo(navigationEvent: NavigationEvent) {
         viewModelScope.launch {
-            mutableNavigation.emit(navigationEvent)
+
         }
     }
 
+    @Deprecated("Use navigation only in fragment")
     fun goBack() {
-        viewModelScope.launch {
-            mutableNavigation.emit(NavigationEvent.Back)
-        }
+
     }
 
     fun sendMessage(message: String) {

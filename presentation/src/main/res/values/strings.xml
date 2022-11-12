@@ -10,6 +10,8 @@
 
     <!-- COMMON -->
     <string name="msg_ruble">&#160;₽</string>
+    <string name="with_ruble">%s ₽</string>
+    <string name="with_ruble_negative">-%s ₽</string>
     <string name="msg_break">\n</string>
     <string name="msg_parenthesis">)&#160;</string>
     <string name="msg_colon">:&#160;</string>
@@ -37,18 +39,24 @@
     <string name="msg_status_canceled">Отменен</string>
 
     <!-- ORDERS -->
+    <string name="title_orders">Заказы</string>
     <string name="title_messaging_new_order">Новый заказ</string>
     <string name="msg_messaging_new_order">Новый заказ</string>
     <string name="title_orders_select_cafe">Выберите кафе</string>
 
+    <!-- LOGOUT -->
+    <string name="title_logout">Выйти из профиля?</string>
+    <string name="action_logout">Выйти</string>
+    <string name="action_cancel">Отмена</string>
+
     <!-- STATISTIC -->
     <string name="msg_statistic_orders">Заказов:&#160;</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
-    <string name="msg_statistic_all_cafes">Все кафе</string>
-    <string name="title_statistic_select_period">Выберите период</string>
-    <string name="msg_statistic_day_period">По дням</string>
-    <string name="msg_statistic_week_period">По неделям</string>
-    <string name="msg_statistic_month_period">По месяцам</string>
+    <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>
+    <string name="title_statistic_select_time_interval">Выберите период</string>
+    <string name="msg_statistic_day_interval">По дням</string>
+    <string name="msg_statistic_week_interval">По неделям</string>
+    <string name="msg_statistic_month_interval">По месяцам</string>
 
     <!-- PRODUCT CODE -->
     <string name="msg_product_code_combo">Комбо</string>

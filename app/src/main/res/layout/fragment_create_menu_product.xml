@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/mainBackground"
     android:scrollbars="none"
-    tools:context=".ui.fragments.menu.CreateMenuProductFragment">
+    tools:context=".screen.menu.CreateMenuProductFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.bunbeauty.fooddeliveryadmin.ui.view.NavigationCardView
+        <com.bunbeauty.fooddeliveryadmin.view.NavigationCardView
             android:id="@+id/fragment_create_menu_product_ncv_product_code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

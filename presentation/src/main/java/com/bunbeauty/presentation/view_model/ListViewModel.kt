@@ -13,7 +13,7 @@ class ListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val listData: ListData = savedStateHandle.navArg(LIST_DATA_ARGS_KEY)!!
+    private val listData: ListData by savedStateHandle.navArg(LIST_DATA_ARGS_KEY)
 
     val isTitleVisible: Boolean = listData.title != null
 

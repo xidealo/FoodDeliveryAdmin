@@ -11,6 +11,7 @@ buildscript {
         classpath(ClassPath.kotlinSerialization)
         classpath(ClassPath.googleServices)
         classpath(ClassPath.hiltServices)
+        classpath(ClassPath.crashlytics)
     }
 }
 

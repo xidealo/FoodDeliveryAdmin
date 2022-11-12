@@ -22,7 +22,7 @@ class StatisticDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val statistic: Statistic = savedStateHandle.navArg(STATISTIC_ARGS_KEY)!!
+    private val statistic: Statistic by savedStateHandle.navArg(STATISTIC_ARGS_KEY)
 
     private val delivery by lazy {
         runBlocking {
@@ -45,13 +45,5 @@ class StatisticDetailsViewModel @Inject constructor(
         }
 
     val productStatisticList: List<ProductStatisticItemModel>
-        get() = statistic.productStatisticList
-            .map { productStatistic ->
-                ProductStatisticItemModel(
-                    name = productStatistic.name,
-                    orderCount = productStatistic.orderCount.toString(),
-                    count = productStatistic.productCount.toString(),
-                    cost = stringUtil.getCostString(productStatistic.proceeds)
-                )
-            }
+        get() = emptyList()
 }

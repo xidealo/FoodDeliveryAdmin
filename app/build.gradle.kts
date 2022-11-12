@@ -6,6 +6,8 @@ plugins {
     id(Plugin.hiltPlugin)
     id(Plugin.navigation)
     id(Plugin.googleService)
+    id(Plugin.crashlytics)
+    id(Plugin.kotlinParcelize)
 }
 
 android {
@@ -43,8 +45,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = false
-            //TODO remove to (host = "food-delivery-api-bunbeauty.herokuapp.com")
-            buildConfigField("String", "FB_LINK", "\"https://test-fooddelivery.firebaseio.com/\"")
         }
 
         getByName("release") {
@@ -53,12 +53,6 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )
-            //TODO remove to (host = "food-delivery-api-bunbeauty.herokuapp.com")
-            buildConfigField(
-                "String",
-                "FB_LINK",
-                "\"https://fooddelivery-ce2ef-default-rtdb.firebaseio.com/\""
             )
             signingConfig = signingConfigs.getByName("release")
         }
@@ -74,7 +68,6 @@ android {
         kotlinOptions {
             jvmTarget = "1.8"
         }
-
     }
 }
 
@@ -92,28 +85,35 @@ dependencies {
     //navigation
     implementation(Navigation.navigationFragment)
     implementation(Navigation.navigationUi)
-    androidTestImplementation(Navigation.navigationTesting)
 
     //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:26.7.0"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
-    //implementation("com.google.firebase:firebase-storage-ktx")
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.messaging)
+    implementation(Firebase.crashlytics)
 
-    //lifecycle
+    // Lifecycle
     implementation(Lifecycle.lifecycleExtensions)
     implementation(Lifecycle.lifecycleViewModel)
     implementation(Lifecycle.activity)
     implementation(Lifecycle.fragment)
     implementation(Lifecycle.lifecycleRuntime)
 
-    //Hilt
+    // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
 
+    // Coroutine
     implementation(Coroutine.coroutineCore)
+
+    // Image loader
     implementation(Coil.coil)
 
-    //FastAdapter
+    // FastAdapter
     implementation(FastAdapter.fastAdapter)
     implementation(FastAdapter.fastAdapterBinding)
+
+    // AdapterDelegates
+    implementation(AdapterDelegates.adapterDelegates)
+    implementation(AdapterDelegates.adapterDelegatesLayoutContainer)
+    implementation(AdapterDelegates.adapterDelegatesViewbinding)
 }

@@ -11,22 +11,20 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
-import io.ktor.client.features.observer.*
-import io.ktor.client.features.websocket.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+import io.ktor.client.plugins.logging.Logger as KtorLogger
 
 @Module
 @InstallIn(SingletonComponent::class)
 class DataSourceModule {
-
-    // LOCAL DATABASE
 
     @Singleton
     @Provides
@@ -46,36 +44,36 @@ class DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideKtorHttpClient(json: Json) = HttpClient(OkHttp) {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(json)
+    fun provideKtorHttpClient() = HttpClient(OkHttp.create()) {
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    prettyPrint = true
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                    encodeDefaults = true
+                }
+            )
         }
-
-        install(WebSockets){
-            pingInterval = 10
-        }
-
+        install(WebSockets)
         install(Logging) {
-            logger = object : Logger {
+            logger = object : KtorLogger {
                 override fun log(message: String) {
-                    Log.v("Logger Ktor =>", message)
+                    Log.v("Ktor", message)
                 }
             }
             level = LogLevel.ALL
         }
-
-        install(ResponseObserver) {
-            onResponse { response ->
-                Log.d("HTTP status:", "${response.status.value}")
-            }
-        }
-
         install(DefaultRequest) {
             host = "food-delivery-api-bunbeauty.herokuapp.com"
             header(HttpHeaders.ContentType, ContentType.Application.Json)
+            contentType(ContentType.Application.Json)
+
+            url {
+                protocol = URLProtocol.HTTPS
+            }
         }
     }
-
 
     // DAO
 
@@ -93,5 +91,6 @@ class DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideMenuProductCategoryDao(localDatabase: LocalDatabase) = localDatabase.menuProductCategoryDao()
+    fun provideMenuProductCategoryDao(localDatabase: LocalDatabase) =
+        localDatabase.menuProductCategoryDao()
 }
