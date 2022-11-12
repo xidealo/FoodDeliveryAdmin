@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list
+package com.bunbeauty.fooddeliveryadmin.screen.order_list.list
 
 import com.bunbeauty.domain.enums.OrderStatus
 

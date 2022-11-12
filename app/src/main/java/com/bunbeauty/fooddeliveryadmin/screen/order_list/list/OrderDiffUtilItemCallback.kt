@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list
+package com.bunbeauty.fooddeliveryadmin.screen.order_list.list
 
 import androidx.recyclerview.widget.DiffUtil
 import javax.inject.Inject

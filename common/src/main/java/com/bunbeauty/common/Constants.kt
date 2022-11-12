@@ -40,6 +40,8 @@ object Constants {
 
     //API
     const val WEB_SOCKET_TAG = "webSocketTag"
+    const val ORDER_TAG = "orderTag"
+    const val NOTIFICATION_TAG = "notificationTag"
     const val COMPANY_UUID_PARAMETER = "companyUuid"
 
 }

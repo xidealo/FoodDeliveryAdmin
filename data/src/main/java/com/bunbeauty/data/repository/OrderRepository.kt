@@ -2,6 +2,7 @@ package com.bunbeauty.data.repository
 
 import android.util.Log
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.Constants.ORDER_TAG
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
@@ -11,7 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class OrderRepository @Inject constructor(
     private val networkConnector: NetworkConnector,
     private val serverOrderMapper: IServerOrderMapper,
@@ -42,12 +45,16 @@ class OrderRepository @Inject constructor(
             is ApiResult.Success -> {
                 mutableOrderListFlow.update {
                     result.data.results.map(serverOrderMapper::toModel)
-                        .sortedByDescending { it.time }
+                        .filter { order ->
+                            order.orderStatus != OrderStatus.CANCELED
+                        }.sortedByDescending { order ->
+                            order.time
+                        }
                 }
             }
             is ApiResult.Error -> {
                 Log.e(
-                    "order",
+                    ORDER_TAG,
                     "loadOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}"
                 )
             }
@@ -60,18 +67,13 @@ class OrderRepository @Inject constructor(
                 serverOrderMapper.toModel(result.data)
             }
             is ApiResult.Error -> {
-                Log.e("order", "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}")
+                Log.e(
+                    ORDER_TAG,
+                    "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}"
+                )
                 null
             }
         }
-    }
-
-    suspend fun subscribeOnNotification(cafeUuid: String) {
-        networkConnector.subscribeOnNotification(cafeUuid)
-    }
-
-    suspend fun unsubscribeOnNotification(cafeId: String) {
-        networkConnector.unsubscribeOnNotification(cafeId)
     }
 
     private fun updateOrderList(newOrder: Order) {

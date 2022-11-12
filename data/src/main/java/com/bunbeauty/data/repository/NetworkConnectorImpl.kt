@@ -4,6 +4,7 @@ import android.util.Log
 import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.COMPANY_UUID_PARAMETER
+import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.NetworkConnector
 import com.bunbeauty.data.model.server.CategoryServer
@@ -108,16 +109,13 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeOnNotification(cafeUuid: String) {
+    override suspend fun subscribeOnCafeTopic(cafeUuid: String) {
         Firebase.messaging.subscribeToTopic(cafeUuid)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("NotificationTag", "Subscribe to topic is successful cafeId: $cafeUuid")
+                    Log.d(NOTIFICATION_TAG, "Subscription to $cafeUuid is successful")
                 } else {
-                    Log.d(
-                        "NotificationTag",
-                        "Subscribe to topic is not successful cafeId: $cafeUuid"
-                    )
+                    Log.d(NOTIFICATION_TAG, "Subscription to $cafeUuid failed")
                 }
             }
     }
@@ -162,13 +160,13 @@ class NetworkConnectorImpl @Inject constructor(
         }
     }
 
-    override suspend fun unsubscribeOnNotification(cafeId: String) {
-        Firebase.messaging.unsubscribeFromTopic(cafeId)
+    override suspend fun unsubscribeFromCafeTopic(cafeUuid: String) {
+        Firebase.messaging.unsubscribeFromTopic(cafeUuid)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("NotificationTag", "Unsubscribe to topic is successful")
+                    Log.d(NOTIFICATION_TAG, "Unsubscription from $cafeUuid is successful")
                 } else {
-                    Log.d("NotificationTag", "Unsubscribe to topic is not successful")
+                    Log.d(NOTIFICATION_TAG, "Unsubscription from $cafeUuid failed")
                 }
             }
     }
