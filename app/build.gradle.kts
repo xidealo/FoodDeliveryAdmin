@@ -89,6 +89,7 @@ dependencies {
     //Firebase
     implementation(platform(Firebase.bom))
     implementation(Firebase.messaging)
+    implementation(Firebase.crashlytics)
 
     // Lifecycle
     implementation(Lifecycle.lifecycleExtensions)

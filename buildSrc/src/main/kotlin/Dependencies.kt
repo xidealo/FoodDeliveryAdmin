@@ -153,4 +153,5 @@ object Lifecycle {
 object Firebase {
     const val bom = "com.google.firebase:firebase-bom:${Versions.firebase}"
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
+    const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
 }

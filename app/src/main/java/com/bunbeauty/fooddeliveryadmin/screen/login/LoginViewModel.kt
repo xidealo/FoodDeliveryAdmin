@@ -22,6 +22,7 @@ class LoginViewModel @Inject constructor(
     private val mutableLoginViewState: MutableStateFlow<LoginViewState> = MutableStateFlow(
         LoginViewState()
     )
+
     val loginViewState: StateFlow<LoginViewState> = mutableLoginViewState.asStateFlow()
 
     init {
