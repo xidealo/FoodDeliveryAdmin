@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementStatisticBinding
 import javax.inject.Inject
 
@@ -34,8 +33,7 @@ class StatisticAdapter @Inject constructor(
         fun bind(statisticItemModel: StatisticItemModel) {
             binding.elementStatisticTvPeriod.text = statisticItemModel.period
             binding.elementStatisticTvCount.text = statisticItemModel.count
-            binding.elementStatisticTvProceeds.text =
-                binding.root.resources.getString(R.string.with_ruble, statisticItemModel.proceeds)
+            binding.elementStatisticTvProceeds.text = statisticItemModel.proceeds
         }
     }
 }

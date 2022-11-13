@@ -1,5 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.repository.CafeRepository
@@ -7,7 +9,6 @@ import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.presentation.R
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class StatisticViewModel @Inject constructor(
     private val cafeRepository: CafeRepository,
     private val stringUtil: IStringUtil,
-    private val resourcesProvider: IResourcesProvider,
+    private val resources: Resources,
     private val dataStoreRepo: DataStoreRepo,
     private val statisticRepository: StatisticRepository
 ) : BaseViewModel() {
@@ -31,7 +32,7 @@ class StatisticViewModel @Inject constructor(
 
     private val allCafes = SelectedCafe(
         uuid = null,
-        address = resourcesProvider.getString(R.string.msg_statistic_all_cafes)
+        address = resources.getString(R.string.msg_statistic_all_cafes)
     )
     private var loadStatisticJob: Job? = null
 
@@ -126,6 +127,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     fun loadStatistic() {
         loadStatisticJob?.cancel()
         loadStatisticJob = viewModelScope.launch {
@@ -144,7 +146,7 @@ class StatisticViewModel @Inject constructor(
                         startMillis = statistic.startPeriodTime,
                         period = statistic.period,
                         count = stringUtil.getOrderCountString(statistic.orderCount),
-                        proceeds = stringUtil.getCostString(statistic.proceeds)
+                        proceeds = resources.getString(R.string.with_ruble, statistic.proceeds)
                     )
                 }.let { statisticItemList ->
                     mutableStatisticState.update { statisticState ->
@@ -167,9 +169,9 @@ class StatisticViewModel @Inject constructor(
 
     private fun getTimeIntervalName(timeInterval: TimeIntervalCode): String {
         return when (timeInterval) {
-            TimeIntervalCode.DAY -> resourcesProvider.getString(R.string.msg_statistic_day_interval)
-            TimeIntervalCode.WEEK -> resourcesProvider.getString(R.string.msg_statistic_week_interval)
-            TimeIntervalCode.MONTH -> resourcesProvider.getString(R.string.msg_statistic_month_interval)
+            TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
+            TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
+            TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
         }
     }
 }
