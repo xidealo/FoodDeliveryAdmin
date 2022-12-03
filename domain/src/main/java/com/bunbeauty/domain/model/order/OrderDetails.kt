@@ -1,26 +1,39 @@
 package com.bunbeauty.domain.model.order
 
-import android.os.Parcelable
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.cart_product.CartProduct
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class OrderDetails(
     val uuid: String,
-    val cafeUuid: String,
-    val oderProductList: List<CartProduct>,
-    val address: String?,
     val code: String,
-    val comment: String?,
-    val deferred: Long?,
-    val delivery: Boolean,
-    val discount: Int?,
-    val email: String,
-    val orderStatus: OrderStatus,
-    val phone: String,
+    val status: OrderStatus,
     val time: Long,
-    val userId: String,
-    val deliveryCost: Int? = null,
+    val timeZone: String,
+    val isDelivery: Boolean,
+    val deferredTime: Long?,
+    val address: OrderAddress,
+    val comment: String?,
+    val clientUser: ClientUser,
+    val cafeUuid: String,
+    val deliveryCost: Int?,
+    val oldTotalCost: Int?,
+    val newTotalCost: Int,
+    val oderProductList: List<CartProduct>,
     val availableStatusList: List<OrderStatus>
-) : Parcelable
+)
+
+class ClientUser(
+    val uuid: String,
+    val phoneNumber: String,
+    val email: String?,
+)
+
+class OrderAddress(
+    val description: String?,
+    val street: String?,
+    val house: String?,
+    val flat: String?,
+    val entrance: String?,
+    val floor: String?,
+    val comment: String?,
+)

@@ -1,15 +1,33 @@
 package com.bunbeauty.presentation.utils
 
+import android.content.res.Resources
+import com.bunbeauty.common.Constants.ADDRESS_DIVIDER
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.enums.OrderStatus.*
+import com.bunbeauty.domain.enums.OrderStatus.ACCEPTED
+import com.bunbeauty.domain.enums.OrderStatus.CANCELED
+import com.bunbeauty.domain.enums.OrderStatus.DELIVERED
+import com.bunbeauty.domain.enums.OrderStatus.DONE
+import com.bunbeauty.domain.enums.OrderStatus.NOT_ACCEPTED
+import com.bunbeauty.domain.enums.OrderStatus.PREPARING
+import com.bunbeauty.domain.enums.OrderStatus.SENT_OUT
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.enums.ProductCode.*
+import com.bunbeauty.domain.enums.ProductCode.BAKERY
+import com.bunbeauty.domain.enums.ProductCode.BARBECUE
+import com.bunbeauty.domain.enums.ProductCode.BURGER
+import com.bunbeauty.domain.enums.ProductCode.COMBO
+import com.bunbeauty.domain.enums.ProductCode.DRINK
+import com.bunbeauty.domain.enums.ProductCode.OVEN
+import com.bunbeauty.domain.enums.ProductCode.PIZZA
+import com.bunbeauty.domain.enums.ProductCode.POTATO
+import com.bunbeauty.domain.enums.ProductCode.SPICE
+import com.bunbeauty.domain.model.order.OrderAddress
 import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
 class StringUtil @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
+    private val resources: Resources,
     private val dateTimeUtil: DateTimeUtil
 ) : IStringUtil {
 
@@ -35,7 +53,7 @@ class StringUtil @Inject constructor(
         return resourcesProvider.getString(R.string.msg_order) + orderCode
     }
 
-    override fun getReceivingMethodString(isDelivery: Boolean): String {
+    override fun getReceiveMethodString(isDelivery: Boolean): String {
         return if (isDelivery) {
             resourcesProvider.getString(R.string.msg_order_delivery)
         } else {
@@ -76,12 +94,42 @@ class StringUtil @Inject constructor(
         }
     }
 
-    fun getStringPart(constant: String, possiblyEmpty: String?): String {
-        return if (possiblyEmpty.isNullOrEmpty()) {
-            ""
-        } else {
-            constant + possiblyEmpty
-        }
+    override fun getOrderAddressString(address: OrderAddress): String {
+        return address.description ?: (
+            address.street +
+                getAddressPart(
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_house,
+                        address.house
+                    ),
+                    data = address.house
+                ) +
+                getAddressPart(
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_flat,
+                        address.flat
+                    ),
+                    data = address.flat
+                ) +
+                getAddressPart(
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_entrance,
+                        address.entrance
+                    ),
+                    data = address.entrance
+                ) +
+                getAddressPart(
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_floor,
+                        address.floor
+                    ),
+                    data = address.floor
+                ) +
+                getAddressPart(
+                    part = ADDRESS_DIVIDER + address.comment,
+                    data = address.comment
+                )
+            )
     }
 
     override fun getDeliveryString(deliveryCost: Int): String {
@@ -129,4 +177,13 @@ class StringUtil @Inject constructor(
             "-" + getCostString(bonusCount)
         }
     }
+
+    fun getAddressPart(part: String, data: String?): String {
+        return if (data.isNullOrEmpty()) {
+            ""
+        } else {
+            part
+        }
+    }
+
 }

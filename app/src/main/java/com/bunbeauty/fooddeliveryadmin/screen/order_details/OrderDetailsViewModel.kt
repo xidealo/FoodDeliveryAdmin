@@ -11,7 +11,6 @@ import com.bunbeauty.domain.enums.OrderStatus.CANCELED
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.core_ui.ListItem
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
@@ -22,15 +21,26 @@ import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.collections.List
+import kotlin.collections.buildList
+import kotlin.collections.isNullOrEmpty
+import kotlin.collections.map
+import kotlin.collections.minus
+import kotlin.collections.plus
+import kotlin.collections.toSet
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     private val orderRepository: OrderRepository,
     private val productUtil: IProductUtil,
-    private val orderUtil: IOrderUtil,
     private val stringUtil: IStringUtil,
     private val resources: Resources,
     private val dateTimeUtil: IDateTimeUtil,
@@ -64,7 +74,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     fun onStatusClicked() {
-        val availableStatusList = mutableOrderDetailsState.value.order?.availableStatusList
+        val availableStatusList = mutableOrderDetailsState.value.orderDetails?.availableStatusList
         if (!availableStatusList.isNullOrEmpty()) {
             val statusList = availableStatusList.map { orderStatus ->
                 Option(
@@ -82,17 +92,14 @@ class OrderDetailsViewModel @Inject constructor(
     fun onStatusSelected(statusName: String) {
         val orderStatus = OrderStatus.valueOf(statusName)
         mutableOrderDetailsState.update { orderDetailsState ->
-            val order = orderDetailsState.order
-            if (order == null) {
-                orderDetailsState
-            } else {
-                val updatedOrder = order.copy(orderStatus = orderStatus)
+            val orderDetails = orderDetailsState.orderDetails
+            orderDetails?.copy(status = orderStatus)?.let { updatedOrderDetails ->
                 orderDetailsState.copy(
-                    order = updatedOrder,
+                    orderDetails = updatedOrderDetails,
                     selectedStatus = orderStatus,
-                    itemModelList = buildItemModelList(updatedOrder)
+                    itemModelList = buildItemModelList(updatedOrderDetails)
                 )
-            }
+            } ?: orderDetailsState
         }
     }
 
@@ -118,26 +125,23 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     @SuppressLint("StringFormatMatches")
-    private fun updateOrderDetailsState(order: OrderDetails) {
-        val oldOrderCost = orderUtil.getOldOrderCost(order)
-        val newOrderCost = orderUtil.getNewOrderCost(order)
+    private fun updateOrderDetailsState(orderDetails: OrderDetails) {
         mutableOrderDetailsState.update { orderDetailsState ->
             orderDetailsState.copy(
-                order = order,
-                itemModelList = buildItemModelList(order),
-                deliveryCost = order.deliveryCost?.let { deliveryCost ->
+                orderDetails = orderDetails,
+                itemModelList = buildItemModelList(orderDetails),
+                deliveryCost = orderDetails.deliveryCost?.let { deliveryCost ->
                     if (deliveryCost == 0) {
                         resources.getString(R.string.msg_order_delivery_free)
                     } else {
                         resources.getString(R.string.with_ruble, deliveryCost)
                     }
                 },
-                discount = order.discount?.let { discount ->
-                    resources.getString(R.string.with_ruble_negative, discount)
+                oldFinalCost = orderDetails.oldTotalCost?.let { oldTotalCost ->
+                    resources.getString(R.string.with_ruble, oldTotalCost)
                 },
-                oldFinalCost = oldOrderCost?.let { resources.getString(R.string.with_ruble, it) },
-                newFinalCost = resources.getString(R.string.with_ruble, newOrderCost),
-                selectedStatus = order.orderStatus,
+                newFinalCost = resources.getString(R.string.with_ruble, orderDetails.newTotalCost),
+                selectedStatus = orderDetails.status,
                 isLoading = false
             )
         }
@@ -147,13 +151,13 @@ class OrderDetailsViewModel @Inject constructor(
         add(
             OrderDetailsItem(
                 uuid = order.uuid,
-                phone = order.phone,
-                time = dateTimeUtil.getTimeHHMM(order.time),
-                receiveMethod = stringUtil.getReceivingMethodString(order.delivery),
-                deferredTime = order.deferred?.let { dateTimeUtil.getTimeHHMM(it) },
-                address = order.address,
+                phone = order.clientUser.phoneNumber,
+                time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
+                receiveMethod = stringUtil.getReceiveMethodString(order.isDelivery),
+                deferredTime = order.deferredTime?.let { dateTimeUtil.getTimeHHMM(it) },
+                address = stringUtil.getOrderAddressString(order.address),
                 comment = order.comment,
-                status = stringUtil.getOrderStatusString(order.orderStatus)
+                status = stringUtil.getOrderStatusString(order.status)
             )
         )
         order.oderProductList.map { cartProduct ->

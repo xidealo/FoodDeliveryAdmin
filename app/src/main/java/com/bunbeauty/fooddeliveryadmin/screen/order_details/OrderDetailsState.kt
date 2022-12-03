@@ -6,14 +6,14 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.ListItem
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 
 data class OrderDetailsState(
-    val order: OrderDetails? = null,
+    val orderDetails: OrderDetails? = null,
     val itemModelList: List<ListItem> = emptyList(),
     val deliveryCost: String? = null,
     val discount: String? = null,
     val oldFinalCost: String? = null,
     val newFinalCost: String? = null,
     val selectedStatus: OrderStatus? = null,
-    val isLoading: Boolean? = false,
+    val isLoading: Boolean = false,
     val eventList: List<Event> = emptyList()
 ) {
 

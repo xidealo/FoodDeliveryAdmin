@@ -2,11 +2,10 @@
 <resources>
 
     <!-- ADDRESS -->
-    <string name="msg_address_house">, д.&#160;</string>
-    <string name="msg_address_flat">, кв.&#160;</string>
-    <string name="msg_address_entrance">, подъезд&#160;</string>
-    <string name="msg_address_floor">, этаж&#160;</string>
-    <string name="msg_address_comment">, комментарий:&#160;</string>
+    <string name="msg_address_house">д. %s</string>
+    <string name="msg_address_flat">кв. %s</string>
+    <string name="msg_address_entrance">%s подъезд</string>
+    <string name="msg_address_floor">%s этаж</string>
 
     <!-- COMMON -->
     <string name="msg_ruble">&#160;₽</string>

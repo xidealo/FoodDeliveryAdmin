@@ -41,11 +41,11 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
         viewModel.orderDetailsState.onEach { orderDetailsState ->
             binding.apply {
-                codeTv.text = orderDetailsState.order?.code
+                codeTv.text = orderDetailsState.orderDetails?.code
 
                 adapter.items = orderDetailsState.itemModelList
 
-                val isDelivery = orderDetailsState.order?.delivery ?: false
+                val isDelivery = orderDetailsState.orderDetails?.isDelivery ?: false
                 deliveryCostTv.isVisible = isDelivery
                 deliveryCostValueTv.isVisible = isDelivery
                 deliveryCostValueTv.text = orderDetailsState.deliveryCost
