@@ -17,9 +17,6 @@
     <string name="msg_pieces">x&#160;</string>
     <string name="msg_comma">,&#160;</string>
 
-    <!-- LOGIN -->
-    <string name="error_login_wrong_data">Неверный логин или пароль</string>
-
     <!-- ORDER -->
     <string name="msg_order">Заказ&#160;</string>
     <string name="msg_order_deferred_time">Ко времени:&#160;</string>

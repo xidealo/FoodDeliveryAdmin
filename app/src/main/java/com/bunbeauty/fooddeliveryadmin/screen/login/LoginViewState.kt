@@ -3,10 +3,14 @@ package com.bunbeauty.fooddeliveryadmin.screen.login
 data class LoginViewState(
     val isLoading: Boolean = true,
     val appVersion: String? = null,
-    val events: List<Event> = emptyList()
+    val eventList: List<Event> = emptyList()
 ) {
     sealed interface Event {
         object OpenOrderListEvent : Event
-        object ShowLoginError : Event
+        object ShowWrongCredentialError : Event
+        object ShowConnectionError : Event
     }
+
+    operator fun plus(event: Event) = copy(eventList = eventList + event)
+    operator fun minus(events: List<Event>) = copy(eventList = eventList - events.toSet())
 }
