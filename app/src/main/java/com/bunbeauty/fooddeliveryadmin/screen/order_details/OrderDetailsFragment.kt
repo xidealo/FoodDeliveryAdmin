@@ -10,6 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.core_ui.FIELD_ITEM_CALLBACK
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
+import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.order_details.item.getOrderDetailsDelegate
@@ -41,11 +42,11 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
         viewModel.orderDetailsState.onEach { orderDetailsState ->
             binding.apply {
-                codeTv.text = orderDetailsState.order?.code
+                codeTv.text = orderDetailsState.orderDetails?.code
 
                 adapter.items = orderDetailsState.itemModelList
 
-                val isDelivery = orderDetailsState.order?.delivery ?: false
+                val isDelivery = orderDetailsState.orderDetails?.isDelivery ?: false
                 deliveryCostTv.isVisible = isDelivery
                 deliveryCostValueTv.isVisible = isDelivery
                 deliveryCostValueTv.text = orderDetailsState.deliveryCost
@@ -80,13 +81,20 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     private fun handleEventList(eventList: List<OrderDetailsState.Event>) {
         eventList.forEach { event ->
             when (event) {
-                is OrderDetailsState.OpenStatusListEvent -> {
+                is OrderDetailsState.Event.OpenStatusListEvent -> {
                     openStatusList(event.statusList)
                 }
-                OrderDetailsState.OpenWarningDialogEvent -> {
+                is  OrderDetailsState.Event.OpenErrorDialogEvent -> {
+                    lifecycleScope.launch {
+                        ErrorDialog.show(childFragmentManager).let {
+                            viewModel.onRetryClicked(event.retryAction)
+                        }
+                    }
+                }
+                OrderDetailsState.Event.OpenWarningDialogEvent -> {
                     showCancellationWarning()
                 }
-                OrderDetailsState.GoBackEvent -> {
+                OrderDetailsState.Event.GoBackEvent -> {
                     goBack()
                 }
             }

@@ -10,11 +10,18 @@
     title_registration_pass
     -->
 
+    <!-- COMMON -->
+
+    <string name="action_retry">Повторить попытку</string>
+    <string name="title_can_not_load_data">Не удается загрузить данные</string>
+    <string name="msg_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
+
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
     <string name="msg_login_version">Версия приложения %s</string>
+    <string name="error_login_wrong_data">Неверный логин или пароль</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>

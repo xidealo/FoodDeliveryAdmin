@@ -1,6 +1,6 @@
 package com.bunbeauty.data.di
 
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.repository.*
 import com.bunbeauty.domain.repo.*
 import dagger.Binds
@@ -19,7 +19,7 @@ abstract class RepoModule {
 
     @Singleton
     @Binds
-    abstract fun bindApiRepository(networkConnectorImpl: NetworkConnectorImpl): NetworkConnector
+    abstract fun bindApiRepository(networkConnectorImpl: FoodDeliveryApiImpl): FoodDeliveryApi
 
     @Singleton
     @Binds
