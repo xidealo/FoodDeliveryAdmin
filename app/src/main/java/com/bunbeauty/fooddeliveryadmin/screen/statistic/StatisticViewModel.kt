@@ -129,11 +129,7 @@ class StatisticViewModel @Inject constructor(
     @SuppressLint("StringFormatMatches")
     fun loadStatistic() {
         loadStatisticJob?.cancel()
-        loadStatisticJob = viewModelScope.launch {
-            mutableStatisticState.update { statisticState ->
-                statisticState.copy(isLoading = true)
-            }
-
+        loadStatisticJob = handleWithState(RetryAction.LOAD_STATISTIC) {
             val statisticResult = statisticRepository.getStatistic(
                 token = dataStoreRepo.token.first(),
                 cafeUuid = mutableStatisticState.value.selectedCafe?.uuid,
@@ -153,20 +149,19 @@ class StatisticViewModel @Inject constructor(
                     }
                 }
             }
-
-            mutableStatisticState.update { statisticState ->
-                statisticState.copy(isLoading = false)
-            }
         }
     }
 
-    fun onRetryClicked() {
-        updateData()
+    fun onRetryClicked(retryAction: RetryAction) {
+        when (retryAction) {
+            RetryAction.LOAD_CAFE_LIST -> updateData()
+            RetryAction.LOAD_STATISTIC -> loadStatistic()
+        }
     }
 
     fun onLogout(option: String) {
         if (LogoutOption.valueOf(option) == LogoutOption.LOGOUT) {
-            handleWithState {
+            viewModelScope.launch {
                 logoutUseCase()
                 mutableStatisticState.update { state ->
                     state + StatisticState.Event.OpenLoginEvent
@@ -182,7 +177,7 @@ class StatisticViewModel @Inject constructor(
     }
 
     private fun updateData() {
-        handleWithState {
+        handleWithState(RetryAction.LOAD_CAFE_LIST) {
             cafeRepository.refreshCafeList(
                 token = dataStoreRepo.token.first(),
                 cityUuid = dataStoreRepo.managerCity.first()
@@ -198,8 +193,11 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    private inline fun handleWithState(crossinline block: suspend () -> Unit) {
-        viewModelScope.launch {
+    private inline fun handleWithState(
+        retryAction: RetryAction,
+        crossinline block: suspend () -> Unit
+    ): Job {
+        return viewModelScope.launch {
             mutableStatisticState.update { state ->
                 state.copy(isLoading = true)
             }
@@ -210,7 +208,7 @@ class StatisticViewModel @Inject constructor(
                 }
             } catch (exception: Exception) {
                 mutableStatisticState.update { state ->
-                    state.copy(isLoading = false) + StatisticState.Event.ShowError
+                    state.copy(isLoading = false) + StatisticState.Event.ShowError(retryAction)
                 }
             }
         }

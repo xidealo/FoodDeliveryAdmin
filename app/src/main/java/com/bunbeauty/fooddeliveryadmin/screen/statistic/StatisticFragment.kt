@@ -85,10 +85,10 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                 is StatisticState.Event.OpenTimeIntervalListEvent -> {
                     openTimeIntervals(event.timeIntervalList)
                 }
-                StatisticState.Event.ShowError -> {
+                is StatisticState.Event.ShowError -> {
                     lifecycleScope.launch {
                         ErrorDialog.show(childFragmentManager).let {
-                            viewModel.onRetryClicked()
+                            viewModel.onRetryClicked(event.retryAction)
                         }
                     }
                 }

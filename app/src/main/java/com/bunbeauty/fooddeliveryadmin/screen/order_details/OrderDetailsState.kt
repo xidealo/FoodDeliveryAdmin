@@ -25,12 +25,12 @@ data class OrderDetailsState(
         object GoBackEvent : Event
     }
 
-    enum class RetryAction {
-        LOAD_ORDER,
-        SAVE_STATUS,
-    }
-
     operator fun plus(event: Event) = copy(eventList = eventList + event)
     operator fun minus(events: List<Event>) = copy(eventList = eventList - events.toSet())
 
+}
+
+enum class RetryAction {
+    LOAD_ORDER,
+    SAVE_STATUS,
 }

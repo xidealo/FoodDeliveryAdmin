@@ -100,12 +100,12 @@ class OrderDetailsViewModel @Inject constructor(
         updateStatus(CANCELED)
     }
 
-    fun onRetryClicked(retryAction: OrderDetailsState.RetryAction) {
+    fun onRetryClicked(retryAction: RetryAction) {
         when (retryAction) {
-            OrderDetailsState.RetryAction.LOAD_ORDER -> {
+            RetryAction.LOAD_ORDER -> {
                 loadOrder(orderUuid)
             }
-            OrderDetailsState.RetryAction.SAVE_STATUS -> {
+            RetryAction.SAVE_STATUS -> {
                 val selectedStatus = mutableOrderDetailsState.value.selectedStatus ?: return
                 updateStatus(selectedStatus)
             }
@@ -133,9 +133,7 @@ class OrderDetailsViewModel @Inject constructor(
                     }
                 }
             } catch (exception: Exception) {
-                val event = OrderDetailsState.Event.OpenErrorDialogEvent(
-                    OrderDetailsState.RetryAction.LOAD_ORDER
-                )
+                val event = OrderDetailsState.Event.OpenErrorDialogEvent(RetryAction.LOAD_ORDER)
                 mutableOrderDetailsState.update { orderDetailsState ->
                     orderDetailsState.copy(isLoading = false) + event
                 }
@@ -209,7 +207,7 @@ class OrderDetailsViewModel @Inject constructor(
                 }
             } catch (exception: Exception) {
                 mutableOrderDetailsState.update { orderDetailsState ->
-                    orderDetailsState + OrderDetailsState.Event.OpenErrorDialogEvent(OrderDetailsState.RetryAction.SAVE_STATUS)
+                    orderDetailsState + OrderDetailsState.Event.OpenErrorDialogEvent(RetryAction.SAVE_STATUS)
                 }
             }
         }
