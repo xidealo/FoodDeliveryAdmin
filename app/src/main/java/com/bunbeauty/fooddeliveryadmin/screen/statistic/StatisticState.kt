@@ -16,7 +16,11 @@ data class StatisticState(
     sealed class Event {
         class OpenCafeListEvent(val cafeList: List<Option>) : Event()
         class OpenTimeIntervalListEvent(val timeIntervalList: List<Option>) : Event()
+        object ShowError : Event()
     }
+
+    operator fun plus(event: Event) = copy(eventList = eventList + event)
+    operator fun minus(events: List<Event>) = copy(eventList = eventList - events.toSet())
 }
 
 data class SelectedCafe(

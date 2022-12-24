@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
+import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
@@ -62,6 +63,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                 }
                 is StatisticState.Event.OpenTimeIntervalListEvent -> {
                     openTimeIntervals(event.timeIntervalList)
+                }
+                StatisticState.Event.ShowError -> {
+                    lifecycleScope.launch {
+                        ErrorDialog.show(childFragmentManager).let {
+                            viewModel.onRetryClicked()
+                        }
+                    }
                 }
             }
         }

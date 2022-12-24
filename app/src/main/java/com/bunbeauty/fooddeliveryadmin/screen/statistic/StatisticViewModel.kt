@@ -46,13 +46,7 @@ class StatisticViewModel @Inject constructor(
                 )
             )
         }
-
-        viewModelScope.launch {
-            cafeRepository.refreshCafeList(
-                token = dataStoreRepo.token.first(),
-                cityUuid = dataStoreRepo.managerCity.first()
-            )
-        }
+        updateData()
     }
 
     fun onCafeClicked() {
@@ -74,10 +68,9 @@ class StatisticViewModel @Inject constructor(
                     addAll(cafeAddressList)
                 }
             }
-            val openCafeListEvent = StatisticState.Event.OpenCafeListEvent(cafeList)
 
             mutableStatisticState.update { statisticState ->
-                statisticState.copy(eventList = statisticState.eventList + openCafeListEvent)
+                statisticState + StatisticState.Event.OpenCafeListEvent(cafeList)
             }
         }
     }
@@ -107,10 +100,9 @@ class StatisticViewModel @Inject constructor(
                     title = getTimeIntervalName(timeInterval)
                 )
             }
-            val openCafeListEvent = StatisticState.Event.OpenTimeIntervalListEvent(timeIntervalList)
 
             mutableStatisticState.update { statisticState ->
-                statisticState.copy(eventList = statisticState.eventList + openCafeListEvent)
+                statisticState + StatisticState.Event.OpenTimeIntervalListEvent(timeIntervalList)
             }
         }
     }
@@ -161,9 +153,22 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
+    fun onRetryClicked() {
+        updateData()
+    }
+
     fun consumeEvents(events: List<StatisticState.Event>) {
         mutableStatisticState.update { statisticState ->
-            statisticState.copy(eventList = statisticState.eventList - events.toSet())
+            statisticState - events
+        }
+    }
+
+    private fun updateData() {
+        handleWithState {
+            cafeRepository.refreshCafeList(
+                token = dataStoreRepo.token.first(),
+                cityUuid = dataStoreRepo.managerCity.first()
+            )
         }
     }
 
@@ -172,6 +177,24 @@ class StatisticViewModel @Inject constructor(
             TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
             TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
             TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
+        }
+    }
+
+    private inline fun handleWithState(crossinline block: suspend () -> Unit) {
+        viewModelScope.launch {
+            mutableStatisticState.update { state ->
+                state.copy(isLoading = true)
+            }
+            try {
+                block()
+                mutableStatisticState.update { state ->
+                    state.copy(isLoading = false)
+                }
+            } catch (exception: Exception) {
+                mutableStatisticState.update { state ->
+                    state.copy(isLoading = false) + StatisticState.Event.ShowError
+                }
+            }
         }
     }
 }
