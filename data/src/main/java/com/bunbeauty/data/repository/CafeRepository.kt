@@ -61,12 +61,7 @@ class CafeRepository @Inject constructor(
                         })
                 }
             }
-            is ApiResult.Error -> {
-                Log.e(
-                    "testTag",
-                    "refreshCafeList ${result.apiError.message} ${result.apiError.code}"
-                )
-            }
+            is ApiResult.Error -> {}
         }
     }
 }

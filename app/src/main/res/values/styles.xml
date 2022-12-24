@@ -39,6 +39,7 @@
 
     <style name="MainButton" parent="BaseButton">
         <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">44dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="cornerRadius">@dimen/medium_radius</item>
@@ -135,6 +136,12 @@
 
     <style name="LargeRegularText" parent="BaseText">
         <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="fontFamily">@font/font_roboto_regular</item>
+    </style>
+
+    <style name="LargeRegularCenterText" parent="BaseText">
+        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:textAlignment">center</item>
         <item name="fontFamily">@font/font_roboto_regular</item>
     </style>
 
