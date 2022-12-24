@@ -1,7 +1,7 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.CategoryDao
 import com.bunbeauty.data.mapper.CategoryMapper
 import com.bunbeauty.domain.repo.CategoryRepo
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class CategoryRepository @Inject constructor(
     private val categoryDao: CategoryDao,
-    private val networkConnector: NetworkConnector,
+    private val networkConnector: FoodDeliveryApi,
     private val categoryMapper: CategoryMapper
 ) : CategoryRepo {
 

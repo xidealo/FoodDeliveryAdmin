@@ -1,8 +1,7 @@
 package com.bunbeauty.data.repository
 
-import android.util.Log
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.CafeDao
 import com.bunbeauty.data.mapper.cafe.IEntityCafeMapper
 import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
@@ -16,7 +15,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CafeRepository @Inject constructor(
-    private val networkConnector: NetworkConnector,
+    private val networkConnector: FoodDeliveryApi,
     private val serverCafeMapper: IServerCafeMapper,
     private val entityCafeMapper: IEntityCafeMapper,
     private val cafeDao: CafeDao

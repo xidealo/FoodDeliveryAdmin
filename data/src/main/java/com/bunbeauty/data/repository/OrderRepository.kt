@@ -3,7 +3,7 @@ package com.bunbeauty.data.repository
 import android.util.Log
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.ORDER_TAG
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Singleton
 class OrderRepository @Inject constructor(
-    private val networkConnector: NetworkConnector,
+    private val networkConnector: FoodDeliveryApi,
     private val serverOrderMapper: IServerOrderMapper,
 ) {
 

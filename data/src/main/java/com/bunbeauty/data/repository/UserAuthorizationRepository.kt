@@ -1,7 +1,7 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import kotlinx.coroutines.Dispatchers.IO
@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserAuthorizationRepository @Inject constructor(
-    private val networkConnector: NetworkConnector
+    private val networkConnector: FoodDeliveryApi
 ) : UserAuthorizationRepo {
 
     override suspend fun login(
