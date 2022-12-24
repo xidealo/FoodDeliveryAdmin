@@ -25,11 +25,6 @@
         <action
             android:id="@+id/to_ordersDetailsFragment"
             app:destination="@id/ordersDetailsFragment" />
-        <action
-            android:id="@+id/to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/nav_main"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/ordersDetailsFragment"
@@ -100,4 +95,11 @@
             android:name="listData"
             app:argType="com.bunbeauty.presentation.model.ListData" />
     </dialog>
+
+    <action
+        android:id="@+id/to_loginFragment"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true" />
+
 </navigation>

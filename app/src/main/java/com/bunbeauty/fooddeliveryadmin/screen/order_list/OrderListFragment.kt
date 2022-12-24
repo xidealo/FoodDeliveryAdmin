@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
+import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
@@ -27,6 +28,9 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
 
     @Inject
     lateinit var orderAdapter: OrderAdapter
+
+    @Inject
+    lateinit var navigator: Navigator
 
     override val viewModel: OrderListViewModel by viewModels()
 
@@ -50,7 +54,11 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             toolbar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.logout -> {
-                        openLogoutConfirmation()
+                        lifecycleScope.launch {
+                            navigator.openLogout(parentFragmentManager)?.let { option ->
+                                viewModel.onLogout(option)
+                            }
+                        }
                         true
                     }
                     else -> {

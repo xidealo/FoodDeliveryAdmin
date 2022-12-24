@@ -5,12 +5,16 @@ import android.view.View
 import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
+import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections
+import com.bunbeauty.fooddeliveryadmin.screen.statistic.StatisticFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -22,6 +26,8 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
     @Inject
     lateinit var statisticAdapter: StatisticAdapter
+    @Inject
+    lateinit var navigator: Navigator
 
     override val viewModel: StatisticViewModel by viewModels()
 
@@ -32,6 +38,21 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
+            toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.logout -> {
+                        lifecycleScope.launch {
+                            navigator.openLogout(parentFragmentManager)?.let { option ->
+                                viewModel.onLogout(option)
+                            }
+                        }
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
             fragmentStatisticRvList.adapter = statisticAdapter
             fragmentStatisticRvList.addSpaceItemDecorator(R.dimen.very_small_margin)
             fragmentStatisticMcvCafe.setOnClickListener {
@@ -70,6 +91,9 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                             viewModel.onRetryClicked()
                         }
                     }
+                }
+                StatisticState.Event.OpenLoginEvent -> {
+                    findNavController().navigate(toLoginFragment())
                 }
             }
         }

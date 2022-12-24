@@ -7,13 +7,19 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.fooddeliveryadmin.domain.LogoutUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.LogoutOption
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +29,8 @@ class StatisticViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val resources: Resources,
     private val dataStoreRepo: DataStoreRepo,
-    private val statisticRepository: StatisticRepository
+    private val statisticRepository: StatisticRepository,
+    private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
 
     private val mutableStatisticState: MutableStateFlow<StatisticState> =
@@ -155,6 +162,17 @@ class StatisticViewModel @Inject constructor(
 
     fun onRetryClicked() {
         updateData()
+    }
+
+    fun onLogout(option: String) {
+        if (LogoutOption.valueOf(option) == LogoutOption.LOGOUT) {
+            handleWithState {
+                logoutUseCase()
+                mutableStatisticState.update { state ->
+                    state + StatisticState.Event.OpenLoginEvent
+                }
+            }
+        }
     }
 
     fun consumeEvents(events: List<StatisticState.Event>) {

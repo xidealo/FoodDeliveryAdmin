@@ -46,6 +46,7 @@
     <string name="action_cancel">Отмена</string>
 
     <!-- STATISTIC -->
+    <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
     <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>

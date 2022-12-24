@@ -16,6 +16,7 @@ data class StatisticState(
     sealed class Event {
         class OpenCafeListEvent(val cafeList: List<Option>) : Event()
         class OpenTimeIntervalListEvent(val timeIntervalList: List<Option>) : Event()
+        object OpenLoginEvent : Event()
         object ShowError : Event()
     }
 
