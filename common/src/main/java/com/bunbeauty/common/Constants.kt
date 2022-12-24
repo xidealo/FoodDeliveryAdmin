@@ -44,4 +44,6 @@ object Constants {
     const val NOTIFICATION_TAG = "notificationTag"
     const val COMPANY_UUID_PARAMETER = "companyUuid"
 
+    const val ADDRESS_DIVIDER = ", "
+
 }

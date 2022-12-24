@@ -13,8 +13,8 @@
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/elementBackground"
         app:layout_collapseMode="pin"
-        app:menu="@menu/top_menu"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/top_menu">
 
         <TextView
             style="@style/LargeBoldCenterText"

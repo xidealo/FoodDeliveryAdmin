@@ -11,7 +11,6 @@ import com.bunbeauty.domain.enums.OrderStatus.CANCELED
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.domain.util.order.IOrderUtil
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.fooddeliveryadmin.core_ui.ListItem
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
@@ -22,7 +21,12 @@ import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +34,6 @@ import javax.inject.Inject
 class OrderDetailsViewModel @Inject constructor(
     private val orderRepository: OrderRepository,
     private val productUtil: IProductUtil,
-    private val orderUtil: IOrderUtil,
     private val stringUtil: IStringUtil,
     private val resources: Resources,
     private val dateTimeUtil: IDateTimeUtil,
@@ -48,23 +51,8 @@ class OrderDetailsViewModel @Inject constructor(
         loadOrder(orderUuid)
     }
 
-    private fun loadOrder(orderUuid: String) {
-        mutableOrderDetailsState.update { orderDetailsState ->
-            orderDetailsState.copy(isLoading = true)
-        }
-        viewModelScope.launch {
-            dataStoreRepo.token.firstOrNull()?.let { token ->
-                orderRepository.loadOrderByUuid(
-                    token = token, orderUuid = orderUuid
-                )?.let { order ->
-                    updateOrderDetailsState(order)
-                }
-            }
-        }
-    }
-
     fun onStatusClicked() {
-        val availableStatusList = mutableOrderDetailsState.value.order?.availableStatusList
+        val availableStatusList = mutableOrderDetailsState.value.orderDetails?.availableStatusList
         if (!availableStatusList.isNullOrEmpty()) {
             val statusList = availableStatusList.map { orderStatus ->
                 Option(
@@ -72,9 +60,10 @@ class OrderDetailsViewModel @Inject constructor(
                     title = stringUtil.getOrderStatusString(orderStatus),
                 )
             }
-            val openStatusListEvent = OrderDetailsState.OpenStatusListEvent(statusList = statusList)
+            val openStatusListEvent =
+                OrderDetailsState.Event.OpenStatusListEvent(statusList = statusList)
             mutableOrderDetailsState.update { orderDetailsState ->
-                orderDetailsState.copy(eventList = orderDetailsState.eventList + openStatusListEvent)
+                orderDetailsState + openStatusListEvent
             }
         }
     }
@@ -82,15 +71,15 @@ class OrderDetailsViewModel @Inject constructor(
     fun onStatusSelected(statusName: String) {
         val orderStatus = OrderStatus.valueOf(statusName)
         mutableOrderDetailsState.update { orderDetailsState ->
-            val order = orderDetailsState.order
-            if (order == null) {
+            val orderDetails = orderDetailsState.orderDetails
+            if (orderDetails == null) {
                 orderDetailsState
             } else {
-                val updatedOrder = order.copy(orderStatus = orderStatus)
+                val updatedOrderDetails = orderDetails.copy(status = orderStatus)
                 orderDetailsState.copy(
-                    order = updatedOrder,
+                    orderDetails = updatedOrderDetails,
                     selectedStatus = orderStatus,
-                    itemModelList = buildItemModelList(updatedOrder)
+                    itemModelList = buildItemModelList(updatedOrderDetails)
                 )
             }
         }
@@ -100,7 +89,7 @@ class OrderDetailsViewModel @Inject constructor(
         val selectedStatus = mutableOrderDetailsState.value.selectedStatus ?: return
         if (selectedStatus == CANCELED) {
             mutableOrderDetailsState.update { orderDetailsState ->
-                orderDetailsState.copy(eventList = orderDetailsState.eventList + OrderDetailsState.OpenWarningDialogEvent)
+                orderDetailsState + OrderDetailsState.Event.OpenWarningDialogEvent
             }
         } else {
             updateStatus(selectedStatus)
@@ -111,33 +100,65 @@ class OrderDetailsViewModel @Inject constructor(
         updateStatus(CANCELED)
     }
 
+    fun onRetryClicked(retryAction: RetryAction) {
+        when (retryAction) {
+            RetryAction.LOAD_ORDER -> {
+                loadOrder(orderUuid)
+            }
+            RetryAction.SAVE_STATUS -> {
+                val selectedStatus = mutableOrderDetailsState.value.selectedStatus ?: return
+                updateStatus(selectedStatus)
+            }
+        }
+    }
+
     fun consumeEvents(events: List<OrderDetailsState.Event>) {
         mutableOrderDetailsState.update { orderDetailsState ->
-            orderDetailsState.copy(eventList = orderDetailsState.eventList - events.toSet())
+            orderDetailsState - events
+        }
+    }
+
+    private fun loadOrder(orderUuid: String) {
+        mutableOrderDetailsState.update { orderDetailsState ->
+            orderDetailsState.copy(isLoading = true)
+        }
+        viewModelScope.launch {
+            try {
+                dataStoreRepo.token.firstOrNull()?.let { token ->
+                    orderRepository.loadOrderByUuid(
+                        token = token,
+                        orderUuid = orderUuid
+                    )?.let { order ->
+                        updateOrderDetailsState(order)
+                    }
+                }
+            } catch (exception: Exception) {
+                val event = OrderDetailsState.Event.OpenErrorDialogEvent(RetryAction.LOAD_ORDER)
+                mutableOrderDetailsState.update { orderDetailsState ->
+                    orderDetailsState.copy(isLoading = false) + event
+                }
+            }
         }
     }
 
     @SuppressLint("StringFormatMatches")
-    private fun updateOrderDetailsState(order: OrderDetails) {
-        val oldOrderCost = orderUtil.getOldOrderCost(order)
-        val newOrderCost = orderUtil.getNewOrderCost(order)
+    private fun updateOrderDetailsState(orderDetails: OrderDetails) {
         mutableOrderDetailsState.update { orderDetailsState ->
             orderDetailsState.copy(
-                order = order,
-                itemModelList = buildItemModelList(order),
-                deliveryCost = order.deliveryCost?.let { deliveryCost ->
+                orderDetails = orderDetails,
+                itemModelList = buildItemModelList(orderDetails),
+                deliveryCost = orderDetails.deliveryCost?.let { deliveryCost ->
                     if (deliveryCost == 0) {
                         resources.getString(R.string.msg_order_delivery_free)
                     } else {
                         resources.getString(R.string.with_ruble, deliveryCost)
                     }
                 },
-                discount = order.discount?.let { discount ->
-                    resources.getString(R.string.with_ruble_negative, discount)
+                oldFinalCost = orderDetails.oldTotalCost?.let { oldTotalCost ->
+                    resources.getString(R.string.with_ruble, oldTotalCost)
                 },
-                oldFinalCost = oldOrderCost?.let { resources.getString(R.string.with_ruble, it) },
-                newFinalCost = resources.getString(R.string.with_ruble, newOrderCost),
-                selectedStatus = order.orderStatus,
+                newFinalCost = resources.getString(R.string.with_ruble, orderDetails.newTotalCost),
+                selectedStatus = orderDetails.status,
                 isLoading = false
             )
         }
@@ -147,13 +168,13 @@ class OrderDetailsViewModel @Inject constructor(
         add(
             OrderDetailsItem(
                 uuid = order.uuid,
-                phone = order.phone,
-                time = dateTimeUtil.getTimeHHMM(order.time),
-                receiveMethod = stringUtil.getReceivingMethodString(order.delivery),
-                deferredTime = order.deferred?.let { dateTimeUtil.getTimeHHMM(it) },
-                address = order.address,
+                phone = order.clientUser.phoneNumber,
+                time = dateTimeUtil.getDateTimeDDMMHHMM(order.time),
+                receiveMethod = stringUtil.getReceiveMethodString(order.isDelivery),
+                deferredTime = order.deferredTime?.let { dateTimeUtil.getTimeHHMM(it) },
+                address = stringUtil.getOrderAddressString(order.address),
                 comment = order.comment,
-                status = stringUtil.getOrderStatusString(order.orderStatus)
+                status = stringUtil.getOrderStatusString(order.status)
             )
         )
         order.oderProductList.map { cartProduct ->
@@ -175,13 +196,19 @@ class OrderDetailsViewModel @Inject constructor(
     private fun updateStatus(selectedStatus: OrderStatus) {
         viewModelScope.launch {
             val token = dataStoreRepo.token.first()
-            orderRepository.updateStatus(
-                token = token,
-                orderUuid = orderUuid,
-                status = selectedStatus
-            )
-            mutableOrderDetailsState.update { orderDetailsState ->
-                orderDetailsState.copy(eventList = orderDetailsState.eventList + OrderDetailsState.GoBackEvent)
+            try {
+                orderRepository.updateStatus(
+                    token = token,
+                    orderUuid = orderUuid,
+                    status = selectedStatus
+                )
+                mutableOrderDetailsState.update { orderDetailsState ->
+                    orderDetailsState + OrderDetailsState.Event.GoBackEvent
+                }
+            } catch (exception: Exception) {
+                mutableOrderDetailsState.update { orderDetailsState ->
+                    orderDetailsState + OrderDetailsState.Event.OpenErrorDialogEvent(RetryAction.SAVE_STATUS)
+                }
             }
         }
     }

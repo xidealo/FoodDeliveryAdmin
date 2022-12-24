@@ -11,10 +11,14 @@ data class OrderListState(
     val eventList: List<Event> = emptyList()
 ) {
 
-    sealed class Event {
-        object ScrollToTop : Event()
-        class OpenCafeListEvent(val cafeList: List<Option>) : Event()
-        class OpenOrderDetailsEvent(val orderUuid: String) : Event()
-        object OpenLoginEvent : Event()
+    sealed interface Event {
+        object ScrollToTop : Event
+        class OpenCafeListEvent(val cafeList: List<Option>) : Event
+        class OpenOrderDetailsEvent(val orderUuid: String) : Event
+        object OpenLoginEvent : Event
+        object ShowError : Event
     }
+
+    operator fun plus(event: Event) = copy(eventList = eventList + event)
+    operator fun minus(events: List<Event>) = copy(eventList = eventList - events.toSet())
 }

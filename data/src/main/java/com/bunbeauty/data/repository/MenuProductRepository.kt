@@ -2,7 +2,7 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.RELOAD_DELAY
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.mapper.MenuProductMapper
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MenuProductRepository @Inject constructor(
-    private val networkConnector: NetworkConnector,
+    private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper,
     private val menuProductDao: MenuProductDao,
     private val menuProductCategoryDao: MenuProductCategoryDao

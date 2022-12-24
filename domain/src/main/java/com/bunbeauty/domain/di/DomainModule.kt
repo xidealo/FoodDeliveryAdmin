@@ -2,8 +2,6 @@ package com.bunbeauty.domain.di
 
 import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.domain.util.order.IOrderUtil
-import com.bunbeauty.domain.util.order.OrderUtil
 import com.bunbeauty.domain.util.product.IProductUtil
 import com.bunbeauty.domain.util.product.ProductUtil
 import dagger.Binds
@@ -25,7 +23,4 @@ abstract class DomainModule {
     @Binds
     abstract fun bindDateTimeUtil(dateTimeUtil: DateTimeUtil): IDateTimeUtil
 
-    @Singleton
-    @Binds
-    abstract fun bindOrderUtil(orderUtil: OrderUtil): IOrderUtil
 }

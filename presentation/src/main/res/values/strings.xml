@@ -2,11 +2,10 @@
 <resources>
 
     <!-- ADDRESS -->
-    <string name="msg_address_house">, д.&#160;</string>
-    <string name="msg_address_flat">, кв.&#160;</string>
-    <string name="msg_address_entrance">, подъезд&#160;</string>
-    <string name="msg_address_floor">, этаж&#160;</string>
-    <string name="msg_address_comment">, комментарий:&#160;</string>
+    <string name="msg_address_house">д. %s</string>
+    <string name="msg_address_flat">кв. %s</string>
+    <string name="msg_address_entrance">%s подъезд</string>
+    <string name="msg_address_floor">%s этаж</string>
 
     <!-- COMMON -->
     <string name="msg_ruble">&#160;₽</string>
@@ -17,9 +16,6 @@
     <string name="msg_colon">:&#160;</string>
     <string name="msg_pieces">x&#160;</string>
     <string name="msg_comma">,&#160;</string>
-
-    <!-- LOGIN -->
-    <string name="error_login_wrong_data">Неверный логин или пароль</string>
 
     <!-- ORDER -->
     <string name="msg_order">Заказ&#160;</string>
@@ -50,6 +46,7 @@
     <string name="action_cancel">Отмена</string>
 
     <!-- STATISTIC -->
+    <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
     <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>
