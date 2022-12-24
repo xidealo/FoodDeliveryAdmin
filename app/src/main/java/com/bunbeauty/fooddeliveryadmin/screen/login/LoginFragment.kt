@@ -34,19 +34,26 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 binding.versionTextView.text =
                     resources.getString(R.string.msg_login_version, version)
             }
-            handleEvents(state.events)
+            handleEvents(state.eventList)
         }
     }
 
     private fun handleEvents(eventList: List<LoginViewState.Event>) {
         eventList.forEach { event ->
             when (event) {
-                is LoginViewState.Event.OpenOrderListEvent -> {
+                LoginViewState.Event.OpenOrderListEvent -> {
                     findNavController().navigate(LoginFragmentDirections.toOrdersFragment())
                 }
-                is LoginViewState.Event.ShowLoginError -> {
+                LoginViewState.Event.ShowWrongCredentialError -> {
                     showSnackbar(
                         resources.getString(R.string.error_login_wrong_data),
+                        R.color.lightTextColor,
+                        R.color.errorColor
+                    )
+                }
+                LoginViewState.Event.ShowConnectionError -> {
+                    showSnackbar(
+                        resources.getString(R.string.msg_check_connection_and_retry),
                         R.color.lightTextColor,
                         R.color.errorColor
                     )

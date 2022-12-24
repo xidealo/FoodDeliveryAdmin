@@ -2,7 +2,6 @@ package com.bunbeauty.data
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.CategoryServer
-import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
@@ -14,16 +13,13 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
 import kotlinx.coroutines.flow.Flow
 
-interface NetworkConnector {
+interface FoodDeliveryApi {
 
     // LOGIN
     suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
 
     // CAFE
     suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
-
-    // DELIVERY
-    suspend fun getDelivery(token: String, companyUuid: String): ApiResult<DeliveryServer>
 
     // MENU PRODUCT
     suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>>
@@ -43,14 +39,10 @@ interface NetworkConnector {
 
     // ORDER
 
-    suspend fun subscribeOnCafeTopic(cafeUuid: String)
-
     suspend fun subscribeOnOrderListByCafeId(
         token: String,
         cafeUuid: String
     ): Flow<ApiResult<ServerOrder>>
-
-    suspend fun unsubscribeFromCafeTopic(cafeUuid: String)
 
     suspend fun unsubscribeOnOrderList(message: String)
 

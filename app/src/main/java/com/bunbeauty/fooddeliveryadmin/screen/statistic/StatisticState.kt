@@ -16,7 +16,17 @@ data class StatisticState(
     sealed class Event {
         class OpenCafeListEvent(val cafeList: List<Option>) : Event()
         class OpenTimeIntervalListEvent(val timeIntervalList: List<Option>) : Event()
+        object OpenLoginEvent : Event()
+        class ShowError(val retryAction: RetryAction) : Event()
     }
+
+    operator fun plus(event: Event) = copy(eventList = eventList + event)
+    operator fun minus(events: List<Event>) = copy(eventList = eventList - events.toSet())
+}
+
+enum class RetryAction {
+    LOAD_CAFE_LIST,
+    LOAD_STATISTIC,
 }
 
 data class SelectedCafe(

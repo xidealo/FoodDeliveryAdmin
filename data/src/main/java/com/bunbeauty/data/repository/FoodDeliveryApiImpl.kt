@@ -3,12 +3,9 @@ package com.bunbeauty.data.repository
 import android.util.Log
 import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.common.Constants.COMPANY_UUID_PARAMETER
-import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.CategoryServer
-import com.bunbeauty.data.model.server.DeliveryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
@@ -18,8 +15,6 @@ import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.websocket.*
@@ -33,10 +28,10 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class NetworkConnectorImpl @Inject constructor(
+class FoodDeliveryApiImpl @Inject constructor(
     private val client: HttpClient,
     private val json: Json
-) : NetworkConnector {
+) : FoodDeliveryApi {
 
     private var webSocketSession: DefaultClientWebSocketSession? = null
 
@@ -57,18 +52,6 @@ class NetworkConnectorImpl @Inject constructor(
             serializer = ListServer.serializer(CafeServer.serializer()),
             parameters = hashMapOf("cityUuid" to cityUuid),
             token = token,
-        )
-    }
-
-    override suspend fun getDelivery(
-        token: String,
-        companyUuid: String
-    ): ApiResult<DeliveryServer> {
-        return getData(
-            token = token,
-            path = "delivery",
-            serializer = DeliveryServer.serializer(),
-            parameters = hashMapOf(COMPANY_UUID_PARAMETER to companyUuid)
         )
     }
 
@@ -109,17 +92,6 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeOnCafeTopic(cafeUuid: String) {
-        Firebase.messaging.subscribeToTopic(cafeUuid)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(NOTIFICATION_TAG, "Subscription to $cafeUuid is successful")
-                } else {
-                    Log.d(NOTIFICATION_TAG, "Subscription to $cafeUuid failed")
-                }
-            }
-    }
-
     override suspend fun subscribeOnOrderListByCafeId(
         token: String,
         cafeUuid: String
@@ -145,30 +117,21 @@ class NetworkConnectorImpl @Inject constructor(
                         emit(ApiResult.Success(serverModel))
                     }
                 }
-            } catch (e: WebSocketException) {
-                Log.e(WEB_SOCKET_TAG, "WebSocketException: ${e.message}")
-            } catch (e: Exception) {
-                val stackTrace = e.stackTrace.joinToString("\n") {
+            } catch (exception: WebSocketException) {
+                Log.e(WEB_SOCKET_TAG, "WebSocketException: ${exception.message}")
+                emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+            } catch (exception: Exception) {
+                val stackTrace = exception.stackTrace.joinToString("\n") {
                     "${it.className} ${it.methodName} ${it.lineNumber}"
                 }
                 Log.e(
-                    WEB_SOCKET_TAG, "Exception: $e \n$stackTrace"
+                    WEB_SOCKET_TAG, "Exception: $exception \n$stackTrace"
                 )
+                emit(ApiResult.Error(ApiError(message = exception.message.toString())))
             } finally {
                 unsubscribeOnOrderList("Unknown")
             }
         }
-    }
-
-    override suspend fun unsubscribeFromCafeTopic(cafeUuid: String) {
-        Firebase.messaging.unsubscribeFromTopic(cafeUuid)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(NOTIFICATION_TAG, "Unsubscription from $cafeUuid is successful")
-                } else {
-                    Log.d(NOTIFICATION_TAG, "Unsubscription from $cafeUuid failed")
-                }
-            }
     }
 
     override suspend fun unsubscribeOnOrderList(message: String) {
@@ -230,42 +193,7 @@ class NetworkConnectorImpl @Inject constructor(
         )
     }
 
-
-//    suspend fun <T : Any> getData(
-//        path: String,
-//        serializer: KSerializer<T>,
-//        parameters: HashMap<String, String?> = hashMapOf(),
-//        token: String
-//    ): ApiResult<T> {
-//        return try {
-//            ApiResult.Success(
-//                json.decodeFromString(
-//                    serializer,
-//                    client.get<HttpStatement> {
-//                        url {
-//                            path(path)
-//                        }
-//                        if (token.isNotEmpty())
-//                            header("Authorization", "Bearer $token")
-//
-//                        parameters.forEach { (key, parameter) ->
-//                            if (parameter != null) {
-//                                parameter(key, parameter)
-//                            }
-//                        }
-//                    }.execute().readText()
-//                )
-//            )
-//        } catch (exception: ClientRequestException) {
-//            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
-//        } catch (exception: CancellationException) {
-//            ApiResult.Error(ApiError(7, exception.message ?: ""))
-//        } catch (exception: Exception) {
-//            ApiResult.Error(ApiError(0, exception.message ?: ""))
-//        }
-//    }
-
-    suspend fun <T> getData(
+    private suspend fun <T> getData(
         path: String,
         serializer: KSerializer<T>,
         parameters: Map<String, String?> = mapOf(),
@@ -282,7 +210,7 @@ class NetworkConnectorImpl @Inject constructor(
         return handleResponse(serializer, request)
     }
 
-    suspend fun <T> postData(
+    private suspend fun <T> postData(
         path: String,
         postBody: Any,
         serializer: KSerializer<T>,
@@ -302,7 +230,7 @@ class NetworkConnectorImpl @Inject constructor(
         return handleResponse(serializer, request)
     }
 
-    suspend fun <T> patchData(
+    private suspend fun <T> patchData(
         path: String,
         patchBody: Any,
         serializer: KSerializer<T>,
@@ -322,7 +250,7 @@ class NetworkConnectorImpl @Inject constructor(
         return handleResponse(serializer, request)
     }
 
-    fun HttpRequestBuilder.buildRequest(
+    private fun HttpRequestBuilder.buildRequest(
         path: String,
         body: Any?,
         parameters: Map<String, String?> = mapOf(),
@@ -342,7 +270,7 @@ class NetworkConnectorImpl @Inject constructor(
         }
     }
 
-    suspend fun <T> handleResponse(
+    private suspend fun <T> handleResponse(
         serializer: KSerializer<T>,
         request: HttpResponse
     ): ApiResult<T> {

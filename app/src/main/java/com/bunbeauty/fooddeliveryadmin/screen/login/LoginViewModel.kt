@@ -7,9 +7,12 @@ import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,31 +40,44 @@ class LoginViewModel @Inject constructor(
         val processedUsername = username.lowercase().trim()
         val processedPassword = password.lowercase().trim()
         if (!isCorrectUsername(processedUsername)) {
-            showWrongDataError()
+            mutableLoginViewState.update { oldState ->
+                oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
+            }
             return
         }
         if (!isCorrectPassword(processedPassword)) {
-            showWrongDataError()
+            mutableLoginViewState.update { oldState ->
+                oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
+            }
             return
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
-            when (val result = userAuthorizationRepo.login(processedUsername, processedPassword)) {
-                is ApiResult.Success -> {
-                    result.data.let { (token, managerCityUuid, companyUuid) ->
-                        dataStoreRepo.saveManagerCity(managerCityUuid)
-                        dataStoreRepo.saveCompanyUuid(companyUuid)
-                        dataStoreRepo.saveToken(token)
+        viewModelScope.launch {
+            try {
+                when (val result =
+                    userAuthorizationRepo.login(processedUsername, processedPassword)) {
+                    is ApiResult.Success -> {
+                        result.data.let { (token, managerCityUuid, companyUuid) ->
+                            dataStoreRepo.saveManagerCity(managerCityUuid)
+                            dataStoreRepo.saveCompanyUuid(companyUuid)
+                            dataStoreRepo.saveToken(token)
+                        }
+                    }
+                    is ApiResult.Error -> {
+                        mutableLoginViewState.update { oldState ->
+                            oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
+                        }
                     }
                 }
-                is ApiResult.Error -> {
-                    showWrongDataError()
+            } catch (exception: Exception) {
+                mutableLoginViewState.update { oldState ->
+                    oldState.copy(isLoading = false) + LoginViewState.Event.ShowConnectionError
                 }
             }
         }
     }
 
-    fun subscribeOnToken() {
+    private fun subscribeOnToken() {
         dataStoreRepo.token.onEach { token ->
             if (token.isEmpty()) {
                 mutableLoginViewState.update { oldState ->
@@ -72,19 +88,10 @@ class LoginViewModel @Inject constructor(
                 }
             } else {
                 mutableLoginViewState.update { oldState ->
-                    oldState.copy(events = oldState.events + LoginViewState.Event.OpenOrderListEvent)
+                    oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    private fun showWrongDataError() {
-        mutableLoginViewState.update { oldState ->
-            oldState.copy(
-                isLoading = false,
-                events = oldState.events + LoginViewState.Event.ShowLoginError
-            )
-        }
     }
 
     private fun isCorrectUsername(username: String): Boolean {
@@ -98,17 +105,8 @@ class LoginViewModel @Inject constructor(
     fun consumeEvents(events: List<LoginViewState.Event>) {
         mutableLoginViewState.update { loginState ->
             loginState.copy(
-                events = loginState.events - events.toSet()
+                eventList = loginState.eventList - events.toSet()
             )
-        }
-    }
-
-    /**
-     * For test login
-     */
-    fun clear() {
-        viewModelScope.launch(IO) {
-            dataStoreRepo.clearCache()
         }
     }
 }

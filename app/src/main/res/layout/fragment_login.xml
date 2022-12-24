@@ -32,7 +32,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_user">
+        app:startIconDrawable="@drawable/ic_person"
+        app:startIconTint="@color/darkIconColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_login_et_login"
@@ -49,7 +50,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_login_til_login"
-        app:startIconDrawable="@drawable/ic_locked">
+        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconTint="@color/darkIconColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_login_et_password"

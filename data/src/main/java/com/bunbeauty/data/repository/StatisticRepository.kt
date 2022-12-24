@@ -2,12 +2,12 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.model.statistic.Statistic
-import com.bunbeauty.data.NetworkConnector
+import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.statistic.IStatisticMapper
 import javax.inject.Inject
 
 class StatisticRepository @Inject constructor(
-    private val networkConnector: NetworkConnector,
+    private val networkConnector: FoodDeliveryApi,
     private val statisticMapper: IStatisticMapper
 ) {
     suspend fun getStatistic(

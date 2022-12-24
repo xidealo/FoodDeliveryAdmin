@@ -7,13 +7,19 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.fooddeliveryadmin.domain.LogoutUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.LogoutOption
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +29,8 @@ class StatisticViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val resources: Resources,
     private val dataStoreRepo: DataStoreRepo,
-    private val statisticRepository: StatisticRepository
+    private val statisticRepository: StatisticRepository,
+    private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
 
     private val mutableStatisticState: MutableStateFlow<StatisticState> =
@@ -46,13 +53,7 @@ class StatisticViewModel @Inject constructor(
                 )
             )
         }
-
-        viewModelScope.launch {
-            cafeRepository.refreshCafeList(
-                token = dataStoreRepo.token.first(),
-                cityUuid = dataStoreRepo.managerCity.first()
-            )
-        }
+        updateData()
     }
 
     fun onCafeClicked() {
@@ -74,10 +75,9 @@ class StatisticViewModel @Inject constructor(
                     addAll(cafeAddressList)
                 }
             }
-            val openCafeListEvent = StatisticState.Event.OpenCafeListEvent(cafeList)
 
             mutableStatisticState.update { statisticState ->
-                statisticState.copy(eventList = statisticState.eventList + openCafeListEvent)
+                statisticState + StatisticState.Event.OpenCafeListEvent(cafeList)
             }
         }
     }
@@ -107,10 +107,9 @@ class StatisticViewModel @Inject constructor(
                     title = getTimeIntervalName(timeInterval)
                 )
             }
-            val openCafeListEvent = StatisticState.Event.OpenTimeIntervalListEvent(timeIntervalList)
 
             mutableStatisticState.update { statisticState ->
-                statisticState.copy(eventList = statisticState.eventList + openCafeListEvent)
+                statisticState + StatisticState.Event.OpenTimeIntervalListEvent(timeIntervalList)
             }
         }
     }
@@ -130,11 +129,7 @@ class StatisticViewModel @Inject constructor(
     @SuppressLint("StringFormatMatches")
     fun loadStatistic() {
         loadStatisticJob?.cancel()
-        loadStatisticJob = viewModelScope.launch {
-            mutableStatisticState.update { statisticState ->
-                statisticState.copy(isLoading = true)
-            }
-
+        loadStatisticJob = handleWithState(RetryAction.LOAD_STATISTIC) {
             val statisticResult = statisticRepository.getStatistic(
                 token = dataStoreRepo.token.first(),
                 cafeUuid = mutableStatisticState.value.selectedCafe?.uuid,
@@ -154,16 +149,39 @@ class StatisticViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
 
-            mutableStatisticState.update { statisticState ->
-                statisticState.copy(isLoading = false)
+    fun onRetryClicked(retryAction: RetryAction) {
+        when (retryAction) {
+            RetryAction.LOAD_CAFE_LIST -> updateData()
+            RetryAction.LOAD_STATISTIC -> loadStatistic()
+        }
+    }
+
+    fun onLogout(option: String) {
+        if (LogoutOption.valueOf(option) == LogoutOption.LOGOUT) {
+            viewModelScope.launch {
+                logoutUseCase()
+                mutableStatisticState.update { state ->
+                    state + StatisticState.Event.OpenLoginEvent
+                }
             }
         }
     }
 
     fun consumeEvents(events: List<StatisticState.Event>) {
         mutableStatisticState.update { statisticState ->
-            statisticState.copy(eventList = statisticState.eventList - events.toSet())
+            statisticState - events
+        }
+    }
+
+    private fun updateData() {
+        handleWithState(RetryAction.LOAD_CAFE_LIST) {
+            cafeRepository.refreshCafeList(
+                token = dataStoreRepo.token.first(),
+                cityUuid = dataStoreRepo.managerCity.first()
+            )
         }
     }
 
@@ -172,6 +190,27 @@ class StatisticViewModel @Inject constructor(
             TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
             TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
             TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
+        }
+    }
+
+    private inline fun handleWithState(
+        retryAction: RetryAction,
+        crossinline block: suspend () -> Unit
+    ): Job {
+        return viewModelScope.launch {
+            mutableStatisticState.update { state ->
+                state.copy(isLoading = true)
+            }
+            try {
+                block()
+                mutableStatisticState.update { state ->
+                    state.copy(isLoading = false)
+                }
+            } catch (exception: Exception) {
+                mutableStatisticState.update { state ->
+                    state.copy(isLoading = false) + StatisticState.Event.ShowError(retryAction)
+                }
+            }
         }
     }
 }

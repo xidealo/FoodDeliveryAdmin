@@ -17,9 +17,6 @@
     <string name="msg_pieces">x&#160;</string>
     <string name="msg_comma">,&#160;</string>
 
-    <!-- LOGIN -->
-    <string name="error_login_wrong_data">Неверный логин или пароль</string>
-
     <!-- ORDER -->
     <string name="msg_order">Заказ&#160;</string>
     <string name="msg_order_deferred_time">Ко времени:&#160;</string>
@@ -49,6 +46,7 @@
     <string name="action_cancel">Отмена</string>
 
     <!-- STATISTIC -->
+    <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
     <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>

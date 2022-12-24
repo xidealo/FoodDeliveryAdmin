@@ -29,13 +29,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.List
-import kotlin.collections.buildList
-import kotlin.collections.isNullOrEmpty
-import kotlin.collections.map
-import kotlin.collections.minus
-import kotlin.collections.plus
-import kotlin.collections.toSet
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
@@ -58,21 +51,6 @@ class OrderDetailsViewModel @Inject constructor(
         loadOrder(orderUuid)
     }
 
-    private fun loadOrder(orderUuid: String) {
-        mutableOrderDetailsState.update { orderDetailsState ->
-            orderDetailsState.copy(isLoading = true)
-        }
-        viewModelScope.launch {
-            dataStoreRepo.token.firstOrNull()?.let { token ->
-                orderRepository.loadOrderByUuid(
-                    token = token, orderUuid = orderUuid
-                )?.let { order ->
-                    updateOrderDetailsState(order)
-                }
-            }
-        }
-    }
-
     fun onStatusClicked() {
         val availableStatusList = mutableOrderDetailsState.value.orderDetails?.availableStatusList
         if (!availableStatusList.isNullOrEmpty()) {
@@ -82,9 +60,10 @@ class OrderDetailsViewModel @Inject constructor(
                     title = stringUtil.getOrderStatusString(orderStatus),
                 )
             }
-            val openStatusListEvent = OrderDetailsState.OpenStatusListEvent(statusList = statusList)
+            val openStatusListEvent =
+                OrderDetailsState.Event.OpenStatusListEvent(statusList = statusList)
             mutableOrderDetailsState.update { orderDetailsState ->
-                orderDetailsState.copy(eventList = orderDetailsState.eventList + openStatusListEvent)
+                orderDetailsState + openStatusListEvent
             }
         }
     }
@@ -93,13 +72,16 @@ class OrderDetailsViewModel @Inject constructor(
         val orderStatus = OrderStatus.valueOf(statusName)
         mutableOrderDetailsState.update { orderDetailsState ->
             val orderDetails = orderDetailsState.orderDetails
-            orderDetails?.copy(status = orderStatus)?.let { updatedOrderDetails ->
+            if (orderDetails == null) {
+                orderDetailsState
+            } else {
+                val updatedOrderDetails = orderDetails.copy(status = orderStatus)
                 orderDetailsState.copy(
                     orderDetails = updatedOrderDetails,
                     selectedStatus = orderStatus,
                     itemModelList = buildItemModelList(updatedOrderDetails)
                 )
-            } ?: orderDetailsState
+            }
         }
     }
 
@@ -107,7 +89,7 @@ class OrderDetailsViewModel @Inject constructor(
         val selectedStatus = mutableOrderDetailsState.value.selectedStatus ?: return
         if (selectedStatus == CANCELED) {
             mutableOrderDetailsState.update { orderDetailsState ->
-                orderDetailsState.copy(eventList = orderDetailsState.eventList + OrderDetailsState.OpenWarningDialogEvent)
+                orderDetailsState + OrderDetailsState.Event.OpenWarningDialogEvent
             }
         } else {
             updateStatus(selectedStatus)
@@ -118,9 +100,44 @@ class OrderDetailsViewModel @Inject constructor(
         updateStatus(CANCELED)
     }
 
+    fun onRetryClicked(retryAction: RetryAction) {
+        when (retryAction) {
+            RetryAction.LOAD_ORDER -> {
+                loadOrder(orderUuid)
+            }
+            RetryAction.SAVE_STATUS -> {
+                val selectedStatus = mutableOrderDetailsState.value.selectedStatus ?: return
+                updateStatus(selectedStatus)
+            }
+        }
+    }
+
     fun consumeEvents(events: List<OrderDetailsState.Event>) {
         mutableOrderDetailsState.update { orderDetailsState ->
-            orderDetailsState.copy(eventList = orderDetailsState.eventList - events.toSet())
+            orderDetailsState - events
+        }
+    }
+
+    private fun loadOrder(orderUuid: String) {
+        mutableOrderDetailsState.update { orderDetailsState ->
+            orderDetailsState.copy(isLoading = true)
+        }
+        viewModelScope.launch {
+            try {
+                dataStoreRepo.token.firstOrNull()?.let { token ->
+                    orderRepository.loadOrderByUuid(
+                        token = token,
+                        orderUuid = orderUuid
+                    )?.let { order ->
+                        updateOrderDetailsState(order)
+                    }
+                }
+            } catch (exception: Exception) {
+                val event = OrderDetailsState.Event.OpenErrorDialogEvent(RetryAction.LOAD_ORDER)
+                mutableOrderDetailsState.update { orderDetailsState ->
+                    orderDetailsState.copy(isLoading = false) + event
+                }
+            }
         }
     }
 
@@ -179,13 +196,19 @@ class OrderDetailsViewModel @Inject constructor(
     private fun updateStatus(selectedStatus: OrderStatus) {
         viewModelScope.launch {
             val token = dataStoreRepo.token.first()
-            orderRepository.updateStatus(
-                token = token,
-                orderUuid = orderUuid,
-                status = selectedStatus
-            )
-            mutableOrderDetailsState.update { orderDetailsState ->
-                orderDetailsState.copy(eventList = orderDetailsState.eventList + OrderDetailsState.GoBackEvent)
+            try {
+                orderRepository.updateStatus(
+                    token = token,
+                    orderUuid = orderUuid,
+                    status = selectedStatus
+                )
+                mutableOrderDetailsState.update { orderDetailsState ->
+                    orderDetailsState + OrderDetailsState.Event.GoBackEvent
+                }
+            } catch (exception: Exception) {
+                mutableOrderDetailsState.update { orderDetailsState ->
+                    orderDetailsState + OrderDetailsState.Event.OpenErrorDialogEvent(RetryAction.SAVE_STATUS)
+                }
             }
         }
     }
