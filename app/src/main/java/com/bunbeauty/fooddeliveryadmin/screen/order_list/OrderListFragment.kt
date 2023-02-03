@@ -148,5 +148,4 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
     private fun openOrderDetails(orderUuid: String) {
         findNavController().navigate(toOrdersDetailsFragment(orderUuid))
     }
-
 }

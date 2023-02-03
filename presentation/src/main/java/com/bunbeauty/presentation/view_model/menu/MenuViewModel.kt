@@ -6,9 +6,8 @@ import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.presentation.extension.toStateSuccess
-import com.bunbeauty.presentation.model.MenuProductItemModel
+import com.bunbeauty.presentation.model.MenuViewState
 import com.bunbeauty.presentation.navigation_event.MenuNavigationEvent
-import com.bunbeauty.presentation.state.State
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,13 +27,13 @@ class MenuViewModel @Inject constructor(
     private val categoryRepo: CategoryRepo
 ) : BaseViewModel() {
 
-    private val mutableProductListState: MutableStateFlow<State<List<MenuProductItemModel>>> =
-        MutableStateFlow(State.Loading())
-    val productListState: StateFlow<State<List<MenuProductItemModel>>> =
+    private val mutableProductListState: MutableStateFlow<MenuViewState> =
+        MutableStateFlow(MenuViewState())
+    val productListState: StateFlow<MenuViewState> =
         mutableProductListState.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch() {
             categoryRepo.refreshCategories(
                 dataStoreRepo.token.first(),
                 dataStoreRepo.companyUuid.first()
@@ -44,28 +43,28 @@ class MenuViewModel @Inject constructor(
         }
     }
 
-    fun goToEditMenuProduct(menuProductItemModel: MenuProductItemModel) {
-        goTo(MenuNavigationEvent.ToEditMenuProduct(menuProductItemModel.menuProduct))
+    fun goToEditMenuProduct(menuProductItemModel: MenuViewState) {
+        //goTo(MenuNavigationEvent.ToEditMenuProduct(menuProductItemModel.menuProduct))
     }
 
     fun goToCreateMenuProduct() {
-        goTo(MenuNavigationEvent.ToCreateMenuProduct)
+        //goTo(MenuNavigationEvent.ToCreateMenuProduct)
     }
 
     private suspend fun subscribeOnProducts() {
         menuProductRepo.getMenuProductList().collect { menuProductList ->
-            mutableProductListState.value = menuProductList.map(::toItemModel).toStateSuccess()
+            //mutableProductListState.value = menuProductList.map(::toItemModel).toStateSuccess()
         }
     }
 
-    private fun toItemModel(menuProduct: MenuProduct): MenuProductItemModel {
-        return MenuProductItemModel(
+    private fun toItemModel(menuProduct: MenuProduct): MenuViewState? {
+        return null
+        /*return MenuViewState(
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,
             visible = menuProduct.isVisible,
             newCost = stringUtil.getCostString(menuProduct.newPrice),
             oldCost = stringUtil.getCostString(menuProduct.oldPrice),
-            menuProduct = menuProduct,
-        )
+        )*/
     }
 }

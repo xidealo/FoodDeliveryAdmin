@@ -8,9 +8,11 @@ plugins {
     id(Plugin.googleService)
     id(Plugin.crashlytics)
     id(Plugin.kotlinParcelize)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {
+
     compileSdk = AndroidSdk.compile
     defaultConfig {
         applicationId = Application.applicationId
@@ -59,6 +61,7 @@ android {
 
         buildFeatures {
             viewBinding = true
+            compose = true
         }
 
         compileOptions {
@@ -67,6 +70,9 @@ android {
         }
         kotlinOptions {
             jvmTarget = "1.8"
+        }
+        composeOptions {
+            kotlinCompilerExtensionVersion = Versions.composeCompiler
         }
     }
 }
@@ -77,40 +83,40 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":presentation"))
 
-    implementation(Google.material)
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
-    implementation(AndroidX.constraintLayout)
 
-    //navigation
+    // navigation
     implementation(Navigation.navigationFragment)
     implementation(Navigation.navigationUi)
 
-    //Firebase
+    // Firebase
     implementation(platform(Firebase.bom))
     implementation(Firebase.messaging)
     implementation(Firebase.crashlytics)
 
     // Lifecycle
-    implementation(Lifecycle.lifecycleExtensions)
     implementation(Lifecycle.lifecycleViewModel)
     implementation(Lifecycle.activity)
     implementation(Lifecycle.fragment)
     implementation(Lifecycle.lifecycleRuntime)
 
+    // Compose
+    implementation(Compose.bom)
+    implementation(Compose.foundation)
+    implementation(Compose.ui)
+    implementation(Compose.material3)
+    implementation(Compose.uiTooling)
+    implementation(Compose.uiToolingPreview)
+    implementation(Compose.activity)
+    implementation(Compose.lifecycle)
+
     // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
 
-    // Coroutine
-    implementation(Coroutine.coroutineCore)
-
     // Image loader
     implementation(Coil.coil)
-
-    // FastAdapter
-    implementation(FastAdapter.fastAdapter)
-    implementation(FastAdapter.fastAdapterBinding)
 
     // AdapterDelegates
     implementation(AdapterDelegates.adapterDelegates)

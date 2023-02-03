@@ -8,7 +8,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.Customizable
 import com.bunbeauty.presentation.utils.ResourcesProvider
@@ -86,6 +85,4 @@ class NavigationCardView @JvmOverloads constructor(
             )
         }
     }
-
-
 }

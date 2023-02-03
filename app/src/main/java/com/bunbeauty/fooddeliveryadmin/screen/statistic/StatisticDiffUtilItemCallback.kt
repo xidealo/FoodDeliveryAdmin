@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.statistic
 import androidx.recyclerview.widget.DiffUtil
 import javax.inject.Inject
 
-class StatisticDiffUtilItemCallback @Inject constructor(): DiffUtil.ItemCallback<StatisticItemModel>() {
+class StatisticDiffUtilItemCallback @Inject constructor() : DiffUtil.ItemCallback<StatisticItemModel>() {
 
     override fun areItemsTheSame(
         oldItem: StatisticItemModel,
@@ -14,6 +14,4 @@ class StatisticDiffUtilItemCallback @Inject constructor(): DiffUtil.ItemCallback
         oldItem: StatisticItemModel,
         newItem: StatisticItemModel
     ): Boolean = oldItem == newItem
-
-
 }

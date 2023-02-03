@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.presentation.navigation_event.NavigationEvent
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.flow.onEach
 import java.lang.reflect.ParameterizedType
-import javax.inject.Inject
 
 abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragment() {
 

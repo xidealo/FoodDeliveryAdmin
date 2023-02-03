@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.repository.CafeRepository
@@ -207,6 +208,7 @@ class StatisticViewModel @Inject constructor(
                     state.copy(isLoading = false)
                 }
             } catch (exception: Exception) {
+                Log.e("StatisticViewModel", exception.message.toString())
                 mutableStatisticState.update { state ->
                     state.copy(isLoading = false) + StatisticState.Event.ShowError(retryAction)
                 }

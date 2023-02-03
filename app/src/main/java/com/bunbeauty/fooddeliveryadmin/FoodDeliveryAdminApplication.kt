@@ -4,13 +4,11 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.bunbeauty.common.Constants
-import com.bunbeauty.domain.repo.DataStoreRepo
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @HiltAndroidApp

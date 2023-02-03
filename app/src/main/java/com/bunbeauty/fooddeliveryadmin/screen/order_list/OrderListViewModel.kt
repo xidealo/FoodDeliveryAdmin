@@ -148,7 +148,6 @@ class OrderListViewModel @Inject constructor(
                     updateStateWithError()
                 }
             }
-
         }.launchIn(viewModelScope)
 
         newOrderEventUseCase().onEach {
@@ -193,5 +192,4 @@ class OrderListViewModel @Inject constructor(
             ) + OrderListState.Event.ShowError
         }
     }
-
 }

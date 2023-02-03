@@ -84,7 +84,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 is OrderDetailsState.Event.OpenStatusListEvent -> {
                     openStatusList(event.statusList)
                 }
-                is  OrderDetailsState.Event.OpenErrorDialogEvent -> {
+                is OrderDetailsState.Event.OpenErrorDialogEvent -> {
                     lifecycleScope.launch {
                         ErrorDialog.show(childFragmentManager).let {
                             viewModel.onRetryClicked(event.retryAction)
