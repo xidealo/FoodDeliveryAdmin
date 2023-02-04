@@ -15,6 +15,14 @@ class CategoryMapper @Inject constructor() {
         )
     }
 
+    fun toModel(categoryServer: CategoryServer): Category {
+        return Category(
+            uuid = categoryServer.uuid,
+            name = categoryServer.name,
+            priority = categoryServer.priority,
+        )
+    }
+
     fun toEntity(categoryServer: CategoryServer): CategoryEntity {
         return CategoryEntity(
             uuid = categoryServer.uuid,

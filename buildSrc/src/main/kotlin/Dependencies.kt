@@ -21,7 +21,6 @@ object Versions {
 
     const val composeCompiler = "1.4.0"
     const val composeBom = "2023.01.00"
-    const val composeMaterial3 = "1.1.0-alpha05"
     const val composeUiTooling = "1.3.2"
     const val composeUiToolingPreview = "1.3.2"
     const val activityCompose = "1.6.1"
@@ -116,6 +115,7 @@ object Ktor {
 
 object Coil {
     const val coil = "io.coil-kt:coil:${Versions.coil}"
+    const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
 }
 
 object DataStore {
@@ -141,10 +141,12 @@ object Compose {
     const val bom = "androidx.compose:compose-bom:${Versions.composeBom}"
     const val foundation = "androidx.compose.foundation:foundation"
     const val ui = "androidx.compose.ui:ui"
-    const val material3 = "androidx.compose.material3:material3:${Versions.composeMaterial3}"
+    const val material = "androidx.compose.material:material"
+
     const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUiTooling}"
     const val uiToolingPreview =
         "androidx.compose.ui:ui-tooling-preview:${Versions.composeUiToolingPreview}"
+
     const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
     const val lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleRuntimeCompose}"
 }

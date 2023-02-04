@@ -11,8 +11,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DimenRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.bunbeauty.fooddeliveryadmin.view.theme.FoodDeliveryTheme
 
 fun TextView.strikeOutText() {
     this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -55,4 +59,14 @@ fun RecyclerView.addSpaceItemDecorator(@DimenRes spaceId: Int) {
             }
         }
     )
+}
+
+
+inline fun ComposeView.compose(crossinline content: @Composable () -> Unit) {
+    setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+    setContent {
+        FoodDeliveryTheme {
+            content()
+        }
+    }
 }

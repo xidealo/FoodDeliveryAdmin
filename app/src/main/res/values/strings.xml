@@ -12,6 +12,7 @@
 
     <!-- COMMON -->
 
+    <string name="description_product">Фото блюда</string>
     <string name="action_retry">Повторить попытку</string>
     <string name="title_can_not_load_data">Не удается загрузить данные</string>
     <string name="msg_check_connection_and_retry">Проверьте соединение и повторите попытку</string>

@@ -105,7 +105,7 @@ dependencies {
     implementation(Compose.bom)
     implementation(Compose.foundation)
     implementation(Compose.ui)
-    implementation(Compose.material3)
+    implementation(Compose.material)
     implementation(Compose.uiTooling)
     implementation(Compose.uiToolingPreview)
     implementation(Compose.activity)
@@ -117,6 +117,7 @@ dependencies {
 
     // Image loader
     implementation(Coil.coil)
+    implementation(Coil.coilCompose)
 
     // AdapterDelegates
     implementation(AdapterDelegates.adapterDelegates)

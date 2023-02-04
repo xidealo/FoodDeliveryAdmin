@@ -4,16 +4,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MenuProductServer(
-    val uuid: String = "",
-    val name: String = "",
-    val newPrice: Int = 0,
+    val uuid: String? = null,
+    val name: String? = null,
+    val newPrice: Int? = null,
     val oldPrice: Int? = null,
-    val utils: String = "",
-    val nutrition: Int = 0,
-    val description: String = "",
+    val utils: String? = null,
+    val nutrition: Int? = null,
+    val description: String? = null,
     val comboDescription: String? = null,
-    val photoLink: String = "",
-    val barcode: Int = 0,
-    val isVisible: Boolean = false,
-    val categories: List<CategoryServer> = emptyList()
+    val photoLink: String? = null,
+    val barcode: Int? = null,
+    val isVisible: Boolean? = null,
+    val categories: List<CategoryServer>? = null
 )

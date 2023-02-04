@@ -14,7 +14,7 @@ interface MenuProductDao : BaseDao<MenuProductEntity> {
     fun getListFlow(): Flow<List<MenuProductWithCategoriesEntity>>
 
     @Query("SELECT * FROM MenuProductEntity")
-    fun getList(): List<MenuProductEntity>
+    suspend fun getList(): List<MenuProductWithCategoriesEntity>
 
     @Query("SELECT * FROM MenuProductEntity WHERE uuid = :uuid")
     fun getByUuid(uuid: String): Flow<MenuProductEntity?>
