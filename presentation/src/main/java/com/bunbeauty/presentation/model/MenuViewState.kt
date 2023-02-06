@@ -3,6 +3,7 @@ package com.bunbeauty.presentation.model
 data class MenuViewState(
     val menuProductItems: List<MenuProductItem> = listOf(),
     val isLoading: Boolean = true,
+    val isRefreshing: Boolean = false,
     val throwable: Throwable? = null
 ) {
 

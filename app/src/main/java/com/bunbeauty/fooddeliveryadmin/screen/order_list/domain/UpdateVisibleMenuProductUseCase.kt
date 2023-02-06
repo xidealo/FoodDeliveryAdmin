@@ -16,7 +16,5 @@ class UpdateVisibleMenuProductUseCase @Inject constructor(
             isVisible = isVisible,
             token = dataStoreRepo.token.first()
         )
-
-
     }
 }

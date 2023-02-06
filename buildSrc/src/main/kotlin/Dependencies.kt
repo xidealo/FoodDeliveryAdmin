@@ -21,6 +21,8 @@ object Versions {
 
     const val composeCompiler = "1.4.0"
     const val composeBom = "2023.01.00"
+    const val composeMaterial = "1.3.1"
+
     const val composeUiTooling = "1.3.2"
     const val composeUiToolingPreview = "1.3.2"
     const val activityCompose = "1.6.1"
@@ -141,7 +143,7 @@ object Compose {
     const val bom = "androidx.compose:compose-bom:${Versions.composeBom}"
     const val foundation = "androidx.compose.foundation:foundation"
     const val ui = "androidx.compose.ui:ui"
-    const val material = "androidx.compose.material:material"
+    const val material = "androidx.compose.material:material:${Versions.composeMaterial}"
 
     const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUiTooling}"
     const val uiToolingPreview =

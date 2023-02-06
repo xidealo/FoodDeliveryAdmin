@@ -35,6 +35,4 @@ data class AppDimensions(
             0.dp
         }
     }
-
-
 }

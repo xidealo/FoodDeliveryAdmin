@@ -9,7 +9,10 @@ import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,18 +33,37 @@ class MenuViewModel @Inject constructor(
         }
     }
 
-    fun loadData() {
+    fun loadData(isRefreshing: Boolean = false) {
         viewModelScope.launch(exceptionHandler) {
+            if (isRefreshing) {
+                mutableProductListState.update {
+                    it.copy(
+                        isRefreshing = true,
+                        throwable = null
+                    )
+                }
+            } else {
+                mutableProductListState.update {
+                    it.copy(
+                        isLoading = true,
+                        throwable = null
+                    )
+                }
+            }
+
+            val items = getMenuUseCase().map(::toItemModel)
+
             mutableProductListState.update {
                 it.copy(
-                    menuProductItems = getMenuUseCase().map(::toItemModel),
-                    isLoading = false
+                    menuProductItems = items,
+                    isLoading = false,
+                    isRefreshing = false
                 )
             }
         }
     }
 
-    //TODO TESTS
+    // TODO TESTS
     fun updateVisible(menuProductItem: MenuViewState.MenuProductItem) {
         viewModelScope.launch(exceptionHandler) {
 
@@ -62,16 +84,15 @@ class MenuViewModel @Inject constructor(
                     isLoading = false
                 )
             }
-
         }
     }
 
     fun goToEditMenuProduct(menuProductItemModel: MenuViewState) {
-        //goTo(MenuNavigationEvent.ToEditMenuProduct(menuProductItemModel.menuProduct))
+        // goTo(MenuNavigationEvent.ToEditMenuProduct(menuProductItemModel.menuProduct))
     }
 
     fun goToCreateMenuProduct() {
-        //goTo(MenuNavigationEvent.ToCreateMenuProduct)
+        // goTo(MenuNavigationEvent.ToCreateMenuProduct)
     }
 
     private fun toItemModel(menuProduct: MenuProduct): MenuViewState.MenuProductItem {

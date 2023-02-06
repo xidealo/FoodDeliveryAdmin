@@ -17,10 +17,10 @@
         app:menu="@menu/top_menu">
 
         <TextView
-            style="@style/LargeBoldCenterText"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="@string/title_statistic" />
     </androidx.appcompat.widget.Toolbar>
 

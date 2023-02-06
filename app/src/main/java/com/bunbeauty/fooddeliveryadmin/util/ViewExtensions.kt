@@ -61,7 +61,6 @@ fun RecyclerView.addSpaceItemDecorator(@DimenRes spaceId: Int) {
     )
 }
 
-
 inline fun ComposeView.compose(crossinline content: @Composable () -> Unit) {
     setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
     setContent {

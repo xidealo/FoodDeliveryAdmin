@@ -1,10 +1,12 @@
 package com.bunbeauty.fooddeliveryadmin.view.theme
 
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-
 
 val orange = Color(0xFFFF6900)
 val white = Color(0xFFFFFFFF)
@@ -173,23 +175,6 @@ class AppColors(
         handleColor = primary,
         backgroundColor = primary.copy(alpha = 0.4f)
     )
-
-    val smsTextSelectionColors = TextSelectionColors(
-        handleColor = Color.Transparent,
-        backgroundColor = Color.Transparent
-    )
-
-    val surfaceGradient = Brush.verticalGradient(
-        colors = listOf(Color.Transparent, surface)
-    )
-
-    fun switcherButtonTextColor(enabled: Boolean): Color {
-        return if (enabled) {
-            onSecondary
-        } else {
-            onPrimary
-        }
-    }
 
     fun copy(
         primary: Color = this.primary,
