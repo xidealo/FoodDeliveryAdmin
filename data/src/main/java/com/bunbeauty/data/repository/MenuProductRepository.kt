@@ -2,14 +2,11 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.mapper.MenuProductMapper
-import com.bunbeauty.data.model.entity.menu_product.MenuProductCategoryEntity
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -17,16 +14,15 @@ class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper,
     private val menuProductDao: MenuProductDao,
-    private val menuProductCategoryDao: MenuProductCategoryDao
 ) : MenuProductRepo {
 
     private var menuProductList: List<MenuProduct>? = null
 
     override suspend fun getMenuProductList(
         companyUuid: String,
-        loadFromServer: Boolean
+        isRefreshing: Boolean
     ): List<MenuProduct> {
-        return if (menuProductList.isNullOrEmpty()) {
+        return if (menuProductList.isNullOrEmpty() || isRefreshing) {
             networkConnector.getMenuProductList(
                 companyUuid = companyUuid
             ).let { listServer ->
@@ -84,14 +80,14 @@ class MenuProductRepository @Inject constructor(
         )
 
         menuProductList = menuProductList?.map { menuProductItem ->
-                if (uuid == menuProductItem.uuid) {
-                    menuProductItem.copy(
-                        isVisible = isVisible
-                    )
-                } else {
-                    menuProductItem
-                }
+            if (uuid == menuProductItem.uuid) {
+                menuProductItem.copy(
+                    isVisible = isVisible
+                )
+            } else {
+                menuProductItem
             }
+        }
     }
 
     override suspend fun deleteMenuProduct(uuid: String) {

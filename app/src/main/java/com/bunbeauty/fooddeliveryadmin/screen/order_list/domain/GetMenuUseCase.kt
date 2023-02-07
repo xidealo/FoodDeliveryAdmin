@@ -10,9 +10,10 @@ class GetMenuUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
 ) {
-    suspend operator fun invoke(): List<MenuProduct> {
+    suspend operator fun invoke(isRefreshing: Boolean): List<MenuProduct> {
         return menuProductRepo.getMenuProductList(
-            companyUuid = dataStoreRepo.companyUuid.first()
+            companyUuid = dataStoreRepo.companyUuid.first(),
+            isRefreshing = isRefreshing
         )
     }
 }

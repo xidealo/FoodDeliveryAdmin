@@ -5,7 +5,7 @@ import com.bunbeauty.domain.model.menu_product.MenuProduct
 interface MenuProductRepo {
     suspend fun getMenuProductList(
         companyUuid: String,
-        loadFromServer: Boolean = true
+        isRefreshing: Boolean = true
     ): List<MenuProduct>
 
     suspend fun getMenuProductList(): List<MenuProduct>
