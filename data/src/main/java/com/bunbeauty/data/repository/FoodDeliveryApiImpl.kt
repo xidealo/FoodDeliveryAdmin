@@ -17,6 +17,7 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
@@ -109,16 +110,16 @@ class FoodDeliveryApiImpl @Inject constructor(
         token: String,
         cafeUuid: String?,
         period: String
-    ): ApiResult<ListServer<StatisticServer>> {
-        return getData(
-            path = "statistic",
-            serializer = ListServer.serializer(StatisticServer.serializer()),
-            parameters = hashMapOf(
-                "cafeUuid" to cafeUuid,
-                "period" to period,
-            ),
-            token = token,
-        )
+    ): List<StatisticServer> {
+        return client.get {
+            url {
+                path("statistic")
+            }
+            parameter("cafeUuid", cafeUuid)
+            parameter("period", period)
+
+            header("Authorization", "Bearer $token")
+        }.body()
     }
 
     override suspend fun subscribeOnOrderListByCafeId(

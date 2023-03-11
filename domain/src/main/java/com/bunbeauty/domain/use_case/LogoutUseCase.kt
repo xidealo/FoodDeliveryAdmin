@@ -1,15 +1,15 @@
-package com.bunbeauty.fooddeliveryadmin.domain
+package com.bunbeauty.domain.use_case
 
-import com.bunbeauty.data.repository.CafeNotificationRepository
-import com.bunbeauty.data.repository.OrderRepository
+import com.bunbeauty.domain.repo.CafeNotificationRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.OrderRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class LogoutUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val cafeNotificationRepository: CafeNotificationRepository,
-    private val orderRepository: OrderRepository,
+    private val cafeNotificationRepository: CafeNotificationRepo,
+    private val orderRepository: OrderRepo,
 ) {
 
     suspend operator fun invoke() {

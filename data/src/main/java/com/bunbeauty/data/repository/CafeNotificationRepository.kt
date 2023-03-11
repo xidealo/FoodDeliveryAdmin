@@ -2,13 +2,14 @@ package com.bunbeauty.data.repository
 
 import android.util.Log
 import com.bunbeauty.common.Constants
+import com.bunbeauty.domain.repo.CafeNotificationRepo
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import javax.inject.Inject
 
-class CafeNotificationRepository @Inject constructor() {
+class CafeNotificationRepository @Inject constructor() : CafeNotificationRepo {
 
-    fun subscribeOnCafeNotification(cafeUuid: String) {
+    override fun subscribeOnCafeNotification(cafeUuid: String) {
         Firebase.messaging.subscribeToTopic(cafeUuid)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -19,7 +20,7 @@ class CafeNotificationRepository @Inject constructor() {
             }
     }
 
-    fun unsubscribeFromCafeNotification(cafeUuid: String) {
+    override fun unsubscribeFromCafeNotification(cafeUuid: String) {
         Firebase.messaging.unsubscribeFromTopic(cafeUuid)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

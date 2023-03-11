@@ -1,6 +1,6 @@
 object Versions {
     const val kotlin = "1.8.0"
-    const val gradle = "7.3.1"
+    const val gradle = "7.4.1"
     const val androidxCore = "1.9.0"
     const val ktor = "2.2.2"
     const val appCompact = "1.6.0"

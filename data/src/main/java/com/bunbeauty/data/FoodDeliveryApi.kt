@@ -34,7 +34,7 @@ interface FoodDeliveryApi {
         token: String,
         cafeUuid: String?,
         period: String
-    ): ApiResult<ListServer<StatisticServer>>
+    ): List<StatisticServer>
 
     // ORDER
 

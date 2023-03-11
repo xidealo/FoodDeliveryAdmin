@@ -9,6 +9,7 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.model.order.OrderListResult
+import com.bunbeauty.domain.repo.OrderRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
@@ -24,47 +25,49 @@ import javax.inject.Singleton
 class OrderRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
     private val serverOrderMapper: IServerOrderMapper,
-) {
+) : OrderRepo {
 
     var observeOrderJob: Job? = null
 
     private var orderList: List<Order> = emptyList()
     private val mutableOrderListFlow: MutableSharedFlow<OrderListResult> = MutableSharedFlow()
-    val orderListFlow: Flow<OrderListResult> = mutableOrderListFlow.map { orderListResult ->
-        if (orderListResult is OrderListResult.Success) {
-            OrderListResult.Success(
-                orderList = orderListResult.orderList.filter { order ->
-                    order.orderStatus != OrderStatus.CANCELED
-                }
-            )
-        } else {
-            orderListResult
+    override val orderListFlow: Flow<OrderListResult> =
+        mutableOrderListFlow.map { orderListResult ->
+            if (orderListResult is OrderListResult.Success) {
+                OrderListResult.Success(
+                    orderList = orderListResult.orderList.filter { order ->
+                        order.orderStatus != OrderStatus.CANCELED
+                    }
+                )
+            } else {
+                orderListResult
+            }
         }
-    }
 
-    suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
+    override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
         networkConnector.updateOrderStatus(token, orderUuid, status)
     }
 
-    suspend fun subscribeOnOrderList(token: String, cafeUuid: String) {
-        observeOrderJob = networkConnector.subscribeOnOrderListByCafeId(token, cafeUuid).map { result ->
-            when (result) {
-                is ApiResult.Success -> {
-                    val order = serverOrderMapper.toModel(result.data)
-                    updateOrderList(order)
+    override suspend fun subscribeOnOrderList(token: String, cafeUuid: String) {
+        observeOrderJob =
+            networkConnector.subscribeOnOrderListByCafeId(token, cafeUuid).map { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        val order = serverOrderMapper.toModel(result.data)
+                        updateOrderList(order)
+                    }
+                    is ApiResult.Error -> {
+                        Log.e(
+                            ORDER_TAG,
+                            "subscribeOnOrderList ${result.apiError.message} ${result.apiError.code}"
+                        )
+                        mutableOrderListFlow.emit(OrderListResult.Error)
+                    }
                 }
-                is ApiResult.Error -> {
-                    Log.e(
-                        ORDER_TAG,
-                        "subscribeOnOrderList ${result.apiError.message} ${result.apiError.code}"
-                    )
-                    mutableOrderListFlow.emit(OrderListResult.Error)
-                }
-            }
-        }.launchIn(CoroutineScope(IO))
+            }.launchIn(CoroutineScope(IO))
     }
 
-    suspend fun unsubscribeOnOrderList(message: String) {
+    override suspend fun unsubscribeOnOrderList(message: String) {
         observeOrderJob?.cancelAndJoin()
         observeOrderJob = null
         networkConnector.unsubscribeOnOrderList(message)
