@@ -93,4 +93,8 @@ class MenuProductRepository @Inject constructor(
     override suspend fun deleteMenuProduct(uuid: String) {
         networkConnector.deleteMenuProduct(uuid)
     }
+
+    override suspend fun clearMenuProductList() {
+        menuProductList = emptyList()
+    }
 }
