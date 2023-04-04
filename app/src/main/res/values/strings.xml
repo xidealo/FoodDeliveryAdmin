@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PapaKarloAdmin</string>
+    <string name="app_name">Админ</string>
     <!--
     title — заголовки;
     hint — подсказки в edittext;
