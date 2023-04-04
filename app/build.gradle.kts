@@ -20,15 +20,6 @@ android {
         versionName = Application.versionName
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file("keystore")
-            storePassword = "itisBB15092019"
-            keyAlias = "papakarloKey"
-            keyPassword = "Itispapakarlo08062004"
-        }
-    }
-
     buildTypes {
         applicationVariants.all {
             val variant = this
@@ -54,7 +45,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
         }
 
         buildFeatures {

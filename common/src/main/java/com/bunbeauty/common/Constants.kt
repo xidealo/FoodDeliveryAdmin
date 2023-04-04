@@ -4,18 +4,12 @@ object Constants {
 
     // FRAGMENT FOR RESULT
 
-    const val STATUS_REQUEST_KEY = "status request key"
-    const val SELECTED_STATUS_KEY = "selected status key"
-
     const val PRODUCT_CODE_REQUEST_KEY = "product code request key"
     const val SELECTED_PRODUCT_CODE_KEY = "selected product code key"
 
     // NOTIFICATION
 
     const val CHANNEL_ID = "1"
-    const val CHANNEL_NAME = "Main channel"
-    const val ORDER_CODE = "orderCode"
-    const val NOTIFICATION_ID = 1
 
     // ARGS_KEY
 
