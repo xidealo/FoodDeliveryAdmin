@@ -35,10 +35,6 @@ abstract class RepoModule {
 
     @Singleton
     @Binds
-    abstract fun bindCafeNotificationRepository(cafeNotificationRepository: CafeNotificationRepository): CafeNotificationRepo
-
-    @Singleton
-    @Binds
     abstract fun bindOrderRepository(orderRepository: OrderRepository): OrderRepo
 
     @Singleton
