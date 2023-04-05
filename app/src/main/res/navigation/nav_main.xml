@@ -57,7 +57,7 @@
         android:id="@+id/menuFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.MenuFragment"
         android:label="MenuFragment"
-        tools:layout="@layout/fragment_menu">
+        tools:layout="@layout/fragment_compose">
         <action
             android:id="@+id/to_editMenuProductFragment"
             app:destination="@id/editMenuProductFragment" />

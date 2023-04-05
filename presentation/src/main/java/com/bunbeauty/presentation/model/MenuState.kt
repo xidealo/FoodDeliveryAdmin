@@ -1,6 +1,6 @@
 package com.bunbeauty.presentation.model
 
-data class MenuViewState(
+data class MenuState(
     val menuProductItems: List<MenuProductItem> = listOf(),
     val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,

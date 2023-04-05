@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetMenuUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.UpdateVisibleMenuProductUseCase
-import com.bunbeauty.presentation.model.MenuViewState
+import com.bunbeauty.presentation.model.MenuState
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +23,9 @@ class MenuViewModel @Inject constructor(
     private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
 ) : BaseViewModel() {
 
-    private val mutableProductListState: MutableStateFlow<MenuViewState> =
-        MutableStateFlow(MenuViewState())
-    val menuViewState: StateFlow<MenuViewState> = mutableProductListState.asStateFlow()
+    private val mutableProductListState: MutableStateFlow<MenuState> =
+        MutableStateFlow(MenuState())
+    val menuState: StateFlow<MenuState> = mutableProductListState.asStateFlow()
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         mutableProductListState.update {
@@ -64,7 +64,7 @@ class MenuViewModel @Inject constructor(
     }
 
     // TODO TESTS
-    fun updateVisible(menuProductItem: MenuViewState.MenuProductItem) {
+    fun updateVisible(menuProductItem: MenuState.MenuProductItem) {
         viewModelScope.launch(exceptionHandler) {
 
             mutableProductListState.update { oldState ->
@@ -82,7 +82,7 @@ class MenuViewModel @Inject constructor(
         }
     }
 
-    fun goToEditMenuProduct(menuProductItemModel: MenuViewState) {
+    fun goToEditMenuProduct(menuProductItemModel: MenuState) {
         // goTo(MenuNavigationEvent.ToEditMenuProduct(menuProductItemModel.menuProduct))
     }
 
@@ -90,8 +90,8 @@ class MenuViewModel @Inject constructor(
         // goTo(MenuNavigationEvent.ToCreateMenuProduct)
     }
 
-    private fun toItemModel(menuProduct: MenuProduct): MenuViewState.MenuProductItem {
-        return MenuViewState.MenuProductItem(
+    private fun toItemModel(menuProduct: MenuProduct): MenuState.MenuProductItem {
+        return MenuState.MenuProductItem(
             uuid = menuProduct.uuid,
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,

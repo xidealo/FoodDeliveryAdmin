@@ -19,20 +19,4 @@ data class AppDimensions(
     val productImageSmallWidth: Dp = 108.dp,
     val blurHeight: Dp = 16.dp,
     val smallProgressBarSize: Dp = 24.dp,
-) {
-    fun getItemSpaceByIndex(i: Int): Dp {
-        return if (i == 0) {
-            0.dp
-        } else {
-            smallSpace
-        }
-    }
-
-    fun getEvaluation(hasShadow: Boolean): Dp {
-        return if (hasShadow) {
-            elevation
-        } else {
-            0.dp
-        }
-    }
-}
+)
