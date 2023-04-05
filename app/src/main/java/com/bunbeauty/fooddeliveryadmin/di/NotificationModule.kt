@@ -15,5 +15,4 @@ interface NotificationModule {
     @Singleton
     @Binds
     fun bindNotificationService(firebaseNotificationService: FirebaseNotificationService): NotificationService
-
 }

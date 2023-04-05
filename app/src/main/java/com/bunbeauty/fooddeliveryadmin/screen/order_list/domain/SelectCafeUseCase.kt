@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.order_list.domain
 
-import com.bunbeauty.domain.NotificationService
 import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.domain.NotificationService
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject

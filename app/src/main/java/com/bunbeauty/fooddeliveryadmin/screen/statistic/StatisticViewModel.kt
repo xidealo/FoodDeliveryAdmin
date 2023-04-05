@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.CafeRepository
-import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.use_case.GetStatisticUseCase
 import com.bunbeauty.domain.use_case.LogoutUseCase

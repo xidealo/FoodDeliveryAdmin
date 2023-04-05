@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import javax.inject.Inject
 
-class FirebaseNotificationService @Inject constructor(): NotificationService {
+class FirebaseNotificationService @Inject constructor() : NotificationService {
 
     override fun subscribeOnNotifications(topic: String) {
         Firebase.messaging.subscribeToTopic(topic)
@@ -30,5 +30,4 @@ class FirebaseNotificationService @Inject constructor(): NotificationService {
                 }
             }
     }
-
 }
