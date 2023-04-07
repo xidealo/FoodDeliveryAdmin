@@ -20,6 +20,7 @@ android {
         targetSdk = AndroidSdk.target
         versionCode = Application.versionCode
         versionName = Application.versionName
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {

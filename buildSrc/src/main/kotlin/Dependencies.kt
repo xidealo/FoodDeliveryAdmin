@@ -33,12 +33,12 @@ object Versions {
 
 object Application {
     const val versionMajor = 1
-    const val versionMinor = 1
-    const val versionPatch = 1
+    const val versionMinor = 2
+    const val versionPatch = 0
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 111
+    const val versionCode = 120
 }
 
 object AndroidSdk {
