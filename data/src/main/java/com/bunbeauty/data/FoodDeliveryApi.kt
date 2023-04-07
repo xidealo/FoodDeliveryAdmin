@@ -22,12 +22,11 @@ interface FoodDeliveryApi {
     suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
 
     // MENU PRODUCT
-    suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>>
+    suspend fun getMenuProductList(companyUuid: String): ListServer<MenuProductServer>
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
 
-    //  suspend fun saveMenuProduct(menuProduct: ServerMenuProduct)
-    //  suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
+    suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
     suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC
@@ -35,7 +34,7 @@ interface FoodDeliveryApi {
         token: String,
         cafeUuid: String?,
         period: String
-    ): ApiResult<ListServer<StatisticServer>>
+    ): List<StatisticServer>
 
     // ORDER
 

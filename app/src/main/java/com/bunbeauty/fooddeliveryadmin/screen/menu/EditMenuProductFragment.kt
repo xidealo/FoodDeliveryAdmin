@@ -12,10 +12,10 @@ import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentEditMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.EditMenuProductViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -43,7 +43,6 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.run {
             fragmentEditMenuProductBtnBack.setOnClickListener {
-
             }
             fragmentEditMenuProductBtnVisibility.setOnClickListener {
                 viewModel.switchVisibility()
@@ -80,7 +79,7 @@ class EditMenuProductFragment : BaseFragment<FragmentEditMenuProductBinding>() {
                 viewModel.saveMenuProduct(
                     fragmentEditMenuProductEtName.text.toString(),
                     "",
-                    //fragmentEditMenuProductNcvProductCode.cardText,
+                    // fragmentEditMenuProductNcvProductCode.cardText,
                     fragmentEditMenuProductEtCost.text.toString(),
                     fragmentEditMenuProductEtDiscountCost.text.toString(),
                     fragmentEditMenuProductEtWeight.text.toString(),

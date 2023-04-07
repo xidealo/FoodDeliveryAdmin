@@ -1,9 +1,6 @@
-package com.bunbeauty.data
+package com.bunbeauty.domain.repo
 
-interface NotificationService {
-
+interface CafeNotificationRepo {
     fun subscribeOnCafeNotification(cafeUuid: String)
-
     fun unsubscribeFromCafeNotification(cafeUuid: String)
-
 }

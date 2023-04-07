@@ -15,15 +15,19 @@ import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.model.menu_product.MenuProduct
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.websocket.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -55,13 +59,20 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
-    override suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>> {
-        return getData(
-            path = "menu_product",
-            serializer = ListServer.serializer(MenuProductServer.serializer()),
-            parameters = hashMapOf("companyUuid" to companyUuid),
-            token = ""
-        )
+    override suspend fun getMenuProductList(companyUuid: String): ListServer<MenuProductServer> {
+        return withContext(Dispatchers.IO) {
+            val request = client.get {
+                url {
+                    path("menu_product")
+                }
+                parameter("companyUuid", companyUuid)
+            }
+
+            json.decodeFromString(
+                ListServer.serializer(MenuProductServer.serializer()),
+                request.bodyAsText()
+            )
+        }
     }
 
     override suspend fun deleteMenuProductPhoto(photoName: String) {
@@ -72,6 +83,25 @@ class FoodDeliveryApiImpl @Inject constructor(
         return ApiResult.Success(":")
     }
 
+    override suspend fun updateVisibleMenuProductUseCase(
+        uuid: String,
+        isVisible: Boolean,
+        token: String
+    ) {
+        client.patch {
+            url {
+                path("menu_product")
+            }
+            parameter("uuid", uuid)
+            setBody(
+                MenuProductServer(
+                    isVisible = isVisible
+                )
+            )
+            header("Authorization", "Bearer $token")
+        }
+    }
+
     override suspend fun deleteMenuProduct(uuid: String) {
 
     }
@@ -80,16 +110,16 @@ class FoodDeliveryApiImpl @Inject constructor(
         token: String,
         cafeUuid: String?,
         period: String
-    ): ApiResult<ListServer<StatisticServer>> {
-        return getData(
-            path = "statistic",
-            serializer = ListServer.serializer(StatisticServer.serializer()),
-            parameters = hashMapOf(
-                "cafeUuid" to cafeUuid,
-                "period" to period,
-            ),
-            token = token,
-        )
+    ): List<StatisticServer> {
+        return client.get {
+            url {
+                path("statistic")
+            }
+            parameter("cafeUuid", cafeUuid)
+            parameter("period", period)
+
+            header("Authorization", "Bearer $token")
+        }.body()
     }
 
     override suspend fun subscribeOnOrderListByCafeId(

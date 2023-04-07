@@ -4,7 +4,6 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.fooddeliveryadmin.core_ui.ListItem
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListState
 
 data class OrderDetailsState(
     val orderDetails: OrderDetails? = null,
@@ -27,7 +26,6 @@ data class OrderDetailsState(
 
     operator fun plus(event: Event) = copy(eventList = eventList + event)
     operator fun minus(events: List<Event>) = copy(eventList = eventList - events.toSet())
-
 }
 
 enum class RetryAction {

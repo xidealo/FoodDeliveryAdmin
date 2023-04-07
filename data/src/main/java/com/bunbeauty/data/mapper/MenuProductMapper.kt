@@ -11,17 +11,17 @@ class MenuProductMapper @Inject constructor(
 ) {
     fun toEntity(menuProductServer: MenuProductServer): MenuProductEntity {
         return MenuProductEntity(
-            uuid = menuProductServer.uuid,
-            name = menuProductServer.name,
-            newPrice = menuProductServer.newPrice,
+            uuid = menuProductServer.uuid ?: "",
+            name = menuProductServer.name ?: "",
+            newPrice = menuProductServer.newPrice ?: 0,
             oldPrice = menuProductServer.oldPrice,
-            utils = menuProductServer.utils,
-            nutrition = menuProductServer.nutrition,
-            description = menuProductServer.description,
+            utils = menuProductServer.utils ?: "",
+            nutrition = menuProductServer.nutrition ?: 0,
+            description = menuProductServer.description ?: "",
             comboDescription = menuProductServer.comboDescription,
-            photoLink = menuProductServer.photoLink,
-            barcode = menuProductServer.barcode,
-            isVisible = menuProductServer.isVisible,
+            photoLink = menuProductServer.photoLink ?: "",
+            barcode = menuProductServer.barcode ?: 0,
+            isVisible = menuProductServer.isVisible ?: false,
         )
     }
 
@@ -39,6 +39,23 @@ class MenuProductMapper @Inject constructor(
             barcode = menuProductWithCategoriesEntity.menuProductEntity.barcode,
             isVisible = menuProductWithCategoriesEntity.menuProductEntity.isVisible,
             categories = menuProductWithCategoriesEntity.categories.map(categoryMapper::toModel)
+        )
+    }
+
+    fun toModel(menuProductServer: MenuProductServer): MenuProduct {
+        return MenuProduct(
+            uuid = menuProductServer.uuid ?: "",
+            name = menuProductServer.name ?: "",
+            newPrice = menuProductServer.newPrice ?: 0,
+            oldPrice = menuProductServer.oldPrice,
+            utils = menuProductServer.utils ?: "",
+            nutrition = menuProductServer.nutrition ?: 0,
+            description = menuProductServer.description ?: "",
+            comboDescription = menuProductServer.comboDescription,
+            photoLink = menuProductServer.photoLink ?: "",
+            barcode = menuProductServer.barcode ?: 0,
+            isVisible = menuProductServer.isVisible ?: false,
+            categories = menuProductServer.categories?.map(categoryMapper::toModel) ?: emptyList()
         )
     }
 }

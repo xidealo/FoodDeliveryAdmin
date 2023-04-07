@@ -28,8 +28,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    implementation(Coroutine.coroutineCore)
-
     //Database
     implementation(RoomDatabase.roomDatabaseRuntime)
     implementation(RoomDatabase.roomDatabaseKtx)

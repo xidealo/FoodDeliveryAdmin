@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_list.list
 import androidx.recyclerview.widget.DiffUtil
 import javax.inject.Inject
 
-class OrderDiffUtilItemCallback @Inject constructor(): DiffUtil.ItemCallback<OrderItemModel>() {
+class OrderDiffUtilItemCallback @Inject constructor() : DiffUtil.ItemCallback<OrderItemModel>() {
 
     override fun areItemsTheSame(
         oldItem: OrderItemModel,
@@ -14,6 +14,4 @@ class OrderDiffUtilItemCallback @Inject constructor(): DiffUtil.ItemCallback<Ord
         oldItem: OrderItemModel,
         newItem: OrderItemModel
     ): Boolean = oldItem == newItem
-
-
 }

@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.order_list.domain
 
-import com.bunbeauty.data.NotificationService
 import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.domain.NotificationService
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class SelectCafeUseCase @Inject constructor(
         val savedCafeUuid = dataStoreRepo.cafeUuid.firstOrNull()
 
         if (cafeUuid != null && savedCafeUuid != null) {
-            notificationService.unsubscribeFromCafeNotification(savedCafeUuid)
+            notificationService.unsubscribeFromNotifications(savedCafeUuid)
         }
         return if (cafeUuid == null) {
             if (savedCafeUuid == null) {
@@ -30,12 +30,11 @@ class SelectCafeUseCase @Inject constructor(
             cafeRepository.getCafeByUuid(cafeUuid)
         }?.let { cafe ->
             dataStoreRepo.saveCafeUuid(cafe.uuid)
-            notificationService.subscribeOnCafeNotification(cafe.uuid)
+            notificationService.subscribeOnNotifications(cafe.uuid)
             SelectedCafe(
                 uuid = cafe.uuid,
                 address = cafe.address
             )
         }
     }
-
 }

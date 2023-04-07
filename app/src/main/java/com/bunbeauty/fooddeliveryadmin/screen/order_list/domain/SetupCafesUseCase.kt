@@ -16,5 +16,4 @@ class SetupCafesUseCase @Inject constructor(
             cityUuid = dataStoreRepo.managerCity.first()
         )
     }
-
 }

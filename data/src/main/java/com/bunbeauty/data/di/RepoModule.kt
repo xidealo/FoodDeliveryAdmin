@@ -32,4 +32,12 @@ abstract class RepoModule {
     @Singleton
     @Binds
     abstract fun bindCategoryRepository(categoryRepository: CategoryRepository): CategoryRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindOrderRepository(orderRepository: OrderRepository): OrderRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindStatisticRepository(statisticRepository: StatisticRepository): StatisticRepo
 }

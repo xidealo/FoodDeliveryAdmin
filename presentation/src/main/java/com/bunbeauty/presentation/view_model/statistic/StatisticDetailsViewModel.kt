@@ -33,7 +33,7 @@ class StatisticDetailsViewModel @Inject constructor(
 
     val averageCheck: String
         get() {
-            return stringUtil.getCostString(statistic.averageCheck)
+            return stringUtil.getCostString(0)
         }
 
     val productStatisticList: List<ProductStatisticItemModel>

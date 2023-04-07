@@ -203,8 +203,6 @@
 
     <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconSize">24dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="menu">@menu/bottom_navigation_menu</item>
         <item name="itemIconTint">@color/selector_navigation</item>
         <item name="itemTextColor">@color/selector_navigation</item>

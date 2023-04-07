@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/add_photo" />
+                    android:src="@drawable/default_product" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -82,10 +82,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_edit_menu_product_til_name">
-
-
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_menu_product_til_name"
+                android:orientation="horizontal"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_edit_menu_product_til_cost"

@@ -3,17 +3,17 @@ package com.bunbeauty.fooddeliveryadmin.screen.statistic
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.repository.CafeRepository
-import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.fooddeliveryadmin.domain.LogoutUseCase
+import com.bunbeauty.domain.use_case.GetStatisticUseCase
+import com.bunbeauty.domain.use_case.LogoutUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.LogoutOption
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +29,7 @@ class StatisticViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val resources: Resources,
     private val dataStoreRepo: DataStoreRepo,
-    private val statisticRepository: StatisticRepository,
+    private val getStatisticUseCase: GetStatisticUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
 
@@ -42,6 +42,13 @@ class StatisticViewModel @Inject constructor(
         address = resources.getString(R.string.msg_statistic_all_cafes)
     )
     private var loadStatisticJob: Job? = null
+
+    private fun getExceptionHandler(retryAction: RetryAction) =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            mutableStatisticState.update { state ->
+                state.copy(isLoading = false) + StatisticState.Event.ShowError(retryAction)
+            }
+        }
 
     init {
         mutableStatisticState.update { statisticState ->
@@ -57,7 +64,7 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun onCafeClicked() {
-        viewModelScope.launch {
+        viewModelScope.launch(getExceptionHandler(RetryAction.LOAD_CAFE_LIST)) {
             val cafeList = buildList {
                 add(
                     Option(
@@ -83,7 +90,11 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun onCafeSelected(cafeUuid: String?) {
-        viewModelScope.launch {
+        viewModelScope.launch(getExceptionHandler(RetryAction.LOAD_CAFE_LIST)) {
+            mutableStatisticState.update { statisticState ->
+                statisticState.copy(isLoading = true)
+            }
+
             val selectedCafe = cafeUuid?.let { cafeUuid ->
                 cafeRepository.getCafeByUuid(cafeUuid)
             }?.let { cafe ->
@@ -94,7 +105,10 @@ class StatisticViewModel @Inject constructor(
             } ?: allCafes
 
             mutableStatisticState.update { statisticState ->
-                statisticState.copy(selectedCafe = selectedCafe)
+                statisticState.copy(
+                    selectedCafe = selectedCafe,
+                    isLoading = false
+                )
             }
         }
     }
@@ -129,24 +143,27 @@ class StatisticViewModel @Inject constructor(
     @SuppressLint("StringFormatMatches")
     fun loadStatistic() {
         loadStatisticJob?.cancel()
-        loadStatisticJob = handleWithState(RetryAction.LOAD_STATISTIC) {
-            val statisticResult = statisticRepository.getStatistic(
+        loadStatisticJob = viewModelScope.launch(getExceptionHandler(RetryAction.LOAD_STATISTIC)) {
+            mutableStatisticState.update { statisticState ->
+                statisticState.copy(isLoading = true)
+            }
+            getStatisticUseCase(
                 token = dataStoreRepo.token.first(),
                 cafeUuid = mutableStatisticState.value.selectedCafe?.uuid,
                 period = mutableStatisticState.value.selectedTimeIntervalCode
-            )
-            if (statisticResult is ApiResult.Success) {
-                statisticResult.data.map { statistic ->
-                    StatisticItemModel(
-                        startMillis = statistic.startPeriodTime,
-                        period = statistic.period,
-                        count = stringUtil.getOrderCountString(statistic.orderCount),
-                        proceeds = resources.getString(R.string.with_ruble, statistic.proceeds)
+            ).map { statistic ->
+                StatisticItemModel(
+                    startMillis = statistic.startPeriodTime,
+                    period = statistic.period,
+                    count = stringUtil.getOrderCountString(statistic.orderCount),
+                    proceeds = resources.getString(R.string.with_ruble, statistic.proceeds)
+                )
+            }.let { statisticItemList ->
+                mutableStatisticState.update { statisticState ->
+                    statisticState.copy(
+                        statisticList = statisticItemList,
+                        isLoading = false
                     )
-                }.let { statisticItemList ->
-                    mutableStatisticState.update { statisticState ->
-                        statisticState.copy(statisticList = statisticItemList)
-                    }
                 }
             }
         }
@@ -177,7 +194,7 @@ class StatisticViewModel @Inject constructor(
     }
 
     private fun updateData() {
-        handleWithState(RetryAction.LOAD_CAFE_LIST) {
+        viewModelScope.launch(getExceptionHandler(RetryAction.LOAD_CAFE_LIST)) {
             cafeRepository.refreshCafeList(
                 token = dataStoreRepo.token.first(),
                 cityUuid = dataStoreRepo.managerCity.first()
@@ -190,27 +207,6 @@ class StatisticViewModel @Inject constructor(
             TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
             TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
             TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
-        }
-    }
-
-    private inline fun handleWithState(
-        retryAction: RetryAction,
-        crossinline block: suspend () -> Unit
-    ): Job {
-        return viewModelScope.launch {
-            mutableStatisticState.update { state ->
-                state.copy(isLoading = true)
-            }
-            try {
-                block()
-                mutableStatisticState.update { state ->
-                    state.copy(isLoading = false)
-                }
-            } catch (exception: Exception) {
-                mutableStatisticState.update { state ->
-                    state.copy(isLoading = false) + StatisticState.Event.ShowError(retryAction)
-                }
-            }
         }
     }
 }

@@ -16,6 +16,4 @@ class SetupOrdersUseCase @Inject constructor(
         orderRepository.loadOrderListByCafeUuid(token = token, cafeUuid = cafeUuid)
         orderRepository.subscribeOnOrderList(token = token, cafeUuid = cafeUuid)
     }
-
-
 }

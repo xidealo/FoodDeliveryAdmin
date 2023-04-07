@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderListResult
+import com.bunbeauty.domain.use_case.LogoutUseCase
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.fooddeliveryadmin.domain.LogoutUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetCafeListUseCase
@@ -148,7 +148,6 @@ class OrderListViewModel @Inject constructor(
                     updateStateWithError()
                 }
             }
-
         }.launchIn(viewModelScope)
 
         newOrderEventUseCase().onEach {
@@ -193,5 +192,4 @@ class OrderListViewModel @Inject constructor(
             ) + OrderListState.Event.ShowError
         }
     }
-
 }

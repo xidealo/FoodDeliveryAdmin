@@ -12,11 +12,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.presentation.navigation_event.NavigationEvent
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
-import javax.inject.Inject
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
@@ -108,5 +108,4 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
             }
         }
     }
-
 }

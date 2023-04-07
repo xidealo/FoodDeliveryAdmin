@@ -69,4 +69,3 @@ fun getOrderDetailsDelegate(onStatusClickListener: () -> Unit) =
             }
         }
     }
-

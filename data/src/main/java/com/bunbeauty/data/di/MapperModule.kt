@@ -6,7 +6,6 @@ import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
 import com.bunbeauty.data.mapper.cafe.ServerCafeMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.ServerOrderMapper
-import com.bunbeauty.data.mapper.statistic.IStatisticMapper
 import com.bunbeauty.data.mapper.statistic.StatisticMapper
 import dagger.Binds
 import dagger.Module
@@ -29,9 +28,4 @@ abstract class MapperModule {
     @Singleton
     @Binds
     abstract fun bindServerOrderMapper(serverOrderMapper: ServerOrderMapper): IServerOrderMapper
-
-    @Singleton
-    @Binds
-    abstract fun bindStatisticMapper(statisticMapper: StatisticMapper): IStatisticMapper
-
 }

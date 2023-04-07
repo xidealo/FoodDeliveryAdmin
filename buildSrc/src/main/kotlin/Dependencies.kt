@@ -1,29 +1,34 @@
 object Versions {
-    const val kotlin = "1.7.21"
-    const val gradle = "7.3.1"
-    const val kotlinCoroutines = "1.6.4"
-    const val androidxCore = "1.8.0"
-    const val ktor = "2.1.2"
-    const val constraintLayout = "2.1.4"
-    const val material = "1.7.0"
-    const val appCompact = "1.5.1"
+    const val kotlin = "1.8.0"
+    const val gradle = "7.4.1"
+    const val androidxCore = "1.9.0"
+    const val ktor = "2.2.2"
+    const val appCompact = "1.6.0"
     const val coil = "2.2.2"
     const val dataStorePreferencesVersion = "1.0.0"
-    const val googleServices = "4.3.14"
+    const val googleServices = "4.3.15"
     const val navigation = "2.5.3"
-    const val extensions = "2.2.0"
-    const val viewmodel = "2.4.0"
-    const val activity = "1.4.0"
-    const val fragment = "1.5.4"
-    const val lifecycle = "2.4.0"
-    const val googleMapUtils = "2.2.3"
+    const val viewmodel = "2.5.1"
+    const val activity = "1.6.1"
+    const val fragment = "1.5.5"
+    const val lifecycle = "2.5.1"
     const val hilt = "2.44"
-    const val fastAdapter = "5.3.4"
     const val adapterDelegates = "4.3.2"
-    const val roomDatabaseVersion = "2.4.3"
+    const val roomDatabaseVersion = "2.5.0"
     const val joda = "2.12.1"
     const val crashlytics = "2.9.2"
     const val firebase = "31.0.2"
+
+    const val composeCompiler = "1.4.0"
+    const val composeBom = "2023.01.00"
+    const val composeMaterial = "1.3.1"
+
+    const val composeUiTooling = "1.3.2"
+    const val composeUiToolingPreview = "1.3.2"
+    const val activityCompose = "1.6.1"
+    const val lifecycleRuntimeCompose = "2.6.0-alpha05"
+
+    const val ktLint = "11.0.0"
 }
 
 object Application {
@@ -71,28 +76,17 @@ object Plugin {
     const val hiltPlugin = "dagger.hilt.android.plugin"
     const val googleService = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"
+    const val ktLint = "org.jlleitschuh.gradle.ktlint"
 }
 
 object AndroidX {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompact}"
-    const val constraintLayout =
-        "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     const val coreKtx = "androidx.core:core-ktx:${Versions.androidxCore}"
-}
-
-object Google {
-    const val material = "com.google.android.material:material:${Versions.material}"
 }
 
 object Dagger {
     const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
-}
-
-object FastAdapter {
-    const val fastAdapter = "com.mikepenz:fastadapter:${Versions.fastAdapter}"
-    const val fastAdapterBinding =
-        "com.mikepenz:fastadapter-extensions-binding:${Versions.fastAdapter}"
 }
 
 object AdapterDelegates {
@@ -123,16 +117,12 @@ object Ktor {
 
 object Coil {
     const val coil = "io.coil-kt:coil:${Versions.coil}"
+    const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
 }
 
 object DataStore {
     const val dataStorePreferences =
         "androidx.datastore:datastore-preferences:${Versions.dataStorePreferencesVersion}"
-}
-
-object Coroutine {
-    const val coroutineCore =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
 }
 
 object RoomDatabase {
@@ -142,12 +132,25 @@ object RoomDatabase {
 }
 
 object Lifecycle {
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.extensions}"
     const val lifecycleViewModel =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewmodel}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+}
+
+object Compose {
+    const val bom = "androidx.compose:compose-bom:${Versions.composeBom}"
+    const val foundation = "androidx.compose.foundation:foundation"
+    const val ui = "androidx.compose.ui:ui"
+    const val material = "androidx.compose.material:material:${Versions.composeMaterial}"
+
+    const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUiTooling}"
+    const val uiToolingPreview =
+        "androidx.compose.ui:ui-tooling-preview:${Versions.composeUiToolingPreview}"
+
+    const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
+    const val lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleRuntimeCompose}"
 }
 
 object Firebase {

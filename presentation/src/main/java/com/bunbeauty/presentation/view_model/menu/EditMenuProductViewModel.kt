@@ -148,7 +148,7 @@ class EditMenuProductViewModel @Inject constructor(
                 categories = emptyList()
             )
             viewModelScope.launch(IO) {
-                menuProductRepo.updateMenuProduct(menuProduct)
+                //menuProductRepo.updateMenuProduct(menuProduct)
                 finishEditing(name)
             }
         } else {

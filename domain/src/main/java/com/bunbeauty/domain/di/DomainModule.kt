@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class DomainModule {
 
-    //UTIL
     @Singleton
     @Binds
     abstract fun bindProductUtil(productUtil: ProductUtil): IProductUtil

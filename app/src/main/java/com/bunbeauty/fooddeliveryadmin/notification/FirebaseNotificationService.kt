@@ -2,33 +2,32 @@ package com.bunbeauty.fooddeliveryadmin.notification
 
 import android.util.Log
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
-import com.bunbeauty.data.NotificationService
+import com.bunbeauty.domain.NotificationService
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import javax.inject.Inject
 
-class FirebaseNotificationService @Inject constructor(): NotificationService {
+class FirebaseNotificationService @Inject constructor() : NotificationService {
 
-    override fun subscribeOnCafeNotification(cafeUuid: String) {
-        Firebase.messaging.subscribeToTopic(cafeUuid)
+    override fun subscribeOnNotifications(topic: String) {
+        Firebase.messaging.subscribeToTopic(topic)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d(NOTIFICATION_TAG, "Subscribed to $cafeUuid successfully")
+                    Log.d(NOTIFICATION_TAG, "Subscribed to $topic successfully")
                 } else {
-                    Log.e(NOTIFICATION_TAG, "Failed to subscribe to $cafeUuid")
+                    Log.e(NOTIFICATION_TAG, "Failed to subscribe to $topic")
                 }
             }
     }
 
-    override fun unsubscribeFromCafeNotification(cafeUuid: String) {
-        Firebase.messaging.unsubscribeFromTopic(cafeUuid)
+    override fun unsubscribeFromNotifications(topic: String) {
+        Firebase.messaging.unsubscribeFromTopic(topic)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d(NOTIFICATION_TAG, "Unsubscribed from $cafeUuid successfully")
+                    Log.d(NOTIFICATION_TAG, "Unsubscribed from $topic successfully")
                 } else {
-                    Log.e(NOTIFICATION_TAG, "Failed to unsubscribe from $cafeUuid")
+                    Log.e(NOTIFICATION_TAG, "Failed to unsubscribe from $topic")
                 }
             }
     }
-
 }

@@ -2,9 +2,9 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_details.item
 
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.ListItem
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import com.bunbeauty.fooddeliveryadmin.databinding.ElementOrderProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.strikeOutText
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 
 data class OrderProductItem(
     val uuid: String,
@@ -18,7 +18,6 @@ data class OrderProductItem(
         (other is OrderProductItem) && (other.uuid == uuid)
 
     override fun isTheSameContent(other: ListItem) = other == this
-
 }
 
 fun getOrderProductDelegate() = adapterDelegateLayoutContainer<OrderProductItem, ListItem>(
@@ -36,6 +35,3 @@ fun getOrderProductDelegate() = adapterDelegateLayoutContainer<OrderProductItem,
         }
     }
 }
-
-
-

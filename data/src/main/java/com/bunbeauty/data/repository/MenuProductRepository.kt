@@ -1,61 +1,50 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.common.Constants.RELOAD_DELAY
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.mapper.MenuProductMapper
-import com.bunbeauty.data.model.entity.menu_product.MenuProductCategoryEntity
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper,
     private val menuProductDao: MenuProductDao,
-    private val menuProductCategoryDao: MenuProductCategoryDao
 ) : MenuProductRepo {
 
-    override suspend fun refreshMenuProductList(companyUuid: String) {
-        when (val result = networkConnector.getMenuProductList(companyUuid)) {
-            is ApiResult.Success -> {
-                menuProductDao.deleteAll()
-                result.data.let { listServer ->
-                    menuProductDao.insertAll(
-                        listServer.results.map { serverMenuProductList ->
-                            menuProductMapper.toEntity(serverMenuProductList)
-                        })
+    private var menuProductList: List<MenuProduct>? = null
 
-                    listServer.results.forEach { menuProductServer ->
-                        menuProductServer.categories.forEach { category ->
-                            menuProductCategoryDao.insert(
-                                MenuProductCategoryEntity(
-                                    menuProductServer.uuid, category.uuid
-                                )
-                            )
+    override suspend fun getMenuProductList(
+        companyUuid: String,
+        isRefreshing: Boolean
+    ): List<MenuProduct> {
+        return if (menuProductList.isNullOrEmpty() || isRefreshing) {
+            networkConnector.getMenuProductList(
+                companyUuid = companyUuid
+            ).let { listServer ->
+                return withContext(Dispatchers.Default) {
+                    listServer
+                        .results
+                        .map { menuProductMapper.toModel(it) }
+                        .sortedByDescending { menuProduct ->
+                            menuProduct.isVisible
+                        }.also {
+                            menuProductList = it
                         }
-                    }
                 }
             }
-            is ApiResult.Error -> {
-                delay(RELOAD_DELAY)
-                //refreshMenuProductList()
-            }
-        }
+        } else menuProductList ?: emptyList()
     }
 
-    override fun getMenuProductList(): Flow<List<MenuProduct>> {
-        return menuProductDao.getListFlow().map { list ->
-            list.map {
-                menuProductMapper.toModel(it)
-            }.sortedByDescending { menuProduct ->
-                menuProduct.isVisible
-            }
+    override suspend fun getMenuProductList(): List<MenuProduct> {
+        return menuProductDao.getList().map { menuProduct ->
+            menuProductMapper.toModel(menuProduct)
+        }.sortedByDescending { menuProduct ->
+            menuProduct.isVisible
         }
     }
 
@@ -79,14 +68,33 @@ class MenuProductRepository @Inject constructor(
         // networkConnector.saveMenuProduct(menuProductMapper.toServerModel(menuProduct))
     }
 
-    override suspend fun updateMenuProduct(menuProduct: MenuProduct) {
-        /*   networkConnector.updateMenuProduct(
-               menuProductMapper.toServerModel(menuProduct),
-               menuProduct.uuid!!
-           )*/
+    override suspend fun updateVisibleMenuProductUseCase(
+        uuid: String,
+        isVisible: Boolean,
+        token: String
+    ) {
+        networkConnector.updateVisibleMenuProductUseCase(
+            uuid = uuid,
+            isVisible = isVisible,
+            token = token
+        )
+
+        menuProductList = menuProductList?.map { menuProductItem ->
+            if (uuid == menuProductItem.uuid) {
+                menuProductItem.copy(
+                    isVisible = isVisible
+                )
+            } else {
+                menuProductItem
+            }
+        }
     }
 
     override suspend fun deleteMenuProduct(uuid: String) {
         networkConnector.deleteMenuProduct(uuid)
+    }
+
+    override suspend fun clearMenuProductList() {
+        menuProductList = emptyList()
     }
 }

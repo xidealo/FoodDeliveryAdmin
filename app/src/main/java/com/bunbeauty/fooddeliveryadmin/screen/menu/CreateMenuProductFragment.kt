@@ -14,10 +14,10 @@ import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
@@ -46,7 +46,6 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
 
         binding.run {
             fragmentCreateMenuProductBtnBack.setOnClickListener {
-
             }
             fragmentCreateMenuProductBtnVisibility.setOnClickListener {
                 viewModel.switchVisibility()
@@ -96,6 +95,5 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
                 )
             }
         }
-
     }
 }
