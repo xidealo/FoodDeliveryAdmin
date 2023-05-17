@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.8.0"
+    const val kotlin = "1.8.21"
     const val gradle = "7.4.1"
     const val androidxCore = "1.9.0"
     const val ktor = "2.2.2"
@@ -19,14 +19,15 @@ object Versions {
     const val crashlytics = "2.9.2"
     const val firebase = "31.0.2"
 
-    const val composeCompiler = "1.4.0"
-    const val composeBom = "2023.01.00"
-    const val composeMaterial = "1.3.1"
-
-    const val composeUiTooling = "1.3.2"
-    const val composeUiToolingPreview = "1.3.2"
-    const val activityCompose = "1.6.1"
-    const val lifecycleRuntimeCompose = "2.6.0-alpha05"
+    const val composeCompiler = "1.4.7"
+    const val composeBom = "2023.05.01"
+    const val composeMaterial3 = "1.1.0"
+    const val composeMaterial = "1.4.3"
+    const val composeUiTooling = "1.4.3"
+    const val composeUiToolingPreview = "1.4.3"
+    const val composeUiViewbinding = "1.4.3"
+    const val activityCompose = "1.7.1"
+    const val lifecycleRuntimeCompose = "2.6.1"
 
     const val ktLint = "11.0.0"
 }
@@ -144,14 +145,15 @@ object Compose {
     const val bom = "androidx.compose:compose-bom:${Versions.composeBom}"
     const val foundation = "androidx.compose.foundation:foundation"
     const val ui = "androidx.compose.ui:ui"
+    const val material3 = "androidx.compose.material3:material3:${Versions.composeMaterial3}"
     const val material = "androidx.compose.material:material:${Versions.composeMaterial}"
-
     const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUiTooling}"
     const val uiToolingPreview =
         "androidx.compose.ui:ui-tooling-preview:${Versions.composeUiToolingPreview}"
-
+    const val uiViewbinding = "androidx.compose.ui:ui-viewbinding:${Versions.composeUiViewbinding}"
     const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
-    const val lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleRuntimeCompose}"
+    const val lifecycle =
+        "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleRuntimeCompose}"
 }
 
 object Firebase {
