@@ -33,30 +33,41 @@ class MenuViewModel @Inject constructor(
         }
     }
 
-    fun loadData(isRefreshing: Boolean = false) {
+    fun loadData() {
         viewModelScope.launch(exceptionHandler) {
-            val items = if (isRefreshing) {
-                mutableProductListState.update {
-                    it.copy(
-                        isRefreshing = true,
-                        throwable = null
-                    )
-                }
-                getMenuUseCase(isRefreshing = true).map(::toItemModel)
-            } else {
-                mutableProductListState.update {
-                    it.copy(
-                        isLoading = true,
-                        throwable = null
-                    )
-                }
-                getMenuUseCase(isRefreshing = false).map(::toItemModel)
+            mutableProductListState.update {
+                it.copy(
+                    isLoading = true,
+                    throwable = null
+                )
             }
+
+            val items = getMenuUseCase(isRefreshing = false).map(::toItemModel)
 
             mutableProductListState.update {
                 it.copy(
                     menuProductItems = items,
                     isLoading = false,
+                    isRefreshing = false
+                )
+            }
+        }
+    }
+
+    fun refreshData() {
+        viewModelScope.launch(exceptionHandler) {
+            mutableProductListState.update {
+                it.copy(
+                    isRefreshing = true,
+                    throwable = null
+                )
+            }
+
+            val items = getMenuUseCase(isRefreshing = true).map(::toItemModel)
+
+            mutableProductListState.update {
+                it.copy(
+                    menuProductItems = items,
                     isRefreshing = false
                 )
             }

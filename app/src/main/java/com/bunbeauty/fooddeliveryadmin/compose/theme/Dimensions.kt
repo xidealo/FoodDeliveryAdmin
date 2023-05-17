@@ -1,12 +1,12 @@
-package com.bunbeauty.fooddeliveryadmin.view.theme
+package com.bunbeauty.fooddeliveryadmin.compose.theme
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-internal val LocalAppDimensions = staticCompositionLocalOf { AppDimensions() }
+internal val LocalAdminDimensions = staticCompositionLocalOf { AdminDimensions() }
 
-data class AppDimensions(
+data class AdminDimensions(
     val verySmallSpace: Dp = 4.dp,
     val smallSpace: Dp = 8.dp,
     val mediumSpace: Dp = 16.dp,

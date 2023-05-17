@@ -20,7 +20,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bunbeauty.fooddeliveryadmin.view.theme.FoodDeliveryTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
 @Composable
 fun ErrorScreen(
@@ -32,7 +33,7 @@ fun ErrorScreen(
     Column(
         modifier = Modifier
             .background(
-                color = FoodDeliveryTheme.colors.background
+                color = AdminTheme.colors.mainColors.background
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -46,18 +47,18 @@ fun ErrorScreen(
                 .size(40.dp),
             imageVector = ImageVector
                 .vectorResource(iconId),
-            contentDescription = "",
-            tint = FoodDeliveryTheme.colors.primary
+            contentDescription = null,
+            tint = AdminTheme.colors.mainColors.primary
         )
 
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = FoodDeliveryTheme.dimensions.mediumSpace)
-                .padding(horizontal = FoodDeliveryTheme.dimensions.mediumSpace),
+                .padding(top = AdminTheme.dimensions.mediumSpace)
+                .padding(horizontal = AdminTheme.dimensions.mediumSpace),
             text = stringResource(id = mainTextId),
-            style = FoodDeliveryTheme.typography.h2,
-            color = FoodDeliveryTheme.colors.onSurface,
+            style = AdminTheme.typography.titleMedium.bold,
+            color = AdminTheme.colors.mainColors.onBackground,
             textAlign = TextAlign.Center
         )
 
@@ -65,11 +66,11 @@ fun ErrorScreen(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = FoodDeliveryTheme.dimensions.smallSpace)
-                    .padding(horizontal = FoodDeliveryTheme.dimensions.mediumSpace),
+                    .padding(top = AdminTheme.dimensions.smallSpace)
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace),
                 text = stringResource(id = extraTextId),
-                style = FoodDeliveryTheme.typography.h3,
-                color = FoodDeliveryTheme.colors.onSurface,
+                style = AdminTheme.typography.bodyLarge,
+                color = AdminTheme.colors.mainColors.onBackground,
                 textAlign = TextAlign.Center
             )
         }
@@ -81,15 +82,13 @@ fun ErrorScreen(
 
         TextButton(
             modifier = Modifier
-                .padding(bottom = FoodDeliveryTheme.dimensions.mediumSpace),
-            onClick = {
-                action.invoke()
-            }
+                .padding(bottom = AdminTheme.dimensions.mediumSpace),
+            onClick = action
         ) {
             Text(
-                color = FoodDeliveryTheme.colors.primary,
+                color = AdminTheme.colors.mainColors.onBackground,
                 text = stringResource(id = com.bunbeauty.fooddeliveryadmin.R.string.action_retry),
-                style = FoodDeliveryTheme.typography.smallButton
+                style = AdminTheme.typography.labelLarge
             )
         }
     }

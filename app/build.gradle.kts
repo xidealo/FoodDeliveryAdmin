@@ -93,12 +93,15 @@ dependencies {
     implementation(Lifecycle.lifecycleRuntime)
 
     // Compose
+
     implementation(Compose.bom)
     implementation(Compose.foundation)
     implementation(Compose.ui)
+    implementation(Compose.material3)
     implementation(Compose.material)
     implementation(Compose.uiTooling)
     implementation(Compose.uiToolingPreview)
+    implementation(Compose.uiViewbinding)
     implementation(Compose.activity)
     implementation(Compose.lifecycle)
 
