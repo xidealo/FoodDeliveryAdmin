@@ -16,6 +16,7 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.ListItem
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_details.item.OrderDetailsItem
 import com.bunbeauty.fooddeliveryadmin.screen.order_details.item.OrderProductItem
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetIsLastOrderUseCase
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.utils.IStringUtil
@@ -38,6 +39,7 @@ class OrderDetailsViewModel @Inject constructor(
     private val resources: Resources,
     private val dateTimeUtil: IDateTimeUtil,
     private val dataStoreRepo: DataStoreRepo,
+    private val getIsLastOrderUseCase: GetIsLastOrderUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -130,6 +132,7 @@ class OrderDetailsViewModel @Inject constructor(
                         orderUuid = orderUuid
                     )?.let { order ->
                         updateOrderDetailsState(order)
+                        checkToCancelNotification(order.code)
                     }
                 }
             } catch (exception: Exception) {
@@ -137,6 +140,14 @@ class OrderDetailsViewModel @Inject constructor(
                 mutableOrderDetailsState.update { orderDetailsState ->
                     orderDetailsState.copy(isLoading = false) + event
                 }
+            }
+        }
+    }
+
+    private suspend fun checkToCancelNotification(orderCode: String) {
+        if (getIsLastOrderUseCase(orderCode = orderCode)) {
+            mutableOrderDetailsState.update { orderDetailsState ->
+                orderDetailsState + OrderDetailsState.Event.CancelNotification
             }
         }
     }

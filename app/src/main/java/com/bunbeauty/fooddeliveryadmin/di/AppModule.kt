@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import android.content.Context
 import android.content.res.Resources
+import androidx.core.app.NotificationManagerCompat
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +17,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideResources(@ApplicationContext context: Context): Resources = context.resources
+
+    @Provides
+    fun provideNotificationManagerCompat(@ApplicationContext context: Context): NotificationManagerCompat =
+        NotificationManagerCompat.from(context)
 }
