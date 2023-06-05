@@ -20,23 +20,14 @@ abstract class BaseViewModel : ViewModel() {
     private val mutableFieldError = MutableSharedFlow<FieldError>(0)
     val fieldError: SharedFlow<FieldError> = mutableFieldError.asSharedFlow()
 
-    protected fun goTo(navigationEvent: NavigationEvent) {
-        viewModelScope.launch {
-
-        }
-    }
-
-    @Deprecated("Use navigation only in fragment")
-    fun goBack() {
-
-    }
-
+    @Deprecated("Send event to View and call MessageHost")
     fun sendMessage(message: String) {
         viewModelScope.launch {
             mutableMessage.emit(message)
         }
     }
 
+    @Deprecated("Send event to View and call MessageHost")
     fun sendError(error: String) {
         viewModelScope.launch {
             mutableError.emit(error)

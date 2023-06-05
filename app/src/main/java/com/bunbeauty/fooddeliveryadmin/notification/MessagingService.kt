@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.MainActivity
+import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +37,7 @@ class MessagingService : FirebaseMessagingService() {
         }
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
+    @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
     private fun showNotification(code: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -8,10 +8,14 @@ object Versions {
     const val dataStorePreferencesVersion = "1.0.0"
     const val googleServices = "4.3.15"
     const val navigation = "2.5.3"
-    const val viewmodel = "2.5.1"
+
     const val activity = "1.6.1"
     const val fragment = "1.5.5"
+    const val viewmodel = "2.5.1"
     const val lifecycle = "2.5.1"
+
+    const val viewBindingDelegate = "1.5.3"
+
     const val hilt = "2.44"
     const val adapterDelegates = "4.3.2"
     const val roomDatabaseVersion = "2.5.0"
@@ -100,9 +104,11 @@ object AdapterDelegates {
 }
 
 object Navigation {
-    const val navigationFragment =
+    const val fragment =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
-    const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    const val ui = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    const val runtime =
+        "androidx.navigation:navigation-runtime-ktx:${Versions.navigation}"
 }
 
 object Ktor {
@@ -138,6 +144,11 @@ object Lifecycle {
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+}
+
+object ViewBinding {
+    const val propertyDelegate =
+        "com.github.kirich1409:viewbindingpropertydelegate:${Versions.viewBindingDelegate}"
 }
 
 object Compose {

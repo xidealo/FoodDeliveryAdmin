@@ -23,5 +23,4 @@ object AdminTopBarDefaults {
         titleContentColor = titleContentColor,
         actionIconContentColor = actionIconContentColor
     )
-
 }

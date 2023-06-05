@@ -10,6 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
@@ -91,7 +92,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
                     openOrderDetails(event.orderUuid)
                 }
                 OrderListState.Event.OpenLoginEvent -> {
-                    findNavController().navigate(toLoginFragment())
+                    findNavController().navigateSafe(toLoginFragment())
                 }
                 OrderListState.Event.ShowError -> {
                     lifecycleScope.launch {
@@ -122,30 +123,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun openLogoutConfirmation() {
-        lifecycleScope.launch {
-            OptionListBottomSheet.show(
-                fragmentManager = parentFragmentManager,
-                title = resources.getString(R.string.title_logout),
-                options = listOf(
-                    Option(
-                        id = LogoutOption.LOGOUT.name,
-                        title = resources.getString(R.string.action_logout),
-                        isPrimary = true
-                    ),
-                    Option(
-                        id = LogoutOption.CANCEL.name,
-                        title = resources.getString(R.string.action_cancel)
-                    )
-                ),
-                isCenter = true
-            )?.value?.let { resultValue ->
-                viewModel.onLogout(resultValue)
-            }
-        }
-    }
-
     private fun openOrderDetails(orderUuid: String) {
-        findNavController().navigate(toOrdersDetailsFragment(orderUuid))
+        findNavController().navigateSafe(toOrdersDetailsFragment(orderUuid))
     }
 }

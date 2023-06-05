@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 internal val LocalAdminDimensions = staticCompositionLocalOf { AdminDimensions() }
 
 data class AdminDimensions(
+    // old
     val verySmallSpace: Dp = 4.dp,
     val smallSpace: Dp = 8.dp,
     val mediumSpace: Dp = 16.dp,
@@ -19,4 +20,8 @@ data class AdminDimensions(
     val productImageSmallWidth: Dp = 108.dp,
     val blurHeight: Dp = 16.dp,
     val smallProgressBarSize: Dp = 24.dp,
+
+    // new
+    val cardElevation: Dp = 2.dp,
+    val surfaceElevation: Dp = 4.dp,
 )
