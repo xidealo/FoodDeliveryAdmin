@@ -22,8 +22,11 @@ import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -55,16 +58,24 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
                     ) == PackageManager.PERMISSION_GRANTED)
         if (isNotificationPermissionGranted) {
             val code = remoteMessage.data[ORDER_CODE_KEY] ?: ""
-            showNotification(code)
 
-            launch(coroutineExceptionHandler) {
+            launch(coroutineExceptionHandler + Dispatchers.Default) {
+                val isUnlimited = dataStoreRepo.isUnlimitedNotification.first()
+
+                withContext(Dispatchers.Main) {
+                    showNotification(
+                        code = code,
+                        isUnlimited = isUnlimited
+                    )
+                }
+
                 dataStoreRepo.saveLastOrderCode(code)
             }
         }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
-    private fun showNotification(code: String) {
+    private fun showNotification(code: String, isUnlimited: Boolean) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -73,7 +84,6 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
         } else {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         }
-
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_new_order)
@@ -84,11 +94,12 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
             .setAutoCancel(false)
             .setColor(ContextCompat.getColor(this, R.color.lightIconColor))
 
-
         NotificationManagerCompat.from(this)
             .notify(LAST_ORDER_NOTIFICATION_ID, builder.build()
                 .apply {
-                    flags = flags or Notification.FLAG_INSISTENT
+                    if (isUnlimited) {
+                        flags = flags or Notification.FLAG_INSISTENT
+                    }
                 }
             )
     }

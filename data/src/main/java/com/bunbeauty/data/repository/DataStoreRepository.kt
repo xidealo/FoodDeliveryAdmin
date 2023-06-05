@@ -3,6 +3,7 @@ package com.bunbeauty.data.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -25,6 +26,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     private val Context.deliveryDataStore: DataStore<Preferences> by preferencesDataStore(name = DELIVERY_DATA_STORE)
     private val Context.companyUuidDataStore: DataStore<Preferences> by preferencesDataStore(name = COMPANY_UUID_DATA_STORE)
     private val Context.lastOrderCodeDataStore: DataStore<Preferences> by preferencesDataStore(name = LAST_ORDER_CODE_STORE)
+    private val Context.isUnlimitedNotification: DataStore<Preferences> by preferencesDataStore(name = IS_UNLIMITED_NOTIFICATION_DATA_STORE)
 
     override val token: Flow<String> = context.tokenDataStore.data.map {
         it[TOKEN_KEY] ?: ""
@@ -102,6 +104,18 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
+    override val isUnlimitedNotification: Flow<Boolean> = context.isUnlimitedNotification.data.map {
+        it[IS_UNLIMITED_NOTIFICATION_KEY] ?: false
+    }
+
+    override suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean) {
+        withContext(IO) {
+            context.isUnlimitedNotification.edit {
+                it[IS_UNLIMITED_NOTIFICATION_KEY] = isUnlimitedNotification
+            }
+        }
+    }
+
     override suspend fun clearCache() {
         withContext(IO) {
             context.tokenDataStore.edit {
@@ -125,6 +139,8 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         private const val DELIVERY_DATA_STORE = "delivery dataStore"
         private const val COMPANY_UUID_DATA_STORE = "company uuid dataStore"
         private const val LAST_ORDER_CODE_STORE = "last order code dataStore"
+        private const val IS_UNLIMITED_NOTIFICATION_DATA_STORE =
+            "is unlimited notification dataStore"
         private const val TOKEN = "token"
         private const val MANAGER_CITY_UUID = "manager city uuid"
         private const val CAFE_UUID = "cafe uuid"
@@ -132,6 +148,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         private const val DELIVERY_FOR_FREE = "delivery for free"
         private const val COMPANY_UUID = "company uuid"
         private const val LAST_ORDER_CODE = "company uuid"
+        private const val IS_UNLIMITED_NOTIFICATION = "company uuid"
 
         // KEYS
         private val TOKEN_KEY = stringPreferencesKey(TOKEN)
@@ -141,5 +158,6 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         private val DELIVERY_COST_KEY = intPreferencesKey(DELIVERY_COST)
         private val DELIVERY_FOR_FREE_KEY = intPreferencesKey(DELIVERY_FOR_FREE)
         private val LAST_ORDER_CODE_KEY = stringPreferencesKey(LAST_ORDER_CODE)
+        private val IS_UNLIMITED_NOTIFICATION_KEY = booleanPreferencesKey(IS_UNLIMITED_NOTIFICATION)
     }
 }
