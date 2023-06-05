@@ -14,12 +14,12 @@ import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderAdapter
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
+import com.bunbeauty.presentation.Option
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -51,7 +51,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             orderListRv.addSpaceItemDecorator(R.dimen.very_small_margin)
             orderListRv.adapter = orderAdapter.apply {
                 onClickListener = { orderItemModel ->
-                    viewModel.onOrderClicked(orderItemModel)
+                    viewModel.onOrderClicked(orderItemModel.uuid, orderItemModel.code)
                 }
             }
             cafeMcv.setOnClickListener {
@@ -94,7 +94,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
                     openCafeList(event.cafeList)
                 }
                 is OrderListState.Event.OpenOrderDetailsEvent -> {
-                    openOrderDetails(event.orderUuid)
+                    openOrderDetails(event.orderUuid, event.orderCode)
                 }
                 OrderListState.Event.OpenLoginEvent -> {
                     findNavController().navigateSafe(toLoginFragment())
@@ -131,7 +131,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun openOrderDetails(orderUuid: String) {
-        findNavController().navigateSafe(toOrdersDetailsFragment(orderUuid))
+    private fun openOrderDetails(orderUuid: String, orderCode: String) {
+        findNavController().navigateSafe(toOrdersDetailsFragment(orderUuid, orderCode))
     }
 }

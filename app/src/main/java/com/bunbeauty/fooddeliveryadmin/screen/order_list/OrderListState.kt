@@ -1,8 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectedCafe
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderItemModel
+import com.bunbeauty.presentation.Option
 
 data class OrderListState(
     val selectedCafe: SelectedCafe? = null,
@@ -14,7 +14,7 @@ data class OrderListState(
     sealed interface Event {
         object ScrollToTop : Event
         class OpenCafeListEvent(val cafeList: List<Option>) : Event
-        class OpenOrderDetailsEvent(val orderUuid: String) : Event
+        class OpenOrderDetailsEvent(val orderUuid: String, val orderCode: String) : Event
         object OpenLoginEvent : Event
         object ShowError : Event
         object CancelNotification : Event

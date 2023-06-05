@@ -3,9 +3,9 @@ package com.bunbeauty.fooddeliveryadmin.navigation
 import android.content.res.Resources
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.LogoutOption
+import com.bunbeauty.presentation.Option
 import javax.inject.Inject
 
 class Navigator @Inject constructor(

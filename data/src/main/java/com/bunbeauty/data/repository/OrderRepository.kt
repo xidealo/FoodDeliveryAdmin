@@ -93,7 +93,7 @@ class OrderRepository @Inject constructor(
         }
     }
 
-    suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
+    override suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
         return when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
             is ApiResult.Success -> {
                 serverOrderMapper.toModel(result.data)
