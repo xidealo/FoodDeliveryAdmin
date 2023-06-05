@@ -35,7 +35,7 @@ class StringUtil @Inject constructor(
         return if (deferred == null) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_order_deferred_time) + dateTimeUtil.getTimeHHMM(
+            resourcesProvider.getString(R.string.msg_order_deferred_date_time) + dateTimeUtil.getTimeHHMM(
                 deferred
             )
         }

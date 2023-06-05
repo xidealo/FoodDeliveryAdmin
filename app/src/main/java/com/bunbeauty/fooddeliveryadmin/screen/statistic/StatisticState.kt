@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
+import com.bunbeauty.presentation.Option
 
 data class StatisticState(
     val selectedCafe: SelectedCafe? = null,

@@ -1,23 +1,23 @@
 package com.bunbeauty.domain.util.product
 
-import com.bunbeauty.domain.model.cart_product.CartProduct
+import com.bunbeauty.domain.model.cart_product.OrderProduct
 import javax.inject.Inject
 
 class ProductUtil @Inject constructor() : IProductUtil {
 
-    override fun getNewTotalCost(cartProductList: List<CartProduct>): Int {
-        return cartProductList.map { cartProduct ->
+    override fun getNewTotalCost(orderProductList: List<OrderProduct>): Int {
+        return orderProductList.map { cartProduct ->
             getCartProductNewCost(cartProduct)
         }.sum()
     }
 
-    override fun getOldTotalCost(cartProductList: List<CartProduct>): Int? {
-        val hasSomeDiscounts = cartProductList.any { cartProduct ->
+    override fun getOldTotalCost(orderProductList: List<OrderProduct>): Int? {
+        val hasSomeDiscounts = orderProductList.any { cartProduct ->
             cartProduct.oldPrice != null
         }
 
         return if (hasSomeDiscounts) {
-            cartProductList.map { cartProduct ->
+            orderProductList.map { cartProduct ->
                 getCartProductOldCost(cartProduct) ?: getCartProductNewCost(cartProduct)
             }.sum()
         } else {
@@ -25,26 +25,26 @@ class ProductUtil @Inject constructor() : IProductUtil {
         }
     }
 
-    override fun getCartProductNewCost(cartProduct: CartProduct): Int {
-        return cartProduct.newPrice * cartProduct.count
+    override fun getCartProductNewCost(orderProduct: OrderProduct): Int {
+        return orderProduct.newPrice * orderProduct.count
     }
 
-    override fun getCartProductOldCost(cartProduct: CartProduct): Int? {
-        cartProduct.oldPrice?.let {
-            return it * cartProduct.count
+    override fun getCartProductOldCost(orderProduct: OrderProduct): Int? {
+        orderProduct.oldPrice?.let {
+            return it * orderProduct.count
         }
         return null
     }
 
-    override fun getMenuProductNewPrice(cartProduct: CartProduct): Int {
-        return cartProduct.newPrice
+    override fun getMenuProductNewPrice(orderProduct: OrderProduct): Int {
+        return orderProduct.newPrice
     }
 
-    override fun getMenuProductOldPrice(cartProduct: CartProduct): Int? {
-        return cartProduct.oldPrice
+    override fun getMenuProductOldPrice(orderProduct: OrderProduct): Int? {
+        return orderProduct.oldPrice
     }
 
-    override fun getPositionName(cartProduct: CartProduct): String {
-        return cartProduct.comboDescription ?: cartProduct.name
+    override fun getPositionName(orderProduct: OrderProduct): String {
+        return orderProduct.comboDescription ?: orderProduct.name
     }
 }

@@ -32,11 +32,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentComposeBinding
 import com.bunbeauty.fooddeliveryadmin.util.compose
-import com.bunbeauty.fooddeliveryadmin.view.ErrorScreen
 import com.bunbeauty.presentation.model.MenuState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -143,10 +143,9 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
     @Composable
     private fun MenuErrorScreen() {
         ErrorScreen(
-            mainTextId = R.string.title_can_not_load_data,
-            iconId = R.drawable.ic_repeat,
-            extraTextId = R.string.msg_check_connection_and_retry,
-            action = viewModel::loadData
+            mainTextId = R.string.title_common_can_not_load_data,
+            extraTextId = R.string.msg_common_check_connection_and_retry,
+            onClick = viewModel::loadData
         )
     }
 

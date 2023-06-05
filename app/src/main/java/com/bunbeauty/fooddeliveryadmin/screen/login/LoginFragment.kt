@@ -54,7 +54,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
                 LoginViewState.Event.ShowConnectionError -> {
                     (activity as? MessageHost)?.showErrorMessage(
-                        resources.getString(R.string.msg_check_connection_and_retry)
+                        resources.getString(R.string.msg_common_check_connection_and_retry)
                     )
                 }
             }
