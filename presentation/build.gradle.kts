@@ -41,6 +41,9 @@ dependencies {
     implementation(AndroidX.appCompat)
     implementation(Lifecycle.lifecycleViewModel)
 
+    //Navigation
+    implementation(Navigation.runtime)
+
     //Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)

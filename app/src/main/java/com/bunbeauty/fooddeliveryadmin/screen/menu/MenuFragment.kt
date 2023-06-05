@@ -62,7 +62,7 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
     @Composable
     fun MenuScreen(menuState: MenuState) {
         AdminScaffold(
-            title = stringResource(R.string.title_bottom_navigation_menu_menu),
+            title = stringResource(R.string.title_bottom_navigation_menu),
             pullRefreshEnabled = true,
             refreshing = menuState.isRefreshing,
             onRefresh = viewModel::refreshData,

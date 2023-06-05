@@ -78,8 +78,9 @@ dependencies {
     implementation(AndroidX.appCompat)
 
     // navigation
-    implementation(Navigation.navigationFragment)
-    implementation(Navigation.navigationUi)
+    implementation(Navigation.fragment)
+    implementation(Navigation.ui)
+    implementation(Navigation.runtime)
 
     // Firebase
     implementation(platform(Firebase.bom))
@@ -93,8 +94,9 @@ dependencies {
     implementation(Lifecycle.runtime)
     implementation(Lifecycle.service)
 
-    // Compose
+    implementation(ViewBinding.propertyDelegate)
 
+    // Compose
     implementation(Compose.bom)
     implementation(Compose.foundation)
     implementation(Compose.ui)

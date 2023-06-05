@@ -120,42 +120,8 @@ class CreateMenuProductViewModel @Inject constructor(
                 photo!!.toByteArray()
             }
             menuProductRepo.saveMenuProductPhoto(photoByteArray)
-
-          /*      .collect { photoLink ->
-                val uuid = UUID.randomUUID().toString()
-                val menuProduct = MenuProduct(
-                    uuid = uuid,
-                    name = name,
-                    cost = costInt,
-                    discountCost = discountCostInt,
-                    weight = weight.toIntOrNull(),
-                    description = description,
-                    comboDescription = nullableComboDescription,
-                    photoLink = photoLink,
-                    onFire = false,
-                    inOven = false,
-                    productCode = productCode,
-                    barcode = null,
-                    visible = isVisible.value
-                )
-                menuProductRepo.saveMenuProduct(menuProduct)
-                finishCreation(name)
-            }*/
         }
     }
 
-    private fun finishCreation(productName: String) {
-        sendMessage(productName + resourcesProvider.getString(R.string.msg_product_created))
-        goBack()
-    }
-
-    fun goToProductCodeList() {
-        val listData = ListData(
-            title = resourcesProvider.getString(R.string.title_create_menu_product_select_category),
-            listItem = menuProductCodeList,
-            requestKey = PRODUCT_CODE_REQUEST_KEY,
-            selectedKey = SELECTED_PRODUCT_CODE_KEY
-        )
-        goTo(CreateMenuProductNavigationEvent.ToProductCodeList(listData))
-    }
+    fun goToProductCodeList() {}
 }

@@ -5,6 +5,26 @@
     android:id="@+id/nav_main"
     app:startDestination="@id/loginFragment">
 
+    <!-- MAIN -->
+
+    <action
+        android:id="@+id/global_to_ordersFragment"
+        app:destination="@id/ordersFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="false" />
+
+    <action
+        android:id="@+id/global_to_statisticFragment"
+        app:destination="@id/statisticFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="false" />
+
+    <action
+        android:id="@+id/global_to_menuFragment"
+        app:destination="@id/menuFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="false" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.login.LoginFragment"

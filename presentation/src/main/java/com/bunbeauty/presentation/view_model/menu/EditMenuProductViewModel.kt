@@ -183,21 +183,10 @@ class EditMenuProductViewModel @Inject constructor(
 
     private fun finishDeleting() {
         sendMessage(name + resourcesProvider.getString(R.string.msg_product_deleted))
-        goBack()
     }
 
     private fun finishEditing(productName: String) {
         sendMessage(productName + resourcesProvider.getString(R.string.msg_product_updated))
-        goBack()
     }
 
-    fun goToProductCodeList() {
-        val listData = ListData(
-            title = resourcesProvider.getString(R.string.title_edit_menu_product_select_category),
-            listItem = menuProductCodeList,
-            requestKey = PRODUCT_CODE_REQUEST_KEY,
-            selectedKey = SELECTED_PRODUCT_CODE_KEY
-        )
-        goTo(EditMenuProductNavigationEvent.ToProductCodeList(listData))
-    }
 }
