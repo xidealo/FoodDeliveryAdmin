@@ -96,6 +96,8 @@ dependencies {
 
     implementation(ViewBinding.propertyDelegate)
 
+    implementation(ViewBinding.propertyDelegate)
+
     // Compose
     implementation(Compose.bom)
     implementation(Compose.foundation)
