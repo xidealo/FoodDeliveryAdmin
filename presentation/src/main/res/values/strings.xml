@@ -15,6 +15,7 @@
     <string name="msg_parenthesis">)&#160;</string>
     <string name="msg_colon">:&#160;</string>
     <string name="msg_pieces">x&#160;</string>
+    <string name="common_with_pieces">× %s</string>
     <string name="msg_comma">,&#160;</string>
 
     <!-- ORDER -->
@@ -31,6 +32,7 @@
     <string name="hint_order_details_pickup_deferred_time">Время самовывоза</string>
     <string name="msg_order_details_delivery">Доставка</string>
     <string name="msg_order_details_pickup">Самовывоз</string>
+    <string name="error_order_details_can_not_save">Не удалось сохранить изменения</string>
 
     <!-- ORDER STATUS-->
     <string name="title_order_status">Статус заказа</string>

@@ -1,10 +1,13 @@
 package com.bunbeauty.presentation.feature.order
 
+import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.feature.order.LoadOrderDetailsUseCase
+import com.bunbeauty.domain.feature.order.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.presentation.Option
+import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.feature.order.mapper.OrderDetailsStateMapper
@@ -24,6 +27,8 @@ class OrderDetailsViewModel @Inject constructor(
     private val orderDetailsStateMapper: OrderDetailsStateMapper,
     private val orderStatusMapper: OrderStatusMapper,
     private val loadOrderDetails: LoadOrderDetailsUseCase,
+    private val updateOrderStatus: UpdateOrderStatusUseCase,
+    private val resources: Resources,
 ) : BaseViewModel() {
 
     private val mutableDataState =
@@ -77,18 +82,26 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     fun onSaveClicked() {
-//        val selectedStatus = mutableOrderDetailsState.value.selectedStatus ?: return
-//        if (selectedStatus == CANCELED) {
-//            mutableOrderDetailsState.update { orderDetailsState ->
-//                orderDetailsState + OrderDetailsState.Event.OpenWarningDialogEvent
-//            }
-//        } else {
-//            updateStatus(selectedStatus)
-//        }
+        val orderDetails = mutableDataState.value.orderDetails ?: return
+        if (orderDetails.status == OrderStatus.CANCELED) {
+            mutableDataState.update { dataState ->
+                dataState + OrderDetailsEvent.OpenWarningDialogEvent
+            }
+        } else {
+            updateStatus(
+                orderUuid = orderDetails.uuid,
+                status = orderDetails.status
+            )
+        }
     }
 
     fun onCancellationConfirmed() {
-        //updateStatus(CANCELED)
+        mutableDataState.value.orderDetails?.uuid?.let { orderUuid ->
+            updateStatus(
+                orderUuid = orderUuid,
+                status = OrderStatus.CANCELED
+            )
+        }
     }
 
     fun consumeEvents(events: List<OrderDetailsEvent>) {
@@ -112,6 +125,26 @@ class OrderDetailsViewModel @Inject constructor(
                 orderDetails = orderDetails,
             )
         }
+    }
+
+    private fun updateStatus(orderUuid: String, status: OrderStatus) {
+        viewModelScope.launchSafe(
+            block = {
+                updateOrderStatus(
+                    orderUuid = orderUuid,
+                    status = status,
+                )
+                mutableDataState.update { dataState ->
+                    dataState + OrderDetailsEvent.GoBackEvent
+                }
+            },
+            onError = {
+                val errorMessage = resources.getString(R.string.error_order_details_can_not_save)
+                mutableDataState.update { dataState ->
+                    dataState + OrderDetailsEvent.ShowErrorMessage(errorMessage)
+                }
+            }
+        )
     }
 
 }

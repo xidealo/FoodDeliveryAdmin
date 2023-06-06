@@ -17,7 +17,7 @@ class OrderProductMapper @Inject constructor(
                 R.string.common_with_ruble,
                 orderProduct.newPrice.toString()
             ),
-            count = resources.getString(R.string.common_with_ruble, orderProduct.count.toString()),
+            count = resources.getString(R.string.common_with_pieces, orderProduct.count.toString()),
             cost = resources.getString(
                 R.string.common_with_ruble,
                 (orderProduct.newPrice * orderProduct.count).toString()
