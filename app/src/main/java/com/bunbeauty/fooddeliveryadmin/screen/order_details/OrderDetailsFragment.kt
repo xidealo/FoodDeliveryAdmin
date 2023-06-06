@@ -32,6 +32,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
@@ -44,6 +46,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.feature.order.OrderDetailsViewModel
@@ -78,7 +81,8 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
 
             OrderDetailsScreen(
                 uiState = uiState,
-                onStatusClicked = viewModel::onStatusClicked
+                onStatusClicked = viewModel::onStatusClicked,
+                onSaveClicked = viewModel::onSaveClicked,
             )
 
             LaunchedEffect(uiState.eventList) {
@@ -91,6 +95,7 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
     private fun OrderDetailsScreen(
         uiState: OrderDetailsUiState,
         onStatusClicked: () -> Unit,
+        onSaveClicked: () -> Unit,
     ) {
         AdminScaffold(
             title = uiState.title,
@@ -110,7 +115,8 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                 is OrderDetailsUiState.State.Success -> {
                     SuccessOrderDetailsScreen(
                         stateSuccess = uiState.state as OrderDetailsUiState.State.Success,
-                        onStatusClicked = onStatusClicked
+                        onStatusClicked = onStatusClicked,
+                        onSaveClicked = onSaveClicked,
                     )
                 }
             }
@@ -121,6 +127,7 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
     private fun SuccessOrderDetailsScreen(
         stateSuccess: OrderDetailsUiState.State.Success,
         onStatusClicked: () -> Unit,
+        onSaveClicked: () -> Unit,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -160,7 +167,10 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                     }
                 }
             }
-            BottomAmountBar(stateSuccess)
+            BottomAmountBar(
+                stateSuccess = stateSuccess,
+                onSaveClicked = onSaveClicked,
+            )
         }
     }
 
@@ -238,7 +248,10 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
     }
 
     @Composable
-    private fun BottomAmountBar(stateSuccess: OrderDetailsUiState.State.Success) {
+    private fun BottomAmountBar(
+        stateSuccess: OrderDetailsUiState.State.Success,
+        onSaveClicked: () -> Unit,
+    ) {
         AdminSurface(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier
@@ -276,6 +289,18 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                         color = AdminTheme.colors.mainColors.onSurface,
                     )
                 }
+                MainButton(
+                    modifier = Modifier.padding(top = 16.dp),
+                    textStringId = R.string.action_order_details_save,
+                    onClick = onSaveClicked
+                )
+                SecondaryButton(
+                    modifier = Modifier.padding(top = 8.dp),
+                    textStringId = R.string.action_order_details_do_not_save,
+                    onClick = {
+                        findNavController().popBackStack()
+                    }
+                )
             }
         }
     }
@@ -288,6 +313,9 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                 }
                 OrderDetailsEvent.OpenWarningDialogEvent -> {
                     showCancellationWarning()
+                }
+                is OrderDetailsEvent.ShowErrorMessage -> {
+                    (activity as? MessageHost)?.showErrorMessage(event.message)
                 }
                 OrderDetailsEvent.GoBackEvent -> {
                     findNavController().navigateUp()
@@ -360,7 +388,8 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                     ),
                     eventList = emptyList()
                 ),
-                onStatusClicked = {}
+                onStatusClicked = {},
+                onSaveClicked = {},
             )
         }
     }
