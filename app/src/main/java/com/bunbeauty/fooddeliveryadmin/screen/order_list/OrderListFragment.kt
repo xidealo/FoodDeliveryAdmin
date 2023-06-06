@@ -51,7 +51,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             orderListRv.addSpaceItemDecorator(R.dimen.very_small_margin)
             orderListRv.adapter = orderAdapter.apply {
                 onClickListener = { orderItemModel ->
-                    viewModel.onOrderClicked(orderItemModel.uuid, orderItemModel.code)
+                    viewModel.onOrderClicked(orderItemModel)
                 }
             }
             cafeMcv.setOnClickListener {

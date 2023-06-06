@@ -152,11 +152,6 @@ object ViewBinding {
         "com.github.kirich1409:viewbindingpropertydelegate:${Versions.viewBindingDelegate}"
 }
 
-object ViewBinding {
-    const val propertyDelegate =
-        "com.github.kirich1409:viewbindingpropertydelegate:${Versions.viewBindingDelegate}"
-}
-
 object Compose {
     const val bom = "androidx.compose:compose-bom:${Versions.composeBom}"
     const val foundation = "androidx.compose.foundation:foundation"
