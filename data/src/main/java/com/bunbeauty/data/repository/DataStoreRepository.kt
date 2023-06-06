@@ -105,7 +105,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     }
 
     override val isUnlimitedNotification: Flow<Boolean> = context.isUnlimitedNotification.data.map {
-        it[IS_UNLIMITED_NOTIFICATION_KEY] ?: false
+        it[IS_UNLIMITED_NOTIFICATION_KEY] ?: true
     }
 
     override suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean) {

@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
+import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
@@ -32,6 +34,9 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
     @Inject
     lateinit var navigator: Navigator
 
+    @Inject
+    lateinit var notificationManagerCompat: NotificationManagerCompat
+
     override val viewModel: OrderListViewModel by viewModels()
 
     private var cafeListBottomSheetJob: Job? = null
@@ -45,7 +50,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
             orderListRv.addSpaceItemDecorator(R.dimen.very_small_margin)
             orderListRv.adapter = orderAdapter.apply {
                 onClickListener = { orderItemModel ->
-                    viewModel.onOrderClicked(orderItemModel.uuid)
+                    viewModel.onOrderClicked(orderItemModel)
                 }
             }
             cafeMcv.setOnClickListener {
@@ -99,6 +104,9 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
                             viewModel.onRetryClicked()
                         }
                     }
+                }
+                OrderListState.Event.CancelNotification -> {
+                    notificationManagerCompat.cancel(LAST_ORDER_NOTIFICATION_ID)
                 }
             }
         }

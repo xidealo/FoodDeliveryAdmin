@@ -2,7 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_details
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +10,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.core_ui.FIELD_ITEM_CALLBACK
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrderDetailsBinding
-import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
@@ -25,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
@@ -33,9 +30,6 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     override val viewModel: OrderDetailsViewModel by viewModels()
 
     private var statusListJob: Job? = null
-
-    @Inject
-    lateinit var notificationManagerCompat: NotificationManagerCompat
 
     private val adapter = AsyncListDifferDelegationAdapter(
         FIELD_ITEM_CALLBACK,
@@ -102,9 +96,6 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 }
                 OrderDetailsState.Event.GoBackEvent -> {
                     goBack()
-                }
-                OrderDetailsState.Event.CancelNotification -> {
-                    notificationManagerCompat.cancel(LAST_ORDER_NOTIFICATION_ID)
                 }
             }
         }

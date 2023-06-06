@@ -17,6 +17,7 @@ data class OrderListState(
         class OpenOrderDetailsEvent(val orderUuid: String) : Event
         object OpenLoginEvent : Event
         object ShowError : Event
+        object CancelNotification : Event
     }
 
     operator fun plus(event: Event) = copy(eventList = eventList + event)

@@ -22,7 +22,6 @@ data class OrderDetailsState(
         object OpenWarningDialogEvent : Event
         class OpenErrorDialogEvent(val retryAction: RetryAction) : Event
         object GoBackEvent : Event
-        object CancelNotification : Event
     }
 
     operator fun plus(event: Event) = copy(eventList = eventList + event)
