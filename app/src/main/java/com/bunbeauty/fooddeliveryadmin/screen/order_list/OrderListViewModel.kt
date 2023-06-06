@@ -11,6 +11,7 @@ import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetCafeListUseCase
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetIsLastOrderUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.NewOrderEventUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectCafeUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupCafesUseCase
@@ -40,6 +41,7 @@ class OrderListViewModel @Inject constructor(
     private val checkIsAnotherCafeSelectedUseCase: CheckIsAnotherCafeSelectedUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val newOrderEventUseCase: NewOrderEventUseCase,
+    private val getIsLastOrderUseCase: GetIsLastOrderUseCase,
 ) : BaseViewModel(), DefaultLifecycleObserver {
 
     private val mutableOrderListState: MutableStateFlow<OrderListState> =
@@ -98,9 +100,12 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
-    fun onOrderClicked(orderUuid: String) {
+    fun onOrderClicked(orderItemModel: OrderItemModel) {
         mutableOrderListState.update { state ->
-            state + OrderListState.Event.OpenOrderDetailsEvent(orderUuid)
+            state + OrderListState.Event.OpenOrderDetailsEvent(orderItemModel.uuid)
+        }
+        viewModelScope.launch {
+            checkToCancelNotification(orderItemModel.code)
         }
     }
 
@@ -155,6 +160,14 @@ class OrderListViewModel @Inject constructor(
                 state + OrderListState.Event.ScrollToTop
             }
         }.launchIn(viewModelScope)
+    }
+
+    private suspend fun checkToCancelNotification(orderCode: String) {
+        if (getIsLastOrderUseCase(orderCode = orderCode)) {
+            mutableOrderListState.update { orderListState ->
+                orderListState + OrderListState.Event.CancelNotification
+            }
+        }
     }
 
     private fun toItemModel(order: Order): OrderItemModel {

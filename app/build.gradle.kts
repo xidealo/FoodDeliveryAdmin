@@ -90,7 +90,8 @@ dependencies {
     implementation(Lifecycle.lifecycleViewModel)
     implementation(Lifecycle.activity)
     implementation(Lifecycle.fragment)
-    implementation(Lifecycle.lifecycleRuntime)
+    implementation(Lifecycle.runtime)
+    implementation(Lifecycle.service)
 
     // Compose
     implementation(Compose.bom)

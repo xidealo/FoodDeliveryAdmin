@@ -136,7 +136,8 @@ object Lifecycle {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewmodel}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
-    const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+    const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+    const val service = "androidx.lifecycle:lifecycle-service:${Versions.lifecycle}"
 }
 
 object Compose {
