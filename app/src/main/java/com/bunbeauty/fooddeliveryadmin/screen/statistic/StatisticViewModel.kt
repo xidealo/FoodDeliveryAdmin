@@ -7,8 +7,8 @@ import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.use_case.GetStatisticUseCase
 import com.bunbeauty.domain.use_case.LogoutUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.LogoutOption
+import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
@@ -156,7 +156,7 @@ class StatisticViewModel @Inject constructor(
                     startMillis = statistic.startPeriodTime,
                     period = statistic.period,
                     count = stringUtil.getOrderCountString(statistic.orderCount),
-                    proceeds = resources.getString(R.string.with_ruble, statistic.proceeds)
+                    proceeds = resources.getString(R.string.common_with_ruble, statistic.proceeds)
                 )
             }.let { statisticItemList ->
                 mutableStatisticState.update { statisticState ->

@@ -11,14 +11,15 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderAdapter
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
+import com.bunbeauty.presentation.Option
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -93,10 +94,10 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
                     openCafeList(event.cafeList)
                 }
                 is OrderListState.Event.OpenOrderDetailsEvent -> {
-                    openOrderDetails(event.orderUuid)
+                    openOrderDetails(event.orderUuid, event.orderCode)
                 }
                 OrderListState.Event.OpenLoginEvent -> {
-                    findNavController().navigate(toLoginFragment())
+                    findNavController().navigateSafe(toLoginFragment())
                 }
                 OrderListState.Event.ShowError -> {
                     lifecycleScope.launch {
@@ -130,30 +131,7 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun openLogoutConfirmation() {
-        lifecycleScope.launch {
-            OptionListBottomSheet.show(
-                fragmentManager = parentFragmentManager,
-                title = resources.getString(R.string.title_logout),
-                options = listOf(
-                    Option(
-                        id = LogoutOption.LOGOUT.name,
-                        title = resources.getString(R.string.action_logout),
-                        isPrimary = true
-                    ),
-                    Option(
-                        id = LogoutOption.CANCEL.name,
-                        title = resources.getString(R.string.action_cancel)
-                    )
-                ),
-                isCenter = true
-            )?.value?.let { resultValue ->
-                viewModel.onLogout(resultValue)
-            }
-        }
-    }
-
-    private fun openOrderDetails(orderUuid: String) {
-        findNavController().navigate(toOrdersDetailsFragment(orderUuid))
+    private fun openOrderDetails(orderUuid: String, orderCode: String) {
+        findNavController().navigateSafe(toOrdersDetailsFragment(orderUuid, orderCode))
     }
 }

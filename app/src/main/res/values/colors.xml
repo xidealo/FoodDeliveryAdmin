@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff6900</color>
+    <color name="colorPrimary">#2985F1</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorPrimaryLight">#FFD2B0</color>
+    <color name="colorPrimaryLight">#7FB7F7</color>
 
     <!-- ICON -->
     <color name="darkIconColor">#000000</color>

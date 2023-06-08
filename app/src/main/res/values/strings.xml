@@ -14,8 +14,10 @@
 
     <string name="description_product">Фото блюда</string>
     <string name="action_retry">Повторить попытку</string>
-    <string name="title_can_not_load_data">Не удается загрузить данные</string>
-    <string name="msg_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
+    <string name="title_common_can_not_load_data">Не удается загрузить данные</string>
+    <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
+    <string name="error_common_no_internet">Нет подключения к интернету</string>
+    <string name="description_common_navigate">Перейти</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -32,6 +34,7 @@
     <string name="msg_order_details_address">Адрес</string>
     <string name="msg_order_details_comment">Комментарий</string>
     <string name="msg_order_details_order_status">Статус</string>
+    <string name="hint_order_details_order_status">Статус</string>
     <string name="msg_order_details_order_list">Список заказанных блюд</string>
     <string name="msg_order_details_order_cost">Сумма заказа</string>
     <string name="msg_order_details_delivery_cost">Доставка</string>
@@ -45,9 +48,9 @@
     <string name="title_order_details_choice_cafe">Выбрать кафе</string>
 
     <!-- BOTTOM PANEL -->
-    <string name="title_bottom_navigation_menu_orders">Заказы</string>
-    <string name="title_bottom_navigation_menu_statistic">Статистика</string>
-    <string name="title_bottom_navigation_menu_menu">Меню</string>
+    <string name="title_bottom_navigation_orders">Заказы</string>
+    <string name="title_bottom_navigation_statistic">Статистика</string>
+    <string name="title_bottom_navigation_menu">Меню</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>

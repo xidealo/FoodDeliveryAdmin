@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.model.order.OrderListResult
 import kotlinx.coroutines.flow.Flow
 
@@ -11,4 +12,5 @@ interface OrderRepo {
 
     suspend fun subscribeOnOrderList(token: String, cafeId: String)
     suspend fun unsubscribeOnOrderList(message: String)
+    suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails?
 }

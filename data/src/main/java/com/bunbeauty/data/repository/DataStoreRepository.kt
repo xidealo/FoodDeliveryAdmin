@@ -13,6 +13,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,6 +31,10 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
 
     override val token: Flow<String> = context.tokenDataStore.data.map {
         it[TOKEN_KEY] ?: ""
+    }
+
+    override suspend fun getToken(): String? {
+        return token.firstOrNull()
     }
 
     override suspend fun saveToken(token: String) {

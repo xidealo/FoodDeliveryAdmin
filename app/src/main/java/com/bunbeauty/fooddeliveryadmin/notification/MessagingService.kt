@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ServiceLifecycleDispatcher
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +20,7 @@ import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.MainActivity
+import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +41,9 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.d("MessagingService", throwable.message.toString())
     }
+
+    override val lifecycle: Lifecycle
+        get() = serviceDispatcher.lifecycle
 
     @Inject
     lateinit var dataStoreRepo: DataStoreRepo
@@ -75,8 +79,6 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
             }
         }
     }
-
-    override fun getLifecycle() = serviceDispatcher.lifecycle
 
     override fun onDestroy() {
         serviceDispatcher.onServicePreSuperOnDestroy()

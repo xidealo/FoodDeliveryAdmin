@@ -1,12 +1,12 @@
 package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.server.CartProductServer
-import com.bunbeauty.domain.model.cart_product.CartProduct
+import com.bunbeauty.domain.model.cart_product.OrderProduct
 import javax.inject.Inject
 
 class CartProductMapper @Inject constructor() {
-    fun toModel(cartProductServer: CartProductServer): CartProduct {
-       return CartProduct(
+    fun toModel(cartProductServer: CartProductServer): OrderProduct {
+       return OrderProduct(
             uuid = cartProductServer.uuid,
             count = cartProductServer.count,
             name = cartProductServer.name,

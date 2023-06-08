@@ -11,18 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.Text
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -36,12 +31,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.FoodDeliveryToolbarScreen
+import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentComposeBinding
 import com.bunbeauty.fooddeliveryadmin.util.compose
-import com.bunbeauty.fooddeliveryadmin.view.ErrorScreen
-import com.bunbeauty.fooddeliveryadmin.view.theme.FoodDeliveryTheme
 import com.bunbeauty.presentation.model.MenuState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,31 +59,19 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
         }
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     fun MenuScreen(menuState: MenuState) {
-        val state = rememberPullRefreshState(
+        AdminScaffold(
+            title = stringResource(R.string.title_bottom_navigation_menu),
+            pullRefreshEnabled = true,
             refreshing = menuState.isRefreshing,
-            onRefresh = {
-                viewModel.loadData(isRefreshing = true)
-            }
-        )
-
-        FoodDeliveryToolbarScreen(
-            modifier = Modifier.pullRefresh(state),
-            title = stringResource(R.string.title_bottom_navigation_menu_menu)
+            onRefresh = viewModel::refreshData,
         ) {
             if (menuState.throwable == null) {
                 MenuSuccessScreen(menuState)
             } else {
                 MenuErrorScreen()
             }
-            PullRefreshIndicator(
-                refreshing = menuState.isRefreshing,
-                state = state,
-                modifier = Modifier.align(Alignment.TopCenter),
-                contentColor = FoodDeliveryTheme.colors.primary
-            )
         }
     }
 
@@ -106,8 +89,8 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
                     ) {
                         AsyncImage(
                             modifier = Modifier
-                                .width(FoodDeliveryTheme.dimensions.productImageSmallWidth)
-                                .height(FoodDeliveryTheme.dimensions.productImageSmallHeight),
+                                .width(AdminTheme.dimensions.productImageSmallWidth)
+                                .height(AdminTheme.dimensions.productImageSmallHeight),
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(menuProduct.photoLink)
                                 .crossfade(true)
@@ -121,26 +104,28 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
                             text = menuProduct.name,
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(top = FoodDeliveryTheme.dimensions.smallSpace)
-                                .padding(horizontal = FoodDeliveryTheme.dimensions.smallSpace)
+                                .padding(top = AdminTheme.dimensions.smallSpace)
+                                .padding(horizontal = AdminTheme.dimensions.smallSpace)
                         )
 
                         IconButton(
                             modifier = Modifier
                                 .align(CenterVertically)
-                                .padding(end = FoodDeliveryTheme.dimensions.smallSpace),
+                                .padding(end = AdminTheme.dimensions.smallSpace),
                             onClick = {
                                 viewModel.updateVisible(menuProduct)
                             }
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_visible),
-                                contentDescription = null,
-                                tint = if (menuProduct.visible) {
-                                    FoodDeliveryTheme.colors.primary
+                                painter = if (menuProduct.visible) {
+                                    R.drawable.ic_invisible
                                 } else {
-                                    FoodDeliveryTheme.colors.primaryDisabled
-                                }
+                                    R.drawable.ic_visible
+                                }.let { iconId ->
+                                    painterResource(iconId)
+                                },
+                                contentDescription = null,
+                                tint = AdminTheme.colors.mainColors.onSurfaceVariant
                             )
                         }
                     }
@@ -149,7 +134,7 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
         }
         if (menuState.isLoading) {
             LinearProgressIndicator(
-                color = FoodDeliveryTheme.colors.primary,
+                color = AdminTheme.colors.mainColors.primary,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -158,17 +143,16 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
     @Composable
     private fun MenuErrorScreen() {
         ErrorScreen(
-            mainTextId = R.string.title_can_not_load_data,
-            iconId = R.drawable.ic_repeat,
-            extraTextId = R.string.msg_check_connection_and_retry,
-            action = viewModel::loadData
+            mainTextId = R.string.title_common_can_not_load_data,
+            extraTextId = R.string.msg_common_check_connection_and_retry,
+            onClick = viewModel::loadData
         )
     }
 
     @Preview
     @Composable
     private fun MenuScreenPreview() {
-        FoodDeliveryTheme {
+        AdminTheme {
             MenuScreen(
                 menuState = MenuState(
                     menuProductItems = listOf(

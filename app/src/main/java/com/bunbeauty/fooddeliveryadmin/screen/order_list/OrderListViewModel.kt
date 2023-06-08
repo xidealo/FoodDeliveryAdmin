@@ -8,7 +8,6 @@ import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderListResult
 import com.bunbeauty.domain.use_case.LogoutUseCase
 import com.bunbeauty.domain.util.date_time.IDateTimeUtil
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetCafeListUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetIsLastOrderUseCase
@@ -17,6 +16,7 @@ import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectCafeUseCas
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupCafesUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupOrdersUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderItemModel
+import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -102,7 +102,10 @@ class OrderListViewModel @Inject constructor(
 
     fun onOrderClicked(orderItemModel: OrderItemModel) {
         mutableOrderListState.update { state ->
-            state + OrderListState.Event.OpenOrderDetailsEvent(orderItemModel.uuid)
+            state + OrderListState.Event.OpenOrderDetailsEvent(
+                orderUuid = orderItemModel.uuid,
+                orderCode = orderItemModel.code,
+            )
         }
         viewModelScope.launch {
             checkToCancelNotification(orderItemModel.code)
