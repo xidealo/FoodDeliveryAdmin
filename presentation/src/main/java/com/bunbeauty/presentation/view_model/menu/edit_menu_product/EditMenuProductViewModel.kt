@@ -1,33 +1,28 @@
-package com.bunbeauty.presentation.view_model.menu
+package com.bunbeauty.presentation.view_model.menu.edit_menu_product
 
 import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.MENU_PRODUCT_ARGS_KEY
-import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
-import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.extension.toByteArray
-import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.R
+import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.model.list.MenuProductCode
-import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -46,32 +41,19 @@ class EditMenuProductViewModel @Inject constructor(
         MenuProductCode(title = stringUtil.getProductCodeString(productCode))
     }
 
-    private val mutableIsVisible: MutableStateFlow<Boolean> =
-        MutableStateFlow(menuProduct.isVisible)
-    val isVisible: StateFlow<Boolean> = mutableIsVisible.asStateFlow()
-
-    private val mutableIsComboDescriptionVisible =
-        MutableStateFlow(false) //menuProduct.productCode == ProductCode.COMBO
-    val isComboDescriptionVisible = mutableIsComboDescriptionVisible.asStateFlow()
-
     val photoLink: String = menuProduct.photoLink
     val name: String = menuProduct.name
-    val productCodeString: String = ""//stringUtil.getProductCodeString(menuProduct.productCode)
-    val cost: String = menuProduct.newPrice.toString()
-    val discountCost: String = menuProduct.oldPrice?.toString() ?: ""
-    val weight: String = menuProduct.nutrition?.toString() ?: ""
-    val description: String = menuProduct.description
-    val comboDescription: String = menuProduct.comboDescription ?: ""
 
     var photo: Bitmap? = null
 
-    fun switchVisibility() {
-        mutableIsVisible.value = !mutableIsVisible.value
+
+    private val mutableState = MutableStateFlow(EditMenuProductDataState())
+    val editMenuProductUiState = mutableState.mapToStateFlow(viewModelScope) { state ->
+        mapState(state)
     }
 
     fun setProductCode(productCode: MenuProductCode) {
-        mutableIsComboDescriptionVisible.value =
-            (productCode.title == stringUtil.getProductCodeString(ProductCode.COMBO))
+
     }
 
     fun deleteMenuProduct() {
@@ -143,7 +125,7 @@ class EditMenuProductViewModel @Inject constructor(
                 comboDescription = nullableComboDescription,
                 photoLink = photoLink,
                 barcode = null,
-                isVisible = isVisible.value,
+                isVisible = false,
                 utils = "",
                 categories = emptyList()
             )
@@ -187,6 +169,20 @@ class EditMenuProductViewModel @Inject constructor(
 
     private fun finishEditing(productName: String) {
         sendMessage(productName + resourcesProvider.getString(R.string.msg_product_updated))
+    }
+
+
+    private fun mapState(dataState: EditMenuProductDataState): EditMenuProductUIState {
+        return EditMenuProductUIState(
+            editMenuProductState = when (dataState.state) {
+                EditMenuProductDataState.State.SUCCESS -> {
+                    EditMenuProductUIState.EditMenuProductState.Success()
+                }
+                EditMenuProductDataState.State.LOADING -> EditMenuProductUIState.EditMenuProductState.Loading
+                EditMenuProductDataState.State.ERROR -> EditMenuProductUIState.EditMenuProductState.Error
+            },
+            eventList = dataState.eventList
+        )
     }
 
 }
