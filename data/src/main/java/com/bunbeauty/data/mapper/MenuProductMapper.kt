@@ -4,58 +4,69 @@ import com.bunbeauty.data.model.entity.menu_product.MenuProductEntity
 import com.bunbeauty.data.model.entity.menu_product.MenuProductWithCategoriesEntity
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.domain.model.menu_product.MenuProduct
-import javax.inject.Inject
 
-class MenuProductMapper @Inject constructor(
-    private val categoryMapper: CategoryMapper
-) {
-    fun toEntity(menuProductServer: MenuProductServer): MenuProductEntity {
-        return MenuProductEntity(
-            uuid = menuProductServer.uuid ?: "",
-            name = menuProductServer.name ?: "",
-            newPrice = menuProductServer.newPrice ?: 0,
-            oldPrice = menuProductServer.oldPrice,
-            utils = menuProductServer.utils ?: "",
-            nutrition = menuProductServer.nutrition ?: 0,
-            description = menuProductServer.description ?: "",
-            comboDescription = menuProductServer.comboDescription,
-            photoLink = menuProductServer.photoLink ?: "",
-            barcode = menuProductServer.barcode ?: 0,
-            isVisible = menuProductServer.isVisible ?: false,
-        )
-    }
+fun MenuProductServer.toEntity(): MenuProductEntity {
+    return MenuProductEntity(
+        uuid = uuid ?: "",
+        name = name ?: "",
+        newPrice = newPrice ?: 0,
+        oldPrice = oldPrice,
+        utils = utils ?: "",
+        nutrition = nutrition ?: 0,
+        description = description ?: "",
+        comboDescription = comboDescription,
+        photoLink = photoLink ?: "",
+        barcode = barcode ?: 0,
+        isVisible = isVisible ?: false,
+    )
+}
 
-    fun toModel(menuProductWithCategoriesEntity: MenuProductWithCategoriesEntity): MenuProduct {
-        return MenuProduct(
-            uuid = menuProductWithCategoriesEntity.menuProductEntity.uuid,
-            name = menuProductWithCategoriesEntity.menuProductEntity.name,
-            newPrice = menuProductWithCategoriesEntity.menuProductEntity.newPrice,
-            oldPrice = menuProductWithCategoriesEntity.menuProductEntity.oldPrice,
-            utils = menuProductWithCategoriesEntity.menuProductEntity.utils,
-            nutrition = menuProductWithCategoriesEntity.menuProductEntity.nutrition,
-            description = menuProductWithCategoriesEntity.menuProductEntity.description,
-            comboDescription = menuProductWithCategoriesEntity.menuProductEntity.comboDescription,
-            photoLink = menuProductWithCategoriesEntity.menuProductEntity.photoLink,
-            barcode = menuProductWithCategoriesEntity.menuProductEntity.barcode,
-            isVisible = menuProductWithCategoriesEntity.menuProductEntity.isVisible,
-            categories = menuProductWithCategoriesEntity.categories.map(categoryMapper::toModel)
-        )
-    }
+fun MenuProductWithCategoriesEntity.toModel(categoryMapper: CategoryMapper): MenuProduct {
+    return MenuProduct(
+        uuid = menuProductEntity.uuid,
+        name = menuProductEntity.name,
+        newPrice = menuProductEntity.newPrice,
+        oldPrice = menuProductEntity.oldPrice,
+        utils = menuProductEntity.utils,
+        nutrition = menuProductEntity.nutrition,
+        description = menuProductEntity.description,
+        comboDescription = menuProductEntity.comboDescription,
+        photoLink = menuProductEntity.photoLink,
+        barcode = menuProductEntity.barcode,
+        isVisible = menuProductEntity.isVisible,
+        categories = categories.map(categoryMapper::toModel)
+    )
+}
 
-    fun toModel(menuProductServer: MenuProductServer): MenuProduct {
-        return MenuProduct(
-            uuid = menuProductServer.uuid ?: "",
-            name = menuProductServer.name ?: "",
-            newPrice = menuProductServer.newPrice ?: 0,
-            oldPrice = menuProductServer.oldPrice,
-            utils = menuProductServer.utils ?: "",
-            nutrition = menuProductServer.nutrition ?: 0,
-            description = menuProductServer.description ?: "",
-            comboDescription = menuProductServer.comboDescription,
-            photoLink = menuProductServer.photoLink ?: "",
-            barcode = menuProductServer.barcode ?: 0,
-            isVisible = menuProductServer.isVisible ?: false,
-            categories = menuProductServer.categories?.map(categoryMapper::toModel) ?: emptyList()
-        )
-    }
+fun MenuProductServer.toModel(categoryMapper: CategoryMapper): MenuProduct {
+    return MenuProduct(
+        uuid = uuid ?: "",
+        name = name ?: "",
+        newPrice = newPrice ?: 0,
+        oldPrice = oldPrice,
+        utils = utils ?: "",
+        nutrition = nutrition ?: 0,
+        description = description ?: "",
+        comboDescription = comboDescription,
+        photoLink = photoLink ?: "",
+        barcode = barcode ?: 0,
+        isVisible = isVisible ?: false,
+        categories = categories?.map(categoryMapper::toModel) ?: emptyList()
+    )
+}
+
+fun MenuProduct.toEntity(): MenuProductEntity {
+    return MenuProductEntity(
+        uuid = uuid,
+        name = name,
+        newPrice = newPrice,
+        oldPrice = oldPrice,
+        utils = utils,
+        nutrition = nutrition ?: 0,
+        description = description,
+        comboDescription = comboDescription,
+        photoLink = photoLink,
+        barcode = barcode ?: 0,
+        isVisible = isVisible,
+    )
 }

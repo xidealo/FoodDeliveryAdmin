@@ -1,182 +1,145 @@
 package com.bunbeauty.presentation.view_model.menu.edit_menu_product
 
 import android.graphics.Bitmap
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.Constants.MENU_PRODUCT_ARGS_KEY
-import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.domain.enums.ProductCode
-import com.bunbeauty.domain.model.menu_product.MenuProduct
-import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.presentation.utils.IResourcesProvider
-import com.bunbeauty.presentation.extension.toByteArray
+import com.bunbeauty.domain.use_case.GetMenuProductUseCase
+import com.bunbeauty.domain.use_case.UpdateMenuProductUseCase
 import com.bunbeauty.presentation.R
+import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.extension.navArg
+import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
 import com.bunbeauty.presentation.model.list.MenuProductCode
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class EditMenuProductViewModel @Inject constructor(
     private val resourcesProvider: IResourcesProvider,
     private val stringUtil: IStringUtil,
-    private val menuProductRepo: MenuProductRepo,
-    savedStateHandle: SavedStateHandle
+    private val getMenuProductUseCase: GetMenuProductUseCase,
+    private val updateMenuProductUseCase: UpdateMenuProductUseCase
 ) : BaseViewModel() {
 
-    private val menuProduct: MenuProduct by savedStateHandle.navArg(MENU_PRODUCT_ARGS_KEY)
-
-    private val menuProductCodeList = ProductCode.values().map { productCode ->
-        MenuProductCode(title = stringUtil.getProductCodeString(productCode))
-    }
-
-    val photoLink: String = menuProduct.photoLink
-    val name: String = menuProduct.name
+    private val menuProductCodeList = ProductCode.values()
+        .map { productCode ->
+            MenuProductCode(title = stringUtil.getProductCodeString(productCode))
+        }
 
     var photo: Bitmap? = null
-
 
     private val mutableState = MutableStateFlow(EditMenuProductDataState())
     val editMenuProductUiState = mutableState.mapToStateFlow(viewModelScope) { state ->
         mapState(state)
     }
 
-    fun setProductCode(productCode: MenuProductCode) {
+    fun loadData(productUuid: String) {
+        viewModelScope.launchSafe(
+            block = {
+                val menuProduct = getMenuProductUseCase(productUuid)
+                mutableState.update { oldState ->
+                    oldState.copy(
+                        menuProduct = menuProduct,
+                        name = menuProduct.name,
+                        description = menuProduct.description,
+                        newPrice = menuProduct.newPrice.toString(),
+                        oldPrice = menuProduct.oldPrice?.toString() ?: "",
+                        state = EditMenuProductDataState.State.SUCCESS
+                    )
+                }
+            },
+            onError = {
 
+            }
+        )
     }
 
     fun deleteMenuProduct() {
         viewModelScope.launch(IO) {
-            menuProductRepo.deleteMenuProductPhoto(photoLink)
-            menuProductRepo.deleteMenuProduct(menuProduct.uuid)
             finishDeleting()
         }
     }
 
-    fun saveMenuProduct(
-        name: String,
-        productCodeString: String,
-        newPrice: String,
-        oldPrice: String,
-        weight: String,
-        description: String,
-        comboDescription: String
-    ) {
-        if (name.isEmpty()) {
-            sendFieldError(
-                PRODUCT_NAME_ERROR_KEY,
-                resourcesProvider.getString(R.string.error_edit_menu_product_empty_name)
-            )
-            return
-        }
-
-        val costInt = newPrice.toIntOrNull()
-        if (costInt == null) {
-            sendFieldError(
-                PRODUCT_COST_ERROR_KEY,
-                resourcesProvider.getString(R.string.error_edit_menu_product_cost_incorrect)
-            )
-            return
-        }
-
-        val oldPriceInt = oldPrice.toIntOrNull()
-        if (oldPriceInt != null && oldPriceInt <= costInt) {
-            sendFieldError(
-                PRODUCT_DISCOUNT_COST_ERROR_KEY,
-                resourcesProvider.getString(R.string.error_edit_menu_product_discount_cost_incorrect)
-            )
-            return
-        }
-
-        val productCode = stringUtil.getProductCode(productCodeString)
-        if (productCode == ProductCode.COMBO && comboDescription.isEmpty()) {
-            sendFieldError(
-                PRODUCT_COMBO_DESCRIPTION_ERROR_KEY,
-                resourcesProvider.getString(R.string.error_edit_menu_product_combo_description_incorrect)
-            )
-            return
-        }
-
-        val nullableComboDescription = if (productCode == ProductCode.COMBO) {
-            comboDescription
-        } else {
-            null
-        }
-
-        if (photo == null) {
-            val menuProduct = MenuProduct(
-                uuid = menuProduct.uuid,
-                name = name,
-                newPrice = costInt,
-                oldPrice = oldPriceInt,
-                nutrition = weight.toIntOrNull(),
-                description = description,
-                comboDescription = nullableComboDescription,
-                photoLink = photoLink,
-                barcode = null,
-                isVisible = false,
-                utils = "",
-                categories = emptyList()
-            )
-            viewModelScope.launch(IO) {
-                //menuProductRepo.updateMenuProduct(menuProduct)
-                finishEditing(name)
-            }
-        } else {
-            viewModelScope.launch(Default) {
-                val photoByteArray = photo!!.toByteArray()
-                withContext(IO) {
-                    menuProductRepo.deleteMenuProductPhoto(photoLink)
-                    menuProductRepo.saveMenuProductPhoto(photoByteArray)
-                    /*   .collect { photoLink ->
-                       val menuProduct = MenuProduct(
-                           uuid = menuProduct.uuid,
-                           name = name,
-                           cost = costInt,
-                           discountCost = discountCostInt,
-                           weight = weight.toIntOrNull(),
-                           description = description,
-                           comboDescription = nullableComboDescription,
-                           photoLink = photoLink,
-                           onFire = false,
-                           inOven = false,
-                           productCode = productCode!!,
-                           barcode = null,
-                           visible = isVisible.value
-                       )
-                       menuProductRepo.updateMenuProduct(menuProduct)
-                       finishEditing(name)
-                   }*/
+    fun updateMenuProduct() {
+        viewModelScope.launchSafe(
+            block = {
+                mutableState.value.menuProduct?.let { menuProduct ->
+                    updateMenuProductUseCase(
+                        menuProduct = menuProduct.copy(
+                            name = mutableState.value.name,
+                            description = mutableState.value.description,
+                            newPrice = mutableState.value.newPrice.toInt(),
+                            oldPrice = mutableState.value.oldPrice.ifEmpty { null }?.toInt() ?: 0,
+                        )
+                    )
                 }
+            },
+            onError = {
+
             }
+        )
+    }
+
+    fun onNameTextChanged(name: String) {
+        mutableState.update { state ->
+            state.copy(name = name)
+        }
+    }
+
+    fun onDescriptionTextChanged(description: String) {
+        mutableState.update { state ->
+            state.copy(description = description)
+        }
+    }
+
+    fun onNewPriceTextChanged(newPrice: String) {
+        mutableState.update { state ->
+            state.copy(newPrice = newPrice)
+        }
+    }
+
+    fun onOldPriceTextChanged(oldPrice: String) {
+        mutableState.update { state ->
+            state.copy(oldPrice = oldPrice)
         }
     }
 
     private fun finishDeleting() {
-        sendMessage(name + resourcesProvider.getString(R.string.msg_product_deleted))
+        //sendMessage(name + resourcesProvider.getString(R.string.msg_product_deleted))
     }
 
     private fun finishEditing(productName: String) {
         sendMessage(productName + resourcesProvider.getString(R.string.msg_product_updated))
     }
 
+    fun consumeEvents(events: List<EditMenuProductEvent>) {
+        mutableState.update { dataState ->
+            dataState - events
+        }
+    }
 
     private fun mapState(dataState: EditMenuProductDataState): EditMenuProductUIState {
         return EditMenuProductUIState(
+            title = dataState.name,
             editMenuProductState = when (dataState.state) {
                 EditMenuProductDataState.State.SUCCESS -> {
-                    EditMenuProductUIState.EditMenuProductState.Success()
+                    EditMenuProductUIState.EditMenuProductState.Success(
+                        name = dataState.name,
+                        hasNameError = dataState.hasNameError,
+                        description = dataState.description,
+                        hasDescriptionError = dataState.hasDescriptionError,
+                        newPrice = dataState.newPrice,
+                        hasNewPriceError = dataState.hasNewPriceError,
+                        oldPrice = dataState.oldPrice,
+                        hasOldPriceError = dataState.hasOldPriceError,
+                    )
                 }
                 EditMenuProductDataState.State.LOADING -> EditMenuProductUIState.EditMenuProductState.Loading
                 EditMenuProductDataState.State.ERROR -> EditMenuProductUIState.EditMenuProductState.Error

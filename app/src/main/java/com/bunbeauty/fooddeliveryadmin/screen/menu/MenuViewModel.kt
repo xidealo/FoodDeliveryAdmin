@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetMenuUseCase
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetMenuSortedByVisibleDescUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.presentation.model.MenuState
 import com.bunbeauty.presentation.utils.IStringUtil
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
-    private val getMenuUseCase: GetMenuUseCase,
+    private val getMenuSortedByVisibleDescUseCase: GetMenuSortedByVisibleDescUseCase,
     private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
 ) : BaseViewModel() {
 
@@ -42,7 +42,7 @@ class MenuViewModel @Inject constructor(
                 )
             }
 
-            val items = getMenuUseCase(isRefreshing = false).map(::toItemModel)
+            val items = getMenuSortedByVisibleDescUseCase(isRefreshing = false).map(::toItemModel)
 
             mutableProductListState.update {
                 it.copy(
@@ -63,7 +63,7 @@ class MenuViewModel @Inject constructor(
                 )
             }
 
-            val items = getMenuUseCase(isRefreshing = true).map(::toItemModel)
+            val items = getMenuSortedByVisibleDescUseCase(isRefreshing = true).map(::toItemModel)
 
             mutableProductListState.update {
                 it.copy(

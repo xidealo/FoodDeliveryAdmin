@@ -3,17 +3,23 @@ package com.bunbeauty.domain.repo
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 
 interface MenuProductRepo {
+    /*GET*/
     suspend fun getMenuProductList(
         companyUuid: String,
         isRefreshing: Boolean = true
     ): List<MenuProduct>
 
-    suspend fun getMenuProductList(): List<MenuProduct>
+    suspend fun getMenuProduct(menuProductUuid: String): MenuProduct?
 
-    suspend fun deleteMenuProductPhoto(photoLink: String)
-    suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String
-    suspend fun saveMenuProduct(menuProduct: MenuProduct)
+    /*UPDATE*/
+    suspend fun updateMenuProduct(menuProduct: MenuProduct)
     suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
+
+    /*DELETE*/
     suspend fun deleteMenuProduct(uuid: String)
     suspend fun clearMenuProductList()
+
+    /*OTHER*/
+    suspend fun deleteMenuProductPhoto(photoLink: String)
+    suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String
 }

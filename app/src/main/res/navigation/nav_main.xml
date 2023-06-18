@@ -92,13 +92,14 @@
         android:id="@+id/editMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.EditMenuProductFragment"
         android:label="EditMenuProductFragment"
-        tools:layout="@layout/fragment_edit_menu_product">
-        <argument
-            android:name="menuProduct"
-            app:argType="com.bunbeauty.domain.model.menu_product.MenuProduct" />
+        tools:layout="@layout/fragment_compose">
+
         <action
             android:id="@+id/to_listBottomSheet"
             app:destination="@id/listBottomSheet" />
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"

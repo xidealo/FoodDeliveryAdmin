@@ -79,6 +79,8 @@
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
     <string name="hint_edit_menu_product_name">Название</string>
+    <string name="hint_edit_menu_product_new_price">Актуальная цена</string>
+    <string name="hint_edit_menu_product_old_price">Цена до скидки</string>
     <string name="hint_edit_menu_product_cost">Цена, ₽</string>
     <string name="hint_edit_menu_product_discount_cost">Цена без скидки, ₽</string>
     <string name="hint_edit_menu_product_weight">Вес, г</string>

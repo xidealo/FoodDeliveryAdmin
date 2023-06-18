@@ -6,7 +6,7 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class GetMenuUseCase @Inject constructor(
+class GetMenuSortedByVisibleDescUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
 ) {
@@ -14,6 +14,8 @@ class GetMenuUseCase @Inject constructor(
         return menuProductRepo.getMenuProductList(
             companyUuid = dataStoreRepo.companyUuid.first(),
             isRefreshing = isRefreshing
-        )
+        ).sortedByDescending { menuProduct ->
+            menuProduct.isVisible
+        }
     }
 }

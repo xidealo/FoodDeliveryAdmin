@@ -88,6 +88,9 @@
 
     <!-- EDIT MENU PRODUCT -->
     <string name="error_edit_menu_product_empty_name">Название не может быть пустым</string>
+    <string name="error_edit_menu_product_empty_description">Описание не может быть пустым</string>
+    <string name="error_edit_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
+    <string name="hint_edit_menu_product_name">Название продукта</string>
     <string name="error_edit_menu_product_cost_incorrect">Некорректное значение</string>
     <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть больше цены</string>
     <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>

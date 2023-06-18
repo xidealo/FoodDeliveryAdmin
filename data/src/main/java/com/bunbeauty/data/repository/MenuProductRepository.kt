@@ -3,7 +3,9 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductDao
-import com.bunbeauty.data.mapper.MenuProductMapper
+import com.bunbeauty.data.mapper.CategoryMapper
+import com.bunbeauty.data.mapper.toEntity
+import com.bunbeauty.data.mapper.toModel
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.Dispatchers
@@ -12,40 +14,40 @@ import javax.inject.Inject
 
 class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val menuProductMapper: MenuProductMapper,
+    private val categoryMapper: CategoryMapper,
     private val menuProductDao: MenuProductDao,
 ) : MenuProductRepo {
-
-    private var menuProductList: List<MenuProduct>? = null
 
     override suspend fun getMenuProductList(
         companyUuid: String,
         isRefreshing: Boolean
     ): List<MenuProduct> {
-        return if (menuProductList.isNullOrEmpty() || isRefreshing) {
+        val menuProductListFromLocal = getMenuProductListLocal()
+
+        return if (menuProductListFromLocal.isEmpty() || isRefreshing) {
             networkConnector.getMenuProductList(
                 companyUuid = companyUuid
             ).let { listServer ->
                 return withContext(Dispatchers.Default) {
                     listServer
                         .results
-                        .map { menuProductMapper.toModel(it) }
-                        .sortedByDescending { menuProduct ->
-                            menuProduct.isVisible
-                        }.also {
-                            menuProductList = it
+                        .onEach { menuProduct ->
+                            menuProductDao.insert(menuProduct.toEntity())
                         }
+                        .map { menuProductServer -> menuProductServer.toModel(categoryMapper) }
                 }
             }
-        } else menuProductList ?: emptyList()
+        } else menuProductListFromLocal
     }
 
-    override suspend fun getMenuProductList(): List<MenuProduct> {
-        return menuProductDao.getList().map { menuProduct ->
-            menuProductMapper.toModel(menuProduct)
-        }.sortedByDescending { menuProduct ->
-            menuProduct.isVisible
+    private suspend fun getMenuProductListLocal(): List<MenuProduct> {
+        return menuProductDao.getList().map { menuProductWithCategoriesEntity ->
+            menuProductWithCategoriesEntity.toModel(categoryMapper)
         }
+    }
+
+    override suspend fun getMenuProduct(menuProductUuid: String): MenuProduct? {
+        return menuProductDao.getByUuid(uuid = menuProductUuid)?.toModel(categoryMapper)
     }
 
     override suspend fun deleteMenuProductPhoto(photoLink: String) {
@@ -64,8 +66,9 @@ class MenuProductRepository @Inject constructor(
         }
     }
 
-    override suspend fun saveMenuProduct(menuProduct: MenuProduct) {
-        // networkConnector.saveMenuProduct(menuProductMapper.toServerModel(menuProduct))
+    override suspend fun updateMenuProduct(menuProduct: MenuProduct) {
+        //networkConnector.saveMenuProduct(menuProductMapper.toServerModel(menuProduct))
+        menuProductDao.update(menuProduct.toEntity())
     }
 
     override suspend fun updateVisibleMenuProductUseCase(
@@ -79,22 +82,21 @@ class MenuProductRepository @Inject constructor(
             token = token
         )
 
-        menuProductList = menuProductList?.map { menuProductItem ->
-            if (uuid == menuProductItem.uuid) {
-                menuProductItem.copy(
-                    isVisible = isVisible
-                )
-            } else {
-                menuProductItem
+        menuProductDao.getByUuid(uuid = uuid)
+            ?.menuProductEntity
+            ?.copy(
+                isVisible = isVisible
+            )?.let { menuProductEntity ->
+                menuProductDao.update(menuProductEntity)
             }
-        }
     }
 
     override suspend fun deleteMenuProduct(uuid: String) {
         networkConnector.deleteMenuProduct(uuid)
+        //todo remove local
     }
 
     override suspend fun clearMenuProductList() {
-        menuProductList = emptyList()
+        menuProductDao.deleteAll()
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -28,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.fragment.findNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
@@ -36,6 +38,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentComposeBinding
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.util.compose
 import com.bunbeauty.presentation.model.MenuState
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,6 +78,7 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MenuSuccessScreen(menuState: MenuState) {
         LazyColumn(
@@ -82,7 +86,14 @@ class MenuFragment : BaseFragment<FragmentComposeBinding>() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(menuState.menuProductItems) { menuProduct ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        findNavController().navigateSafe(
+                            MenuFragmentDirections.toEditMenuProductFragment(menuProduct.uuid)
+                        )
+                    }
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
