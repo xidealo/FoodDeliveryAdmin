@@ -45,7 +45,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
+import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.presentation.Option
@@ -60,7 +60,7 @@ import kotlinx.coroutines.launch
 private const val PHONE_LINK = "tel:"
 
 @AndroidEntryPoint
-class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
+class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 

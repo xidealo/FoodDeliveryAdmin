@@ -4,10 +4,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.OrderRepository
-import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderListResult
-import com.bunbeauty.domain.use_case.LogoutUseCase
-import com.bunbeauty.domain.util.date_time.IDateTimeUtil
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetCafeListUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetIsLastOrderUseCase
@@ -15,14 +12,11 @@ import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.NewOrderEventUse
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectCafeUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupCafesUseCase
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupOrdersUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderItemModel
 import com.bunbeauty.presentation.Option
-import com.bunbeauty.presentation.utils.IStringUtil
+import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -32,21 +26,38 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
     private val orderRepository: OrderRepository,
-    private val stringUtil: IStringUtil,
-    private val dateTimeUtil: IDateTimeUtil,
     private val setupCafesUseCase: SetupCafesUseCase,
     private val selectCafeUseCase: SelectCafeUseCase,
     private val setupOrdersUseCase: SetupOrdersUseCase,
     private val getCafeListUseCase: GetCafeListUseCase,
     private val checkIsAnotherCafeSelectedUseCase: CheckIsAnotherCafeSelectedUseCase,
-    private val logoutUseCase: LogoutUseCase,
     private val newOrderEventUseCase: NewOrderEventUseCase,
     private val getIsLastOrderUseCase: GetIsLastOrderUseCase,
+    private val orderMapper: OrderMapper,
 ) : BaseViewModel(), DefaultLifecycleObserver {
 
-    private val mutableOrderListState: MutableStateFlow<OrderListState> =
-        MutableStateFlow(OrderListState())
-    val orderListState: StateFlow<OrderListState> = mutableOrderListState.asStateFlow()
+    private val mutableDataState = MutableStateFlow(
+        OrderListDataState(
+            selectedCafe = null,
+            cafeState = OrderListDataState.State.LOADING,
+            orderList = null,
+            orderListState = OrderListDataState.State.LOADING,
+            eventList = emptyList(),
+        )
+    )
+    val orderListUiState = mutableDataState.mapToStateFlow(viewModelScope) { dataState ->
+        OrderListUiState(
+            state = when (dataState.cafeState) {
+                OrderListDataState.State.LOADING -> OrderListUiState.State.Loading
+                OrderListDataState.State.ERROR -> OrderListUiState.State.Error
+                OrderListDataState.State.SUCCESS -> OrderListUiState.State.Success(
+                    cafeAddress = dataState.selectedCafe?.address ?: "",
+                    orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList(),
+                )
+            },
+            eventList = dataState.eventList
+        )
+    }
 
     init {
         observeOrderList()
@@ -56,9 +67,9 @@ class OrderListViewModel @Inject constructor(
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
 
-        if (!mutableOrderListState.value.isLoading) {
+        if (mutableDataState.value.cafeState != OrderListDataState.State.LOADING) {
             handleWithState {
-                mutableOrderListState.update { state ->
+                mutableDataState.update { state ->
                     state.copy(selectedCafe = selectCafeUseCase())
                 }
                 setupOrdersUseCase()
@@ -82,8 +93,8 @@ class OrderListViewModel @Inject constructor(
                     title = cafe.address,
                 )
             }
-            mutableOrderListState.update { state ->
-                state + OrderListState.Event.OpenCafeListEvent(cafeList)
+            mutableDataState.update { state ->
+                state + OrderListEvent.OpenCafeListEvent(cafeList)
             }
         }
     }
@@ -91,7 +102,7 @@ class OrderListViewModel @Inject constructor(
     fun onCafeSelected(cafeUuid: String?) {
         handleWithState {
             if (checkIsAnotherCafeSelectedUseCase(cafeUuid)) {
-                mutableOrderListState.update { state ->
+                mutableDataState.update { state ->
                     state.copy(selectedCafe = selectCafeUseCase(cafeUuid))
                 }
                 orderRepository.unsubscribeOnOrderList("new cafe selected")
@@ -100,26 +111,15 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
-    fun onOrderClicked(orderItemModel: OrderItemModel) {
-        mutableOrderListState.update { state ->
-            state + OrderListState.Event.OpenOrderDetailsEvent(
-                orderUuid = orderItemModel.uuid,
-                orderCode = orderItemModel.code,
+    fun onOrderClicked(orderItem: OrderListUiState.OrderItem) {
+        mutableDataState.update { state ->
+            state + OrderListEvent.OpenOrderDetailsEvent(
+                orderUuid = orderItem.uuid,
+                orderCode = orderItem.code,
             )
         }
         viewModelScope.launch {
-            checkToCancelNotification(orderItemModel.code)
-        }
-    }
-
-    fun onLogout(logoutOption: String) {
-        if (LogoutOption.valueOf(logoutOption) == LogoutOption.LOGOUT) {
-            handleWithState {
-                logoutUseCase()
-                mutableOrderListState.update { state ->
-                    state + OrderListState.Event.OpenLoginEvent
-                }
-            }
+            checkToCancelNotification(orderItem.code)
         }
     }
 
@@ -127,8 +127,8 @@ class OrderListViewModel @Inject constructor(
         updateData()
     }
 
-    fun consumeEvents(events: List<OrderListState.Event>) {
-        mutableOrderListState.update { state ->
+    fun consumeEvents(events: List<OrderListEvent>) {
+        mutableDataState.update { state ->
             state - events
         }
     }
@@ -136,7 +136,7 @@ class OrderListViewModel @Inject constructor(
     private fun updateData() {
         handleWithState {
             setupCafesUseCase()
-            mutableOrderListState.update { state ->
+            mutableDataState.update { state ->
                 state.copy(selectedCafe = selectCafeUseCase())
             }
             setupOrdersUseCase()
@@ -147,9 +147,8 @@ class OrderListViewModel @Inject constructor(
         orderRepository.orderListFlow.onEach { orderListResult ->
             when (orderListResult) {
                 is OrderListResult.Success -> {
-                    val orderItemList = orderListResult.orderList.map(::toItemModel)
-                    mutableOrderListState.update { state ->
-                        state.copy(orderList = orderItemList)
+                    mutableDataState.update { state ->
+                        state.copy(orderList = orderListResult.orderList)
                     }
                 }
                 OrderListResult.Error -> {
@@ -159,40 +158,29 @@ class OrderListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         newOrderEventUseCase().onEach {
-            mutableOrderListState.update { state ->
-                state + OrderListState.Event.ScrollToTop
+            mutableDataState.update { state ->
+                state + OrderListEvent.ScrollToTop
             }
         }.launchIn(viewModelScope)
     }
 
     private suspend fun checkToCancelNotification(orderCode: String) {
         if (getIsLastOrderUseCase(orderCode = orderCode)) {
-            mutableOrderListState.update { orderListState ->
-                orderListState + OrderListState.Event.CancelNotification
+            mutableDataState.update { orderListState ->
+                orderListState + OrderListEvent.CancelNotification
             }
         }
     }
 
-    private fun toItemModel(order: Order): OrderItemModel {
-        return OrderItemModel(
-            uuid = order.uuid,
-            status = order.orderStatus,
-            statusString = stringUtil.getOrderStatusString(order.orderStatus),
-            code = order.code,
-            deferredTime = stringUtil.getDeferredTimeString(order.deferredTime) ?: "",
-            time = dateTimeUtil.getDateTimeDDMMHHMM(order.time)
-        )
-    }
-
     private inline fun handleWithState(crossinline block: suspend () -> Unit) {
         viewModelScope.launch {
-            mutableOrderListState.update { state ->
-                state.copy(isLoading = true)
+            mutableDataState.update { state ->
+                state.copy(cafeState = OrderListDataState.State.LOADING)
             }
             try {
                 block()
-                mutableOrderListState.update { state ->
-                    state.copy(isLoading = false)
+                mutableDataState.update { state ->
+                    state.copy(cafeState = OrderListDataState.State.SUCCESS)
                 }
             } catch (exception: Exception) {
                 updateStateWithError()
@@ -201,11 +189,8 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun updateStateWithError() {
-        mutableOrderListState.update { state ->
-            state.copy(
-                isLoading = false,
-                orderList = emptyList()
-            ) + OrderListState.Event.ShowError
+        mutableDataState.update { state ->
+            state.copy(cafeState = OrderListDataState.State.ERROR)
         }
     }
 }

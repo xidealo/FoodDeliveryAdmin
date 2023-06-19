@@ -49,6 +49,7 @@
     <string name="title_messaging_new_order">Новый заказ</string>
     <string name="msg_messaging_new_order">Новый заказ</string>
     <string name="title_orders_select_cafe">Выберите кафе</string>
+    <string name="hint_orders_cafe">Ресторан</string>
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>

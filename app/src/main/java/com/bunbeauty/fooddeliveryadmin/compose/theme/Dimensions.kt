@@ -29,4 +29,6 @@ data class AdminDimensions(
     val cardRadius: Dp = 8.dp,
 
     val screenContentSpace: Dp = 16.dp,
+
+    val codeWidth: Dp = 56.dp,
 )
