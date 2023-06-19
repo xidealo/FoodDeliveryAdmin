@@ -54,7 +54,7 @@ fun SecondaryButton(
 private fun SecondaryButtonPreview() {
     AdminTheme {
         SecondaryButton(
-            textStringId = R.string.action_cancel,
+            textStringId = R.string.action_common_cancel,
             onClick = { }
         )
     }

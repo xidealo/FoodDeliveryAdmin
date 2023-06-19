@@ -4,10 +4,11 @@ import android.content.res.Resources
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.LogoutOption
+import com.bunbeauty.fooddeliveryadmin.screen.statistic.LogoutOption
 import com.bunbeauty.presentation.Option
 import javax.inject.Inject
 
+@Deprecated("Use navigation component")
 class Navigator @Inject constructor(
     private val resources: Resources
 ) {
@@ -19,12 +20,12 @@ class Navigator @Inject constructor(
             options = listOf(
                 Option(
                     id = LogoutOption.LOGOUT.name,
-                    title = resources.getString(R.string.action_logout),
+                    title = resources.getString(R.string.action_common_logout),
                     isPrimary = true
                 ),
                 Option(
                     id = LogoutOption.CANCEL.name,
-                    title = resources.getString(R.string.action_cancel)
+                    title = resources.getString(R.string.action_common_cancel)
                 )
             ),
             isCenter = true

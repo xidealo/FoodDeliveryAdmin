@@ -1,66 +1,70 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.extension.getNullableResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.CafeDao
+import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.mapper.cafe.IEntityCafeMapper
-import com.bunbeauty.data.mapper.cafe.IServerCafeMapper
 import com.bunbeauty.domain.model.cafe.Cafe
-import kotlinx.coroutines.Dispatchers.Default
+import com.bunbeauty.domain.repo.CafeRepo
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CafeRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val serverCafeMapper: IServerCafeMapper,
     private val entityCafeMapper: IEntityCafeMapper,
+    private val cafeMapper: CafeMapper,
     private val cafeDao: CafeDao
-) {
+): CafeRepo {
 
-    val cafeListFlow = cafeDao.getCafeListFlow()
-        .flowOn(IO)
-        .map { cafeEntityList ->
-            cafeEntityList.map { cafeEntity ->
-                entityCafeMapper.from(cafeEntity)
-            }
-        }
-        .flowOn(Default)
+    var cafeListCache: List<Cafe>? = null
 
-    fun observeCafeByUuid(uuid: String): Flow<Cafe?> = cafeDao.observeCafeByUuid(uuid)
-        .flowOn(IO)
-        .map { cafeEntity ->
-            cafeEntity?.let {
-                entityCafeMapper.from(cafeEntity)
-            }
-        }
-        .flowOn(Default)
-
-    suspend fun getCafeByUuid(uuid: String): Cafe? =
+    override suspend fun getCafeByUuid(uuid: String): Cafe? =
         cafeDao.getCafeByUuid(uuid)?.let { cafeEntity ->
             entityCafeMapper.from(cafeEntity)
         }
 
-    suspend fun getCafeListByCityUuid(cityUuid: String): List<Cafe> = withContext(IO) {
+    override suspend fun getCafeListByCityUuid(cityUuid: String): List<Cafe> = withContext(IO) {
         cafeDao.getCafeListByCityUuid(cityUuid).map { cafeEntity ->
             entityCafeMapper.from(cafeEntity)
         }
     }
 
-    suspend fun refreshCafeList(token: String, cityUuid: String) {
-        when (val result = networkConnector.getCafeList(token, cityUuid)) {
-            is ApiResult.Success -> {
-                result.data.let { listServer ->
-                    cafeDao.insertAll(
-                        listServer.results.map { serverCafe ->
-                            serverCafeMapper.from(serverCafe)
-                        })
-                }
+    override suspend fun getCafeList(token: String, cityUuid: String): List<Cafe> {
+        val cache = cafeListCache
+        return if (cache == null) {
+            val cafeList = getRemoteCafeList(token, cityUuid)
+            if (cafeList == null) {
+                getLocalCafeList(cityUuid)
+            } else {
+                saveCafeListLocally(cafeList)
+                cafeListCache = cafeList
+                cafeList
             }
-            is ApiResult.Error -> {}
+        } else {
+            cache
         }
+    }
+
+    override fun clearCache() {
+        cafeListCache = null
+    }
+
+    suspend fun getRemoteCafeList(token: String, cityUuid: String): List<Cafe>? {
+        return networkConnector.getCafeList(token, cityUuid)
+            .getNullableResult { cafeServerList ->
+                cafeServerList.results.map(cafeMapper::map)
+            }
+    }
+
+    suspend fun getLocalCafeList(cityUuid: String): List<Cafe> {
+        return cafeDao.getCafeListByCityUuid(cityUuid).map(cafeMapper::map)
+    }
+
+    suspend fun saveCafeListLocally(cafeList: List<Cafe>) {
+        cafeDao.insertAll(
+            cafeList.map(cafeMapper::map)
+        )
     }
 }

@@ -2,8 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetMenuUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.UpdateVisibleMenuProductUseCase
+import com.bunbeauty.fooddeliveryadmin.screen.menu.domain.GetMenuUseCase
+import com.bunbeauty.fooddeliveryadmin.screen.menu.domain.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.presentation.model.MenuState
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
