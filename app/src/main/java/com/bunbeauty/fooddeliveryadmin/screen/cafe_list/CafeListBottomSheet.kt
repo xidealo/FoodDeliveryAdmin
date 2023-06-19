@@ -38,7 +38,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
     }
 
     companion object {
-        private const val TAG = "UserAddressListBottomSheet"
+        private const val TAG = "CafeListBottomSheet"
 
         suspend fun show(
             fragmentManager: FragmentManager,

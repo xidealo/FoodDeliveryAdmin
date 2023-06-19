@@ -227,8 +227,8 @@ class OrderListViewModel @Inject constructor(
 
     private suspend fun checkToCancelNotification(orderCode: String) {
         if (getIsLastOrder(orderCode = orderCode)) {
-            mutableDataState.update { orderListState ->
-                orderListState + OrderListEvent.CancelNotification
+            mutableDataState.update { dataState ->
+                dataState + OrderListEvent.CancelNotification
             }
         }
     }

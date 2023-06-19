@@ -199,6 +199,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
                     R.id.ordersFragment -> AdminNavigationBarItem.ORDERS
                     R.id.statisticFragment -> AdminNavigationBarItem.STATISTIC
                     R.id.menuFragment -> AdminNavigationBarItem.MENU
+                    R.id.settingsFragment -> AdminNavigationBarItem.SETTINGS
                     else -> null
                 }
                 viewModel.onNavDestinationUpdated(navigationBarItem, controller)

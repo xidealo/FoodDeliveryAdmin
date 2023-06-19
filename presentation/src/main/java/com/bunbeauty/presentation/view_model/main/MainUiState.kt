@@ -27,9 +27,10 @@ data class AdminMessage(
 )
 
 enum class AdminNavigationBarItem {
-    ORDERS,
     STATISTIC,
+    ORDERS,
     MENU,
+    SETTINGS,
 }
 
 sealed interface NavigationBarOptions {
