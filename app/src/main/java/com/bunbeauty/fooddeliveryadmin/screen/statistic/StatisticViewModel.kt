@@ -195,7 +195,7 @@ class StatisticViewModel @Inject constructor(
 
     private fun updateData() {
         viewModelScope.launch(getExceptionHandler(RetryAction.LOAD_CAFE_LIST)) {
-            cafeRepository.refreshCafeList(
+            cafeRepository.getCafeList(
                 token = dataStoreRepo.token.first(),
                 cityUuid = dataStoreRepo.managerCity.first()
             )

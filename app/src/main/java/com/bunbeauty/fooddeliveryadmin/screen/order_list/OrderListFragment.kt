@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -64,13 +66,18 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
 
         binding.root.setContentWithTheme {
             val uiState by viewModel.orderListUiState.collectAsStateWithLifecycle()
+            val lazyListState = rememberLazyListState()
             OrderListScreen(
                 uiState = uiState.state,
+                lazyListState = lazyListState,
                 onCafeClicked = viewModel::onCafeClicked,
                 onOrderClicked = viewModel::onOrderClicked,
             )
             LaunchedEffect(uiState.eventList) {
-                handleEventList(uiState.eventList)
+                handleEventList(
+                    lazyListState = lazyListState,
+                    eventList = uiState.eventList
+                )
             }
         }
     }
@@ -78,6 +85,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun OrderListScreen(
         uiState: OrderListUiState.State,
+        lazyListState: LazyListState,
         onCafeClicked: () -> Unit,
         onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
     ) {
@@ -96,6 +104,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                 is OrderListUiState.State.Success -> {
                     SuccessOrderListScreen(
                         uiStateSuccess = uiState,
+                        lazyListState = lazyListState,
                         onCafeClicked = onCafeClicked,
                         onOrderClicked = onOrderClicked,
                     )
@@ -107,10 +116,12 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun SuccessOrderListScreen(
         uiStateSuccess: OrderListUiState.State.Success,
+        lazyListState: LazyListState,
         onCafeClicked: () -> Unit,
         onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
     ) {
         LazyColumn(
+            state = lazyListState,
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -131,14 +142,16 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         }
     }
 
-    private fun handleEventList(eventList: List<OrderListEvent>) {
+    private fun handleEventList(
+        lazyListState: LazyListState,
+        eventList: List<OrderListEvent>
+    ) {
         eventList.forEach { event ->
             when (event) {
                 is OrderListEvent.ScrollToTop -> {
-//                    lifecycleScope.launch {
-//                        delay(500)
-//                        binding.orderListRv.smoothScrollToPosition(0)
-//                    }
+                    lifecycleScope.launch {
+                        lazyListState.animateScrollToItem(0)
+                    }
                 }
                 is OrderListEvent.OpenCafeListEvent -> {
                     openCafeList(event.cafeList)

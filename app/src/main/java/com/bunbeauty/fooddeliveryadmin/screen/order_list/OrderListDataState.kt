@@ -1,7 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectedCafe
+import com.bunbeauty.domain.model.cafe.SelectedCafe
 
 data class OrderListDataState(
     val selectedCafe: SelectedCafe?,

@@ -1,18 +1,23 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list.domain
+package com.bunbeauty.domain.feature.order_list
 
-import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class GetCafeListUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val cafeRepository: CafeRepository
+    private val cafeRepository: CafeRepo,
 ) {
 
     suspend operator fun invoke(): List<Cafe> {
+        val token = dataStoreRepo.token.firstOrNull() ?: return emptyList()
         val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: return emptyList()
-        return cafeRepository.getCafeListByCityUuid(cityUuid)
+
+        return cafeRepository.getCafeList(
+            token = token,
+            cityUuid = cityUuid,
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list.domain
+package com.bunbeauty.domain.feature.order_list
 
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull

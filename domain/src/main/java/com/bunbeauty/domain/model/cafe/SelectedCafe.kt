@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list.domain
+package com.bunbeauty.domain.model.cafe
 
 data class SelectedCafe(
     val uuid: String,

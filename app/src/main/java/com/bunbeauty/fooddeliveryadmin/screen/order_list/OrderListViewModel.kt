@@ -3,36 +3,33 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_list
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.data.repository.OrderRepository
-import com.bunbeauty.domain.model.order.OrderListResult
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.CheckIsAnotherCafeSelectedUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetCafeListUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.GetIsLastOrderUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.NewOrderEventUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SelectCafeUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupCafesUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.domain.SetupOrdersUseCase
+import com.bunbeauty.domain.feature.order_list.GetOrderErrorFlowUseCase
+import com.bunbeauty.domain.feature.order_list.GetOrderListFlowUseCase
+import com.bunbeauty.domain.feature.order_list.GetCafeListUseCase
+import com.bunbeauty.domain.feature.order_list.GetIsLastOrderUseCase
+import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
+import com.bunbeauty.domain.feature.order_list.SaveSelectedCafeUuidUseCase
+import com.bunbeauty.domain.feature.order_list.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.presentation.Option
+import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
-    private val orderRepository: OrderRepository,
-    private val setupCafesUseCase: SetupCafesUseCase,
-    private val selectCafeUseCase: SelectCafeUseCase,
-    private val setupOrdersUseCase: SetupOrdersUseCase,
-    private val getCafeListUseCase: GetCafeListUseCase,
-    private val checkIsAnotherCafeSelectedUseCase: CheckIsAnotherCafeSelectedUseCase,
-    private val newOrderEventUseCase: NewOrderEventUseCase,
+    private val getOrderListFlow: GetOrderListFlowUseCase,
+    private val getOrderErrorFlow: GetOrderErrorFlowUseCase,
+    private val getSelectedCafe: GetSelectedCafeUseCase,
+    private val getCafeList: GetCafeListUseCase,
+    private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
     private val getIsLastOrderUseCase: GetIsLastOrderUseCase,
+    private val checkIsAnotherCafeSelectedUseCase: CheckIsAnotherCafeSelectedUseCase,
     private val orderMapper: OrderMapper,
 ) : BaseViewModel(), DefaultLifecycleObserver {
 
@@ -59,35 +56,28 @@ class OrderListViewModel @Inject constructor(
         )
     }
 
+    private var orderListJob: Job? = null
+    private var orderErrorJob: Job? = null
+
     init {
-        observeOrderList()
-        updateData()
+        setUpCafe()
     }
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
 
-        if (mutableDataState.value.cafeState != OrderListDataState.State.LOADING) {
-            handleWithState {
-                mutableDataState.update { state ->
-                    state.copy(selectedCafe = selectCafeUseCase())
-                }
-                setupOrdersUseCase()
-            }
-        }
+        observeOrderList()
     }
 
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
 
-        viewModelScope.launch {
-            orderRepository.unsubscribeOnOrderList("onStop")
-        }
+        stopObservingOrderList()
     }
 
     fun onCafeClicked() {
         viewModelScope.launch {
-            val cafeList = getCafeListUseCase().map { cafe ->
+            val cafeList = getCafeList().map { cafe ->
                 Option(
                     id = cafe.uuid,
                     title = cafe.address,
@@ -100,15 +90,18 @@ class OrderListViewModel @Inject constructor(
     }
 
     fun onCafeSelected(cafeUuid: String?) {
-        handleWithState {
-            if (checkIsAnotherCafeSelectedUseCase(cafeUuid)) {
-                mutableDataState.update { state ->
-                    state.copy(selectedCafe = selectCafeUseCase(cafeUuid))
+        cafeUuid ?: return
+
+        viewModelScope.launchSafe(
+            onError = {},
+            block = {
+                if (checkIsAnotherCafeSelectedUseCase(cafeUuid)) {
+                    stopObservingOrderList()
+                    saveSelectedCafeUuid(cafeUuid)
+                    setUpCafe()
                 }
-                orderRepository.unsubscribeOnOrderList("new cafe selected")
-                setupOrdersUseCase()
             }
-        }
+        )
     }
 
     fun onOrderClicked(orderItem: OrderListUiState.OrderItem) {
@@ -124,7 +117,7 @@ class OrderListViewModel @Inject constructor(
     }
 
     fun onRetryClicked() {
-        updateData()
+        setUpCafe()
     }
 
     fun consumeEvents(events: List<OrderListEvent>) {
@@ -133,35 +126,67 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
-    private fun updateData() {
-        handleWithState {
-            setupCafesUseCase()
-            mutableDataState.update { state ->
-                state.copy(selectedCafe = selectCafeUseCase())
+    private fun setUpCafe() {
+        viewModelScope.launchSafe(
+            onError = {
+                mutableDataState.update { state ->
+                    state.copy(cafeState = OrderListDataState.State.ERROR)
+                }
+            },
+            block = {
+                mutableDataState.update { state ->
+                    state.copy(cafeState = OrderListDataState.State.LOADING)
+                }
+                val selectedCafe = getSelectedCafe()
+                mutableDataState.update { state ->
+                    if (selectedCafe == null) {
+                        state.copy(cafeState = OrderListDataState.State.ERROR)
+                    } else {
+                        state.copy(
+                            cafeState = OrderListDataState.State.SUCCESS,
+                            selectedCafe = selectedCafe,
+                        )
+                    }
+                }
+
+                observeOrderList()
             }
-            setupOrdersUseCase()
-        }
+        )
     }
 
     private fun observeOrderList() {
-        orderRepository.orderListFlow.onEach { orderListResult ->
-            when (orderListResult) {
-                is OrderListResult.Success -> {
+        val selectedCafe = mutableDataState.value.selectedCafe ?: return
+
+        orderListJob = viewModelScope.launchSafe(
+            onError = {
+                mutableDataState.update { state ->
+                    state.copy(orderListState = OrderListDataState.State.ERROR)
+                }
+            },
+            block = {
+                getOrderListFlow(selectedCafe.uuid).collect { orderList ->
                     mutableDataState.update { state ->
-                        state.copy(orderList = orderListResult.orderList)
+                        state.copy(orderList = orderList)
                     }
                 }
-                OrderListResult.Error -> {
-                    updateStateWithError()
+            }
+        )
+
+        orderErrorJob = viewModelScope.launchSafe(
+            onError = {},
+            block = {
+                getOrderErrorFlow().collect {
+                    mutableDataState.update { state ->
+                        state.copy(orderListState = OrderListDataState.State.ERROR)
+                    }
                 }
             }
-        }.launchIn(viewModelScope)
+        )
+    }
 
-        newOrderEventUseCase().onEach {
-            mutableDataState.update { state ->
-                state + OrderListEvent.ScrollToTop
-            }
-        }.launchIn(viewModelScope)
+    private fun stopObservingOrderList() {
+        orderListJob?.cancel()
+        orderErrorJob?.cancel()
     }
 
     private suspend fun checkToCancelNotification(orderCode: String) {
@@ -172,25 +197,4 @@ class OrderListViewModel @Inject constructor(
         }
     }
 
-    private inline fun handleWithState(crossinline block: suspend () -> Unit) {
-        viewModelScope.launch {
-            mutableDataState.update { state ->
-                state.copy(cafeState = OrderListDataState.State.LOADING)
-            }
-            try {
-                block()
-                mutableDataState.update { state ->
-                    state.copy(cafeState = OrderListDataState.State.SUCCESS)
-                }
-            } catch (exception: Exception) {
-                updateStateWithError()
-            }
-        }
-    }
-
-    private fun updateStateWithError() {
-        mutableDataState.update { state ->
-            state.copy(cafeState = OrderListDataState.State.ERROR)
-        }
-    }
 }
