@@ -10,10 +10,8 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.model.order.OrderError
-import com.bunbeauty.domain.model.order.OrderListResult
 import com.bunbeauty.domain.repo.OrderRepo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -29,19 +27,6 @@ class OrderRepository @Inject constructor(
 ) : OrderRepo {
 
     private var cachedOrderList: List<Order> = emptyList()
-    private val mutableOrderListFlow: MutableSharedFlow<OrderListResult> = MutableSharedFlow()
-    override val orderListFlow: Flow<OrderListResult> =
-        mutableOrderListFlow.map { orderListResult ->
-            if (orderListResult is OrderListResult.Success) {
-                OrderListResult.Success(
-                    orderList = orderListResult.orderList.filter { order ->
-                        order.orderStatus != OrderStatus.CANCELED
-                    }
-                )
-            } else {
-                orderListResult
-            }
-        }
 
     override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
         networkConnector.updateOrderStatus(token, orderUuid, status)
