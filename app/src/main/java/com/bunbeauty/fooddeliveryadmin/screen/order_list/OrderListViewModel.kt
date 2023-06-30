@@ -10,6 +10,8 @@ import com.bunbeauty.domain.feature.order_list.GetIsLastOrderUseCase
 import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
 import com.bunbeauty.domain.feature.order_list.SaveSelectedCafeUuidUseCase
 import com.bunbeauty.domain.feature.order_list.CheckIsAnotherCafeSelectedUseCase
+import com.bunbeauty.domain.feature.order_list.SubscribeToCafeNotificationUseCase
+import com.bunbeauty.domain.feature.order_list.UnsubscribeFromCafeNotificationUseCase
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
@@ -28,8 +30,10 @@ class OrderListViewModel @Inject constructor(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val getCafeList: GetCafeListUseCase,
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
-    private val getIsLastOrderUseCase: GetIsLastOrderUseCase,
-    private val checkIsAnotherCafeSelectedUseCase: CheckIsAnotherCafeSelectedUseCase,
+    private val getIsLastOrder: GetIsLastOrderUseCase,
+    private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
+    private val unsubscribeFromCafeNotification: UnsubscribeFromCafeNotificationUseCase,
+    private val subscribeToCafeNotification: SubscribeToCafeNotificationUseCase,
     private val orderMapper: OrderMapper,
 ) : BaseViewModel(), DefaultLifecycleObserver {
 
@@ -95,8 +99,9 @@ class OrderListViewModel @Inject constructor(
         viewModelScope.launchSafe(
             onError = {},
             block = {
-                if (checkIsAnotherCafeSelectedUseCase(cafeUuid)) {
+                if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
+                    unsubscribeFromCafeNotification()
                     saveSelectedCafeUuid(cafeUuid)
                     setUpCafe()
                 }
@@ -142,6 +147,7 @@ class OrderListViewModel @Inject constructor(
                     if (selectedCafe == null) {
                         state.copy(cafeState = OrderListDataState.State.ERROR)
                     } else {
+                        subscribeToCafeNotification(selectedCafe.uuid)
                         state.copy(
                             cafeState = OrderListDataState.State.SUCCESS,
                             selectedCafe = selectedCafe,
@@ -190,7 +196,7 @@ class OrderListViewModel @Inject constructor(
     }
 
     private suspend fun checkToCancelNotification(orderCode: String) {
-        if (getIsLastOrderUseCase(orderCode = orderCode)) {
+        if (getIsLastOrder(orderCode = orderCode)) {
             mutableDataState.update { orderListState ->
                 orderListState + OrderListEvent.CancelNotification
             }

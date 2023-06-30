@@ -15,8 +15,6 @@ object Constants {
 
     const val MENU_PRODUCT_ARGS_KEY = "menuProduct"
     const val LIST_DATA_ARGS_KEY = "listData"
-    const val ORDER_ARGS_KEY = "order"
-    const val ORDER_UUID_ARGS_KEY = "orderUuid"
     const val STATISTIC_ARGS_KEY = "statistic"
 
     // ERROR_KEY
@@ -30,13 +28,10 @@ object Constants {
 
     const val IMAGES_FOLDER = "image/*"
 
-    const val RELOAD_DELAY = 5000L
-
     //API
     const val WEB_SOCKET_TAG = "webSocketTag"
     const val ORDER_TAG = "orderTag"
     const val NOTIFICATION_TAG = "notificationTag"
-    const val COMPANY_UUID_PARAMETER = "companyUuid"
 
     const val ADDRESS_DIVIDER = ", "
 

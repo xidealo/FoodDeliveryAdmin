@@ -178,9 +178,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     private fun openCafeList(cafeList: List<Option>) {
-        val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->
-            !job.isActive
-        } ?: true
+        val isPossibleToOpen = cafeListBottomSheetJob?.isActive != true
         if (isPossibleToOpen) {
             cafeListBottomSheetJob = lifecycleScope.launch {
                 OptionListBottomSheet.show(
