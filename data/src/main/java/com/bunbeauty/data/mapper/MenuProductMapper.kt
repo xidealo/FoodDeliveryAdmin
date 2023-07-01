@@ -70,3 +70,19 @@ fun MenuProduct.toEntity(): MenuProductEntity {
         isVisible = isVisible,
     )
 }
+
+fun MenuProduct.toServer(): MenuProductServer {
+    return MenuProductServer(
+        uuid = uuid,
+        name = name,
+        newPrice = newPrice,
+        oldPrice = oldPrice,
+        utils = utils,
+        nutrition = nutrition ?: 0,
+        description = description,
+        comboDescription = comboDescription,
+        photoLink = photoLink,
+        barcode = barcode ?: 0,
+        isVisible = isVisible,
+    )
+}

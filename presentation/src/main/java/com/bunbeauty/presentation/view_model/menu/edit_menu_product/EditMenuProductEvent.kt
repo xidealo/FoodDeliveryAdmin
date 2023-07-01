@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.view_model.menu.edit_menu_product
 
 sealed interface EditMenuProductEvent {
-    object MoveBack : EditMenuProductEvent
+    data class ShowUpdatedProduct(val productName: String) : EditMenuProductEvent
+    data class ShowErrorOnUpdatedProduct(val productName: String) : EditMenuProductEvent
 }

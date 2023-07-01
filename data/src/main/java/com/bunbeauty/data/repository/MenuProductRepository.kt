@@ -6,6 +6,7 @@ import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.mapper.CategoryMapper
 import com.bunbeauty.data.mapper.toEntity
 import com.bunbeauty.data.mapper.toModel
+import com.bunbeauty.data.mapper.toServer
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.Dispatchers
@@ -66,8 +67,14 @@ class MenuProductRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateMenuProduct(menuProduct: MenuProduct) {
-        //networkConnector.saveMenuProduct(menuProductMapper.toServerModel(menuProduct))
+    override suspend fun updateMenuProduct(
+        menuProduct: MenuProduct,
+        token: String
+    ) {
+        networkConnector.patchMenuProduct(
+            menuProductServer = menuProduct.toServer(),
+            token = token
+        )
         menuProductDao.update(menuProduct.toEntity())
     }
 
@@ -76,7 +83,7 @@ class MenuProductRepository @Inject constructor(
         isVisible: Boolean,
         token: String
     ) {
-        networkConnector.updateVisibleMenuProductUseCase(
+        networkConnector.updateVisibleMenuProduct(
             uuid = uuid,
             isVisible = isVisible,
             token = token

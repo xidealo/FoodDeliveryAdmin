@@ -12,7 +12,11 @@ interface MenuProductRepo {
     suspend fun getMenuProduct(menuProductUuid: String): MenuProduct?
 
     /*UPDATE*/
-    suspend fun updateMenuProduct(menuProduct: MenuProduct)
+    suspend fun updateMenuProduct(
+        menuProduct: MenuProduct,
+        token: String
+    )
+
     suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
 
     /*DELETE*/

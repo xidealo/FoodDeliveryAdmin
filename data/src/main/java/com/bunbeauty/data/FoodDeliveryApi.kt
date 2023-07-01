@@ -26,7 +26,8 @@ interface FoodDeliveryApi {
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
 
-    suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
+    suspend fun updateVisibleMenuProduct(uuid: String, isVisible: Boolean, token: String)
+    suspend fun patchMenuProduct(menuProductServer: MenuProductServer, token: String)
     suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC

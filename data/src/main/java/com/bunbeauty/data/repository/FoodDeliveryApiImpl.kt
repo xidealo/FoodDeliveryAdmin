@@ -9,13 +9,12 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ListServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
-import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
+import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.menu_product.MenuProduct
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -83,7 +82,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         return ApiResult.Success(":")
     }
 
-    override suspend fun updateVisibleMenuProductUseCase(
+    override suspend fun updateVisibleMenuProduct(
         uuid: String,
         isVisible: Boolean,
         token: String
@@ -99,6 +98,21 @@ class FoodDeliveryApiImpl @Inject constructor(
                 )
             )
             header("Authorization", "Bearer $token")
+        }
+    }
+
+    override suspend fun patchMenuProduct(menuProductServer: MenuProductServer, token: String) {
+        client.patch {
+            url {
+                path("menu_product")
+            }
+            parameter("uuid", menuProductServer.uuid)
+            setBody(
+                menuProductServer.copy(
+                    uuid = null
+                )
+            )
+            header(HttpHeaders.Authorization, "Bearer $token")
         }
     }
 

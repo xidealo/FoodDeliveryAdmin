@@ -56,7 +56,11 @@ class EditMenuProductViewModel @Inject constructor(
                 }
             },
             onError = {
-
+                mutableState.update { oldState ->
+                    oldState.copy(
+                        state = EditMenuProductDataState.State.ERROR
+                    )
+                }
             }
         )
     }
@@ -73,16 +77,23 @@ class EditMenuProductViewModel @Inject constructor(
                 mutableState.value.menuProduct?.let { menuProduct ->
                     updateMenuProductUseCase(
                         menuProduct = menuProduct.copy(
-                            name = mutableState.value.name,
-                            description = mutableState.value.description,
+                            name = mutableState.value.name.trim(),
+                            description = mutableState.value.description.trim(),
                             newPrice = mutableState.value.newPrice.toInt(),
                             oldPrice = mutableState.value.oldPrice.ifEmpty { null }?.toInt() ?: 0,
                         )
                     )
+                    mutableState.update { oldState ->
+                        oldState + EditMenuProductEvent.ShowUpdatedProduct(menuProduct.name)
+                    }
                 }
             },
             onError = {
-
+                mutableState.update { oldState ->
+                    oldState + EditMenuProductEvent.ShowErrorOnUpdatedProduct(
+                        mutableState.value.menuProduct?.name ?: ""
+                    )
+                }
             }
         )
     }

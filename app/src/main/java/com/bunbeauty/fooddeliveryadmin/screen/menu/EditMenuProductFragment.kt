@@ -85,7 +85,11 @@ class EditMenuProductFragment : BaseFragment<FragmentComposeBinding>() {
     private fun handleEventList(eventList: List<EditMenuProductEvent>) {
         eventList.forEach { event ->
             when (event) {
-                is EditMenuProductEvent.MoveBack -> {
+                is EditMenuProductEvent.ShowUpdatedProduct -> {
+                    findNavController().popBackStack()
+                }
+                is EditMenuProductEvent.ShowErrorOnUpdatedProduct -> {
+
                 }
             }
         }
@@ -120,7 +124,7 @@ class EditMenuProductFragment : BaseFragment<FragmentComposeBinding>() {
                 onValueChange = { value ->
                     viewModel.onDescriptionTextChanged(value)
                 },
-                maxLines = 5,
+                maxLines = 10,
                 errorMessageId = if (state.hasDescriptionError) {
                     R.string.error_edit_menu_product_empty_description
                 } else {
@@ -173,7 +177,7 @@ class EditMenuProductFragment : BaseFragment<FragmentComposeBinding>() {
         ErrorScreen(
             mainTextId = R.string.title_common_can_not_load_data,
             extraTextId = R.string.msg_common_check_connection_and_retry,
-            onClick = { /*viewModel::loadData*/ }
+            onClick = { viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid) }
         )
     }
 
