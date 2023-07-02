@@ -94,7 +94,8 @@ dependencies {
     implementation(Lifecycle.runtime)
     implementation(Lifecycle.service)
 
-    implementation(ViewBinding.propertyDelegate)
+    // Material
+    implementation(Material.material)
 
     implementation(ViewBinding.propertyDelegate)
 

@@ -29,17 +29,17 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
-import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
+import com.bunbeauty.fooddeliveryadmin.screen.cafe_list.CafeListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderAdapter
-import com.bunbeauty.presentation.Option
+import com.bunbeauty.presentation.feature.cafe_list.SelectableCafeItem
+import com.bunbeauty.presentation.feature.order_list.OrderListViewModel
+import com.bunbeauty.presentation.feature.order_list.state.OrderListEvent
+import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,17 +47,9 @@ import javax.inject.Inject
 class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Inject
-    lateinit var orderAdapter: OrderAdapter
-
-    @Inject
-    lateinit var navigator: Navigator
-
-    @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat
 
     override val viewModel: OrderListViewModel by viewModels()
-
-    private var cafeListBottomSheetJob: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -177,18 +169,13 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         viewModel.consumeEvents(eventList)
     }
 
-    private fun openCafeList(cafeList: List<Option>) {
-        val isPossibleToOpen = cafeListBottomSheetJob?.isActive != true
-        if (isPossibleToOpen) {
-            cafeListBottomSheetJob = lifecycleScope.launch {
-                OptionListBottomSheet.show(
-                    parentFragmentManager,
-                    resources.getString(R.string.title_orders_select_cafe),
-                    cafeList
-                )?.let { result ->
-                    viewModel.onCafeSelected(result.value)
-                }
-            }
+    private fun openCafeList(cafeList: List<SelectableCafeItem>) {
+        lifecycleScope.launch {
+            val selectedCafe = CafeListBottomSheet.show(
+                parentFragmentManager,
+                cafeList
+            )
+            viewModel.onCafeSelected(selectedCafe?.uuid)
         }
     }
 

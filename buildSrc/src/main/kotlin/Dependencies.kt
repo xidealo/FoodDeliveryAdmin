@@ -9,10 +9,13 @@ object Versions {
     const val googleServices = "4.3.15"
     const val navigation = "2.5.3"
 
-    const val activity = "1.6.1"
-    const val fragment = "1.5.5"
-    const val viewmodel = "2.5.1"
-    const val lifecycle = "2.5.1"
+    const val activity = "1.7.2"
+    const val fragment = "1.5.7"
+    const val viewmodel = "2.6.1"
+    const val runtime = "1.5.1"
+    const val lifecycle = "2.6.1"
+
+    const val material = "1.9.0"
 
     const val viewBindingDelegate = "1.5.3"
 
@@ -145,6 +148,10 @@ object Lifecycle {
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     const val service = "androidx.lifecycle:lifecycle-service:${Versions.lifecycle}"
+}
+
+object Material {
+    const val material = "com.google.android.material:material:${Versions.material}"
 }
 
 object ViewBinding {

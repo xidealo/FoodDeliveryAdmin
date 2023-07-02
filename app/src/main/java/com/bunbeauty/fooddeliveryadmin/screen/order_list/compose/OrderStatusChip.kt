@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list
+package com.bunbeauty.fooddeliveryadmin.screen.order_list.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,9 +1,9 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list
+package com.bunbeauty.presentation.feature.order_list.state
 
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 
-data class OrderListDataState(
+internal data class OrderListDataState(
     val selectedCafe: SelectedCafe?,
     val cafeState: State,
     val orderList: List<Order>?,

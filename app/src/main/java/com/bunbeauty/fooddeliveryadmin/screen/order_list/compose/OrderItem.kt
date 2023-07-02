@@ -17,6 +17,8 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
+import com.bunbeauty.fooddeliveryadmin.screen.order_list.compose.OrderStatusChip
+import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
 
 @Composable
 fun OrderItem(

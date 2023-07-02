@@ -1,20 +1,24 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list
+package com.bunbeauty.presentation.feature.order_list
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.order_list.GetOrderErrorFlowUseCase
-import com.bunbeauty.domain.feature.order_list.GetOrderListFlowUseCase
+import com.bunbeauty.domain.feature.order_list.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.domain.feature.order_list.GetCafeListUseCase
 import com.bunbeauty.domain.feature.order_list.GetIsLastOrderUseCase
+import com.bunbeauty.domain.feature.order_list.GetOrderErrorFlowUseCase
+import com.bunbeauty.domain.feature.order_list.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
 import com.bunbeauty.domain.feature.order_list.SaveSelectedCafeUuidUseCase
-import com.bunbeauty.domain.feature.order_list.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.domain.feature.order_list.SubscribeToCafeNotificationUseCase
 import com.bunbeauty.domain.feature.order_list.UnsubscribeFromCafeNotificationUseCase
-import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
+import com.bunbeauty.presentation.feature.cafe_list.SelectableCafeItem
+import com.bunbeauty.presentation.feature.order_list.mapper.OrderMapper
+import com.bunbeauty.presentation.feature.order_list.state.OrderListDataState
+import com.bunbeauty.presentation.feature.order_list.state.OrderListEvent
+import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -80,17 +84,21 @@ class OrderListViewModel @Inject constructor(
     }
 
     fun onCafeClicked() {
-        viewModelScope.launch {
-            val cafeList = getCafeList().map { cafe ->
-                Option(
-                    id = cafe.uuid,
-                    title = cafe.address,
-                )
+        viewModelScope.launchSafe(
+            onError = {},
+            block = {
+                val cafeList = getCafeList().map { cafe ->
+                    SelectableCafeItem(
+                        uuid = cafe.uuid,
+                        address = cafe.address,
+                        isSelected = cafe.uuid == mutableDataState.value.selectedCafe?.uuid,
+                    )
+                }
+                mutableDataState.update { state ->
+                    state + OrderListEvent.OpenCafeListEvent(cafeList)
+                }
             }
-            mutableDataState.update { state ->
-                state + OrderListEvent.OpenCafeListEvent(cafeList)
-            }
-        }
+        )
     }
 
     fun onCafeSelected(cafeUuid: String?) {
