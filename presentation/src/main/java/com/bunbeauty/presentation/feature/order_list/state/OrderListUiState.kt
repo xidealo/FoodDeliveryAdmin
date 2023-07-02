@@ -4,6 +4,7 @@ import com.bunbeauty.domain.enums.OrderStatus
 
 data class OrderListUiState(
     val state: State,
+    val refreshing: Boolean,
     val eventList: List<OrderListEvent>,
 ) {
 

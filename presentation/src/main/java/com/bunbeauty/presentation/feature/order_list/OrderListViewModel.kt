@@ -43,6 +43,7 @@ class OrderListViewModel @Inject constructor(
 
     private val mutableDataState = MutableStateFlow(
         OrderListDataState(
+            refreshing = false,
             selectedCafe = null,
             cafeState = OrderListDataState.State.LOADING,
             orderList = null,
@@ -60,6 +61,7 @@ class OrderListViewModel @Inject constructor(
                     orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList(),
                 )
             },
+            refreshing = dataState.refreshing,
             eventList = dataState.eventList
         )
     }
@@ -81,6 +83,14 @@ class OrderListViewModel @Inject constructor(
         super.onStop(owner)
 
         stopObservingOrderList()
+    }
+
+    fun onRefresh() {
+        mutableDataState.update { state ->
+            state.copy(refreshing = true)
+        }
+        stopObservingOrderList()
+        setUpCafe()
     }
 
     fun onCafeClicked() {
@@ -109,7 +119,6 @@ class OrderListViewModel @Inject constructor(
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
-                    unsubscribeFromCafeNotification()
                     saveSelectedCafeUuid(cafeUuid)
                     setUpCafe()
                 }
@@ -130,6 +139,7 @@ class OrderListViewModel @Inject constructor(
     }
 
     fun onRetryClicked() {
+        stopObservingOrderList()
         setUpCafe()
     }
 
@@ -155,6 +165,7 @@ class OrderListViewModel @Inject constructor(
                     if (selectedCafe == null) {
                         state.copy(cafeState = OrderListDataState.State.ERROR)
                     } else {
+                        unsubscribeFromCafeNotification()
                         subscribeToCafeNotification(selectedCafe.uuid)
                         state.copy(
                             cafeState = OrderListDataState.State.SUCCESS,
@@ -180,7 +191,18 @@ class OrderListViewModel @Inject constructor(
             block = {
                 getOrderListFlow(selectedCafe.uuid).collect { orderList ->
                     mutableDataState.update { state ->
-                        state.copy(orderList = orderList)
+                        state.copy(
+                            orderList = orderList,
+                            refreshing = false,
+                        ).let { newState ->
+                            if (!state.orderList.isNullOrEmpty()
+                                && (state.orderList.size < orderList.size)
+                            ) {
+                                newState + OrderListEvent.ScrollToTop
+                            } else {
+                                newState
+                            }
+                        }
                     }
                 }
             }

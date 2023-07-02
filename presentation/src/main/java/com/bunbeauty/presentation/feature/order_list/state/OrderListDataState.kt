@@ -4,6 +4,7 @@ import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 
 internal data class OrderListDataState(
+    val refreshing: Boolean,
     val selectedCafe: SelectedCafe?,
     val cafeState: State,
     val orderList: List<Order>?,

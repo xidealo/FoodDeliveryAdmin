@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,8 @@ import com.bunbeauty.presentation.feature.order_list.OrderListViewModel
 import com.bunbeauty.presentation.feature.order_list.state.OrderListEvent
 import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -60,14 +63,18 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
             val uiState by viewModel.orderListUiState.collectAsStateWithLifecycle()
             val lazyListState = rememberLazyListState()
             OrderListScreen(
-                uiState = uiState.state,
+                uiState = uiState,
                 lazyListState = lazyListState,
+                onRefresh = viewModel::onRefresh,
                 onCafeClicked = viewModel::onCafeClicked,
                 onOrderClicked = viewModel::onOrderClicked,
             )
+
+            val scope = rememberCoroutineScope()
             LaunchedEffect(uiState.eventList) {
                 handleEventList(
                     lazyListState = lazyListState,
+                    scope = scope,
                     eventList = uiState.eventList
                 )
             }
@@ -76,13 +83,19 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Composable
     private fun OrderListScreen(
-        uiState: OrderListUiState.State,
+        uiState: OrderListUiState,
         lazyListState: LazyListState,
+        onRefresh: () -> Unit,
         onCafeClicked: () -> Unit,
         onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
     ) {
-        AdminScaffold(title = stringResource(R.string.title_orders)) {
-            when (uiState) {
+        AdminScaffold(
+            title = stringResource(R.string.title_orders),
+            pullRefreshEnabled = uiState.state is OrderListUiState.State.Success,
+            refreshing = uiState.refreshing,
+            onRefresh = onRefresh
+        ) {
+            when (val state = uiState.state) {
                 OrderListUiState.State.Loading -> {
                     LoadingScreen()
                 }
@@ -95,7 +108,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                 }
                 is OrderListUiState.State.Success -> {
                     SuccessOrderListScreen(
-                        uiStateSuccess = uiState,
+                        uiStateSuccess = state,
                         lazyListState = lazyListState,
                         onCafeClicked = onCafeClicked,
                         onOrderClicked = onOrderClicked,
@@ -135,13 +148,15 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     private fun handleEventList(
+        eventList: List<OrderListEvent>,
+        scope: CoroutineScope,
         lazyListState: LazyListState,
-        eventList: List<OrderListEvent>
     ) {
         eventList.forEach { event ->
             when (event) {
                 is OrderListEvent.ScrollToTop -> {
-                    lifecycleScope.launch {
+                    scope.launch {
+                        delay(100)
                         lazyListState.animateScrollToItem(0)
                     }
                 }
@@ -155,7 +170,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                     findNavController().navigateSafe(toLoginFragment())
                 }
                 OrderListEvent.ShowError -> {
-                    lifecycleScope.launch {
+                    scope.launch {
                         ErrorDialog.show(childFragmentManager).let {
                             viewModel.onRetryClicked()
                         }
