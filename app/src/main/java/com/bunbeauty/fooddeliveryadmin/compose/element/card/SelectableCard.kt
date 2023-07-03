@@ -44,7 +44,7 @@ fun SelectableCard(
             } ?: label
             Text(
                 modifier = Modifier
-                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                    .padding(end = AdminTheme.dimensions.mediumSpace)
                     .weight(1f),
                 text = labelText,
                 style = AdminTheme.typography.bodyLarge,
