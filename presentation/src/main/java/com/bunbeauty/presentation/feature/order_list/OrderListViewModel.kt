@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.order_list.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.domain.feature.order_list.GetCafeListUseCase
-import com.bunbeauty.domain.feature.order_list.GetIsLastOrderUseCase
+import com.bunbeauty.domain.feature.order_list.CheckIsLastOrderUseCase
 import com.bunbeauty.domain.feature.order_list.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.order_list.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
@@ -34,7 +34,7 @@ class OrderListViewModel @Inject constructor(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val getCafeList: GetCafeListUseCase,
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
-    private val getIsLastOrder: GetIsLastOrderUseCase,
+    private val getIsLastOrder: CheckIsLastOrderUseCase,
     private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
     private val unsubscribeFromCafeNotification: UnsubscribeFromCafeNotificationUseCase,
     private val subscribeToCafeNotification: SubscribeToCafeNotificationUseCase,

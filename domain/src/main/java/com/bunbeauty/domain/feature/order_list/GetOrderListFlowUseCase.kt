@@ -12,13 +12,13 @@ import javax.inject.Inject
 
 class GetOrderListFlowUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val orderRepository: OrderRepo
+    private val orderRepo: OrderRepo
 ) {
 
     suspend operator fun invoke(cafeUuid: String): Flow<List<Order>> {
         val token = dataStoreRepo.token.firstOrNull() ?: return emptyFlow()
 
-        return orderRepository.getOrderListFlow(
+        return orderRepo.getOrderListFlow(
             token = token,
             cafeUuid = cafeUuid,
         ).map { orderList ->

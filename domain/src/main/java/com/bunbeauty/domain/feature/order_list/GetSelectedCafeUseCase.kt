@@ -8,15 +8,15 @@ import javax.inject.Inject
 
 class GetSelectedCafeUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val cafeRepository: CafeRepo,
+    private val cafeRepo: CafeRepo,
 ) {
 
     suspend operator fun invoke(): SelectedCafe? {
-        val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull()
         val token = dataStoreRepo.token.firstOrNull() ?: return null
         val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: return null
+        val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull()
 
-        val cafeList = cafeRepository.getCafeList(
+        val cafeList = cafeRepo.getCafeList(
             token = token,
             cityUuid = cityUuid,
         )

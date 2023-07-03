@@ -37,6 +37,10 @@ object Versions {
     const val lifecycleRuntimeCompose = "2.6.1"
 
     const val ktLint = "11.0.0"
+
+    const val mockk = "1.12.5"
+
+    const val coroutines = "1.6.4"
 }
 
 object Application {
@@ -178,4 +182,18 @@ object Firebase {
     const val bom = "com.google.firebase:firebase-bom:${Versions.firebase}"
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+}
+
+object Mockk {
+    const val main = "io.mockk:mockk:${Versions.mockk}"
+    const val common = "io.mockk:mockk-common:${Versions.mockk}"
+}
+
+object Coroutine {
+    const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+}
+
+object Test {
+    const val test = "test"
 }
