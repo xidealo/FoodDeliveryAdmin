@@ -61,7 +61,6 @@ fun OrderItem(
                     textAlign = TextAlign.End
                 )
             }
-
         }
     }
 }
