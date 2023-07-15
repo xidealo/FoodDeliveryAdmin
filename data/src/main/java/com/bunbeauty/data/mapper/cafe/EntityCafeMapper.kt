@@ -12,8 +12,8 @@ class EntityCafeMapper @Inject constructor() : IEntityCafeMapper {
             address = model.address,
             latitude = model.latitude,
             longitude = model.longitude,
-            fromTime = model.fromTime,
-            toTime = model.toTime,
+            fromTime = model.fromTime.toIntOrNull() ?: 0,
+            toTime = model.toTime.toIntOrNull() ?: 0,
             phone = model.phone,
             visible = model.visible,
             cityUuid = model.cityUuid
@@ -26,8 +26,8 @@ class EntityCafeMapper @Inject constructor() : IEntityCafeMapper {
             address = model.address,
             latitude = model.latitude,
             longitude = model.longitude,
-            fromTime = model.fromTime,
-            toTime = model.toTime,
+            fromTime = model.fromTime.toString(),
+            toTime = model.toTime.toString(),
             phone = model.phone,
             visible = model.visible,
             cityUuid = model.cityUuid

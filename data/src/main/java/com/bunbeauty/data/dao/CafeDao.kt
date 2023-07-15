@@ -13,7 +13,7 @@ interface CafeDao : BaseDao<CafeEntity> {
     fun getCafeListFlow(): Flow<List<CafeEntity>>
 
     @Query("SELECT * FROM CafeEntity WHERE cityUuid =:cityUuid")
-    fun getCafeListByCityUuid(cityUuid:String): List<CafeEntity>
+    suspend fun getCafeListByCityUuid(cityUuid:String): List<CafeEntity>
 
     @Query("SELECT * FROM CafeEntity WHERE uuid = :uuid")
     fun observeCafeByUuid(uuid: String): Flow<CafeEntity?>

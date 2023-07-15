@@ -9,8 +9,8 @@ data class Cafe(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-    val fromTime: String,
-    val toTime: String,
+    val fromTime: Int,
+    val toTime: Int,
     val phone: String,
     val visible: Boolean,
     val cityUuid: String

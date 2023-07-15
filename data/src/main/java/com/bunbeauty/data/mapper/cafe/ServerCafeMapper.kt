@@ -29,6 +29,7 @@ class ServerCafeMapper @Inject constructor() : IServerCafeMapper {
             fromTime = model.fromTime.toInt(),
             toTime = model.toTime.toInt(),
             phone = model.phone,
+            cityUuid = model.cityUuid,
             isVisible = model.visible
         )
     }

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.order_list.domain
+package com.bunbeauty.fooddeliveryadmin.screen.menu.domain
 
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo

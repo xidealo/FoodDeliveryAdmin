@@ -9,10 +9,13 @@ object Versions {
     const val googleServices = "4.3.15"
     const val navigation = "2.5.3"
 
-    const val activity = "1.6.1"
-    const val fragment = "1.5.5"
-    const val viewmodel = "2.5.1"
-    const val lifecycle = "2.5.1"
+    const val activity = "1.7.2"
+    const val fragment = "1.5.7"
+    const val viewmodel = "2.6.1"
+    const val runtime = "1.5.1"
+    const val lifecycle = "2.6.1"
+
+    const val material = "1.9.0"
 
     const val viewBindingDelegate = "1.5.3"
 
@@ -34,6 +37,10 @@ object Versions {
     const val lifecycleRuntimeCompose = "2.6.1"
 
     const val ktLint = "11.0.0"
+
+    const val mockk = "1.12.5"
+
+    const val coroutines = "1.6.4"
 }
 
 object Application {
@@ -147,6 +154,10 @@ object Lifecycle {
     const val service = "androidx.lifecycle:lifecycle-service:${Versions.lifecycle}"
 }
 
+object Material {
+    const val material = "com.google.android.material:material:${Versions.material}"
+}
+
 object ViewBinding {
     const val propertyDelegate =
         "com.github.kirich1409:viewbindingpropertydelegate:${Versions.viewBindingDelegate}"
@@ -171,4 +182,18 @@ object Firebase {
     const val bom = "com.google.firebase:firebase-bom:${Versions.firebase}"
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+}
+
+object Mockk {
+    const val main = "io.mockk:mockk:${Versions.mockk}"
+    const val common = "io.mockk:mockk-common:${Versions.mockk}"
+}
+
+object Coroutine {
+    const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+}
+
+object Test {
+    const val test = "test"
 }

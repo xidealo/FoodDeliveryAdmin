@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import com.bunbeauty.fooddeliveryadmin.compose.element.rememberMultipleEventsCutter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,12 +28,15 @@ fun AdminCard(
         LocalMinimumInteractiveComponentEnforcement provides false,
     ) {
         if (clickable) {
+            val multipleEventsCutter = rememberMultipleEventsCutter()
             Card(
                 modifier = modifier,
                 shape = shape,
                 colors = colors,
                 elevation = FoodDeliveryCardDefaults.getCardElevation(elevated),
-                onClick = onClick,
+                onClick = {
+                    multipleEventsCutter.processEvent(onClick)
+                },
                 border = border,
                 content = content
             )

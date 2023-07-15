@@ -34,6 +34,9 @@
     <string name="msg_order_details_pickup">Самовывоз</string>
     <string name="error_order_details_can_not_save">Не удалось сохранить изменения</string>
 
+    <!-- ORDER -->
+    <string name="title_cafe_list">Ресторан</string>
+
     <!-- ORDER STATUS-->
     <string name="title_order_status">Статус заказа</string>
     <string name="msg_status_not_accepted">Обрабатывается</string>
@@ -49,6 +52,7 @@
     <string name="title_messaging_new_order">Новый заказ</string>
     <string name="msg_messaging_new_order">Новый заказ</string>
     <string name="title_orders_select_cafe">Выберите кафе</string>
+    <string name="hint_orders_cafe">Ресторан</string>
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>
