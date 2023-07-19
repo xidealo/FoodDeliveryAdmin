@@ -5,6 +5,7 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
+import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,21 +84,24 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun checkToken() {
-        viewModelScope.launch {
-            val token = dataStoreRepo.token.firstOrNull()
-            if (token.isNullOrEmpty()) {
-                mutableLoginViewState.update { oldState ->
-                    oldState.copy(
-                        isLoading = false,
-                        appVersion = BuildConfig.VERSION_NAME
-                    )
-                }
-            } else {
-                mutableLoginViewState.update { oldState ->
-                    oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+        viewModelScope.launchSafe(
+            onError = {},
+            block = {
+                val token = dataStoreRepo.token.firstOrNull()
+                if (token.isNullOrEmpty()) {
+                    mutableLoginViewState.update { oldState ->
+                        oldState.copy(
+                            isLoading = false,
+                            appVersion = BuildConfig.VERSION_NAME
+                        )
+                    }
+                } else {
+                    mutableLoginViewState.update { oldState ->
+                        oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+                    }
                 }
             }
-        }
+        )
     }
 
     private fun isCorrectUsername(username: String): Boolean {

@@ -53,7 +53,8 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
             SettingsScreen(
                 uiState = uiState,
                 onUnlimitedNotificationsCheckChanged = viewModel::onUnlimitedNotificationsCheckChanged,
-                onLogoutClicked = viewModel::onLogoutClick
+                onLogoutClicked = viewModel::onLogoutClick,
+                onRetryClicked = viewModel::updateData,
             )
 
             LaunchedEffect(uiState.eventList) {
@@ -67,6 +68,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
         uiState: SettingsUiState,
         onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
         onLogoutClicked: () -> Unit,
+        onRetryClicked: () -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_settings),
@@ -87,7 +89,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = {}
+                        onClick = onRetryClicked
                     )
                 }
                 is SettingsUiState.State.Success -> {
