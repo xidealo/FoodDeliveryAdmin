@@ -26,7 +26,7 @@ fun AdminNavigationBar(options: NavigationBarOptions) {
     if (options is NavigationBarOptions.Visible) {
         NavigationBar(
             modifier = Modifier.shadow(AdminTheme.dimensions.surfaceElevation),
-            containerColor = AdminTheme.colors.mainColors.surface
+            containerColor = AdminTheme.colors.main.surface
         ) {
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == AdminNavigationBarItem.STATISTIC,

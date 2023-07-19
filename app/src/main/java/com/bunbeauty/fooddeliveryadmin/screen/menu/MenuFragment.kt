@@ -125,7 +125,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                                     painterResource(iconId)
                                 },
                                 contentDescription = null,
-                                tint = AdminTheme.colors.mainColors.onSurfaceVariant
+                                tint = AdminTheme.colors.main.onSurfaceVariant
                             )
                         }
                     }
@@ -134,7 +134,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
         }
         if (menuState.isLoading) {
             LinearProgressIndicator(
-                color = AdminTheme.colors.mainColors.primary,
+                color = AdminTheme.colors.main.primary,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

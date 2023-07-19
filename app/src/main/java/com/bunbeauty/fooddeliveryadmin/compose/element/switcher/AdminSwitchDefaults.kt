@@ -9,10 +9,10 @@ object AdminSwitchDefaults {
 
     val switchColors: SwitchColors
         @Composable get() = SwitchDefaults.colors(
-            checkedThumbColor = AdminTheme.colors.mainColors.onPrimary,
-            checkedTrackColor = AdminTheme.colors.mainColors.primary,
-            uncheckedThumbColor = AdminTheme.colors.mainColors.onDisabled,
-            uncheckedTrackColor = AdminTheme.colors.mainColors.disabled,
-            uncheckedBorderColor = AdminTheme.colors.mainColors.onDisabled,
+            checkedThumbColor = AdminTheme.colors.main.onPrimary,
+            checkedTrackColor = AdminTheme.colors.main.primary,
+            uncheckedThumbColor = AdminTheme.colors.main.onDisabled,
+            uncheckedTrackColor = AdminTheme.colors.main.disabled,
+            uncheckedBorderColor = AdminTheme.colors.main.onDisabled,
         )
 }

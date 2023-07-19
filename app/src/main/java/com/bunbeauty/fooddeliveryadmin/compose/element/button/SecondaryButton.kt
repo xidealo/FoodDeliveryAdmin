@@ -35,7 +35,7 @@ fun SecondaryButton(
             colors = AdminButtonDefaults.secondaryButtonColors,
             border = BorderStroke(
                 width = 2.dp,
-                color = AdminTheme.colors.mainColors.onSecondary
+                color = AdminTheme.colors.main.onSecondary
             ),
             shape = AdminButtonDefaults.buttonShape,
             elevation = AdminButtonDefaults.getButtonElevation(elevated),

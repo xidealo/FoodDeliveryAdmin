@@ -9,10 +9,10 @@ object FoodDeliveryNavigationBarDefaults {
 
     @Composable
     fun navigationBarItemColors(): NavigationBarItemColors = NavigationBarItemDefaults.colors(
-        selectedIconColor = AdminTheme.colors.mainColors.primary,
-        selectedTextColor = AdminTheme.colors.mainColors.primary,
-        indicatorColor = AdminTheme.colors.mainColors.surface,
-        unselectedIconColor = AdminTheme.colors.mainColors.onSurfaceVariant,
-        unselectedTextColor = AdminTheme.colors.mainColors.onSurfaceVariant,
+        selectedIconColor = AdminTheme.colors.main.primary,
+        selectedTextColor = AdminTheme.colors.main.primary,
+        indicatorColor = AdminTheme.colors.main.surface,
+        unselectedIconColor = AdminTheme.colors.main.onSurfaceVariant,
+        unselectedTextColor = AdminTheme.colors.main.onSurfaceVariant,
     )
 }

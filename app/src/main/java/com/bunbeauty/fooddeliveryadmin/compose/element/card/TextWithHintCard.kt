@@ -36,12 +36,12 @@ fun TextWithHintCard(
             Text(
                 text = hintText,
                 style = AdminTheme.typography.labelSmall.medium,
-                color = AdminTheme.colors.mainColors.onSurfaceVariant
+                color = AdminTheme.colors.main.onSurfaceVariant
             )
             Text(
                 text = label ?: "",
                 style = AdminTheme.typography.bodyMedium,
-                color = AdminTheme.colors.mainColors.onSurface
+                color = AdminTheme.colors.main.onSurface
             )
         }
     }

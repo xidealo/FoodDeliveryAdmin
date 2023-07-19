@@ -34,7 +34,7 @@ fun OrderStatusChip(
             text = statusName,
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
             style = AdminTheme.typography.labelSmall.medium,
-            color = AdminTheme.colors.orderColors.onOrder,
+            color = AdminTheme.colors.order.onOrder,
             textAlign = TextAlign.Center
         )
     }
@@ -48,7 +48,7 @@ fun EmptyOrderStatusChip(
         modifier = modifier
             .fillMaxHeight()
             .clip(orderStatusShape)
-            .background(AdminTheme.colors.mainColors.disabled)
+            .background(AdminTheme.colors.main.disabled)
     )
 }
 

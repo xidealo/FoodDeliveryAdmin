@@ -46,18 +46,18 @@ fun NavigationTextCard(
                 Text(
                     text = stringResource(hintStringId),
                     style = AdminTheme.typography.labelSmall.medium,
-                    color = AdminTheme.colors.mainColors.onSurfaceVariant
+                    color = AdminTheme.colors.main.onSurfaceVariant
                 )
                 Text(
                     text = label ?: "",
                     style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.mainColors.onSurface
+                    color = AdminTheme.colors.main.onSurface
                 )
             }
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(R.drawable.ic_right_arrow),
-                tint = AdminTheme.colors.mainColors.onSurfaceVariant,
+                tint = AdminTheme.colors.main.onSurfaceVariant,
                 contentDescription = stringResource(R.string.description_common_navigate),
             )
         }

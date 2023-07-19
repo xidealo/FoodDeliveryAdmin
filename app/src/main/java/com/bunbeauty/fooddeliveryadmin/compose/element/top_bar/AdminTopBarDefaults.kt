@@ -11,11 +11,11 @@ object AdminTopBarDefaults {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun topAppBarColors(
-        containerColor: Color = AdminTheme.colors.mainColors.surface,
-        scrolledContainerColor: Color = AdminTheme.colors.mainColors.surface,
-        navigationIconContentColor: Color = AdminTheme.colors.mainColors.onSurface,
-        titleContentColor: Color = AdminTheme.colors.mainColors.onSurface,
-        actionIconContentColor: Color = AdminTheme.colors.mainColors.onSurface,
+        containerColor: Color = AdminTheme.colors.main.surface,
+        scrolledContainerColor: Color = AdminTheme.colors.main.surface,
+        navigationIconContentColor: Color = AdminTheme.colors.main.onSurface,
+        titleContentColor: Color = AdminTheme.colors.main.onSurface,
+        actionIconContentColor: Color = AdminTheme.colors.main.onSurface,
     ) = TopAppBarDefaults.topAppBarColors(
         containerColor = containerColor,
         scrolledContainerColor = scrolledContainerColor,

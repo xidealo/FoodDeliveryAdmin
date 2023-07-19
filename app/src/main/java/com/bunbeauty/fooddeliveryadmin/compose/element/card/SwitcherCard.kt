@@ -48,7 +48,7 @@ fun SwitcherCard(
                     .weight(1f),
                 text = labelText,
                 style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.mainColors.onSurface,
+                color = AdminTheme.colors.main.onSurface,
                 overflow = TextOverflow.Ellipsis
             )
             Switch(

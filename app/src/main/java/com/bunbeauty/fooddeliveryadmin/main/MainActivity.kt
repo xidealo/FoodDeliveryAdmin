@@ -119,14 +119,14 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(AdminTheme.colors.mainColors.error)
+                    .background(AdminTheme.colors.main.error)
                     .padding(8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = resources.getString(R.string.error_common_no_internet),
                     style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.mainColors.onError
+                    color = AdminTheme.colors.main.onError
                 )
             }
         }
@@ -137,12 +137,12 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
         SnackbarHost(hostState = snackbarHostState) { snackbarData ->
             (snackbarData.visuals as? AdminSnackbarVisuals)?.let { visuals ->
                 val containerColor = when (visuals.adminMessage.type) {
-                    AdminMessageType.INFO -> AdminTheme.colors.mainColors.primary
-                    AdminMessageType.ERROR -> AdminTheme.colors.mainColors.error
+                    AdminMessageType.INFO -> AdminTheme.colors.main.primary
+                    AdminMessageType.ERROR -> AdminTheme.colors.main.error
                 }
                 val contentColor = when (visuals.adminMessage.type) {
-                    AdminMessageType.INFO -> AdminTheme.colors.mainColors.onPrimary
-                    AdminMessageType.ERROR -> AdminTheme.colors.mainColors.onError
+                    AdminMessageType.INFO -> AdminTheme.colors.main.onPrimary
+                    AdminMessageType.ERROR -> AdminTheme.colors.main.onError
                 }
                 Snackbar(
                     snackbarData = snackbarData,

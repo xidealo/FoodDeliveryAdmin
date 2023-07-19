@@ -237,12 +237,12 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
             Text(
                 text = hint,
                 style = AdminTheme.typography.labelSmall.medium,
-                color = AdminTheme.colors.mainColors.onSurfaceVariant
+                color = AdminTheme.colors.main.onSurfaceVariant
             )
             Text(
                 text = info,
                 style = AdminTheme.typography.bodyMedium,
-                color = AdminTheme.colors.mainColors.onSurface
+                color = AdminTheme.colors.main.onSurface
             )
         }
     }
@@ -256,7 +256,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(AdminTheme.colors.mainColors.surface)
+                    .background(AdminTheme.colors.main.surface)
                     .padding(AdminTheme.dimensions.mediumSpace)
             ) {
                 stateSuccess.deliveryCost?.let { deliveryCost ->
@@ -264,14 +264,14 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         Text(
                             text = stringResource(R.string.msg_order_details_delivery_cost),
                             style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.mainColors.onSurface
+                            color = AdminTheme.colors.main.onSurface
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
                             modifier = Modifier.weight(1f),
                             text = deliveryCost,
                             style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.mainColors.onSurface,
+                            color = AdminTheme.colors.main.onSurface,
                             textAlign = TextAlign.End
                         )
                     }
@@ -280,13 +280,13 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     Text(
                         text = stringResource(R.string.msg_order_details_order_cost),
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.mainColors.onSurface
+                        color = AdminTheme.colors.main.onSurface
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = stateSuccess.finalCost,
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.mainColors.onSurface,
+                        color = AdminTheme.colors.main.onSurface,
                     )
                 }
                 MainButton(

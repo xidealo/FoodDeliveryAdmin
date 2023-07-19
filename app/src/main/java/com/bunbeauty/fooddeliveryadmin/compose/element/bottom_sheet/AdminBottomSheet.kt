@@ -43,7 +43,7 @@ fun AdminBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 text = title,
                 style = AdminTheme.typography.titleMedium.bold,
-                color = AdminTheme.colors.mainColors.onSurface,
+                color = AdminTheme.colors.main.onSurface,
                 textAlign = TextAlign.Center
             )
         },
@@ -60,7 +60,7 @@ private fun AdminBottomSheet(
         modifier = Modifier
             .fillMaxWidth()
             .clip(AdminBottomSheetDefaults.bottomSheetShape)
-            .background(AdminTheme.colors.mainColors.surface)
+            .background(AdminTheme.colors.main.surface)
             .padding(horizontal = AdminTheme.dimensions.screenContentSpace)
             .padding(bottom = AdminTheme.dimensions.screenContentSpace, top = 8.dp)
     ) {
@@ -69,7 +69,7 @@ private fun AdminBottomSheet(
                 .width(32.dp)
                 .height(4.dp)
                 .background(
-                    color = AdminTheme.colors.mainColors.onSurfaceVariant,
+                    color = AdminTheme.colors.main.onSurfaceVariant,
                     shape = RoundedCornerShape(2.dp)
                 )
                 .align(Alignment.CenterHorizontally)

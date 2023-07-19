@@ -4,8 +4,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.order_list.CheckIsAnotherCafeSelectedUseCase
-import com.bunbeauty.domain.feature.order_list.GetCafeListUseCase
 import com.bunbeauty.domain.feature.order_list.CheckIsLastOrderUseCase
+import com.bunbeauty.domain.feature.order_list.GetCafeListUseCase
 import com.bunbeauty.domain.feature.order_list.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.order_list.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
@@ -61,6 +61,7 @@ class OrderListViewModel @Inject constructor(
                     orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList(),
                 )
             },
+            connectionError = dataState.orderListState == OrderListDataState.State.ERROR,
             refreshing = dataState.refreshing,
             eventList = dataState.eventList
         )
@@ -89,6 +90,11 @@ class OrderListViewModel @Inject constructor(
         mutableDataState.update { state ->
             state.copy(refreshing = true)
         }
+        stopObservingOrderList()
+        setUpCafe()
+    }
+
+    fun retrySetUp() {
         stopObservingOrderList()
         setUpCafe()
     }
@@ -182,10 +188,16 @@ class OrderListViewModel @Inject constructor(
     private fun observeOrderList() {
         val selectedCafe = mutableDataState.value.selectedCafe ?: return
 
+        mutableDataState.update { state ->
+            state.copy(orderListState = OrderListDataState.State.SUCCESS)
+        }
         orderListJob = viewModelScope.launchSafe(
             onError = {
                 mutableDataState.update { state ->
-                    state.copy(orderListState = OrderListDataState.State.ERROR)
+                    state.copy(
+                        refreshing = false,
+                        orderListState = OrderListDataState.State.ERROR,
+                    )
                 }
             },
             block = {
