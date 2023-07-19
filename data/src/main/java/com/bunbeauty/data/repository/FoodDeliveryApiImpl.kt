@@ -26,6 +26,7 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -35,6 +36,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
+import java.net.SocketException
 import javax.inject.Inject
 
 class FoodDeliveryApiImpl @Inject constructor(
@@ -44,7 +46,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     private var webSocketSession: DefaultClientWebSocketSession? = null
 
-    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<ServerOrder>>(replay = 1)
+    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<ServerOrder>>()
 
     private val mutex = Mutex()
 
@@ -171,6 +173,12 @@ class FoodDeliveryApiImpl @Inject constructor(
             } catch (exception: WebSocketException) {
                 Log.e(WEB_SOCKET_TAG, "WebSocketException: ${exception.message}")
                 mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+            } catch (exception: SocketException) {
+                Log.e(WEB_SOCKET_TAG, "SocketException: ${exception.message}")
+                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+            } catch (exception: ClosedReceiveChannelException) {
+                Log.d(WEB_SOCKET_TAG, "ClosedReceiveChannelException: ${exception.message}")
+                // Nothing
             } catch (exception: Exception) {
                 val stackTrace = exception.stackTrace.joinToString("\n") {
                     "${it.className} ${it.methodName} ${it.lineNumber}"
@@ -179,7 +187,6 @@ class FoodDeliveryApiImpl @Inject constructor(
                 mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
             } finally {
                 webSocketSessionOpened = false
-                unsubscribeOnOrderList("Unknown")
             }
         }
     }

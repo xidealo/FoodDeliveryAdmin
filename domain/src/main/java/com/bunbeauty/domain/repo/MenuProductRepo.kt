@@ -15,5 +15,5 @@ interface MenuProductRepo {
     suspend fun saveMenuProduct(menuProduct: MenuProduct)
     suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
     suspend fun deleteMenuProduct(uuid: String)
-    suspend fun clearMenuProductList()
+    suspend fun clearCache()
 }

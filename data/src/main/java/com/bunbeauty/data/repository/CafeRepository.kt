@@ -47,6 +47,10 @@ class CafeRepository @Inject constructor(
         }
     }
 
+    override fun clearCache() {
+        cafeListCache = null
+    }
+
     suspend fun getRemoteCafeList(token: String, cityUuid: String): List<Cafe>? {
         return networkConnector.getCafeList(token, cityUuid)
             .getNullableResult { cafeServerList ->

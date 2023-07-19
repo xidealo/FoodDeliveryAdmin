@@ -8,12 +8,12 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 @Composable
 fun getOrderColor(orderStatus: OrderStatus): Color {
     return when (orderStatus) {
-        OrderStatus.NOT_ACCEPTED -> AdminTheme.colors.orderColors.notAccepted
-        OrderStatus.ACCEPTED -> AdminTheme.colors.orderColors.accepted
-        OrderStatus.PREPARING -> AdminTheme.colors.orderColors.preparing
-        OrderStatus.SENT_OUT -> AdminTheme.colors.orderColors.sentOut
-        OrderStatus.DONE -> AdminTheme.colors.orderColors.done
-        OrderStatus.DELIVERED -> AdminTheme.colors.orderColors.delivered
-        OrderStatus.CANCELED -> AdminTheme.colors.orderColors.canceled
+        OrderStatus.NOT_ACCEPTED -> AdminTheme.colors.order.notAccepted
+        OrderStatus.ACCEPTED -> AdminTheme.colors.order.accepted
+        OrderStatus.PREPARING -> AdminTheme.colors.order.preparing
+        OrderStatus.SENT_OUT -> AdminTheme.colors.order.sentOut
+        OrderStatus.DONE -> AdminTheme.colors.order.done
+        OrderStatus.DELIVERED -> AdminTheme.colors.order.delivered
+        OrderStatus.CANCELED -> AdminTheme.colors.order.canceled
     }
 }

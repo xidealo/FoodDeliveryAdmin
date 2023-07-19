@@ -16,13 +16,13 @@ class MenuProductRepository @Inject constructor(
     private val menuProductDao: MenuProductDao,
 ) : MenuProductRepo {
 
-    private var menuProductList: List<MenuProduct>? = null
+    private var menuProductListCache: List<MenuProduct>? = null
 
     override suspend fun getMenuProductList(
         companyUuid: String,
         isRefreshing: Boolean
     ): List<MenuProduct> {
-        return if (menuProductList.isNullOrEmpty() || isRefreshing) {
+        return if (menuProductListCache.isNullOrEmpty() || isRefreshing) {
             networkConnector.getMenuProductList(
                 companyUuid = companyUuid
             ).let { listServer ->
@@ -33,11 +33,11 @@ class MenuProductRepository @Inject constructor(
                         .sortedByDescending { menuProduct ->
                             menuProduct.isVisible
                         }.also {
-                            menuProductList = it
+                            menuProductListCache = it
                         }
                 }
             }
-        } else menuProductList ?: emptyList()
+        } else menuProductListCache ?: emptyList()
     }
 
     override suspend fun getMenuProductList(): List<MenuProduct> {
@@ -79,7 +79,7 @@ class MenuProductRepository @Inject constructor(
             token = token
         )
 
-        menuProductList = menuProductList?.map { menuProductItem ->
+        menuProductListCache = menuProductListCache?.map { menuProductItem ->
             if (uuid == menuProductItem.uuid) {
                 menuProductItem.copy(
                     isVisible = isVisible
@@ -94,7 +94,7 @@ class MenuProductRepository @Inject constructor(
         networkConnector.deleteMenuProduct(uuid)
     }
 
-    override suspend fun clearMenuProductList() {
-        menuProductList = emptyList()
+    override suspend fun clearCache() {
+        menuProductListCache = null
     }
 }

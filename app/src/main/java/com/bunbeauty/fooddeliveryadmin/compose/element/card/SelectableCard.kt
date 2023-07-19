@@ -48,14 +48,14 @@ fun SelectableCard(
                     .weight(1f),
                 text = labelText,
                 style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.mainColors.onSurface,
+                color = AdminTheme.colors.main.onSurface,
                 overflow = TextOverflow.Ellipsis
             )
             if (selected) {
                 Icon(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(R.drawable.ic_check),
-                    tint = AdminTheme.colors.mainColors.onSurfaceVariant,
+                    tint = AdminTheme.colors.main.onSurfaceVariant,
                     contentDescription = stringResource(R.string.description_common_selected),
                 )
             }

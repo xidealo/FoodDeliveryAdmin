@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
-object FoodDeliveryCardDefaults {
+object AdminCardDefaults {
 
     val cardColors: CardColors
         @Composable get() = CardDefaults.cardColors(
-            containerColor = AdminTheme.colors.mainColors.surface,
-            disabledContainerColor = AdminTheme.colors.mainColors.surface,
+            containerColor = AdminTheme.colors.main.surface,
+            disabledContainerColor = AdminTheme.colors.main.surface,
         )
 
     val cardShape: RoundedCornerShape

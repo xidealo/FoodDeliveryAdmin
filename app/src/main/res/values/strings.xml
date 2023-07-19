@@ -19,6 +19,8 @@
     <string name="error_common_no_internet">Нет подключения к интернету</string>
     <string name="description_common_navigate">Перейти</string>
     <string name="description_common_selected">Выбран</string>
+    <string name="action_common_cancel">Отмена</string>
+    <string name="action_common_logout">Выйти</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -26,6 +28,9 @@
     <string name="action_login_enter">Войти</string>
     <string name="msg_login_version">Версия приложения %s</string>
     <string name="error_login_wrong_data">Неверный логин или пароль</string>
+
+    <!-- ORDER LIST -->
+    <string name="error_order_list_connection">Ошибка. Проверьте подключение\nк интернету и обновите страницу</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>
@@ -52,6 +57,7 @@
     <string name="title_bottom_navigation_orders">Заказы</string>
     <string name="title_bottom_navigation_statistic">Статистика</string>
     <string name="title_bottom_navigation_menu">Меню</string>
+    <string name="title_bottom_navigation_settings">Настройки</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
@@ -95,5 +101,14 @@
     <!-- SERVICE -->
     <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
     <string name="msg_notification_info">Ожидание заказов</string>
+
+    <!-- SETTINGS -->
+    <string name="title_settings">Настройки</string>
+    <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
+    <string name="hint_settings_manager">Менеджер</string>
+    <string name="hint_settings_admin">Админ</string>
+
+    <!-- LOGOUT -->
+    <string name="title_logout">Выйти из профиля?</string>
 
 </resources>

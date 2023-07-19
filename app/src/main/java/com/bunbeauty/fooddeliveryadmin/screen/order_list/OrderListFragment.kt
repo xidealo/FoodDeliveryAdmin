@@ -2,20 +2,28 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.viewModels
@@ -28,6 +36,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
@@ -95,26 +104,51 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
             refreshing = uiState.refreshing,
             onRefresh = onRefresh
         ) {
-            when (val state = uiState.state) {
-                OrderListUiState.State.Loading -> {
-                    LoadingScreen()
+            Column {
+                if (uiState.connectionError) {
+                    ConnectionError()
                 }
-                OrderListUiState.State.Error -> {
-                    ErrorScreen(
-                        mainTextId = R.string.title_common_can_not_load_data,
-                        extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = {}
-                    )
-                }
-                is OrderListUiState.State.Success -> {
-                    SuccessOrderListScreen(
-                        uiStateSuccess = state,
-                        lazyListState = lazyListState,
-                        onCafeClicked = onCafeClicked,
-                        onOrderClicked = onOrderClicked,
-                    )
+                when (val state = uiState.state) {
+                    OrderListUiState.State.Loading -> {
+                        LoadingScreen()
+                    }
+                    OrderListUiState.State.Error -> {
+                        ErrorScreen(
+                            mainTextId = R.string.title_common_can_not_load_data,
+                            extraTextId = R.string.msg_common_check_connection_and_retry,
+                            onClick = viewModel::retrySetUp
+                        )
+                    }
+                    is OrderListUiState.State.Success -> {
+                        SuccessOrderListScreen(
+                            uiStateSuccess = state,
+                            lazyListState = lazyListState,
+                            onCafeClicked = onCafeClicked,
+                            onOrderClicked = onOrderClicked,
+                        )
+                    }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun ConnectionError() {
+        Box(
+            modifier = Modifier
+                .background(AdminTheme.colors.status.negative)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                )
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.error_order_list_connection),
+                style = AdminTheme.typography.bodySmall,
+                color = AdminTheme.colors.status.onStatus,
+                textAlign = TextAlign.Center,
+            )
         }
     }
 
@@ -126,6 +160,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
     ) {
         LazyColumn(
+            modifier = Modifier.fillMaxSize(),
             state = lazyListState,
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)

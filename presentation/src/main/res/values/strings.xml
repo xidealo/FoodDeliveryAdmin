@@ -54,11 +54,6 @@
     <string name="title_orders_select_cafe">Выберите кафе</string>
     <string name="hint_orders_cafe">Ресторан</string>
 
-    <!-- LOGOUT -->
-    <string name="title_logout">Выйти из профиля?</string>
-    <string name="action_logout">Выйти</string>
-    <string name="action_cancel">Отмена</string>
-
     <!-- STATISTIC -->
     <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>

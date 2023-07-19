@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.repo
 
-import com.bunbeauty.domain.model.Delivery
 import kotlinx.coroutines.flow.Flow
 
 interface DataStoreRepo {
@@ -12,14 +11,17 @@ interface DataStoreRepo {
     val managerCity: Flow<String>
     suspend fun saveManagerCity(managerCity: String)
 
+    val companyUuid: Flow<String>
+    suspend fun saveCompanyUuid(companyUuid: String)
+
+    val username: Flow<String>
+    suspend fun saveUsername(username: String)
+
     val cafeUuid: Flow<String?>
     suspend fun saveCafeUuid(cafeUuid: String)
 
-    val delivery: Flow<Delivery>
-    suspend fun saveDelivery(delivery: Delivery)
-
-    val companyUuid: Flow<String>
-    suspend fun saveCompanyUuid(companyUuid: String)
+    val previousCafeUuid: Flow<String?>
+    suspend fun savePreviousCafeUuid(cafeUuid: String)
 
     val lastOrderCode: Flow<String>
     suspend fun saveLastOrderCode(orderCode: String)

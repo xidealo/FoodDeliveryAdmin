@@ -26,16 +26,8 @@ fun AdminNavigationBar(options: NavigationBarOptions) {
     if (options is NavigationBarOptions.Visible) {
         NavigationBar(
             modifier = Modifier.shadow(AdminTheme.dimensions.surfaceElevation),
-            containerColor = AdminTheme.colors.mainColors.surface
+            containerColor = AdminTheme.colors.main.surface
         ) {
-            FoodDeliveryBottomItem(
-                selected = options.selectedItem == AdminNavigationBarItem.ORDERS,
-                iconId = R.drawable.ic_orders,
-                labelId = R.string.title_bottom_navigation_orders,
-                onClick = {
-                    options.navController.navigateSafe(R.id.global_to_ordersFragment)
-                }
-            )
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == AdminNavigationBarItem.STATISTIC,
                 iconId = R.drawable.ic_statistic,
@@ -45,11 +37,27 @@ fun AdminNavigationBar(options: NavigationBarOptions) {
                 }
             )
             FoodDeliveryBottomItem(
+                selected = options.selectedItem == AdminNavigationBarItem.ORDERS,
+                iconId = R.drawable.ic_orders,
+                labelId = R.string.title_bottom_navigation_orders,
+                onClick = {
+                    options.navController.navigateSafe(R.id.global_to_ordersFragment)
+                }
+            )
+            FoodDeliveryBottomItem(
                 selected = options.selectedItem == AdminNavigationBarItem.MENU,
                 iconId = R.drawable.ic_menu,
                 labelId = R.string.title_bottom_navigation_menu,
                 onClick = {
                     options.navController.navigateSafe(R.id.global_to_menuFragment)
+                }
+            )
+            FoodDeliveryBottomItem(
+                selected = options.selectedItem == AdminNavigationBarItem.SETTINGS,
+                iconId = R.drawable.is_settings,
+                labelId = R.string.title_bottom_navigation_settings,
+                onClick = {
+                    options.navController.navigateSafe(R.id.global_to_settingsFragment)
                 }
             )
         }

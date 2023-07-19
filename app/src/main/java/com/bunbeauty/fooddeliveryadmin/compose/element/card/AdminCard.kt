@@ -19,8 +19,8 @@ fun AdminCard(
     elevated: Boolean = true,
     onClick: (() -> Unit) = {},
     clickable: Boolean = true,
-    colors: CardColors = FoodDeliveryCardDefaults.cardColors,
-    shape: Shape = FoodDeliveryCardDefaults.cardShape,
+    colors: CardColors = AdminCardDefaults.cardColors,
+    shape: Shape = AdminCardDefaults.cardShape,
     border: BorderStroke? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -33,7 +33,7 @@ fun AdminCard(
                 modifier = modifier,
                 shape = shape,
                 colors = colors,
-                elevation = FoodDeliveryCardDefaults.getCardElevation(elevated),
+                elevation = AdminCardDefaults.getCardElevation(elevated),
                 onClick = {
                     multipleEventsCutter.processEvent(onClick)
                 },
@@ -45,7 +45,7 @@ fun AdminCard(
                 modifier = modifier,
                 shape = shape,
                 colors = colors,
-                elevation = FoodDeliveryCardDefaults.getCardElevation(elevated),
+                elevation = AdminCardDefaults.getCardElevation(elevated),
                 border = border,
                 content = content
             )

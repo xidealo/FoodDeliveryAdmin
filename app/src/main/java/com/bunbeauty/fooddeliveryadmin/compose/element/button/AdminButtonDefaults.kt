@@ -18,18 +18,18 @@ object AdminButtonDefaults {
 
     val mainButtonColors: ButtonColors
         @Composable get() = ButtonDefaults.buttonColors(
-            containerColor = AdminTheme.colors.mainColors.primary,
-            contentColor = AdminTheme.colors.mainColors.onPrimary,
-            disabledContainerColor = AdminTheme.colors.mainColors.disabled,
-            disabledContentColor = AdminTheme.colors.mainColors.onDisabled
+            containerColor = AdminTheme.colors.main.primary,
+            contentColor = AdminTheme.colors.main.onPrimary,
+            disabledContainerColor = AdminTheme.colors.main.disabled,
+            disabledContentColor = AdminTheme.colors.main.onDisabled
         )
 
     val secondaryButtonColors: ButtonColors
         @Composable get() = ButtonDefaults.buttonColors(
-            containerColor = AdminTheme.colors.mainColors.secondary,
-            contentColor = AdminTheme.colors.mainColors.onSecondary,
-            disabledContainerColor = AdminTheme.colors.mainColors.disabled,
-            disabledContentColor = AdminTheme.colors.mainColors.onDisabled
+            containerColor = AdminTheme.colors.main.secondary,
+            contentColor = AdminTheme.colors.main.onSecondary,
+            disabledContainerColor = AdminTheme.colors.main.disabled,
+            disabledContentColor = AdminTheme.colors.main.onDisabled
         )
 
     val buttonShape: RoundedCornerShape

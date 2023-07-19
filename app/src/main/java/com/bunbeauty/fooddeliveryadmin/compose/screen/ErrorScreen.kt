@@ -35,13 +35,13 @@ fun ErrorScreen(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(AdminTheme.colors.mainColors.error),
+                .background(AdminTheme.colors.main.error),
             contentAlignment = Alignment.Center
         ) {
             androidx.compose.material3.Icon(
                 modifier = Modifier.size(64.dp),
                 painter = painterResource(R.drawable.ic_error),
-                tint = AdminTheme.colors.mainColors.onError,
+                tint = AdminTheme.colors.main.onError,
                 contentDescription = null
             )
         }
@@ -52,7 +52,7 @@ fun ErrorScreen(
                 .padding(horizontal = AdminTheme.dimensions.mediumSpace),
             text = stringResource(id = mainTextId),
             style = AdminTheme.typography.titleMedium.bold,
-            color = AdminTheme.colors.mainColors.onSurface,
+            color = AdminTheme.colors.main.onSurface,
             textAlign = TextAlign.Center
         )
         extraTextId?.let {
@@ -63,7 +63,7 @@ fun ErrorScreen(
                     .padding(horizontal = AdminTheme.dimensions.mediumSpace),
                 text = stringResource(id = extraTextId),
                 style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.mainColors.onSurface,
+                color = AdminTheme.colors.main.onSurface,
                 textAlign = TextAlign.Center
             )
         }

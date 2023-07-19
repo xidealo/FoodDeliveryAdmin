@@ -20,12 +20,12 @@ class Navigator @Inject constructor(
             options = listOf(
                 Option(
                     id = LogoutOption.LOGOUT.name,
-                    title = resources.getString(R.string.action_logout),
+                    title = resources.getString(R.string.action_common_logout),
                     isPrimary = true
                 ),
                 Option(
                     id = LogoutOption.CANCEL.name,
-                    title = resources.getString(R.string.action_cancel)
+                    title = resources.getString(R.string.action_common_cancel)
                 )
             ),
             isCenter = true

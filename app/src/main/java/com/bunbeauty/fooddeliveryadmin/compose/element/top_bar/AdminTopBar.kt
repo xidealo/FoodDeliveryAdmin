@@ -44,7 +44,7 @@ fun AdminTopBar(
                         Icon(
                             modifier = Modifier.size(16.dp),
                             painter = painterResource(id = R.drawable.ic_arrow_left),
-                            tint = AdminTheme.colors.mainColors.onSurface,
+                            tint = AdminTheme.colors.main.onSurface,
                             contentDescription = null
                         )
                     }
@@ -68,7 +68,7 @@ private fun AdminAction(action: AdminTopBarAction) {
         Icon(
             modifier = Modifier.size(24.dp),
             painter = painterResource(id = action.iconId),
-            tint = AdminTheme.colors.mainColors.onSurfaceVariant,
+            tint = AdminTheme.colors.main.onSurfaceVariant,
             contentDescription = null
         )
     }

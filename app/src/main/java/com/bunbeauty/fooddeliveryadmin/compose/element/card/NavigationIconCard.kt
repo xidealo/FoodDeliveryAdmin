@@ -44,7 +44,7 @@ fun NavigationIconCard(
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(iconId),
-                tint = AdminTheme.colors.mainColors.onSurfaceVariant,
+                tint = AdminTheme.colors.main.onSurfaceVariant,
                 contentDescription = iconDescriptionStringId?.let { stringId ->
                     stringResource(stringId)
                 },
@@ -58,13 +58,13 @@ fun NavigationIconCard(
                     .weight(1f),
                 text = labelText,
                 style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.mainColors.onSurface,
+                color = AdminTheme.colors.main.onSurface,
                 overflow = TextOverflow.Ellipsis
             )
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(R.drawable.ic_right_arrow),
-                tint = AdminTheme.colors.mainColors.onSurfaceVariant,
+                tint = AdminTheme.colors.main.onSurfaceVariant,
                 contentDescription = stringResource(R.string.description_common_navigate),
             )
         }

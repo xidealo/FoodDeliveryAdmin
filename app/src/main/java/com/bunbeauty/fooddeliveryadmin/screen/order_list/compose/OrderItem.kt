@@ -43,7 +43,7 @@ fun OrderItem(
                     .requiredWidthIn(min = AdminTheme.dimensions.codeWidth)
                     .padding(end = AdminTheme.dimensions.smallSpace),
                 style = AdminTheme.typography.titleMedium.bold,
-                color = AdminTheme.colors.mainColors.onSurface
+                color = AdminTheme.colors.main.onSurface
             )
             OrderStatusChip(orderStatus = orderItem.status, statusName = orderItem.statusString)
             Spacer(modifier = Modifier.weight(1f))
@@ -51,13 +51,13 @@ fun OrderItem(
                 Text(
                     text = orderItem.dateTime,
                     style = AdminTheme.typography.bodySmall,
-                    color = AdminTheme.colors.mainColors.onSurfaceVariant,
+                    color = AdminTheme.colors.main.onSurfaceVariant,
                     textAlign = TextAlign.End
                 )
                 Text(
                     text = orderItem.deferredTime,
                     style = AdminTheme.typography.bodySmall,
-                    color = AdminTheme.colors.mainColors.onSurface,
+                    color = AdminTheme.colors.main.onSurface,
                     textAlign = TextAlign.End
                 )
             }
