@@ -17,6 +17,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
+import com.google.android.material.R as MR
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -79,7 +80,7 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         }
         with(snack) {
             view.layoutParams = layoutParams
-            view.findViewById<TextView>(R.id.snackbar_text).textAlignment = TEXT_ALIGNMENT_CENTER
+            view.findViewById<TextView>(MR.id.snackbar_text).textAlignment = TEXT_ALIGNMENT_CENTER
             show()
         }
     }

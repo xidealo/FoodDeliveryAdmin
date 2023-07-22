@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -90,10 +89,7 @@ class LoginViewModel @Inject constructor(
                 val token = dataStoreRepo.token.firstOrNull()
                 if (token.isNullOrEmpty()) {
                     mutableLoginViewState.update { oldState ->
-                        oldState.copy(
-                            isLoading = false,
-                            appVersion = BuildConfig.VERSION_NAME
-                        )
+                        oldState.copy(isLoading = false)
                     }
                 } else {
                     mutableLoginViewState.update { oldState ->

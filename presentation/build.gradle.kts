@@ -8,19 +8,19 @@ plugins {
 }
 
 android {
+    namespace = Namespace.presentation
 
     compileSdk = AndroidSdk.compile
-
     defaultConfig {
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     buildTypes {
@@ -38,8 +38,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    implementation(AndroidX.appCompat)
-    implementation(Lifecycle.lifecycleViewModel)
+    implementation(Lifecycle.viewModel)
 
     //Navigation
     implementation(Navigation.runtime)

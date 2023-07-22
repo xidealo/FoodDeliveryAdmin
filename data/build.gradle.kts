@@ -6,20 +6,27 @@ plugins {
 }
 
 android {
-    compileSdk = AndroidSdk.compile
+    namespace = Namespace.data
 
+    compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
         }
 
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
         }
     }
 }

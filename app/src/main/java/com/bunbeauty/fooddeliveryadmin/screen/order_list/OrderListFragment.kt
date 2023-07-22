@@ -167,7 +167,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         ) {
             item(key = "cafeAddress") {
                 NavigationTextCard(
-                    hintStringId = R.string.hint_orders_cafe,
+                    hintStringId = R.string.msg_common_cafe,
                     label = uiStateSuccess.cafeAddress,
                     onClick = onCafeClicked
                 )

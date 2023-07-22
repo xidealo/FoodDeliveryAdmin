@@ -193,7 +193,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                 ) {
                     OrderInfoTextColumn(
                         modifier = Modifier.weight(1f),
-                        hint = stringResource(R.string.hint_order_details_date_time),
+                        hint = stringResource(R.string.msg_order_details_order_time),
                         info = stateSuccess.dateTime,
                     )
                     stateSuccess.deferredTime?.let { deferredTime ->

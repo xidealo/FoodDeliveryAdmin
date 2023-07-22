@@ -32,10 +32,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         viewModel.loginViewState.collectWithLifecycle { state ->
             binding.fragmentLoginPbLoading.isVisible = state.isLoading
             binding.fragmentLoginGroupLogin.isVisible = !state.isLoading
-            state.appVersion?.let { version ->
-                binding.versionTextView.text =
-                    resources.getString(R.string.msg_login_version, version)
-            }
 
             handleEvents(state.eventList)
         }
