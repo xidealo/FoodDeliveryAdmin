@@ -1,9 +1,7 @@
 plugins {
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.androidLibrary)
     id(Plugin.kapt)
-    id(Plugin.kotlinParcelize)
     id(Plugin.hiltPlugin)
 }
 
@@ -40,14 +38,11 @@ dependencies {
 
     implementation(Lifecycle.viewModel)
 
-    //Navigation
+    // TODO remove
+    // Navigation
     implementation(Navigation.runtime)
 
-    //Hilt
+    // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
-    implementation("javax.inject:javax.inject:1")
-
-    //DataStore
-    implementation(DataStore.dataStorePreferences)
 }

@@ -1,11 +1,10 @@
 plugins {
     id(Plugin.application)
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.kapt)
     id(Plugin.hiltPlugin)
     id(Plugin.navigation)
-    id(Plugin.googleService)
+    id(Plugin.googleServices)
     id(Plugin.crashlytics)
     id(Plugin.kotlinParcelize)
     id(Plugin.ktLint) version Versions.ktLint

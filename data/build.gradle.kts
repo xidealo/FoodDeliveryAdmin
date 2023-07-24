@@ -35,24 +35,24 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    //Database
+    // Database
     implementation(RoomDatabase.roomDatabaseRuntime)
     implementation(RoomDatabase.roomDatabaseKtx)
     kapt(RoomDatabase.roomDatabaseKapt)
 
-    //Hilt
+    // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
 
-    //DataStore
+    // DataStore
     implementation(DataStore.dataStorePreferences)
 
     Ktor.run {
-        implementation(clientSerialization)
         implementation(clientLogging)
         implementation(clientWebsockets)
-        implementation(negotiation)
-        implementation(serializerJson)
+        implementation(clientContentNegotiation)
+        implementation(clientSerialization)
+        implementation(serializationJson)
         implementation(clientJson)
         implementation(clientAuth)
         implementation(clientOkhttp)

@@ -1,9 +1,6 @@
 plugins {
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.androidLibrary)
-    id(Plugin.kotlinParcelize)
-    id(Plugin.kotlinSerialization)
 }
 
 android {
