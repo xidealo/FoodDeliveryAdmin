@@ -34,7 +34,7 @@ fun AdminScaffold(
     title: String? = null,
     backActionClick: (() -> Unit)? = null,
     topActions: List<AdminTopBarAction> = emptyList(),
-    backgroundColor: Color = AdminTheme.colors.mainColors.background,
+    backgroundColor: Color = AdminTheme.colors.main.background,
     actionButton: @Composable () -> Unit = {},
     pullRefreshEnabled: Boolean = false,
     refreshing: Boolean = false,
@@ -64,7 +64,7 @@ fun AdminScaffold(
                 actions = topActions,
             )
         },
-        containerColor = AdminTheme.colors.mainColors.background,
+        containerColor = AdminTheme.colors.main.background,
         floatingActionButton = actionButton,
         floatingActionButtonPosition = FabPosition.Center,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -82,8 +82,8 @@ fun AdminScaffold(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .zIndex(1F),
-                backgroundColor = AdminTheme.colors.mainColors.surface,
-                contentColor = AdminTheme.colors.mainColors.primary,
+                backgroundColor = AdminTheme.colors.main.surface,
+                contentColor = AdminTheme.colors.main.primary,
             )
         }
     }

@@ -2,111 +2,216 @@ package com.bunbeauty.fooddeliveryadmin.screen.order_list
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
+import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.FragmentOrdersBinding
-import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
+import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
+import com.bunbeauty.fooddeliveryadmin.screen.cafe_list.CafeListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.list.OrderAdapter
-import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
-import com.bunbeauty.presentation.Option
+import com.bunbeauty.presentation.feature.cafe_list.SelectableCafeItem
+import com.bunbeauty.presentation.feature.order_list.OrderListViewModel
+import com.bunbeauty.presentation.feature.order_list.state.OrderListEvent
+import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
-
-    @Inject
-    lateinit var orderAdapter: OrderAdapter
-
-    @Inject
-    lateinit var navigator: Navigator
+class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat
 
     override val viewModel: OrderListViewModel by viewModels()
 
-    private var cafeListBottomSheetJob: Job? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycle.addObserver(viewModel)
 
-        binding.run {
-            orderListRv.addSpaceItemDecorator(R.dimen.very_small_margin)
-            orderListRv.adapter = orderAdapter.apply {
-                onClickListener = { orderItemModel ->
-                    viewModel.onOrderClicked(orderItemModel)
-                }
-            }
-            cafeMcv.setOnClickListener {
-                viewModel.onCafeClicked()
-            }
-            toolbar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.logout -> {
-                        lifecycleScope.launch {
-                            navigator.openLogout(parentFragmentManager)?.let { option ->
-                                viewModel.onLogout(option)
-                            }
-                        }
-                        true
-                    }
-                    else -> {
-                        false
-                    }
-                }
-            }
-            viewModel.orderListState.collectWithLifecycle { orderListState ->
-                loadingLpi.isInvisible = !orderListState.isLoading
-                cafeTv.text = orderListState.selectedCafe?.address
-                orderAdapter.submitList(orderListState.orderList)
-                handleEvents(orderListState.eventList)
+        binding.root.setContentWithTheme {
+            val uiState by viewModel.orderListUiState.collectAsStateWithLifecycle()
+            val lazyListState = rememberLazyListState()
+            OrderListScreen(
+                uiState = uiState,
+                lazyListState = lazyListState,
+                onRefresh = viewModel::onRefresh,
+                onCafeClicked = viewModel::onCafeClicked,
+                onOrderClicked = viewModel::onOrderClicked,
+            )
+
+            val scope = rememberCoroutineScope()
+            LaunchedEffect(uiState.eventList) {
+                handleEventList(
+                    lazyListState = lazyListState,
+                    scope = scope,
+                    eventList = uiState.eventList
+                )
             }
         }
     }
 
-    private fun handleEvents(eventList: List<OrderListState.Event>) {
-        eventList.forEach { event ->
-            when (event) {
-                is OrderListState.Event.ScrollToTop -> {
-                    lifecycleScope.launch {
-                        delay(500)
-                        binding.orderListRv.smoothScrollToPosition(0)
+    @Composable
+    private fun OrderListScreen(
+        uiState: OrderListUiState,
+        lazyListState: LazyListState,
+        onRefresh: () -> Unit,
+        onCafeClicked: () -> Unit,
+        onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
+    ) {
+        AdminScaffold(
+            title = stringResource(R.string.title_orders),
+            pullRefreshEnabled = uiState.state is OrderListUiState.State.Success,
+            refreshing = uiState.refreshing,
+            onRefresh = onRefresh
+        ) {
+            Column {
+                if (uiState.connectionError) {
+                    ConnectionError()
+                }
+                when (val state = uiState.state) {
+                    OrderListUiState.State.Loading -> {
+                        LoadingScreen()
+                    }
+                    OrderListUiState.State.Error -> {
+                        ErrorScreen(
+                            mainTextId = R.string.title_common_can_not_load_data,
+                            extraTextId = R.string.msg_common_check_connection_and_retry,
+                            onClick = viewModel::retrySetUp
+                        )
+                    }
+                    is OrderListUiState.State.Success -> {
+                        SuccessOrderListScreen(
+                            uiStateSuccess = state,
+                            lazyListState = lazyListState,
+                            onCafeClicked = onCafeClicked,
+                            onOrderClicked = onOrderClicked,
+                        )
                     }
                 }
-                is OrderListState.Event.OpenCafeListEvent -> {
+            }
+        }
+    }
+
+    @Composable
+    private fun ConnectionError() {
+        Box(
+            modifier = Modifier
+                .background(AdminTheme.colors.status.negative)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                )
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.error_order_list_connection),
+                style = AdminTheme.typography.bodySmall,
+                color = AdminTheme.colors.status.onStatus,
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+
+    @Composable
+    private fun SuccessOrderListScreen(
+        uiStateSuccess: OrderListUiState.State.Success,
+        lazyListState: LazyListState,
+        onCafeClicked: () -> Unit,
+        onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = lazyListState,
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            item(key = "cafeAddress") {
+                NavigationTextCard(
+                    hintStringId = R.string.hint_orders_cafe,
+                    label = uiStateSuccess.cafeAddress,
+                    onClick = onCafeClicked
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            items(
+                items = uiStateSuccess.orderList,
+                key = { orderItem -> orderItem.uuid }
+            ) { orderItem ->
+                OrderItem(orderItem = orderItem, onClick = onOrderClicked)
+            }
+        }
+    }
+
+    private fun handleEventList(
+        eventList: List<OrderListEvent>,
+        scope: CoroutineScope,
+        lazyListState: LazyListState,
+    ) {
+        eventList.forEach { event ->
+            when (event) {
+                is OrderListEvent.ScrollToTop -> {
+                    scope.launch {
+                        delay(100)
+                        lazyListState.animateScrollToItem(0)
+                    }
+                }
+                is OrderListEvent.OpenCafeListEvent -> {
                     openCafeList(event.cafeList)
                 }
-                is OrderListState.Event.OpenOrderDetailsEvent -> {
+                is OrderListEvent.OpenOrderDetailsEvent -> {
                     openOrderDetails(event.orderUuid, event.orderCode)
                 }
-                OrderListState.Event.OpenLoginEvent -> {
+                OrderListEvent.OpenLoginEvent -> {
                     findNavController().navigateSafe(toLoginFragment())
                 }
-                OrderListState.Event.ShowError -> {
-                    lifecycleScope.launch {
+                OrderListEvent.ShowError -> {
+                    scope.launch {
                         ErrorDialog.show(childFragmentManager).let {
                             viewModel.onRetryClicked()
                         }
                     }
                 }
-                OrderListState.Event.CancelNotification -> {
+                OrderListEvent.CancelNotification -> {
                     notificationManagerCompat.cancel(LAST_ORDER_NOTIFICATION_ID)
                 }
             }
@@ -114,20 +219,13 @@ class OrderListFragment : BaseFragment<FragmentOrdersBinding>() {
         viewModel.consumeEvents(eventList)
     }
 
-    private fun openCafeList(cafeList: List<Option>) {
-        val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->
-            !job.isActive
-        } ?: true
-        if (isPossibleToOpen) {
-            cafeListBottomSheetJob = lifecycleScope.launch {
-                OptionListBottomSheet.show(
-                    parentFragmentManager,
-                    resources.getString(R.string.title_orders_select_cafe),
-                    cafeList
-                )?.let { result ->
-                    viewModel.onCafeSelected(result.value)
-                }
-            }
+    private fun openCafeList(cafeList: List<SelectableCafeItem>) {
+        lifecycleScope.launch {
+            val selectedCafe = CafeListBottomSheet.show(
+                parentFragmentManager,
+                cafeList
+            )
+            viewModel.onCafeSelected(selectedCafe?.uuid)
         }
     }
 

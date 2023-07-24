@@ -23,7 +23,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.Colors.White
 import com.bunbeauty.fooddeliveryadmin.compose.theme.Colors.Yellow
 
 val LightAdminColors = AdminColors(
-    mainColors = MainColors(
+    main = MainColors(
         primary = Blue1,
         disabled = Grey1,
         secondary = White,
@@ -38,7 +38,7 @@ val LightAdminColors = AdminColors(
         onSurfaceVariant = Grey2,
         onError = White,
     ),
-    orderColors = OrderColors(
+    order = OrderColors(
         notAccepted = Purple,
         accepted = Blue2,
         preparing = LightRed,
@@ -48,6 +48,13 @@ val LightAdminColors = AdminColors(
         canceled = DarkGrey,
         onOrder = White,
     ),
+    status = StatusColors(
+        positive = Green,
+        warning = Yellow,
+        negative = LightRed,
+        info = Blue1,
+        onStatus = White,
+    ),
     isLight = true
 )
 
@@ -55,30 +62,36 @@ val LocalAdminColors = staticCompositionLocalOf { LightAdminColors }
 
 @Stable
 class AdminColors(
-    mainColors: MainColors,
-    orderColors: OrderColors,
+    main: MainColors,
+    order: OrderColors,
+    status: StatusColors,
     isLight: Boolean
 ) {
-    var mainColors by mutableStateOf(mainColors)
+    var main by mutableStateOf(main)
         private set
-    var orderColors by mutableStateOf(orderColors)
+    var order by mutableStateOf(order)
+        private set
+    var status by mutableStateOf(status)
         private set
     var isLight by mutableStateOf(isLight)
         internal set
 
     fun copy(
-        mainColors: MainColors = this.mainColors,
-        orderColors: OrderColors = this.orderColors,
+        mainColors: MainColors = this.main,
+        orderColors: OrderColors = this.order,
+        statusColors: StatusColors = this.status,
         isLight: Boolean = this.isLight,
     ) = AdminColors(
-        mainColors = mainColors,
-        orderColors = orderColors,
+        main = mainColors,
+        order = orderColors,
+        status = statusColors,
         isLight = isLight,
     )
 
     fun update(other: AdminColors) {
-        mainColors.update(other.mainColors)
-        orderColors.update(other.orderColors)
+        main.update(other.main)
+        order.update(other.order)
+        status.update(other.status)
         isLight = other.isLight
     }
 }
@@ -231,5 +244,47 @@ class OrderColors(
         delivered = other.delivered
         canceled = other.canceled
         onOrder = other.onOrder
+    }
+}
+
+@Stable
+class StatusColors(
+    positive: Color,
+    warning: Color,
+    negative: Color,
+    info: Color,
+    onStatus: Color,
+) {
+    var positive by mutableStateOf(positive)
+        private set
+    var warning by mutableStateOf(warning)
+        private set
+    var negative by mutableStateOf(negative)
+        private set
+    var info by mutableStateOf(info)
+        private set
+    var onStatus by mutableStateOf(onStatus)
+        private set
+
+    fun copy(
+        positive: Color = this.positive,
+        warning: Color = this.warning,
+        negative: Color = this.negative,
+        info: Color = this.info,
+        onStatus: Color = this.onStatus,
+    ) = StatusColors(
+        positive = positive,
+        warning = warning,
+        negative = negative,
+        info = info,
+        onStatus = onStatus
+    )
+
+    fun update(other: StatusColors) {
+        positive = other.positive
+        warning = other.warning
+        negative = other.negative
+        info = other.info
+        onStatus = other.onStatus
     }
 }

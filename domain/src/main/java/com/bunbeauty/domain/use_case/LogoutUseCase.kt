@@ -1,25 +1,27 @@
 package com.bunbeauty.domain.use_case
 
 import com.bunbeauty.domain.NotificationService
+import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
+import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.repo.OrderRepo
-import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class LogoutUseCase @Inject constructor(
-    private val dataStoreRepo: DataStoreRepo,
+    private val getSelectedCafe: GetSelectedCafeUseCase,
     private val notificationService: NotificationService,
-    private val orderRepository: OrderRepo,
+    private val dataStoreRepo: DataStoreRepo,
+    private val cafeRepo: CafeRepo,
     private val menuProductRepo: MenuProductRepo,
 ) {
 
     suspend operator fun invoke() {
-        dataStoreRepo.cafeUuid.firstOrNull()?.let { cafeUuid ->
-            notificationService.unsubscribeFromNotifications(cafeUuid)
-            orderRepository.unsubscribeOnOrderList("logout")
+        getSelectedCafe()?.let { selectedCafe ->
+            notificationService.unsubscribeFromNotifications(selectedCafe.uuid)
         }
         dataStoreRepo.clearCache()
-        menuProductRepo.clearMenuProductList()
+        cafeRepo.clearCache()
+        menuProductRepo.clearCache()
     }
+
 }

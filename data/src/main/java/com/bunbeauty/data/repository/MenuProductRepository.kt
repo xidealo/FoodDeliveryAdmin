@@ -103,7 +103,7 @@ class MenuProductRepository @Inject constructor(
         //todo remove local
     }
 
-    override suspend fun clearMenuProductList() {
+    override suspend fun clearCache() {
         menuProductDao.deleteAll()
     }
 }

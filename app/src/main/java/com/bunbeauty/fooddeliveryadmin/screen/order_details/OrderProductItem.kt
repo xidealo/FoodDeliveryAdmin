@@ -28,7 +28,7 @@ fun OrderProductItem(
                 modifier = Modifier.weight(1f),
                 text = product.title,
                 style = AdminTheme.typography.titleSmall.bold,
-                color = AdminTheme.colors.mainColors.onSurface,
+                color = AdminTheme.colors.main.onSurface,
             )
             Column(
                 modifier = Modifier.padding(start = 8.dp),
@@ -38,20 +38,20 @@ fun OrderProductItem(
                     Text(
                         text = product.price,
                         style = AdminTheme.typography.bodySmall.bold,
-                        color = AdminTheme.colors.mainColors.onSurface,
+                        color = AdminTheme.colors.main.onSurface,
                     )
                     Text(
                         modifier = Modifier.padding(start = 8.dp),
                         text = product.count,
                         style = AdminTheme.typography.bodySmall,
-                        color = AdminTheme.colors.mainColors.onSurface,
+                        color = AdminTheme.colors.main.onSurface,
                     )
                 }
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = product.cost,
                     style = AdminTheme.typography.bodySmall.bold,
-                    color = AdminTheme.colors.mainColors.onSurface,
+                    color = AdminTheme.colors.main.onSurface,
                 )
             }
         }

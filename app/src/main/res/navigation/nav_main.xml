@@ -25,6 +25,12 @@
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="false" />
 
+    <action
+        android:id="@+id/global_to_settingsFragment"
+        app:destination="@id/settingsFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="false" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.login.LoginFragment"
@@ -119,6 +125,12 @@
             android:name="listData"
             app:argType="com.bunbeauty.presentation.model.ListData" />
     </dialog>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
+        android:label="settingsFragment"
+        tools:layout="@layout/layout_compose">
+    </fragment>
 
     <action
         android:id="@+id/to_loginFragment"

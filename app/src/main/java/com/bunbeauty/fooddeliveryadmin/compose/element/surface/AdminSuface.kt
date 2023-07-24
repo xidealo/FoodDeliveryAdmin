@@ -10,7 +10,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 @Composable
 fun AdminSurface(
     modifier: Modifier = Modifier,
-    color: Color = AdminTheme.colors.mainColors.surface,
+    color: Color = AdminTheme.colors.main.surface,
     elevated: Boolean = true,
     content: @Composable () -> Unit
 ) {

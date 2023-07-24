@@ -24,7 +24,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.FragmentComposeBinding
+import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.util.compose
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductEvent
@@ -35,7 +35,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EditMenuProductFragment : BaseFragment<FragmentComposeBinding>() {
+class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Inject
     lateinit var resourcesProvider: IResourcesProvider

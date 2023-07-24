@@ -45,7 +45,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
+import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
 import com.bunbeauty.presentation.Option
@@ -60,7 +60,7 @@ import kotlinx.coroutines.launch
 private const val PHONE_LINK = "tel:"
 
 @AndroidEntryPoint
-class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
+class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 
@@ -237,12 +237,12 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
             Text(
                 text = hint,
                 style = AdminTheme.typography.labelSmall.medium,
-                color = AdminTheme.colors.mainColors.onSurfaceVariant
+                color = AdminTheme.colors.main.onSurfaceVariant
             )
             Text(
                 text = info,
                 style = AdminTheme.typography.bodyMedium,
-                color = AdminTheme.colors.mainColors.onSurface
+                color = AdminTheme.colors.main.onSurface
             )
         }
     }
@@ -256,7 +256,7 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(AdminTheme.colors.mainColors.surface)
+                    .background(AdminTheme.colors.main.surface)
                     .padding(AdminTheme.dimensions.mediumSpace)
             ) {
                 stateSuccess.deliveryCost?.let { deliveryCost ->
@@ -264,14 +264,14 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                         Text(
                             text = stringResource(R.string.msg_order_details_delivery_cost),
                             style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.mainColors.onSurface
+                            color = AdminTheme.colors.main.onSurface
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
                             modifier = Modifier.weight(1f),
                             text = deliveryCost,
                             style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.mainColors.onSurface,
+                            color = AdminTheme.colors.main.onSurface,
                             textAlign = TextAlign.End
                         )
                     }
@@ -280,13 +280,13 @@ class OrderDetailsFragment : BaseFragment<ActivityMainBinding>() {
                     Text(
                         text = stringResource(R.string.msg_order_details_order_cost),
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.mainColors.onSurface
+                        color = AdminTheme.colors.main.onSurface
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = stateSuccess.finalCost,
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.mainColors.onSurface,
+                        color = AdminTheme.colors.main.onSurface,
                     )
                 }
                 MainButton(

@@ -51,7 +51,7 @@ fun AdminTextField(
                     .padding(start = 16.dp, top = 4.dp),
                 text = stringResource(errorMessageId),
                 style = AdminTheme.typography.bodySmall,
-                color = AdminTheme.colors.mainColors.error
+                color = AdminTheme.colors.main.error
             )
         }
     }
@@ -93,7 +93,7 @@ fun AdminTextField(
                     .padding(start = 16.dp, top = 4.dp),
                 text = stringResource(errorMessageId),
                 style = AdminTheme.typography.bodySmall,
-                color = AdminTheme.colors.mainColors.error
+                color = AdminTheme.colors.main.error
             )
         }
     }

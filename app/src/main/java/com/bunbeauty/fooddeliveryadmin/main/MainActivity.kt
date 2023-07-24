@@ -39,8 +39,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.databinding.ActivityMainBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
+import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.presentation.view_model.main.AdminMessageType
 import com.bunbeauty.presentation.view_model.main.AdminNavigationBarItem
 import com.bunbeauty.presentation.view_model.main.MainUiState
@@ -49,11 +49,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main), MessageHost {
+class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
 
     val viewModel: MainViewModel by viewModels()
 
-    private val viewBinding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
+    private val viewBinding: LayoutComposeBinding by viewBinding(LayoutComposeBinding::bind)
 
     private val requestPermissionLauncher by lazy {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
@@ -119,14 +119,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), MessageHost {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(AdminTheme.colors.mainColors.error)
+                    .background(AdminTheme.colors.main.error)
                     .padding(8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = resources.getString(R.string.error_common_no_internet),
                     style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.mainColors.onError
+                    color = AdminTheme.colors.main.onError
                 )
             }
         }
@@ -137,12 +137,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), MessageHost {
         SnackbarHost(hostState = snackbarHostState) { snackbarData ->
             (snackbarData.visuals as? AdminSnackbarVisuals)?.let { visuals ->
                 val containerColor = when (visuals.adminMessage.type) {
-                    AdminMessageType.INFO -> AdminTheme.colors.mainColors.primary
-                    AdminMessageType.ERROR -> AdminTheme.colors.mainColors.error
+                    AdminMessageType.INFO -> AdminTheme.colors.main.primary
+                    AdminMessageType.ERROR -> AdminTheme.colors.main.error
                 }
                 val contentColor = when (visuals.adminMessage.type) {
-                    AdminMessageType.INFO -> AdminTheme.colors.mainColors.onPrimary
-                    AdminMessageType.ERROR -> AdminTheme.colors.mainColors.onError
+                    AdminMessageType.INFO -> AdminTheme.colors.main.onPrimary
+                    AdminMessageType.ERROR -> AdminTheme.colors.main.onError
                 }
                 Snackbar(
                     snackbarData = snackbarData,
@@ -199,6 +199,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), MessageHost {
                     R.id.ordersFragment -> AdminNavigationBarItem.ORDERS
                     R.id.statisticFragment -> AdminNavigationBarItem.STATISTIC
                     R.id.menuFragment -> AdminNavigationBarItem.MENU
+                    R.id.settingsFragment -> AdminNavigationBarItem.SETTINGS
                     else -> null
                 }
                 viewModel.onNavDestinationUpdated(navigationBarItem, controller)
