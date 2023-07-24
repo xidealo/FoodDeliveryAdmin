@@ -1,7 +1,7 @@
 object Versions {
     const val kotlin = "1.9.0"
     const val gradle = "8.0.0"
-    const val ktor = "2.2.2"
+    const val ktor = "2.3.2"
     const val coil = "2.4.0"
     const val datastorePreferences = "1.0.0"
     const val googleServices = "4.3.15"
@@ -14,7 +14,7 @@ object Versions {
     const val viewBindingDelegate = "1.5.3"
     const val hilt = "2.47"
     const val room = "2.6.0-alpha02"
-    const val joda = "2.12.1"
+    const val joda = "2.12.5"
     const val crashlytics = "2.9.2"
     const val firebase = "32.2.0"
     const val composeCompiler = "1.5.0"
@@ -58,7 +58,7 @@ object Time {
 }
 
 object ClassPath {
-    const val buildTool = "com.android.tools.build:gradle:${Versions.gradle}"
+    const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val googleServices = "com.google.gms:google-services:${Versions.googleServices}"
     const val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
@@ -74,13 +74,12 @@ object Plugin {
     const val application = "com.android.application"
     const val android = "android"
     const val androidLibrary = "com.android.library"
-    const val kotlinAndroid = "kotlin-android"
     const val kotlinParcelize = "kotlin-parcelize"
     const val kotlinSerialization = "kotlinx-serialization"
     const val kapt = "kotlin-kapt"
     const val navigation = "androidx.navigation.safeargs.kotlin"
     const val hiltPlugin = "dagger.hilt.android.plugin"
-    const val googleService = "com.google.gms.google-services"
+    const val googleServices = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"
     const val ktLint = "org.jlleitschuh.gradle.ktlint"
 }
@@ -100,9 +99,9 @@ object Navigation {
 
 object Ktor {
     const val clientWebsockets = "io.ktor:ktor-client-websockets:${Versions.ktor}"
-    const val negotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktor}"
+    const val clientContentNegotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktor}"
     const val clientJson = "io.ktor:ktor-client-json:${Versions.ktor}"
-    const val serializerJson = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktor}"
+    const val serializationJson = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktor}"
     const val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
     const val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
     const val clientAuth = "io.ktor:ktor-client-auth:${Versions.ktor}"
