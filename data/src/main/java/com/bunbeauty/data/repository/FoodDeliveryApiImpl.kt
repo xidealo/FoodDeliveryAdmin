@@ -52,11 +52,12 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     private var webSocketSessionOpened = false
 
-    override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> {
-        return postData(
+    override suspend fun login(
+        userAuthorizationRequest: UserAuthorizationRequest
+    ): ApiResult<UserAuthorizationResponse> {
+        return executePostRequest(
             path = "user/login",
-            postBody = userAuthorizationRequest,
-            serializer = UserAuthorizationResponse.serializer()
+            postBody = userAuthorizationRequest
         )
     }
 
@@ -64,9 +65,8 @@ class FoodDeliveryApiImpl @Inject constructor(
         token: String,
         cityUuid: String
     ): ApiResult<ServerList<CafeServer>> {
-        return getApiResult(
+        return executeGetRequest(
             path = "cafe",
-            serializer = ServerList.serializer(CafeServer.serializer()),
             parameters = hashMapOf("cityUuid" to cityUuid),
             token = token,
         )
@@ -203,7 +203,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String
-    ): ServerList<ServerOrder> {
+    ): ApiResult<ServerList<ServerOrder>> {
         return executeGetRequest(
             path = "order",
             parameters = hashMapOf("cafeUuid" to cafeUuid),
@@ -215,9 +215,8 @@ class FoodDeliveryApiImpl @Inject constructor(
         token: String,
         orderUuid: String
     ): ApiResult<OrderDetailsServer> {
-        return getApiResult(
+        return executeGetRequest(
             path = "v2/order/details",
-            serializer = OrderDetailsServer.serializer(),
             parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
@@ -241,9 +240,8 @@ class FoodDeliveryApiImpl @Inject constructor(
         token: String,
         companyUuid: String
     ): ApiResult<ServerList<CategoryServer>> {
-        return getApiResult(
+        return executeGetRequest(
             path = "category",
-            serializer = ServerList.serializer(CategoryServer.serializer()),
             parameters = hashMapOf("companyUuid" to companyUuid),
             token = token
         )
@@ -253,53 +251,37 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         parameters: Map<String, String?> = mapOf(),
         token: String
-    ): T {
-        return client.get {
-            buildRequest(
-                path = path,
-                body = null,
-                parameters = parameters,
-                headers = mapOf("Authorization" to "Bearer $token")
-            )
-        }.body()
-    }
-
-    @Deprecated("Use executeGetRequest")
-    private suspend fun <T> getApiResult(
-        path: String,
-        serializer: KSerializer<T>,
-        parameters: Map<String, String?> = mapOf(),
-        token: String
     ): ApiResult<T> {
-        val request = client.get {
-            buildRequest(
-                path = path,
-                body = null,
-                parameters = parameters,
-                headers = mapOf("Authorization" to "Bearer $token")
-            )
+        return safeCall {
+            client.get {
+                buildRequest(
+                    path = path,
+                    body = null,
+                    parameters = parameters,
+                    headers = mapOf("Authorization" to "Bearer $token")
+                )
+            }.body()
         }
-        return handleResponse(serializer, request)
     }
 
-    private suspend fun <T> postData(
+    private suspend inline fun <reified T> executePostRequest(
         path: String,
         postBody: Any,
-        serializer: KSerializer<T>,
         parameters: Map<String, String> = mapOf(),
         token: String? = null
     ): ApiResult<T> {
-        val request = client.post {
-            buildRequest(
-                path = path,
-                body = postBody,
-                parameters = parameters,
-                headers = token?.let {
-                    mapOf("Authorization" to "Bearer $token")
-                } ?: emptyMap()
-            )
+        return safeCall {
+            client.post {
+                buildRequest(
+                    path = path,
+                    body = postBody,
+                    parameters = parameters,
+                    headers = token?.let {
+                        mapOf("Authorization" to "Bearer $token")
+                    } ?: emptyMap()
+                )
+            }.body()
         }
-        return handleResponse(serializer, request)
     }
 
     private suspend fun <T> patchData(
@@ -352,6 +334,18 @@ class FoodDeliveryApiImpl @Inject constructor(
             ApiResult.Error(ApiError(exception.response.status.value, exception.message))
         } catch (exception: Exception) {
             ApiResult.Error(ApiError(0, exception.message ?: "-"))
+        }
+    }
+
+    private suspend inline fun <reified R> safeCall(
+        networkCall: () -> HttpResponse
+    ): ApiResult<R> {
+        return try {
+            ApiResult.Success(networkCall().body())
+        } catch (exception: ClientRequestException) {
+            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
+        } catch (exception: Throwable) {
+            ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }
     }
 

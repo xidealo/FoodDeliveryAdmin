@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.Flow
 interface FoodDeliveryApi {
 
     // LOGIN
-    suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
+    suspend fun login(
+        userAuthorizationRequest: UserAuthorizationRequest
+    ): ApiResult<UserAuthorizationResponse>
 
     // CAFE
     suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ServerList<CafeServer>>
@@ -25,7 +27,6 @@ interface FoodDeliveryApi {
     suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer>
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
-
     suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
     suspend fun deleteMenuProduct(uuid: String)
 
@@ -48,7 +49,7 @@ interface FoodDeliveryApi {
     suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String
-    ): ServerList<ServerOrder>
+    ): ApiResult<ServerList<ServerOrder>>
 
     suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<OrderDetailsServer>
 

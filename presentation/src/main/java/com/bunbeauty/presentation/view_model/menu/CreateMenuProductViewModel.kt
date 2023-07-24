@@ -2,19 +2,14 @@ package com.bunbeauty.presentation.view_model.menu
 
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
-import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.toByteArray
-import com.bunbeauty.presentation.model.ListData
-import com.bunbeauty.presentation.model.list.MenuProductCode
-import com.bunbeauty.presentation.navigation_event.CreateMenuProductNavigationEvent
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
@@ -35,10 +30,6 @@ class CreateMenuProductViewModel @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
 ) : BaseViewModel() {
 
-    private val menuProductCodeList = ProductCode.values().map { productCode ->
-        MenuProductCode(title = stringUtil.getProductCodeString(productCode))
-    }
-
     private val mutableIsVisible: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isVisible: StateFlow<Boolean> = mutableIsVisible.asStateFlow()
 
@@ -49,11 +40,6 @@ class CreateMenuProductViewModel @Inject constructor(
 
     fun switchVisibility() {
         mutableIsVisible.value = !mutableIsVisible.value
-    }
-
-    fun setProductCode(productCode: MenuProductCode) {
-        mutableIsComboDescriptionVisible.value =
-            (productCode.title == stringUtil.getProductCodeString(ProductCode.COMBO))
     }
 
     fun createMenuProduct(

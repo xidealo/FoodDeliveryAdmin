@@ -158,6 +158,7 @@ class OrderListViewModel @Inject constructor(
     private fun setUpCafe() {
         viewModelScope.launchSafe(
             onError = {
+                println(it)
                 mutableDataState.update { state ->
                     state.copy(cafeState = OrderListDataState.State.ERROR)
                 }
