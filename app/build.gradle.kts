@@ -89,7 +89,11 @@ fun getProperty(key: String): String {
     val propertiesFile = rootProject.file("./local.properties")
     val properties = Properties()
     properties.load(FileInputStream(propertiesFile))
-    return properties.getProperty(key)
+    val property = properties.getProperty(key)
+    if (property == null) {
+        println("Property with key $key not found")
+    }
+    return property
 }
 
 dependencies {
