@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id(Plugin.application)
     kotlin(Plugin.android)
@@ -25,12 +28,10 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file(
-                project.property("RELEASE_STORE_FILE") ?: error("RELEASE_STORE_FILE not found")
-            )
-            storePassword = project.property("RELEASE_STORE_PASSWORD").toString()
-            keyAlias = project.property("RELEASE_KEY_ALIAS").toString()
-            keyPassword = project.property("RELEASE_KEY_PASSWORD").toString()
+            storeFile = file(getProperty("RELEASE_STORE_FILE"))
+            storePassword = getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = getProperty("RELEASE_KEY_PASSWORD")
 
             enableV1Signing = true
             enableV2Signing = true
@@ -82,6 +83,13 @@ android {
             kotlinCompilerExtensionVersion = Versions.composeCompiler
         }
     }
+}
+
+fun getProperty(key: String): String {
+    val propertiesFile = rootProject.file("./local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(propertiesFile))
+    return properties.getProperty(key)
 }
 
 dependencies {
