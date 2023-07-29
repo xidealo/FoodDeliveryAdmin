@@ -21,6 +21,8 @@ jobs:
           \nRELEASE_STORE_PASSWORD=$RELEASE_STORE_PASSWORD
           \nRELEASE_KEY_ALIAS=$RELEASE_KEY_ALIAS
           \nRELEASE_KEY_PASSWORD=$RELEASE_KEY_PASSWORD" > local.properties
+      - name: check secrets
+        run: echo "RELEASE_STORE_FILE ${{ secrets.RELEASE_STORE_FILE }}"
       - name: set up JDK 17
         uses: actions/setup-java@v1
         with:
