@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn org.joda.convert.FromString
+-dontwarn org.joda.convert.ToString
+-dontwarn org.junit.jupiter.api.extension.AfterAllCallback
+-dontwarn org.junit.jupiter.api.extension.ParameterResolver
+-dontwarn org.junit.jupiter.api.extension.TestInstancePostProcessor
+-dontwarn org.slf4j.impl.StaticLoggerBinder
