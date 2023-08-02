@@ -17,7 +17,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.google.android.material.R as MR
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
+import com.google.android.material.R as MR
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
@@ -35,7 +35,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
     protected val textInputMap = HashMap<String, TextInputLayout>()
     protected abstract val viewModel: BaseViewModel
 
-    @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
