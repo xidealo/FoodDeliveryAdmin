@@ -1,5 +1,5 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id(Plugin.application)
@@ -138,5 +138,4 @@ dependencies {
     // Coil
     implementation(Coil.coil)
     implementation(Coil.coilCompose)
-
 }
