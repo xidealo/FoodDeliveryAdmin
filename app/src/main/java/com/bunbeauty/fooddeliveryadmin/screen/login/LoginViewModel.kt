@@ -53,10 +53,12 @@ class LoginViewModel @Inject constructor(
             block = {
                 userAuthorizationRepo.login(processedUsername, processedPassword)
                     ?.let { (token, managerCityUuid, companyUuid) ->
-                        dataStoreRepo.saveToken(token)
-                        dataStoreRepo.saveManagerCity(managerCityUuid)
-                        dataStoreRepo.saveCompanyUuid(companyUuid)
-                        dataStoreRepo.saveUsername(processedUsername)
+                        with(dataStoreRepo) {
+                            saveToken(token)
+                            saveManagerCity(managerCityUuid)
+                            saveCompanyUuid(companyUuid)
+                            saveUsername(processedUsername)
+                        }
                     }
                 mutableLoginViewState.update { oldState ->
                     oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
