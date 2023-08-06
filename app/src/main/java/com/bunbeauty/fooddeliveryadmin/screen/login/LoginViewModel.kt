@@ -1,10 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.login
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,55 +49,44 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            try {
-                when (
-                    val result =
-                        userAuthorizationRepo.login(processedUsername, processedPassword)
-                ) {
-                    is ApiResult.Success -> {
-                        result.data.let { (token, managerCityUuid, companyUuid) ->
-                            dataStoreRepo.saveToken(token)
-                            dataStoreRepo.saveManagerCity(managerCityUuid)
-                            dataStoreRepo.saveCompanyUuid(companyUuid)
-                            dataStoreRepo.saveUsername(processedUsername)
-                        }
-                        mutableLoginViewState.update { oldState ->
-                            oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+        viewModelScope.launchSafe(
+            block = {
+                userAuthorizationRepo.login(processedUsername, processedPassword)
+                    ?.let { (token, managerCityUuid, companyUuid) ->
+                        with(dataStoreRepo) {
+                            saveToken(token)
+                            saveManagerCity(managerCityUuid)
+                            saveCompanyUuid(companyUuid)
+                            saveUsername(processedUsername)
                         }
                     }
-                    is ApiResult.Error -> {
-                        mutableLoginViewState.update { oldState ->
-                            oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
-                        }
-                    }
-                }
-            } catch (exception: Exception) {
                 mutableLoginViewState.update { oldState ->
-                    oldState.copy(isLoading = false) + LoginViewState.Event.ShowConnectionError
+                    oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+                }
+            },
+            onError = {
+                mutableLoginViewState.update { oldState ->
+                    oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
                 }
             }
-        }
+        )
     }
 
     private fun checkToken() {
         viewModelScope.launchSafe(
-            onError = {},
             block = {
                 val token = dataStoreRepo.token.firstOrNull()
                 if (token.isNullOrEmpty()) {
                     mutableLoginViewState.update { oldState ->
-                        oldState.copy(
-                            isLoading = false,
-                            appVersion = BuildConfig.VERSION_NAME
-                        )
+                        oldState.copy(isLoading = false)
                     }
                 } else {
                     mutableLoginViewState.update { oldState ->
                         oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
                     }
                 }
-            }
+            },
+            onError = {},
         )
     }
 

@@ -7,6 +7,7 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.model.server.order.ServerOrder
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.exception.ServerConnectionException
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderDetails
 import com.bunbeauty.domain.model.order.OrderError
@@ -64,9 +65,21 @@ class OrderRepository @Inject constructor(
     }
 
     private suspend fun getOrderListByCafeUuid(token: String, cafeUuid: String): List<Order> {
-        return networkConnector.getOrderListByCafeUuid(token, cafeUuid)
-            .results
-            .map(serverOrderMapper::toModel)
+        return when (val result = networkConnector.getOrderListByCafeUuid(token, cafeUuid)) {
+            is ApiResult.Success -> {
+                result.data
+                    .results
+                    .map(serverOrderMapper::toModel)
+            }
+
+            is ApiResult.Error -> {
+                Log.e(
+                    ORDER_TAG,
+                    "getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}"
+                )
+                throw ServerConnectionException()
+            }
+        }
     }
 
     override suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
@@ -74,6 +87,7 @@ class OrderRepository @Inject constructor(
             is ApiResult.Success -> {
                 serverOrderMapper.toModel(result.data)
             }
+
             is ApiResult.Error -> {
                 Log.e(
                     ORDER_TAG,

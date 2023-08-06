@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
+import com.google.android.material.R as MR
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
@@ -34,7 +35,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
     protected val textInputMap = HashMap<String, TextInputLayout>()
     protected abstract val viewModel: BaseViewModel
 
-    @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,7 +79,7 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         }
         with(snack) {
             view.layoutParams = layoutParams
-            view.findViewById<TextView>(R.id.snackbar_text).textAlignment = TEXT_ALIGNMENT_CENTER
+            view.findViewById<TextView>(MR.id.snackbar_text).textAlignment = TEXT_ALIGNMENT_CENTER
             show()
         }
     }

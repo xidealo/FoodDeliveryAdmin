@@ -2,7 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.login
 
 data class LoginViewState(
     val isLoading: Boolean = true,
-    val appVersion: String? = null,
     val eventList: List<Event> = emptyList()
 ) {
     sealed interface Event {

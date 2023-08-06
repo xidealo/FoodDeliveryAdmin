@@ -62,7 +62,7 @@ private fun CafeListScreen(
     cafeList: List<SelectableCafeItem>,
     onCafeClicked: (SelectableCafeItem) -> Unit,
 ) {
-    AdminBottomSheet(titleStringId = R.string.title_cafe_list) {
+    AdminBottomSheet(titleStringId = R.string.msg_common_cafe) {
         Column(verticalArrangement = spacedBy(8.dp)) {
             cafeList.forEach { selectableCafeItem ->
                 SelectableCard(

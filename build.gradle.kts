@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath(ClassPath.kotlinPlugin)
-        classpath(ClassPath.buildTool)
+        classpath(ClassPath.gradle)
         classpath(ClassPath.navigationServices)
         classpath(ClassPath.kotlinSerialization)
         classpath(ClassPath.googleServices)

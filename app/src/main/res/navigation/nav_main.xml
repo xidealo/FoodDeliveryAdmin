@@ -5,7 +5,7 @@
     android:id="@+id/nav_main"
     app:startDestination="@id/loginFragment">
 
-    <!-- MAIN -->
+    <!-- Actions -->
 
     <action
         android:id="@+id/global_to_ordersFragment"
@@ -31,6 +31,14 @@
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="false" />
 
+    <action
+        android:id="@+id/to_loginFragment"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true" />
+
+    <!-- Fragments -->
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.login.LoginFragment"
@@ -46,8 +54,7 @@
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragment"
-        android:label="OrdersFragment"
-        tools:layout="@layout/fragment_orders">
+        android:label="OrdersFragment">
         <action
             android:id="@+id/to_ordersDetailsFragment"
             app:destination="@id/ordersDetailsFragment" />
@@ -55,8 +62,7 @@
     <fragment
         android:id="@+id/ordersDetailsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.order_details.OrderDetailsFragment"
-        android:label="ChangeStatusDialog"
-        tools:layout="@layout/fragment_order_details">
+        android:label="ChangeStatusDialog">
         <argument
             android:name="orderUuid"
             app:argType="string" />
@@ -85,8 +91,7 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.MenuFragment"
-        android:label="MenuFragment"
-        tools:layout="@layout/fragment_compose">
+        android:label="MenuFragment">
         <action
             android:id="@+id/to_editMenuProductFragment"
             app:destination="@id/editMenuProductFragment" />
@@ -102,39 +107,15 @@
         <argument
             android:name="menuProduct"
             app:argType="com.bunbeauty.domain.model.menu_product.MenuProduct" />
-        <action
-            android:id="@+id/to_listBottomSheet"
-            app:destination="@id/listBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.CreateMenuProductFragment"
         android:label="CreateNewMenuProductFragment"
-        tools:layout="@layout/fragment_create_menu_product">
-        <action
-            android:id="@+id/to_listBottomSheet"
-            app:destination="@id/listBottomSheet" />
-    </fragment>
-    <dialog
-        android:id="@+id/listBottomSheet"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet"
-        android:label="ListBottomSheet"
-        tools:layout="@layout/bottom_sheet_option_list">
-        <argument
-            android:name="listData"
-            app:argType="com.bunbeauty.presentation.model.ListData" />
-    </dialog>
+        tools:layout="@layout/fragment_create_menu_product" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
         android:label="settingsFragment"
-        tools:layout="@layout/layout_compose">
-    </fragment>
-
-    <action
-        android:id="@+id/to_loginFragment"
-        app:destination="@id/loginFragment"
-        app:popUpTo="@id/nav_main"
-        app:popUpToInclusive="true" />
-
+        tools:layout="@layout/layout_compose" />
 </navigation>

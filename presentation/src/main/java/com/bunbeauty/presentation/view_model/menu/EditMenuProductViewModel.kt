@@ -4,22 +4,17 @@ import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.common.Constants.MENU_PRODUCT_ARGS_KEY
-import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
 import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
-import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.presentation.utils.IResourcesProvider
-import com.bunbeauty.presentation.extension.toByteArray
-import com.bunbeauty.presentation.model.ListData
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.navArg
-import com.bunbeauty.presentation.model.list.MenuProductCode
-import com.bunbeauty.presentation.navigation_event.EditMenuProductNavigationEvent
+import com.bunbeauty.presentation.extension.toByteArray
+import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,10 +37,6 @@ class EditMenuProductViewModel @Inject constructor(
 
     private val menuProduct: MenuProduct by savedStateHandle.navArg(MENU_PRODUCT_ARGS_KEY)
 
-    private val menuProductCodeList = ProductCode.values().map { productCode ->
-        MenuProductCode(title = stringUtil.getProductCodeString(productCode))
-    }
-
     private val mutableIsVisible: MutableStateFlow<Boolean> =
         MutableStateFlow(menuProduct.isVisible)
     val isVisible: StateFlow<Boolean> = mutableIsVisible.asStateFlow()
@@ -67,11 +58,6 @@ class EditMenuProductViewModel @Inject constructor(
 
     fun switchVisibility() {
         mutableIsVisible.value = !mutableIsVisible.value
-    }
-
-    fun setProductCode(productCode: MenuProductCode) {
-        mutableIsComboDescriptionVisible.value =
-            (productCode.title == stringUtil.getProductCodeString(ProductCode.COMBO))
     }
 
     fun deleteMenuProduct() {

@@ -1,17 +1,20 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id(Plugin.application)
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.kapt)
     id(Plugin.hiltPlugin)
     id(Plugin.navigation)
-    id(Plugin.googleService)
+    id(Plugin.googleServices)
     id(Plugin.crashlytics)
     id(Plugin.kotlinParcelize)
     id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {
+    namespace = Namespace.app
 
     compileSdk = AndroidSdk.compile
     defaultConfig {
@@ -25,10 +28,13 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore")
-            storePassword = "itisBB15092019"
-            keyAlias = "papakarloKey"
-            keyPassword = "Itispapakarlo08062004"
+            storeFile = file(getProperty("RELEASE_STORE_FILE"))
+            storePassword = getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = getProperty("RELEASE_KEY_PASSWORD")
+
+            enableV1Signing = true
+            enableV2Signing = true
         }
     }
 
@@ -45,19 +51,20 @@ android {
                 }
         }
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
 
         getByName("release") {
             isDebuggable = false
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
         }
 
         buildFeatures {
@@ -66,11 +73,11 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
         composeOptions {
             kotlinCompilerExtensionVersion = Versions.composeCompiler
@@ -78,16 +85,24 @@ android {
     }
 }
 
+fun getProperty(key: String): String {
+    val propertiesFile = rootProject.file("./local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(propertiesFile))
+    val property = properties.getProperty(key)
+    if (property == null) {
+        println("Property with key $key not found")
+    }
+    return property
+}
+
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
+    implementation(project(":data")) // TODO remove
+    implementation(project(":domain")) // TODO remove
     implementation(project(":common"))
     implementation(project(":presentation"))
 
-    implementation(AndroidX.coreKtx)
-    implementation(AndroidX.appCompat)
-
-    // navigation
+    // Navigation
     implementation(Navigation.fragment)
     implementation(Navigation.ui)
     implementation(Navigation.runtime)
@@ -98,15 +113,12 @@ dependencies {
     implementation(Firebase.crashlytics)
 
     // Lifecycle
-    implementation(Lifecycle.lifecycleViewModel)
-    implementation(Lifecycle.activity)
-    implementation(Lifecycle.fragment)
-    implementation(Lifecycle.runtime)
     implementation(Lifecycle.service)
 
     // Material
     implementation(Material.material)
 
+    // ViewBinding
     implementation(ViewBinding.propertyDelegate)
 
     // Compose
@@ -115,22 +127,15 @@ dependencies {
     implementation(Compose.ui)
     implementation(Compose.material3)
     implementation(Compose.material)
-    implementation(Compose.uiTooling)
     implementation(Compose.uiToolingPreview)
     implementation(Compose.uiViewbinding)
-    implementation(Compose.activity)
     implementation(Compose.lifecycle)
 
-    // Hilt
+    // Dagger Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
 
-    // Image loader
+    // Coil
     implementation(Coil.coil)
     implementation(Coil.coilCompose)
-
-    // AdapterDelegates
-    implementation(AdapterDelegates.adapterDelegates)
-    implementation(AdapterDelegates.adapterDelegatesLayoutContainer)
-    implementation(AdapterDelegates.adapterDelegatesViewbinding)
 }
