@@ -3,28 +3,40 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.util.compose
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductEvent
@@ -85,11 +97,16 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     private fun handleEventList(eventList: List<EditMenuProductEvent>) {
         eventList.forEach { event ->
             when (event) {
-                is EditMenuProductEvent.ShowUpdatedProduct -> {
+                is EditMenuProductEvent.ShowUpdatProductSuccess -> {
+                    (activity as? MessageHost)?.showInfoMessage(
+                        resources.getString(R.string.msg_product_updated, event.productName)
+                    )
                     findNavController().popBackStack()
                 }
-                is EditMenuProductEvent.ShowErrorOnUpdatedProduct -> {
-
+                is EditMenuProductEvent.ShowUpdateProductError -> {
+                    /*   (activity as? MessageHost)?.showErrorMessage(
+                           resources.getString(R.string.msg_product_updated, event.productName)
+                       )*/
                 }
             }
         }
@@ -99,66 +116,130 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     fun EditMenuProductSuccessScreen(state: EditMenuProductUIState.EditMenuProductState.Success) {
         Column(
-            modifier = Modifier.padding(
-                horizontal = 16.dp
-            )
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp)
         ) {
-            AdminTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.name,
-                labelStringId = R.string.hint_edit_menu_product_name,
-                onValueChange = { value ->
-                    viewModel.onNameTextChanged(value)
-                },
-                errorMessageId = if (state.hasNameError) {
-                    R.string.error_edit_menu_product_empty_name
-                } else {
-                    null
-                },
-            )
+            AdminCard(
+                clickable = false
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                ) {
+                    AdminTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.name,
+                        labelStringId = R.string.hint_edit_menu_product_name,
+                        onValueChange = { value ->
+                            viewModel.onNameTextChanged(value)
+                        },
+                        errorMessageId = if (state.hasNameError) {
+                            R.string.error_edit_menu_product_empty_name
+                        } else {
+                            null
+                        },
+                    )
 
-            AdminTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.description,
-                labelStringId = R.string.hint_edit_menu_product_description,
-                onValueChange = { value ->
-                    viewModel.onDescriptionTextChanged(value)
-                },
-                maxLines = 10,
-                errorMessageId = if (state.hasDescriptionError) {
-                    R.string.error_edit_menu_product_empty_description
-                } else {
-                    null
-                },
-            )
+                    AdminTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.newPrice,
+                        labelStringId = R.string.hint_edit_menu_product_new_price,
+                        onValueChange = { value ->
+                            viewModel.onNewPriceTextChanged(value)
+                        },
+                        errorMessageId = if (state.hasNewPriceError) {
+                            R.string.error_edit_menu_product_empty_new_price
+                        } else {
+                            null
+                        },
+                    )
 
-            AdminTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.newPrice,
-                labelStringId = R.string.hint_edit_menu_product_new_price,
-                onValueChange = { value ->
-                    viewModel.onNewPriceTextChanged(value)
-                },
-                errorMessageId = if (state.hasNewPriceError) {
-                    R.string.error_edit_menu_product_empty_new_price
-                } else {
-                    null
-                },
-            )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        AdminTextField(
+                            modifier = Modifier.weight(1f),
+                            value = state.nutrition,
+                            labelStringId = R.string.hint_edit_menu_product_nutrition,
+                            onValueChange = { value ->
+                                viewModel.onNutritionTextChanged(value)
+                            },
+                            errorMessageId = if (state.hasNewPriceError) {
+                                R.string.error_edit_menu_product_empty_nutrition
+                            } else {
+                                null
+                            },
+                        )
 
-            AdminTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.oldPrice,
-                labelStringId = R.string.hint_edit_menu_product_old_price,
-                onValueChange = { value ->
-                    viewModel.onOldPriceTextChanged(value)
-                },
-                errorMessageId = if (state.hasOldPriceError) {
-                    R.string.error_edit_menu_product_empty_name
-                } else {
-                    null
-                },
-            )
+                        val focusManager = LocalFocusManager.current
+
+                        var expanded by remember() {
+                            mutableStateOf(false)
+                        }
+
+                        AdminTextFieldWithMenu(
+                            modifier = Modifier
+                                .weight(1f)
+                                .onFocusChanged { focusState ->
+                                    expanded =
+                                        focusState.isFocused
+                                },
+                            expanded = expanded,
+                            onExpandedChange = { value ->
+                                expanded = value
+                            },
+                            value = state.utils,
+                            labelStringId = R.string.hint_edit_menu_product_utils,
+                            onValueChange = { value ->
+                                //viewModel.onStreetTextChanged(value)
+                            },
+                            /*  errorMessageId = if (state.hasStreetError) {
+                                  R.string.error_create_address_street
+                              } else {
+                                  null
+                              },*/
+                            suggestionsList = stringArrayResource(id = R.array.utilsList)
+                                .mapIndexed { index, util ->
+                                    Suggestion(index.toString(), util)
+                                },
+                            onSuggestionClick = { suggestion ->
+                                focusManager.moveFocus(FocusDirection.Down)
+                                viewModel.onSuggestedUtilsSelected(suggestion)
+                            }
+                        )
+                    }
+
+                    AdminTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.oldPrice,
+                        labelStringId = R.string.hint_edit_menu_product_old_price,
+                        onValueChange = { value ->
+                            viewModel.onOldPriceTextChanged(value)
+                        },
+                        errorMessageId = if (state.hasOldPriceError) {
+                            R.string.error_edit_menu_product_empty_name
+                        } else {
+                            null
+                        },
+                    )
+
+                    AdminTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.description,
+                        labelStringId = R.string.hint_edit_menu_product_description,
+                        onValueChange = { value ->
+                            viewModel.onDescriptionTextChanged(value)
+                        },
+                        maxLines = 10,
+                        errorMessageId = if (state.hasDescriptionError) {
+                            R.string.error_edit_menu_product_empty_description
+                        } else {
+                            null
+                        },
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -200,6 +281,9 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     hasNewPriceError = false,
                     oldPrice = "Цена до скидки",
                     hasOldPriceError = false,
+                    nutrition = "200",
+                    hasNutritionError = false,
+                    utils = "г",
                 )
             )
         }

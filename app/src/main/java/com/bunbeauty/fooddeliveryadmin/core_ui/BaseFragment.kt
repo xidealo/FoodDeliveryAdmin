@@ -31,7 +31,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
     private var mutableBinding: B? = null
     protected val binding
         get() = checkNotNull(mutableBinding)
-    protected val textInputMap = HashMap<String, TextInputLayout>()
     protected abstract val viewModel: BaseViewModel
 
     @Suppress("UNCHECKED_CAST")
@@ -44,44 +43,9 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         return mutableBinding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.message.onEach { message ->
-            showSnackbar(message, R.color.lightTextColor, R.color.colorPrimary)
-        }.startedLaunch(viewLifecycleOwner)
-        viewModel.error.onEach { error ->
-            showSnackbar(error, R.color.lightTextColor, R.color.errorColor)
-        }.startedLaunch(viewLifecycleOwner)
-        viewModel.fieldError.onEach { fieldError ->
-            textInputMap.values.forEach { textInput ->
-                textInput.error = null
-                textInput.clearFocus()
-            }
-            textInputMap[fieldError.key]?.error = fieldError.message
-            textInputMap[fieldError.key]?.requestFocus()
-        }.startedLaunch(viewLifecycleOwner)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         mutableBinding = null
-    }
-
-    fun showSnackbar(errorMessage: String, textColorId: Int, backgroundColorId: Int) {
-        val snack = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), backgroundColorId))
-            .setTextColor(ContextCompat.getColor(requireContext(), textColorId))
-            .setActionTextColor(ContextCompat.getColor(requireContext(), textColorId))
-        val layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
-            gravity = Gravity.TOP
-            setMargins(16, 16, 16, 0)
-        }
-        with(snack) {
-            view.layoutParams = layoutParams
-            view.findViewById<TextView>(R.id.snackbar_text).textAlignment = TEXT_ALIGNMENT_CENTER
-            show()
-        }
     }
 
     @Suppress("UNCHECKED_CAST")

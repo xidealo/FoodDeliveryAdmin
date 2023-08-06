@@ -66,47 +66,47 @@ class CreateMenuProductViewModel @Inject constructor(
         comboDescription: String
     ) {
         if (photo == null) {
-            sendError(resourcesProvider.getString(R.string.error_create_menu_product_image_not_loaded))
+            //sendError(resourcesProvider.getString(R.string.error_create_menu_product_image_not_loaded))
             return
         }
 
         if (name.isEmpty()) {
-            sendFieldError(
+          /*  sendFieldError(
                 PRODUCT_NAME_ERROR_KEY,
                 resourcesProvider.getString(R.string.error_create_menu_product_empty_name)
-            )
+            )*/
             return
         }
 
         val productCode = stringUtil.getProductCode(productCodeString)
         if (productCode == null) {
-            sendError(resourcesProvider.getString(R.string.error_create_menu_product_category_not_selected))
+           // sendError(resourcesProvider.getString(R.string.error_create_menu_product_category_not_selected))
             return
         }
 
         val costInt = cost.toIntOrNull()
         if (costInt == null) {
-            sendFieldError(
+           /* sendFieldError(
                 PRODUCT_COST_ERROR_KEY,
                 resourcesProvider.getString(R.string.error_create_menu_product_cost_incorrect)
-            )
+            )*/
             return
         }
 
         val discountCostInt = discountCost.toIntOrNull()
         if (discountCostInt != null && discountCostInt >= costInt) {
-            sendFieldError(
+       /*     sendFieldError(
                 PRODUCT_DISCOUNT_COST_ERROR_KEY,
                 resourcesProvider.getString(R.string.error_create_menu_product_discount_cost_incorrect)
-            )
+            )*/
             return
         }
 
         if (productCode == ProductCode.COMBO && comboDescription.isEmpty()) {
-            sendFieldError(
+         /*   sendFieldError(
                 PRODUCT_COMBO_DESCRIPTION_ERROR_KEY,
                 resourcesProvider.getString(R.string.error_create_menu_product_combo_description_incorrect)
-            )
+            )*/
             return
         }
 

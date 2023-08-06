@@ -20,7 +20,12 @@ data class EditMenuProductUIState(
             val hasNewPriceError: Boolean,
 
             val oldPrice: String,
-            val hasOldPriceError: Boolean
+            val hasOldPriceError: Boolean,
+
+            val nutrition: String,
+            val hasNutritionError: Boolean,
+
+            val utils: String,
         ) : EditMenuProductState
 
         object Error : EditMenuProductState

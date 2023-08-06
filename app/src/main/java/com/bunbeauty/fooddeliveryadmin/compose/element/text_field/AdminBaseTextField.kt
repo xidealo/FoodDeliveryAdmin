@@ -24,7 +24,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.icon16
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodDeliveryBaseTextField(
     modifier: Modifier = Modifier,

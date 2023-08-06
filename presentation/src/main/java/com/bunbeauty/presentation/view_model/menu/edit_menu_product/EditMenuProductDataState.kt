@@ -5,6 +5,7 @@ import com.bunbeauty.domain.model.menu_product.MenuProduct
 data class EditMenuProductDataState(
     val state: State = State.LOADING,
     val menuProduct: MenuProduct? = null,
+    val constName: String = "",
     val name: String = "",
     val hasNameError: Boolean = false,
     val description: String = "",
@@ -13,6 +14,9 @@ data class EditMenuProductDataState(
     val hasNewPriceError: Boolean = false,
     val oldPrice: String = "",
     val hasOldPriceError: Boolean = false,
+    val nutrition: String = "",
+    val hasNutritionError: Boolean = false,
+    val utils: String = "",
     val eventList: List<EditMenuProductEvent> = emptyList()
 ) {
 

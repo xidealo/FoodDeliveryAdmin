@@ -77,12 +77,12 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
                 fragmentCreateMenuProductTilComboDescription.isVisible = isVisible
             }.startedLaunch(viewLifecycleOwner)
 
-            textInputMap[PRODUCT_NAME_ERROR_KEY] = fragmentCreateMenuProductTilName
+       /*     textInputMap[PRODUCT_NAME_ERROR_KEY] = fragmentCreateMenuProductTilName
             textInputMap[PRODUCT_COST_ERROR_KEY] = fragmentCreateMenuProductTilCost
             textInputMap[PRODUCT_DISCOUNT_COST_ERROR_KEY] = fragmentCreateMenuProductTilDiscountCost
             textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] =
                 fragmentCreateMenuProductTilComboDescription
-
+*/
             fragmentCreateMenuProductBtnCreate.setOnClickListener {
                 viewModel.createMenuProduct(
                     fragmentCreateMenuProductEtName.text.toString(),

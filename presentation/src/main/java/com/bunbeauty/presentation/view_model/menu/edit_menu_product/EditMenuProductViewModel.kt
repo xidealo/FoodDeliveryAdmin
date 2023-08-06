@@ -1,16 +1,13 @@
 package com.bunbeauty.presentation.view_model.menu.edit_menu_product
 
-import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.ProductCode
+import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.domain.use_case.GetMenuProductUseCase
 import com.bunbeauty.domain.use_case.UpdateMenuProductUseCase
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
 import com.bunbeauty.presentation.model.list.MenuProductCode
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditMenuProductViewModel @Inject constructor(
-    private val resourcesProvider: IResourcesProvider,
     private val stringUtil: IStringUtil,
     private val getMenuProductUseCase: GetMenuProductUseCase,
     private val updateMenuProductUseCase: UpdateMenuProductUseCase
@@ -32,8 +28,6 @@ class EditMenuProductViewModel @Inject constructor(
         .map { productCode ->
             MenuProductCode(title = stringUtil.getProductCodeString(productCode))
         }
-
-    var photo: Bitmap? = null
 
     private val mutableState = MutableStateFlow(EditMenuProductDataState())
     val editMenuProductUiState = mutableState.mapToStateFlow(viewModelScope) { state ->
@@ -48,6 +42,7 @@ class EditMenuProductViewModel @Inject constructor(
                     oldState.copy(
                         menuProduct = menuProduct,
                         name = menuProduct.name,
+                        constName = menuProduct.name,
                         description = menuProduct.description,
                         newPrice = menuProduct.newPrice.toString(),
                         oldPrice = menuProduct.oldPrice?.toString() ?: "",
@@ -74,23 +69,24 @@ class EditMenuProductViewModel @Inject constructor(
     fun updateMenuProduct() {
         viewModelScope.launchSafe(
             block = {
+                val name = mutableState.value.name.trim()
                 mutableState.value.menuProduct?.let { menuProduct ->
                     updateMenuProductUseCase(
                         menuProduct = menuProduct.copy(
-                            name = mutableState.value.name.trim(),
+                            name = name,
                             description = mutableState.value.description.trim(),
                             newPrice = mutableState.value.newPrice.toInt(),
                             oldPrice = mutableState.value.oldPrice.ifEmpty { null }?.toInt() ?: 0,
                         )
                     )
                     mutableState.update { oldState ->
-                        oldState + EditMenuProductEvent.ShowUpdatedProduct(menuProduct.name)
+                        oldState + EditMenuProductEvent.ShowUpdatProductSuccess(productName = name)
                     }
                 }
             },
             onError = {
                 mutableState.update { oldState ->
-                    oldState + EditMenuProductEvent.ShowErrorOnUpdatedProduct(
+                    oldState + EditMenuProductEvent.ShowUpdateProductError(
                         mutableState.value.menuProduct?.name ?: ""
                     )
                 }
@@ -116,6 +112,18 @@ class EditMenuProductViewModel @Inject constructor(
         }
     }
 
+    fun onNutritionTextChanged(nutrition: String) {
+        mutableState.update { state ->
+            state.copy(nutrition = nutrition)
+        }
+    }
+
+    fun onSuggestedUtilsSelected(suggestion: Suggestion) {
+        mutableState.update { state ->
+            state.copy(utils = suggestion.value)
+        }
+    }
+
     fun onOldPriceTextChanged(oldPrice: String) {
         mutableState.update { state ->
             state.copy(oldPrice = oldPrice)
@@ -126,10 +134,6 @@ class EditMenuProductViewModel @Inject constructor(
         //sendMessage(name + resourcesProvider.getString(R.string.msg_product_deleted))
     }
 
-    private fun finishEditing(productName: String) {
-        sendMessage(productName + resourcesProvider.getString(R.string.msg_product_updated))
-    }
-
     fun consumeEvents(events: List<EditMenuProductEvent>) {
         mutableState.update { dataState ->
             dataState - events
@@ -138,7 +142,7 @@ class EditMenuProductViewModel @Inject constructor(
 
     private fun mapState(dataState: EditMenuProductDataState): EditMenuProductUIState {
         return EditMenuProductUIState(
-            title = dataState.name,
+            title = dataState.constName,
             editMenuProductState = when (dataState.state) {
                 EditMenuProductDataState.State.SUCCESS -> {
                     EditMenuProductUIState.EditMenuProductState.Success(
@@ -150,6 +154,9 @@ class EditMenuProductViewModel @Inject constructor(
                         hasNewPriceError = dataState.hasNewPriceError,
                         oldPrice = dataState.oldPrice,
                         hasOldPriceError = dataState.hasOldPriceError,
+                        utils = dataState.utils,
+                        nutrition = dataState.nutrition,
+                        hasNutritionError = false
                     )
                 }
                 EditMenuProductDataState.State.LOADING -> EditMenuProductUIState.EditMenuProductState.Loading
