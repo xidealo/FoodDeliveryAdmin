@@ -41,6 +41,7 @@
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>
     <string name="msg_order_details_pickup_method">Способ получения</string>
+    <string name="msg_order_details_payment_method">Способ оплаты</string>
     <string name="msg_order_details_phone">Номер телефона</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
@@ -59,6 +60,11 @@
     <string name="action_order_details_no">Нет</string>
     <string name="title_order_details_choice_cafe">Выбрать кафе</string>
     <string name="title_order_status">Статус заказа</string>
+
+    <string name="msg_payment_cash">Наличные</string>
+    <string name="msg_payment_card">Картой при получении</string>
+    <string name="msg_payment_card_number">Переводом по номеру карты</string>
+    <string name="msg_payment_phone_number">Переводом по номеру телефона</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_orders">Заказы</string>

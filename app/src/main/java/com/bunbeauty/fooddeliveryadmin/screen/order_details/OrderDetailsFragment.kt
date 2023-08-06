@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bunbeauty.domain.model.order.details.PaymentMethod
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
@@ -56,6 +57,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val PHONE_LINK = "tel:"
 
@@ -65,6 +67,9 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 
     override val viewModel: OrderDetailsViewModel by viewModels()
+
+    @Inject
+    lateinit var paymentMethodMapper: PaymentMethodMapper
 
     private var statusListJob: Job? = null
 
@@ -186,7 +191,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -206,19 +212,28 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         )
                     }
                 }
+                Row {
+                    OrderInfoTextColumn(
+                        modifier = Modifier.weight(1f),
+                        hint = stringResource(R.string.msg_order_details_pickup_method),
+                        info = stateSuccess.receiptMethod,
+                    )
+                    stateSuccess.paymentMethod?.let { paymentMethod ->
+                        OrderInfoTextColumn(
+                            modifier = Modifier
+                                .padding(start = 16.dp)
+                                .weight(1f),
+                            hint = stringResource(R.string.msg_order_details_payment_method),
+                            info = paymentMethodMapper.map(paymentMethod),
+                        )
+                    }
+                }
                 OrderInfoTextColumn(
-                    modifier = Modifier.padding(top = 8.dp),
-                    hint = stringResource(R.string.msg_order_details_pickup_method),
-                    info = stateSuccess.receiptMethod,
-                )
-                OrderInfoTextColumn(
-                    modifier = Modifier.padding(top = 8.dp),
                     hint = stringResource(R.string.msg_order_details_address),
                     info = stateSuccess.address,
                 )
                 stateSuccess.comment?.let { comment ->
                     OrderInfoTextColumn(
-                        modifier = Modifier.padding(top = 8.dp),
                         hint = stringResource(R.string.msg_order_details_comment),
                         info = comment,
                     )
@@ -364,6 +379,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                             hint = "Время доставки",
                             value = "18:30"
                         ),
+                        paymentMethod = PaymentMethod.CARD,
                         receiptMethod = "Доставка",
                         address = "улица Чапаева, д 22А, кв 15",
                         comment = "Не забудте привезти еду",

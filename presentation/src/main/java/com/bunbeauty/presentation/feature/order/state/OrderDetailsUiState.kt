@@ -1,5 +1,7 @@
 package com.bunbeauty.presentation.feature.order.state
 
+import com.bunbeauty.domain.model.order.details.PaymentMethod
+
 data class OrderDetailsUiState(
     val title: String,
     val state: State,
@@ -12,6 +14,7 @@ data class OrderDetailsUiState(
         data class Success(
             val dateTime: String,
             val deferredTime: HintWithValue?,
+            val paymentMethod: PaymentMethod?,
             val receiptMethod: String,
             val address: String,
             val comment: String?,
