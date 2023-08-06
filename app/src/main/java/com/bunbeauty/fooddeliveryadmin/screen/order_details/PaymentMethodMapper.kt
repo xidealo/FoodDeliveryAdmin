@@ -17,5 +17,4 @@ class PaymentMethodMapper @Inject constructor(private val resources: Resources) 
             resources.getString(nameResId)
         }
     }
-
 }
