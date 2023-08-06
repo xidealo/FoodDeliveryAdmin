@@ -24,6 +24,7 @@ class EditMenuProductViewModel @Inject constructor(
     private val updateMenuProductUseCase: UpdateMenuProductUseCase
 ) : BaseViewModel() {
 
+
     private val menuProductCodeList = ProductCode.values()
         .map { productCode ->
             MenuProductCode(title = stringUtil.getProductCodeString(productCode))
@@ -46,7 +47,9 @@ class EditMenuProductViewModel @Inject constructor(
                         description = menuProduct.description,
                         newPrice = menuProduct.newPrice.toString(),
                         oldPrice = menuProduct.oldPrice?.toString() ?: "",
-                        state = EditMenuProductDataState.State.SUCCESS
+                        state = EditMenuProductDataState.State.SUCCESS,
+                        nutrition = menuProduct.nutrition?.toString() ?: "",
+                        utils = menuProduct.utils,
                     )
                 }
             },

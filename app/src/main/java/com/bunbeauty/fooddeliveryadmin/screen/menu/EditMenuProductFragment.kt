@@ -159,7 +159,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             .fillMaxWidth()
                     ) {
                         AdminTextField(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(0.7f),
                             value = state.nutrition,
                             labelStringId = R.string.hint_edit_menu_product_nutrition,
                             onValueChange = { value ->
@@ -180,7 +180,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
                         AdminTextFieldWithMenu(
                             modifier = Modifier
-                                .weight(1f)
+                                .weight(0.3f)
+                                .padding(start = 8.dp)
                                 .onFocusChanged { focusState ->
                                     expanded =
                                         focusState.isFocused

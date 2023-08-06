@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -14,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
@@ -31,9 +29,8 @@ fun AdminTextFieldWithMenu(
     suggestionsList: List<Suggestion> = emptyList(),
     onSuggestionClick: (suggestion: Suggestion) -> Unit,
 ) {
-    Column {
+    Column(modifier = modifier) {
         ExposedDropdownMenuBox(
-            modifier = modifier,
             expanded = expanded,
             onExpandedChange = onExpandedChange
         ) {
@@ -43,20 +40,16 @@ fun AdminTextFieldWithMenu(
                 value = value,
                 labelStringId = labelStringId,
                 onValueChange = onValueChange,
-                isError = errorMessageId != null
+                isError = errorMessageId != null,
+                readOnly = true
             )
 
             if (suggestionsList.isNotEmpty()) {
-                DropdownMenu(
+                ExposedDropdownMenu(
                     modifier = Modifier
                         .background(AdminTheme.colors.main.surface)
                         .exposedDropdownSize(),
                     expanded = expanded,
-                    properties = PopupProperties(
-                        focusable = false,
-                        dismissOnClickOutside = true,
-                        dismissOnBackPress = true
-                    ),
                     onDismissRequest = {}
                 ) {
                     suggestionsList.forEach { suggestion ->

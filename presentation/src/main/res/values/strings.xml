@@ -97,7 +97,7 @@
     <string name="title_edit_menu_product_select_category">Выберите категорию</string>
     <string name="msg_product_updated">%s обновлён</string>
     <string name="msg_product_deleted">&#160;удалён</string>
-    <string name="hint_edit_menu_product_utils">Единицы</string>
+    <string name="hint_edit_menu_product_utils">Ед</string>
 
     <string-array name="utilsList">
         <item>г</item>

@@ -34,11 +34,13 @@ fun FoodDeliveryBaseTextField(
     onValueChange: (value: String) -> Unit,
     maxSymbols: Int = Int.MAX_VALUE,
     maxLines: Int = 1,
-    isError: Boolean = false
+    isError: Boolean = false,
+    readOnly: Boolean = false
 ) {
     OutlinedTextField(
         modifier = modifier,
         value = value,
+        readOnly = readOnly,
         onValueChange = { changedValue ->
             onValueChange(changedValue.take(maxSymbols))
         },
@@ -76,7 +78,6 @@ fun FoodDeliveryBaseTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodDeliveryBaseTextField(
     modifier: Modifier = Modifier,
