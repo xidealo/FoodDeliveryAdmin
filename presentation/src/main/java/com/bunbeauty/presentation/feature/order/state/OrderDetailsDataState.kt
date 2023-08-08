@@ -1,6 +1,6 @@
 package com.bunbeauty.presentation.feature.order.state
 
-import com.bunbeauty.domain.model.order.OrderDetails
+import com.bunbeauty.domain.model.order.details.OrderDetails
 
 data class OrderDetailsDataState(
     val state: State,

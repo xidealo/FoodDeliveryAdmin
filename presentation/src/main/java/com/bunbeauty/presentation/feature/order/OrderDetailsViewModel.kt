@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.feature.order.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.UpdateOrderStatusUseCase
-import com.bunbeauty.domain.model.order.OrderDetails
+import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe

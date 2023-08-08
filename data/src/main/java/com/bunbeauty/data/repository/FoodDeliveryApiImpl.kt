@@ -10,7 +10,7 @@ import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
-import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -46,7 +46,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     private var webSocketSession: DefaultClientWebSocketSession? = null
 
-    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<ServerOrder>>()
+    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<OrderServer>>()
 
     private val mutex = Mutex()
 
@@ -138,7 +138,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
         cafeUuid: String
-    ): Flow<ApiResult<ServerOrder>> {
+    ): Flow<ApiResult<OrderServer>> {
         mutex.withLock {
             if (!webSocketSessionOpened) {
                 subscribeOnOrderUpdates(token, cafeUuid)
@@ -166,7 +166,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                         val message = incoming.receive() as? Frame.Text ?: continue
                         Log.d(WEB_SOCKET_TAG, "Message: ${message.readText()}")
                         val serverModel =
-                            json.decodeFromString(ServerOrder.serializer(), message.readText())
+                            json.decodeFromString(OrderServer.serializer(), message.readText())
                         mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
                     }
                 }
@@ -203,7 +203,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String
-    ): ApiResult<ServerList<ServerOrder>> {
+    ): ApiResult<ServerList<OrderServer>> {
         return executeGetRequest(
             path = "order",
             parameters = hashMapOf("cafeUuid" to cafeUuid),

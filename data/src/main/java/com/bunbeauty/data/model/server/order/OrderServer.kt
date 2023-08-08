@@ -2,7 +2,7 @@ package com.bunbeauty.data.model.server.order
 import kotlinx.serialization.Serializable
 
 @Serializable
-class ServerOrder(
+class OrderServer(
     val uuid: String,
     val code: String,
     val status: String,

@@ -2,59 +2,63 @@ package com.bunbeauty.data.mapper.order
 
 import com.bunbeauty.data.mapper.CartProductMapper
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
-import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.order.ClientUser
+import com.bunbeauty.domain.model.order.details.ClientUser
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.OrderAddress
-import com.bunbeauty.domain.model.order.OrderDetails
+import com.bunbeauty.domain.model.order.details.OrderAddress
+import com.bunbeauty.domain.model.order.details.OrderDetails
+import com.bunbeauty.domain.model.order.details.PaymentMethod
 import javax.inject.Inject
 
 class ServerOrderMapper @Inject constructor(
     private val cartProductMapper: CartProductMapper
 ) : IServerOrderMapper {
 
-    override fun toModel(order: OrderDetailsServer): OrderDetails {
+    override fun mapOrderDetails(orderDetailsServer: OrderDetailsServer): OrderDetails {
         return OrderDetails(
-            uuid = order.uuid,
-            code = order.code,
-            status = getOrderStatus(order.status),
-            time = order.time,
-            timeZone = order.timeZone,
-            isDelivery = order.isDelivery,
-            deferredTime = order.deferredTime,
+            uuid = orderDetailsServer.uuid,
+            code = orderDetailsServer.code,
+            status = getOrderStatus(orderDetailsServer.status),
+            time = orderDetailsServer.time,
+            timeZone = orderDetailsServer.timeZone,
+            isDelivery = orderDetailsServer.isDelivery,
+            deferredTime = orderDetailsServer.deferredTime,
+            paymentMethod = PaymentMethod.values().firstOrNull { paymentMethod  ->
+                paymentMethod.name == orderDetailsServer.paymentMethod
+            },
             address = OrderAddress(
-                description = order.address.description,
-                street = order.address.street,
-                house = order.address.house,
-                flat = order.address.flat,
-                entrance = order.address.entrance,
-                floor = order.address.floor,
-                comment = order.address.comment,
+                description = orderDetailsServer.address.description,
+                street = orderDetailsServer.address.street,
+                house = orderDetailsServer.address.house,
+                flat = orderDetailsServer.address.flat,
+                entrance = orderDetailsServer.address.entrance,
+                floor = orderDetailsServer.address.floor,
+                comment = orderDetailsServer.address.comment,
             ),
-            comment = order.comment,
+            comment = orderDetailsServer.comment,
             clientUser = ClientUser(
-                uuid = order.clientUser.uuid,
-                phoneNumber = order.clientUser.phoneNumber,
-                email = order.clientUser.email,
+                uuid = orderDetailsServer.clientUser.uuid,
+                phoneNumber = orderDetailsServer.clientUser.phoneNumber,
+                email = orderDetailsServer.clientUser.email,
             ),
-            cafeUuid = order.cafeUuid,
-            deliveryCost = order.deliveryCost,
-            oldTotalCost = order.oldTotalCost,
-            newTotalCost = order.newTotalCost,
-            oderProductList = order.oderProductList.map(cartProductMapper::toModel),
-            availableStatusList = order.availableStatusList.mapNotNull(::getOrderStatusNullable),
+            cafeUuid = orderDetailsServer.cafeUuid,
+            deliveryCost = orderDetailsServer.deliveryCost,
+            oldTotalCost = orderDetailsServer.oldTotalCost,
+            newTotalCost = orderDetailsServer.newTotalCost,
+            oderProductList = orderDetailsServer.oderProductList.map(cartProductMapper::toModel),
+            availableStatusList = orderDetailsServer.availableStatusList.mapNotNull(::getOrderStatusNullable),
         )
     }
 
-    override fun toModel(order: ServerOrder): Order {
+    override fun mapOrder(orderServer: OrderServer): Order {
         return Order(
-            uuid = order.uuid,
-            code = order.code,
-            time = order.time,
-            deferredTime = order.deferredTime,
-            timeZone = order.timeZone,
-            orderStatus = getOrderStatus(order.status),
+            uuid = orderServer.uuid,
+            code = orderServer.code,
+            time = orderServer.time,
+            deferredTime = orderServer.deferredTime,
+            timeZone = orderServer.timeZone,
+            orderStatus = getOrderStatus(orderServer.status),
         )
     }
 

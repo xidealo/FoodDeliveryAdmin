@@ -5,7 +5,7 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
-import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
@@ -42,14 +42,14 @@ interface FoodDeliveryApi {
     suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
         cafeUuid: String
-    ): Flow<ApiResult<ServerOrder>>
+    ): Flow<ApiResult<OrderServer>>
 
     suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String
-    ): ApiResult<ServerList<ServerOrder>>
+    ): ApiResult<ServerList<OrderServer>>
 
     suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<OrderDetailsServer>
 
