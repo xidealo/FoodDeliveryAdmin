@@ -199,15 +199,6 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <!-- BOTTOM BAR -->
-
-    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemIconSize">24dp</item>
-        <item name="menu">@menu/bottom_navigation_menu</item>
-        <item name="itemIconTint">@color/selector_navigation</item>
-        <item name="itemTextColor">@color/selector_navigation</item>
-    </style>
-
     <!-- BOTTOM SHEET -->
 
     <style name="DialogFragmentStyle" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">

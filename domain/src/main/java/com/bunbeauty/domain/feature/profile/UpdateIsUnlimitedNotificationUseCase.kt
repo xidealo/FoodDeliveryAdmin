@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.settings
+package com.bunbeauty.domain.feature.profile
 
 import com.bunbeauty.domain.repo.DataStoreRepo
 import javax.inject.Inject
