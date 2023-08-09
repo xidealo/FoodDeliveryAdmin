@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -35,7 +34,8 @@ fun FoodDeliveryBaseTextField(
     maxSymbols: Int = Int.MAX_VALUE,
     maxLines: Int = 1,
     isError: Boolean = false,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -75,6 +75,7 @@ fun FoodDeliveryBaseTextField(
         singleLine = maxLines == 1,
         maxLines = maxLines,
         colors = AdminTextFieldDefaults.textFieldColors,
+        enabled = enabled
     )
 }
 
@@ -88,7 +89,9 @@ fun FoodDeliveryBaseTextField(
     onValueChange: (value: TextFieldValue) -> Unit,
     maxSymbols: Int = Int.MAX_VALUE,
     maxLines: Int = 1,
-    isError: Boolean = false
+    isError: Boolean = false,
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides AdminTextFieldDefaults.textSelectionColors
@@ -134,6 +137,7 @@ fun FoodDeliveryBaseTextField(
             singleLine = maxLines == 1,
             maxLines = maxLines,
             colors = AdminTextFieldDefaults.textFieldColors,
+            enabled = enabled
         )
     }
 }

@@ -72,6 +72,13 @@ class EditMenuProductViewModel @Inject constructor(
     fun updateMenuProduct() {
         viewModelScope.launchSafe(
             block = {
+
+                mutableState.update { oldState ->
+                    oldState.copy(
+                        isLoadingButton = true
+                    )
+                }
+
                 val name = mutableState.value.name.trim()
                 mutableState.value.menuProduct?.let { menuProduct ->
                     updateMenuProductUseCase(
@@ -80,6 +87,8 @@ class EditMenuProductViewModel @Inject constructor(
                             description = mutableState.value.description.trim(),
                             newPrice = mutableState.value.newPrice.toInt(),
                             oldPrice = mutableState.value.oldPrice.ifEmpty { null }?.toInt() ?: 0,
+                            utils = mutableState.value.utils,
+                            nutrition = mutableState.value.nutrition.toIntOrNull()
                         )
                     )
                     mutableState.update { oldState ->
@@ -159,7 +168,8 @@ class EditMenuProductViewModel @Inject constructor(
                         hasOldPriceError = dataState.hasOldPriceError,
                         utils = dataState.utils,
                         nutrition = dataState.nutrition,
-                        hasNutritionError = false
+                        hasNutritionError = dataState.hasNutritionError,
+                        isLoadingButton = dataState.isLoadingButton
                     )
                 }
                 EditMenuProductDataState.State.LOADING -> EditMenuProductUIState.EditMenuProductState.Loading

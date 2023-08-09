@@ -26,6 +26,8 @@ data class EditMenuProductUIState(
             val hasNutritionError: Boolean,
 
             val utils: String,
+
+            val isLoadingButton: Boolean
         ) : EditMenuProductState
 
         object Error : EditMenuProductState

@@ -28,6 +28,7 @@ fun AdminTextFieldWithMenu(
     @StringRes errorMessageId: Int? = null,
     suggestionsList: List<Suggestion> = emptyList(),
     onSuggestionClick: (suggestion: Suggestion) -> Unit,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         ExposedDropdownMenuBox(
@@ -41,7 +42,8 @@ fun AdminTextFieldWithMenu(
                 labelStringId = labelStringId,
                 onValueChange = onValueChange,
                 isError = errorMessageId != null,
-                readOnly = true
+                readOnly = true,
+                enabled = enabled
             )
 
             if (suggestionsList.isNotEmpty()) {

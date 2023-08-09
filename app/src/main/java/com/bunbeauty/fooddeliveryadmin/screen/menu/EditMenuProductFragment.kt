@@ -18,6 +18,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
@@ -27,7 +28,7 @@ import androidx.navigation.fragment.navArgs
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextFieldWithMenu
@@ -55,14 +56,6 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     override val viewModel: EditMenuProductViewModel by viewModels()
 
     private val editMenuProductFragmentArgs: EditMenuProductFragmentArgs by navArgs()
-
-//    private val imageLauncher =
-//        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            if (uri != null) {
-//                binding.fragmentEditMenuProductIvPhoto.setImageURI(uri)
-//                viewModel.photo = binding.fragmentEditMenuProductIvPhoto.getBitmap()
-//            }
-//        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -138,6 +131,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         } else {
                             null
                         },
+                        enabled = !state.isLoadingButton
                     )
 
                     AdminTextField(
@@ -152,6 +146,24 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         } else {
                             null
                         },
+                        enabled = !state.isLoadingButton,
+                        keyboardType = KeyboardType.Number
+                    )
+
+                    AdminTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.oldPrice,
+                        labelStringId = R.string.hint_edit_menu_product_old_price,
+                        onValueChange = { value ->
+                            viewModel.onOldPriceTextChanged(value)
+                        },
+                        errorMessageId = if (state.hasOldPriceError) {
+                            R.string.error_edit_menu_product_empty_name
+                        } else {
+                            null
+                        },
+                        enabled = !state.isLoadingButton,
+                        keyboardType = KeyboardType.Number
                     )
 
                     Row(
@@ -170,6 +182,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             } else {
                                 null
                             },
+                            enabled = !state.isLoadingButton,
+                            keyboardType = KeyboardType.Number
                         )
 
                         val focusManager = LocalFocusManager.current
@@ -207,23 +221,10 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             onSuggestionClick = { suggestion ->
                                 focusManager.moveFocus(FocusDirection.Down)
                                 viewModel.onSuggestedUtilsSelected(suggestion)
-                            }
+                            },
+                            enabled = !state.isLoadingButton
                         )
                     }
-
-                    AdminTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.oldPrice,
-                        labelStringId = R.string.hint_edit_menu_product_old_price,
-                        onValueChange = { value ->
-                            viewModel.onOldPriceTextChanged(value)
-                        },
-                        errorMessageId = if (state.hasOldPriceError) {
-                            R.string.error_edit_menu_product_empty_name
-                        } else {
-                            null
-                        },
-                    )
 
                     AdminTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -238,18 +239,20 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         } else {
                             null
                         },
+                        enabled = !state.isLoadingButton
                     )
                 }
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            MainButton(
+            LoadingButton(
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .padding(bottom = 16.dp),
                 textStringId = R.string.action_order_details_save,
-                onClick = viewModel::updateMenuProduct
+                onClick = viewModel::updateMenuProduct,
+                isLoading = state.isLoadingButton
             )
         }
     }
@@ -285,6 +288,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     nutrition = "200",
                     hasNutritionError = false,
                     utils = "г",
+                    isLoadingButton = false
                 )
             )
         }

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -34,6 +32,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
@@ -48,13 +47,9 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
 
     override val viewModel: MenuViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.loadData()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loadData()
 
         binding.root.compose {
             val menuViewState by viewModel.menuState.collectAsStateWithLifecycle()
@@ -78,7 +73,6 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MenuSuccessScreen(menuState: MenuState) {
         LazyColumn(
@@ -86,7 +80,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(menuState.menuProductItems) { menuProduct ->
-                Card(
+                AdminCard(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
                         findNavController().navigateSafe(

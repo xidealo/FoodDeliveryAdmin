@@ -30,7 +30,9 @@ fun AdminTextField(
     onValueChange: (value: String) -> Unit,
     maxSymbols: Int = Int.MAX_VALUE,
     maxLines: Int = 1,
-    @StringRes errorMessageId: Int? = null
+    @StringRes errorMessageId: Int? = null,
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         FoodDeliveryBaseTextField(
@@ -43,6 +45,8 @@ fun AdminTextField(
             maxSymbols = maxSymbols,
             maxLines = maxLines,
             isError = errorMessageId != null,
+            readOnly = readOnly,
+            enabled = enabled
         )
         errorMessageId?.let {
             Text(
@@ -68,7 +72,9 @@ fun AdminTextField(
     onValueChange: (value: TextFieldValue) -> Unit,
     maxSymbols: Int = Int.MAX_VALUE,
     maxLines: Int = 1,
-    @StringRes errorMessageId: Int? = null
+    @StringRes errorMessageId: Int? = null,
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         FoodDeliveryBaseTextField(
@@ -85,6 +91,8 @@ fun AdminTextField(
             maxSymbols = maxSymbols,
             maxLines = maxLines,
             isError = errorMessageId != null,
+            readOnly = readOnly,
+            enabled = enabled
         )
         errorMessageId?.let {
             Text(
