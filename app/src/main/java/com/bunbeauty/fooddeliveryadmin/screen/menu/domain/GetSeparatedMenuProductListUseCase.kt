@@ -15,10 +15,19 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
 ) {
-    suspend operator fun invoke(isRefreshing: Boolean): List<MenuProduct> {
-        return menuProductRepo.getMenuProductList(
+    suspend operator fun invoke(isRefreshing: Boolean): SeparatedMenuProductList {
+        val menuProductList = menuProductRepo.getMenuProductList(
             companyUuid = dataStoreRepo.companyUuid.first(),
             isRefreshing = isRefreshing
-        ).sortedBy { it.name }
+        )
+
+        return SeparatedMenuProductList(
+            visibleList = menuProductList
+                .filter { it.isVisible }
+                .sortedBy { it.name },
+            hiddenList = menuProductList
+                .filter { !it.isVisible }
+                .sortedBy { it.name },
+        )
     }
 }

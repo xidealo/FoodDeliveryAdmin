@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -35,11 +36,14 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.util.compose
-import com.bunbeauty.presentation.model.MenuState
+import com.bunbeauty.presentation.model.MenuEvent
+import com.bunbeauty.presentation.model.MenuProductItem
+import com.bunbeauty.presentation.model.MenuUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,95 +57,137 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
 
         binding.root.compose {
             val menuViewState by viewModel.menuState.collectAsStateWithLifecycle()
-            MenuScreen(menuState = menuViewState)
+            MenuScreen(menuUiState = menuViewState)
         }
     }
 
+    private fun handleEventList(eventList: List<MenuEvent>) {
+        eventList.forEach { event ->
+            when (event) {
+                is MenuEvent.GoToEditMenuProduct -> {
+                    findNavController().navigateSafe(
+                        MenuFragmentDirections.toEditMenuProductFragment(event.uuid)
+                    )
+                }
+            }
+        }
+        viewModel.consumeEvents(eventList)
+    }
+
     @Composable
-    fun MenuScreen(menuState: MenuState) {
+    fun MenuScreen(menuUiState: MenuUiState) {
         AdminScaffold(
             title = stringResource(R.string.title_bottom_navigation_menu),
             pullRefreshEnabled = true,
-            refreshing = menuState.isRefreshing,
+            refreshing = menuUiState.isRefreshing,
             onRefresh = viewModel::refreshData,
         ) {
-            if (menuState.throwable == null) {
-                MenuSuccessScreen(menuState)
-            } else {
-                MenuErrorScreen()
+            when (val state = menuUiState.state) {
+                is MenuUiState.State.Success -> {
+                    MenuSuccessScreen(state)
+                }
+                is MenuUiState.State.Error -> {
+                    MenuErrorScreen()
+                }
+                MenuUiState.State.Loading -> {
+                    LinearProgressIndicator(
+                        color = AdminTheme.colors.main.primary,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
+            LaunchedEffect(menuUiState.eventList) {
+                handleEventList(menuUiState.eventList)
             }
         }
     }
 
     @Composable
-    private fun MenuSuccessScreen(menuState: MenuState) {
+    private fun MenuSuccessScreen(
+        state: MenuUiState.State.Success
+    ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(menuState.menuProductItems) { menuProduct ->
-                AdminCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        findNavController().navigateSafe(
-                            MenuFragmentDirections.toEditMenuProductFragment(menuProduct.uuid)
-                        )
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        AsyncImage(
-                            modifier = Modifier
-                                .width(AdminTheme.dimensions.productImageSmallWidth)
-                                .height(AdminTheme.dimensions.productImageSmallHeight),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(menuProduct.photoLink)
-                                .crossfade(true)
-                                .build(),
-                            placeholder = painterResource(R.drawable.default_product),
-                            contentDescription = stringResource(R.string.description_product),
-                            contentScale = ContentScale.FillWidth
-                        )
-
-                        Text(
-                            text = menuProduct.name,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(top = AdminTheme.dimensions.smallSpace)
-                                .padding(horizontal = AdminTheme.dimensions.smallSpace)
-                        )
-
-                        IconButton(
-                            modifier = Modifier
-                                .align(CenterVertically)
-                                .padding(end = AdminTheme.dimensions.smallSpace),
-                            onClick = {
-                                viewModel.updateVisible(menuProduct)
-                            }
-                        ) {
-                            Icon(
-                                painter = if (menuProduct.visible) {
-                                    R.drawable.ic_invisible
-                                } else {
-                                    R.drawable.ic_visible
-                                }.let { iconId ->
-                                    painterResource(iconId)
-                                },
-                                contentDescription = null,
-                                tint = AdminTheme.colors.main.onSurfaceVariant
-                            )
-                        }
-                    }
+            if (state.visibleMenuProductItems.isNotEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.title_menu_product_visible),
+                        style = AdminTheme.typography.titleMedium.bold
+                    )
+                }
+                items(state.visibleMenuProductItems) { visibleMenuProduct ->
+                    MenuProductCard(visibleMenuProduct)
+                }
+            }
+            if (state.hiddenMenuProductItems.isNotEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.title_menu_product_hidden),
+                        style = AdminTheme.typography.titleMedium.bold
+                    )
+                }
+                items(state.hiddenMenuProductItems) { hiddenMenuProduct ->
+                    MenuProductCard(hiddenMenuProduct)
                 }
             }
         }
-        if (menuState.isLoading) {
-            LinearProgressIndicator(
-                color = AdminTheme.colors.main.primary,
-                modifier = Modifier.fillMaxWidth(),
-            )
+    }
+
+    @Composable
+    private fun MenuProductCard(menuProduct: MenuProductItem) {
+        AdminCard(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                viewModel.goToEditMenuProduct(menuProduct.uuid)
+            }
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .width(AdminTheme.dimensions.productImageSmallWidth)
+                        .height(AdminTheme.dimensions.productImageSmallHeight),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(menuProduct.photoLink)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(R.drawable.default_product),
+                    contentDescription = stringResource(R.string.description_product),
+                    contentScale = ContentScale.FillWidth
+                )
+
+                Text(
+                    text = menuProduct.name,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = AdminTheme.dimensions.smallSpace)
+                        .padding(horizontal = AdminTheme.dimensions.smallSpace)
+                )
+
+                IconButton(
+                    modifier = Modifier
+                        .align(CenterVertically)
+                        .padding(end = AdminTheme.dimensions.smallSpace),
+                    onClick = {
+                        viewModel.updateVisible(menuProduct)
+                    }
+                ) {
+                    Icon(
+                        painter = if (menuProduct.visible) {
+                            R.drawable.ic_visible
+                        } else {
+                            R.drawable.ic_invisible
+                        }.let { iconId ->
+                            painterResource(iconId)
+                        },
+                        contentDescription = null,
+                        tint = AdminTheme.colors.main.onSurfaceVariant
+                    )
+                }
+            }
         }
     }
 
@@ -159,34 +205,63 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
     private fun MenuScreenPreview() {
         AdminTheme {
             MenuScreen(
-                menuState = MenuState(
-                    menuProductItems = listOf(
-                        MenuState.MenuProductItem(
-                            name = "name",
-                            photoLink = "",
-                            visible = true,
-                            newCost = "500",
-                            oldCost = "1000",
-                            uuid = "asdasd"
+                menuUiState = MenuUiState(
+                    state = MenuUiState.State.Success(
+                        visibleMenuProductItems = listOf(
+                            MenuProductItem(
+                                name = "name",
+                                photoLink = "",
+                                visible = true,
+                                newCost = "500",
+                                oldCost = "1000",
+                                uuid = "asdasd"
+                            ),
+                            MenuProductItem(
+                                name = "name 1 ",
+                                photoLink = "",
+                                visible = true,
+                                newCost = "500",
+                                oldCost = "1000",
+                                uuid = "asdasd"
+                            ),
+                            MenuProductItem(
+                                name = "name 2 32423423412ыфвафва вфавафвыафвыавыф3",
+                                photoLink = "",
+                                visible = true,
+                                newCost = "500",
+                                oldCost = "1000",
+                                uuid = "asdasd"
+                            ),
                         ),
-                        MenuState.MenuProductItem(
-                            name = "name 1 ",
-                            photoLink = "",
-                            visible = true,
-                            newCost = "500",
-                            oldCost = "1000",
-                            uuid = "asdasd"
-                        ),
-                        MenuState.MenuProductItem(
-                            name = "name 2 32423423412ыфвафва вфавафвыафвыавыф3",
-                            photoLink = "",
-                            visible = true,
-                            newCost = "500",
-                            oldCost = "1000",
-                            uuid = "asdasd"
+                        hiddenMenuProductItems = listOf(
+                            MenuProductItem(
+                                name = "name",
+                                photoLink = "",
+                                visible = true,
+                                newCost = "500",
+                                oldCost = "1000",
+                                uuid = "asdasd"
+                            ),
+                            MenuProductItem(
+                                name = "name 1 ",
+                                photoLink = "",
+                                visible = true,
+                                newCost = "500",
+                                oldCost = "1000",
+                                uuid = "asdasd"
+                            ),
+                            MenuProductItem(
+                                name = "name 2 32423423412ыфвафва вфавафвыафвыавыф3",
+                                photoLink = "",
+                                visible = true,
+                                newCost = "500",
+                                oldCost = "1000",
+                                uuid = "asdasd"
+                            ),
                         ),
                     ),
-                    isLoading = false
+                    isRefreshing = false,
+                    eventList = emptyList(),
                 )
             )
         }
