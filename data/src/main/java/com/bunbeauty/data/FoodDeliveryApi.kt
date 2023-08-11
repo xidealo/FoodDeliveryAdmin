@@ -5,6 +5,7 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -21,7 +22,10 @@ interface FoodDeliveryApi {
     ): ApiResult<UserAuthorizationResponse>
 
     // CAFE
-    suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ServerList<CafeServer>>
+    suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
+
+    // CAFE
+    suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>
 
     // MENU PRODUCT
     suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer>

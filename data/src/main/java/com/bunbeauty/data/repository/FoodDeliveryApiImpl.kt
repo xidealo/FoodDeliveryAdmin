@@ -9,6 +9,7 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -41,7 +42,7 @@ import javax.inject.Inject
 
 class FoodDeliveryApiImpl @Inject constructor(
     private val client: HttpClient,
-    private val json: Json
+    private val json: Json,
 ) : FoodDeliveryApi {
 
     private var webSocketSession: DefaultClientWebSocketSession? = null
@@ -53,7 +54,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     private var webSocketSessionOpened = false
 
     override suspend fun login(
-        userAuthorizationRequest: UserAuthorizationRequest
+        userAuthorizationRequest: UserAuthorizationRequest,
     ): ApiResult<UserAuthorizationResponse> {
         return executePostRequest(
             path = "user/login",
@@ -61,14 +62,17 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
-    override suspend fun getCafeList(
-        token: String,
-        cityUuid: String
-    ): ApiResult<ServerList<CafeServer>> {
+    override suspend fun getCafeList(cityUuid: String, ): ApiResult<ServerList<CafeServer>> {
         return executeGetRequest(
             path = "cafe",
             parameters = hashMapOf("cityUuid" to cityUuid),
-            token = token,
+        )
+    }
+
+    override suspend fun getCityList(companyUuid: String, ): ApiResult<ServerList<CityServer>> {
+        return executeGetRequest(
+            path = "city",
+            parameters = hashMapOf("companyUuid" to companyUuid),
         )
     }
 
@@ -99,7 +103,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun updateVisibleMenuProductUseCase(
         uuid: String,
         isVisible: Boolean,
-        token: String
+        token: String,
     ) {
         client.patch {
             url {
@@ -122,7 +126,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String
+        period: String,
     ): List<StatisticServer> {
         return client.get {
             url {
@@ -137,7 +141,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): Flow<ApiResult<OrderServer>> {
         mutex.withLock {
             if (!webSocketSessionOpened) {
@@ -202,7 +206,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getOrderListByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): ApiResult<ServerList<OrderServer>> {
         return executeGetRequest(
             path = "order",
@@ -213,7 +217,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getOrderByUuid(
         token: String,
-        orderUuid: String
+        orderUuid: String,
     ): ApiResult<OrderDetailsServer> {
         return executeGetRequest(
             path = "v2/order/details",
@@ -225,7 +229,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
-        status: OrderStatus
+        status: OrderStatus,
     ): ApiResult<OrderDetailsServer> {
         return patchData(
             path = "order",
@@ -238,7 +242,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getCategoriesByCompanyUuid(
         token: String,
-        companyUuid: String
+        companyUuid: String,
     ): ApiResult<ServerList<CategoryServer>> {
         return executeGetRequest(
             path = "category",
@@ -250,7 +254,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     private suspend inline fun <reified T> executeGetRequest(
         path: String,
         parameters: Map<String, String?> = mapOf(),
-        token: String
+        token: String? = null,
     ): ApiResult<T> {
         return safeCall {
             client.get {
@@ -258,7 +262,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    headers = mapOf("Authorization" to "Bearer $token")
+                    headers = if (token == null) emptyMap() else mapOf("Authorization" to "Bearer $token")
                 )
             }.body()
         }
@@ -268,7 +272,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         postBody: Any,
         parameters: Map<String, String> = mapOf(),
-        token: String? = null
+        token: String? = null,
     ): ApiResult<T> {
         return safeCall {
             client.post {
@@ -289,7 +293,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         patchBody: Any,
         serializer: KSerializer<T>,
         parameters: Map<String, String> = mapOf(),
-        token: String? = null
+        token: String? = null,
     ): ApiResult<T> {
         val request = client.patch {
             buildRequest(
@@ -308,7 +312,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         body: Any?,
         parameters: Map<String, String?> = mapOf(),
-        headers: Map<String, String> = mapOf()
+        headers: Map<String, String> = mapOf(),
     ) {
         if (body != null) {
             setBody(body)
@@ -326,7 +330,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     private suspend fun <T> handleResponse(
         serializer: KSerializer<T>,
-        request: HttpResponse
+        request: HttpResponse,
     ): ApiResult<T> {
         return try {
             ApiResult.Success(json.decodeFromString(serializer, request.bodyAsText()))
@@ -338,7 +342,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     }
 
     private suspend inline fun <reified R> safeCall(
-        networkCall: () -> HttpResponse
+        networkCall: () -> HttpResponse,
     ): ApiResult<R> {
         return try {
             ApiResult.Success(networkCall().body())

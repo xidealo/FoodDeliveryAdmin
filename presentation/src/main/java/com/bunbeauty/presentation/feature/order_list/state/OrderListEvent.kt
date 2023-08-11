@@ -1,6 +1,6 @@
 package com.bunbeauty.presentation.feature.order_list.state
 
-import com.bunbeauty.presentation.feature.cafe_list.SelectableCafeItem
+import com.bunbeauty.presentation.feature.select_cafe.SelectableCafeItem
 
 sealed interface OrderListEvent {
     object ScrollToTop : OrderListEvent

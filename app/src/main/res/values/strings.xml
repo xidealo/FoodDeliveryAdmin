@@ -122,11 +122,23 @@
     <string name="title_profile">Профиль</string>
     <string name="hint_profile_manager">Менеджер</string>
     <string name="hint_profile_admin">Админ</string>
+    <string name="action_profile_cafes">Рестораны</string>
+    <string name="action_profile_settings">Настройки</string>
+    <string name="action_profile_statistic">Статистика</string>
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>
     <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
 
+    <!-- CAFE LIST -->
+    <string name="title_cafe_list">Рестораны</string>
+    <string name="msg_cafe_open">Открыто</string>
+    <plurals name="msg_cafe_close_soon">
+         <item quantity="one">Открыто. Закроется через %d минуту</item>
+         <item quantity="few">Открыто. Закроется через %d минуты</item>
+        <item quantity="other">Открыто. Закроется через %d минут</item>
+    </plurals>
+    <string name="msg_cafe_closed">Закрыто</string>
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>

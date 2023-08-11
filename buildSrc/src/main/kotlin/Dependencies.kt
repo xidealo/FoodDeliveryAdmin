@@ -27,6 +27,7 @@ object Versions {
     const val ktLint = "11.0.0"
     const val mockk = "1.12.5"
     const val coroutines = "1.6.4"
+    const val datetime = "0.4.0"
 }
 
 object Application {
@@ -87,6 +88,10 @@ object Plugin {
 object Dagger {
     const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+}
+
+object KotlinxDatetime {
+    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.datetime}"
 }
 
 object Navigation {

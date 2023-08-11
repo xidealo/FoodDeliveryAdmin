@@ -5,7 +5,6 @@ import com.bunbeauty.domain.feature.profile.model.UserRole
 data class ProfileDataState(
     val state: State,
     val user: User?,
-    val isUnlimitedNotifications: Boolean?,
     val eventList: List<ProfileEvent>
 ) {
 
