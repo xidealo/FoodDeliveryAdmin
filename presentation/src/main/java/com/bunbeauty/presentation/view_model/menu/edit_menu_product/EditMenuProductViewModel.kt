@@ -1,34 +1,25 @@
 package com.bunbeauty.presentation.view_model.menu.edit_menu_product
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.enums.ProductCode
+import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.domain.use_case.GetMenuProductUseCase
 import com.bunbeauty.domain.use_case.UpdateMenuProductUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.model.list.MenuProductCode
-import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EditMenuProductViewModel @Inject constructor(
-    private val stringUtil: IStringUtil,
     private val getMenuProductUseCase: GetMenuProductUseCase,
     private val updateMenuProductUseCase: UpdateMenuProductUseCase
 ) : BaseViewModel() {
-
-
-    private val menuProductCodeList = ProductCode.values()
-        .map { productCode ->
-            MenuProductCode(title = stringUtil.getProductCodeString(productCode))
-        }
 
     private val mutableState = MutableStateFlow(EditMenuProductDataState())
     val editMenuProductUiState = mutableState.mapToStateFlow(viewModelScope) { state ->
@@ -49,7 +40,8 @@ class EditMenuProductViewModel @Inject constructor(
                         oldPrice = menuProduct.oldPrice?.toString() ?: "",
                         state = EditMenuProductDataState.State.SUCCESS,
                         nutrition = menuProduct.nutrition?.toString() ?: "",
-                        utils = menuProduct.utils,
+                        utils = menuProduct.utils ?: "",
+                        isVisible = menuProduct.isVisible,
                     )
                 }
             },
@@ -63,19 +55,17 @@ class EditMenuProductViewModel @Inject constructor(
         )
     }
 
-    fun deleteMenuProduct() {
-        viewModelScope.launch(IO) {
-            finishDeleting()
-        }
-    }
-
     fun updateMenuProduct() {
         viewModelScope.launchSafe(
             block = {
-
                 mutableState.update { oldState ->
                     oldState.copy(
-                        isLoadingButton = true
+                        isLoadingButton = true,
+                        hasNameError = false,
+                        hasDescriptionError = false,
+                        hasNewPriceError = false,
+                        hasOldPriceError = false,
+                        hasNutritionError = false,
                     )
                 }
 
@@ -85,10 +75,17 @@ class EditMenuProductViewModel @Inject constructor(
                         menuProduct = menuProduct.copy(
                             name = name,
                             description = mutableState.value.description.trim(),
-                            newPrice = mutableState.value.newPrice.toInt(),
-                            oldPrice = mutableState.value.oldPrice.ifEmpty { null }?.toInt() ?: 0,
-                            utils = mutableState.value.utils,
-                            nutrition = mutableState.value.nutrition.toIntOrNull()
+                            newPrice = mutableState.value.newPrice.toIntOrNull() ?: 0,
+                            oldPrice = mutableState.value.oldPrice
+                                .ifEmpty { null }
+                                ?.toInt() ?: 0,
+                            utils = if (mutableState.value.nutrition.isEmpty()) {
+                                mutableState.value.utils
+                            } else {
+                                ""
+                            },
+                            nutrition = mutableState.value.nutrition.toIntOrNull(),
+                            isVisible = mutableState.value.isVisible
                         )
                     )
                     mutableState.update { oldState ->
@@ -98,9 +95,34 @@ class EditMenuProductViewModel @Inject constructor(
             },
             onError = {
                 mutableState.update { oldState ->
-                    oldState + EditMenuProductEvent.ShowUpdateProductError(
-                        mutableState.value.menuProduct?.name ?: ""
-                    )
+                    when (it) {
+                        is MenuProductNameException -> {
+                            oldState.copy(
+                                isLoadingButton = false,
+                                hasNameError = true
+                            )
+                        }
+                        is MenuProductNewPriceException -> {
+                            oldState.copy(
+                                isLoadingButton = false,
+                                hasNewPriceError = true
+                            )
+                        }
+                        is MenuProductDescriptionException -> {
+                            oldState.copy(
+                                isLoadingButton = false,
+                                hasDescriptionError = true
+                            )
+                        }
+                        else -> {
+                            oldState.copy(
+                                isLoadingButton = false,
+                                eventList = oldState.eventList + EditMenuProductEvent.ShowUpdateProductError(
+                                    mutableState.value.menuProduct?.name ?: ""
+                                )
+                            )
+                        }
+                    }
                 }
             }
         )
@@ -142,8 +164,10 @@ class EditMenuProductViewModel @Inject constructor(
         }
     }
 
-    private fun finishDeleting() {
-        //sendMessage(name + resourcesProvider.getString(R.string.msg_product_deleted))
+    fun onVisibleChanged(isVisible: Boolean) {
+        mutableState.update { state ->
+            state.copy(isVisible = isVisible)
+        }
     }
 
     fun consumeEvents(events: List<EditMenuProductEvent>) {
@@ -169,7 +193,8 @@ class EditMenuProductViewModel @Inject constructor(
                         utils = dataState.utils,
                         nutrition = dataState.nutrition,
                         hasNutritionError = dataState.hasNutritionError,
-                        isLoadingButton = dataState.isLoadingButton
+                        isLoadingButton = dataState.isLoadingButton,
+                        isVisible = dataState.isVisible
                     )
                 }
                 EditMenuProductDataState.State.LOADING -> EditMenuProductUIState.EditMenuProductState.Loading

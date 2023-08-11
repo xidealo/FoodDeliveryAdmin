@@ -23,6 +23,7 @@ fun SwitcherCard(
     label: String = "",
     checked: Boolean,
     elevated: Boolean = true,
+    enabled: Boolean = true,
     onCheckChanged: (Boolean) -> Unit,
 ) {
     AdminCard(
@@ -55,6 +56,7 @@ fun SwitcherCard(
                 checked = checked,
                 onCheckedChange = onCheckChanged,
                 colors = AdminSwitchDefaults.switchColors,
+                enabled = enabled
             )
         }
     }

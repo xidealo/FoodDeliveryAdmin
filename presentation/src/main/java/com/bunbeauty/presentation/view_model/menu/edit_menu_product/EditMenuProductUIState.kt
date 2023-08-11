@@ -27,7 +27,9 @@ data class EditMenuProductUIState(
 
             val utils: String,
 
-            val isLoadingButton: Boolean
+            val isLoadingButton: Boolean,
+
+            val isVisible: Boolean
         ) : EditMenuProductState
 
         object Error : EditMenuProductState

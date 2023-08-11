@@ -30,6 +30,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
@@ -43,7 +44,6 @@ import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductEvent
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductUIState
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -97,9 +97,9 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     findNavController().popBackStack()
                 }
                 is EditMenuProductEvent.ShowUpdateProductError -> {
-                    /*   (activity as? MessageHost)?.showErrorMessage(
-                           resources.getString(R.string.msg_product_updated, event.productName)
-                       )*/
+                    (activity as? MessageHost)?.showErrorMessage(
+                        resources.getString(R.string.error_product_updated)
+                    )
                 }
             }
         }
@@ -177,7 +177,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             onValueChange = { value ->
                                 viewModel.onNutritionTextChanged(value)
                             },
-                            errorMessageId = if (state.hasNewPriceError) {
+                            errorMessageId = if (state.hasNutritionError) {
                                 R.string.error_edit_menu_product_empty_nutrition
                             } else {
                                 null
@@ -207,7 +207,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             value = state.utils,
                             labelStringId = R.string.hint_edit_menu_product_utils,
                             onValueChange = { value ->
-                                //viewModel.onStreetTextChanged(value)
+                                // viewModel.onStreetTextChanged(value)
                             },
                             /*  errorMessageId = if (state.hasStreetError) {
                                   R.string.error_create_address_street
@@ -243,6 +243,14 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     )
                 }
             }
+
+            SwitcherCard(
+                modifier = Modifier.padding(top = 8.dp),
+                checked = state.isVisible,
+                onCheckChanged = viewModel::onVisibleChanged,
+                labelStringId = R.string.title_edit_menu_product_is_visible,
+                enabled = !state.isLoadingButton
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -288,7 +296,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     nutrition = "200",
                     hasNutritionError = false,
                     utils = "г",
-                    isLoadingButton = false
+                    isLoadingButton = false,
+                    isVisible = true
                 )
             )
         }
@@ -308,16 +317,5 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         AdminTheme {
             EditMenuProductLoadingScreen()
         }
-    }
-
-    fun showDeleteDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.title_edit_menu_product_alert)
-            .setMessage(R.string.msg_edit_menu_product_alert)
-            .setPositiveButton(R.string.action_edit_menu_product_alert_yes) { _, _ ->
-                viewModel.deleteMenuProduct()
-            }
-            .setNegativeButton(R.string.action_edit_menu_product_alert_cancel) { _, _ -> }
-            .show()
     }
 }

@@ -177,9 +177,9 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                 ) {
                     Icon(
                         painter = if (menuProduct.visible) {
-                            R.drawable.ic_visible
-                        } else {
                             R.drawable.ic_invisible
+                        } else {
+                            R.drawable.ic_visible
                         }.let { iconId ->
                             painterResource(iconId)
                         },

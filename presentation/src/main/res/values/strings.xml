@@ -95,7 +95,9 @@
     <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть больше цены</string>
     <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
     <string name="title_edit_menu_product_select_category">Выберите категорию</string>
+    <string name="title_edit_menu_product_is_visible">Показывать в меню</string>
     <string name="msg_product_updated">%s обновлён</string>
+    <string name="error_product_updated">Что-то пошло не так</string>
     <string name="msg_product_deleted">&#160;удалён</string>
     <string name="hint_edit_menu_product_utils">Ед</string>
 

@@ -61,7 +61,7 @@ fun MenuProduct.toEntity(): MenuProductEntity {
         name = name,
         newPrice = newPrice,
         oldPrice = oldPrice,
-        utils = utils,
+        utils = utils ?: "",
         nutrition = nutrition ?: 0,
         description = description,
         comboDescription = comboDescription,

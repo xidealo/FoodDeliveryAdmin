@@ -8,10 +8,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
 import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
-import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.common.Constants.SELECTED_PRODUCT_CODE_KEY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment

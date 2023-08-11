@@ -18,7 +18,8 @@ data class EditMenuProductDataState(
     val hasNutritionError: Boolean = false,
     val utils: String = "",
     val eventList: List<EditMenuProductEvent> = emptyList(),
-    val isLoadingButton: Boolean = false
+    val isLoadingButton: Boolean = false,
+    val isVisible: Boolean = false
 ) {
 
     enum class State {
