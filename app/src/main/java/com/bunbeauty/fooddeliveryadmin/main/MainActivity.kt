@@ -197,9 +197,8 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
             if (destination !is FloatingWindow) {
                 val navigationBarItem = when (destination.id) {
                     R.id.ordersFragment -> AdminNavigationBarItem.ORDERS
-                    R.id.statisticFragment -> AdminNavigationBarItem.STATISTIC
                     R.id.menuFragment -> AdminNavigationBarItem.MENU
-                    R.id.settingsFragment -> AdminNavigationBarItem.SETTINGS
+                    R.id.profileFragment -> AdminNavigationBarItem.PROFILE
                     else -> null
                 }
                 viewModel.onNavDestinationUpdated(navigationBarItem, controller)

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.settings
+package com.bunbeauty.fooddeliveryadmin.screen.profile
 
 import android.os.Bundle
 import android.view.View
@@ -27,21 +27,21 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.logout.LogoutBottomSheet
-import com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragmentDirections.Companion.toLoginFragment
-import com.bunbeauty.presentation.feature.settings.SettingsEvent
-import com.bunbeauty.presentation.feature.settings.SettingsUiState
-import com.bunbeauty.presentation.feature.settings.SettingsViewModel
+import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toLoginFragment
+import com.bunbeauty.presentation.feature.profile.ProfileEvent
+import com.bunbeauty.presentation.feature.profile.ProfileUiState
+import com.bunbeauty.presentation.feature.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
+class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
 
-    override val viewModel: SettingsViewModel by viewModels()
+    override val viewModel: ProfileViewModel by viewModels()
 
     @Inject
-    lateinit var settingsMapper: SettingsMapper
+    lateinit var profileMapper: ProfileMapper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +50,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
 
         binding.root.setContentWithTheme {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            SettingsScreen(
+            ProfileScreen(
                 uiState = uiState,
                 onUnlimitedNotificationsCheckChanged = viewModel::onUnlimitedNotificationsCheckChanged,
                 onLogoutClicked = viewModel::onLogoutClick,
@@ -64,14 +64,14 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    private fun SettingsScreen(
-        uiState: SettingsUiState,
+    private fun ProfileScreen(
+        uiState: ProfileUiState,
         onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
         onLogoutClicked: () -> Unit,
         onRetryClicked: () -> Unit,
     ) {
         AdminScaffold(
-            title = stringResource(R.string.title_settings),
+            title = stringResource(R.string.title_profile),
             actionButton = {
                 MainButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -82,18 +82,18 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
             }
         ) {
             when (val state = uiState.state) {
-                SettingsUiState.State.Loading -> {
+                ProfileUiState.State.Loading -> {
                     LoadingScreen()
                 }
-                SettingsUiState.State.Error -> {
+                ProfileUiState.State.Error -> {
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = onRetryClicked
                     )
                 }
-                is SettingsUiState.State.Success -> {
-                    SuccessSettingsScreen(
+                is ProfileUiState.State.Success -> {
+                    SuccessProfileScreen(
                         uiStateSuccess = state,
                         onUnlimitedNotificationsCheckChanged = onUnlimitedNotificationsCheckChanged,
                     )
@@ -103,8 +103,8 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    private fun SuccessSettingsScreen(
-        uiStateSuccess: SettingsUiState.State.Success,
+    private fun SuccessProfileScreen(
+        uiStateSuccess: ProfileUiState.State.Success,
         onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
     ) {
         Column(
@@ -112,7 +112,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TextWithHintCard(
-                hint = settingsMapper.mapUserRole(uiStateSuccess.role),
+                hint = profileMapper.mapUserRole(uiStateSuccess.role),
                 label = uiStateSuccess.userName
             )
             SwitcherCard(
@@ -124,18 +124,18 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     private fun handleEventList(
-        eventList: List<SettingsEvent>,
+        eventList: List<ProfileEvent>,
     ) {
         eventList.forEach { event ->
             when (event) {
-                SettingsEvent.OpenLogoutEvent -> {
+                ProfileEvent.OpenLogoutEvent -> {
                     lifecycleScope.launch {
                         LogoutBottomSheet.show(parentFragmentManager)?.let { confirmed ->
                             viewModel.onLogoutConfirmed(confirmed)
                         }
                     }
                 }
-                SettingsEvent.OpenLoginEvent -> {
+                ProfileEvent.OpenLoginEvent -> {
                     findNavController().navigateSafe(toLoginFragment())
                 }
             }

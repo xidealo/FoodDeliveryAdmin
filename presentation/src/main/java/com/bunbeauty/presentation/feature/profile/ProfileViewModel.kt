@@ -1,10 +1,10 @@
-package com.bunbeauty.presentation.feature.settings
+package com.bunbeauty.presentation.feature.profile
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.settings.GetIsUnlimitedNotificationUseCase
-import com.bunbeauty.domain.feature.settings.GetUsernameUseCase
-import com.bunbeauty.domain.feature.settings.UpdateIsUnlimitedNotificationUseCase
-import com.bunbeauty.domain.feature.settings.model.UserRole
+import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
+import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
+import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
+import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.use_case.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
-    private val settingsStateMapper: SettingsStateMapper,
+class ProfileViewModel @Inject constructor(
+    private val profileStateMapper: ProfileStateMapper,
     private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
     private val getUsername: GetUsernameUseCase,
     private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
@@ -24,27 +24,27 @@ class SettingsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val mutableDataState = MutableStateFlow(
-        SettingsDataState(
-            state = SettingsDataState.State.LOADING,
+        ProfileDataState(
+            state = ProfileDataState.State.LOADING,
             user = null,
             isUnlimitedNotifications = null,
             eventList = emptyList(),
         )
     )
-    val uiState = mutableDataState.mapToStateFlow(viewModelScope, settingsStateMapper::map)
+    val uiState = mutableDataState.mapToStateFlow(viewModelScope, profileStateMapper::map)
 
     fun updateData() {
         viewModelScope.launchSafe(
             onError = {
                 mutableDataState.update { dataState ->
-                    dataState.copy(state = SettingsDataState.State.ERROR)
+                    dataState.copy(state = ProfileDataState.State.ERROR)
                 }
             },
             block = {
                 mutableDataState.update { dataState ->
                     dataState.copy(
-                        state = SettingsDataState.State.SUCCESS,
-                        user = SettingsDataState.User(
+                        state = ProfileDataState.State.SUCCESS,
+                        user = ProfileDataState.User(
                             role = UserRole.MANAGER,
                             userName = getUsername().lowercase().replaceFirstChar { char ->
                                 char.titlecase()
@@ -71,7 +71,7 @@ class SettingsViewModel @Inject constructor(
 
     fun onLogoutClick() {
         mutableDataState.update { dataState ->
-            dataState + SettingsEvent.OpenLogoutEvent
+            dataState + ProfileEvent.OpenLogoutEvent
         }
     }
 
@@ -82,14 +82,14 @@ class SettingsViewModel @Inject constructor(
                 block = {
                     logout()
                     mutableDataState.update { state ->
-                        state + SettingsEvent.OpenLoginEvent
+                        state + ProfileEvent.OpenLoginEvent
                     }
                 }
             )
         }
     }
 
-    fun consumeEvents(events: List<SettingsEvent>) {
+    fun consumeEvents(events: List<ProfileEvent>) {
         mutableDataState.update { state ->
             state - events
         }

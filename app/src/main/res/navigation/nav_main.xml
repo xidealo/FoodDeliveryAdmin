@@ -14,20 +14,14 @@
         app:popUpToInclusive="false" />
 
     <action
-        android:id="@+id/global_to_statisticFragment"
-        app:destination="@id/statisticFragment"
-        app:popUpTo="@id/nav_main"
-        app:popUpToInclusive="false" />
-
-    <action
         android:id="@+id/global_to_menuFragment"
         app:destination="@id/menuFragment"
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="false" />
 
     <action
-        android:id="@+id/global_to_settingsFragment"
-        app:destination="@id/settingsFragment"
+        android:id="@+id/global_to_profileFragment"
+        app:destination="@id/profileFragment"
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="false" />
 
@@ -114,8 +108,8 @@
         android:label="CreateNewMenuProductFragment"
         tools:layout="@layout/fragment_create_menu_product" />
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
-        android:label="settingsFragment"
+        android:id="@+id/profileFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragment"
+        android:label="profileFragment"
         tools:layout="@layout/layout_compose" />
 </navigation>

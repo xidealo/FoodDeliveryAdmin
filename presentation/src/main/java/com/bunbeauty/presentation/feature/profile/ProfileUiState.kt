@@ -1,10 +1,10 @@
-package com.bunbeauty.presentation.feature.settings
+package com.bunbeauty.presentation.feature.profile
 
-import com.bunbeauty.domain.feature.settings.model.UserRole
+import com.bunbeauty.domain.feature.profile.model.UserRole
 
-data class SettingsUiState(
+data class ProfileUiState(
     val state: State,
-    val eventList: List<SettingsEvent>
+    val eventList: List<ProfileEvent>
 ) {
 
     val isLogoutEnabled: Boolean

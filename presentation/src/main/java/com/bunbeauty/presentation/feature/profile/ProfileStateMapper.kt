@@ -1,19 +1,19 @@
-package com.bunbeauty.presentation.feature.settings
+package com.bunbeauty.presentation.feature.profile
 
 import javax.inject.Inject
 
-class SettingsStateMapper @Inject constructor() {
+class ProfileStateMapper @Inject constructor() {
 
-    fun map(dataState: SettingsDataState): SettingsUiState {
-        return SettingsUiState(
+    fun map(dataState: ProfileDataState): ProfileUiState {
+        return ProfileUiState(
             state = when (dataState.state) {
-                SettingsDataState.State.LOADING -> SettingsUiState.State.Loading
-                SettingsDataState.State.ERROR -> SettingsUiState.State.Error
-                SettingsDataState.State.SUCCESS -> {
+                ProfileDataState.State.LOADING -> ProfileUiState.State.Loading
+                ProfileDataState.State.ERROR -> ProfileUiState.State.Error
+                ProfileDataState.State.SUCCESS -> {
                     if (dataState.user == null || dataState.isUnlimitedNotifications == null) {
-                        SettingsUiState.State.Error
+                        ProfileUiState.State.Error
                     } else {
-                        SettingsUiState.State.Success(
+                        ProfileUiState.State.Success(
                             role = dataState.user.role,
                             userName = dataState.user.userName,
                             isUnlimitedNotifications = dataState.isUnlimitedNotifications,
