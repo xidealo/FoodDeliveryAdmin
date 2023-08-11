@@ -112,6 +112,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                     OrderListUiState.State.Loading -> {
                         LoadingScreen()
                     }
+
                     OrderListUiState.State.Error -> {
                         ErrorScreen(
                             mainTextId = R.string.title_common_can_not_load_data,
@@ -119,6 +120,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                             onClick = viewModel::retrySetUp
                         )
                     }
+
                     is OrderListUiState.State.Success -> {
                         SuccessOrderListScreen(
                             uiStateSuccess = state,
@@ -195,15 +197,19 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                         lazyListState.animateScrollToItem(0)
                     }
                 }
+
                 is OrderListEvent.OpenCafeListEvent -> {
                     openCafeList(event.cafeList)
                 }
+
                 is OrderListEvent.OpenOrderDetailsEvent -> {
                     openOrderDetails(event.orderUuid, event.orderCode)
                 }
+
                 OrderListEvent.OpenLoginEvent -> {
                     findNavController().navigateSafe(toLoginFragment())
                 }
+
                 OrderListEvent.ShowError -> {
                     scope.launch {
                         ErrorDialog.show(childFragmentManager).let {
@@ -211,6 +217,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                         }
                     }
                 }
+
                 OrderListEvent.CancelNotification -> {
                     notificationManagerCompat.cancel(LAST_ORDER_NOTIFICATION_ID)
                 }
@@ -221,7 +228,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
 
     private fun openCafeList(cafeList: List<SelectableCafeItem>) {
         lifecycleScope.launch {
-            val selectedCafe = CafeListBottomSheet.show(
+            val selectedCafe = SelectCafeBottomSheet.show(
                 parentFragmentManager,
                 cafeList
             )

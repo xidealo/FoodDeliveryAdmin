@@ -1,9 +1,7 @@
 package com.bunbeauty.presentation.feature.profile
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
-import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -17,9 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileStateMapper: ProfileStateMapper,
-    private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
     private val getUsername: GetUsernameUseCase,
-    private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
     private val logout: LogoutUseCase,
 ) : BaseViewModel() {
 
@@ -27,7 +23,6 @@ class ProfileViewModel @Inject constructor(
         ProfileDataState(
             state = ProfileDataState.State.LOADING,
             user = null,
-            isUnlimitedNotifications = null,
             eventList = emptyList(),
         )
     )
@@ -50,23 +45,28 @@ class ProfileViewModel @Inject constructor(
                                 char.titlecase()
                             },
                         ),
-                        isUnlimitedNotifications = getIsUnlimitedNotification(),
                     )
                 }
             }
         )
     }
 
-    fun onUnlimitedNotificationsCheckChanged(isChecked: Boolean) {
-        viewModelScope.launchSafe(
-            onError = {},
-            block = {
-                updateIsUnlimitedNotification(isChecked)
-                mutableDataState.update { dataState ->
-                    dataState.copy(isUnlimitedNotifications = isChecked)
-                }
-            }
-        )
+    fun onSettingsClicked() {
+        mutableDataState.update { dataState ->
+            dataState + ProfileEvent.OpenSettingsEvent
+        }
+    }
+
+    fun onCafesClicked() {
+        mutableDataState.update { dataState ->
+            dataState + ProfileEvent.OpenCafeListEvent
+        }
+    }
+
+    fun onStatisticClicked() {
+        mutableDataState.update { dataState ->
+            dataState + ProfileEvent.OpenStatisticEvent
+        }
     }
 
     fun onLogoutClick() {

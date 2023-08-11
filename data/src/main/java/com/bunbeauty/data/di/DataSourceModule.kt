@@ -96,4 +96,8 @@ class DataSourceModule {
     @Provides
     fun provideMenuProductCategoryDao(localDatabase: LocalDatabase) =
         localDatabase.menuProductCategoryDao()
+
+    @Singleton
+    @Provides
+    fun provideCityDao(localDatabase: LocalDatabase) = localDatabase.cityDao()
 }

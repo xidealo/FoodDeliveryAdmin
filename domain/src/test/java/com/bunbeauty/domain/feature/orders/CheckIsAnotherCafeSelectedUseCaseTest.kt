@@ -1,4 +1,4 @@
-package com.bunbeauty.domain
+package com.bunbeauty.domain.feature.orders
 
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase

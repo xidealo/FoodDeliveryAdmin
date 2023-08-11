@@ -1,4 +1,4 @@
-package com.bunbeauty.domain
+package com.bunbeauty.domain.feature.orders
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase

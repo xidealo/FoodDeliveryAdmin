@@ -16,7 +16,6 @@ data class ProfileUiState(
         data class Success(
             val role: UserRole,
             val userName: String,
-            val isUnlimitedNotifications: Boolean,
         ) : State
     }
 

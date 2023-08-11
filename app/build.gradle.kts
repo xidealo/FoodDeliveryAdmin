@@ -98,7 +98,7 @@ fun getProperty(key: String): String {
 
 dependencies {
     implementation(project(":data")) // TODO remove
-    implementation(project(":domain")) // TODO remove
+    implementation(project(":domain"))
     implementation(project(":common"))
     implementation(project(":presentation"))
 
@@ -140,4 +140,7 @@ dependencies {
     // Coil
     implementation(Coil.coil)
     implementation(Coil.coilCompose)
+
+    // Time
+    implementation(KotlinxDatetime.datetime)
 }

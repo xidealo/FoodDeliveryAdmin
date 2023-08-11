@@ -10,13 +10,12 @@ class ProfileStateMapper @Inject constructor() {
                 ProfileDataState.State.LOADING -> ProfileUiState.State.Loading
                 ProfileDataState.State.ERROR -> ProfileUiState.State.Error
                 ProfileDataState.State.SUCCESS -> {
-                    if (dataState.user == null || dataState.isUnlimitedNotifications == null) {
+                    if (dataState.user == null) {
                         ProfileUiState.State.Error
                     } else {
                         ProfileUiState.State.Success(
                             role = dataState.user.role,
                             userName = dataState.user.userName,
-                            isUnlimitedNotifications = dataState.isUnlimitedNotifications,
                         )
                     }
                 }
