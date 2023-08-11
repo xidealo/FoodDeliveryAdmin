@@ -51,4 +51,14 @@ dependencies {
 
     //DataStore
     implementation(DataStore.dataStorePreferences)
+
+    // Mocks for testing
+    implementation(Mockk.main)
+    implementation(Mockk.common)
+
+    // Coroutine
+    implementation(Coroutine.test)
+
+    // Test
+    testImplementation(kotlin(Test.test))
 }
