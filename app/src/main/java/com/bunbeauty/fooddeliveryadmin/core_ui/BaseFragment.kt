@@ -21,7 +21,6 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         get() = checkNotNull(mutableBinding)
     protected abstract val viewModel: BaseViewModel
 
-    @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

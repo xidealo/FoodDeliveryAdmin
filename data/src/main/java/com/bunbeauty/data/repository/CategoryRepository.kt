@@ -19,9 +19,7 @@ class CategoryRepository @Inject constructor(
                 categoryDao.deleteAll()
                 categoryDao.insertAll(result.data.results.map(categoryMapper::toEntity))
             }
-            is ApiResult.Error -> {
-
-            }
+            is ApiResult.Error -> {}
         }
     }
 

@@ -21,6 +21,7 @@
     <string name="description_common_selected">Выбран</string>
     <string name="action_common_cancel">Отмена</string>
     <string name="action_common_logout">Выйти</string>
+    <string name="msg_common_cafe">Ресторан</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -29,12 +30,18 @@
     <string name="msg_login_version">Версия приложения %s</string>
     <string name="error_login_wrong_data">Неверный логин или пароль</string>
 
+    <!-- NOTIFICATION -->
+    <string name="title_messaging_new_order">Новый заказ</string>
+    <string name="msg_messaging_new_order">Новый заказ</string>
+
     <!-- ORDER LIST -->
+    <string name="title_orders">Заказы</string>
     <string name="error_order_list_connection">Ошибка. Проверьте подключение\nк интернету и обновите страницу</string>
 
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>
     <string name="msg_order_details_pickup_method">Способ получения</string>
+    <string name="msg_order_details_payment_method">Способ оплаты</string>
     <string name="msg_order_details_phone">Номер телефона</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
@@ -52,12 +59,21 @@
     <string name="action_order_details_yes">Да</string>
     <string name="action_order_details_no">Нет</string>
     <string name="title_order_details_choice_cafe">Выбрать кафе</string>
+    <string name="title_order_status">Статус заказа</string>
+
+    <string name="msg_payment_cash">Наличные</string>
+    <string name="msg_payment_card">Картой при получении</string>
+    <string name="msg_payment_card_number">Переводом по номеру карты</string>
+    <string name="msg_payment_phone_number">Переводом по номеру телефона</string>
 
     <!-- BOTTOM PANEL -->
     <string name="title_bottom_navigation_orders">Заказы</string>
-    <string name="title_bottom_navigation_statistic">Статистика</string>
     <string name="title_bottom_navigation_menu">Меню</string>
-    <string name="title_bottom_navigation_settings">Настройки</string>
+    <string name="title_bottom_navigation_profile">Профиль</string>
+
+    <!-- STATISTIC -->
+    <string name="title_statistic_select_cafe">Выберите кафе</string>
+    <string name="title_statistic_select_time_interval">Выберите период</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
@@ -104,11 +120,15 @@
     <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
     <string name="msg_notification_info">Ожидание заказов</string>
 
+    <!-- PROFILE -->
+    <string name="title_profile">Профиль</string>
+    <string name="hint_profile_manager">Менеджер</string>
+    <string name="hint_profile_admin">Админ</string>
+
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>
     <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
-    <string name="hint_settings_manager">Менеджер</string>
-    <string name="hint_settings_admin">Админ</string>
+
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>

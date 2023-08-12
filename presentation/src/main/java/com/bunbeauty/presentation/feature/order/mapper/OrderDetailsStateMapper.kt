@@ -3,8 +3,8 @@ package com.bunbeauty.presentation.feature.order.mapper
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import com.bunbeauty.common.Constants
-import com.bunbeauty.domain.model.order.OrderAddress
-import com.bunbeauty.domain.model.order.OrderDetails
+import com.bunbeauty.domain.model.order.details.OrderAddress
+import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.util.date_time.DateTimeUtil
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
@@ -32,6 +32,7 @@ class OrderDetailsStateMapper @Inject constructor(
                         OrderDetailsUiState.State.Success(
                             dateTime = dateTimeUtil.getDateTimeDDMMHHMM(dataState.orderDetails.time),
                             deferredTime = getDeferredTime(dataState.orderDetails),
+                            paymentMethod = dataState.orderDetails.paymentMethod,
                             receiptMethod = getReceiptMethod(dataState.orderDetails),
                             address = getOrderAddressString(dataState.orderDetails.address),
                             comment = dataState.orderDetails.comment,

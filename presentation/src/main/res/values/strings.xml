@@ -27,18 +27,13 @@
 
     <!-- ORDER DETAILS -->
     <string name="title_order_details">Заказ «%s»</string>
-    <string name="hint_order_details_date_time">Дата и время заказа</string>
     <string name="hint_order_details_delivery_deferred_time">Время доставки</string>
     <string name="hint_order_details_pickup_deferred_time">Время самовывоза</string>
     <string name="msg_order_details_delivery">Доставка</string>
     <string name="msg_order_details_pickup">Самовывоз</string>
     <string name="error_order_details_can_not_save">Не удалось сохранить изменения</string>
 
-    <!-- ORDER -->
-    <string name="title_cafe_list">Ресторан</string>
-
     <!-- ORDER STATUS-->
-    <string name="title_order_status">Статус заказа</string>
     <string name="msg_status_not_accepted">Обрабатывается</string>
     <string name="msg_status_accepted">Принят</string>
     <string name="msg_status_preparing">Готовится</string>
@@ -48,18 +43,12 @@
     <string name="msg_status_canceled">Отменен</string>
 
     <!-- ORDERS -->
-    <string name="title_orders">Заказы</string>
-    <string name="title_messaging_new_order">Новый заказ</string>
-    <string name="msg_messaging_new_order">Новый заказ</string>
     <string name="title_orders_select_cafe">Выберите кафе</string>
-    <string name="hint_orders_cafe">Ресторан</string>
 
     <!-- STATISTIC -->
     <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
-    <string name="title_statistic_select_cafe">Выберите кафе</string>
     <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>
-    <string name="title_statistic_select_time_interval">Выберите период</string>
     <string name="msg_statistic_day_interval">По дням</string>
     <string name="msg_statistic_week_interval">По неделям</string>
     <string name="msg_statistic_month_interval">По месяцам</string>

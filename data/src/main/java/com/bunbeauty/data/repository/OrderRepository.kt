@@ -5,10 +5,11 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.ORDER_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
-import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.exception.ServerConnectionException
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.OrderDetails
+import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.repo.OrderRepo
 import kotlinx.coroutines.flow.Flow
@@ -39,9 +40,9 @@ class OrderRepository @Inject constructor(
         )
         cachedOrderList = orderList
         val updatedOrderListFlow = networkConnector.getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-            .filterIsInstance<ApiResult.Success<ServerOrder>>()
+            .filterIsInstance<ApiResult.Success<OrderServer>>()
             .map { successApiResult ->
-                val order = serverOrderMapper.toModel(successApiResult.data)
+                val order = serverOrderMapper.mapOrder(successApiResult.data)
                 val updatedOrderList = updateOrderList(cachedOrderList, order)
                 cachedOrderList = updatedOrderList
                 updatedOrderList
@@ -57,23 +58,36 @@ class OrderRepository @Inject constructor(
 
     override suspend fun getOrderErrorFlow(token: String, cafeUuid: String): Flow<OrderError> {
         return networkConnector.getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-            .filterIsInstance<ApiResult.Error<ServerOrder>>()
+            .filterIsInstance<ApiResult.Error<OrderServer>>()
             .map { errorApiResult ->
                 OrderError(errorApiResult.apiError.message)
             }
     }
 
     private suspend fun getOrderListByCafeUuid(token: String, cafeUuid: String): List<Order> {
-        return networkConnector.getOrderListByCafeUuid(token, cafeUuid)
-            .results
-            .map(serverOrderMapper::toModel)
+        return when (val result = networkConnector.getOrderListByCafeUuid(token, cafeUuid)) {
+            is ApiResult.Success -> {
+                result.data
+                    .results
+                    .map(serverOrderMapper::mapOrder)
+            }
+
+            is ApiResult.Error -> {
+                Log.e(
+                    ORDER_TAG,
+                    "getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}"
+                )
+                throw ServerConnectionException()
+            }
+        }
     }
 
     override suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
         return when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
             is ApiResult.Success -> {
-                serverOrderMapper.toModel(result.data)
+                serverOrderMapper.mapOrderDetails(result.data)
             }
+
             is ApiResult.Error -> {
                 Log.e(
                     ORDER_TAG,

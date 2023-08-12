@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
 import com.bunbeauty.common.Constants.PRODUCT_CODE_REQUEST_KEY
@@ -14,7 +13,6 @@ import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
-import com.bunbeauty.presentation.model.list.MenuProductCode
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,13 +57,13 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
             fragmentCreateMenuProductMcvPhoto.setOnClickListener {
                 imageLauncher.launch(IMAGES_FOLDER)
             }
-            setFragmentResultListener(PRODUCT_CODE_REQUEST_KEY) { _, bundle ->
-                bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
-                    ?.let { menuProductCode ->
-                        fragmentCreateMenuProductNcvProductCode.cardText = menuProductCode.title
-                        viewModel.setProductCode(menuProductCode)
-                    }
-            }
+//            setFragmentResultListener(PRODUCT_CODE_REQUEST_KEY) { _, bundle ->
+//                bundle.getParcelable<MenuProductCode>(SELECTED_PRODUCT_CODE_KEY)
+//                    ?.let { menuProductCode ->
+//                        fragmentCreateMenuProductNcvProductCode.cardText = menuProductCode.title
+//                        viewModel.setProductCode(menuProductCode)
+//                    }
+//            }
             fragmentCreateMenuProductNcvProductCode.setOnClickListener {
                 viewModel.goToProductCodeList()
             }
