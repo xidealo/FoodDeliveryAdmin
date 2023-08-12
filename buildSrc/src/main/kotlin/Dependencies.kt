@@ -1,11 +1,11 @@
 object Versions {
     const val kotlin = "1.9.0"
-    const val gradle = "8.0.0"
+    const val gradle = "8.1.0"
     const val ktor = "2.3.2"
     const val coil = "2.4.0"
     const val datastorePreferences = "1.0.0"
     const val googleServices = "4.3.15"
-    const val navigation = "2.6.0"
+    const val navigation = "2.7.0"
     const val activity = "1.7.2"
     const val fragment = "1.5.7"
     const val runtime = "1.5.1"
