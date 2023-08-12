@@ -83,7 +83,7 @@ class MenuProductRepository @Inject constructor(
         isVisible: Boolean,
         token: String
     ) {
-        networkConnector.updateVisibleMenuProduct(
+        networkConnector.updateVisibleMenuProductUseCase(
             uuid = uuid,
             isVisible = isVisible,
             token = token

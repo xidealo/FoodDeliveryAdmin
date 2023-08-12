@@ -96,7 +96,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         return ApiResult.Success(":")
     }
 
-    override suspend fun updateVisibleMenuProduct(
+    override suspend fun updateVisibleMenuProductUseCase(
         uuid: String,
         isVisible: Boolean,
         token: String

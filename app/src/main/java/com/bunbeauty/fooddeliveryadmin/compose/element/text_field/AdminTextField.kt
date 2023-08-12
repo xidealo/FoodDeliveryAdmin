@@ -113,7 +113,7 @@ fun AdminTextField(
 private fun AdminTextFieldPreview() {
     AdminTextField(
         value = "Нужно больше еды \n ...",
-        labelStringId = R.string.msg_statistic_day_interval,
+        labelStringId = R.string.title_bottom_navigation_menu,
         onValueChange = {}
     )
 }
