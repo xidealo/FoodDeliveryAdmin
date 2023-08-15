@@ -63,7 +63,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid)
 
         binding.root.compose {
-            val editMenuProductUIState by viewModel.editMenuProductUiState.collectAsStateWithLifecycle()
+            val editMenuProductUIState by viewModel.state.collectAsStateWithLifecycle()
             EditMenuProductScreen(editMenuProductUIState = editMenuProductUIState)
         }
     }
