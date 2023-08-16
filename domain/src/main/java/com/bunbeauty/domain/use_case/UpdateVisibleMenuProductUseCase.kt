@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menu.domain
+package com.bunbeauty.domain.use_case
 
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -10,7 +10,6 @@ class UpdateVisibleMenuProductUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(uuid: String, isVisible: Boolean) {
-
         menuProductRepo.updateVisibleMenuProductUseCase(
             uuid = uuid,
             isVisible = isVisible,

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -35,11 +34,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
+import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.util.compose
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductEvent
 import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductUIState
@@ -62,27 +61,73 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
         viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid)
 
-        binding.root.compose {
+        binding.root.setContentWithTheme {
             val editMenuProductUIState by viewModel.state.collectAsStateWithLifecycle()
-            EditMenuProductScreen(editMenuProductUIState = editMenuProductUIState)
+            EditMenuProductScreen(
+                editMenuProductUIState = editMenuProductUIState,
+                onNameTextChanged = viewModel::onNameTextChanged,
+                onNewPriceTextChanged = viewModel::onNewPriceTextChanged,
+                onOldPriceTextChanged = viewModel::onOldPriceTextChanged,
+                onNutritionTextChanged = viewModel::onNutritionTextChanged,
+                onSuggestedUtilsSelected = viewModel::onSuggestedUtilsSelected,
+                onDescriptionTextChanged = viewModel::onDescriptionTextChanged,
+                onVisibleChanged = viewModel::onVisibleChanged,
+                onErrorClick = {
+                    viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid)
+                },
+                updateMenuProductClick = viewModel::updateMenuProduct,
+                backAction = findNavController()::popBackStack
+            )
+            LaunchedEffect(editMenuProductUIState.eventList) {
+                handleEventList(editMenuProductUIState.eventList)
+            }
         }
     }
 
     @Composable
-    fun EditMenuProductScreen(editMenuProductUIState: EditMenuProductUIState) {
+    fun EditMenuProductScreen(
+        editMenuProductUIState: EditMenuProductUIState,
+        onNameTextChanged: (value: String) -> Unit,
+        onNewPriceTextChanged: (value: String) -> Unit,
+        onOldPriceTextChanged: (value: String) -> Unit,
+        onNutritionTextChanged: (value: String) -> Unit,
+        onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
+        onDescriptionTextChanged: (value: String) -> Unit,
+        onVisibleChanged: (value: Boolean) -> Unit,
+        onErrorClick: () -> Unit,
+        updateMenuProductClick: () -> Unit,
+        backAction: () -> Unit,
+    ) {
         AdminScaffold(
             title = editMenuProductUIState.title,
-            backActionClick = findNavController()::popBackStack
-        ) {
-            when (val state = editMenuProductUIState.editMenuProductState) {
-                EditMenuProductUIState.EditMenuProductState.Error -> EditMenuProductErrorScreen()
-                EditMenuProductUIState.EditMenuProductState.Loading -> EditMenuProductLoadingScreen()
-                is EditMenuProductUIState.EditMenuProductState.Success -> EditMenuProductSuccessScreen(
-                    state
+            backActionClick = backAction,
+            actionButton = {
+                LoadingButton(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .padding(bottom = 16.dp),
+                    textStringId = R.string.action_order_details_save,
+                    onClick = updateMenuProductClick,
+                    isLoading = editMenuProductUIState.getSuccessState?.isLoadingButton == true
                 )
             }
-            LaunchedEffect(editMenuProductUIState.eventList) {
-                handleEventList(editMenuProductUIState.eventList)
+        ) {
+            when (val state = editMenuProductUIState.editMenuProductState) {
+                EditMenuProductUIState.EditMenuProductState.Error -> EditMenuProductErrorScreen(
+                    onClick = onErrorClick
+                )
+
+                EditMenuProductUIState.EditMenuProductState.Loading -> LoadingScreen()
+                is EditMenuProductUIState.EditMenuProductState.Success -> EditMenuProductSuccessScreen(
+                    state = state,
+                    onNameTextChanged = onNameTextChanged,
+                    onNewPriceTextChanged = onNewPriceTextChanged,
+                    onOldPriceTextChanged = onOldPriceTextChanged,
+                    onNutritionTextChanged = onNutritionTextChanged,
+                    onSuggestedUtilsSelected = onSuggestedUtilsSelected,
+                    onDescriptionTextChanged = onDescriptionTextChanged,
+                    onVisibleChanged = onVisibleChanged
+                )
             }
         }
     }
@@ -96,6 +141,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     )
                     findNavController().popBackStack()
                 }
+
                 is EditMenuProductEvent.ShowUpdateProductError -> {
                     (activity as? MessageHost)?.showErrorMessage(
                         resources.getString(R.string.error_product_updated)
@@ -107,7 +153,16 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    fun EditMenuProductSuccessScreen(state: EditMenuProductUIState.EditMenuProductState.Success) {
+    fun EditMenuProductSuccessScreen(
+        state: EditMenuProductUIState.EditMenuProductState.Success,
+        onNameTextChanged: (value: String) -> Unit,
+        onNewPriceTextChanged: (value: String) -> Unit,
+        onOldPriceTextChanged: (value: String) -> Unit,
+        onNutritionTextChanged: (value: String) -> Unit,
+        onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
+        onDescriptionTextChanged: (value: String) -> Unit,
+        onVisibleChanged: (value: Boolean) -> Unit,
+    ) {
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -123,9 +178,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier.fillMaxWidth(),
                         value = state.name,
                         labelStringId = R.string.hint_edit_menu_product_name,
-                        onValueChange = { value ->
-                            viewModel.onNameTextChanged(value)
-                        },
+                        onValueChange = onNameTextChanged,
                         errorMessageId = if (state.hasNameError) {
                             R.string.error_edit_menu_product_empty_name
                         } else {
@@ -138,9 +191,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier.fillMaxWidth(),
                         value = state.newPrice,
                         labelStringId = R.string.hint_edit_menu_product_new_price,
-                        onValueChange = { value ->
-                            viewModel.onNewPriceTextChanged(value)
-                        },
+                        onValueChange = onNewPriceTextChanged,
                         errorMessageId = if (state.hasNewPriceError) {
                             R.string.error_edit_menu_product_empty_new_price
                         } else {
@@ -154,9 +205,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier.fillMaxWidth(),
                         value = state.oldPrice,
                         labelStringId = R.string.hint_edit_menu_product_old_price,
-                        onValueChange = { value ->
-                            viewModel.onOldPriceTextChanged(value)
-                        },
+                        onValueChange = onOldPriceTextChanged,
                         errorMessageId = if (state.hasOldPriceError) {
                             R.string.error_edit_menu_product_empty_name
                         } else {
@@ -174,9 +223,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             modifier = Modifier.weight(0.7f),
                             value = state.nutrition,
                             labelStringId = R.string.hint_edit_menu_product_nutrition,
-                            onValueChange = { value ->
-                                viewModel.onNutritionTextChanged(value)
-                            },
+                            onValueChange = onNutritionTextChanged,
                             errorMessageId = if (state.hasNutritionError) {
                                 R.string.error_edit_menu_product_empty_nutrition
                             } else {
@@ -207,20 +254,15 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             value = state.utils,
                             labelStringId = R.string.hint_edit_menu_product_utils,
                             onValueChange = { value ->
-                                // viewModel.onStreetTextChanged(value)
+                                //stub don't need
                             },
-                            /*  errorMessageId = if (state.hasStreetError) {
-                                  R.string.error_create_address_street
-                              } else {
-                                  null
-                              },*/
                             suggestionsList = stringArrayResource(id = R.array.utilsList)
                                 .mapIndexed { index, util ->
                                     Suggestion(index.toString(), util)
                                 },
                             onSuggestionClick = { suggestion ->
                                 focusManager.moveFocus(FocusDirection.Down)
-                                viewModel.onSuggestedUtilsSelected(suggestion)
+                                onSuggestedUtilsSelected(suggestion)
                             },
                             enabled = !state.isLoadingButton
                         )
@@ -230,9 +272,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier.fillMaxWidth(),
                         value = state.description,
                         labelStringId = R.string.hint_edit_menu_product_description,
-                        onValueChange = { value ->
-                            viewModel.onDescriptionTextChanged(value)
-                        },
+                        onValueChange = onDescriptionTextChanged,
                         maxLines = 10,
                         errorMessageId = if (state.hasDescriptionError) {
                             R.string.error_edit_menu_product_empty_description
@@ -247,36 +287,22 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
             SwitcherCard(
                 modifier = Modifier.padding(top = 8.dp),
                 checked = state.isVisible,
-                onCheckChanged = viewModel::onVisibleChanged,
+                onCheckChanged = onVisibleChanged,
                 labelStringId = R.string.title_edit_menu_product_is_visible,
                 enabled = !state.isLoadingButton
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            LoadingButton(
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .padding(bottom = 16.dp),
-                textStringId = R.string.action_order_details_save,
-                onClick = viewModel::updateMenuProduct,
-                isLoading = state.isLoadingButton
             )
         }
     }
 
     @Composable
-    fun EditMenuProductErrorScreen() {
+    fun EditMenuProductErrorScreen(
+        onClick: () -> Unit,
+    ) {
         ErrorScreen(
             mainTextId = R.string.title_common_can_not_load_data,
             extraTextId = R.string.msg_common_check_connection_and_retry,
-            onClick = { viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid) }
+            onClick = onClick
         )
-    }
-
-    @Composable
-    fun EditMenuProductLoadingScreen() {
-        LoadingScreen()
     }
 
     @Preview(showSystemUi = true)
@@ -284,7 +310,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     fun EditMenuProductSuccessScreenPreview() {
         AdminTheme {
             EditMenuProductSuccessScreen(
-                EditMenuProductUIState.EditMenuProductState.Success(
+                state = EditMenuProductUIState.EditMenuProductState.Success(
                     name = "Продукт",
                     hasNameError = false,
                     description = "Описание",
@@ -298,7 +324,14 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     utils = "г",
                     isLoadingButton = false,
                     isVisible = true
-                )
+                ),
+                onNameTextChanged = {},
+                onNewPriceTextChanged = {},
+                onOldPriceTextChanged = {},
+                onNutritionTextChanged = {},
+                onSuggestedUtilsSelected = {},
+                onDescriptionTextChanged = {},
+                onVisibleChanged = {},
             )
         }
     }
@@ -307,15 +340,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     fun EditMenuProductErrorScreenPreview() {
         AdminTheme {
-            EditMenuProductErrorScreen()
-        }
-    }
-
-    @Preview(showSystemUi = true)
-    @Composable
-    fun EditMenuProductLoadingScreenPreview() {
-        AdminTheme {
-            EditMenuProductLoadingScreen()
+            EditMenuProductErrorScreen(onClick = {})
         }
     }
 }

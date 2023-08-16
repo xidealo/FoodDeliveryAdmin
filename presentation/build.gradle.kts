@@ -47,9 +47,6 @@ dependencies {
     kapt(Dagger.hiltCompiler)
     implementation("javax.inject:javax.inject:1")
 
-    //DataStore
-    implementation(DataStore.dataStorePreferences)
-
     // Mocks for testing
     implementation(Mockk.main)
     implementation(Mockk.common)

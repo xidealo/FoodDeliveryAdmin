@@ -84,7 +84,7 @@ class EditMenuProductViewModel @Inject constructor(
                             } else {
                                 ""
                             },
-                            nutrition = mutableState.value.nutrition.toIntOrNull(),
+                            nutrition = mutableState.value.nutrition.toIntOrNull() ?: 0,
                             isVisible = mutableState.value.isVisible
                         )
                     )

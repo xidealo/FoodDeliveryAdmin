@@ -35,7 +35,7 @@ fun AdminTextFieldWithMenu(
             expanded = expanded,
             onExpandedChange = onExpandedChange
         ) {
-            FoodDeliveryBaseTextField(
+            AdminBaseTextField(
                 modifier = Modifier
                     .menuAnchor(),
                 value = value,

@@ -35,7 +35,7 @@ fun AdminTextField(
     enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
-        FoodDeliveryBaseTextField(
+        AdminBaseTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             labelStringId = labelStringId,
@@ -77,7 +77,7 @@ fun AdminTextField(
     enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
-        FoodDeliveryBaseTextField(
+        AdminBaseTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .applyIfNotNull(focusRequester) {

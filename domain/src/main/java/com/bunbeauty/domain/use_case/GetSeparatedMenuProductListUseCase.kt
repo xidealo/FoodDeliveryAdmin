@@ -1,9 +1,12 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menu.domain
+package com.bunbeauty.domain.use_case
 
+import com.bunbeauty.domain.exception.NoCompanyUuidException
+import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 data class SeparatedMenuProductList(
@@ -17,7 +20,7 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(isRefreshing: Boolean): SeparatedMenuProductList {
         val menuProductList = menuProductRepo.getMenuProductList(
-            companyUuid = dataStoreRepo.companyUuid.first(),
+            companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
             isRefreshing = isRefreshing
         )
 
@@ -26,7 +29,7 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
                 .filter { it.isVisible }
                 .sortedBy { it.name },
             hiddenList = menuProductList
-                .filter { !it.isVisible }
+                .filterNot { it.isVisible }
                 .sortedBy { it.name },
         )
     }

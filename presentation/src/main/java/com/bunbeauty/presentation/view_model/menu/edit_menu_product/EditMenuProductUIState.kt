@@ -6,6 +6,8 @@ data class EditMenuProductUIState(
     val eventList: List<EditMenuProductEvent> = emptyList()
 ) {
 
+    val getSuccessState = (editMenuProductState as? EditMenuProductState.Success)
+
     sealed interface EditMenuProductState {
 
         data object Loading : EditMenuProductState
