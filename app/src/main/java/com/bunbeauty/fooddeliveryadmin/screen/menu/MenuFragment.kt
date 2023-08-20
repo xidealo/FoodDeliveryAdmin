@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -116,7 +115,6 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                     Text(
                         text = stringResource(id = R.string.title_menu_product_visible),
                         style = AdminTheme.typography.titleMedium.bold,
-                        modifier = Modifier.padding(top = 8.dp)
                     )
                 }
                 items(state.visibleMenuProductItems) { visibleMenuProduct ->

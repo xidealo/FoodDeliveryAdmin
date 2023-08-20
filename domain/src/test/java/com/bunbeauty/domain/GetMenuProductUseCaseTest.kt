@@ -1,6 +1,5 @@
 package com.bunbeauty.domain
 
-import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateproduct.NotFoundMenuProductException
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -8,14 +7,11 @@ import com.bunbeauty.domain.use_case.GetMenuProductUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 

@@ -17,6 +17,7 @@ data class EditMenuProductDataState(
     val nutrition: String = "",
     val hasNutritionError: Boolean = false,
     val utils: String = "",
+    val comboDescription: String = "",
     val eventList: List<EditMenuProductEvent> = emptyList(),
     val isLoadingButton: Boolean = false,
     val isVisible: Boolean = false

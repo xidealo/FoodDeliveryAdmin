@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -76,6 +80,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid)
                 },
                 updateMenuProductClick = viewModel::updateMenuProduct,
+                onComboDescriptionTextChanged = viewModel::onComboDescriptionTextChanged,
                 backAction = findNavController()::popBackStack
             )
             LaunchedEffect(editMenuProductUIState.eventList) {
@@ -93,6 +98,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         onNutritionTextChanged: (value: String) -> Unit,
         onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
         onDescriptionTextChanged: (value: String) -> Unit,
+        onComboDescriptionTextChanged: (value: String) -> Unit,
         onVisibleChanged: (value: Boolean) -> Unit,
         onErrorClick: () -> Unit,
         updateMenuProductClick: () -> Unit,
@@ -103,9 +109,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
             backActionClick = backAction,
             actionButton = {
                 LoadingButton(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .padding(bottom = 16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                     textStringId = R.string.action_order_details_save,
                     onClick = updateMenuProductClick,
                     isLoading = editMenuProductUIState.getSuccessState?.isLoadingButton == true
@@ -126,6 +130,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     onNutritionTextChanged = onNutritionTextChanged,
                     onSuggestedUtilsSelected = onSuggestedUtilsSelected,
                     onDescriptionTextChanged = onDescriptionTextChanged,
+                    onComboDescriptionTextChanged = onComboDescriptionTextChanged,
                     onVisibleChanged = onVisibleChanged
                 )
             }
@@ -135,7 +140,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     private fun handleEventList(eventList: List<EditMenuProductEvent>) {
         eventList.forEach { event ->
             when (event) {
-                is EditMenuProductEvent.ShowUpdatProductSuccess -> {
+                is EditMenuProductEvent.ShowUpdateProductSuccess -> {
                     (activity as? MessageHost)?.showInfoMessage(
                         resources.getString(R.string.msg_product_updated, event.productName)
                     )
@@ -161,10 +166,12 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         onNutritionTextChanged: (value: String) -> Unit,
         onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
         onDescriptionTextChanged: (value: String) -> Unit,
+        onComboDescriptionTextChanged: (value: String) -> Unit,
         onVisibleChanged: (value: Boolean) -> Unit,
     ) {
         Column(
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
                 .padding(top = 16.dp)
         ) {
@@ -235,7 +242,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
                         val focusManager = LocalFocusManager.current
 
-                        var expanded by remember() {
+                        var expanded by remember {
                             mutableStateOf(false)
                         }
 
@@ -273,12 +280,21 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         value = state.description,
                         labelStringId = R.string.hint_edit_menu_product_description,
                         onValueChange = onDescriptionTextChanged,
-                        maxLines = 10,
+                        maxLines = 20,
                         errorMessageId = if (state.hasDescriptionError) {
                             R.string.error_edit_menu_product_empty_description
                         } else {
                             null
                         },
+                        enabled = !state.isLoadingButton
+                    )
+
+                    AdminTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.comboDescription,
+                        labelStringId = R.string.hint_edit_menu_product_combo_description,
+                        onValueChange = onComboDescriptionTextChanged,
+                        maxLines = 20,
                         enabled = !state.isLoadingButton
                     )
                 }
@@ -291,6 +307,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 labelStringId = R.string.title_edit_menu_product_is_visible,
                 enabled = !state.isLoadingButton
             )
+
+            Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
         }
     }
 
@@ -309,21 +327,25 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     fun EditMenuProductSuccessScreenPreview() {
         AdminTheme {
-            EditMenuProductSuccessScreen(
-                state = EditMenuProductUIState.EditMenuProductState.Success(
-                    name = "Продукт",
-                    hasNameError = false,
-                    description = "Описание",
-                    hasDescriptionError = false,
-                    newPrice = "Актуальная цена",
-                    hasNewPriceError = false,
-                    oldPrice = "Цена до скидки",
-                    hasOldPriceError = false,
-                    nutrition = "200",
-                    hasNutritionError = false,
-                    utils = "г",
-                    isLoadingButton = false,
-                    isVisible = true
+            EditMenuProductScreen(
+                editMenuProductUIState = EditMenuProductUIState(
+                    title = "title",
+                    editMenuProductState = EditMenuProductUIState.EditMenuProductState.Success(
+                        name = "Продукт",
+                        hasNameError = false,
+                        description = "Описание",
+                        hasDescriptionError = false,
+                        newPrice = "Актуальная цена",
+                        hasNewPriceError = false,
+                        oldPrice = "Цена до скидки",
+                        hasOldPriceError = false,
+                        nutrition = "200",
+                        hasNutritionError = false,
+                        utils = "г",
+                        isLoadingButton = false,
+                        isVisible = true,
+                        comboDescription = "comboDescription"
+                    ),
                 ),
                 onNameTextChanged = {},
                 onNewPriceTextChanged = {},
@@ -332,6 +354,10 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 onSuggestedUtilsSelected = {},
                 onDescriptionTextChanged = {},
                 onVisibleChanged = {},
+                onErrorClick = {},
+                updateMenuProductClick = {},
+                backAction = {},
+                onComboDescriptionTextChanged = {}
             )
         }
     }
@@ -340,7 +366,23 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     fun EditMenuProductErrorScreenPreview() {
         AdminTheme {
-            EditMenuProductErrorScreen(onClick = {})
+            EditMenuProductScreen(
+                editMenuProductUIState = EditMenuProductUIState(
+                    title = "title",
+                    editMenuProductState = EditMenuProductUIState.EditMenuProductState.Error
+                ),
+                onNameTextChanged = {},
+                onNewPriceTextChanged = {},
+                onOldPriceTextChanged = {},
+                onNutritionTextChanged = {},
+                onSuggestedUtilsSelected = {},
+                onDescriptionTextChanged = {},
+                onVisibleChanged = {},
+                onErrorClick = {},
+                updateMenuProductClick = {},
+                backAction = {},
+                onComboDescriptionTextChanged = {}
+            )
         }
     }
 }

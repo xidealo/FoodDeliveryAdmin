@@ -42,6 +42,7 @@ class EditMenuProductViewModel @Inject constructor(
                         nutrition = menuProduct.nutrition?.toString() ?: "",
                         utils = menuProduct.utils ?: "",
                         isVisible = menuProduct.isVisible,
+                        comboDescription = menuProduct.comboDescription ?: "",
                     )
                 }
             },
@@ -85,35 +86,39 @@ class EditMenuProductViewModel @Inject constructor(
                                 ""
                             },
                             nutrition = mutableState.value.nutrition.toIntOrNull() ?: 0,
-                            isVisible = mutableState.value.isVisible
+                            isVisible = mutableState.value.isVisible,
+                            comboDescription = mutableState.value.comboDescription
                         )
                     )
                     mutableState.update { oldState ->
-                        oldState + EditMenuProductEvent.ShowUpdatProductSuccess(productName = name)
+                        oldState + EditMenuProductEvent.ShowUpdateProductSuccess(productName = name)
                     }
                 }
             },
-            onError = {
+            onError = { throwable ->
                 mutableState.update { oldState ->
-                    when (it) {
+                    when (throwable) {
                         is MenuProductNameException -> {
                             oldState.copy(
                                 isLoadingButton = false,
                                 hasNameError = true
                             )
                         }
+
                         is MenuProductNewPriceException -> {
                             oldState.copy(
                                 isLoadingButton = false,
                                 hasNewPriceError = true
                             )
                         }
+
                         is MenuProductDescriptionException -> {
                             oldState.copy(
                                 isLoadingButton = false,
                                 hasDescriptionError = true
                             )
                         }
+
                         else -> {
                             oldState.copy(
                                 isLoadingButton = false,
@@ -137,6 +142,12 @@ class EditMenuProductViewModel @Inject constructor(
     fun onDescriptionTextChanged(description: String) {
         mutableState.update { state ->
             state.copy(description = description)
+        }
+    }
+
+    fun onComboDescriptionTextChanged(comboDescription: String) {
+        mutableState.update { state ->
+            state.copy(comboDescription = comboDescription)
         }
     }
 
@@ -194,9 +205,11 @@ class EditMenuProductViewModel @Inject constructor(
                         nutrition = dataState.nutrition,
                         hasNutritionError = dataState.hasNutritionError,
                         isLoadingButton = dataState.isLoadingButton,
-                        isVisible = dataState.isVisible
+                        isVisible = dataState.isVisible,
+                        comboDescription = dataState.comboDescription
                     )
                 }
+
                 EditMenuProductDataState.State.LOADING -> EditMenuProductUIState.EditMenuProductState.Loading
                 EditMenuProductDataState.State.ERROR -> EditMenuProductUIState.EditMenuProductState.Error
             },

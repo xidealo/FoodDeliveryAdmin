@@ -31,6 +31,8 @@ data class EditMenuProductUIState(
 
             val isLoadingButton: Boolean,
 
+            val comboDescription: String,
+
             val isVisible: Boolean
         ) : EditMenuProductState
 
