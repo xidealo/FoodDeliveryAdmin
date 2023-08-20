@@ -24,7 +24,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.icon16
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @Composable
-fun FoodDeliveryBaseTextField(
+fun AdminBaseTextField(
     modifier: Modifier = Modifier,
     value: String = "",
     @StringRes labelStringId: Int,
@@ -80,7 +80,7 @@ fun FoodDeliveryBaseTextField(
 }
 
 @Composable
-fun FoodDeliveryBaseTextField(
+fun AdminBaseTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue = TextFieldValue(""),
     @StringRes labelStringId: Int,
@@ -137,7 +137,8 @@ fun FoodDeliveryBaseTextField(
             singleLine = maxLines == 1,
             maxLines = maxLines,
             colors = AdminTextFieldDefaults.textFieldColors,
-            enabled = enabled
+            enabled = enabled,
+            readOnly = readOnly
         )
     }
 }
@@ -146,7 +147,7 @@ fun FoodDeliveryBaseTextField(
 @Preview
 @Composable
 private fun FoodDeliveryTextBaseFieldPreview() {
-    FoodDeliveryBaseTextField(
+    AdminBaseTextField(
         value = "Нужно больше еды \n ...",
         labelStringId = R.string.hint_login_password,
         onValueChange = {}

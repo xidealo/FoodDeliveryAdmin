@@ -6,9 +6,11 @@ data class EditMenuProductUIState(
     val eventList: List<EditMenuProductEvent> = emptyList()
 ) {
 
+    val getSuccessState = (editMenuProductState as? EditMenuProductState.Success)
+
     sealed interface EditMenuProductState {
 
-        object Loading : EditMenuProductState
+        data object Loading : EditMenuProductState
         data class Success(
             val name: String,
             val hasNameError: Boolean,
@@ -32,7 +34,7 @@ data class EditMenuProductUIState(
             val isVisible: Boolean
         ) : EditMenuProductState
 
-        object Error : EditMenuProductState
+        data object Error : EditMenuProductState
     }
 }
 

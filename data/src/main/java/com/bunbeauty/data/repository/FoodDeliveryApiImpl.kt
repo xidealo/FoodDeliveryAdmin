@@ -116,18 +116,15 @@ class FoodDeliveryApiImpl @Inject constructor(
     }
 
     override suspend fun patchMenuProduct(menuProductServer: MenuProductServer, token: String) {
-        client.patch {
-            url {
-                path("menu_product")
-            }
-            parameter("uuid", menuProductServer.uuid)
-            setBody(
-                menuProductServer.copy(
-                    uuid = null
-                )
-            )
-            header(HttpHeaders.Authorization, "Bearer $token")
-        }
+        patchData(
+            path = "menu_product",
+            patchBody = menuProductServer.copy(
+                uuid = null
+            ),
+            serializer = MenuProductServer.serializer(),
+            parameters = hashMapOf("uuid" to menuProductServer.uuid),
+            token = token
+        )
     }
 
     override suspend fun deleteMenuProduct(uuid: String) {
@@ -303,7 +300,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         patchBody: Any,
         serializer: KSerializer<T>,
-        parameters: Map<String, String> = mapOf(),
+        parameters: Map<String, String?> = mapOf(),
         token: String? = null
     ): ApiResult<T> {
         val request = client.patch {

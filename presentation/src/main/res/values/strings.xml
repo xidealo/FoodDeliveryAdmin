@@ -73,32 +73,4 @@
     <string name="error_create_menu_product_discount_cost_incorrect">Должна быть меньше цены</string>
     <string name="error_create_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
     <string name="msg_product_created">&#160;создан</string>
-
-    <!-- EDIT MENU PRODUCT -->
-    <string name="error_edit_menu_product_empty_name">Название не может быть пустым</string>
-    <string name="error_edit_menu_product_empty_description">Описание не может быть пустым</string>
-    <string name="error_edit_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
-    <string name="error_edit_menu_product_empty_nutrition">Вес не может быть пустым</string>
-    <string name="hint_edit_menu_product_name">Название продукта</string>
-    <string name="error_edit_menu_product_cost_incorrect">Некорректное значение</string>
-    <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть больше цены</string>
-    <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
-    <string name="title_edit_menu_product_select_category">Выберите категорию</string>
-    <string name="title_edit_menu_product_is_visible">Показывать в меню</string>
-    <string name="msg_product_updated">%s обновлён</string>
-    <string name="error_product_updated">Что-то пошло не так</string>
-    <string name="msg_product_deleted">&#160;удалён</string>
-    <string name="hint_edit_menu_product_utils">Ед</string>
-
-    <!--MENU FRAGMENT-->
-    <string name="title_menu_product_visible">Видимые позиции</string>
-    <string name="title_menu_product_hidden">Скрытые позиции</string>
-
-    <string-array name="utilsList">
-        <item>г</item>
-        <item>кг</item>
-        <item>мл</item>
-        <item>л</item>
-        <item>шт</item>
-    </string-array>
 </resources>

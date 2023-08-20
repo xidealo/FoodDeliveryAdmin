@@ -16,9 +16,9 @@ class UpdateMenuProductUseCase @Inject constructor(
     suspend operator fun invoke(menuProduct: MenuProduct) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
-        if (menuProduct.name.isEmpty()) throw MenuProductNameException
-        if (menuProduct.newPrice == 0) throw MenuProductNewPriceException
-        if (menuProduct.description.isEmpty()) throw MenuProductDescriptionException
+        if (menuProduct.name.isEmpty()) throw MenuProductNameException()
+        if (menuProduct.newPrice == 0) throw MenuProductNewPriceException()
+        if (menuProduct.description.isEmpty()) throw MenuProductDescriptionException()
 
         menuProductRepo.updateMenuProduct(menuProduct = menuProduct, token = token)
     }

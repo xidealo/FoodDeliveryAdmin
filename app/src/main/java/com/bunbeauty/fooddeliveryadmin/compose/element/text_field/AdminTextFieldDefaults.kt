@@ -10,12 +10,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 object AdminTextFieldDefaults {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     val textFieldColors: TextFieldColors
-        @Composable get() = TextFieldDefaults.textFieldColors(
-            //  textColor = AdminTheme.colors.mainColors.onSurface,
+        @Composable get() = TextFieldDefaults.colors(
             disabledTextColor = AdminTheme.colors.main.onSurfaceVariant,
-            containerColor = AdminTheme.colors.main.surface,
+            focusedContainerColor = AdminTheme.colors.main.surface,
+            unfocusedContainerColor = AdminTheme.colors.main.surface,
             cursorColor = AdminTheme.colors.main.primary,
             errorCursorColor = AdminTheme.colors.main.error,
             focusedIndicatorColor = AdminTheme.colors.main.primary,
@@ -32,33 +31,6 @@ object AdminTextFieldDefaults {
             unfocusedLabelColor = AdminTheme.colors.main.onSurfaceVariant,
             disabledLabelColor = AdminTheme.colors.main.onSurfaceVariant,
             errorLabelColor = AdminTheme.colors.main.error,
-            // placeholderColor = AdminTheme.colors.main.onSurfaceVariant,
-            disabledPlaceholderColor = AdminTheme.colors.main.onSurfaceVariant
-        )
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    val smsCodeTextFieldColors: TextFieldColors
-        @Composable get() = TextFieldDefaults.textFieldColors(
-            // textColor = AdminTheme.colors.main.onSurface,
-            disabledTextColor = AdminTheme.colors.main.onSurfaceVariant,
-            containerColor = AdminTheme.colors.main.surface,
-            cursorColor = Color.Transparent,
-            errorCursorColor = AdminTheme.colors.main.error,
-            focusedIndicatorColor = AdminTheme.colors.main.primary,
-            unfocusedIndicatorColor = AdminTheme.colors.main.onSurfaceVariant,
-            disabledIndicatorColor = AdminTheme.colors.main.onSurfaceVariant,
-            errorIndicatorColor = AdminTheme.colors.main.error,
-            focusedLeadingIconColor = AdminTheme.colors.main.onSurfaceVariant,
-            disabledLeadingIconColor = AdminTheme.colors.main.onSurfaceVariant,
-            errorLeadingIconColor = AdminTheme.colors.main.error,
-            focusedTrailingIconColor = AdminTheme.colors.main.onSurfaceVariant,
-            disabledTrailingIconColor = AdminTheme.colors.main.onSurfaceVariant,
-            errorTrailingIconColor = AdminTheme.colors.main.error,
-            focusedLabelColor = AdminTheme.colors.main.primary,
-            unfocusedLabelColor = AdminTheme.colors.main.onSurfaceVariant,
-            disabledLabelColor = AdminTheme.colors.main.onSurfaceVariant,
-            errorLabelColor = AdminTheme.colors.main.error,
-            // placeholderColor = AdminTheme.colors.main.onSurfaceVariant,
             disabledPlaceholderColor = AdminTheme.colors.main.onSurfaceVariant
         )
 

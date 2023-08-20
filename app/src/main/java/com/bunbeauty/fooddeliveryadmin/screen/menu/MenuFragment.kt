@@ -35,6 +35,8 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
+import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
@@ -55,9 +57,12 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadData()
 
-        binding.root.compose {
+        binding.root.setContentWithTheme {
             val menuViewState by viewModel.menuState.collectAsStateWithLifecycle()
             MenuScreen(menuUiState = menuViewState)
+            LaunchedEffect(menuViewState.eventList) {
+                handleEventList(menuViewState.eventList)
+            }
         }
     }
 
@@ -75,7 +80,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    fun MenuScreen(menuUiState: MenuUiState) {
+    private fun MenuScreen(menuUiState: MenuUiState) {
         AdminScaffold(
             title = stringResource(R.string.title_bottom_navigation_menu),
             pullRefreshEnabled = true,
@@ -86,18 +91,14 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                 is MenuUiState.State.Success -> {
                     MenuSuccessScreen(state)
                 }
+
                 is MenuUiState.State.Error -> {
                     MenuErrorScreen()
                 }
+
                 MenuUiState.State.Loading -> {
-                    LinearProgressIndicator(
-                        color = AdminTheme.colors.main.primary,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
+                    LoadingScreen()
                 }
-            }
-            LaunchedEffect(menuUiState.eventList) {
-                handleEventList(menuUiState.eventList)
             }
         }
     }
@@ -114,7 +115,8 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                 item {
                     Text(
                         text = stringResource(id = R.string.title_menu_product_visible),
-                        style = AdminTheme.typography.titleMedium.bold
+                        style = AdminTheme.typography.titleMedium.bold,
+                        modifier = Modifier.padding(top = 8.dp)
                     )
                 }
                 items(state.visibleMenuProductItems) { visibleMenuProduct ->
@@ -125,7 +127,8 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                 item {
                     Text(
                         text = stringResource(id = R.string.title_menu_product_hidden),
-                        style = AdminTheme.typography.titleMedium.bold
+                        style = AdminTheme.typography.titleMedium.bold,
+                        modifier = Modifier.padding(top = 8.dp)
                     )
                 }
                 items(state.hiddenMenuProductItems) { hiddenMenuProduct ->

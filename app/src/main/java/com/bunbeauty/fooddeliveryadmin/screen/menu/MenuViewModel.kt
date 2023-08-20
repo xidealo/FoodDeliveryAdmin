@@ -2,8 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.menu
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
-import com.bunbeauty.fooddeliveryadmin.screen.menu.domain.GetSeparatedMenuProductListUseCase
-import com.bunbeauty.fooddeliveryadmin.screen.menu.domain.UpdateVisibleMenuProductUseCase
+import com.bunbeauty.domain.use_case.GetSeparatedMenuProductListUseCase
+import com.bunbeauty.domain.use_case.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.model.MenuDataState
 import com.bunbeauty.presentation.model.MenuEvent
@@ -71,7 +71,7 @@ class MenuViewModel @Inject constructor(
                 )
             }
 
-            val items = getSeparatedMenuProductListUseCase(isRefreshing = false)
+            val items = getSeparatedMenuProductListUseCase(isRefreshing = true)
 
             mutableState.update { oldState ->
                 oldState.copy(
@@ -122,6 +122,7 @@ class MenuViewModel @Inject constructor(
                         hiddenMenuProductItems = dataState.hiddenMenuProductItems,
                     )
                 }
+
                 MenuDataState.State.LOADING -> MenuUiState.State.Loading
                 MenuDataState.State.ERROR -> MenuUiState.State.Error(dataState.throwable)
             },

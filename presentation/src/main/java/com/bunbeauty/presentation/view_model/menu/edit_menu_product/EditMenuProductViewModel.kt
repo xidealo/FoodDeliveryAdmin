@@ -13,7 +13,6 @@ import com.bunbeauty.presentation.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import org.jetbrains.annotations.TestOnly
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +22,7 @@ class EditMenuProductViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(EditMenuProductDataState())
-    val editMenuProductUiState = mutableState.mapToStateFlow(viewModelScope) { state ->
+    val state = mutableState.mapToStateFlow(viewModelScope) { state ->
         mapState(state)
     }
 
@@ -85,7 +84,7 @@ class EditMenuProductViewModel @Inject constructor(
                             } else {
                                 ""
                             },
-                            nutrition = mutableState.value.nutrition.toIntOrNull(),
+                            nutrition = mutableState.value.nutrition.toIntOrNull() ?: 0,
                             isVisible = mutableState.value.isVisible
                         )
                     )
