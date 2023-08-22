@@ -30,7 +30,7 @@ abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragmen
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         mutableBinding = createBindingInstance(inflater, container)
         return mutableBinding?.root

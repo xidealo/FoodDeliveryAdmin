@@ -81,9 +81,9 @@ class EditMenuProductViewModel @Inject constructor(
                                 .ifEmpty { null }
                                 ?.toInt() ?: 0,
                             utils = if (mutableState.value.nutrition.isEmpty()) {
-                                mutableState.value.utils
-                            } else {
                                 ""
+                            } else {
+                                mutableState.value.utils
                             },
                             nutrition = mutableState.value.nutrition.toIntOrNull() ?: 0,
                             isVisible = mutableState.value.isVisible,

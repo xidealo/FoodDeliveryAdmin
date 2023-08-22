@@ -102,7 +102,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         onVisibleChanged: (value: Boolean) -> Unit,
         onErrorClick: () -> Unit,
         updateMenuProductClick: () -> Unit,
-        backAction: () -> Unit,
+        backAction: () -> Unit
     ) {
         AdminScaffold(
             title = editMenuProductUIState.title,
@@ -167,7 +167,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
         onDescriptionTextChanged: (value: String) -> Unit,
         onComboDescriptionTextChanged: (value: String) -> Unit,
-        onVisibleChanged: (value: Boolean) -> Unit,
+        onVisibleChanged: (value: Boolean) -> Unit
     ) {
         Column(
             modifier = Modifier
@@ -179,7 +179,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 clickable = false
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp)
                 ) {
                     AdminTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -227,7 +227,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             .fillMaxWidth()
                     ) {
                         AdminTextField(
-                            modifier = Modifier.weight(0.7f),
+                            modifier = Modifier.weight(0.6f),
                             value = state.nutrition,
                             labelStringId = R.string.hint_edit_menu_product_nutrition,
                             onValueChange = onNutritionTextChanged,
@@ -248,7 +248,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
                         AdminTextFieldWithMenu(
                             modifier = Modifier
-                                .weight(0.3f)
+                                .weight(0.4f)
                                 .padding(start = 8.dp)
                                 .onFocusChanged { focusState ->
                                     expanded =
@@ -261,7 +261,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             value = state.utils,
                             labelStringId = R.string.hint_edit_menu_product_utils,
                             onValueChange = { value ->
-                                //stub don't need
+                                // stub don't need
                             },
                             suggestionsList = stringArrayResource(id = R.array.utilsList)
                                 .mapIndexed { index, util ->
@@ -314,7 +314,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Composable
     fun EditMenuProductErrorScreen(
-        onClick: () -> Unit,
+        onClick: () -> Unit
     ) {
         ErrorScreen(
             mainTextId = R.string.title_common_can_not_load_data,
@@ -345,7 +345,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         isLoadingButton = false,
                         isVisible = true,
                         comboDescription = "comboDescription"
-                    ),
+                    )
                 ),
                 onNameTextChanged = {},
                 onNewPriceTextChanged = {},

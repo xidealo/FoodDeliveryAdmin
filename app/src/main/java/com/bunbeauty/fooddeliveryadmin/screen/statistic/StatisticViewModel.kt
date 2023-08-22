@@ -29,7 +29,7 @@ class StatisticViewModel @Inject constructor(
     private val resources: Resources,
     private val dataStoreRepo: DataStoreRepo,
     private val getStatisticUseCase: GetStatisticUseCase,
-    private val logoutUseCase: LogoutUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : BaseViewModel() {
 
     private val mutableStatisticState: MutableStateFlow<StatisticState> =
@@ -68,14 +68,14 @@ class StatisticViewModel @Inject constructor(
                 add(
                     Option(
                         id = allCafes.uuid,
-                        title = allCafes.address,
+                        title = allCafes.address
                     )
                 )
                 val cityUuid = dataStoreRepo.managerCity.first()
                 cafeRepository.getCafeListByCityUuid(cityUuid).map { cafe ->
                     Option(
                         id = cafe.uuid,
-                        title = cafe.address,
+                        title = cafe.address
                     )
                 }.let { cafeAddressList ->
                     addAll(cafeAddressList)

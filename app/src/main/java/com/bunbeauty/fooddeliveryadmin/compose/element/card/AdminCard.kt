@@ -22,10 +22,10 @@ fun AdminCard(
     colors: CardColors = AdminCardDefaults.cardColors,
     shape: Shape = AdminCardDefaults.cardShape,
     border: BorderStroke? = null,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false,
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         if (clickable) {
             val multipleEventsCutter = rememberMultipleEventsCutter()

@@ -24,10 +24,10 @@ fun SecondaryButton(
     @StringRes textStringId: Int,
     elevated: Boolean = true,
     onClick: () -> Unit,
-    isEnabled: Boolean = true,
+    isEnabled: Boolean = true
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false,
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         OutlinedButton(
             modifier = modifier.fillMaxWidth(),
@@ -43,7 +43,7 @@ fun SecondaryButton(
         ) {
             Text(
                 text = stringResource(textStringId),
-                style = AdminTheme.typography.labelLarge.medium,
+                style = AdminTheme.typography.labelLarge.medium
             )
         }
     }

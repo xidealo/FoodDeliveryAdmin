@@ -84,7 +84,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
             title = stringResource(R.string.title_bottom_navigation_menu),
             pullRefreshEnabled = true,
             refreshing = menuUiState.isRefreshing,
-            onRefresh = viewModel::refreshData,
+            onRefresh = viewModel::refreshData
         ) {
             when (val state = menuUiState.state) {
                 is MenuUiState.State.Success -> {
@@ -114,7 +114,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                 item {
                     Text(
                         text = stringResource(id = R.string.title_menu_product_visible),
-                        style = AdminTheme.typography.titleMedium.bold,
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
                 items(state.visibleMenuProductItems) { visibleMenuProduct ->
@@ -185,7 +185,11 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                             painterResource(iconId)
                         },
                         contentDescription = null,
-                        tint = AdminTheme.colors.main.onSurfaceVariant
+                        tint = if (menuProduct.visible) {
+                            AdminTheme.colors.main.primary
+                        } else {
+                            AdminTheme.colors.main.onSurfaceVariant
+                        }
                     )
                 }
             }
@@ -232,7 +236,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                                 newCost = "500",
                                 oldCost = "1000",
                                 uuid = "asdasd"
-                            ),
+                            )
                         ),
                         hiddenMenuProductItems = listOf(
                             MenuProductItem(
@@ -258,11 +262,11 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
                                 newCost = "500",
                                 oldCost = "1000",
                                 uuid = "asdasd"
-                            ),
-                        ),
+                            )
+                        )
                     ),
                     isRefreshing = false,
-                    eventList = emptyList(),
+                    eventList = emptyList()
                 )
             )
         }

@@ -24,19 +24,19 @@ fun SwitcherCard(
     checked: Boolean,
     elevated: Boolean = true,
     enabled: Boolean = true,
-    onCheckChanged: (Boolean) -> Unit,
+    onCheckChanged: (Boolean) -> Unit
 ) {
     AdminCard(
         modifier = modifier,
         clickable = false,
-        elevated = elevated,
+        elevated = elevated
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = AdminTheme.dimensions.mediumSpace,
-                    vertical = 12.dp,
+                    vertical = 12.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -69,7 +69,7 @@ private fun SelectedSelectableCard() {
         SwitcherCard(
             label = "Текст",
             checked = true,
-            onCheckChanged = {},
+            onCheckChanged = {}
         )
     }
 }
@@ -81,7 +81,7 @@ private fun UnselectedSelectableCard() {
         SwitcherCard(
             label = "Текст",
             checked = false,
-            onCheckChanged = {},
+            onCheckChanged = {}
         )
     }
 }

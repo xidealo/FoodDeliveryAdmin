@@ -17,18 +17,18 @@ import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
 @Composable
 fun OrderProductItem(
     product: OrderDetailsUiState.Product,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     AdminCard(
         modifier = modifier,
-        clickable = false,
+        clickable = false
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             Text(
                 modifier = Modifier.weight(1f),
                 text = product.title,
                 style = AdminTheme.typography.titleSmall.bold,
-                color = AdminTheme.colors.main.onSurface,
+                color = AdminTheme.colors.main.onSurface
             )
             Column(
                 modifier = Modifier.padding(start = 8.dp),
@@ -38,20 +38,20 @@ fun OrderProductItem(
                     Text(
                         text = product.price,
                         style = AdminTheme.typography.bodySmall.bold,
-                        color = AdminTheme.colors.main.onSurface,
+                        color = AdminTheme.colors.main.onSurface
                     )
                     Text(
                         modifier = Modifier.padding(start = 8.dp),
                         text = product.count,
                         style = AdminTheme.typography.bodySmall,
-                        color = AdminTheme.colors.main.onSurface,
+                        color = AdminTheme.colors.main.onSurface
                     )
                 }
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = product.cost,
                     style = AdminTheme.typography.bodySmall.bold,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
             }
         }
@@ -66,7 +66,7 @@ private fun OrderProductItemPreview() {
             title = "Хот-дог французский с куриной колбаской",
             price = "99 ₽",
             count = "× 2",
-            cost = "198 ₽",
+            cost = "198 ₽"
         )
     )
 }

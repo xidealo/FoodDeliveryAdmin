@@ -81,7 +81,7 @@ class NavigationCardView @JvmOverloads constructor(
                 null,
                 null,
                 icon,
-                null,
+                null
             )
         }
     }

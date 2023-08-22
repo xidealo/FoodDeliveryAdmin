@@ -49,7 +49,7 @@ fun AdminBaseTextField(
             Text(
                 text = stringResource(labelStringId),
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.Ellipsis
             )
         },
         trailingIcon = {
@@ -111,7 +111,7 @@ fun AdminBaseTextField(
                 Text(
                     text = stringResource(labelStringId),
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
             },
             trailingIcon = {

@@ -39,7 +39,7 @@ fun AdminScaffold(
     pullRefreshEnabled: Boolean = false,
     refreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    content: (@Composable () -> Unit),
+    content: (@Composable () -> Unit)
 ) {
     val appBarState = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.pinnedScrollBehavior(appBarState)
@@ -61,13 +61,13 @@ fun AdminScaffold(
                 title = title,
                 backActionClick = backActionClick,
                 scrollBehavior = scrollBehavior,
-                actions = topActions,
+                actions = topActions
             )
         },
         containerColor = AdminTheme.colors.main.background,
         floatingActionButton = actionButton,
         floatingActionButtonPosition = FabPosition.Center,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { padding ->
         Box(
             modifier = Modifier
@@ -83,7 +83,7 @@ fun AdminScaffold(
                     .align(Alignment.TopCenter)
                     .zIndex(1F),
                 backgroundColor = AdminTheme.colors.main.surface,
-                contentColor = AdminTheme.colors.main.primary,
+                contentColor = AdminTheme.colors.main.primary
             )
         }
     }

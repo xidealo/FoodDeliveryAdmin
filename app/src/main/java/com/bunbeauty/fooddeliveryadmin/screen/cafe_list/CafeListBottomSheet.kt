@@ -32,7 +32,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
                 onCafeClicked = { cafeItem ->
                     callback?.onResult(cafeItem)
                     dismiss()
-                },
+                }
             )
         }
     }
@@ -42,7 +42,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 
         suspend fun show(
             fragmentManager: FragmentManager,
-            addressList: List<SelectableCafeItem>,
+            addressList: List<SelectableCafeItem>
         ) = suspendCoroutine { continuation ->
             CafeListBottomSheet().apply {
                 this.cafeList = addressList
@@ -60,7 +60,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 @Composable
 private fun CafeListScreen(
     cafeList: List<SelectableCafeItem>,
-    onCafeClicked: (SelectableCafeItem) -> Unit,
+    onCafeClicked: (SelectableCafeItem) -> Unit
 ) {
     AdminBottomSheet(titleStringId = R.string.msg_common_cafe) {
         Column(verticalArrangement = spacedBy(8.dp)) {
@@ -92,9 +92,9 @@ private fun CafeListScreenPreview() {
                     uuid = "2",
                     address = "Оооооооооооооооооооооооочень длинный адрес 2",
                     isSelected = false
-                ),
+                )
             ),
-            onCafeClicked = {},
+            onCafeClicked = {}
         )
     }
 }

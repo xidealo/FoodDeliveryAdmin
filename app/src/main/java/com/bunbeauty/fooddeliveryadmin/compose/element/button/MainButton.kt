@@ -23,10 +23,10 @@ fun MainButton(
     text: String? = null,
     elevated: Boolean = true,
     isEnabled: Boolean = true,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false,
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         Button(
             modifier = modifier.fillMaxWidth(),
@@ -41,7 +41,7 @@ fun MainButton(
             } ?: ""
             Text(
                 text = buttonText,
-                style = AdminTheme.typography.labelLarge.medium,
+                style = AdminTheme.typography.labelLarge.medium
             )
         }
     }

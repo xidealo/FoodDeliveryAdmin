@@ -24,7 +24,7 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         mutableBinding = createBindingInstance(inflater, container)
         return mutableBinding?.root

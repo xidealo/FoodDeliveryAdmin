@@ -20,7 +20,7 @@ object Versions {
     const val composeCompiler = "1.5.0"
     const val composeBom = "2023.08.00"
     const val lifecycleRuntimeCompose = "2.6.1"
-    const val ktLint = "11.0.0"
+    const val ktLint = "11.5.1"
     const val mockk = "1.12.5"
     const val coroutines = "1.6.4"
 }

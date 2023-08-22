@@ -40,7 +40,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
         private const val TAG = "LogoutBottomSheet"
 
         suspend fun show(
-            fragmentManager: FragmentManager,
+            fragmentManager: FragmentManager
         ) = suspendCoroutine { continuation ->
             LogoutBottomSheet().apply {
                 callback = object : Callback<Boolean> {
@@ -57,7 +57,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
 @Composable
 private fun LogoutScreen(
     onLogoutClicked: () -> Unit,
-    onCancelClicked: () -> Unit,
+    onCancelClicked: () -> Unit
 ) {
     AdminBottomSheet(titleStringId = R.string.title_logout) {
         Column(verticalArrangement = Arrangement.Absolute.spacedBy(8.dp)) {
@@ -78,6 +78,6 @@ private fun LogoutScreen(
 private fun LogoutScreenPreview() {
     LogoutScreen(
         onLogoutClicked = {},
-        onCancelClicked = {},
+        onCancelClicked = {}
     )
 }

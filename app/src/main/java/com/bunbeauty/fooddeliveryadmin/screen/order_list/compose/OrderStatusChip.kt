@@ -23,7 +23,7 @@ private val orderStatusShape = RoundedCornerShape(12.dp)
 fun OrderStatusChip(
     modifier: Modifier = Modifier,
     orderStatus: OrderStatus,
-    statusName: String,
+    statusName: String
 ) {
     Box(
         modifier = modifier

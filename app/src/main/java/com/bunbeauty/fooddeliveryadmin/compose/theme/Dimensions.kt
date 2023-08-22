@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.compose.theme
 
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -33,5 +32,5 @@ data class AdminDimensions(
 
     val codeWidth: Dp = 56.dp,
 
-    val scrollScreenBottomSpace: Dp = ButtonDefaults.MinHeight + 32.dp,
+    val scrollScreenBottomSpace: Dp = ButtonDefaults.MinHeight + 32.dp
 )

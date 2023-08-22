@@ -12,6 +12,6 @@ object AdminBottomSheetDefaults {
             topStart = AdminTheme.dimensions.bottomSheetRadius,
             topEnd = AdminTheme.dimensions.bottomSheetRadius,
             bottomEnd = 0.dp,
-            bottomStart = 0.dp,
+            bottomStart = 0.dp
         )
 }

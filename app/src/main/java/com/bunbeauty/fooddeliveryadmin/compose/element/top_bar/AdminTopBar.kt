@@ -23,7 +23,7 @@ fun AdminTopBar(
     title: String?,
     backActionClick: (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior,
-    actions: List<AdminTopBarAction> = emptyList(),
+    actions: List<AdminTopBarAction> = emptyList()
 ) {
     Box {
         TopAppBar(

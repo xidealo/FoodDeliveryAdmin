@@ -15,7 +15,7 @@ object AdminTopBarDefaults {
         scrolledContainerColor: Color = AdminTheme.colors.main.surface,
         navigationIconContentColor: Color = AdminTheme.colors.main.onSurface,
         titleContentColor: Color = AdminTheme.colors.main.onSurface,
-        actionIconContentColor: Color = AdminTheme.colors.main.onSurface,
+        actionIconContentColor: Color = AdminTheme.colors.main.onSurface
     ) = TopAppBarDefaults.topAppBarColors(
         containerColor = containerColor,
         scrolledContainerColor = scrolledContainerColor,

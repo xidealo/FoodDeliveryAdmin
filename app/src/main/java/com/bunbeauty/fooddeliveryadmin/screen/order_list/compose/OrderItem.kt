@@ -24,7 +24,7 @@ import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
 fun OrderItem(
     modifier: Modifier = Modifier,
     orderItem: OrderListUiState.OrderItem,
-    onClick: (OrderListUiState.OrderItem) -> Unit,
+    onClick: (OrderListUiState.OrderItem) -> Unit
 ) {
     AdminCard(
         modifier = modifier,
@@ -78,7 +78,7 @@ private fun OrderItemPreview() {
                 deferredTime = "",
                 dateTime = "9 февраля 22:00"
             ),
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -96,7 +96,7 @@ private fun OrderItemLageFontPreview() {
                 deferredTime = "Ко времени: 15:00",
                 dateTime = "9 февраля 22:00"
             ),
-            onClick = {},
+            onClick = {}
         )
     }
 }

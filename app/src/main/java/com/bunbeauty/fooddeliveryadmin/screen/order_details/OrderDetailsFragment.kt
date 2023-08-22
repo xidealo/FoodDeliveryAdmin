@@ -78,7 +78,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
         viewModel.setupOrder(
             orderUuid = orderDetailsFragmentArgs.orderUuid,
-            orderCode = orderDetailsFragmentArgs.orderCode,
+            orderCode = orderDetailsFragmentArgs.orderCode
         )
 
         binding.root.setContentWithTheme {
@@ -87,7 +87,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
             OrderDetailsScreen(
                 uiState = uiState,
                 onStatusClicked = viewModel::onStatusClicked,
-                onSaveClicked = viewModel::onSaveClicked,
+                onSaveClicked = viewModel::onSaveClicked
             )
 
             LaunchedEffect(uiState.eventList) {
@@ -100,7 +100,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     private fun OrderDetailsScreen(
         uiState: OrderDetailsUiState,
         onStatusClicked: () -> Unit,
-        onSaveClicked: () -> Unit,
+        onSaveClicked: () -> Unit
     ) {
         AdminScaffold(
             title = uiState.title,
@@ -121,7 +121,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     SuccessOrderDetailsScreen(
                         stateSuccess = uiState.state as OrderDetailsUiState.State.Success,
                         onStatusClicked = onStatusClicked,
-                        onSaveClicked = onSaveClicked,
+                        onSaveClicked = onSaveClicked
                     )
                 }
             }
@@ -132,13 +132,13 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     private fun SuccessOrderDetailsScreen(
         stateSuccess: OrderDetailsUiState.State.Success,
         onStatusClicked: () -> Unit,
-        onSaveClicked: () -> Unit,
+        onSaveClicked: () -> Unit
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(1f)
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -174,7 +174,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
             }
             BottomAmountBar(
                 stateSuccess = stateSuccess,
-                onSaveClicked = onSaveClicked,
+                onSaveClicked = onSaveClicked
             )
         }
     }
@@ -182,7 +182,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun OrderInfoCard(
         modifier: Modifier = Modifier,
-        stateSuccess: OrderDetailsUiState.State.Success,
+        stateSuccess: OrderDetailsUiState.State.Success
     ) {
         AdminCard(
             modifier = modifier,
@@ -200,7 +200,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     OrderInfoTextColumn(
                         modifier = Modifier.weight(1f),
                         hint = stringResource(R.string.msg_order_details_order_time),
-                        info = stateSuccess.dateTime,
+                        info = stateSuccess.dateTime
                     )
                     stateSuccess.deferredTime?.let { deferredTime ->
                         OrderInfoTextColumn(
@@ -208,7 +208,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                                 .padding(start = 16.dp)
                                 .weight(1f),
                             hint = deferredTime.hint,
-                            info = deferredTime.value,
+                            info = deferredTime.value
                         )
                     }
                 }
@@ -216,7 +216,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     OrderInfoTextColumn(
                         modifier = Modifier.weight(1f),
                         hint = stringResource(R.string.msg_order_details_pickup_method),
-                        info = stateSuccess.receiptMethod,
+                        info = stateSuccess.receiptMethod
                     )
                     stateSuccess.paymentMethod?.let { paymentMethod ->
                         OrderInfoTextColumn(
@@ -224,18 +224,18 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                                 .padding(start = 16.dp)
                                 .weight(1f),
                             hint = stringResource(R.string.msg_order_details_payment_method),
-                            info = paymentMethodMapper.map(paymentMethod),
+                            info = paymentMethodMapper.map(paymentMethod)
                         )
                     }
                 }
                 OrderInfoTextColumn(
                     hint = stringResource(R.string.msg_order_details_address),
-                    info = stateSuccess.address,
+                    info = stateSuccess.address
                 )
                 stateSuccess.comment?.let { comment ->
                     OrderInfoTextColumn(
                         hint = stringResource(R.string.msg_order_details_comment),
-                        info = comment,
+                        info = comment
                     )
                 }
             }
@@ -246,7 +246,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     private fun OrderInfoTextColumn(
         modifier: Modifier = Modifier,
         hint: String,
-        info: String,
+        info: String
     ) {
         Column(modifier = modifier) {
             Text(
@@ -265,7 +265,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun BottomAmountBar(
         stateSuccess: OrderDetailsUiState.State.Success,
-        onSaveClicked: () -> Unit,
+        onSaveClicked: () -> Unit
     ) {
         AdminSurface(modifier = Modifier.fillMaxWidth()) {
             Column(
@@ -301,7 +301,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     Text(
                         text = stateSuccess.finalCost,
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.main.onSurface,
+                        color = AdminTheme.colors.main.onSurface
                     )
                 }
                 MainButton(
@@ -390,22 +390,22 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                                 title = "Хот-дог французский с куриной колбаской",
                                 price = "99 ₽",
                                 count = "× 2",
-                                cost = "198 ₽",
+                                cost = "198 ₽"
                             ),
                             OrderDetailsUiState.Product(
                                 title = "Хот-дог французский с куриной колбаской",
                                 price = "99 ₽",
                                 count = "× 2",
-                                cost = "198 ₽",
-                            ),
+                                cost = "198 ₽"
+                            )
                         ),
                         deliveryCost = "100 ₽",
-                        finalCost = "480 ₽",
+                        finalCost = "480 ₽"
                     ),
                     eventList = emptyList()
                 ),
                 onStatusClicked = {},
-                onSaveClicked = {},
+                onSaveClicked = {}
             )
         }
     }

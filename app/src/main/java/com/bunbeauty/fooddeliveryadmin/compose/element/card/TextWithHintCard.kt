@@ -18,11 +18,11 @@ fun TextWithHintCard(
     label: String?,
     modifier: Modifier = Modifier,
     @StringRes hintStringId: Int? = null,
-    hint: String = "",
+    hint: String = ""
 ) {
     AdminCard(
         modifier = modifier,
-        clickable = false,
+        clickable = false
     ) {
         Column(
             modifier = Modifier.padding(
@@ -54,7 +54,7 @@ private fun TextNavigationCardPreview() {
         TextWithHintCard(
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
             hintStringId = R.string.hint_login_login,
-            label = "+7 999 000-00-00",
+            label = "+7 999 000-00-00"
         )
     }
 }

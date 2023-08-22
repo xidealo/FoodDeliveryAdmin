@@ -26,6 +26,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
     @Inject
     lateinit var statisticAdapter: StatisticAdapter
+
     @Inject
     lateinit var navigator: Navigator
 

@@ -76,7 +76,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                 lazyListState = lazyListState,
                 onRefresh = viewModel::onRefresh,
                 onCafeClicked = viewModel::onCafeClicked,
-                onOrderClicked = viewModel::onOrderClicked,
+                onOrderClicked = viewModel::onOrderClicked
             )
 
             val scope = rememberCoroutineScope()
@@ -96,7 +96,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         lazyListState: LazyListState,
         onRefresh: () -> Unit,
         onCafeClicked: () -> Unit,
-        onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
+        onOrderClicked: (OrderListUiState.OrderItem) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_orders),
@@ -124,7 +124,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                             uiStateSuccess = state,
                             lazyListState = lazyListState,
                             onCafeClicked = onCafeClicked,
-                            onOrderClicked = onOrderClicked,
+                            onOrderClicked = onOrderClicked
                         )
                     }
                 }
@@ -139,7 +139,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                 .background(AdminTheme.colors.status.negative)
                 .padding(
                     horizontal = 16.dp,
-                    vertical = 8.dp,
+                    vertical = 8.dp
                 )
         ) {
             Text(
@@ -147,7 +147,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                 text = stringResource(R.string.error_order_list_connection),
                 style = AdminTheme.typography.bodySmall,
                 color = AdminTheme.colors.status.onStatus,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -157,7 +157,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         uiStateSuccess: OrderListUiState.State.Success,
         lazyListState: LazyListState,
         onCafeClicked: () -> Unit,
-        onOrderClicked: (OrderListUiState.OrderItem) -> Unit,
+        onOrderClicked: (OrderListUiState.OrderItem) -> Unit
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -185,7 +185,7 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
     private fun handleEventList(
         eventList: List<OrderListEvent>,
         scope: CoroutineScope,
-        lazyListState: LazyListState,
+        lazyListState: LazyListState
     ) {
         eventList.forEach { event ->
             when (event) {

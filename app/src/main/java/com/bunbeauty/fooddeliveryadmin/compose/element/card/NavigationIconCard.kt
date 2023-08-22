@@ -27,7 +27,7 @@ fun NavigationIconCard(
     @StringRes labelStringId: Int? = null,
     label: String = "",
     elevated: Boolean = true,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
@@ -47,7 +47,7 @@ fun NavigationIconCard(
                 tint = AdminTheme.colors.main.onSurfaceVariant,
                 contentDescription = iconDescriptionStringId?.let { stringId ->
                     stringResource(stringId)
-                },
+                }
             )
             val labelText = labelStringId?.let { id ->
                 stringResource(id)
@@ -65,7 +65,7 @@ fun NavigationIconCard(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(R.drawable.ic_right_arrow),
                 tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription = stringResource(R.string.description_common_navigate),
+                contentDescription = stringResource(R.string.description_common_navigate)
             )
         }
     }
