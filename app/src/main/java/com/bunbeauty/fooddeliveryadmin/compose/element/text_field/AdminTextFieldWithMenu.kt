@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.domain.model.Suggestion
+import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,26 +25,33 @@ fun AdminTextFieldWithMenu(
     onExpandedChange: (Boolean) -> Unit,
     value: String = "",
     @StringRes labelStringId: Int,
-    onValueChange: (value: String) -> Unit,
     @StringRes errorMessageId: Int? = null,
     suggestionsList: List<Suggestion> = emptyList(),
     onSuggestionClick: (suggestion: Suggestion) -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Column(modifier = modifier) {
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = onExpandedChange
+            onExpandedChange = {
+                if (enabled) {
+                    onExpandedChange(it)
+                }
+            }
         ) {
             AdminBaseTextField(
-                modifier = Modifier
-                    .menuAnchor(),
+                modifier = Modifier.menuAnchor(),
                 value = value,
                 labelStringId = labelStringId,
-                onValueChange = onValueChange,
+                onValueChange = {},
                 isError = errorMessageId != null,
                 readOnly = true,
-                enabled = enabled
+                enabled = false,
+                trailingIconId = if (expanded) {
+                    R.drawable.ic_collapse_arrow
+                } else {
+                    R.drawable.ic_expand_arrow
+                },
             )
 
             if (suggestionsList.isNotEmpty()) {

@@ -17,9 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -240,8 +237,6 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             keyboardType = KeyboardType.Number
                         )
 
-                        val focusManager = LocalFocusManager.current
-
                         var expanded by remember {
                             mutableStateOf(false)
                         }
@@ -249,26 +244,19 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         AdminTextFieldWithMenu(
                             modifier = Modifier
                                 .weight(0.4f)
-                                .padding(start = 8.dp)
-                                .onFocusChanged { focusState ->
-                                    expanded =
-                                        focusState.isFocused
-                                },
+                                .padding(start = 8.dp),
                             expanded = expanded,
                             onExpandedChange = { value ->
                                 expanded = value
                             },
                             value = state.utils,
                             labelStringId = R.string.hint_edit_menu_product_utils,
-                            onValueChange = { value ->
-                                // stub don't need
-                            },
                             suggestionsList = stringArrayResource(id = R.array.utilsList)
                                 .mapIndexed { index, util ->
                                     Suggestion(index.toString(), util)
                                 },
                             onSuggestionClick = { suggestion ->
-                                focusManager.moveFocus(FocusDirection.Down)
+                                expanded = false
                                 onSuggestedUtilsSelected(suggestion)
                             },
                             enabled = !state.isLoadingButton
