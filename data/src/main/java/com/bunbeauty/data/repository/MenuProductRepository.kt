@@ -3,10 +3,7 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductDao
-import com.bunbeauty.data.mapper.CategoryMapper
-import com.bunbeauty.data.mapper.toEntity
-import com.bunbeauty.data.mapper.toModel
-import com.bunbeauty.data.mapper.toServer
+import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.domain.model.menu_product.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +12,7 @@ import javax.inject.Inject
 
 class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val categoryMapper: CategoryMapper,
+    private val menuProductMapper: MenuProductMapper,
     private val menuProductDao: MenuProductDao,
 ) : MenuProductRepo {
 
@@ -33,9 +30,9 @@ class MenuProductRepository @Inject constructor(
                     listServer
                         .results
                         .onEach { menuProduct ->
-                            menuProductDao.insert(menuProduct.toEntity())
+                            menuProductDao.insert(menuProductMapper.toEntity(menuProduct))
                         }
-                        .map { menuProductServer -> menuProductServer.toModel(categoryMapper) }
+                        .map { menuProductServer -> menuProductMapper.toModel(menuProductServer) }
                 }
             }
         } else menuProductListFromLocal
@@ -43,12 +40,19 @@ class MenuProductRepository @Inject constructor(
 
     private suspend fun getMenuProductListLocal(): List<MenuProduct> {
         return menuProductDao.getList().map { menuProductWithCategoriesEntity ->
-            menuProductWithCategoriesEntity.toModel(categoryMapper)
+            menuProductMapper.toModel(menuProductWithCategoriesEntity)
         }
     }
 
     override suspend fun getMenuProduct(menuProductUuid: String): MenuProduct? {
-        return menuProductDao.getByUuid(uuid = menuProductUuid)?.toModel(categoryMapper)
+        return menuProductDao.getByUuid(uuid = menuProductUuid)
+            .let { menuProductWithCategoriesEntity ->
+                if (menuProductWithCategoriesEntity == null) {
+                    null
+                } else {
+                    menuProductMapper.toModel(menuProductWithCategoriesEntity)
+                }
+            }
     }
 
     override suspend fun deleteMenuProductPhoto(photoLink: String) {
@@ -61,6 +65,7 @@ class MenuProductRepository @Inject constructor(
             is ApiResult.Success -> {
                 result.data
             }
+
             is ApiResult.Error -> {
                 ""
             }
@@ -72,10 +77,10 @@ class MenuProductRepository @Inject constructor(
         token: String
     ) {
         networkConnector.patchMenuProduct(
-            menuProductServer = menuProduct.toServer(),
+            menuProductServer = menuProductMapper.toServer(menuProduct),
             token = token
         )
-        menuProductDao.update(menuProduct.toEntity())
+        menuProductDao.update(menuProductMapper.toEntity(menuProduct))
     }
 
     override suspend fun updateVisibleMenuProductUseCase(

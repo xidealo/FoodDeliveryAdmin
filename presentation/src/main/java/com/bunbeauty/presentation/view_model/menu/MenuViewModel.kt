@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menu
+package com.bunbeauty.presentation.view_model.menu
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menu_product.MenuProduct
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// TODO TESTS
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
@@ -83,7 +84,6 @@ class MenuViewModel @Inject constructor(
         }
     }
 
-    // TODO TESTS
     fun updateVisible(menuProductItem: MenuProductItem) {
         viewModelScope.launch(exceptionHandler) {
             updateVisibleMenuProductUseCase(

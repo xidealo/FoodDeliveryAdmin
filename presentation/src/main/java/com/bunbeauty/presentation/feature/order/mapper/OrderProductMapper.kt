@@ -12,7 +12,11 @@ class OrderProductMapper @Inject constructor(
 
     fun map(orderProduct: OrderProduct): OrderDetailsUiState.Product {
         return OrderDetailsUiState.Product(
-            title = orderProduct.name + "\n" + (orderProduct.comboDescription ?: ""),
+            title = if (orderProduct.comboDescription == null) {
+                orderProduct.name
+            } else {
+                orderProduct.name + "\n" + (orderProduct.comboDescription ?: "")
+            },
             price = resources.getString(
                 R.string.common_with_ruble,
                 orderProduct.newPrice.toString()
