@@ -19,7 +19,7 @@ import com.bunbeauty.presentation.feature.order_list.mapper.OrderMapper
 import com.bunbeauty.presentation.feature.order_list.state.OrderListDataState
 import com.bunbeauty.presentation.feature.order_list.state.OrderListEvent
 import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
-import com.bunbeauty.presentation.view_model.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.model.order.details
 
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.cart_product.OrderProduct
+import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
 data class OrderDetails(
     val uuid: String,

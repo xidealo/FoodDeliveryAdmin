@@ -13,7 +13,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.bottom_sheet.AdminBottomS
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.ComposeBottomSheet
+import com.bunbeauty.fooddeliveryadmin.coreui.ComposeBottomSheet
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.zIndex
-import com.bunbeauty.fooddeliveryadmin.compose.element.top_bar.AdminTopBar
-import com.bunbeauty.fooddeliveryadmin.compose.element.top_bar.AdminTopBarAction
+import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBar
+import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @OptIn(

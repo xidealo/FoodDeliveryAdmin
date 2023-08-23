@@ -7,12 +7,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.utils.IResourcesProvider
-import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
+import com.bunbeauty.presentation.viewmodel.menu.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject

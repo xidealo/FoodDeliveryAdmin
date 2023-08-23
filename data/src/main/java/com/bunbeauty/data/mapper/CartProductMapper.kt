@@ -1,7 +1,7 @@
 package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.server.CartProductServer
-import com.bunbeauty.domain.model.cart_product.OrderProduct
+import com.bunbeauty.domain.model.cartproduct.OrderProduct
 import javax.inject.Inject
 
 class CartProductMapper @Inject constructor() {

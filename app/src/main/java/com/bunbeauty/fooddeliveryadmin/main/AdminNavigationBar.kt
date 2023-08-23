@@ -18,8 +18,8 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.presentation.view_model.main.AdminNavigationBarItem
-import com.bunbeauty.presentation.view_model.main.NavigationBarOptions
+import com.bunbeauty.presentation.viewmodel.main.AdminNavigationBarItem
+import com.bunbeauty.presentation.viewmodel.main.NavigationBarOptions
 
 @Composable
 fun AdminNavigationBar(options: NavigationBarOptions) {

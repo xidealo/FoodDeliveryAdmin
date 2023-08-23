@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.feature.order.mapper
 
 import android.content.res.Resources
-import com.bunbeauty.domain.model.cart_product.OrderProduct
+import com.bunbeauty.domain.model.cartproduct.OrderProduct
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
 import javax.inject.Inject

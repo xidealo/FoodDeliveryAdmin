@@ -31,19 +31,19 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextField
-import com.bunbeauty.fooddeliveryadmin.compose.element.text_field.AdminTextFieldWithMenu
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.utils.IResourcesProvider
-import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductEvent
-import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductUIState
-import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductViewModel
+import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductEvent
+import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductUIState
+import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -41,10 +41,10 @@ import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
-import com.bunbeauty.presentation.view_model.main.AdminMessageType
-import com.bunbeauty.presentation.view_model.main.AdminNavigationBarItem
-import com.bunbeauty.presentation.view_model.main.MainUiState
-import com.bunbeauty.presentation.view_model.main.MainViewModel
+import com.bunbeauty.presentation.viewmodel.main.AdminMessageType
+import com.bunbeauty.presentation.viewmodel.main.AdminNavigationBarItem
+import com.bunbeauty.presentation.viewmodel.main.MainUiState
+import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

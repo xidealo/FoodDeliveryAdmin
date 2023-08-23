@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.repo
 
-import com.bunbeauty.domain.model.menu_product.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.MenuProduct
 
 interface MenuProductRepo {
     /*GET*/

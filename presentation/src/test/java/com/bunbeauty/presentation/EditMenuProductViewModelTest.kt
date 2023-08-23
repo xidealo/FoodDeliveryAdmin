@@ -1,16 +1,15 @@
 package com.bunbeauty.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.model.Suggestion
-import com.bunbeauty.domain.model.menu_product.MenuProduct
-import com.bunbeauty.domain.use_case.GetMenuProductUseCase
-import com.bunbeauty.domain.use_case.UpdateMenuProductUseCase
-import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductEvent
-import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductUIState
-import com.bunbeauty.presentation.view_model.menu.edit_menu_product.EditMenuProductViewModel
+import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.usecase.GetMenuProductUseCase
+import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
+import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductEvent
+import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductUIState
+import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

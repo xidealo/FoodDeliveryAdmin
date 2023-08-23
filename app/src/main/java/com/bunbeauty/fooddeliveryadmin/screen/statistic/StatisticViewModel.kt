@@ -5,12 +5,12 @@ import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.use_case.GetStatisticUseCase
-import com.bunbeauty.domain.use_case.LogoutUseCase
+import com.bunbeauty.domain.usecase.GetStatisticUseCase
+import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
-import com.bunbeauty.presentation.view_model.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job

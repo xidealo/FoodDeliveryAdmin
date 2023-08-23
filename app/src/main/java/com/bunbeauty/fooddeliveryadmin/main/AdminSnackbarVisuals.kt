@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.main
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarVisuals
-import com.bunbeauty.presentation.view_model.main.AdminMessage
+import com.bunbeauty.presentation.viewmodel.main.AdminMessage
 
 data class AdminSnackbarVisuals(
     val adminMessage: AdminMessage,
