@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.text_field
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +36,8 @@ fun AdminBaseTextField(
     maxLines: Int = 1,
     isError: Boolean = false,
     readOnly: Boolean = false,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    @DrawableRes trailingIconId: Int? = null,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -53,14 +55,22 @@ fun AdminBaseTextField(
             )
         },
         trailingIcon = {
-            if (value.isNotEmpty()) {
+            if (trailingIconId == null) {
+                if (value.isNotEmpty()) {
+                    Icon(
+                        modifier = Modifier
+                            .icon16()
+                            .clickable {
+                                onValueChange("")
+                            },
+                        painter = painterResource(R.drawable.ic_clear),
+                        tint = AdminTheme.colors.main.onSurfaceVariant,
+                        contentDescription = null
+                    )
+                }
+            } else {
                 Icon(
-                    modifier = Modifier
-                        .icon16()
-                        .clickable {
-                            onValueChange("")
-                        },
-                    painter = painterResource(R.drawable.ic_clear),
+                    painter = painterResource(trailingIconId),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
                     contentDescription = null
                 )
