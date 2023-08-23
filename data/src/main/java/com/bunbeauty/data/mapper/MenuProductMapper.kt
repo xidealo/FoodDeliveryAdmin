@@ -1,7 +1,7 @@
 package com.bunbeauty.data.mapper
 
-import com.bunbeauty.data.model.entity.menu_product.MenuProductEntity
-import com.bunbeauty.data.model.entity.menu_product.MenuProductWithCategoriesEntity
+import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
+import com.bunbeauty.data.model.entity.menuproduct.MenuProductWithCategoriesEntity
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import javax.inject.Inject

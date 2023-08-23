@@ -9,13 +9,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.element.bottom_sheet.AdminBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SelectableCard
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.ComposeBottomSheet
 import com.bunbeauty.fooddeliveryadmin.util.argument
-import com.bunbeauty.presentation.feature.cafe_list.SelectableCafeItem
+import com.bunbeauty.presentation.feature.cafelist.SelectableCafeItem
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

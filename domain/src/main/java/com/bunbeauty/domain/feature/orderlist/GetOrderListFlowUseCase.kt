@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.order_list
+package com.bunbeauty.domain.feature.orderlist
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order

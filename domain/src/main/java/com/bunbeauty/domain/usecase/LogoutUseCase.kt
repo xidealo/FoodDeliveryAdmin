@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.usecase
 
 import com.bunbeauty.domain.NotificationService
-import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
+import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.compose.element.bottom_sheet
+package com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background

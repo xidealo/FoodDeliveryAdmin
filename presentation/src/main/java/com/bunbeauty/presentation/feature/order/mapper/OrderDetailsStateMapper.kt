@@ -5,7 +5,7 @@ import android.content.res.Resources
 import com.bunbeauty.common.Constants
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
-import com.bunbeauty.domain.util.date_time.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState

@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.util.date_time
+package com.bunbeauty.domain.util.datetime
 
 interface IDateTimeUtil {
 

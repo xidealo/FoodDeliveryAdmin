@@ -1,11 +1,11 @@
-package com.bunbeauty.presentation.feature.order_list.mapper
+package com.bunbeauty.presentation.feature.orderlist.mapper
 
 import android.content.res.Resources
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.util.date_time.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
-import com.bunbeauty.presentation.feature.order_list.state.OrderListUiState
+import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 import javax.inject.Inject
 
 class OrderMapper @Inject constructor(

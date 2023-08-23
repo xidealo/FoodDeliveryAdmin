@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.util.date_time
+package com.bunbeauty.domain.util.datetime
 
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.MONDAY

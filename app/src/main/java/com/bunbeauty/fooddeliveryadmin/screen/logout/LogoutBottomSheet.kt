@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.element.bottom_sheet.AdminBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme

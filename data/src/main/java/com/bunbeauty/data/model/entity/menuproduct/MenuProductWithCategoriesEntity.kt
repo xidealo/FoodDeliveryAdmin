@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.entity.menu_product
+package com.bunbeauty.data.model.entity.menuproduct
 
 import androidx.room.*
 import com.bunbeauty.data.model.entity.CategoryEntity
