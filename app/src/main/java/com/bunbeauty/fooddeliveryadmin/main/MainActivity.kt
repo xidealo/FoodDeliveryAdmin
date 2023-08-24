@@ -41,10 +41,10 @@ import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
-import com.bunbeauty.presentation.view_model.main.AdminMessageType
-import com.bunbeauty.presentation.view_model.main.AdminNavigationBarItem
-import com.bunbeauty.presentation.view_model.main.MainUiState
-import com.bunbeauty.presentation.view_model.main.MainViewModel
+import com.bunbeauty.presentation.viewmodel.main.AdminMessageType
+import com.bunbeauty.presentation.viewmodel.main.AdminNavigationBarItem
+import com.bunbeauty.presentation.viewmodel.main.MainUiState
+import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
             LaunchedEffect(mainState.eventList) {
                 handleEventList(
                     eventList = mainState.eventList,
-                    snackbarHostState = snackbarHostState,
+                    snackbarHostState = snackbarHostState
                 )
             }
             MainScreen(
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
                     .fillMaxWidth()
                     .background(AdminTheme.colors.main.error)
                     .padding(8.dp),
-                contentAlignment = Alignment.Center,
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = resources.getString(R.string.error_common_no_internet),
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
                 Snackbar(
                     snackbarData = snackbarData,
                     containerColor = containerColor,
-                    contentColor = contentColor,
+                    contentColor = contentColor
                 )
             }
         }

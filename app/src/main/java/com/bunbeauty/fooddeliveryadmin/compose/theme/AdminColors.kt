@@ -36,7 +36,7 @@ val LightAdminColors = AdminColors(
         onBackground = Black1,
         onSurface = Black1,
         onSurfaceVariant = Grey2,
-        onError = White,
+        onError = White
     ),
     order = OrderColors(
         notAccepted = Purple,
@@ -46,14 +46,14 @@ val LightAdminColors = AdminColors(
         done = LightGreen,
         delivered = Green,
         canceled = DarkGrey,
-        onOrder = White,
+        onOrder = White
     ),
     status = StatusColors(
         positive = Green,
         warning = Yellow,
         negative = LightRed,
         info = Blue1,
-        onStatus = White,
+        onStatus = White
     ),
     isLight = true
 )
@@ -80,12 +80,12 @@ class AdminColors(
         mainColors: MainColors = this.main,
         orderColors: OrderColors = this.order,
         statusColors: StatusColors = this.status,
-        isLight: Boolean = this.isLight,
+        isLight: Boolean = this.isLight
     ) = AdminColors(
         main = mainColors,
         order = orderColors,
         status = statusColors,
-        isLight = isLight,
+        isLight = isLight
     )
 
     fun update(other: AdminColors) {
@@ -110,7 +110,7 @@ class MainColors(
     onBackground: Color,
     onSurface: Color,
     onSurfaceVariant: Color,
-    onError: Color,
+    onError: Color
 ) {
 
     var primary by mutableStateOf(primary)
@@ -153,7 +153,7 @@ class MainColors(
         onBackground: Color = this.onBackground,
         onSurface: Color = this.onSurface,
         onSurfaceVariant: Color = this.onSurfaceVariant,
-        onError: Color = this.onError,
+        onError: Color = this.onError
     ) = MainColors(
         primary = primary,
         disabled = disabled,
@@ -167,7 +167,7 @@ class MainColors(
         onBackground = onBackground,
         onSurface = onSurface,
         onSurfaceVariant = onSurfaceVariant,
-        onError = onError,
+        onError = onError
     )
 
     fun update(other: MainColors) {
@@ -196,7 +196,7 @@ class OrderColors(
     done: Color,
     delivered: Color,
     canceled: Color,
-    onOrder: Color,
+    onOrder: Color
 ) {
     var notAccepted by mutableStateOf(notAccepted)
         private set
@@ -223,7 +223,7 @@ class OrderColors(
         done: Color = this.done,
         delivered: Color = this.delivered,
         canceled: Color = this.canceled,
-        onOrder: Color = this.onOrder,
+        onOrder: Color = this.onOrder
     ) = OrderColors(
         notAccepted = notAccepted,
         accepted = accepted,
@@ -232,7 +232,7 @@ class OrderColors(
         done = done,
         delivered = delivered,
         canceled = canceled,
-        onOrder = onOrder,
+        onOrder = onOrder
     )
 
     fun update(other: OrderColors) {
@@ -253,7 +253,7 @@ class StatusColors(
     warning: Color,
     negative: Color,
     info: Color,
-    onStatus: Color,
+    onStatus: Color
 ) {
     var positive by mutableStateOf(positive)
         private set
@@ -271,7 +271,7 @@ class StatusColors(
         warning: Color = this.warning,
         negative: Color = this.negative,
         info: Color = this.info,
-        onStatus: Color = this.onStatus,
+        onStatus: Color = this.onStatus
     ) = StatusColors(
         positive = positive,
         warning = warning,

@@ -13,6 +13,6 @@ object FoodDeliveryNavigationBarDefaults {
         selectedTextColor = AdminTheme.colors.main.primary,
         indicatorColor = AdminTheme.colors.main.surface,
         unselectedIconColor = AdminTheme.colors.main.onSurfaceVariant,
-        unselectedTextColor = AdminTheme.colors.main.onSurfaceVariant,
+        unselectedTextColor = AdminTheme.colors.main.onSurfaceVariant
     )
 }

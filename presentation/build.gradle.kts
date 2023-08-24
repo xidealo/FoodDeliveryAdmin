@@ -45,4 +45,15 @@ dependencies {
     // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
+    implementation("javax.inject:javax.inject:1")
+
+    // Mocks for testing
+    implementation(Mockk.main)
+    implementation(Mockk.common)
+
+    // Coroutine
+    implementation(Coroutine.test)
+
+    // Test
+    testImplementation(kotlin(Test.test))
 }

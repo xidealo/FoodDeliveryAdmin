@@ -122,10 +122,12 @@ dependencies {
     implementation(ViewBinding.propertyDelegate)
 
     // Compose
-    implementation(Compose.bom)
+    implementation(platform(Compose.bom))
     implementation(Compose.foundation)
     implementation(Compose.ui)
+    implementation(Compose.uiTooling)
     implementation(Compose.material3)
+    implementation(Compose.material3WindowSizeClass)
     implementation(Compose.material)
     implementation(Compose.uiToolingPreview)
     implementation(Compose.uiViewbinding)

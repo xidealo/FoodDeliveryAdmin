@@ -27,7 +27,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 fun ErrorScreen(
     @StringRes mainTextId: Int,
     @StringRes extraTextId: Int? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(1f))

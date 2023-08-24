@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.view_model.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val userAuthorizationRepo: UserAuthorizationRepo,
+    private val userAuthorizationRepo: UserAuthorizationRepo
 ) : BaseViewModel() {
 
     private val mutableLoginViewState: MutableStateFlow<LoginViewState> = MutableStateFlow(
@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             },
-            onError = {},
+            onError = {}
         )
     }
 

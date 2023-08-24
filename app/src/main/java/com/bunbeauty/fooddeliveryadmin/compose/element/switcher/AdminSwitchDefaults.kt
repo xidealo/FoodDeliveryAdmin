@@ -13,6 +13,6 @@ object AdminSwitchDefaults {
             checkedTrackColor = AdminTheme.colors.main.primary,
             uncheckedThumbColor = AdminTheme.colors.main.onDisabled,
             uncheckedTrackColor = AdminTheme.colors.main.disabled,
-            uncheckedBorderColor = AdminTheme.colors.main.onDisabled,
+            uncheckedBorderColor = AdminTheme.colors.main.onDisabled
         )
 }

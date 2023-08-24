@@ -5,12 +5,12 @@ import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.use_case.GetStatisticUseCase
-import com.bunbeauty.domain.use_case.LogoutUseCase
+import com.bunbeauty.domain.usecase.GetStatisticUseCase
+import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
-import com.bunbeauty.presentation.view_model.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -29,7 +29,7 @@ class StatisticViewModel @Inject constructor(
     private val resources: Resources,
     private val dataStoreRepo: DataStoreRepo,
     private val getStatisticUseCase: GetStatisticUseCase,
-    private val logoutUseCase: LogoutUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : BaseViewModel() {
 
     private val mutableStatisticState: MutableStateFlow<StatisticState> =
@@ -68,14 +68,14 @@ class StatisticViewModel @Inject constructor(
                 add(
                     Option(
                         id = allCafes.uuid,
-                        title = allCafes.address,
+                        title = allCafes.address
                     )
                 )
                 val cityUuid = dataStoreRepo.managerCity.first()
                 cafeRepository.getCafeListByCityUuid(cityUuid).map { cafe ->
                     Option(
                         id = cafe.uuid,
-                        title = cafe.address,
+                        title = cafe.address
                     )
                 }.let { cafeAddressList ->
                     addAll(cafeAddressList)

@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.Customizable
+import com.bunbeauty.fooddeliveryadmin.coreui.Customizable
 import com.bunbeauty.presentation.utils.ResourcesProvider
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,7 +81,7 @@ class NavigationCardView @JvmOverloads constructor(
                 null,
                 null,
                 icon,
-                null,
+                null
             )
         }
     }

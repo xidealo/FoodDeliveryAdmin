@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragment"
         android:label="OrdersFragment">
         <action
             android:id="@+id/to_ordersDetailsFragment"
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/ordersDetailsFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.order_details.OrderDetailsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderDetailsFragment"
         android:label="ChangeStatusDialog">
         <argument
             android:name="orderUuid"
@@ -75,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/statisticDetailsFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.statistic_details.StatisticDetailsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.statisticdetails.StatisticDetailsFragment"
         android:label="StatisticDetailsFragment"
         tools:layout="@layout/fragment_statistic_details">
         <argument
@@ -99,8 +99,8 @@
         android:label="EditMenuProductFragment"
         tools:layout="@layout/fragment_edit_menu_product">
         <argument
-            android:name="menuProduct"
-            app:argType="com.bunbeauty.domain.model.menu_product.MenuProduct" />
+            android:name="menuProductUuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"

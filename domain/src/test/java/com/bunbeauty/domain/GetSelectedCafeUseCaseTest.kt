@@ -1,6 +1,6 @@
 package com.bunbeauty.domain
 
-import com.bunbeauty.domain.feature.order_list.GetSelectedCafeUseCase
+import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 import com.bunbeauty.domain.repo.CafeRepo

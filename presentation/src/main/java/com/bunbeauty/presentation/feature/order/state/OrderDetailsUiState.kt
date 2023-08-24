@@ -9,8 +9,8 @@ data class OrderDetailsUiState(
 ) {
 
     sealed interface State {
-        object Loading: State
-        object Error: State
+        data object Loading : State
+        data object Error : State
         data class Success(
             val dateTime: String,
             val deferredTime: HintWithValue?,
@@ -23,7 +23,7 @@ data class OrderDetailsUiState(
             val productList: List<Product>,
             val deliveryCost: String?,
             val finalCost: String,
-        ): State
+        ) : State
     }
 
     data class HintWithValue(

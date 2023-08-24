@@ -8,8 +8,8 @@ import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.model.entity.CafeEntity
 import com.bunbeauty.data.model.entity.CategoryEntity
-import com.bunbeauty.data.model.entity.menu_product.MenuProductCategoryEntity
-import com.bunbeauty.data.model.entity.menu_product.MenuProductEntity
+import com.bunbeauty.data.model.entity.menuproduct.MenuProductCategoryEntity
+import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
 
 @Database(
     entities = [

@@ -23,7 +23,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.logout.LogoutBottomSheet
@@ -54,7 +54,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                 uiState = uiState,
                 onUnlimitedNotificationsCheckChanged = viewModel::onUnlimitedNotificationsCheckChanged,
                 onLogoutClicked = viewModel::onLogoutClick,
-                onRetryClicked = viewModel::updateData,
+                onRetryClicked = viewModel::updateData
             )
 
             LaunchedEffect(uiState.eventList) {
@@ -68,7 +68,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
         uiState: ProfileUiState,
         onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
         onLogoutClicked: () -> Unit,
-        onRetryClicked: () -> Unit,
+        onRetryClicked: () -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_profile),
@@ -77,7 +77,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                     modifier = Modifier.padding(horizontal = 16.dp),
                     textStringId = R.string.action_common_logout,
                     isEnabled = uiState.isLogoutEnabled,
-                    onClick = onLogoutClicked,
+                    onClick = onLogoutClicked
                 )
             }
         ) {
@@ -95,7 +95,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                 is ProfileUiState.State.Success -> {
                     SuccessProfileScreen(
                         uiStateSuccess = state,
-                        onUnlimitedNotificationsCheckChanged = onUnlimitedNotificationsCheckChanged,
+                        onUnlimitedNotificationsCheckChanged = onUnlimitedNotificationsCheckChanged
                     )
                 }
             }
@@ -105,7 +105,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun SuccessProfileScreen(
         uiStateSuccess: ProfileUiState.State.Success,
-        onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
+        onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -118,13 +118,13 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
             SwitcherCard(
                 labelStringId = R.string.msg_settings_unlimited_notifications,
                 checked = uiStateSuccess.isUnlimitedNotifications,
-                onCheckChanged = onUnlimitedNotificationsCheckChanged,
+                onCheckChanged = onUnlimitedNotificationsCheckChanged
             )
         }
     }
 
     private fun handleEventList(
-        eventList: List<ProfileEvent>,
+        eventList: List<ProfileEvent>
     ) {
         eventList.forEach { event ->
             when (event) {

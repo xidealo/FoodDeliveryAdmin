@@ -13,7 +13,7 @@ object AdminCardDefaults {
     val cardColors: CardColors
         @Composable get() = CardDefaults.cardColors(
             containerColor = AdminTheme.colors.main.surface,
-            disabledContainerColor = AdminTheme.colors.main.surface,
+            disabledContainerColor = AdminTheme.colors.main.surface
         )
 
     val cardShape: RoundedCornerShape
@@ -23,12 +23,12 @@ object AdminCardDefaults {
     fun getCardElevation(elevated: Boolean): CardElevation = if (elevated) {
         CardDefaults.cardElevation(
             defaultElevation = AdminTheme.dimensions.cardElevation,
-            disabledElevation = AdminTheme.dimensions.cardElevation,
+            disabledElevation = AdminTheme.dimensions.cardElevation
         )
     } else {
         CardDefaults.cardElevation(
             defaultElevation = 0.dp,
-            disabledElevation = 0.dp,
+            disabledElevation = 0.dp
         )
     }
 }

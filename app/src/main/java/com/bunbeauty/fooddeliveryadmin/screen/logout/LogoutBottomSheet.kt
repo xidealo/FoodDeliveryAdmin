@@ -9,11 +9,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.element.bottom_sheet.AdminBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.ComposeBottomSheet
+import com.bunbeauty.fooddeliveryadmin.coreui.ComposeBottomSheet
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -40,7 +40,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
         private const val TAG = "LogoutBottomSheet"
 
         suspend fun show(
-            fragmentManager: FragmentManager,
+            fragmentManager: FragmentManager
         ) = suspendCoroutine { continuation ->
             LogoutBottomSheet().apply {
                 callback = object : Callback<Boolean> {
@@ -57,7 +57,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
 @Composable
 private fun LogoutScreen(
     onLogoutClicked: () -> Unit,
-    onCancelClicked: () -> Unit,
+    onCancelClicked: () -> Unit
 ) {
     AdminBottomSheet(titleStringId = R.string.title_logout) {
         Column(verticalArrangement = Arrangement.Absolute.spacedBy(8.dp)) {
@@ -78,6 +78,6 @@ private fun LogoutScreen(
 private fun LogoutScreenPreview() {
     LogoutScreen(
         onLogoutClicked = {},
-        onCancelClicked = {},
+        onCancelClicked = {}
     )
 }

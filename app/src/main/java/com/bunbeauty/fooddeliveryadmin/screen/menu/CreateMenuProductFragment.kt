@@ -6,17 +6,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.bunbeauty.common.Constants.IMAGES_FOLDER
-import com.bunbeauty.common.Constants.PRODUCT_COMBO_DESCRIPTION_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_COST_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_DISCOUNT_COST_ERROR_KEY
-import com.bunbeauty.common.Constants.PRODUCT_NAME_ERROR_KEY
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBinding
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.utils.IResourcesProvider
-import com.bunbeauty.presentation.view_model.menu.CreateMenuProductViewModel
+import com.bunbeauty.presentation.viewmodel.menu.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -73,12 +69,12 @@ class CreateMenuProductFragment : BaseFragment<FragmentCreateMenuProductBinding>
                 fragmentCreateMenuProductTilComboDescription.isVisible = isVisible
             }.startedLaunch(viewLifecycleOwner)
 
-            textInputMap[PRODUCT_NAME_ERROR_KEY] = fragmentCreateMenuProductTilName
+       /*     textInputMap[PRODUCT_NAME_ERROR_KEY] = fragmentCreateMenuProductTilName
             textInputMap[PRODUCT_COST_ERROR_KEY] = fragmentCreateMenuProductTilCost
             textInputMap[PRODUCT_DISCOUNT_COST_ERROR_KEY] = fragmentCreateMenuProductTilDiscountCost
             textInputMap[PRODUCT_COMBO_DESCRIPTION_ERROR_KEY] =
                 fragmentCreateMenuProductTilComboDescription
-
+*/
             fragmentCreateMenuProductBtnCreate.setOnClickListener {
                 viewModel.createMenuProduct(
                     fragmentCreateMenuProductEtName.text.toString(),

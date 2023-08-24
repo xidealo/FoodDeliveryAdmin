@@ -1,9 +1,8 @@
 package com.bunbeauty.data.mapper.statistic
 
 import com.bunbeauty.data.model.server.statistic.StatisticServer
-import com.bunbeauty.domain.model.statistic.ProductStatistic
 import com.bunbeauty.domain.model.statistic.Statistic
-import com.bunbeauty.domain.util.date_time.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import javax.inject.Inject
 
 class StatisticMapper @Inject constructor(

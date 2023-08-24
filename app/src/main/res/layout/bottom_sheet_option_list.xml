@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/DefaultBottomSheet"
-    tools:context="com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet">
+    tools:context="com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet">
 
     <TextView
         android:id="@+id/bottomSheetOptionListTvTitle"

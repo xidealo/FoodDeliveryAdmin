@@ -18,8 +18,8 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.presentation.view_model.main.AdminNavigationBarItem
-import com.bunbeauty.presentation.view_model.main.NavigationBarOptions
+import com.bunbeauty.presentation.viewmodel.main.AdminNavigationBarItem
+import com.bunbeauty.presentation.viewmodel.main.NavigationBarOptions
 
 @Composable
 fun AdminNavigationBar(options: NavigationBarOptions) {
@@ -61,7 +61,7 @@ private fun RowScope.FoodDeliveryBottomItem(
     selected: Boolean,
     @DrawableRes iconId: Int,
     @StringRes labelId: Int,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     NavigationBarItem(
         selected = selected,
@@ -80,9 +80,9 @@ private fun RowScope.FoodDeliveryBottomItem(
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(iconId),
-                contentDescription = null,
+                contentDescription = null
             )
         },
-        colors = FoodDeliveryNavigationBarDefaults.navigationBarItemColors(),
+        colors = FoodDeliveryNavigationBarDefaults.navigationBarItemColors()
     )
 }

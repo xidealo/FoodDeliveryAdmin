@@ -58,7 +58,7 @@ fun NavigationTextCard(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(R.drawable.ic_right_arrow),
                 tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription = stringResource(R.string.description_common_navigate),
+                contentDescription = stringResource(R.string.description_common_navigate)
             )
         }
     }

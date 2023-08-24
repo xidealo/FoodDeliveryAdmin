@@ -25,7 +25,7 @@ fun SelectableCard(
     label: String = "",
     selected: Boolean,
     elevated: Boolean = false,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
@@ -56,7 +56,7 @@ fun SelectableCard(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(R.drawable.ic_check),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
-                    contentDescription = stringResource(R.string.description_common_selected),
+                    contentDescription = stringResource(R.string.description_common_selected)
                 )
             }
         }
