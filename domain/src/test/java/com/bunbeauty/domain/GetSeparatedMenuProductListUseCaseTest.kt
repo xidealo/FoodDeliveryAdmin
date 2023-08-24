@@ -38,7 +38,7 @@ class GetSeparatedMenuProductListUseCaseTest {
         coEvery {
             menuProductRepo.getMenuProductList(
                 companyUuid = companyUuid,
-                isRefreshing = isRefreshing
+                takeRemote = isRefreshing
             )
         } returns emptyList()
 
@@ -58,7 +58,7 @@ class GetSeparatedMenuProductListUseCaseTest {
             coEvery {
                 menuProductRepo.getMenuProductList(
                     companyUuid = companyUuid,
-                    isRefreshing = isRefreshing
+                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 menuProductMock.copy(
@@ -94,7 +94,7 @@ class GetSeparatedMenuProductListUseCaseTest {
             coEvery {
                 menuProductRepo.getMenuProductList(
                     companyUuid = companyUuid,
-                    isRefreshing = isRefreshing
+                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 menuProductMock.copy(
@@ -130,7 +130,7 @@ class GetSeparatedMenuProductListUseCaseTest {
             coEvery {
                 menuProductRepo.getMenuProductList(
                     companyUuid = companyUuid,
-                    isRefreshing = isRefreshing
+                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 menuProductMock.copy(
@@ -171,7 +171,7 @@ class GetSeparatedMenuProductListUseCaseTest {
             coEvery {
                 menuProductRepo.getMenuProductList(
                     companyUuid = companyUuid,
-                    isRefreshing = isRefreshing
+                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 menuProductMock.copy(

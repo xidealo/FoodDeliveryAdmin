@@ -16,10 +16,10 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
 ) {
-    suspend operator fun invoke(isRefreshing: Boolean): SeparatedMenuProductList {
+    suspend operator fun invoke(takeRemote: Boolean): SeparatedMenuProductList {
         val menuProductList = menuProductRepo.getMenuProductList(
             companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
-            isRefreshing = isRefreshing
+            takeRemote = takeRemote
         )
 
         return SeparatedMenuProductList(

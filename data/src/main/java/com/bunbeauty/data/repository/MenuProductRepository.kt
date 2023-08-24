@@ -18,11 +18,11 @@ class MenuProductRepository @Inject constructor(
 
     override suspend fun getMenuProductList(
         companyUuid: String,
-        isRefreshing: Boolean
+        takeRemote: Boolean
     ): List<MenuProduct> {
         val menuProductListFromLocal = getMenuProductListLocal()
 
-        return if (menuProductListFromLocal.isEmpty() || isRefreshing) {
+        return if (menuProductListFromLocal.isEmpty() || takeRemote) {
             networkConnector.getMenuProductList(
                 companyUuid = companyUuid
             ).let { listServer ->

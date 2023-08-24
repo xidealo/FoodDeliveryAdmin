@@ -50,7 +50,8 @@ class MenuViewModel @Inject constructor(
                 )
             }
 
-            val items = getSeparatedMenuProductListUseCase(isRefreshing = false)
+            val items =
+                getSeparatedMenuProductListUseCase(takeRemote = mutableState.value.isEmptyMenuProductListSize)
 
             mutableState.update { oldState ->
                 oldState.copy(
@@ -72,7 +73,7 @@ class MenuViewModel @Inject constructor(
                 )
             }
 
-            val items = getSeparatedMenuProductListUseCase(isRefreshing = true)
+            val items = getSeparatedMenuProductListUseCase(takeRemote = true)
 
             mutableState.update { oldState ->
                 oldState.copy(

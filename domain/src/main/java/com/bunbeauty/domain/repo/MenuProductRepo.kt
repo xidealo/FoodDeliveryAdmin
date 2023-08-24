@@ -6,7 +6,7 @@ interface MenuProductRepo {
     /*GET*/
     suspend fun getMenuProductList(
         companyUuid: String,
-        isRefreshing: Boolean = true
+        takeRemote: Boolean = true
     ): List<MenuProduct>
 
     suspend fun getMenuProduct(menuProductUuid: String): MenuProduct?
