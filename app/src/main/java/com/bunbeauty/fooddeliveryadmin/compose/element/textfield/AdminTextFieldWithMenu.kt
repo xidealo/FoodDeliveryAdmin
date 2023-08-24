@@ -60,7 +60,9 @@ fun AdminTextFieldWithMenu(
                         .background(AdminTheme.colors.main.surface)
                         .exposedDropdownSize(),
                     expanded = expanded,
-                    onDismissRequest = {}
+                    onDismissRequest = {
+                        onExpandedChange(false)
+                    }
                 ) {
                     suggestionsList.forEach { suggestion ->
                         DropdownMenuItem(

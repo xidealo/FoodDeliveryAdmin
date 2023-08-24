@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.domain.model.Suggestion
@@ -45,6 +46,8 @@ import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProduct
 import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductUIState
 import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -78,7 +81,12 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 },
                 updateMenuProductClick = viewModel::updateMenuProduct,
                 onComboDescriptionTextChanged = viewModel::onComboDescriptionTextChanged,
-                backAction = findNavController()::popBackStack
+                backAction = {
+                    lifecycleScope.launch {
+                        delay(100)
+                        findNavController().popBackStack()
+                    }
+                }
             )
             LaunchedEffect(editMenuProductUIState.eventList) {
                 handleEventList(editMenuProductUIState.eventList)
@@ -301,9 +309,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    fun EditMenuProductErrorScreen(
-        onClick: () -> Unit
-    ) {
+    fun EditMenuProductErrorScreen(onClick: () -> Unit) {
         ErrorScreen(
             mainTextId = R.string.title_common_can_not_load_data,
             extraTextId = R.string.msg_common_check_connection_and_retry,
