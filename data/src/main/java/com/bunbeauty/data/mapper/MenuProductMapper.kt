@@ -2,8 +2,10 @@ package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductWithCategoriesEntity
-import com.bunbeauty.data.model.server.MenuProductServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import javax.inject.Inject
 
 class MenuProductMapper @Inject constructor(private val categoryMapper: CategoryMapper) {
@@ -11,17 +13,17 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
     fun toEntity(menuProductServer: MenuProductServer): MenuProductEntity {
         return with(menuProductServer) {
             MenuProductEntity(
-                uuid = uuid ?: "",
-                name = name ?: "",
-                newPrice = newPrice ?: 0,
+                uuid = uuid,
+                name = name,
+                newPrice = newPrice,
                 oldPrice = oldPrice,
                 utils = utils ?: "",
                 nutrition = nutrition ?: 0,
-                description = description ?: "",
+                description = description,
                 comboDescription = comboDescription,
-                photoLink = photoLink ?: "",
-                barcode = barcode ?: 0,
-                isVisible = isVisible ?: false,
+                photoLink = photoLink,
+                barcode = barcode,
+                isVisible = isVisible,
             )
         }
     }
@@ -48,25 +50,6 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
     fun toModel(menuProductServer: MenuProductServer): MenuProduct {
         return with(menuProductServer) {
             MenuProduct(
-                uuid = uuid ?: "",
-                name = name ?: "",
-                newPrice = newPrice ?: 0,
-                oldPrice = oldPrice,
-                utils = utils ?: "",
-                nutrition = nutrition ?: 0,
-                description = description ?: "",
-                comboDescription = comboDescription,
-                photoLink = photoLink ?: "",
-                barcode = barcode ?: 0,
-                isVisible = isVisible ?: false,
-                categories = categories?.map(categoryMapper::toModel) ?: emptyList()
-            )
-        }
-    }
-
-    fun toEntity(menuProduct: MenuProduct): MenuProductEntity {
-        return with(menuProduct) {
-            MenuProductEntity(
                 uuid = uuid,
                 name = name,
                 newPrice = newPrice,
@@ -76,26 +59,26 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
                 description = description,
                 comboDescription = comboDescription,
                 photoLink = photoLink,
-                barcode = barcode ?: 0,
+                barcode = barcode,
                 isVisible = isVisible,
+                categories = categories.map(categoryMapper::toModel)
             )
         }
     }
 
-    fun toServer(menuProduct: MenuProduct): MenuProductServer {
-        return with(menuProduct) {
-            MenuProductServer(
-                uuid = uuid,
+    fun toPatchServer(updateMenuProduct: UpdateMenuProduct): MenuProductPatchServer {
+        return with(updateMenuProduct) {
+            MenuProductPatchServer(
                 name = name,
                 newPrice = newPrice,
                 oldPrice = oldPrice,
                 utils = utils,
-                nutrition = nutrition ?: 0,
+                nutrition = nutrition,
                 description = description,
                 comboDescription = comboDescription,
                 photoLink = photoLink,
-                barcode = barcode ?: 0,
                 isVisible = isVisible,
+                categoryUuids = categoryUuids
             )
         }
     }
