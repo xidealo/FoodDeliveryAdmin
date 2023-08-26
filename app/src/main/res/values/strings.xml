@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PapaKarloAdmin</string>
+    <string name="app_name">Админ</string>
     <!--
     title — заголовки;
     hint — подсказки в edittext;
@@ -12,9 +12,16 @@
 
     <!-- COMMON -->
 
+    <string name="description_product">Фото блюда</string>
     <string name="action_retry">Повторить попытку</string>
-    <string name="title_can_not_load_data">Не удается загрузить данные</string>
-    <string name="msg_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
+    <string name="title_common_can_not_load_data">Не удается загрузить данные</string>
+    <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
+    <string name="error_common_no_internet">Нет подключения к интернету</string>
+    <string name="description_common_navigate">Перейти</string>
+    <string name="description_common_selected">Выбран</string>
+    <string name="action_common_cancel">Отмена</string>
+    <string name="action_common_logout">Выйти</string>
+    <string name="msg_common_cafe">Ресторан</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -23,14 +30,24 @@
     <string name="msg_login_version">Версия приложения %s</string>
     <string name="error_login_wrong_data">Неверный логин или пароль</string>
 
+    <!-- NOTIFICATION -->
+    <string name="title_messaging_new_order">Новый заказ</string>
+    <string name="msg_messaging_new_order">Новый заказ</string>
+
+    <!-- ORDER LIST -->
+    <string name="title_orders">Заказы</string>
+    <string name="error_order_list_connection">Ошибка. Проверьте подключение\nк интернету и обновите страницу</string>
+
     <!-- ORDER DETAILS -->
     <string name="msg_order_details_order_time">Дата и время заказа</string>
     <string name="msg_order_details_pickup_method">Способ получения</string>
+    <string name="msg_order_details_payment_method">Способ оплаты</string>
     <string name="msg_order_details_phone">Номер телефона</string>
     <string name="msg_order_details_deferred_time">Ко времени</string>
     <string name="msg_order_details_address">Адрес</string>
     <string name="msg_order_details_comment">Комментарий</string>
     <string name="msg_order_details_order_status">Статус</string>
+    <string name="hint_order_details_order_status">Статус</string>
     <string name="msg_order_details_order_list">Список заказанных блюд</string>
     <string name="msg_order_details_order_cost">Сумма заказа</string>
     <string name="msg_order_details_delivery_cost">Доставка</string>
@@ -42,11 +59,21 @@
     <string name="action_order_details_yes">Да</string>
     <string name="action_order_details_no">Нет</string>
     <string name="title_order_details_choice_cafe">Выбрать кафе</string>
+    <string name="title_order_status">Статус заказа</string>
+
+    <string name="msg_payment_cash">Наличные</string>
+    <string name="msg_payment_card">Картой при получении</string>
+    <string name="msg_payment_card_number">Переводом по номеру карты</string>
+    <string name="msg_payment_phone_number">Переводом по номеру телефона</string>
 
     <!-- BOTTOM PANEL -->
-    <string name="title_bottom_navigation_menu_orders">Заказы</string>
-    <string name="title_bottom_navigation_menu_statistic">Статистика</string>
-    <string name="title_bottom_navigation_menu_menu">Меню</string>
+    <string name="title_bottom_navigation_orders">Заказы</string>
+    <string name="title_bottom_navigation_menu">Меню</string>
+    <string name="title_bottom_navigation_profile">Профиль</string>
+
+    <!-- STATISTIC -->
+    <string name="title_statistic_select_cafe">Выберите кафе</string>
+    <string name="title_statistic_select_time_interval">Выберите период</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
@@ -75,9 +102,11 @@
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
     <string name="hint_edit_menu_product_name">Название</string>
+    <string name="hint_edit_menu_product_new_price">Актуальная цена</string>
+    <string name="hint_edit_menu_product_old_price">Цена до скидки</string>
     <string name="hint_edit_menu_product_cost">Цена, ₽</string>
     <string name="hint_edit_menu_product_discount_cost">Цена без скидки, ₽</string>
-    <string name="hint_edit_menu_product_weight">Вес, г</string>
+    <string name="hint_edit_menu_product_nutrition">Вес</string>
     <string name="hint_edit_menu_product_description">Описание</string>
     <string name="hint_edit_menu_product_combo_description">Описание комбо</string>
     <string name="action_edit_menu_product_save">Сохранить</string>
@@ -86,9 +115,45 @@
     <string name="msg_edit_menu_product_alert">Удалить позицию?</string>
     <string name="action_edit_menu_product_alert_yes">Да</string>
     <string name="action_edit_menu_product_alert_cancel">Отмена</string>
+    <string name="error_edit_menu_product_empty_name">Название не может быть пустым</string>
+    <string name="error_edit_menu_product_empty_description">Описание не может быть пустым</string>
+    <string name="error_edit_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
+    <string name="error_edit_menu_product_empty_nutrition">Вес не может быть пустым</string>
+    <string name="error_edit_menu_product_cost_incorrect">Некорректное значение</string>
+    <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть больше цены</string>
+    <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
+    <string name="title_edit_menu_product_select_category">Выберите категорию</string>
+    <string name="title_edit_menu_product_is_visible">Показывать в меню</string>
+    <string name="msg_product_updated">%s обновлён</string>
+    <string name="error_product_updated">Что-то пошло не так</string>
+    <string name="hint_edit_menu_product_utils">Ед</string>
+
+    <!--MENU FRAGMENT-->
+    <string name="title_menu_product_visible">Видимые позиции</string>
+    <string name="title_menu_product_hidden">Скрытые позиции</string>
+
+    <string-array name="utilsList">
+        <item>г</item>
+        <item>кг</item>
+        <item>мл</item>
+        <item>л</item>
+        <item>шт</item>
+    </string-array>
 
     <!-- SERVICE -->
     <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
     <string name="msg_notification_info">Ожидание заказов</string>
+
+    <!-- PROFILE -->
+    <string name="title_profile">Профиль</string>
+    <string name="hint_profile_manager">Менеджер</string>
+    <string name="hint_profile_admin">Админ</string>
+
+    <!-- SETTINGS -->
+    <string name="title_settings">Настройки</string>
+    <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
+
+    <!-- LOGOUT -->
+    <string name="title_logout">Выйти из профиля?</string>
 
 </resources>

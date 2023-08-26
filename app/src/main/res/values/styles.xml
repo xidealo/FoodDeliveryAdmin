@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -42,9 +43,10 @@
         <item name="android:layout_height">44dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
-        <item name="cornerRadius">@dimen/medium_radius</item>
+        <item name="cornerRadius">20dp</item>
         <item name="android:backgroundTint">@color/selector_button_color</item>
         <item name="android:textColor">@color/lightTextColor</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="SecondaryButton" parent="BaseButton">
@@ -199,17 +201,6 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <!-- BOTTOM BAR -->
-
-    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemIconSize">24dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="menu">@menu/bottom_navigation_menu</item>
-        <item name="itemIconTint">@color/selector_navigation</item>
-        <item name="itemTextColor">@color/selector_navigation</item>
-    </style>
-
     <!-- BOTTOM SHEET -->
 
     <style name="DialogFragmentStyle" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
@@ -251,6 +242,22 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">16dp</item>
         <item name="android:background">@drawable/background_blur</item>
+    </style>
+
+    <!-- BOTTOM SHEET new -->
+
+    <style name="BottomSheetDialogStyle" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

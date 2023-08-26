@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.statistic
 
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
+import com.bunbeauty.presentation.Option
 
 data class StatisticState(
     val selectedCafe: SelectedCafe? = null,
@@ -26,7 +26,7 @@ data class StatisticState(
 
 enum class RetryAction {
     LOAD_CAFE_LIST,
-    LOAD_STATISTIC,
+    LOAD_STATISTIC
 }
 
 data class SelectedCafe(
@@ -36,11 +36,11 @@ data class SelectedCafe(
 
 data class SelectedTimeInterval(
     val code: TimeIntervalCode,
-    val name: String,
+    val name: String
 )
 
 enum class TimeIntervalCode {
     DAY,
     WEEK,
-    MONTH,
+    MONTH
 }

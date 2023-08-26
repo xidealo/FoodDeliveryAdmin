@@ -1,6 +1,5 @@
 plugins {
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.androidLibrary)
     id(Plugin.kapt)
     id(Plugin.kotlinParcelize)
@@ -8,19 +7,19 @@ plugins {
 }
 
 android {
+    namespace = Namespace.domain
 
     compileSdk = AndroidSdk.compile
-
     defaultConfig {
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildTypes {
         getByName("debug") {
@@ -38,6 +37,15 @@ dependencies {
 
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
-    implementation(Coroutine.coroutineCore)
     implementation(Time.jodaTime)
+
+    // Mocks for testing
+    implementation(Mockk.main)
+    implementation(Mockk.common)
+
+    // Coroutine
+    implementation(Coroutine.test)
+
+    // Test
+    testImplementation(kotlin(Test.test))
 }

@@ -1,59 +1,96 @@
 package com.bunbeauty.fooddeliveryadmin.notification
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ServiceLifecycleDispatcher
+import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.Constants.CHANNEL_ID
-import com.bunbeauty.common.Constants.NOTIFICATION_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
-import com.bunbeauty.common.Constants.ORDER_CODE
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.MainActivity
-import com.bunbeauty.presentation.utils.IResourcesProvider
+import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-@AndroidEntryPoint
+const val LAST_ORDER_NOTIFICATION_ID = 1
+private const val ORDER_CODE_KEY = "orderCode"
+
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
-class MessagingService : FirebaseMessagingService(), CoroutineScope {
+@AndroidEntryPoint
+class MessagingService : FirebaseMessagingService(), LifecycleOwner {
+
+    private val serviceDispatcher = ServiceLifecycleDispatcher(this)
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.d("MessagingService", throwable.message.toString())
+    }
+
+    override val lifecycle: Lifecycle
+        get() = serviceDispatcher.lifecycle
 
     @Inject
     lateinit var dataStoreRepo: DataStoreRepo
 
     @Inject
-    lateinit var resourcesProvider: IResourcesProvider
+    lateinit var notificationManagerCompat: NotificationManagerCompat
 
-    override val coroutineContext = Job()
+    override fun onCreate() {
+        serviceDispatcher.onServicePreSuperOnCreate()
+        super.onCreate()
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(NOTIFICATION_TAG, "onMessageReceived")
 
-        launch(IO) {
-            withContext(Main) {
-                showNotification(remoteMessage.data[ORDER_CODE] ?: "")
+        val isNotificationPermissionGranted =
+            (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
+                (
+                    ActivityCompat.checkSelfPermission(
+                        this,
+                        POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                    )
+        if (isNotificationPermissionGranted) {
+            val code = remoteMessage.data[ORDER_CODE_KEY] ?: return
+
+            lifecycleScope.launch(coroutineExceptionHandler) {
+                showNotification(
+                    code = code,
+                    isUnlimited = dataStoreRepo.isUnlimitedNotification.first()
+                )
+                dataStoreRepo.saveLastOrderCode(code)
             }
         }
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun showNotification(code: String) {
+    override fun onDestroy() {
+        serviceDispatcher.onServicePreSuperOnDestroy()
+        super.onDestroy()
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
+    private fun showNotification(code: String, isUnlimited: Boolean) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        var pendingIntent: PendingIntent? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val pendingIntent: PendingIntent? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
         } else {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -61,11 +98,18 @@ class MessagingService : FirebaseMessagingService(), CoroutineScope {
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_new_order)
-            .setContentTitle("${resourcesProvider.getString(R.string.title_messaging_new_order)} $code")
-            .setContentText(resourcesProvider.getString(R.string.msg_messaging_new_order))
+            .setContentTitle("${resources.getString(R.string.title_messaging_new_order)} $code")
+            .setContentText(resources.getString(R.string.msg_messaging_new_order))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .setColor(resourcesProvider.getColor(R.color.lightIconColor))
-        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, builder.build())
+            .setAutoCancel(false)
+            .setColor(ContextCompat.getColor(this, R.color.lightIconColor))
+        val notification = builder.build().apply {
+            if (isUnlimited) {
+                flags = flags or Notification.FLAG_INSISTENT
+            }
+        }
+
+        notificationManagerCompat.notify(LAST_ORDER_NOTIFICATION_ID, notification)
     }
 }

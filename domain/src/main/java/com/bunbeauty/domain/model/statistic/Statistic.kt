@@ -9,5 +9,4 @@ data class Statistic(
     val startPeriodTime: Long,
     val orderCount: Int,
     val proceeds: Int,
-    val averageCheck: Int
 ) : Parcelable

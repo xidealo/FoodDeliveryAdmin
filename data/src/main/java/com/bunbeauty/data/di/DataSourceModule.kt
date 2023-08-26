@@ -51,7 +51,7 @@ class DataSourceModule {
                     prettyPrint = true
                     isLenient = true
                     ignoreUnknownKeys = true
-                    encodeDefaults = true
+                    encodeDefaults = false
                 }
             )
         }
@@ -63,6 +63,9 @@ class DataSourceModule {
                 }
             }
             level = LogLevel.ALL
+        }
+        install(HttpTimeout){
+            requestTimeoutMillis = 10000
         }
         install(DefaultRequest) {
             host = "food-delivery-api-bunbeauty.herokuapp.com"

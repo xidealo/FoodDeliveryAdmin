@@ -20,8 +20,8 @@ import com.bunbeauty.domain.enums.ProductCode.OVEN
 import com.bunbeauty.domain.enums.ProductCode.PIZZA
 import com.bunbeauty.domain.enums.ProductCode.POTATO
 import com.bunbeauty.domain.enums.ProductCode.SPICE
-import com.bunbeauty.domain.model.order.OrderAddress
-import com.bunbeauty.domain.util.date_time.DateTimeUtil
+import com.bunbeauty.domain.model.order.details.OrderAddress
+import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class StringUtil @Inject constructor(
         return if (deferred == null) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_order_deferred_time) + dateTimeUtil.getTimeHHMM(
+            resourcesProvider.getString(R.string.msg_order_deferred_date_time) + dateTimeUtil.getTimeHHMM(
                 deferred
             )
         }

@@ -12,6 +12,7 @@ class OrderDetailsServer(
     val timeZone: String,
     val isDelivery: Boolean,
     val deferredTime: Long?,
+    val paymentMethod: String?,
     val address: OrderAddressServer,
     val comment: String?,
     val clientUser: ClientUserServer,

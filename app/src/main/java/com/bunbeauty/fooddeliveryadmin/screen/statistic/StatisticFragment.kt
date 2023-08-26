@@ -7,15 +7,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.Navigator
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.Option
-import com.bunbeauty.fooddeliveryadmin.screen.option_list.OptionListBottomSheet
-import com.bunbeauty.fooddeliveryadmin.screen.order_list.OrderListFragmentDirections
+import com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.statistic.StatisticFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.util.addSpaceItemDecorator
+import com.bunbeauty.presentation.Option
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -26,6 +26,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
 
     @Inject
     lateinit var statisticAdapter: StatisticAdapter
+
     @Inject
     lateinit var navigator: Navigator
 
@@ -93,7 +94,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                     }
                 }
                 StatisticState.Event.OpenLoginEvent -> {
-                    findNavController().navigate(toLoginFragment())
+                    findNavController().navigateSafe(toLoginFragment())
                 }
             }
         }

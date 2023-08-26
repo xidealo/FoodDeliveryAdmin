@@ -2,10 +2,10 @@ package com.bunbeauty.data
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.CategoryServer
-import com.bunbeauty.data.model.server.ListServer
+import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
-import com.bunbeauty.data.model.server.order.ServerOrder
+import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
@@ -16,18 +16,19 @@ import kotlinx.coroutines.flow.Flow
 interface FoodDeliveryApi {
 
     // LOGIN
-    suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
+    suspend fun login(
+        userAuthorizationRequest: UserAuthorizationRequest
+    ): ApiResult<UserAuthorizationResponse>
 
     // CAFE
-    suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ListServer<CafeServer>>
+    suspend fun getCafeList(token: String, cityUuid: String): ApiResult<ServerList<CafeServer>>
 
     // MENU PRODUCT
-    suspend fun getMenuProductList(companyUuid: String): ApiResult<ListServer<MenuProductServer>>
+    suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer>
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
-
-    //  suspend fun saveMenuProduct(menuProduct: ServerMenuProduct)
-    //  suspend fun updateMenuProduct(menuProduct: ServerMenuProduct, uuid: String)
+    suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
+    suspend fun patchMenuProduct(menuProductServer: MenuProductServer, token: String)
     suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC
@@ -35,21 +36,21 @@ interface FoodDeliveryApi {
         token: String,
         cafeUuid: String?,
         period: String
-    ): ApiResult<ListServer<StatisticServer>>
+    ): List<StatisticServer>
 
     // ORDER
 
-    suspend fun subscribeOnOrderListByCafeId(
+    suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
         cafeUuid: String
-    ): Flow<ApiResult<ServerOrder>>
+    ): Flow<ApiResult<OrderServer>>
 
     suspend fun unsubscribeOnOrderList(message: String)
 
-    suspend fun getOrderListByCafeId(
+    suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String
-    ): ApiResult<ListServer<ServerOrder>>
+    ): ApiResult<ServerList<OrderServer>>
 
     suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<OrderDetailsServer>
 
@@ -63,5 +64,5 @@ interface FoodDeliveryApi {
     suspend fun getCategoriesByCompanyUuid(
         token: String,
         companyUuid: String
-    ): ApiResult<ListServer<CategoryServer>>
+    ): ApiResult<ServerList<CategoryServer>>
 }

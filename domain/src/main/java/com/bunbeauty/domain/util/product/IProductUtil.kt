@@ -1,17 +1,17 @@
 package com.bunbeauty.domain.util.product
 
-import com.bunbeauty.domain.model.cart_product.CartProduct
+import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
 interface IProductUtil {
 
-    fun getNewTotalCost(cartProductList: List<CartProduct>): Int
-    fun getOldTotalCost(cartProductList: List<CartProduct>): Int?
+    fun getNewTotalCost(orderProductList: List<OrderProduct>): Int
+    fun getOldTotalCost(orderProductList: List<OrderProduct>): Int?
 
-    fun getCartProductNewCost(cartProduct: CartProduct): Int
-    fun getCartProductOldCost(cartProduct: CartProduct): Int?
+    fun getCartProductNewCost(orderProduct: OrderProduct): Int
+    fun getCartProductOldCost(orderProduct: OrderProduct): Int?
 
-    fun getMenuProductNewPrice(cartProduct: CartProduct): Int
-    fun getMenuProductOldPrice(cartProduct: CartProduct): Int?
+    fun getMenuProductNewPrice(orderProduct: OrderProduct): Int
+    fun getMenuProductOldPrice(orderProduct: OrderProduct): Int?
 
-    fun getPositionName(cartProduct: CartProduct): String
+    fun getPositionName(orderProduct: OrderProduct): String
 }

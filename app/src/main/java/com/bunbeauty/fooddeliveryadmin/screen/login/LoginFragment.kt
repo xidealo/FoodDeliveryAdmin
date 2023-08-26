@@ -6,8 +6,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentLoginBinding
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,10 +32,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         viewModel.loginViewState.collectWithLifecycle { state ->
             binding.fragmentLoginPbLoading.isVisible = state.isLoading
             binding.fragmentLoginGroupLogin.isVisible = !state.isLoading
-            state.appVersion?.let { version ->
-                binding.versionTextView.text =
-                    resources.getString(R.string.msg_login_version, version)
-            }
+
             handleEvents(state.eventList)
         }
     }
@@ -42,20 +41,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         eventList.forEach { event ->
             when (event) {
                 LoginViewState.Event.OpenOrderListEvent -> {
-                    findNavController().navigate(LoginFragmentDirections.toOrdersFragment())
+                    findNavController().navigateSafe(LoginFragmentDirections.toOrdersFragment())
                 }
                 LoginViewState.Event.ShowWrongCredentialError -> {
-                    showSnackbar(
-                        resources.getString(R.string.error_login_wrong_data),
-                        R.color.lightTextColor,
-                        R.color.errorColor
+                    (activity as? MessageHost)?.showErrorMessage(
+                        resources.getString(R.string.error_login_wrong_data)
                     )
                 }
                 LoginViewState.Event.ShowConnectionError -> {
-                    showSnackbar(
-                        resources.getString(R.string.msg_check_connection_and_retry),
-                        R.color.lightTextColor,
-                        R.color.errorColor
+                    (activity as? MessageHost)?.showErrorMessage(
+                        resources.getString(R.string.msg_common_check_connection_and_retry)
                     )
                 }
             }

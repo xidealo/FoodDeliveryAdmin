@@ -1,16 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id(Plugin.application)
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.kapt)
     id(Plugin.hiltPlugin)
     id(Plugin.navigation)
-    id(Plugin.googleService)
+    id(Plugin.googleServices)
     id(Plugin.crashlytics)
     id(Plugin.kotlinParcelize)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {
+    namespace = Namespace.app
+
     compileSdk = AndroidSdk.compile
     defaultConfig {
         applicationId = Application.applicationId
@@ -18,14 +23,18 @@ android {
         targetSdk = AndroidSdk.target
         versionCode = Application.versionCode
         versionName = Application.versionName
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore")
-            storePassword = "itisBB15092019"
-            keyAlias = "papakarloKey"
-            keyPassword = "Itispapakarlo08062004"
+            storeFile = file(getProperty("RELEASE_STORE_FILE"))
+            storePassword = getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = getProperty("RELEASE_KEY_PASSWORD")
+
+            enableV1Signing = true
+            enableV2Signing = true
         }
     }
 
@@ -42,78 +51,93 @@ android {
                 }
         }
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
 
         getByName("release") {
             isDebuggable = false
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
         }
 
         buildFeatures {
             viewBinding = true
+            compose = true
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = JavaVersion.VERSION_17.toString()
+        }
+        composeOptions {
+            kotlinCompilerExtensionVersion = Versions.composeCompiler
         }
     }
 }
 
+fun getProperty(key: String): String {
+    val propertiesFile = rootProject.file("./local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(propertiesFile))
+    val property = properties.getProperty(key)
+    if (property == null) {
+        println("Property with key $key not found")
+    }
+    return property
+}
+
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
+    implementation(project(":data")) // TODO remove
+    implementation(project(":domain")) // TODO remove
     implementation(project(":common"))
     implementation(project(":presentation"))
 
-    implementation(Google.material)
-    implementation(AndroidX.coreKtx)
-    implementation(AndroidX.appCompat)
-    implementation(AndroidX.constraintLayout)
+    // Navigation
+    implementation(Navigation.fragment)
+    implementation(Navigation.ui)
+    implementation(Navigation.runtime)
 
-    //navigation
-    implementation(Navigation.navigationFragment)
-    implementation(Navigation.navigationUi)
-
-    //Firebase
+    // Firebase
     implementation(platform(Firebase.bom))
     implementation(Firebase.messaging)
     implementation(Firebase.crashlytics)
 
     // Lifecycle
-    implementation(Lifecycle.lifecycleExtensions)
-    implementation(Lifecycle.lifecycleViewModel)
-    implementation(Lifecycle.activity)
-    implementation(Lifecycle.fragment)
-    implementation(Lifecycle.lifecycleRuntime)
+    implementation(Lifecycle.service)
 
-    // Hilt
+    // Material
+    implementation(Material.material)
+
+    // ViewBinding
+    implementation(ViewBinding.propertyDelegate)
+
+    // Compose
+    implementation(platform(Compose.bom))
+    implementation(Compose.foundation)
+    implementation(Compose.ui)
+    implementation(Compose.uiTooling)
+    implementation(Compose.material3)
+    implementation(Compose.material3WindowSizeClass)
+    implementation(Compose.material)
+    implementation(Compose.uiToolingPreview)
+    implementation(Compose.uiViewbinding)
+    implementation(Compose.lifecycle)
+
+    // Dagger Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
 
-    // Coroutine
-    implementation(Coroutine.coroutineCore)
-
-    // Image loader
+    // Coil
     implementation(Coil.coil)
-
-    // FastAdapter
-    implementation(FastAdapter.fastAdapter)
-    implementation(FastAdapter.fastAdapterBinding)
-
-    // AdapterDelegates
-    implementation(AdapterDelegates.adapterDelegates)
-    implementation(AdapterDelegates.adapterDelegatesLayoutContainer)
-    implementation(AdapterDelegates.adapterDelegatesViewbinding)
+    implementation(Coil.coilCompose)
 }

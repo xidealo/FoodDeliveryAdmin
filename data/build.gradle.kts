@@ -1,34 +1,32 @@
 plugins {
     kotlin(Plugin.android)
-    id(Plugin.kotlinAndroid)
     id(Plugin.androidLibrary)
     id(Plugin.kapt)
     id(Plugin.kotlinSerialization)
-    id(Plugin.hiltPlugin)
-    id(Plugin.googleService)
 }
 
 android {
-    compileSdk = AndroidSdk.compile
+    namespace = Namespace.data
 
+    compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
-            buildConfigField("String", "FB_LINK", "\"https://test-fooddelivery.firebaseio.com/\"")
         }
 
         getByName("release") {
-            isMinifyEnabled = false
-            buildConfigField(
-                "String",
-                "FB_LINK",
-                "\"https://fooddelivery-ce2ef-default-rtdb.firebaseio.com/\""
-            )
+            isMinifyEnabled = true
         }
     }
 }
@@ -37,32 +35,26 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    implementation(Coroutine.coroutineCore)
-
-    //Database
+    // Database
     implementation(RoomDatabase.roomDatabaseRuntime)
     implementation(RoomDatabase.roomDatabaseKtx)
     kapt(RoomDatabase.roomDatabaseKapt)
 
-    //Hilt
+    // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
 
-    //DataStore
+    // DataStore
     implementation(DataStore.dataStorePreferences)
 
     Ktor.run {
-        implementation(clientSerialization)
         implementation(clientLogging)
         implementation(clientWebsockets)
-        implementation(negotiation)
-        implementation(serializerJson)
+        implementation(clientContentNegotiation)
+        implementation(clientSerialization)
+        implementation(serializationJson)
         implementation(clientJson)
         implementation(clientAuth)
         implementation(clientOkhttp)
     }
-
-    //Firebase
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.messaging)
 }
