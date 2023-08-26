@@ -3,8 +3,9 @@ package com.bunbeauty.data
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
-import com.bunbeauty.data.model.server.MenuProductServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -27,8 +28,11 @@ interface FoodDeliveryApi {
     suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer>
     suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
-    suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
-    suspend fun patchMenuProduct(menuProductServer: MenuProductServer, token: String)
+    suspend fun patchMenuProduct(
+        menuProductUuid: String,
+        menuProductPatchServer: MenuProductPatchServer,
+        token: String
+    ): ApiResult<MenuProductServer>
     suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC

@@ -1,11 +1,10 @@
-package com.bunbeauty.data.model.entity.menuproduct
+package com.bunbeauty.data.model.server.menu_product
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.bunbeauty.data.model.server.CategoryServer
+import kotlinx.serialization.Serializable
 
-@Entity
-data class MenuProductEntity(
-    @PrimaryKey
+@Serializable
+data class MenuProductServer(
     val uuid: String,
     val name: String,
     val newPrice: Int,
@@ -17,4 +16,5 @@ data class MenuProductEntity(
     val photoLink: String,
     val barcode: Int,
     val isVisible: Boolean,
+    val categories: List<CategoryServer>
 )

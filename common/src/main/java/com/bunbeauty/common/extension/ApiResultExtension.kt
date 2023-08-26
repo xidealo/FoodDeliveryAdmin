@@ -16,3 +16,11 @@ suspend fun <T, R> ApiResult<T>.getNullableResult(
         onError?.invoke(apiError)
     }
 }
+
+suspend fun <T> ApiResult<T>.onSuccess(
+    block: (suspend (T) -> Unit)
+) {
+    if (this is ApiResult.Success) {
+        block(this.data)
+    }
+}

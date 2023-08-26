@@ -1,10 +1,12 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -55,6 +57,20 @@ class MenuProductRepository @Inject constructor(
             }
     }
 
+    override suspend fun updateMenuProduct(
+        menuProductUuid: String,
+        updateMenuProduct: UpdateMenuProduct,
+        token: String
+    ) {
+        networkConnector.patchMenuProduct(
+            menuProductUuid = menuProductUuid,
+            menuProductPatchServer = menuProductMapper.toPatchServer(updateMenuProduct),
+            token = token
+        ).onSuccess { menuProductServer ->
+            menuProductDao.update(menuProductMapper.toEntity(menuProductServer))
+        }
+    }
+
     override suspend fun deleteMenuProductPhoto(photoLink: String) {
         val photoName = photoLink.split("%2F", "?alt=media")[1]
         return networkConnector.deleteMenuProductPhoto(photoName)
@@ -70,37 +86,6 @@ class MenuProductRepository @Inject constructor(
                 ""
             }
         }
-    }
-
-    override suspend fun updateMenuProduct(
-        menuProduct: MenuProduct,
-        token: String
-    ) {
-        networkConnector.patchMenuProduct(
-            menuProductServer = menuProductMapper.toServer(menuProduct),
-            token = token
-        )
-        menuProductDao.update(menuProductMapper.toEntity(menuProduct))
-    }
-
-    override suspend fun updateVisibleMenuProductUseCase(
-        uuid: String,
-        isVisible: Boolean,
-        token: String
-    ) {
-        networkConnector.updateVisibleMenuProductUseCase(
-            uuid = uuid,
-            isVisible = isVisible,
-            token = token
-        )
-
-        menuProductDao.getByUuid(uuid = uuid)
-            ?.menuProductEntity
-            ?.copy(
-                isVisible = isVisible
-            )?.let { menuProductEntity ->
-                menuProductDao.update(menuProductEntity)
-            }
     }
 
     override suspend fun deleteMenuProduct(uuid: String) {
