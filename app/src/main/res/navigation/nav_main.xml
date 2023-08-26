@@ -78,9 +78,6 @@
         android:name="com.bunbeauty.fooddeliveryadmin.screen.statisticdetails.StatisticDetailsFragment"
         android:label="StatisticDetailsFragment"
         tools:layout="@layout/fragment_statistic_details">
-        <argument
-            android:name="statistic"
-            app:argType="com.bunbeauty.domain.model.statistic.Statistic" />
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
