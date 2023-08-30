@@ -1,9 +1,9 @@
-package com.bunbeauty.presentation.feature.cafe_list
+package com.bunbeauty.presentation.feature.cafelist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.cafelist.GetCafeWithWorkingHoursListFlowUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.view_model.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

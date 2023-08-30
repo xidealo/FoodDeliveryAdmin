@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.cafe_list.item
+package com.bunbeauty.fooddeliveryadmin.screen.cafelist.item
 
 import com.bunbeauty.domain.model.cafe.CafeStatus
 
@@ -7,5 +7,5 @@ data class CafeUiItem(
     val address: String,
     val workingHours: String,
     val cafeStatusText: String,
-    val cafeStatus: CafeStatus,
+    val cafeStatus: CafeStatus
 )

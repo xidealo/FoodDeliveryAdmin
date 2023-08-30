@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.select_cafe
+package com.bunbeauty.fooddeliveryadmin.screen.selectcafe
 
 import android.os.Bundle
 import android.view.View
@@ -9,13 +9,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.element.bottom_sheet.AdminBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SelectableCard
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.ComposeBottomSheet
+import com.bunbeauty.fooddeliveryadmin.coreui.ComposeBottomSheet
 import com.bunbeauty.fooddeliveryadmin.util.argument
-import com.bunbeauty.presentation.feature.select_cafe.SelectableCafeItem
+import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -32,7 +32,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
                 onCafeClicked = { cafeItem ->
                     callback?.onResult(cafeItem)
                     dismiss()
-                },
+                }
             )
         }
     }
@@ -42,7 +42,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 
         suspend fun show(
             fragmentManager: FragmentManager,
-            addressList: List<SelectableCafeItem>,
+            addressList: List<SelectableCafeItem>
         ) = suspendCoroutine { continuation ->
             SelectCafeBottomSheet().apply {
                 this.cafeList = addressList
@@ -60,7 +60,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 @Composable
 private fun SelectCafeScreen(
     cafeList: List<SelectableCafeItem>,
-    onCafeClicked: (SelectableCafeItem) -> Unit,
+    onCafeClicked: (SelectableCafeItem) -> Unit
 ) {
     AdminBottomSheet(titleStringId = R.string.msg_common_cafe) {
         Column(verticalArrangement = spacedBy(8.dp)) {
@@ -92,9 +92,9 @@ private fun SelectCafeScreenPreview() {
                     uuid = "2",
                     address = "Оооооооооооооооооооооооочень длинный адрес 2",
                     isSelected = false
-                ),
+                )
             ),
-            onCafeClicked = {},
+            onCafeClicked = {}
         )
     }
 }

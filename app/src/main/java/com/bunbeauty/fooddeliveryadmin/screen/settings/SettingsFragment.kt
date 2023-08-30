@@ -15,7 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +42,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun SettingsScreen(
         isUnlimitedNotifications: Boolean?,
-        onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
+        onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_settings),
@@ -53,7 +53,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
                     modifier = Modifier.padding(16.dp),
                     labelStringId = R.string.msg_settings_unlimited_notifications,
                     checked = isUnlimitedNotifications,
-                    onCheckChanged = onUnlimitedNotificationsCheckChanged,
+                    onCheckChanged = onUnlimitedNotificationsCheckChanged
                 )
             }
         }

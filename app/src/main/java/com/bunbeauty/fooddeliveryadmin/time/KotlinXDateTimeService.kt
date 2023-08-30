@@ -8,7 +8,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
-class KotlinXDateTimeService @Inject constructor(): TimeService {
+class KotlinXDateTimeService @Inject constructor() : TimeService {
 
     override fun getCurrentTime(timeZone: String): Time {
         val currentMillis = Clock.System.now().toEpochMilliseconds()
@@ -17,7 +17,7 @@ class KotlinXDateTimeService @Inject constructor(): TimeService {
         return Time(
             hour = localDateTime.hour,
             minute = localDateTime.minute,
-            second = localDateTime.second,
+            second = localDateTime.second
         )
     }
 }

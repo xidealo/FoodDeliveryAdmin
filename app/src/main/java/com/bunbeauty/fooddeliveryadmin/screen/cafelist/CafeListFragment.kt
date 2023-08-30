@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.cafe_list
+package com.bunbeauty.fooddeliveryadmin.screen.cafelist
 
 import android.os.Bundle
 import android.view.View
@@ -20,12 +20,12 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.fooddeliveryadmin.core_ui.BaseFragment
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
-import com.bunbeauty.fooddeliveryadmin.screen.cafe_list.item.CafeItem
-import com.bunbeauty.fooddeliveryadmin.screen.cafe_list.item.CafeUiItem
-import com.bunbeauty.presentation.feature.cafe_list.CafeListUiState
-import com.bunbeauty.presentation.feature.cafe_list.CafeListViewModel
+import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeItem
+import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeUiItem
+import com.bunbeauty.presentation.feature.cafelist.CafeListUiState
+import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
     private fun CafeListScreen(
         uiState: CafeListUiState,
         onRetryClicked: () -> Unit,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_cafe_list),
@@ -75,7 +75,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
                 is CafeListUiState.State.Success -> {
                     CafeListSuccessScreen(
                         cafeList = state.cafeList,
-                        onCafeClicked = onCafeClicked,
+                        onCafeClicked = onCafeClicked
                     )
                 }
             }
@@ -85,14 +85,14 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun CafeListSuccessScreen(
         cafeList: List<CafeWithWorkingHours>,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         val cafeItems = remember(cafeList) {
             cafeList.map(cafeItemMapper::map)
         }
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(cafeItems) { cafeUiItem ->
                 CafeItem(
@@ -102,5 +102,4 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
             }
         }
     }
-
 }

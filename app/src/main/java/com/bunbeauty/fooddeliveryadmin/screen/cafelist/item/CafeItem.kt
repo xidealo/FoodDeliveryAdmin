@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.cafe_list.item
+package com.bunbeauty.fooddeliveryadmin.screen.cafelist.item
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +19,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 fun CafeItem(
     modifier: Modifier = Modifier,
     cafeItem: CafeUiItem,
-    onClick: (CafeUiItem) -> Unit,
+    onClick: (CafeUiItem) -> Unit
 ) {
     AdminCard(
         modifier = modifier.fillMaxWidth(),
@@ -43,7 +43,7 @@ fun CafeItem(
                 Text(
                     text = cafeItem.workingHours,
                     style = AdminTheme.typography.labelMedium.medium,
-                    color = AdminTheme.colors.main.onSurfaceVariant,
+                    color = AdminTheme.colors.main.onSurfaceVariant
                 )
 
                 Text(
@@ -51,7 +51,7 @@ fun CafeItem(
                         .padding(start = AdminTheme.dimensions.smallSpace),
                     text = cafeItem.cafeStatusText,
                     style = AdminTheme.typography.labelMedium.medium,
-                    color = getCafeStatusColor(cafeItem.cafeStatus),
+                    color = getCafeStatusColor(cafeItem.cafeStatus)
                 )
             }
         }
@@ -77,9 +77,9 @@ private fun CafeItemOpenPreview() {
                 address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
                 workingHours = "9:00 - 22:00",
                 cafeStatusText = "Open",
-                cafeStatus = CafeStatus.Open,
+                cafeStatus = CafeStatus.Open
             ),
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -94,9 +94,9 @@ private fun CafeItemCloseSoonPreview() {
                 address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
                 workingHours = "9:00 - 22:00",
                 cafeStatusText = "Closed soon 30 min",
-                cafeStatus = CafeStatus.CloseSoon(30),
+                cafeStatus = CafeStatus.CloseSoon(30)
             ),
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -111,9 +111,9 @@ private fun CafeItemClosedPreview() {
                 address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
                 workingHours = "9:00 - 22:00",
                 cafeStatusText = "Closed",
-                cafeStatus = CafeStatus.Closed,
+                cafeStatus = CafeStatus.Closed
             ),
-            onClick = {},
+            onClick = {}
         )
     }
 }

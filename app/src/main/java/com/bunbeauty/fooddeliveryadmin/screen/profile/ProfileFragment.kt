@@ -106,7 +106,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                         uiStateSuccess = state,
                         onCafesClicked = onCafesClicked,
                         onSettingsClicked = onSettingsClicked,
-                        onStatisticClicked = onStatisticClicked,
+                        onStatisticClicked = onStatisticClicked
                     )
                 }
             }
@@ -118,7 +118,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
         uiStateSuccess: ProfileUiState.State.Success,
         onCafesClicked: () -> Unit,
         onSettingsClicked: () -> Unit,
-        onStatisticClicked: () -> Unit,
+        onStatisticClicked: () -> Unit
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

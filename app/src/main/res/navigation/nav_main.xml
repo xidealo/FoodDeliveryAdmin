@@ -73,8 +73,7 @@
     <fragment
         android:id="@+id/statisticDetailsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.statisticdetails.StatisticDetailsFragment"
-        android:label="StatisticDetailsFragment"
-        tools:layout="@layout/fragment_statistic_details">
+        android:label="StatisticDetailsFragment">
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
@@ -119,6 +118,6 @@
         android:label="settingsFragment" />
     <fragment
         android:id="@+id/cafeLisFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.cafe_list.CafeListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragment"
         android:label="cafeLisFragment" />
 </navigation>

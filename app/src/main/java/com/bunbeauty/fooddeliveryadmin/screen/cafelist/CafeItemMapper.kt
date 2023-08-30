@@ -1,10 +1,10 @@
-package com.bunbeauty.fooddeliveryadmin.screen.cafe_list
+package com.bunbeauty.fooddeliveryadmin.screen.cafelist
 
 import android.content.res.Resources
 import com.bunbeauty.domain.model.cafe.CafeStatus
 import com.bunbeauty.domain.model.cafe.CafeWithWorkingHours
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.screen.cafe_list.item.CafeUiItem
+import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeUiItem
 import javax.inject.Inject
 
 class CafeItemMapper @Inject constructor(private val resources: Resources) {
@@ -20,10 +20,10 @@ class CafeItemMapper @Inject constructor(private val resources: Resources) {
                 is CafeStatus.CloseSoon -> resources.getQuantityString(
                     R.plurals.msg_cafe_close_soon,
                     status.minutes,
-                    status.minutes,
+                    status.minutes
                 )
             },
-            cafeStatus = cafe.status,
+            cafeStatus = cafe.status
         )
     }
 }
