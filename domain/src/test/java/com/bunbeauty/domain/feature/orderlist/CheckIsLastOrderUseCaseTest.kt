@@ -1,6 +1,5 @@
-package com.bunbeauty.domain.feature.orders
+package com.bunbeauty.domain.feature.orderlist
 
-import com.bunbeauty.domain.feature.orderlist.CheckIsLastOrderUseCase
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.mockk

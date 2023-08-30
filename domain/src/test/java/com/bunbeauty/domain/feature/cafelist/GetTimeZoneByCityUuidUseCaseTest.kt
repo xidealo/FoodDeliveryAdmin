@@ -1,6 +1,5 @@
-package com.bunbeauty.domain.feature.cafes
+package com.bunbeauty.domain.feature.cafelist
 
-import com.bunbeauty.domain.feature.cafelist.GetTimeZoneByCityUuidUseCase
 import com.bunbeauty.domain.model.city.City
 import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo

@@ -25,7 +25,7 @@ interface FoodDeliveryApi {
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
 
-    // CAFE
+    // CITY
     suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>
 
     // MENU PRODUCT

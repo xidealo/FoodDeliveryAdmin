@@ -1,9 +1,7 @@
-package com.bunbeauty.domain.feature.cafes
+package com.bunbeauty.domain.feature.cafelist
 
 import com.bunbeauty.domain.exception.DataNotFoundException
-import com.bunbeauty.domain.feature.cafelist.GetCafeWithWorkingHoursListFlowUseCase
-import com.bunbeauty.domain.feature.cafelist.GetTimeZoneByCityUuidUseCase
-import com.bunbeauty.domain.feature.orders.GetCafeListUseCase
+import com.bunbeauty.domain.feature.orderlist.GetCafeListUseCase
 import com.bunbeauty.domain.feature.time.GetCurrentTimeFlowUseCase
 import com.bunbeauty.domain.feature.time.Time
 import com.bunbeauty.domain.model.cafe.Cafe
