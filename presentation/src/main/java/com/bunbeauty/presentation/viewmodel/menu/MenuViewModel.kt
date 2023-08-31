@@ -88,7 +88,7 @@ class MenuViewModel @Inject constructor(
     fun updateVisible(menuProductItem: MenuProductItem) {
         viewModelScope.launch(exceptionHandler) {
             updateVisibleMenuProductUseCase(
-                uuid = menuProductItem.uuid,
+                menuProductUuid = menuProductItem.uuid,
                 isVisible = !menuProductItem.visible
             )
             loadData()

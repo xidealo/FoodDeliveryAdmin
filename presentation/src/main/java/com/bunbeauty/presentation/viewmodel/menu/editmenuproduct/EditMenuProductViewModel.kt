@@ -5,6 +5,7 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionExcept
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.model.Suggestion
+import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.usecase.GetMenuProductUseCase
 import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditMenuProductViewModel @Inject constructor(
     private val getMenuProductUseCase: GetMenuProductUseCase,
-    private val updateMenuProductUseCase: UpdateMenuProductUseCase
+    private val updateMenuProductUseCase: UpdateMenuProductUseCase,
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(EditMenuProductDataState())
@@ -37,9 +38,13 @@ class EditMenuProductViewModel @Inject constructor(
                         constName = menuProduct.name,
                         description = menuProduct.description,
                         newPrice = menuProduct.newPrice.toString(),
-                        oldPrice = menuProduct.oldPrice?.toString() ?: "",
+                        oldPrice = menuProduct.oldPrice?.takeIf { oldPrice ->
+                            oldPrice != 0
+                        }?.toString() ?: "",
                         state = EditMenuProductDataState.State.SUCCESS,
-                        nutrition = menuProduct.nutrition?.toString() ?: "",
+                        nutrition = menuProduct.nutrition?.takeIf { oldPrice ->
+                            oldPrice != 0
+                        }?.toString() ?: "",
                         utils = menuProduct.utils ?: "",
                         isVisible = menuProduct.isVisible,
                         comboDescription = menuProduct.comboDescription ?: "",
@@ -65,29 +70,24 @@ class EditMenuProductViewModel @Inject constructor(
                         hasNameError = false,
                         hasDescriptionError = false,
                         hasNewPriceError = false,
-                        hasOldPriceError = false,
-                        hasNutritionError = false,
                     )
                 }
 
-                val name = mutableState.value.name.trim()
-                mutableState.value.menuProduct?.let { menuProduct ->
+                with(mutableState.value) {
+                    val menuProductUuid = menuProduct?.uuid ?: return@with
                     updateMenuProductUseCase(
-                        menuProduct = menuProduct.copy(
-                            name = name,
-                            description = mutableState.value.description.trim(),
-                            newPrice = mutableState.value.newPrice.toIntOrNull() ?: 0,
-                            oldPrice = mutableState.value.oldPrice
-                                .ifEmpty { null }
-                                ?.toInt() ?: 0,
-                            utils = if (mutableState.value.nutrition.isEmpty()) {
-                                ""
-                            } else {
-                                mutableState.value.utils
-                            },
-                            nutrition = mutableState.value.nutrition.toIntOrNull() ?: 0,
-                            isVisible = mutableState.value.isVisible,
-                            comboDescription = mutableState.value.comboDescription
+                        menuProductUuid = menuProductUuid,
+                        updateMenuProduct = UpdateMenuProduct(
+                            name = name.trim(),
+                            newPrice = newPrice.trim().toIntOrNull(),
+                            oldPrice = oldPrice.trim().toIntOrNull(),
+                            utils = utils,
+                            nutrition = nutrition.toIntOrNull(),
+                            description = description.trim(),
+                            comboDescription = comboDescription.trim(),
+                            photoLink = null,
+                            isVisible = isVisible,
+                            categoryUuids = null,
                         )
                     )
                     mutableState.update { oldState ->
@@ -200,10 +200,8 @@ class EditMenuProductViewModel @Inject constructor(
                         newPrice = dataState.newPrice,
                         hasNewPriceError = dataState.hasNewPriceError,
                         oldPrice = dataState.oldPrice,
-                        hasOldPriceError = dataState.hasOldPriceError,
                         utils = dataState.utils,
                         nutrition = dataState.nutrition,
-                        hasNutritionError = dataState.hasNutritionError,
                         isLoadingButton = dataState.isLoadingButton,
                         isVisible = dataState.isVisible,
                         comboDescription = dataState.comboDescription

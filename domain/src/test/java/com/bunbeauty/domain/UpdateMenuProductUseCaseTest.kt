@@ -4,7 +4,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
-import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
@@ -24,6 +24,7 @@ class UpdateMenuProductUseCaseTest {
     private val dataStoreRepo: DataStoreRepo = mockk()
     private lateinit var useCase: UpdateMenuProductUseCase
     private val token = "token"
+    private val menuProductUuid = "menuProductUuid"
 
     @BeforeTest
     fun setup() {
@@ -41,7 +42,7 @@ class UpdateMenuProductUseCaseTest {
         //Result
         assertFailsWith(
             exceptionClass = NoTokenException::class,
-            block = { useCase(mockk()) }
+            block = { useCase(menuProductUuid, mockk()) }
         )
     }
 
@@ -53,7 +54,7 @@ class UpdateMenuProductUseCaseTest {
         //Result
         assertFailsWith(
             exceptionClass = MenuProductNameException::class,
-            block = { useCase(menuProductMock.copy(name = "")) }
+            block = { useCase(menuProductUuid, menuProductMock.copy(name = "")) }
         )
     }
 
@@ -65,7 +66,7 @@ class UpdateMenuProductUseCaseTest {
         //Result
         assertFailsWith(
             exceptionClass = MenuProductNewPriceException::class,
-            block = { useCase(menuProductMock.copy(newPrice = 0)) }
+            block = { useCase(menuProductUuid, menuProductMock.copy(newPrice = 0)) }
         )
     }
 
@@ -77,7 +78,7 @@ class UpdateMenuProductUseCaseTest {
         //Result
         assertFailsWith(
             exceptionClass = MenuProductDescriptionException::class,
-            block = { useCase(menuProductMock.copy(description = "")) }
+            block = { useCase(menuProductUuid, menuProductMock.copy(description = "")) }
         )
     }
 
@@ -87,14 +88,19 @@ class UpdateMenuProductUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns token
 
         // When
-        useCase(menuProductMock)
-        // Then
+        useCase(menuProductUuid, menuProductMock)
 
-        coVerify { menuProductRepo.updateMenuProduct(menuProduct = menuProductMock, token = token) }
+        // Then
+        coVerify {
+            menuProductRepo.updateMenuProduct(
+                menuProductUuid = menuProductUuid,
+                updateMenuProduct = menuProductMock,
+                token = token
+            )
+        }
     }
 
-    private val menuProductMock = MenuProduct(
-        uuid = "uuid",
+    private val menuProductMock = UpdateMenuProduct(
         name = "name",
         newPrice = 1,
         oldPrice = 2,
@@ -103,8 +109,7 @@ class UpdateMenuProductUseCaseTest {
         description = "description",
         comboDescription = "comboDescription",
         photoLink = "photoLink",
-        barcode = 2,
         isVisible = true,
-        categories = emptyList(),
+        categoryUuids = emptyList(),
     )
 }

@@ -139,7 +139,7 @@ object Compose {
     const val foundation = "androidx.compose.foundation:foundation"
     const val ui = "androidx.compose.ui:ui"
     const val material3 = "androidx.compose.material3:material3"
-    const val material3WindowSizeClass = "androidx.compose.material3:material3-window-size-class:"
+    const val material3WindowSizeClass = "androidx.compose.material3:material3-window-size-class"
     const val material = "androidx.compose.material:material"
     const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview"
     const val uiTooling = "androidx.compose.ui:ui-tooling"
