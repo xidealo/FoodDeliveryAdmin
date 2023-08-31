@@ -70,8 +70,6 @@ class EditMenuProductViewModel @Inject constructor(
                         hasNameError = false,
                         hasDescriptionError = false,
                         hasNewPriceError = false,
-                        hasOldPriceError = false,
-                        hasNutritionError = false,
                     )
                 }
 
@@ -202,10 +200,8 @@ class EditMenuProductViewModel @Inject constructor(
                         newPrice = dataState.newPrice,
                         hasNewPriceError = dataState.hasNewPriceError,
                         oldPrice = dataState.oldPrice,
-                        hasOldPriceError = dataState.hasOldPriceError,
                         utils = dataState.utils,
                         nutrition = dataState.nutrition,
-                        hasNutritionError = dataState.hasNutritionError,
                         isLoadingButton = dataState.isLoadingButton,
                         isVisible = dataState.isVisible,
                         comboDescription = dataState.comboDescription
