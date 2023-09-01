@@ -17,7 +17,7 @@ import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
         MenuProductEntity::class,
         CategoryEntity::class,
         MenuProductCategoryEntity::class
-    ], version = 22
+    ], version = 23
 )
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun cafeDao(): CafeDao
