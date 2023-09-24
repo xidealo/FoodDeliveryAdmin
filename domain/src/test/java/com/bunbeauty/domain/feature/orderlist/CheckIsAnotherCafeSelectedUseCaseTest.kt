@@ -1,7 +1,5 @@
-package com.bunbeauty.domain
+package com.bunbeauty.domain.feature.orderlist
 
-import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
-import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 import io.mockk.coEvery
 import io.mockk.mockk

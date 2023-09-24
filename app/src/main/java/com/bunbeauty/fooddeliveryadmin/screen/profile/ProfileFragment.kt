@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -27,7 +27,10 @@ import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.logout.LogoutBottomSheet
+import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toCafeListFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toLoginFragment
+import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toSettingsFragment
+import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toStatisticFragment
 import com.bunbeauty.presentation.feature.profile.ProfileEvent
 import com.bunbeauty.presentation.feature.profile.ProfileUiState
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
@@ -52,7 +55,9 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ProfileScreen(
                 uiState = uiState,
-                onUnlimitedNotificationsCheckChanged = viewModel::onUnlimitedNotificationsCheckChanged,
+                onSettingsClicked = viewModel::onSettingsClicked,
+                onCafesClicked = viewModel::onCafesClicked,
+                onStatisticClicked = viewModel::onStatisticClicked,
                 onLogoutClicked = viewModel::onLogoutClick,
                 onRetryClicked = viewModel::updateData
             )
@@ -66,7 +71,9 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun ProfileScreen(
         uiState: ProfileUiState,
-        onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
+        onCafesClicked: () -> Unit,
+        onSettingsClicked: () -> Unit,
+        onStatisticClicked: () -> Unit,
         onLogoutClicked: () -> Unit,
         onRetryClicked: () -> Unit
     ) {
@@ -85,6 +92,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                 ProfileUiState.State.Loading -> {
                     LoadingScreen()
                 }
+
                 ProfileUiState.State.Error -> {
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
@@ -92,10 +100,13 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                         onClick = onRetryClicked
                     )
                 }
+
                 is ProfileUiState.State.Success -> {
                     SuccessProfileScreen(
                         uiStateSuccess = state,
-                        onUnlimitedNotificationsCheckChanged = onUnlimitedNotificationsCheckChanged
+                        onCafesClicked = onCafesClicked,
+                        onSettingsClicked = onSettingsClicked,
+                        onStatisticClicked = onStatisticClicked
                     )
                 }
             }
@@ -105,7 +116,9 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun SuccessProfileScreen(
         uiStateSuccess: ProfileUiState.State.Success,
-        onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit
+        onCafesClicked: () -> Unit,
+        onSettingsClicked: () -> Unit,
+        onStatisticClicked: () -> Unit
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -115,10 +128,20 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                 hint = profileMapper.mapUserRole(uiStateSuccess.role),
                 label = uiStateSuccess.userName
             )
-            SwitcherCard(
-                labelStringId = R.string.msg_settings_unlimited_notifications,
-                checked = uiStateSuccess.isUnlimitedNotifications,
-                onCheckChanged = onUnlimitedNotificationsCheckChanged
+            NavigationIconCard(
+                iconId = R.drawable.ic_cafe,
+                labelStringId = R.string.action_profile_cafes,
+                onClick = onCafesClicked
+            )
+            NavigationIconCard(
+                iconId = R.drawable.ic_settings,
+                labelStringId = R.string.action_profile_settings,
+                onClick = onSettingsClicked
+            )
+            NavigationIconCard(
+                iconId = R.drawable.ic_statistic,
+                labelStringId = R.string.action_profile_statistic,
+                onClick = onStatisticClicked
             )
         }
     }
@@ -128,6 +151,15 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
     ) {
         eventList.forEach { event ->
             when (event) {
+                ProfileEvent.OpenSettingsEvent -> {
+                    findNavController().navigateSafe(toSettingsFragment())
+                }
+                ProfileEvent.OpenCafeListEvent -> {
+                    findNavController().navigateSafe(toCafeListFragment())
+                }
+                ProfileEvent.OpenStatisticEvent -> {
+                    findNavController().navigateSafe(toStatisticFragment())
+                }
                 ProfileEvent.OpenLogoutEvent -> {
                     lifecycleScope.launch {
                         LogoutBottomSheet.show(parentFragmentManager)?.let { confirmed ->
@@ -135,6 +167,7 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                         }
                     }
                 }
+
                 ProfileEvent.OpenLoginEvent -> {
                     findNavController().navigateSafe(toLoginFragment())
                 }

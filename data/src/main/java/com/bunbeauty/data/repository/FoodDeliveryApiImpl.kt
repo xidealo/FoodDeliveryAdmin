@@ -9,6 +9,7 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
@@ -61,14 +62,17 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
-    override suspend fun getCafeList(
-        token: String,
-        cityUuid: String
-    ): ApiResult<ServerList<CafeServer>> {
+    override suspend fun getCafeList(cityUuid: String, ): ApiResult<ServerList<CafeServer>> {
         return executeGetRequest(
             path = "cafe",
             parameters = hashMapOf("cityUuid" to cityUuid),
-            token = token,
+        )
+    }
+
+    override suspend fun getCityList(companyUuid: String, ): ApiResult<ServerList<CityServer>> {
+        return executeGetRequest(
+            path = "city",
+            parameters = hashMapOf("companyUuid" to companyUuid),
         )
     }
 
@@ -243,7 +247,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     private suspend inline fun <reified T> executeGetRequest(
         path: String,
         parameters: Map<String, String?> = mapOf(),
-        token: String
+        token: String? = null,
     ): ApiResult<T> {
         return safeCall {
             client.get {
@@ -251,7 +255,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    headers = mapOf("Authorization" to "Bearer $token")
+                    headers = if (token == null) emptyMap() else mapOf("Authorization" to "Bearer $token")
                 )
             }.body()
         }

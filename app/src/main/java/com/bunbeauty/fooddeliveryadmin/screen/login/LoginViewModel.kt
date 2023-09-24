@@ -74,6 +74,9 @@ class LoginViewModel @Inject constructor(
 
     private fun checkToken() {
         viewModelScope.launchSafe(
+            onError = {
+                // No errors
+            },
             block = {
                 val token = dataStoreRepo.token.firstOrNull()
                 if (token.isNullOrEmpty()) {
@@ -85,8 +88,7 @@ class LoginViewModel @Inject constructor(
                         oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
                     }
                 }
-            },
-            onError = {}
+            }
         )
     }
 

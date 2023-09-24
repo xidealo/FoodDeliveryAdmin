@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
     app:startDestination="@id/loginFragment">
 
@@ -36,8 +35,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.login.LoginFragment"
-        android:label="LoginFragment"
-        tools:layout="@layout/fragment_login">
+        android:label="LoginFragment">
         <action
             android:id="@+id/to_ordersFragment"
             app:destination="@id/ordersFragment"
@@ -67,8 +65,7 @@
     <fragment
         android:id="@+id/statisticFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.statistic.StatisticFragment"
-        android:label="StatisticFragment"
-        tools:layout="@layout/fragment_statistic">
+        android:label="StatisticFragment">
         <action
             android:id="@+id/to_statisticDetailsFragment"
             app:destination="@id/statisticDetailsFragment" />
@@ -76,8 +73,7 @@
     <fragment
         android:id="@+id/statisticDetailsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.statisticdetails.StatisticDetailsFragment"
-        android:label="StatisticDetailsFragment"
-        tools:layout="@layout/fragment_statistic_details">
+        android:label="StatisticDetailsFragment">
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
@@ -93,8 +89,7 @@
     <fragment
         android:id="@+id/editMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.EditMenuProductFragment"
-        android:label="EditMenuProductFragment"
-        tools:layout="@layout/fragment_edit_menu_product">
+        android:label="EditMenuProductFragment">
         <argument
             android:name="menuProductUuid"
             app:argType="string" />
@@ -102,11 +97,27 @@
     <fragment
         android:id="@+id/createNewMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.CreateMenuProductFragment"
-        android:label="CreateNewMenuProductFragment"
-        tools:layout="@layout/fragment_create_menu_product" />
+        android:label="CreateNewMenuProductFragment"/>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragment"
-        android:label="profileFragment"
-        tools:layout="@layout/layout_compose" />
+        android:label="profileFragment">
+        <action
+            android:id="@+id/to_cafeListFragment"
+            app:destination="@id/cafeLisFragment" />
+        <action
+            android:id="@+id/to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/to_statisticFragment"
+            app:destination="@id/statisticFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
+        android:label="settingsFragment" />
+    <fragment
+        android:id="@+id/cafeLisFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragment"
+        android:label="cafeLisFragment" />
 </navigation>

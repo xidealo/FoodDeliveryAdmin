@@ -1,6 +1,5 @@
-package com.bunbeauty.domain
+package com.bunbeauty.domain.feature.orderlist
 
-import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 import com.bunbeauty.domain.repo.CafeRepo
@@ -10,8 +9,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -32,12 +31,10 @@ class GetSelectedCafeUseCaseTest {
     @Test
     fun `return first cafe when selected uuid is not saved`() = runTest {
         // Given
-        val token = "token"
         val cityUuid = "cityUuid"
-        coEvery { dataStoreRepo.token } returns flowOf(token)
         coEvery { dataStoreRepo.managerCity } returns flowOf(cityUuid)
         coEvery { dataStoreRepo.cafeUuid } returns flowOf(null)
-        coEvery { cafeRepo.getCafeList(token, cityUuid) } returns listOf(
+        coEvery { cafeRepo.getCafeList(cityUuid) } returns listOf(
             createCafe("uuid1", "address1"),
             createCafe("uuid2", "address2"),
             createCafe("uuid3", "address3"),
@@ -57,13 +54,11 @@ class GetSelectedCafeUseCaseTest {
     @Test
     fun `return selected cafe when selected uuid is saved`() = runTest {
         // Given
-        val token = "token"
         val cityUuid = "cityUuid"
         val cafeUuid = "uuid3"
-        coEvery { dataStoreRepo.token } returns flowOf(token)
         coEvery { dataStoreRepo.managerCity } returns flowOf(cityUuid)
         coEvery { dataStoreRepo.cafeUuid } returns flowOf(cafeUuid)
-        coEvery { cafeRepo.getCafeList(token, cityUuid) } returns listOf(
+        coEvery { cafeRepo.getCafeList(cityUuid) } returns listOf(
             createCafe("uuid1", "address1"),
             createCafe("uuid2", "address2"),
             createCafe("uuid3", "address3"),

@@ -14,11 +14,11 @@ import com.bunbeauty.domain.feature.orderlist.SubscribeToCafeNotificationUseCase
 import com.bunbeauty.domain.feature.orderlist.UnsubscribeFromCafeNotificationUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.feature.cafelist.SelectableCafeItem
 import com.bunbeauty.presentation.feature.orderlist.mapper.OrderMapper
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListDataState
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
+import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
 import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -101,7 +101,9 @@ class OrderListViewModel @Inject constructor(
 
     fun onCafeClicked() {
         viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No idea how to handle this
+            },
             block = {
                 val cafeList = getCafeList().map { cafe ->
                     SelectableCafeItem(
@@ -121,7 +123,9 @@ class OrderListViewModel @Inject constructor(
         cafeUuid ?: return
 
         viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No idea how to handle this
+            },
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
@@ -158,7 +162,6 @@ class OrderListViewModel @Inject constructor(
     private fun setUpCafe() {
         viewModelScope.launchSafe(
             onError = {
-                println(it)
                 mutableDataState.update { state ->
                     state.copy(cafeState = OrderListDataState.State.ERROR)
                 }
@@ -222,7 +225,9 @@ class OrderListViewModel @Inject constructor(
         )
 
         orderErrorJob = viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No idea how to handle this
+            },
             block = {
                 getOrderErrorFlow().collect {
                     mutableDataState.update { state ->

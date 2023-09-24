@@ -12,14 +12,10 @@ class GetSelectedCafeUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): SelectedCafe? {
-        val token = dataStoreRepo.token.firstOrNull() ?: return null
         val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: return null
         val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull()
 
-        val cafeList = cafeRepo.getCafeList(
-            token = token,
-            cityUuid = cityUuid,
-        )
+        val cafeList = cafeRepo.getCafeList(cityUuid = cityUuid)
         val cafe = if (cafeUuid == null) {
             cafeList.firstOrNull()
         } else {

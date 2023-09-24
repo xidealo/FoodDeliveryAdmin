@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.cafelist
+package com.bunbeauty.fooddeliveryadmin.screen.selectcafe
 
 import android.os.Bundle
 import android.view.View
@@ -15,11 +15,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.ComposeBottomSheet
 import com.bunbeauty.fooddeliveryadmin.util.argument
-import com.bunbeauty.presentation.feature.cafelist.SelectableCafeItem
+import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
+class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 
     private var cafeList by argument<List<SelectableCafeItem>>()
 
@@ -27,7 +27,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.root.setContentWithTheme {
-            CafeListScreen(
+            SelectCafeScreen(
                 cafeList = cafeList,
                 onCafeClicked = { cafeItem ->
                     callback?.onResult(cafeItem)
@@ -44,7 +44,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
             fragmentManager: FragmentManager,
             addressList: List<SelectableCafeItem>
         ) = suspendCoroutine { continuation ->
-            CafeListBottomSheet().apply {
+            SelectCafeBottomSheet().apply {
                 this.cafeList = addressList
                 callback = object : Callback<SelectableCafeItem> {
                     override fun onResult(result: SelectableCafeItem?) {
@@ -58,7 +58,7 @@ class CafeListBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 }
 
 @Composable
-private fun CafeListScreen(
+private fun SelectCafeScreen(
     cafeList: List<SelectableCafeItem>,
     onCafeClicked: (SelectableCafeItem) -> Unit
 ) {
@@ -79,9 +79,9 @@ private fun CafeListScreen(
 
 @Preview
 @Composable
-private fun CafeListScreenPreview() {
+private fun SelectCafeScreenPreview() {
     AdminTheme {
-        CafeListScreen(
+        SelectCafeScreen(
             cafeList = listOf(
                 SelectableCafeItem(
                     uuid = "1",

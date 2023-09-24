@@ -1,7 +1,6 @@
-package com.bunbeauty.domain
+package com.bunbeauty.domain.feature.orderlist
 
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.OrderRepo
