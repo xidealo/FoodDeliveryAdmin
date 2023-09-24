@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -218,11 +219,6 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         value = state.oldPrice,
                         labelStringId = R.string.hint_edit_menu_product_old_price,
                         onValueChange = onOldPriceTextChanged,
-                        errorMessageId = if (state.hasOldPriceError) {
-                            R.string.error_edit_menu_product_empty_name
-                        } else {
-                            null
-                        },
                         enabled = !state.isLoadingButton,
                         keyboardType = KeyboardType.Number
                     )
@@ -236,11 +232,6 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                             value = state.nutrition,
                             labelStringId = R.string.hint_edit_menu_product_nutrition,
                             onValueChange = onNutritionTextChanged,
-                            errorMessageId = if (state.hasNutritionError) {
-                                R.string.error_edit_menu_product_empty_nutrition
-                            } else {
-                                null
-                            },
                             enabled = !state.isLoadingButton,
                             keyboardType = KeyboardType.Number
                         )
@@ -275,6 +266,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier.fillMaxWidth(),
                         value = state.description,
                         labelStringId = R.string.hint_edit_menu_product_description,
+                        imeAction = ImeAction.None,
                         onValueChange = onDescriptionTextChanged,
                         maxLines = 20,
                         errorMessageId = if (state.hasDescriptionError) {
@@ -289,6 +281,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier.fillMaxWidth(),
                         value = state.comboDescription,
                         labelStringId = R.string.hint_edit_menu_product_combo_description,
+                        imeAction = ImeAction.None,
                         onValueChange = onComboDescriptionTextChanged,
                         maxLines = 20,
                         enabled = !state.isLoadingButton
@@ -332,9 +325,7 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         newPrice = "Актуальная цена",
                         hasNewPriceError = false,
                         oldPrice = "Цена до скидки",
-                        hasOldPriceError = false,
                         nutrition = "200",
-                        hasNutritionError = false,
                         utils = "г",
                         isLoadingButton = false,
                         isVisible = true,
