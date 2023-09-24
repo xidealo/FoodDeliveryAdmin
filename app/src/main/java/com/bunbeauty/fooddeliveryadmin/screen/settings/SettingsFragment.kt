@@ -46,7 +46,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
     private fun SettingsScreen(
         isUnlimitedNotifications: Boolean?,
         onUnlimitedNotificationsCheckChanged: (Boolean) -> Unit,
-        backActionClick: () -> Unit,
+        backActionClick: () -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_settings),
@@ -69,10 +69,9 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
         AdminTheme {
             SettingsScreen(
                 isUnlimitedNotifications = true,
-                onUnlimitedNotificationsCheckChanged= {},
-                backActionClick= {},
+                onUnlimitedNotificationsCheckChanged = {},
+                backActionClick = {}
             )
         }
     }
-
 }

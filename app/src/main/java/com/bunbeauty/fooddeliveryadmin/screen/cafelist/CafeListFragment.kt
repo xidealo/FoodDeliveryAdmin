@@ -61,7 +61,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
         uiState: CafeListUiState,
         backActionClick: () -> Unit,
         onRetryClicked: () -> Unit,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_cafe_list),
@@ -88,7 +88,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun CafeListSuccessScreen(
         cafeItemList: List<CafeUiItem>,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
@@ -115,27 +115,27 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
                             address = "улица Чапаева, д. 22а",
                             workingHours = "10:00-22:00",
                             cafeStatusText = "Открыто",
-                            cafeStatus = CafeStatus.Open,
+                            cafeStatus = CafeStatus.Open
                         ),
                         CafeUiItem(
                             uuid = "",
                             address = "улица Чапаева, д. 22а",
                             workingHours = "10:00-20:00",
                             cafeStatusText = "Закрыто",
-                            cafeStatus = CafeStatus.Closed,
+                            cafeStatus = CafeStatus.Closed
                         ),
                         CafeUiItem(
                             uuid = "",
                             address = "улица Чапаева, д. 22а",
                             workingHours = "10:00-21:00",
                             cafeStatusText = "Открыто. Закроется через 30 мин",
-                            cafeStatus = CafeStatus.CloseSoon(30),
-                        ),
+                            cafeStatus = CafeStatus.CloseSoon(30)
+                        )
                     )
                 ),
                 backActionClick = {},
                 onRetryClicked = {},
-                onCafeClicked = {},
+                onCafeClicked = {}
             )
         }
     }
