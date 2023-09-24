@@ -244,7 +244,7 @@ class EditMenuProductViewModelTest {
     fun `return ShowUpdateProductSuccess event when update is success`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } returns Unit
+        coEvery { updateMenuProductUseCase(any(), any()) } returns Unit
 
         // When
         with(viewModel) {
@@ -253,7 +253,7 @@ class EditMenuProductViewModelTest {
         }
 
         // Then
-        coVerify { updateMenuProductUseCase(any()) }
+        coVerify { updateMenuProductUseCase(any(), any()) }
         assertTrue(
             viewModel.state.value.editMenuProductState is EditMenuProductUIState.EditMenuProductState.Success
         )
@@ -269,7 +269,7 @@ class EditMenuProductViewModelTest {
     fun `return hasNameError true when update failed by name product`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } throws MenuProductNameException()
+        coEvery { updateMenuProductUseCase(any(), any()) } throws MenuProductNameException()
 
         // When
         with(viewModel) {
@@ -288,7 +288,7 @@ class EditMenuProductViewModelTest {
     fun `return hasNewPriceError true when update failed by new price product`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } throws MenuProductNewPriceException()
+        coEvery { updateMenuProductUseCase(any(), any()) } throws MenuProductNewPriceException()
 
         // When
         with(viewModel) {
@@ -307,7 +307,7 @@ class EditMenuProductViewModelTest {
     fun `return hasDescriptionError true when update failed by description product`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } throws MenuProductDescriptionException()
+        coEvery { updateMenuProductUseCase(any(), any()) } throws MenuProductDescriptionException()
 
         // When
         with(viewModel) {
@@ -326,7 +326,7 @@ class EditMenuProductViewModelTest {
     fun `return loadingButton false when update failed`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } throws Exception()
+        coEvery { updateMenuProductUseCase(any(), any()) } throws Exception()
 
         // When
         with(viewModel) {
@@ -345,7 +345,7 @@ class EditMenuProductViewModelTest {
     fun `return ShowUpdateProductError event when update failed by unknown exception`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } throws Exception()
+        coEvery { updateMenuProductUseCase(any(), any()) } throws Exception()
 
         // When
         with(viewModel) {
@@ -354,7 +354,7 @@ class EditMenuProductViewModelTest {
         }
 
         // Then
-        coVerify { updateMenuProductUseCase(any()) }
+        coVerify { updateMenuProductUseCase(any(), any()) }
         assertTrue(
             viewModel.state.value.editMenuProductState is EditMenuProductUIState.EditMenuProductState.Success
         )
@@ -370,7 +370,7 @@ class EditMenuProductViewModelTest {
     fun `return 0 events when consumeEvents was called`() = runTest {
         // Given
         coEvery { getMenuProductUseCase(productUuidMock) } returns menuProductMock
-        coEvery { updateMenuProductUseCase(any()) } throws Exception()
+        coEvery { updateMenuProductUseCase(any(), any()) } throws Exception()
 
         // When
         with(viewModel) {
