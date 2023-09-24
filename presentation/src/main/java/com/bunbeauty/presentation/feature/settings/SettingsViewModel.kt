@@ -15,14 +15,16 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
     private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private val mutableIsUnlimitedNotifications = MutableStateFlow<Boolean?>(null)
     val isUnlimitedNotifications = mutableIsUnlimitedNotifications.asStateFlow()
 
     fun updateData() {
         viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No errors
+            },
             block = {
                 mutableIsUnlimitedNotifications.update {
                     getIsUnlimitedNotification()
@@ -33,7 +35,9 @@ class SettingsViewModel @Inject constructor(
 
     fun onUnlimitedNotificationsCheckChanged(isChecked: Boolean) {
         viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No errors
+            },
             block = {
                 updateIsUnlimitedNotification(isChecked)
                 mutableIsUnlimitedNotifications.update {

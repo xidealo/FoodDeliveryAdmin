@@ -15,30 +15,33 @@ class CafeListViewModel @Inject constructor(
     private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursListFlowUseCase,
 ) : BaseViewModel() {
 
-    private val mutableUiState = MutableStateFlow(CafeListUiState(CafeListUiState.State.Loading))
-    val uiState = mutableUiState.asStateFlow()
+    private val mutableDataState = MutableStateFlow(
+        CafeListDataState(
+            state = CafeListDataState.State.LOADING
+        )
+    )
+    val dataState = mutableDataState.asStateFlow()
 
     init {
         updateCafeList()
     }
 
     fun updateCafeList() {
-        mutableUiState.update { state ->
-            state.copy(
-                state = CafeListUiState.State.Loading
-            )
+        mutableDataState.update { state ->
+            state.copy(state = CafeListDataState.State.LOADING)
         }
         viewModelScope.launchSafe(
             onError = {
-                mutableUiState.update { state ->
-                    state.copy(state = CafeListUiState.State.Error)
+                mutableDataState.update { state ->
+                    state.copy(state = CafeListDataState.State.ERORR)
                 }
             },
             block = {
-                getCafeWithWorkingHoursListFlow().collect {
-                    mutableUiState.update { state ->
+                getCafeWithWorkingHoursListFlow().collect { cafeList ->
+                    mutableDataState.update { state ->
                         state.copy(
-                            state = CafeListUiState.State.Success(it)
+                            state = CafeListDataState.State.SUCCESS,
+                            cafeList = cafeList
                         )
                     }
                 }

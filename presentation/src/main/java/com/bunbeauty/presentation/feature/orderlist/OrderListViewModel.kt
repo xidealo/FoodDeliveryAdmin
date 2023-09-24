@@ -101,7 +101,9 @@ class OrderListViewModel @Inject constructor(
 
     fun onCafeClicked() {
         viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No idea how to handle this
+            },
             block = {
                 val cafeList = getCafeList().map { cafe ->
                     SelectableCafeItem(
@@ -121,7 +123,9 @@ class OrderListViewModel @Inject constructor(
         cafeUuid ?: return
 
         viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No idea how to handle this
+            },
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
@@ -158,7 +162,6 @@ class OrderListViewModel @Inject constructor(
     private fun setUpCafe() {
         viewModelScope.launchSafe(
             onError = {
-                println(it)
                 mutableDataState.update { state ->
                     state.copy(cafeState = OrderListDataState.State.ERROR)
                 }
@@ -222,7 +225,9 @@ class OrderListViewModel @Inject constructor(
         )
 
         orderErrorJob = viewModelScope.launchSafe(
-            onError = {},
+            onError = {
+                // No idea how to handle this
+            },
             block = {
                 getOrderErrorFlow().collect {
                     mutableDataState.update { state ->

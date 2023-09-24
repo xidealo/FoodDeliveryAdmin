@@ -78,7 +78,9 @@ class ProfileViewModel @Inject constructor(
     fun onLogoutConfirmed(confirmed: Boolean) {
         if (confirmed) {
             viewModelScope.launchSafe(
-                onError = {},
+                onError = {
+                    // No idea how to handle this
+                },
                 block = {
                     logout()
                     mutableDataState.update { state ->
