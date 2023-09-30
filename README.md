@@ -21,3 +21,5 @@ Get it on [Google Play](https://play.google.com/store/apps/details?id=com.bunbea
 - [Jetpack compose](https://developer.android.com/jetpack/compose): UI
 - [Navigation](https://developer.android.com/jetpack/androidx/releases/navigation): Navigation
 - [Joda-Time](https://www.joda.org/joda-time/): Handling of date and time
+
+![Admin logo large](https://github.com/xidealo/FoodDeliveryAdmin/assets/36783631/5d4792ac-5753-4c83-b6e8-d5533ce787b3)
