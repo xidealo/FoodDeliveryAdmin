@@ -18,6 +18,7 @@ class OrderDetailsServer(
     val clientUser: ClientUserServer,
     val cafeUuid: String,
     val deliveryCost: Int?,
+    val percentDiscount: Int?,
     val oldTotalCost: Int?,
     val newTotalCost: Int,
     val oderProductList: List<CartProductServer>,

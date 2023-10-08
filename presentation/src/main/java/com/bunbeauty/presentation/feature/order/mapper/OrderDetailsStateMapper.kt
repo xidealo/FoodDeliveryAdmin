@@ -3,6 +3,8 @@ package com.bunbeauty.presentation.feature.order.mapper
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import com.bunbeauty.common.Constants
+import com.bunbeauty.common.Constants.PERCENT
+import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
@@ -42,15 +44,12 @@ class OrderDetailsStateMapper @Inject constructor(
                                 orderProductMapper::map
                             ),
                             deliveryCost = dataState.orderDetails.deliveryCost?.let { deliveryCost ->
-                                resources.getString(
-                                    R.string.common_with_ruble,
-                                    deliveryCost.toString()
-                                )
+                                "$deliveryCost $RUBLE_CURRENCY"
                             },
-                            finalCost = resources.getString(
-                                R.string.common_with_ruble,
-                                dataState.orderDetails.newTotalCost.toString()
-                            ),
+                            percentDiscount =  dataState.orderDetails.percentDiscount?.let { percentDiscount ->
+                                "$percentDiscount$PERCENT"
+                            },
+                            finalCost = "${dataState.orderDetails.newTotalCost} $RUBLE_CURRENCY",
                         )
                     }
                 }
