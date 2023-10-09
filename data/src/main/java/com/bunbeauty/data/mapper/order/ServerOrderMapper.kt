@@ -44,6 +44,7 @@ class ServerOrderMapper @Inject constructor(
             ),
             cafeUuid = orderDetailsServer.cafeUuid,
             deliveryCost = orderDetailsServer.deliveryCost,
+            percentDiscount = orderDetailsServer.percentDiscount,
             oldTotalCost = orderDetailsServer.oldTotalCost,
             newTotalCost = orderDetailsServer.newTotalCost,
             oderProductList = orderDetailsServer.oderProductList.map(cartProductMapper::toModel),

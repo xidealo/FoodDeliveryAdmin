@@ -36,6 +36,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.DiscountCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.surface.AdminSurface
@@ -274,6 +275,18 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     .background(AdminTheme.colors.main.surface)
                     .padding(AdminTheme.dimensions.mediumSpace)
             ) {
+                stateSuccess.percentDiscount?.let { discount ->
+                    Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                        Text(
+                            text = stringResource(R.string.msg_order_details_discount_cost),
+                            style = AdminTheme.typography.bodyMedium,
+                            color = AdminTheme.colors.main.onSurface
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        DiscountCard(discount = discount)
+                    }
+                }
                 stateSuccess.deliveryCost?.let { deliveryCost ->
                     Row(modifier = Modifier.padding(bottom = 8.dp)) {
                         Text(
@@ -400,6 +413,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                             )
                         ),
                         deliveryCost = "100 ₽",
+                        percentDiscount = "10%",
                         finalCost = "480 ₽"
                     ),
                     eventList = emptyList()

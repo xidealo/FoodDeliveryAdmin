@@ -51,6 +51,7 @@
     <string name="msg_order_details_order_list">Список заказанных блюд</string>
     <string name="msg_order_details_order_cost">Сумма заказа</string>
     <string name="msg_order_details_delivery_cost">Доставка</string>
+    <string name="msg_order_details_discount_cost">Скидка</string>
     <string name="msg_order_details_bonuses">Бонусная скидка</string>
     <string name="action_order_details_do_not_save">Не сохранять</string>
     <string name="action_order_details_save">Сохранить</string>
