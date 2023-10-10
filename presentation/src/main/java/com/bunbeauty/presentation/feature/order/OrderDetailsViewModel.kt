@@ -9,32 +9,28 @@ import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.feature.order.mapper.OrderDetailsStateMapper
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
-import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
+import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
-    private val orderDetailsStateMapper: OrderDetailsStateMapper,
     private val orderStatusMapper: OrderStatusMapper,
     private val loadOrderDetails: LoadOrderDetailsUseCase,
     private val updateOrderStatus: UpdateOrderStatusUseCase,
     private val resources: Resources,
 ) : BaseViewModel() {
 
-    private val mutableDataState =
-        MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
-    val uiState: StateFlow<OrderDetailsUiState> =
-        mutableDataState.mapToStateFlow(viewModelScope, orderDetailsStateMapper::map)
+    private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
+    val uiState: StateFlow<OrderDetailsDataState> = mutableDataState.asStateFlow()
 
     fun setupOrder(orderUuid: String, orderCode: String) {
         mutableDataState.update { dataState ->

@@ -1,6 +1,7 @@
 package com.bunbeauty.data.model.server.order
 
 import com.bunbeauty.data.model.server.CartProductServer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable

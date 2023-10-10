@@ -36,7 +36,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 
         suspend fun show(
             fragmentManager: FragmentManager,
-            addressList: List<SelectableCafeItem>
+            addressList: List<SelectableCafeItem>,
         ) = suspendCoroutine { continuation ->
             SelectCafeBottomSheet().apply {
                 this.cafeList = addressList
@@ -54,7 +54,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 @Composable
 private fun SelectCafeScreen(
     cafeList: List<SelectableCafeItem>,
-    onCafeClicked: (SelectableCafeItem) -> Unit
+    onCafeClicked: (SelectableCafeItem) -> Unit,
 ) {
     AdminBottomSheet(titleStringId = R.string.msg_common_cafe) {
         Column(verticalArrangement = spacedBy(8.dp)) {

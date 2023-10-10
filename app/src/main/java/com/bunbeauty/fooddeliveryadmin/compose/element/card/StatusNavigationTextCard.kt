@@ -2,15 +2,19 @@ package com.bunbeauty.fooddeliveryadmin.compose.element.card
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,51 +22,49 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 
 @Composable
-fun NavigationIconCard(
+fun StatusNavigationTextCard(
+    statusColor: Color,
     modifier: Modifier = Modifier,
-    @DrawableRes iconId: Int,
-    @StringRes iconDescriptionStringId: Int? = null,
-    @StringRes labelStringId: Int? = null,
-    label: String = "",
-    elevated: Boolean = true,
+    @StringRes hintStringId: Int,
+    label: String?,
+    clickable: Boolean = true,
     onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
-        elevated = elevated
+        colors = CardDefaults.cardColors(
+            containerColor = statusColor
+        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(start = 8.dp)
+                .background(AdminTheme.colors.main.surface)
+                .padding(start = 8.dp, end = 16.dp)
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(iconId),
-                tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription = iconDescriptionStringId?.let { stringId ->
-                    stringResource(stringId)
-                }
-            )
-            val labelText = labelStringId?.let { id ->
-                stringResource(id)
-            } ?: label
-            Text(
+            Column(
                 modifier = Modifier
-                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
-                    .weight(1f),
-                text = labelText,
-                style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.main.onSurface,
-                overflow = TextOverflow.Ellipsis
-            )
+                    .weight(1f)
+                    .padding(end = AdminTheme.dimensions.smallSpace)
+            ) {
+                Text(
+                    text = stringResource(hintStringId),
+                    style = AdminTheme.typography.labelSmall.medium,
+                    color = AdminTheme.colors.main.onSurfaceVariant
+                )
+                Text(
+                    text = label ?: "",
+                    style = AdminTheme.typography.bodyMedium,
+                    color = AdminTheme.colors.main.onSurface
+                )
+            }
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(R.drawable.ic_right_arrow),
@@ -77,9 +79,11 @@ fun NavigationIconCard(
 @Composable
 private fun NavigationIconCardPreview() {
     AdminTheme {
-        NavigationIconCard(
-            iconId = R.drawable.ic_menu,
-            label = "Текст",
+        StatusNavigationTextCard(
+            statusColor = AdminTheme.colors.order.notAccepted,
+            modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
+            hintStringId = R.string.hint_login_login,
+            label = "+7 999 000-00-00",
             onClick = {}
         )
     }

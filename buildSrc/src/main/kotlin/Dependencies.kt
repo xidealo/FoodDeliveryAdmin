@@ -1,6 +1,6 @@
 object Versions {
     const val kotlin = "1.9.0"
-    const val gradle = "8.1.0"
+    const val gradle = "8.1.1"
     const val ktor = "2.3.2"
     const val coil = "2.4.0"
     const val datastorePreferences = "1.0.0"

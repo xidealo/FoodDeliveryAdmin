@@ -1,6 +1,7 @@
-package com.bunbeauty.presentation.feature.order.state
+package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 
-import com.bunbeauty.domain.model.order.details.PaymentMethod
+import androidx.compose.ui.graphics.Color
+import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
 
 data class OrderDetailsUiState(
     val title: String,
@@ -14,17 +15,17 @@ data class OrderDetailsUiState(
         data class Success(
             val dateTime: String,
             val deferredTime: HintWithValue?,
-            val paymentMethod: PaymentMethod?,
+            val paymentMethod: String?,
             val receiptMethod: String,
             val address: String,
             val comment: String?,
             val status: String,
+            val statusColor: Color,
             val phoneNumber: String,
             val productList: List<Product>,
             val percentDiscount: String?,
             val deliveryCost: String?,
             val finalCost: String,
-            val oldFinalCost: String?,
         ) : State
     }
 
@@ -38,5 +39,6 @@ data class OrderDetailsUiState(
         val price: String,
         val count: String,
         val cost: String,
+        val additions: String?
     )
 }

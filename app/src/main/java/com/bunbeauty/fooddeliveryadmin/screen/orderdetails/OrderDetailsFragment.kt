@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
@@ -31,7 +30,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bunbeauty.domain.model.order.details.PaymentMethod
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
@@ -39,7 +37,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.DiscountCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.StatusNavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.surface.AdminSurface
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -54,7 +52,6 @@ import com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.feature.order.OrderDetailsViewModel
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
-import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -71,7 +68,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     override val viewModel: OrderDetailsViewModel by viewModels()
 
     @Inject
-    lateinit var paymentMethodMapper: PaymentMethodMapper
+    lateinit var orderDetailsStateMapper: OrderDetailsStateMapper
 
     private var statusListJob: Job? = null
 
@@ -84,16 +81,16 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
         )
 
         binding.root.setContentWithTheme {
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val dataState by viewModel.uiState.collectAsStateWithLifecycle()
 
             OrderDetailsScreen(
-                uiState = uiState,
+                uiState = orderDetailsStateMapper.map(dataState),
                 onStatusClicked = viewModel::onStatusClicked,
                 onSaveClicked = viewModel::onSaveClicked
             )
 
-            LaunchedEffect(uiState.eventList) {
-                handleEventList(uiState.eventList)
+            LaunchedEffect(dataState.eventList) {
+                handleEventList(dataState.eventList)
             }
         }
     }
@@ -106,7 +103,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     ) {
         AdminScaffold(
             title = uiState.title,
-            backActionClick = { findNavController().popBackStack() }
+            backActionClick = { findNavController().popBackStack() },
         ) {
             when (uiState.state) {
                 OrderDetailsUiState.State.Loading -> {
@@ -123,7 +120,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
                 is OrderDetailsUiState.State.Success -> {
                     SuccessOrderDetailsScreen(
-                        stateSuccess = uiState.state as OrderDetailsUiState.State.Success,
+                        stateSuccess = uiState.state,
                         onStatusClicked = onStatusClicked,
                         onSaveClicked = onSaveClicked
                     )
@@ -138,7 +135,9 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
         onStatusClicked: () -> Unit,
         onSaveClicked: () -> Unit
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -153,10 +152,11 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         OrderInfoCard(stateSuccess = stateSuccess)
                     }
                     item {
-                        NavigationTextCard(
+                        StatusNavigationTextCard(
                             hintStringId = R.string.hint_order_details_order_status,
                             label = stateSuccess.status,
-                            onClick = onStatusClicked
+                            onClick = onStatusClicked,
+                            statusColor = stateSuccess.statusColor
                         )
                     }
                     item {
@@ -171,7 +171,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         )
                     }
 
-                    items(stateSuccess.productList) { product ->
+                    itemsIndexed(stateSuccess.productList) { index, product ->
                         OrderProductItem(product = product)
                     }
                 }
@@ -190,7 +190,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     ) {
         AdminCard(
             modifier = modifier,
-            clickable = false
+            clickable = false,
+            elevated = false
         ) {
             Column(
                 modifier = Modifier
@@ -228,7 +229,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                                 .padding(start = 16.dp)
                                 .weight(1f),
                             hint = stringResource(R.string.msg_order_details_payment_method),
-                            info = paymentMethodMapper.map(paymentMethod)
+                            info = paymentMethod
                         )
                     }
                 }
@@ -314,16 +315,6 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         color = AdminTheme.colors.main.onSurface
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    stateSuccess.oldFinalCost?.let { oldFinalCost ->
-                        Text(
-                            modifier = Modifier
-                                .padding(end = AdminTheme.dimensions.smallSpace),
-                            text = oldFinalCost,
-                            style = AdminTheme.typography.bodyMedium.bold,
-                            color = AdminTheme.colors.main.onSurfaceVariant,
-                            textDecoration = TextDecoration.LineThrough
-                        )
-                    }
                     Text(
                         text = stateSuccess.finalCost,
                         style = AdminTheme.typography.bodyMedium.bold,
@@ -408,7 +399,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                             hint = "Время доставки",
                             value = "18:30"
                         ),
-                        paymentMethod = PaymentMethod.CARD,
+                        paymentMethod = "Картой",
                         receiptMethod = "Доставка",
                         address = "улица Чапаева, д 22А, кв 15",
                         comment = "Не забудте привезти еду",
@@ -416,22 +407,24 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         phoneNumber = "+ 7 (900) 900-90-90",
                         productList = listOf(
                             OrderDetailsUiState.Product(
-                                title = "Хот-дог французский с куриной колбаской",
+                                title = "Хот-дог французский с куриной колбаской с супер пупер длинной строкой в названии",
                                 price = "99 ₽",
                                 count = "× 2",
-                                cost = "198 ₽"
+                                cost = "198 ₽",
+                                additions = "Необычный лаваш • Добавка 1 • Добавка 2"
                             ),
                             OrderDetailsUiState.Product(
                                 title = "Хот-дог французский с куриной колбаской",
                                 price = "99 ₽",
-                                count = "× 2",
-                                cost = "198 ₽"
+                                count = "× 2 + 200 ₽",
+                                cost = "198 ₽",
+                                additions = null
                             )
                         ),
                         deliveryCost = "100 ₽",
                         percentDiscount = "10%",
                         finalCost = "480 ₽",
-                        oldFinalCost = "480 ₽"
+                        statusColor = AdminTheme.colors.order.notAccepted
                     ),
                     eventList = emptyList()
                 ),

@@ -42,20 +42,15 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductEvent
 import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductUIState
 import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
-
-    @Inject
-    lateinit var resourcesProvider: IResourcesProvider
 
     override val viewModel: EditMenuProductViewModel by viewModels()
 

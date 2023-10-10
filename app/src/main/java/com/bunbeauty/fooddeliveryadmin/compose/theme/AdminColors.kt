@@ -36,7 +36,9 @@ val LightAdminColors = AdminColors(
         onBackground = Black1,
         onSurface = Black1,
         onSurfaceVariant = Grey2,
-        onError = White
+        onError = White,
+        stroke = Cream,
+        strokeVariant = Blue1
     ),
     order = OrderColors(
         notAccepted = Purple,
@@ -110,7 +112,9 @@ class MainColors(
     onBackground: Color,
     onSurface: Color,
     onSurfaceVariant: Color,
-    onError: Color
+    onError: Color,
+    stroke: Color,
+    strokeVariant: Color
 ) {
 
     var primary by mutableStateOf(primary)
@@ -139,6 +143,10 @@ class MainColors(
         private set
     var onError by mutableStateOf(onError)
         private set
+    var stroke by mutableStateOf(stroke)
+        private set
+    var strokeVariant by mutableStateOf(strokeVariant)
+        private set
 
     fun copy(
         primary: Color = this.primary,
@@ -153,7 +161,9 @@ class MainColors(
         onBackground: Color = this.onBackground,
         onSurface: Color = this.onSurface,
         onSurfaceVariant: Color = this.onSurfaceVariant,
-        onError: Color = this.onError
+        onError: Color = this.onError,
+        stroke: Color = this.stroke,
+        strokeVariant: Color = this.strokeVariant
     ) = MainColors(
         primary = primary,
         disabled = disabled,
@@ -167,7 +177,9 @@ class MainColors(
         onBackground = onBackground,
         onSurface = onSurface,
         onSurfaceVariant = onSurfaceVariant,
-        onError = onError
+        onError = onError,
+        stroke = stroke,
+        strokeVariant = strokeVariant
     )
 
     fun update(other: MainColors) {
@@ -184,6 +196,8 @@ class MainColors(
         onSurface = other.onSurface
         onSurfaceVariant = other.onSurfaceVariant
         onError = other.onError
+        stroke = other.stroke
+        strokeVariant = other.strokeVariant
     }
 }
 
