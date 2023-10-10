@@ -9,7 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType

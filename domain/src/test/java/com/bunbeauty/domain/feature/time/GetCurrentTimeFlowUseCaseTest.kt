@@ -17,7 +17,7 @@ class GetCurrentTimeFlowUseCaseTest {
 
     private val timeService: TimeService = mockk()
     private lateinit var getCurrentTimeFlow: GetCurrentTimeFlowUseCase
-    private val timeZone = "UTC+3"
+    private val timeZone = 3
     private val currentTime = Time(10, 30, 59)
 
     @BeforeTest

@@ -133,6 +133,9 @@ dependencies {
     implementation(Compose.uiViewbinding)
     implementation(Compose.lifecycle)
 
+    // Date time picker
+    implementation(MaterialDialogs.datetime)
+
     // Dagger Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)

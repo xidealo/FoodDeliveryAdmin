@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.presentation.extension.toByteArray
 import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateMenuProductViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
-    private val resourcesProvider: IResourcesProvider,
     private val menuProductRepo: MenuProductRepo,
 ) : BaseViewModel() {
 

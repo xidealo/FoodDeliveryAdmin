@@ -6,7 +6,7 @@ import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

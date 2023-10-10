@@ -71,11 +71,6 @@ class MenuProductRepository @Inject constructor(
         }
     }
 
-    override suspend fun deleteMenuProductPhoto(photoLink: String) {
-        val photoName = photoLink.split("%2F", "?alt=media")[1]
-        return networkConnector.deleteMenuProductPhoto(photoName)
-    }
-
     override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String {
         return when (val result = networkConnector.saveMenuProductPhoto(photoByteArray)) {
             is ApiResult.Success -> {
@@ -86,11 +81,6 @@ class MenuProductRepository @Inject constructor(
                 ""
             }
         }
-    }
-
-    override suspend fun deleteMenuProduct(uuid: String) {
-        networkConnector.deleteMenuProduct(uuid)
-        //todo remove local
     }
 
     override suspend fun clearCache() {

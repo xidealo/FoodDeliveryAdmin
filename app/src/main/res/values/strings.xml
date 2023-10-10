@@ -12,16 +12,25 @@
 
     <!-- COMMON -->
 
-    <string name="description_product">Фото блюда</string>
-    <string name="action_retry">Повторить попытку</string>
     <string name="title_common_can_not_load_data">Не удается загрузить данные</string>
+    <string name="title_common_select_date">Выбрать дату</string>
+    <string name="title_common_select_time">Выбрать дату</string>
     <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
-    <string name="error_common_no_internet">Нет подключения к интернету</string>
+    <string name="msg_common_non_working_day">Сегодня запланирован нерабочий день</string>
+    <string name="msg_common_cafe">Ресторан</string>
+    <string name="description_product">Фото блюда</string>
     <string name="description_common_navigate">Перейти</string>
     <string name="description_common_selected">Выбран</string>
+    <string name="action_retry">Повторить попытку</string>
     <string name="action_common_cancel">Отмена</string>
+    <string name="action_common_ok">Ок</string>
     <string name="action_common_logout">Выйти</string>
-    <string name="msg_common_cafe">Ресторан</string>
+    <string name="action_common_delete">Удалить</string>
+    <string name="error_common_no_internet">Нет подключения к интернету</string>
+    <string name="error_common_update_failed">При обновлении данных произошла ошибка</string>
+    <string name="error_common_loading_failed">При загрузке данных произошла ошибка</string>
+    <string name="error_common_saving_failed">При сохранении данных произошла ошибка</string>
+    <string name="error_common_deleting_failed">При удалении данных произошла ошибка</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -165,6 +174,16 @@
         <item quantity="other">Открыто. Закроется через %d минут</item>
     </plurals>
     <string name="msg_cafe_closed">Закрыто</string>
+
+    <!-- EDIT CAFE -->
+    <string name="hint_edit_cafe_from_time">Время начала работы</string>
+    <string name="hint_edit_cafe_to_time">Время окончания работы</string>
+    <string name="title_edit_cafe_non_working_days">Запланированные нерабочие дни</string>
+    <string name="msg_edit_cafe_empty_non_working_days">Нажмите «Добавить», чтобы запланировать нерабочий день</string>
+    <string name="action_edit_cafe_add">Добавить</string>
+    <string name="title_edit_cafe_from_time">Время начала работы</string>
+    <string name="title_edit_cafe_to_time">Время окончания работы</string>
+    <string name="title_edit_cafe_delete_now_working_day">Удалить нерабочий день?</string>
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>

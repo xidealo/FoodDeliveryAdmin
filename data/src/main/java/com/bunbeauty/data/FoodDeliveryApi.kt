@@ -5,8 +5,12 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
+import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
+import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
+import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -19,45 +23,44 @@ interface FoodDeliveryApi {
 
     // LOGIN
     suspend fun login(
-        userAuthorizationRequest: UserAuthorizationRequest
+        userAuthorizationRequest: UserAuthorizationRequest,
     ): ApiResult<UserAuthorizationResponse>
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
+    suspend fun patchCafe(cafeUuid: String, patchCafe: PatchCafeServer, token: String): ApiResult<CafeServer>
 
     // CITY
     suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>
 
     // MENU PRODUCT
     suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer>
-    suspend fun deleteMenuProductPhoto(photoName: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
     suspend fun patchMenuProduct(
         menuProductUuid: String,
         menuProductPatchServer: MenuProductPatchServer,
-        token: String
+        token: String,
     ): ApiResult<MenuProductServer>
-    suspend fun deleteMenuProduct(uuid: String)
 
     // STATISTIC
     suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String
+        period: String,
     ): List<StatisticServer>
 
     // ORDER
 
     suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): Flow<ApiResult<OrderServer>>
 
     suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): ApiResult<ServerList<OrderServer>>
 
     suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<OrderDetailsServer>
@@ -65,12 +68,25 @@ interface FoodDeliveryApi {
     suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
-        status: OrderStatus
+        status: OrderStatus,
     ): ApiResult<OrderDetailsServer>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(
         token: String,
-        companyUuid: String
+        companyUuid: String,
     ): ApiResult<ServerList<CategoryServer>>
+
+    // NON WORKING DAYS
+    suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>>
+    suspend fun postNonWorkingDay(
+        token: String,
+        postNonWorkingDay: PostNonWorkingDayServer,
+    ): ApiResult<NonWorkingDayServer>
+    suspend fun patchNonWorkingDay(
+        token: String,
+        uuid: String,
+        patchNonWorkingDay: PatchNonWorkingDayServer
+    ): ApiResult<NonWorkingDayServer>
+
 }

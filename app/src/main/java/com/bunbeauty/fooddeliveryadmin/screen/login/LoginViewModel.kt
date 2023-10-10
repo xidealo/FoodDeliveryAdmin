@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.usecase.LoginUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -74,9 +74,6 @@ class LoginViewModel @Inject constructor(
 
     private fun checkToken() {
         viewModelScope.launchSafe(
-            onError = {
-                // No errors
-            },
             block = {
                 val token = dataStoreRepo.token.firstOrNull()
                 if (token.isNullOrEmpty()) {
@@ -88,6 +85,9 @@ class LoginViewModel @Inject constructor(
                         oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
                     }
                 }
+            },
+            onError = {
+                // No errors
             }
         )
     }

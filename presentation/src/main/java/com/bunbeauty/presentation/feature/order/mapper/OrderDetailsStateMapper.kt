@@ -8,6 +8,8 @@ import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
+import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
@@ -32,7 +34,7 @@ class OrderDetailsStateMapper @Inject constructor(
                         OrderDetailsUiState.State.Error
                     } else {
                         OrderDetailsUiState.State.Success(
-                            dateTime = dateTimeUtil.getDateTimeDDMMHHMM(dataState.orderDetails.time),
+                            dateTime = dateTimeUtil.formatDateTime(dataState.orderDetails.time, PATTERN_DD_MMMM_HH_MM),
                             deferredTime = getDeferredTime(dataState.orderDetails),
                             paymentMethod = dataState.orderDetails.paymentMethod,
                             receiptMethod = getReceiptMethod(dataState.orderDetails),
@@ -70,7 +72,7 @@ class OrderDetailsStateMapper @Inject constructor(
             }
             OrderDetailsUiState.HintWithValue(
                 hint = resources.getString(hintStringId),
-                value = dateTimeUtil.getTimeHHMM(deferredTime)
+                value = dateTimeUtil.formatDateTime(deferredTime, PATTERN_HH_MM)
             )
         }
     }

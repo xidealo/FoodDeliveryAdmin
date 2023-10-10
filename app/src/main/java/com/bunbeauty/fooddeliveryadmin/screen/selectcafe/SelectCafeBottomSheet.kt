@@ -1,7 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.screen.selectcafe
 
-import android.os.Bundle
-import android.view.View
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -11,7 +9,6 @@ import androidx.fragment.app.FragmentManager
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SelectableCard
-import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.ComposeBottomSheet
 import com.bunbeauty.fooddeliveryadmin.util.argument
@@ -23,18 +20,15 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 
     private var cafeList by argument<List<SelectableCafeItem>>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.root.setContentWithTheme {
-            SelectCafeScreen(
-                cafeList = cafeList,
-                onCafeClicked = { cafeItem ->
-                    callback?.onResult(cafeItem)
-                    dismiss()
-                }
-            )
-        }
+    @Composable
+    override fun Content() {
+        SelectCafeScreen(
+            cafeList = cafeList,
+            onCafeClicked = { cafeItem ->
+                callback?.onResult(cafeItem)
+                dismiss()
+            }
+        )
     }
 
     companion object {
@@ -42,7 +36,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 
         suspend fun show(
             fragmentManager: FragmentManager,
-            addressList: List<SelectableCafeItem>
+            addressList: List<SelectableCafeItem>,
         ) = suspendCoroutine { continuation ->
             SelectCafeBottomSheet().apply {
                 this.cafeList = addressList
@@ -60,7 +54,7 @@ class SelectCafeBottomSheet : ComposeBottomSheet<SelectableCafeItem>() {
 @Composable
 private fun SelectCafeScreen(
     cafeList: List<SelectableCafeItem>,
-    onCafeClicked: (SelectableCafeItem) -> Unit
+    onCafeClicked: (SelectableCafeItem) -> Unit,
 ) {
     AdminBottomSheet(titleStringId = R.string.msg_common_cafe) {
         Column(verticalArrangement = spacedBy(8.dp)) {

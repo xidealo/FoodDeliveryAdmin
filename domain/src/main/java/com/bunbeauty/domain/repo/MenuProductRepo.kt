@@ -20,10 +20,8 @@ interface MenuProductRepo {
     )
 
     /*DELETE*/
-    suspend fun deleteMenuProduct(uuid: String)
     suspend fun clearCache()
 
     /*OTHER*/
-    suspend fun deleteMenuProductPhoto(photoLink: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String
 }
