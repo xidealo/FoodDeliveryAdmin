@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.login
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.UserAuthorizationRepo
+import com.bunbeauty.domain.usecase.LoginUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val userAuthorizationRepo: UserAuthorizationRepo
+    private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {
 
     private val mutableLoginViewState: MutableStateFlow<LoginViewState> = MutableStateFlow(
@@ -51,8 +51,8 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launchSafe(
             block = {
-                userAuthorizationRepo.login(processedUsername, processedPassword)
-                    ?.let { (token, managerCityUuid, companyUuid) ->
+                loginUseCase(username = processedUsername, password = processedPassword)
+                    .let { (token, managerCityUuid, companyUuid) ->
                         with(dataStoreRepo) {
                             saveToken(token)
                             saveManagerCity(managerCityUuid)
