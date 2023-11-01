@@ -3,6 +3,8 @@ package com.bunbeauty.presentation.feature.order.mapper
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import com.bunbeauty.common.Constants
+import com.bunbeauty.common.Constants.PERCENT
+import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
@@ -42,15 +44,15 @@ class OrderDetailsStateMapper @Inject constructor(
                                 orderProductMapper::map
                             ),
                             deliveryCost = dataState.orderDetails.deliveryCost?.let { deliveryCost ->
-                                resources.getString(
-                                    R.string.common_with_ruble,
-                                    deliveryCost.toString()
-                                )
+                                "$deliveryCost $RUBLE_CURRENCY"
                             },
-                            finalCost = resources.getString(
-                                R.string.common_with_ruble,
-                                dataState.orderDetails.newTotalCost.toString()
-                            ),
+                            percentDiscount = dataState.orderDetails.percentDiscount?.let { percentDiscount ->
+                                "$percentDiscount$PERCENT"
+                            },
+                            finalCost = "${dataState.orderDetails.newTotalCost} $RUBLE_CURRENCY",
+                            oldFinalCost = dataState.orderDetails.oldTotalCost?.let { oldTotalCost ->
+                                "${dataState.orderDetails.oldTotalCost} $RUBLE_CURRENCY"
+                            }
                         )
                     }
                 }
@@ -85,40 +87,40 @@ class OrderDetailsStateMapper @Inject constructor(
 
     private fun getOrderAddressString(address: OrderAddress): String {
         return address.description ?: (
-            address.street +
-                getAddressPart(
-                    part = Constants.ADDRESS_DIVIDER + resources.getString(
-                        R.string.msg_address_house,
-                        address.house
-                    ),
-                    data = address.house
-                ) +
-                getAddressPart(
-                    part = Constants.ADDRESS_DIVIDER + resources.getString(
-                        R.string.msg_address_flat,
-                        address.flat
-                    ),
-                    data = address.flat
-                ) +
-                getAddressPart(
-                    part = Constants.ADDRESS_DIVIDER + resources.getString(
-                        R.string.msg_address_entrance,
-                        address.entrance
-                    ),
-                    data = address.entrance
-                ) +
-                getAddressPart(
-                    part = Constants.ADDRESS_DIVIDER + resources.getString(
-                        R.string.msg_address_floor,
-                        address.floor
-                    ),
-                    data = address.floor
-                ) +
-                getAddressPart(
-                    part = Constants.ADDRESS_DIVIDER + address.comment,
-                    data = address.comment
+                address.street +
+                        getAddressPart(
+                            part = Constants.ADDRESS_DIVIDER + resources.getString(
+                                R.string.msg_address_house,
+                                address.house
+                            ),
+                            data = address.house
+                        ) +
+                        getAddressPart(
+                            part = Constants.ADDRESS_DIVIDER + resources.getString(
+                                R.string.msg_address_flat,
+                                address.flat
+                            ),
+                            data = address.flat
+                        ) +
+                        getAddressPart(
+                            part = Constants.ADDRESS_DIVIDER + resources.getString(
+                                R.string.msg_address_entrance,
+                                address.entrance
+                            ),
+                            data = address.entrance
+                        ) +
+                        getAddressPart(
+                            part = Constants.ADDRESS_DIVIDER + resources.getString(
+                                R.string.msg_address_floor,
+                                address.floor
+                            ),
+                            data = address.floor
+                        ) +
+                        getAddressPart(
+                            part = Constants.ADDRESS_DIVIDER + address.comment,
+                            data = address.comment
+                        )
                 )
-            )
     }
 
     private fun getAddressPart(part: String, data: String?): String {

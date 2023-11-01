@@ -16,6 +16,11 @@ object AdminCardDefaults {
             disabledContainerColor = AdminTheme.colors.main.surface
         )
 
+    val cardStatusColors: CardColors
+        @Composable get() = CardDefaults.cardColors(
+            containerColor = AdminTheme.colors.status.positive
+        )
+
     val cardShape: RoundedCornerShape
         @Composable get() = RoundedCornerShape(AdminTheme.dimensions.cardRadius)
 

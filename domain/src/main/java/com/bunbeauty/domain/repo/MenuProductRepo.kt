@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 interface MenuProductRepo {
     /*GET*/
@@ -13,11 +14,10 @@ interface MenuProductRepo {
 
     /*UPDATE*/
     suspend fun updateMenuProduct(
-        menuProduct: MenuProduct,
+        menuProductUuid: String,
+        updateMenuProduct: UpdateMenuProduct,
         token: String
     )
-
-    suspend fun updateVisibleMenuProductUseCase(uuid: String, isVisible: Boolean, token: String)
 
     /*DELETE*/
     suspend fun deleteMenuProduct(uuid: String)

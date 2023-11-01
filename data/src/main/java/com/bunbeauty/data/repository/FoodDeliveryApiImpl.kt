@@ -6,9 +6,11 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.CategoryServer
-import com.bunbeauty.data.model.server.MenuProductServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.city.CityServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -34,7 +36,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.net.SocketException
 import javax.inject.Inject
@@ -61,14 +62,17 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
-    override suspend fun getCafeList(
-        token: String,
-        cityUuid: String
-    ): ApiResult<ServerList<CafeServer>> {
+    override suspend fun getCafeList(cityUuid: String, ): ApiResult<ServerList<CafeServer>> {
         return executeGetRequest(
             path = "cafe",
             parameters = hashMapOf("cityUuid" to cityUuid),
-            token = token,
+        )
+    }
+
+    override suspend fun getCityList(companyUuid: String, ): ApiResult<ServerList<CityServer>> {
+        return executeGetRequest(
+            path = "city",
+            parameters = hashMapOf("companyUuid" to companyUuid),
         )
     }
 
@@ -96,33 +100,15 @@ class FoodDeliveryApiImpl @Inject constructor(
         return ApiResult.Success(":")
     }
 
-    override suspend fun updateVisibleMenuProductUseCase(
-        uuid: String,
-        isVisible: Boolean,
+    override suspend fun patchMenuProduct(
+        menuProductUuid: String,
+        menuProductPatchServer: MenuProductPatchServer,
         token: String
-    ) {
-        client.patch {
-            url {
-                path("menu_product")
-            }
-            parameter("uuid", uuid)
-            setBody(
-                MenuProductServer(
-                    isVisible = isVisible
-                )
-            )
-            header("Authorization", "Bearer $token")
-        }
-    }
-
-    override suspend fun patchMenuProduct(menuProductServer: MenuProductServer, token: String) {
-        patchData(
+    ): ApiResult<MenuProductServer>  {
+        return executePatchRequest(
             path = "menu_product",
-            patchBody = menuProductServer.copy(
-                uuid = null
-            ),
-            serializer = MenuProductServer.serializer(),
-            parameters = hashMapOf("uuid" to menuProductServer.uuid),
+            patchBody = menuProductPatchServer,
+            parameters = hashMapOf("uuid" to menuProductUuid),
             token = token
         )
     }
@@ -239,10 +225,9 @@ class FoodDeliveryApiImpl @Inject constructor(
         orderUuid: String,
         status: OrderStatus
     ): ApiResult<OrderDetailsServer> {
-        return patchData(
+        return executePatchRequest(
             path = "order",
             patchBody = hashMapOf("status" to status.toString()),
-            serializer = OrderDetailsServer.serializer(),
             parameters = hashMapOf("uuid" to orderUuid),
             token = token
         )
@@ -262,7 +247,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     private suspend inline fun <reified T> executeGetRequest(
         path: String,
         parameters: Map<String, String?> = mapOf(),
-        token: String
+        token: String? = null,
     ): ApiResult<T> {
         return safeCall {
             client.get {
@@ -270,7 +255,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    headers = mapOf("Authorization" to "Bearer $token")
+                    headers = if (token == null) emptyMap() else mapOf("Authorization" to "Bearer $token")
                 )
             }.body()
         }
@@ -296,24 +281,24 @@ class FoodDeliveryApiImpl @Inject constructor(
         }
     }
 
-    private suspend fun <T> patchData(
+    private suspend inline fun <reified T> executePatchRequest(
         path: String,
         patchBody: Any,
-        serializer: KSerializer<T>,
         parameters: Map<String, String?> = mapOf(),
         token: String? = null
     ): ApiResult<T> {
-        val request = client.patch {
-            buildRequest(
-                path = path,
-                body = patchBody,
-                parameters = parameters,
-                headers = token?.let {
-                    mapOf("Authorization" to "Bearer $token")
-                } ?: emptyMap()
-            )
+        return safeCall {
+            client.patch {
+                buildRequest(
+                    path = path,
+                    body = patchBody,
+                    parameters = parameters,
+                    headers = token?.let {
+                        mapOf("Authorization" to "Bearer $token")
+                    } ?: emptyMap()
+                )
+            }.body()
         }
-        return handleResponse(serializer, request)
     }
 
     private fun HttpRequestBuilder.buildRequest(
@@ -333,19 +318,6 @@ class FoodDeliveryApiImpl @Inject constructor(
         }
         headers.forEach { headerEntry ->
             header(headerEntry.key, headerEntry.value)
-        }
-    }
-
-    private suspend fun <T> handleResponse(
-        serializer: KSerializer<T>,
-        request: HttpResponse
-    ): ApiResult<T> {
-        return try {
-            ApiResult.Success(json.decodeFromString(serializer, request.bodyAsText()))
-        } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
-        } catch (exception: Exception) {
-            ApiResult.Error(ApiError(0, exception.message ?: "-"))
         }
     }
 

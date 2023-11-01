@@ -44,4 +44,8 @@ abstract class RepoModule {
     @Singleton
     @Binds
     abstract fun bindCafeRepository(cafeRepository: CafeRepository): CafeRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindCityRepository(cityRepository: CityRepository): CityRepo
 }

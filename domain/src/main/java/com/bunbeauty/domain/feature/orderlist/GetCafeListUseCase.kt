@@ -12,12 +12,8 @@ class GetCafeListUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): List<Cafe> {
-        val token = dataStoreRepo.token.firstOrNull() ?: return emptyList()
         val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: return emptyList()
 
-        return cafeRepository.getCafeList(
-            token = token,
-            cityUuid = cityUuid,
-        )
+        return cafeRepository.getCafeList(cityUuid = cityUuid)
     }
 }

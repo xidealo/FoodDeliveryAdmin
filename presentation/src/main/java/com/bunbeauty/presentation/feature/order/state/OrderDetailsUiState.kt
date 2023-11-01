@@ -21,8 +21,10 @@ data class OrderDetailsUiState(
             val status: String,
             val phoneNumber: String,
             val productList: List<Product>,
+            val percentDiscount: String?,
             val deliveryCost: String?,
             val finalCost: String,
+            val oldFinalCost: String?,
         ) : State
     }
 

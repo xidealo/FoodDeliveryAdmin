@@ -1,10 +1,6 @@
-package com.bunbeauty.data.model.server
+package com.bunbeauty.domain.model.menuproduct
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class MenuProductServer(
-    val uuid: String? = null,
+data class UpdateMenuProduct(
     val name: String? = null,
     val newPrice: Int? = null,
     val oldPrice: Int? = null,
@@ -13,7 +9,6 @@ data class MenuProductServer(
     val description: String? = null,
     val comboDescription: String? = null,
     val photoLink: String? = null,
-    val barcode: Int? = null,
     val isVisible: Boolean? = null,
-    val categories: List<CategoryServer>? = null
+    val categoryUuids: List<String>? = null,
 )

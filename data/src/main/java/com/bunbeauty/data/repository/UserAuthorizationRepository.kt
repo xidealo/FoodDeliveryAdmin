@@ -14,12 +14,14 @@ class UserAuthorizationRepository @Inject constructor(
         username: String,
         password: String
     ): Triple<String, String, String>? {
-        return when (val result = networkConnector.login(
-            UserAuthorizationRequest(
-                username = username,
-                password = password
+        return when (
+            val result = networkConnector.login(
+                UserAuthorizationRequest(
+                    username = username,
+                    password = password
+                )
             )
-        )) {
+        ) {
             is ApiResult.Success -> {
                 Triple(
                     result.data.token,

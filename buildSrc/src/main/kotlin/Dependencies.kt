@@ -23,16 +23,17 @@ object Versions {
     const val ktLint = "11.5.1"
     const val mockk = "1.12.5"
     const val coroutines = "1.6.4"
+    const val datetime = "0.4.0"
 }
 
 object Application {
     const val versionMajor = 1
     const val versionMinor = 4
-    const val versionPatch = 0
+    const val versionPatch = 4
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 140
+    const val versionCode = 144
 }
 
 object Namespace {
@@ -83,6 +84,10 @@ object Plugin {
 object Dagger {
     const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+}
+
+object KotlinxDatetime {
+    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.datetime}"
 }
 
 object Navigation {
@@ -139,7 +144,7 @@ object Compose {
     const val foundation = "androidx.compose.foundation:foundation"
     const val ui = "androidx.compose.ui:ui"
     const val material3 = "androidx.compose.material3:material3"
-    const val material3WindowSizeClass = "androidx.compose.material3:material3-window-size-class:"
+    const val material3WindowSizeClass = "androidx.compose.material3:material3-window-size-class"
     const val material = "androidx.compose.material:material"
     const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview"
     const val uiTooling = "androidx.compose.ui:ui-tooling"

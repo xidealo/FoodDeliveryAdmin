@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
@@ -36,6 +37,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.DiscountCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.surface.AdminSurface
@@ -110,6 +112,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                 OrderDetailsUiState.State.Loading -> {
                     LoadingScreen()
                 }
+
                 OrderDetailsUiState.State.Error -> {
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
@@ -117,6 +120,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         onClick = {}
                     )
                 }
+
                 is OrderDetailsUiState.State.Success -> {
                     SuccessOrderDetailsScreen(
                         stateSuccess = uiState.state as OrderDetailsUiState.State.Success,
@@ -274,6 +278,18 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     .background(AdminTheme.colors.main.surface)
                     .padding(AdminTheme.dimensions.mediumSpace)
             ) {
+                stateSuccess.percentDiscount?.let { discount ->
+                    Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                        Text(
+                            text = stringResource(R.string.msg_order_details_discount_cost),
+                            style = AdminTheme.typography.bodyMedium,
+                            color = AdminTheme.colors.main.onSurface
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        DiscountCard(discount = discount)
+                    }
+                }
                 stateSuccess.deliveryCost?.let { deliveryCost ->
                     Row(modifier = Modifier.padding(bottom = 8.dp)) {
                         Text(
@@ -298,6 +314,16 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         color = AdminTheme.colors.main.onSurface
                     )
                     Spacer(modifier = Modifier.weight(1f))
+                    stateSuccess.oldFinalCost?.let { oldFinalCost ->
+                        Text(
+                            modifier = Modifier
+                                .padding(end = AdminTheme.dimensions.smallSpace),
+                            text = oldFinalCost,
+                            style = AdminTheme.typography.bodyMedium.bold,
+                            color = AdminTheme.colors.main.onSurfaceVariant,
+                            textDecoration = TextDecoration.LineThrough
+                        )
+                    }
                     Text(
                         text = stateSuccess.finalCost,
                         style = AdminTheme.typography.bodyMedium.bold,
@@ -326,12 +352,15 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                 is OrderDetailsEvent.OpenStatusListEvent -> {
                     openStatusList(event.statusList)
                 }
+
                 OrderDetailsEvent.OpenWarningDialogEvent -> {
                     showCancellationWarning()
                 }
+
                 is OrderDetailsEvent.ShowErrorMessage -> {
                     (activity as? MessageHost)?.showErrorMessage(event.message)
                 }
+
                 OrderDetailsEvent.GoBackEvent -> {
                     findNavController().navigateUp()
                 }
@@ -400,7 +429,9 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                             )
                         ),
                         deliveryCost = "100 ₽",
-                        finalCost = "480 ₽"
+                        percentDiscount = "10%",
+                        finalCost = "480 ₽",
+                        oldFinalCost = "480 ₽"
                     ),
                     eventList = emptyList()
                 ),

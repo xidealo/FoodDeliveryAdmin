@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.feature.cafelist
+package com.bunbeauty.presentation.feature.selectcafe
 
 class SelectableCafeItem(
     val uuid: String,
