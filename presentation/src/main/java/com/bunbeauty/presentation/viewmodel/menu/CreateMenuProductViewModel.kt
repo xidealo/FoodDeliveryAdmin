@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.ProductCode
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.presentation.extension.toByteArray
-import com.bunbeauty.presentation.utils.IResourcesProvider
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -9,8 +9,6 @@ import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
 import com.bunbeauty.domain.model.nonworkingday.NonWorkingDay
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NonWorkingDayRepository @Inject constructor(
@@ -23,59 +21,53 @@ class NonWorkingDayRepository @Inject constructor(
 
     override suspend fun getNonWorkingDayListByCafeUuid(cafeUuid: String): List<NonWorkingDay> {
         val cache = nonWorkingDayMapCache[cafeUuid]
-        return withContext(IO) {
-            if (cache == null) {
-                val nonWorkingDayList = getRemoteNonWorkingDayList(cafeUuid)
-                if (nonWorkingDayList == null) {
-                    getLocalNonWorkingDayList(cafeUuid)
-                } else {
-                    saveNonWorkingDayListLocally(nonWorkingDayList)
-                    nonWorkingDayMapCache[cafeUuid] = nonWorkingDayList
-                    nonWorkingDayList
-                }
+        return if (cache == null) {
+            val nonWorkingDayList = getRemoteNonWorkingDayList(cafeUuid)
+            if (nonWorkingDayList == null) {
+                getLocalNonWorkingDayList(cafeUuid)
             } else {
-                cache
+                saveNonWorkingDayListLocally(nonWorkingDayList)
+                nonWorkingDayMapCache[cafeUuid] = nonWorkingDayList
+                nonWorkingDayList
             }
+        } else {
+            cache
         }
     }
 
     override suspend fun saveNonWorkingDay(token: String, newNonWorkingDay: NewNonWorkingDay): NonWorkingDay? {
-        return withContext(IO) {
-            foodDeliveryApi.postNonWorkingDay(
-                token = token,
-                postNonWorkingDay = nonWorkingDayMapper.toPostNonWorkingDayServer(newNonWorkingDay),
-            ).dataOrNull()?.let { nonWorkingDayServer ->
-                val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
-                nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
-                nonWorkingDayMapCache[nonWorkingDay.cafeUuid] =
-                    nonWorkingDayMapCache[nonWorkingDay.cafeUuid].orEmpty() + nonWorkingDay
+        return foodDeliveryApi.postNonWorkingDay(
+            token = token,
+            postNonWorkingDay = nonWorkingDayMapper.toPostNonWorkingDayServer(newNonWorkingDay),
+        ).dataOrNull()?.let { nonWorkingDayServer ->
+            val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
+            nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
+            nonWorkingDayMapCache[nonWorkingDay.cafeUuid] =
+                nonWorkingDayMapCache[nonWorkingDay.cafeUuid].orEmpty() + nonWorkingDay
 
-                nonWorkingDay
-            }
+            nonWorkingDay
         }
     }
 
     override suspend fun updateNonWorkingDay(token: String, uuid: String, isVisible: Boolean): NonWorkingDay? {
-        return withContext(IO) {
-            foodDeliveryApi.patchNonWorkingDay(
-                token = token,
-                uuid = uuid,
-                patchNonWorkingDay = PatchNonWorkingDayServer(isVisible = isVisible),
-            ).dataOrNull()?.let { nonWorkingDayServer ->
-                val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
-                nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
-                nonWorkingDayMapCache[nonWorkingDay.cafeUuid]?.let { nonWorkingDayList ->
-                    nonWorkingDayMapCache[nonWorkingDay.cafeUuid] = nonWorkingDayList.map { cachedNonWorkingDay ->
-                        if (cachedNonWorkingDay.uuid == nonWorkingDay.uuid) {
-                            nonWorkingDay
-                        } else {
-                            cachedNonWorkingDay
-                        }
+        return foodDeliveryApi.patchNonWorkingDay(
+            token = token,
+            uuid = uuid,
+            patchNonWorkingDay = PatchNonWorkingDayServer(isVisible = isVisible),
+        ).dataOrNull()?.let { nonWorkingDayServer ->
+            val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
+            nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
+            nonWorkingDayMapCache[nonWorkingDay.cafeUuid]?.let { nonWorkingDayList ->
+                nonWorkingDayMapCache[nonWorkingDay.cafeUuid] = nonWorkingDayList.map { cachedNonWorkingDay ->
+                    if (cachedNonWorkingDay.uuid == nonWorkingDay.uuid) {
+                        nonWorkingDay
+                    } else {
+                        cachedNonWorkingDay
                     }
                 }
-
-                nonWorkingDay
             }
+
+            nonWorkingDay
         }
     }
 

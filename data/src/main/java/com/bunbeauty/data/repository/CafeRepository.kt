@@ -8,8 +8,6 @@ import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CafeRepository @Inject constructor(
@@ -21,36 +19,30 @@ class CafeRepository @Inject constructor(
     private var cafeListCache: List<Cafe>? = null
 
     override suspend fun getCafeByUuid(uuid: String): Cafe? {
-        return withContext(IO) {
-            val cachedCafe = cafeListCache?.find { cafe ->
-                cafe.uuid == uuid
-            }
-
-            cachedCafe ?: cafeDao.getCafeByUuid(uuid)?.let(cafeMapper::toCafe)
+        val cachedCafe = cafeListCache?.find { cafe ->
+            cafe.uuid == uuid
         }
+
+        return cachedCafe ?: cafeDao.getCafeByUuid(uuid)?.let(cafeMapper::toCafe)
     }
 
     override suspend fun getCafeListByCityUuid(cityUuid: String): List<Cafe> {
-        return withContext(IO) {
-            cafeDao.getCafeListByCityUuid(cityUuid).map(cafeMapper::toCafe)
-        }
+        return cafeDao.getCafeListByCityUuid(cityUuid).map(cafeMapper::toCafe)
     }
 
     override suspend fun getCafeList(cityUuid: String): List<Cafe> {
         val cache = cafeListCache
-        return withContext(IO) {
-            if (cache == null) {
-                val cafeList = getRemoteCafeList(cityUuid)
-                if (cafeList == null) {
-                    getLocalCafeList(cityUuid)
-                } else {
-                    saveCafeListLocally(cafeList)
-                    cafeListCache = cafeList
-                    cafeList
-                }
+        return if (cache == null) {
+            val cafeList = getRemoteCafeList(cityUuid)
+            if (cafeList == null) {
+                getLocalCafeList(cityUuid)
             } else {
-                cache
+                saveCafeListLocally(cafeList)
+                cafeListCache = cafeList
+                cafeList
             }
+        } else {
+            cache
         }
     }
 

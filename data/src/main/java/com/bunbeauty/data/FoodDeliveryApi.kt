@@ -34,7 +34,7 @@ interface FoodDeliveryApi {
     suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>
 
     // MENU PRODUCT
-    suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer>
+    suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>>
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
     suspend fun patchMenuProduct(
         menuProductUuid: String,

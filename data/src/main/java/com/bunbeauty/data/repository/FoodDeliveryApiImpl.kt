@@ -6,12 +6,12 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.CategoryServer
-import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
@@ -21,14 +21,28 @@ import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.websocket.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.websocket.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ResponseException
+import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.WebSocketException
+import io.ktor.client.plugins.websocket.webSocket
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.request.patch
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.HttpHeaders.Authorization
+import io.ktor.http.HttpMethod
+import io.ktor.http.path
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.Frame
+import io.ktor.websocket.close
+import io.ktor.websocket.readText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
@@ -39,7 +53,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.net.SocketException
 import javax.inject.Inject
@@ -93,21 +106,11 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
-    override suspend fun getMenuProductList(companyUuid: String): ServerList<MenuProductServer> {
-        return withContext(IO) {
-            // TODO refactor
-            val request = client.get {
-                url {
-                    path("menu_product")
-                }
-                parameter("companyUuid", companyUuid)
-            }
-
-            json.decodeFromString(
-                ServerList.serializer(MenuProductServer.serializer()),
-                request.bodyAsText()
-            )
-        }
+    override suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>> {
+        return get(
+            path = "menu_product",
+            parameters = mapOf("companyUuid" to companyUuid),
+        )
     }
 
     override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> {
@@ -297,7 +300,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    headers = if (token == null) emptyMap() else mapOf("Authorization" to "Bearer $token")
+                    token = token
                 )
             }
         }
@@ -315,9 +318,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = body,
                     parameters = parameters,
-                    headers = token?.let {
-                        mapOf("Authorization" to "Bearer $token")
-                    } ?: emptyMap()
+                    token = token
                 )
             }
         }
@@ -335,9 +336,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = body,
                     parameters = parameters,
-                    headers = token?.let {
-                        mapOf("Authorization" to "Bearer $token")
-                    } ?: emptyMap()
+                    token = token
                 )
             }
         }
@@ -354,9 +353,7 @@ class FoodDeliveryApiImpl @Inject constructor(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    headers = token?.let {
-                        mapOf("Authorization" to "Bearer $token")
-                    } ?: emptyMap()
+                    token = token
                 )
             }
         }
@@ -366,7 +363,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         body: Any?,
         parameters: Map<String, String?> = mapOf(),
-        headers: Map<String, String> = mapOf(),
+        token: String? = null,
     ) {
         if (body != null) {
             setBody(body)
@@ -377,9 +374,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         parameters.forEach { parameterMap ->
             parameter(parameterMap.key, parameterMap.value)
         }
-        headers.forEach { headerEntry ->
-            header(headerEntry.key, headerEntry.value)
-        }
+        header(Authorization, "Bearer $token")
     }
 
     private suspend inline fun <reified R> safeCall(
@@ -387,8 +382,8 @@ class FoodDeliveryApiImpl @Inject constructor(
     ): ApiResult<R> {
         return try {
             ApiResult.Success(networkCall().body())
-        } catch (exception: ClientRequestException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message))
+        } catch (exception: ResponseException) {
+            ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: ""))
         } catch (exception: Throwable) {
             ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }

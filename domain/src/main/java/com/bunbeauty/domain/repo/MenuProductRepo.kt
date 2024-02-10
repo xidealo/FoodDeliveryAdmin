@@ -8,7 +8,7 @@ interface MenuProductRepo {
     suspend fun getMenuProductList(
         companyUuid: String,
         takeRemote: Boolean = true
-    ): List<MenuProduct>
+    ): List<MenuProduct>?
 
     suspend fun getMenuProduct(menuProductUuid: String): MenuProduct?
 
