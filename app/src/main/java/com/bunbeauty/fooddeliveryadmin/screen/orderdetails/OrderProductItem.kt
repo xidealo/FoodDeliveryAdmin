@@ -33,7 +33,7 @@ fun OrderProductItem(
                 color = AdminTheme.colors.main.onSurface
             )
 
-            product.additions?.let { additions ->
+            product.description?.let { additions ->
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     text = additions,
@@ -75,7 +75,7 @@ private fun OrderProductItemPreview() {
             price = "99 ₽",
             count = "× 2",
             cost = "198 ₽",
-            additions = "Необычный лаваш • Добавка 1 • Добавка 2"
+            description = "Необычный лаваш • Добавка 1 • Добавка 2"
         )
     )
 }

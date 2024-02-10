@@ -10,11 +10,7 @@ class OrderProductMapper @Inject constructor() {
 
     fun map(orderProduct: OrderProduct): OrderDetailsUiState.Product {
         return OrderDetailsUiState.Product(
-            title = if (orderProduct.comboDescription == null) {
-                orderProduct.name
-            } else {
-                orderProduct.name + "\n" + (orderProduct.comboDescription ?: "")
-            },
+            title = orderProduct.name,
             price = if (orderProduct.additionsPrice == null) {
                 "${orderProduct.newPrice} $RUBLE_CURRENCY"
             } else {
@@ -22,13 +18,36 @@ class OrderProductMapper @Inject constructor() {
             },
             count = "$X_SYMBOL ${orderProduct.count}",
             cost = "${orderProduct.newTotalCost} $RUBLE_CURRENCY",
-            additions = orderProduct.additions.takeIf { additions ->
-                additions.isNotEmpty()
-            }?.let { additions ->
-                additions.joinToString(" $BULLET_SYMBOL ") { orderAddition ->
-                    orderAddition.name
+            description = getDescription(orderProduct = orderProduct)
+        )
+    }
+
+    private fun getDescription(orderProduct: OrderProduct): String? {
+        val additions = getAdditionsString(orderProduct = orderProduct)
+        return if (orderProduct.comboDescription == null && additions == null) {
+            null
+        } else {
+            buildString {
+                if (orderProduct.comboDescription != null) {
+                    append(orderProduct.comboDescription)
+                    if (additions != null) {
+                        append("\n")
+                    }
+                }
+                if (additions != null) {
+                    append(additions)
                 }
             }
-        )
+        }
+    }
+
+    private fun getAdditionsString(orderProduct: OrderProduct): String? {
+        return orderProduct.additions.takeIf { additions ->
+            additions.isNotEmpty()
+        }?.let { additions ->
+            additions.joinToString(" $BULLET_SYMBOL ") { orderAddition ->
+                orderAddition.name
+            }
+        }
     }
 }

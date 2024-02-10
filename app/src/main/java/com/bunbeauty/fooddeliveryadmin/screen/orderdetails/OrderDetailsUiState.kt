@@ -39,6 +39,6 @@ data class OrderDetailsUiState(
         val price: String,
         val count: String,
         val cost: String,
-        val additions: String?
+        val description: String?
     )
 }

@@ -411,14 +411,14 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                                 price = "99 ₽",
                                 count = "× 2",
                                 cost = "198 ₽",
-                                additions = "Необычный лаваш • Добавка 1 • Добавка 2"
+                                description = "Необычный лаваш • Добавка 1 • Добавка 2"
                             ),
                             OrderDetailsUiState.Product(
                                 title = "Хот-дог французский с куриной колбаской",
                                 price = "99 ₽",
                                 count = "× 2 + 200 ₽",
                                 cost = "198 ₽",
-                                additions = null
+                                description = null
                             )
                         ),
                         deliveryCost = "100 ₽",
