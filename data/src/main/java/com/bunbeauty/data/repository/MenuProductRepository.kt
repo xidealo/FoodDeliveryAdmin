@@ -29,7 +29,7 @@ class MenuProductRepository @Inject constructor(
             ).dataOrNull()
                 ?.results
                 ?.onEach { menuProductServer ->
-                    menuProductMapper.toEntity(menuProductServer)
+                    menuProductDao.insert(menuProductMapper.toEntity(menuProductServer))
                 }?.map { menuProductServer ->
                     menuProductMapper.toModel(menuProductServer)
                 }
