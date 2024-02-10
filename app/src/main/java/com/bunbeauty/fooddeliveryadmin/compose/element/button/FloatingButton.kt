@@ -31,7 +31,7 @@ fun FloatingButton(
     @DrawableRes iconId: Int,
     @StringRes textStringId: Int? = null,
     text: String? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentEnforcement provides false
@@ -42,7 +42,7 @@ fun FloatingButton(
             shape = AdminButtonDefaults.buttonShape,
             containerColor = AdminTheme.colors.main.primary,
             contentColor = AdminTheme.colors.main.onPrimary,
-            elevation = FloatingActionButtonDefaults.elevation(2.dp),
+            elevation = FloatingActionButtonDefaults.elevation(2.dp)
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp),

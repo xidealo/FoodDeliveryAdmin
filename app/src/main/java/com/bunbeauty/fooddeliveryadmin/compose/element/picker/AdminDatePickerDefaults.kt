@@ -10,11 +10,11 @@ object AdminDatePickerDefaults {
     val datePickerColors: DatePickerColors
         @Composable get() = DatePickerDefaults.colors(
             headerBackgroundColor = AdminTheme.colors.main.surface,
-                headerTextColor = AdminTheme.colors.main.onSurface,
-                calendarHeaderTextColor = AdminTheme.colors.main.onSurface,
-                dateActiveBackgroundColor = AdminTheme.colors.main.primary.copy(0.2f),
-                dateInactiveBackgroundColor = AdminTheme.colors.main.surface,
-                dateActiveTextColor = AdminTheme.colors.main.primary,
-                dateInactiveTextColor = AdminTheme.colors.main.onSurface,
+            headerTextColor = AdminTheme.colors.main.onSurface,
+            calendarHeaderTextColor = AdminTheme.colors.main.onSurface,
+            dateActiveBackgroundColor = AdminTheme.colors.main.primary.copy(0.2f),
+            dateInactiveBackgroundColor = AdminTheme.colors.main.surface,
+            dateActiveTextColor = AdminTheme.colors.main.primary,
+            dateInactiveTextColor = AdminTheme.colors.main.onSurface
         )
 }

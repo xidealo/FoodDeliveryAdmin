@@ -53,7 +53,7 @@ class ConfirmDeletionBottomSheet : ComposeBottomSheet<Boolean>() {
         private const val TAG = "LogoutBottomSheet"
 
         suspend fun show(
-            fragmentManager: FragmentManager,
+            fragmentManager: FragmentManager
         ) = suspendCoroutine { continuation ->
             ConfirmDeletionBottomSheet().apply {
                 callback = object : Callback<Boolean> {

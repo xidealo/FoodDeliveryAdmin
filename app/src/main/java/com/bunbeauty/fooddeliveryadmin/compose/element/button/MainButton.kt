@@ -26,7 +26,7 @@ fun MainButton(
     colors: ButtonColors = AdminButtonDefaults.mainButtonColors,
     elevated: Boolean = true,
     isEnabled: Boolean = true,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentEnforcement provides false

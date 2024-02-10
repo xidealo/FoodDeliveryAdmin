@@ -7,14 +7,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
-import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
+import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : BaseAction, E : BaseEvent> :
@@ -50,5 +50,4 @@ abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : B
 
     @Composable
     abstract fun Screen(state: VS, onAction: (A) -> Unit)
-
 }

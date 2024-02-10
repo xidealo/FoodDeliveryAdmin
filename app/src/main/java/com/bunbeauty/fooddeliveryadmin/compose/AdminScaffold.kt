@@ -40,7 +40,7 @@ fun AdminScaffold(
     pullRefreshEnabled: Boolean = false,
     refreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    content: (@Composable () -> Unit),
+    content: (@Composable () -> Unit)
 ) {
     val appBarState = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.pinnedScrollBehavior(appBarState)

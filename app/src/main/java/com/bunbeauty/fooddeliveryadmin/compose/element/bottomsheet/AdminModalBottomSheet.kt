@@ -39,7 +39,7 @@ fun AdminModalBottomSheet(
     containerColor: Color = AdminTheme.colors.main.surface,
     contentColor: Color = AdminTheme.colors.main.onSurface,
     tonalElevation: Dp = BottomSheetDefaults.Elevation,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     ModalBottomSheet(
         modifier = modifier,

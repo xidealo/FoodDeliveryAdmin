@@ -39,5 +39,4 @@ class KotlinXDateTimeService @Inject constructor() : TimeService {
 
         return startDay.toEpochMilliseconds()
     }
-
 }

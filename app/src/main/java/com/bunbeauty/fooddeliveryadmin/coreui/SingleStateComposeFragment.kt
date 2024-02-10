@@ -10,5 +10,4 @@ abstract class SingleStateComposeFragment<VDS : BaseViewDataState, A : BaseActio
     override fun mapState(state: VDS): VDS {
         return state
     }
-
 }

@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
 
     private fun handleEventList(
         events: List<Main.Event>,
-        snackbarHostState: SnackbarHostState,
+        snackbarHostState: SnackbarHostState
     ) {
         events.forEach { event ->
             when (event) {
@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     private fun fragmentContainerFactory(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        attachToParent: Boolean,
+        attachToParent: Boolean
     ): FragmentContainerBinding =
         FragmentContainerBinding.inflate(inflater, parent, attachToParent).also {
             setupNavigationListener()
@@ -220,8 +220,8 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
             if (destination !is FloatingWindow) {
                 val navigationBarItem = when (destination.id) {
                     R.id.ordersFragment -> Main.NavigationBarItem.ORDERS
-                    R.id.menuFragment ->  Main.NavigationBarItem.MENU
-                    R.id.profileFragment ->  Main.NavigationBarItem.PROFILE
+                    R.id.menuFragment -> Main.NavigationBarItem.MENU
+                    R.id.profileFragment -> Main.NavigationBarItem.PROFILE
                     else -> null
                 }
                 viewModel.handleAction(Main.Action.UpdateNavDestination(navigationBarItem, controller))

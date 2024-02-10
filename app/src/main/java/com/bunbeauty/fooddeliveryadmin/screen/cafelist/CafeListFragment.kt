@@ -55,7 +55,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
                     findNavController().navigateSafe(
                         toEditCafeFragment(
                             cafeUuid = cafeUiItem.uuid,
-                            cafeAddress = cafeUiItem.address,
+                            cafeAddress = cafeUiItem.address
                         )
                     )
                 }
@@ -68,7 +68,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
         uiState: CafeListUiState,
         backActionClick: () -> Unit,
         onRetryClicked: () -> Unit,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_cafe_list),
@@ -95,7 +95,7 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun CafeListSuccessScreen(
         cafeItemList: List<CafeUiItem>,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
