@@ -31,7 +31,6 @@
     <string name="hint_order_details_pickup_deferred_time">Время самовывоза</string>
     <string name="msg_order_details_delivery">Доставка</string>
     <string name="msg_order_details_pickup">Самовывоз</string>
-    <string name="msg_order_details_new_price_with_addition">Самовывоз</string>
     <string name="error_order_details_can_not_save">Не удалось сохранить изменения</string>
 
     <!-- ORDER STATUS-->
