@@ -17,6 +17,16 @@ class LoadOrderDetailsUseCase @Inject constructor(
         return orderRepo.loadOrderByUuid(
             token = token,
             orderUuid = orderUuid
-        )
+        )?.let { orderDetails ->
+            orderDetails.copy(
+                oderProductList = orderDetails.oderProductList.map { oderProduct ->
+                    oderProduct.copy(
+                        additions = oderProduct.additions.sortedBy { addition ->
+                            addition.priority
+                        }
+                    )
+                }
+            )
+        }
     }
 }

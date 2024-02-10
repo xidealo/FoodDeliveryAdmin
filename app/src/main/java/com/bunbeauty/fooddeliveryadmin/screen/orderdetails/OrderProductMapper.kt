@@ -1,13 +1,12 @@
 package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 
-import android.content.res.Resources
+import com.bunbeauty.common.Constants.BULLET_SYMBOL
+import com.bunbeauty.common.Constants.RUBLE_CURRENCY
+import com.bunbeauty.common.Constants.X_SYMBOL
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
-import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
-class OrderProductMapper @Inject constructor(
-    private val resources: Resources
-) {
+class OrderProductMapper @Inject constructor() {
 
     fun map(orderProduct: OrderProduct): OrderDetailsUiState.Product {
         return OrderDetailsUiState.Product(
@@ -17,26 +16,18 @@ class OrderProductMapper @Inject constructor(
                 orderProduct.name + "\n" + (orderProduct.comboDescription ?: "")
             },
             price = if (orderProduct.additionsPrice == null) {
-                resources.getString(
-                    R.string.common_with_ruble,
-                    orderProduct.newPrice.toString()
-                )
+                "${orderProduct.newPrice} $RUBLE_CURRENCY"
             } else {
-                resources.getString(
-                    R.string.hint_order_details_pickup_deferred_time,
-                    orderProduct.newPrice.toString(),
-                    orderProduct.additionsPrice.toString()
-                )
+                "(${orderProduct.newPrice} $RUBLE_CURRENCY + ${orderProduct.additionsPrice} $RUBLE_CURRENCY)"
             },
-            count = resources.getString(R.string.common_with_pieces, orderProduct.count.toString()),
-            cost = resources.getString(
-                R.string.common_with_ruble,
-                orderProduct.newTotalCost.toString()
-            ),
-            additions = orderProduct.additions.joinToString(" • ") { orderAddition ->
-                orderAddition.name
-            }.ifBlank {
-                null
+            count = "$X_SYMBOL ${orderProduct.count}",
+            cost = "${orderProduct.newTotalCost} $RUBLE_CURRENCY",
+            additions = orderProduct.additions.takeIf { additions ->
+                additions.isNotEmpty()
+            }?.let { additions ->
+                additions.joinToString(" $BULLET_SYMBOL ") { orderAddition ->
+                    orderAddition.name
+                }
             }
         )
     }

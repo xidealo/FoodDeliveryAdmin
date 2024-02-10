@@ -29,7 +29,7 @@ class OrderDetailsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
-    val uiState: StateFlow<OrderDetailsDataState> = mutableDataState.asStateFlow()
+    val dataState: StateFlow<OrderDetailsDataState> = mutableDataState.asStateFlow()
 
     fun setupOrder(orderUuid: String, orderCode: String) {
         mutableDataState.update { dataState ->

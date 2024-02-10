@@ -6,5 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Addition(
     val uuid: String,
-    val name: String
+    val name: String,
+    val priority: Int,
 ) : Parcelable

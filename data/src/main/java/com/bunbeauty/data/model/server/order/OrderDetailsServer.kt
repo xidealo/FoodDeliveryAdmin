@@ -1,7 +1,6 @@
 package com.bunbeauty.data.model.server.order
 
-import com.bunbeauty.data.model.server.CartProductServer
-import kotlinx.serialization.SerialName
+import com.bunbeauty.data.model.server.OrderProductServer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,7 +21,7 @@ class OrderDetailsServer(
     val percentDiscount: Int?,
     val oldTotalCost: Int?,
     val newTotalCost: Int,
-    val oderProductList: List<CartProductServer>,
+    val oderProductList: List<OrderProductServer>,
     val availableStatusList: List<String>
 )
 

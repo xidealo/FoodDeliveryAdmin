@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CartProductServer(
+data class OrderProductServer(
     val uuid: String = "",
     val count: Int = 0,
     val name: String = "",

@@ -21,6 +21,8 @@ object Constants {
 
     const val ADDRESS_DIVIDER = ", "
     const val RUBLE_CURRENCY = "₽"
+    const val X_SYMBOL = "×"
+    const val BULLET_SYMBOL = "•"
     const val PERCENT = "%"
 
 }
