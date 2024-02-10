@@ -14,13 +14,13 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
 @Composable
-    fun OrderProductItem(
+fun OrderProductItem(
     product: OrderDetailsUiState.Product,
     modifier: Modifier = Modifier
 ) {
     AdminCard(
         modifier = modifier,
-        clickable = false,
+        clickable = false
     ) {
         Column(
             modifier = Modifier

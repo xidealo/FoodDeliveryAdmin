@@ -6,7 +6,7 @@ import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
 data class OrderDetailsUiState(
     val title: String,
     val state: State,
-    val eventList: List<OrderDetailsEvent>,
+    val eventList: List<OrderDetailsEvent>
 ) {
 
     sealed interface State {
@@ -25,13 +25,13 @@ data class OrderDetailsUiState(
             val productList: List<Product>,
             val percentDiscount: String?,
             val deliveryCost: String?,
-            val finalCost: String,
+            val finalCost: String
         ) : State
     }
 
     data class HintWithValue(
         val hint: String,
-        val value: String,
+        val value: String
     )
 
     data class Product(

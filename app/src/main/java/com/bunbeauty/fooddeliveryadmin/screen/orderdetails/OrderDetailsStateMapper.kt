@@ -64,7 +64,7 @@ class OrderDetailsStateMapper @Inject constructor(
                     } ?: OrderDetailsUiState.State.Error
                 }
             },
-            eventList = dataState.eventList,
+            eventList = dataState.eventList
         )
     }
 
@@ -137,5 +137,4 @@ class OrderDetailsStateMapper @Inject constructor(
             part
         }
     }
-
 }

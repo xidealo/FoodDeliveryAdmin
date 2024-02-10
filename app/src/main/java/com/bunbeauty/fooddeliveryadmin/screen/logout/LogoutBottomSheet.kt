@@ -53,7 +53,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
         private const val TAG = "LogoutBottomSheet"
 
         suspend fun show(
-            fragmentManager: FragmentManager,
+            fragmentManager: FragmentManager
         ) = suspendCoroutine { continuation ->
             LogoutBottomSheet().apply {
                 callback = object : Callback<Boolean> {

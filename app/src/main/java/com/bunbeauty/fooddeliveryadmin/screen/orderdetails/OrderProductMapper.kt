@@ -16,12 +16,12 @@ class OrderProductMapper @Inject constructor(
             } else {
                 orderProduct.name + "\n" + (orderProduct.comboDescription ?: "")
             },
-            price = if(orderProduct.additionsPrice == null){
+            price = if (orderProduct.additionsPrice == null) {
                 resources.getString(
                     R.string.common_with_ruble,
                     orderProduct.newPrice.toString()
                 )
-            }else{
+            } else {
                 resources.getString(
                     R.string.hint_order_details_pickup_deferred_time,
                     orderProduct.newPrice.toString(),

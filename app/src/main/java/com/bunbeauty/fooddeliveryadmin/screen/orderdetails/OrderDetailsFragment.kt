@@ -103,7 +103,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     ) {
         AdminScaffold(
             title = uiState.title,
-            backActionClick = { findNavController().popBackStack() },
+            backActionClick = { findNavController().popBackStack() }
         ) {
             when (uiState.state) {
                 OrderDetailsUiState.State.Loading -> {
