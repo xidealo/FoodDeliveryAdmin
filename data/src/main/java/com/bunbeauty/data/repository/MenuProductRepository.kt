@@ -4,12 +4,11 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductDao
+import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MenuProductRepository @Inject constructor(
@@ -21,23 +20,22 @@ class MenuProductRepository @Inject constructor(
     override suspend fun getMenuProductList(
         companyUuid: String,
         takeRemote: Boolean
-    ): List<MenuProduct> {
+    ): List<MenuProduct>? {
         val menuProductListFromLocal = getMenuProductListLocal()
 
         return if (menuProductListFromLocal.isEmpty() || takeRemote) {
             networkConnector.getMenuProductList(
                 companyUuid = companyUuid
-            ).let { listServer ->
-                return withContext(Dispatchers.Default) {
-                    listServer
-                        .results
-                        .onEach { menuProduct ->
-                            menuProductDao.insert(menuProductMapper.toEntity(menuProduct))
-                        }
-                        .map { menuProductServer -> menuProductMapper.toModel(menuProductServer) }
+            ).dataOrNull()
+                ?.results
+                ?.onEach { menuProductServer ->
+                    menuProductMapper.toEntity(menuProductServer)
+                }?.map { menuProductServer ->
+                    menuProductMapper.toModel(menuProductServer)
                 }
-            }
-        } else menuProductListFromLocal
+        } else {
+            menuProductListFromLocal
+        }
     }
 
     private suspend fun getMenuProductListLocal(): List<MenuProduct> {
@@ -71,11 +69,6 @@ class MenuProductRepository @Inject constructor(
         }
     }
 
-    override suspend fun deleteMenuProductPhoto(photoLink: String) {
-        val photoName = photoLink.split("%2F", "?alt=media")[1]
-        return networkConnector.deleteMenuProductPhoto(photoName)
-    }
-
     override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String {
         return when (val result = networkConnector.saveMenuProductPhoto(photoByteArray)) {
             is ApiResult.Success -> {
@@ -86,11 +79,6 @@ class MenuProductRepository @Inject constructor(
                 ""
             }
         }
-    }
-
-    override suspend fun deleteMenuProduct(uuid: String) {
-        networkConnector.deleteMenuProduct(uuid)
-        //todo remove local
     }
 
     override suspend fun clearCache() {

@@ -67,7 +67,7 @@ private fun getCafeStatusColor(cafeStatus: CafeStatus): Color {
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun CafeItemOpenPreview() {
     AdminTheme {
@@ -84,7 +84,7 @@ private fun CafeItemOpenPreview() {
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun CafeItemCloseSoonPreview() {
     AdminTheme {
@@ -101,7 +101,7 @@ private fun CafeItemCloseSoonPreview() {
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun CafeItemClosedPreview() {
     AdminTheme {

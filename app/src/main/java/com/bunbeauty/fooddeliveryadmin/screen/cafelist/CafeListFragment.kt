@@ -23,6 +23,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
+import com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragmentDirections.Companion.toEditCafeFragment
 import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeItem
 import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeUiItem
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
@@ -49,8 +51,13 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
                 uiState = uiState,
                 backActionClick = findNavController()::popBackStack,
                 onRetryClicked = viewModel::updateCafeList,
-                onCafeClicked = {
-                    // TODO go to edit cafe
+                onCafeClicked = { cafeUiItem ->
+                    findNavController().navigateSafe(
+                        toEditCafeFragment(
+                            cafeUuid = cafeUiItem.uuid,
+                            cafeAddress = cafeUiItem.address
+                        )
+                    )
                 }
             )
         }

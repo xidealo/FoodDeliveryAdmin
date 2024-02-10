@@ -19,7 +19,7 @@ import com.bunbeauty.presentation.feature.orderlist.state.OrderListDataState
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

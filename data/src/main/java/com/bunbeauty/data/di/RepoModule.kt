@@ -48,4 +48,9 @@ abstract class RepoModule {
     @Singleton
     @Binds
     abstract fun bindCityRepository(cityRepository: CityRepository): CityRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindNonWorkingDayRepository(nonWorkingDayRepository: NonWorkingDayRepository): NonWorkingDayRepo
+
 }

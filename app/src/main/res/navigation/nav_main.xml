@@ -119,5 +119,20 @@
     <fragment
         android:id="@+id/cafeLisFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragment"
-        android:label="cafeLisFragment" />
+        android:label="cafeLisFragment" >
+        <action
+            android:id="@+id/to_editCafeFragment"
+            app:destination="@id/editCafeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCafeFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.editcafe.EditCafeFragment"
+        android:label="editCafeFragment" >
+        <argument
+            android:name="cafeUuid"
+            app:argType="string" />
+        <argument
+            android:name="cafeAddress"
+            app:argType="string" />
+    </fragment>
 </navigation>

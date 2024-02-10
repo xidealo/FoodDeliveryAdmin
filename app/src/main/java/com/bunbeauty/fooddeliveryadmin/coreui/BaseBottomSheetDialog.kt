@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

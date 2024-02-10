@@ -1,5 +1,6 @@
 package com.bunbeauty.domain.feature.orderlist
 
+import com.bunbeauty.domain.feature.main.GetSelectedCafeFlowUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 import com.bunbeauty.domain.repo.CafeRepo
@@ -7,6 +8,8 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -14,15 +17,15 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetSelectedCafeUseCaseTest {
+class GetSelectedCafeFlowUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val cafeRepo: CafeRepo = mockk()
-    private lateinit var getSelectedCafe: GetSelectedCafeUseCase
+    private lateinit var getSelectedCafe: GetSelectedCafeFlowUseCase
 
     @BeforeTest
     fun setup() {
-        getSelectedCafe = GetSelectedCafeUseCase(
+        getSelectedCafe = GetSelectedCafeFlowUseCase(
             dataStoreRepo = dataStoreRepo,
             cafeRepo = cafeRepo,
         )
@@ -45,7 +48,7 @@ class GetSelectedCafeUseCaseTest {
         )
 
         // When
-        val result = getSelectedCafe()
+        val result = getSelectedCafe().firstOrNull()
 
         // Then
         assertEquals(selectedCafe, result)
@@ -69,7 +72,7 @@ class GetSelectedCafeUseCaseTest {
         )
 
         // When
-        val result = getSelectedCafe()
+        val result = getSelectedCafe().first()
 
         // Then
         assertEquals(selectedCafe, result)
@@ -83,6 +86,7 @@ class GetSelectedCafeUseCaseTest {
             longitude = 0.0,
             fromTime = 0,
             toTime = 0,
+            offset = 3,
             phone = "phone",
             visible = true,
             cityUuid = "cityUuid",

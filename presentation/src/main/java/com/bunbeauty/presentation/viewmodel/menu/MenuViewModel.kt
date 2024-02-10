@@ -10,7 +10,7 @@ import com.bunbeauty.presentation.model.MenuEvent
 import com.bunbeauty.presentation.model.MenuProductItem
 import com.bunbeauty.presentation.model.MenuUiState
 import com.bunbeauty.presentation.utils.IStringUtil
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow

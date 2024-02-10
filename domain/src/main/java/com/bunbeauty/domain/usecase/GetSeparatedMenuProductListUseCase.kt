@@ -20,7 +20,7 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
         val menuProductList = menuProductRepo.getMenuProductList(
             companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
             takeRemote = takeRemote
-        )
+        ).orEmpty()
 
         return SeparatedMenuProductList(
             visibleList = menuProductList

@@ -64,7 +64,7 @@ class DataSourceModule {
             }
             level = LogLevel.ALL
         }
-        install(HttpTimeout){
+        install(HttpTimeout) {
             requestTimeoutMillis = 10000
         }
         install(DefaultRequest) {
@@ -100,4 +100,8 @@ class DataSourceModule {
     @Singleton
     @Provides
     fun provideCityDao(localDatabase: LocalDatabase) = localDatabase.cityDao()
+
+    @Singleton
+    @Provides
+    fun provideNonWorkingDayDao(localDatabase: LocalDatabase) = localDatabase.nonWorkingDayDao()
 }

@@ -22,22 +22,22 @@ import com.bunbeauty.domain.enums.ProductCode.POTATO
 import com.bunbeauty.domain.enums.ProductCode.SPICE
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
 class StringUtil @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
     private val resources: Resources,
-    private val dateTimeUtil: DateTimeUtil
+    private val dateTimeUtil: DateTimeUtil,
 ) : IStringUtil {
 
     override fun getDeferredTimeString(deferred: Long?): String {
         return if (deferred == null) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_order_deferred_date_time) + dateTimeUtil.getTimeHHMM(
-                deferred
-            )
+            resourcesProvider.getString(R.string.msg_order_deferred_date_time) +
+                dateTimeUtil.formatDateTime(deferred, PATTERN_HH_MM)
         }
     }
 
