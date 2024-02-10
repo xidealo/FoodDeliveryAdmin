@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-abstract class BaseStateViewModel<DS : DataState, A : Action, E : Event>(
+abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEvent>(
     initState: DS
 ): ViewModel() {
 
@@ -23,11 +23,11 @@ abstract class BaseStateViewModel<DS : DataState, A : Action, E : Event>(
         }
     }
 
-    protected inline fun state(block: (DS) -> DS) {
+    protected inline fun setState(block: (DS) -> DS) {
         mutableState.update(block)
     }
 
-    protected inline fun event(block: (DS) -> E) {
+    protected inline fun addEvent(block: (DS) -> E) {
         mutableEvents.update { list ->
             list + block(mutableState.value)
         }

@@ -18,18 +18,17 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.presentation.viewmodel.main.AdminNavigationBarItem
-import com.bunbeauty.presentation.viewmodel.main.NavigationBarOptions
+import com.bunbeauty.presentation.viewmodel.main.Main
 
 @Composable
-fun AdminNavigationBar(options: NavigationBarOptions) {
-    if (options is NavigationBarOptions.Visible) {
+fun AdminNavigationBar(options: Main.NavigationBarOptions) {
+    if (options is Main.NavigationBarOptions.Visible) {
         NavigationBar(
             modifier = Modifier.shadow(AdminTheme.dimensions.surfaceElevation),
             containerColor = AdminTheme.colors.main.surface
         ) {
             FoodDeliveryBottomItem(
-                selected = options.selectedItem == AdminNavigationBarItem.ORDERS,
+                selected = options.selectedItem == Main.NavigationBarItem.ORDERS,
                 iconId = R.drawable.ic_orders,
                 labelId = R.string.title_bottom_navigation_orders,
                 onClick = {
@@ -37,7 +36,7 @@ fun AdminNavigationBar(options: NavigationBarOptions) {
                 }
             )
             FoodDeliveryBottomItem(
-                selected = options.selectedItem == AdminNavigationBarItem.MENU,
+                selected = options.selectedItem == Main.NavigationBarItem.MENU,
                 iconId = R.drawable.ic_menu,
                 labelId = R.string.title_bottom_navigation_menu,
                 onClick = {
@@ -45,7 +44,7 @@ fun AdminNavigationBar(options: NavigationBarOptions) {
                 }
             )
             FoodDeliveryBottomItem(
-                selected = options.selectedItem == AdminNavigationBarItem.PROFILE,
+                selected = options.selectedItem == Main.NavigationBarItem.PROFILE,
                 iconId = R.drawable.ic_profile,
                 labelId = R.string.title_bottom_navigation_profile,
                 onClick = {

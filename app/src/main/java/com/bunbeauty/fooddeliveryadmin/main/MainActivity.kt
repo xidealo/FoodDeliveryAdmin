@@ -41,11 +41,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
-import com.bunbeauty.presentation.viewmodel.main.AdminMessageType
-import com.bunbeauty.presentation.viewmodel.main.AdminNavigationBarItem
-import com.bunbeauty.presentation.viewmodel.main.MainAction
-import com.bunbeauty.presentation.viewmodel.main.MainEvent
-import com.bunbeauty.presentation.viewmodel.main.MainState
+import com.bunbeauty.presentation.viewmodel.main.Main
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -87,15 +83,15 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     }
 
     override fun showInfoMessage(text: String) {
-        viewModel.handleAction(MainAction.ShowInfoMessage(text))
+        viewModel.handleAction(Main.Action.ShowInfoMessage(text))
     }
 
     override fun showErrorMessage(text: String) {
-        viewModel.handleAction(MainAction.ShowErrorMessage(text))
+        viewModel.handleAction(Main.Action.ShowErrorMessage(text))
     }
 
     @Composable
-    private fun MainScreen(mainState: MainState, snackbarHostState: SnackbarHostState) {
+    private fun MainScreen(mainState: Main.ViewDataState, snackbarHostState: SnackbarHostState) {
         Scaffold(
             snackbarHost = {
                 AdminSnackbarHost(snackbarHostState)
@@ -165,12 +161,12 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
         SnackbarHost(hostState = snackbarHostState) { snackbarData ->
             (snackbarData.visuals as? AdminSnackbarVisuals)?.let { visuals ->
                 val containerColor = when (visuals.adminMessage.type) {
-                    AdminMessageType.INFO -> AdminTheme.colors.main.primary
-                    AdminMessageType.ERROR -> AdminTheme.colors.main.error
+                    Main.Message.Type.INFO -> AdminTheme.colors.main.primary
+                    Main.Message.Type.ERROR -> AdminTheme.colors.main.error
                 }
                 val contentColor = when (visuals.adminMessage.type) {
-                    AdminMessageType.INFO -> AdminTheme.colors.main.onPrimary
-                    AdminMessageType.ERROR -> AdminTheme.colors.main.onError
+                    Main.Message.Type.INFO -> AdminTheme.colors.main.onPrimary
+                    Main.Message.Type.ERROR -> AdminTheme.colors.main.onError
                 }
                 Snackbar(
                     snackbarData = snackbarData,
@@ -182,12 +178,12 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     }
 
     private fun handleEventList(
-        events: List<MainEvent>,
+        events: List<Main.Event>,
         snackbarHostState: SnackbarHostState,
     ) {
         events.forEach { event ->
             when (event) {
-                is MainEvent.ShowMessageEvent -> {
+                is Main.Event.ShowMessageEvent -> {
                     lifecycleScope.launch {
                         snackbarHostState.showSnackbar(
                             AdminSnackbarVisuals(event.message)
@@ -223,12 +219,12 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
         navController.addOnDestinationChangedListener { controller, destination, _ ->
             if (destination !is FloatingWindow) {
                 val navigationBarItem = when (destination.id) {
-                    R.id.ordersFragment -> AdminNavigationBarItem.ORDERS
-                    R.id.menuFragment -> AdminNavigationBarItem.MENU
-                    R.id.profileFragment -> AdminNavigationBarItem.PROFILE
+                    R.id.ordersFragment -> Main.NavigationBarItem.ORDERS
+                    R.id.menuFragment ->  Main.NavigationBarItem.MENU
+                    R.id.profileFragment ->  Main.NavigationBarItem.PROFILE
                     else -> null
                 }
-                viewModel.handleAction(MainAction.UpdateNavDestination(navigationBarItem, controller))
+                viewModel.handleAction(Main.Action.UpdateNavDestination(navigationBarItem, controller))
             }
         }
     }

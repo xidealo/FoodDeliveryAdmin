@@ -12,61 +12,61 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,
-) : BaseStateViewModel<MainState, MainAction, MainEvent>(
-    initState = MainState(
+) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
+    initState = Main.ViewDataState(
         connectionLost = false,
         nonWorkingDay = false,
-        navigationBarOptions = NavigationBarOptions.Hidden,
+        navigationBarOptions = Main.NavigationBarOptions.Hidden,
     )
 ) {
 
     init {
         getIsNonWorkingDayFlow().onEach { isNonWorkingDay ->
-            state { state ->
+            setState { state ->
                 state.copy(nonWorkingDay = isNonWorkingDay)
             }
         }.launchIn(viewModelScope)
     }
 
-    override fun handleAction(action: MainAction) {
+    override fun handleAction(action: Main.Action) {
         when (action) {
-            is MainAction.UpdateNavDestination -> {
+            is Main.Action.UpdateNavDestination -> {
                 updateNavDestination(
                     navigationBarItem = action.navigationBarItem,
                     navController = action.navController,
                 )
             }
 
-            is MainAction.ShowInfoMessage -> {
-                showMessage(action.text, AdminMessageType.INFO)
+            is Main.Action.ShowInfoMessage -> {
+                showMessage(action.text, Main.Message.Type.INFO)
             }
 
-            is MainAction.ShowErrorMessage -> {
-                showMessage(action.text, AdminMessageType.ERROR)
+            is Main.Action.ShowErrorMessage -> {
+                showMessage(action.text, Main.Message.Type.ERROR)
             }
         }
     }
 
     private fun updateNavDestination(
-        navigationBarItem: AdminNavigationBarItem?,
+        navigationBarItem: Main.NavigationBarItem?,
         navController: NavController,
     ) {
         val navigationBarOptions = navigationBarItem?.let {
-            NavigationBarOptions.Visible(
+            Main.NavigationBarOptions.Visible(
                 selectedItem = navigationBarItem,
                 navController = navController
             )
-        } ?: NavigationBarOptions.Hidden
+        } ?: Main.NavigationBarOptions.Hidden
 
-        state { state ->
+        setState { state ->
             state.copy(navigationBarOptions = navigationBarOptions)
         }
     }
 
-    private fun showMessage(text: String, type: AdminMessageType) {
-        event {
-            MainEvent.ShowMessageEvent(
-                message = AdminMessage(
+    private fun showMessage(text: String, type: Main.Message.Type) {
+        addEvent {
+            Main.Event.ShowMessageEvent(
+                message = Main.Message(
                     type = type,
                     text = text
                 )

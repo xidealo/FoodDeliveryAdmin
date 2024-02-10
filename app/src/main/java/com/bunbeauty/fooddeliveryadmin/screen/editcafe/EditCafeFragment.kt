@@ -51,9 +51,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.presentation.feature.editcafe.EditCafeAction
-import com.bunbeauty.presentation.feature.editcafe.EditCafeEvent
-import com.bunbeauty.presentation.feature.editcafe.EditCafeState
+import com.bunbeauty.presentation.feature.editcafe.EditCafe
 import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
@@ -66,7 +64,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @AndroidEntryPoint
-class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeAction, EditCafeEvent>() {
+class EditCafeFragment : SingleStateComposeFragment<EditCafe.ViewDataState, EditCafe.Action, EditCafe.Event>() {
 
     override val viewModel: EditCafeViewModel by viewModels()
 
@@ -76,7 +74,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.handleAction(
-            EditCafeAction.Init(
+            EditCafe.Action.Init(
                 cafeUuid = editCafeFragmentArgs.cafeUuid,
                 cafeAddress = editCafeFragmentArgs.cafeAddress,
             )
@@ -85,18 +83,18 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun Screen(state: EditCafeState, onAction: (EditCafeAction) -> Unit) {
+    override fun Screen(state: EditCafe.ViewDataState, onAction: (EditCafe.Action) -> Unit) {
         val dateDialogState = rememberMaterialDialogState()
         val deleteConfirmBottomSheetState = rememberModalBottomSheetState()
 
         AdminScaffold(
             title = state.cafeAddress,
             backActionClick = {
-                onAction(EditCafeAction.BackClick)
+                onAction(EditCafe.Action.BackClick)
             },
             actionButton = {
-                if (state.nonWorkingDays == EditCafeState.NonWorkingDays.Empty
-                    || state.nonWorkingDays is EditCafeState.NonWorkingDays.Success
+                if (state.nonWorkingDays == EditCafe.ViewDataState.NonWorkingDays.Empty
+                    || state.nonWorkingDays is EditCafe.ViewDataState.NonWorkingDays.Success
                 ) {
                     FloatingButton(
                         iconId = R.drawable.ic_plus,
@@ -153,13 +151,13 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                     contentAlignment = Alignment.Center
                 ) {
                     when (val nonWorkingDays = state.nonWorkingDays) {
-                        EditCafeState.NonWorkingDays.Loading -> {
+                        EditCafe.ViewDataState.NonWorkingDays.Loading -> {
                             CircularProgressIndicator(
                                 color = AdminTheme.colors.main.primary
                             )
                         }
 
-                        EditCafeState.NonWorkingDays.Empty -> {
+                        EditCafe.ViewDataState.NonWorkingDays.Empty -> {
                             Text(
                                 text = stringResource(R.string.msg_edit_cafe_empty_non_working_days),
                                 style = AdminTheme.typography.bodyMedium,
@@ -168,7 +166,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                             )
                         }
 
-                        is EditCafeState.NonWorkingDays.Success -> {
+                        is EditCafe.ViewDataState.NonWorkingDays.Success -> {
                             Column(
                                 modifier = Modifier.padding(top = 8.dp),
                                 verticalArrangement = spacedBy(8.dp)
@@ -190,7 +188,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                         yearRange = state.yearRange,
                         minDate = state.minNonWorkingDayDate,
                         onDateSelected = { date ->
-                            onAction(EditCafeAction.AddNonWorkingDay(date))
+                            onAction(EditCafe.Action.AddNonWorkingDay(date))
                         },
                     )
                 }
@@ -198,34 +196,34 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
         }
     }
 
-    override fun handleEvent(event: EditCafeEvent) {
+    override fun handleEvent(event: EditCafe.Event) {
         when (event) {
-            EditCafeEvent.GoBack -> {
+            EditCafe.Event.GoBack -> {
                 findNavController().popBackStack()
             }
 
-            EditCafeEvent.ShowFetchDataError -> {
+            EditCafe.Event.ShowFetchDataError -> {
                 (activity as? MessageHost)?.showErrorMessage(getString(R.string.error_common_loading_failed))
             }
 
-            EditCafeEvent.ShowUpdateDataError -> {
+            EditCafe.Event.ShowUpdateDataError -> {
                 (activity as? MessageHost)?.showErrorMessage(getString(R.string.error_common_update_failed))
             }
 
-            EditCafeEvent.ShowSaveDataError -> {
+            EditCafe.Event.ShowSaveDataError -> {
                 (activity as? MessageHost)?.showErrorMessage(getString(R.string.error_common_saving_failed))
             }
 
-            EditCafeEvent.ShowDeleteDataError -> {
+            EditCafe.Event.ShowDeleteDataError -> {
                 (activity as? MessageHost)?.showErrorMessage(getString(R.string.error_common_deleting_failed))
             }
 
-            is EditCafeEvent.ShowConfirmDeletion -> {
+            is EditCafe.Event.ShowConfirmDeletion -> {
                 lifecycleScope.launch {
                     ConfirmDeletionBottomSheet.show(parentFragmentManager)?.let { confirmed ->
                         if (confirmed) {
                             viewModel.handleAction(
-                                EditCafeAction.ConfirmDeleteNonWorkingDay(uuid = event.uuid)
+                                EditCafe.Action.ConfirmDeleteNonWorkingDay(uuid = event.uuid)
                             )
                         }
                     }
@@ -238,7 +236,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
     @Composable
     private fun NonWorkingDayItem(
         day: FormattedNonWorkingDay,
-        onAction: (EditCafeAction) -> Unit,
+        onAction: (EditCafe.Action) -> Unit,
         deleteConfirmBottomSheetState: SheetState
     ) {
         Row {
@@ -261,7 +259,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                     .size(48.dp),
                 colors = AdminCardDefaults.cardNegativeColors,
                 onClick = {
-                    onAction(EditCafeAction.DeleteNonWorkingDay(day.uuid))
+                    onAction(EditCafe.Action.DeleteNonWorkingDay(day.uuid))
                     lifecycleScope.launch {
                         deleteConfirmBottomSheetState.show()
                     }
@@ -283,14 +281,14 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
     private fun FromTimePickerDialog(
         dialogState: MaterialDialogState,
         initialTime: LocalTime,
-        onAction: (EditCafeAction) -> Unit,
+        onAction: (EditCafe.Action) -> Unit,
     ) {
         TimePickerDialog(
             dialogState = dialogState,
             titleStringId = R.string.title_edit_cafe_from_time,
             initialTime = initialTime,
             onTimeSelected = { time ->
-                onAction(EditCafeAction.UpdateFromTime(time))
+                onAction(EditCafe.Action.UpdateFromTime(time))
             },
         )
     }
@@ -299,14 +297,14 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
     private fun ToTimePickerDialog(
         dialogState: MaterialDialogState,
         initialTime: LocalTime,
-        onAction: (EditCafeAction) -> Unit,
+        onAction: (EditCafe.Action) -> Unit,
     ) {
         TimePickerDialog(
             dialogState = dialogState,
             titleStringId = R.string.title_edit_cafe_to_time,
             initialTime = initialTime,
             onTimeSelected = { time ->
-                onAction(EditCafeAction.UpdateToTime(time))
+                onAction(EditCafe.Action.UpdateToTime(time))
             },
         )
     }
@@ -423,7 +421,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
     @Composable
     private fun SuccessEditCafeScreenPreview() {
         Screen(
-            state = EditCafeState(
+            state = EditCafe.ViewDataState(
                 cafeUuid = null,
                 cafeAddress = "Дубна, ул. Университетская, д. 111",
                 cafeWorkingHours = CafeWorkingHours(
@@ -432,7 +430,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                     toTimeText = "20:00",
                     toTime = LocalTime.of(20, 0),
                 ),
-                nonWorkingDays = EditCafeState.NonWorkingDays.Success(
+                nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Success(
                     listOf(
                         FormattedNonWorkingDay(
                             uuid = "1",
@@ -463,7 +461,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
     @Composable
     private fun EmptyEditCafeScreenPreview() {
         Screen(
-            state = EditCafeState(
+            state = EditCafe.ViewDataState(
                 cafeUuid = null,
                 cafeAddress = "Дубна, ул. Университетская, д. 111",
                 cafeWorkingHours = CafeWorkingHours(
@@ -472,7 +470,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                     toTimeText = "20:00",
                     toTime = LocalTime.of(20, 0),
                 ),
-                nonWorkingDays = EditCafeState.NonWorkingDays.Empty,
+                nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Empty,
                 initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
                 yearRange = IntRange(2023, 2023),
                 minNonWorkingDayDate = LocalDate.of(2023, 10, 28),
@@ -485,7 +483,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
     @Composable
     private fun LoadingEditCafeScreenPreview() {
         Screen(
-            state = EditCafeState(
+            state = EditCafe.ViewDataState(
                 cafeUuid = null,
                 cafeAddress = "Дубна, ул. Университетская, д. 111",
                 cafeWorkingHours = CafeWorkingHours(
@@ -494,7 +492,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState, EditCafeActio
                     toTimeText = "20:00",
                     toTime = LocalTime.of(20, 0),
                 ),
-                nonWorkingDays = EditCafeState.NonWorkingDays.Loading,
+                nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Loading,
                 initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
                 yearRange = IntRange(2023, 2023),
                 minNonWorkingDayDate = LocalDate.of(2023, 10, 28),

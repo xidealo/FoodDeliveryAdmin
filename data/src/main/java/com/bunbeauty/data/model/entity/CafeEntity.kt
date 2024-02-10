@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class CafeEntity(
     @PrimaryKey
-    var uuid: String,
+    val uuid: String,
     val address: String,
     val latitude: Double,
     val longitude: Double,

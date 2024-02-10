@@ -57,15 +57,7 @@ class NonWorkingDayRepository @Inject constructor(
         ).dataOrNull()?.let { nonWorkingDayServer ->
             val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
             nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
-            nonWorkingDayMapCache[nonWorkingDay.cafeUuid]?.let { nonWorkingDayList ->
-                nonWorkingDayMapCache[nonWorkingDay.cafeUuid] = nonWorkingDayList.map { cachedNonWorkingDay ->
-                    if (cachedNonWorkingDay.uuid == nonWorkingDay.uuid) {
-                        nonWorkingDay
-                    } else {
-                        cachedNonWorkingDay
-                    }
-                }
-            }
+            nonWorkingDayMapCache[nonWorkingDay.cafeUuid] = getUpdatedCache(nonWorkingDay)
 
             nonWorkingDay
         }
@@ -73,6 +65,16 @@ class NonWorkingDayRepository @Inject constructor(
 
     override suspend fun clearCache() {
         nonWorkingDayMapCache.clear()
+    }
+
+    private fun getUpdatedCache(nonWorkingDay: NonWorkingDay): List<NonWorkingDay> {
+        return nonWorkingDayMapCache[nonWorkingDay.cafeUuid]?.map { cachedNonWorkingDay ->
+            if (cachedNonWorkingDay.uuid == nonWorkingDay.uuid) {
+                nonWorkingDay
+            } else {
+                cachedNonWorkingDay
+            }
+        }.orEmpty()
     }
 
     private suspend fun getRemoteNonWorkingDayList(cafeUuid: String): List<NonWorkingDay>? {

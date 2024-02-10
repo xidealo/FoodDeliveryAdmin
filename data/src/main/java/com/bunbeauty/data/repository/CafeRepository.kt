@@ -95,15 +95,19 @@ class CafeRepository @Inject constructor(
         cafeDao.insert(cafeMapper.toCafeEntity(patchedCafeServer))
 
         val updatedCafe = cafeMapper.toCafe(patchedCafeServer)
-        cafeListCache = cafeListCache?.map { cachedCafe ->
-            if (cachedCafe.uuid == cafeUuid) {
-                updatedCafe
+        cafeListCache = getUpdatedCache(cafe = updatedCafe)
+
+        return updatedCafe
+    }
+
+    private fun getUpdatedCache(cafe: Cafe): List<Cafe>? {
+        return cafeListCache?.map { cachedCafe ->
+            if (cachedCafe.uuid == cafe.uuid) {
+                cafe
             } else {
                 cachedCafe
             }
         }
-
-        return updatedCafe
     }
 
 }
