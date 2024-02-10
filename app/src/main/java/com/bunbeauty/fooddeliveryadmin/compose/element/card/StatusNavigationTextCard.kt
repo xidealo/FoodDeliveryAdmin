@@ -38,7 +38,7 @@ fun StatusNavigationTextCard(
     AdminCard(
         modifier = modifier,
         onClick = onClick,
-        clickable = clickable,
+        clickable = clickable
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
             Spacer(
