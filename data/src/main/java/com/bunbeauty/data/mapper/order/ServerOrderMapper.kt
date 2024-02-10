@@ -1,6 +1,6 @@
 package com.bunbeauty.data.mapper.order
 
-import com.bunbeauty.data.mapper.CartProductMapper
+import com.bunbeauty.data.mapper.OderProductMapper
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
@@ -12,7 +12,7 @@ import com.bunbeauty.domain.model.order.details.PaymentMethod
 import javax.inject.Inject
 
 class ServerOrderMapper @Inject constructor(
-    private val cartProductMapper: CartProductMapper
+    private val oderProductMapper: OderProductMapper
 ) : IServerOrderMapper {
 
     override fun mapOrderDetails(orderDetailsServer: OrderDetailsServer): OrderDetails {
@@ -24,7 +24,7 @@ class ServerOrderMapper @Inject constructor(
             timeZone = orderDetailsServer.timeZone,
             isDelivery = orderDetailsServer.isDelivery,
             deferredTime = orderDetailsServer.deferredTime,
-            paymentMethod = PaymentMethod.values().firstOrNull { paymentMethod  ->
+            paymentMethod = PaymentMethod.entries.firstOrNull { paymentMethod  ->
                 paymentMethod.name == orderDetailsServer.paymentMethod
             },
             address = OrderAddress(
@@ -47,7 +47,7 @@ class ServerOrderMapper @Inject constructor(
             percentDiscount = orderDetailsServer.percentDiscount,
             oldTotalCost = orderDetailsServer.oldTotalCost,
             newTotalCost = orderDetailsServer.newTotalCost,
-            oderProductList = orderDetailsServer.oderProductList.map(cartProductMapper::toModel),
+            oderProductList = orderDetailsServer.oderProductList.map(oderProductMapper::toModel),
             availableStatusList = orderDetailsServer.availableStatusList.mapNotNull(::getOrderStatusNullable),
         )
     }
@@ -68,7 +68,7 @@ class ServerOrderMapper @Inject constructor(
     }
 
     private fun getOrderStatusNullable(statusName: String): OrderStatus? {
-        val hasStatus = OrderStatus.values().any { orderStatus ->
+        val hasStatus = OrderStatus.entries.any { orderStatus ->
             orderStatus.name == statusName
         }
         return if (hasStatus) {

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.orderlist
+package com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +17,6 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
-import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderStatusChip
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 
 @Composable

@@ -8,7 +8,6 @@ import javax.inject.Inject
 class OrderStatusMapper @Inject constructor(
     private val resources: Resources
 ) {
-
     fun map(orderStatus: OrderStatus): String {
         return when (orderStatus) {
             OrderStatus.NOT_ACCEPTED -> resources.getString(R.string.msg_status_not_accepted)
@@ -20,5 +19,4 @@ class OrderStatusMapper @Inject constructor(
             OrderStatus.CANCELED -> resources.getString(R.string.msg_status_canceled)
         }
     }
-
 }

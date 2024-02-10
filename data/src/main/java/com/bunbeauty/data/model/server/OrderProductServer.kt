@@ -1,9 +1,10 @@
 package com.bunbeauty.data.model.server
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CartProductServer(
+data class OrderProductServer(
     val uuid: String = "",
     val count: Int = 0,
     val name: String = "",
@@ -13,5 +14,11 @@ data class CartProductServer(
     val nutrition: Int? = null,
     val description: String = "",
     val comboDescription: String? = null,
+    @SerialName("newTotalCost")
+    val newTotalCost: Int,
+    @SerialName("additionsPrice")
+    val additionsPrice: Int?,
     val barcode: Int = 0,
+    @SerialName("additions")
+    val additions: List<AdditionServer>
 )
