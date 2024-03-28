@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/statisticFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.statistic.StatisticFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.statistic.ui.StatisticFragment"
         android:label="StatisticFragment">
         <action
             android:id="@+id/to_statisticDetailsFragment"

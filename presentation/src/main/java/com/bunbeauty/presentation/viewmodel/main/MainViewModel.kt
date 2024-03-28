@@ -22,13 +22,13 @@ class MainViewModel @Inject constructor(
 
     init {
         getIsNonWorkingDayFlow().onEach { isNonWorkingDay ->
-            setState { state ->
-                state.copy(nonWorkingDay = isNonWorkingDay)
+            setState {
+                copy(nonWorkingDay = isNonWorkingDay)
             }
         }.launchIn(viewModelScope)
     }
 
-    override fun handleAction(action: Main.Action) {
+    override fun reduce(action: Main.Action, dataState: Main.ViewDataState) {
         when (action) {
             is Main.Action.UpdateNavDestination -> {
                 updateNavDestination(
@@ -58,8 +58,8 @@ class MainViewModel @Inject constructor(
             )
         } ?: Main.NavigationBarOptions.Hidden
 
-        setState { state ->
-            state.copy(navigationBarOptions = navigationBarOptions)
+        setState {
+            copy(navigationBarOptions = navigationBarOptions)
         }
     }
 

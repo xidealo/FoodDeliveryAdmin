@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsLastOrderUseCase
-import com.bunbeauty.domain.feature.orderlist.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
@@ -51,6 +51,7 @@ class OrderListViewModel @Inject constructor(
             eventList = emptyList(),
         )
     )
+
     val orderListUiState = mutableDataState.mapToStateFlow(viewModelScope) { dataState ->
         OrderListUiState(
             state = when (dataState.cafeState) {
@@ -195,6 +196,9 @@ class OrderListViewModel @Inject constructor(
         mutableDataState.update { state ->
             state.copy(orderListState = OrderListDataState.State.SUCCESS)
         }
+
+        if (orderListJob != null) return
+
         orderListJob = viewModelScope.launchSafe(
             onError = {
                 mutableDataState.update { state ->
@@ -241,6 +245,9 @@ class OrderListViewModel @Inject constructor(
     private fun stopObservingOrderList() {
         orderListJob?.cancel()
         orderErrorJob?.cancel()
+
+        orderListJob = null
+        orderErrorJob = null
     }
 
     private suspend fun checkToCancelNotification(orderCode: String) {

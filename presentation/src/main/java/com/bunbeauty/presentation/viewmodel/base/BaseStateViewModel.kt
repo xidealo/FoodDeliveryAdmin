@@ -9,13 +9,17 @@ abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEv
     initState: DS
 ): ViewModel() {
 
-    protected val mutableState = MutableStateFlow(initState)
-    val state = mutableState.asStateFlow()
+    protected val mutableDataState = MutableStateFlow(initState)
+    val state = mutableDataState.asStateFlow()
 
     protected val mutableEvents = MutableStateFlow<List<E>>(emptyList())
     val events = mutableEvents.asStateFlow()
 
-    abstract fun handleAction(action: A)
+    fun onAction(action: A) {
+        reduce(action, mutableDataState.value)
+    }
+
+    protected abstract fun reduce(action: A, dataState: DS)
 
     fun consumeEvents(events: List<E>) {
         mutableEvents.update { list ->
@@ -23,13 +27,13 @@ abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEv
         }
     }
 
-    protected inline fun setState(block: (DS) -> DS) {
-        mutableState.update(block)
+    protected inline fun setState(block: DS.() -> DS) {
+        mutableDataState.update(block)
     }
 
     protected inline fun addEvent(block: (DS) -> E) {
         mutableEvents.update { list ->
-            list + block(mutableState.value)
+            list + block(mutableDataState.value)
         }
     }
 

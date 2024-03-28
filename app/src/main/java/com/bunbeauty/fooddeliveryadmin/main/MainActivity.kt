@@ -83,11 +83,11 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     }
 
     override fun showInfoMessage(text: String) {
-        viewModel.handleAction(Main.Action.ShowInfoMessage(text))
+        viewModel.onAction(Main.Action.ShowInfoMessage(text))
     }
 
     override fun showErrorMessage(text: String) {
-        viewModel.handleAction(Main.Action.ShowErrorMessage(text))
+        viewModel.onAction(Main.Action.ShowErrorMessage(text))
     }
 
     @Composable
@@ -224,7 +224,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
                     R.id.profileFragment -> Main.NavigationBarItem.PROFILE
                     else -> null
                 }
-                viewModel.handleAction(Main.Action.UpdateNavDestination(navigationBarItem, controller))
+                viewModel.onAction(Main.Action.UpdateNavDestination(navigationBarItem, controller))
             }
         }
     }

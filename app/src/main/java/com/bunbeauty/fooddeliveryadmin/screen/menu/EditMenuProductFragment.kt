@@ -292,7 +292,6 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 enabled = !state.isLoadingButton
             )
 
-
             Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
         }
     }

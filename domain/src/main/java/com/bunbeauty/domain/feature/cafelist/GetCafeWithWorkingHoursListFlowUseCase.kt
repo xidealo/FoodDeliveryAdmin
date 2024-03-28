@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.feature.cafelist
 
-import com.bunbeauty.domain.feature.orderlist.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.time.GetCurrentTimeFlowUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.CafeStatus

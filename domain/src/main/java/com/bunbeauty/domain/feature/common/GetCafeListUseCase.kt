@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.orderlist
+package com.bunbeauty.domain.feature.common
 
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo

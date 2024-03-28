@@ -25,16 +25,17 @@ object Versions {
     const val coroutines = "1.6.4"
     const val kotlinxDatetime = "0.4.0"
     const val materialDialogsDatetime = "0.9.0"
+    const val kotlinxCollectionsImmutable = "0.3.7"
 }
 
 object Application {
     const val versionMajor = 1
-    const val versionMinor = 4
-    const val versionPatch = 4
+    const val versionMinor = 5
+    const val versionPatch = 0
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 144
+    const val versionCode = 150
 }
 
 object Namespace {
@@ -155,7 +156,8 @@ object Compose {
 }
 
 object MaterialDialogs {
-    const val datetime = "io.github.vanpra.compose-material-dialogs:datetime:${Versions.materialDialogsDatetime}"
+    const val datetime =
+        "io.github.vanpra.compose-material-dialogs:datetime:${Versions.materialDialogsDatetime}"
 }
 
 object Firebase {
@@ -176,4 +178,9 @@ object Coroutine {
 
 object Test {
     const val test = "test"
+}
+
+object KotlinxCollectionsImmutable {
+    const val collectionsImmutable =
+        "org.jetbrains.kotlinx:kotlinx-collections-immutable:${Versions.kotlinxCollectionsImmutable}"
 }

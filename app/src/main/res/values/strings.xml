@@ -82,8 +82,10 @@
     <string name="title_bottom_navigation_profile">Профиль</string>
 
     <!-- STATISTIC -->
+    <string name="title_statistic">Статистика</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
     <string name="title_statistic_select_time_interval">Выберите период</string>
+    <string name="action_product_statistic_load">Загрузить</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>
@@ -93,7 +95,6 @@
     <string name="msg_product_statistic_order_count">Количество заказов</string>
     <string name="msg_product_statistic_count">Количество</string>
     <string name="msg_product_statistic_cost">Стоимость</string>
-    <string name="action_product_statistic_load">Загрузить</string>
 
     <!-- MENU -->
     <string name="action_menu_create">Создать</string>
