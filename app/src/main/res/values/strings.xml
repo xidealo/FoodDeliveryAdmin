@@ -86,6 +86,7 @@
     <string name="title_statistic_select_cafe">Выберите кафе</string>
     <string name="title_statistic_select_time_interval">Выберите период</string>
     <string name="action_product_statistic_load">Загрузить</string>
+    <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>
 
     <!-- STATISTIC DETAILS-->
     <string name="msg_statistic_total_proceeds">Выручка</string>

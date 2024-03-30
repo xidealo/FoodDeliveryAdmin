@@ -3,11 +3,9 @@ package com.bunbeauty.fooddeliveryadmin.screen.statistic.ui
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -67,15 +65,26 @@ class StatisticFragment :
     override fun mapState(state: Statistic.ViewDataState): StatisticViewState {
         return StatisticViewState(
             statisticList = state.statisticList.toPersistentList(),
-            selectedCafe = state.selectedCafe?.address ?: "",
-            period = state.selectedTimeInterval?.name ?: ""
+            selectedCafe = state.selectedCafe?.address
+                ?: resources.getString(R.string.msg_statistic_all_cafes),
+            period = getTimeIntervalName(
+                state.selectedTimeInterval
+            )
         )
+    }
+
+    private fun getTimeIntervalName(timeInterval: Statistic.TimeIntervalCode): String {
+        return when (timeInterval) {
+            Statistic.TimeIntervalCode.DAY -> resources.getString(com.bunbeauty.presentation.R.string.msg_statistic_day_interval)
+            Statistic.TimeIntervalCode.WEEK -> resources.getString(com.bunbeauty.presentation.R.string.msg_statistic_week_interval)
+            Statistic.TimeIntervalCode.MONTH -> resources.getString(com.bunbeauty.presentation.R.string.msg_statistic_month_interval)
+        }
     }
 
     override fun handleEvent(event: Statistic.Event) {
         when (event) {
             is Statistic.Event.OpenCafeListEvent -> {
-                openCafeListBottom(event.cafeList)
+                openCafeListBottom(buildOptionList(event))
             }
 
             is Statistic.Event.OpenTimeIntervalListEvent -> {
@@ -91,15 +100,34 @@ class StatisticFragment :
             }
 
             Statistic.Event.GoBack -> {
-
             }
         }
+    }
+
+    private fun buildOptionList(event: Statistic.Event.OpenCafeListEvent): List<Option> {
+        val optionsList = buildList {
+            add(
+                Option(
+                    id = null,
+                    title = resources.getString(R.string.msg_statistic_all_cafes)
+                )
+            )
+            event.cafeList.map { cafe ->
+                Option(
+                    id = cafe.uuid,
+                    title = cafe.address
+                )
+            }.let { cafeAddressList ->
+                addAll(cafeAddressList)
+            }
+        }
+        return optionsList
     }
 
     @Composable
     private fun StatisticScreen(
         statisticViewState: StatisticViewState,
-        onAction: (Statistic.Action) -> Unit,
+        onAction: (Statistic.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_statistic),
@@ -131,7 +159,6 @@ class StatisticFragment :
                         .padding(horizontal = 16.dp),
                     label = statisticViewState.period,
                     onClick = {
-
                     }
                 )
 
@@ -167,7 +194,7 @@ class StatisticFragment :
                                 Column(
                                     modifier = Modifier
                                         .padding(
-                                            start = 8.dp,
+                                            start = 8.dp
                                         ),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
@@ -179,14 +206,13 @@ class StatisticFragment :
                                     Text(
                                         modifier = Modifier
                                             .padding(
-                                                top = 4.dp,
+                                                top = 4.dp
                                             ),
                                         text = statisticItemModel.proceeds,
                                         style = AdminTheme.typography.bodyMedium.bold,
                                         color = AdminTheme.colors.main.onSurface
                                     )
                                 }
-
                             }
                         }
                     }
@@ -206,58 +232,24 @@ class StatisticFragment :
                             startMillis = 3064,
                             period = "апрель",
                             count = "Заказов: 20",
-                            proceeds = "2000 $"
+                            proceeds = "2000 $",
+                            date = "ssss"
                         ),
                         Statistic.ViewDataState.StatisticItemModel(
                             startMillis = 3064,
                             period = "май",
                             count = "Заказов: 387",
-                            proceeds = "128234 $"
+                            proceeds = "128234 $",
+                            date = "ssss"
                         )
                     ),
                     selectedCafe = "Все кафе",
-                    period = "По годам",
+                    period = "По годам"
                 ),
                 onAction = {}
             )
         }
     }
-
-    /*
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.run {
-            toolbar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    else -> {
-                        false
-                    }
-                }
-            }
-            fragmentStatisticRvList.adapter = statisticAdapter
-            fragmentStatisticRvList.addSpaceItemDecorator(R.dimen.very_small_margin)
-            fragmentStatisticMcvCafe.setOnClickListener {
-                viewModel.onCafeClicked()
-            }
-            fragmentStatisticMcvInterval.setOnClickListener {
-                viewModel.onTimeIntervalClicked()
-            }
-            fragmentStatisticBtnLoad.setOnClickListener {
-                viewModel.loadStatistic()
-            }
-
-            viewModel.statisticState.collectWithLifecycle { statisticState ->
-                fragmentStatisticLpiLoading.isInvisible = !statisticState.isLoading
-                fragmentStatisticBtnLoad.isEnabled = !statisticState.isLoading
-                fragmentStatisticTvCafe.text = statisticState.selectedCafe?.address
-                fragmentStatisticTvInterval.text = statisticState.selectedTimeInterval?.name
-                statisticAdapter.submitList(statisticState.statisticList)
-                handleEvents(statisticState.eventList)
-            }
-        }
-    }
-*/
 
     private fun openCafeListBottom(cafeList: List<Option>) {
         val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->

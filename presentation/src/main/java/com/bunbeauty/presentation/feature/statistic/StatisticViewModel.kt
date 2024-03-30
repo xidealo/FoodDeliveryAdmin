@@ -1,14 +1,14 @@
 package com.bunbeauty.presentation.feature.statistic
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
+import android.icu.util.Calendar
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeListByCityUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
+import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.Option
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +22,7 @@ class StatisticViewModel @Inject constructor(
     private val getCafeListByCityUuidUseCase: GetCafeListByCityUuidUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val stringUtil: IStringUtil,
-    private val resources: Resources,
+    private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase,
 ) : BaseStateViewModel<Statistic.ViewDataState, Statistic.Action, Statistic.Event>(
     initState = Statistic.ViewDataState(
@@ -32,7 +32,7 @@ class StatisticViewModel @Inject constructor(
 
     private val allCafes = Statistic.SelectedCafe(
         uuid = null,
-        address = resources.getString(R.string.msg_statistic_all_cafes)
+        address = null
     )
 
     private var loadStatisticJob: Job? = null
@@ -43,10 +43,7 @@ class StatisticViewModel @Inject constructor(
                 setState {
                     copy(
                         selectedCafe = allCafes,
-                        selectedTimeInterval = Statistic.SelectedTimeInterval(
-                            code = Statistic.TimeIntervalCode.MONTH,
-                            name = getTimeIntervalName(Statistic.TimeIntervalCode.MONTH)
-                        )
+                        selectedTimeInterval = Statistic.TimeIntervalCode.MONTH
                     )
                 }
                 updateData()
@@ -55,7 +52,7 @@ class StatisticViewModel @Inject constructor(
             Statistic.Action.LoadStatisticClick -> {
                 loadStatistic(
                     cafeUuid = dataState.selectedCafe?.uuid,
-                    period = dataState.selectedTimeIntervalCode
+                    period = dataState.selectedTimeInterval
                 )
             }
 
@@ -67,25 +64,10 @@ class StatisticViewModel @Inject constructor(
 
     fun onCafeClicked() {
         viewModelScope.launch {
-            val cafeList = buildList {
-                add(
-                    Option(
-                        id = allCafes.uuid,
-                        title = allCafes.address
-                    )
-                )
-                getCafeListByCityUuidUseCase().map { cafe ->
-                    Option(
-                        id = cafe.uuid,
-                        title = cafe.address
-                    )
-                }.let { cafeAddressList ->
-                    addAll(cafeAddressList)
-                }
-            }
-
             addEvent {
-                Statistic.Event.OpenCafeListEvent(cafeList)
+                Statistic.Event.OpenCafeListEvent(
+                    getCafeListByCityUuidUseCase()
+                )
             }
         }
     }
@@ -119,7 +101,7 @@ class StatisticViewModel @Inject constructor(
             val timeIntervalList = Statistic.TimeIntervalCode.entries.map { timeInterval ->
                 Option(
                     id = timeInterval.name,
-                    title = getTimeIntervalName(timeInterval)
+                    title = timeInterval.name
                 )
             }
             addEvent {
@@ -132,10 +114,7 @@ class StatisticViewModel @Inject constructor(
         val timeIntervalCode = Statistic.TimeIntervalCode.valueOf(timeInterval)
         setState {
             copy(
-                selectedTimeInterval = Statistic.SelectedTimeInterval(
-                    code = timeIntervalCode,
-                    name = getTimeIntervalName(timeIntervalCode)
-                )
+                selectedTimeInterval = timeIntervalCode,
             )
         }
     }
@@ -143,7 +122,7 @@ class StatisticViewModel @Inject constructor(
     @SuppressLint("StringFormatMatches")
     fun loadStatistic(
         cafeUuid: String?,
-        period: String
+        period: Statistic.TimeIntervalCode
     ) {
         loadStatisticJob?.cancel()
         loadStatisticJob = viewModelScope.launch {
@@ -152,13 +131,14 @@ class StatisticViewModel @Inject constructor(
             }
             getStatisticUseCase(
                 cafeUuid = cafeUuid,
-                period = period
+                period = period.name
             ).map { statistic ->
                 Statistic.ViewDataState.StatisticItemModel(
                     startMillis = statistic.startPeriodTime,
                     period = statistic.period,
                     count = stringUtil.getOrderCountString(statistic.orderCount),
-                    proceeds = resources.getString(R.string.common_with_ruble, statistic.proceeds)
+                    proceeds = "${statistic.proceeds} ${statistic.currency}",
+                    date = dateTimeUtil.formatDateTime(statistic.startPeriodTime, "MMMM")
                 )
             }.let { statisticItemList ->
                 setState {
@@ -176,7 +156,7 @@ class StatisticViewModel @Inject constructor(
             Statistic.RetryAction.LOAD_CAFE_LIST -> updateData()
             Statistic.RetryAction.LOAD_STATISTIC -> loadStatistic(
                 cafeUuid = null,
-                period = ""
+                period = Statistic.TimeIntervalCode.MONTH
             )
         }
     }
@@ -184,14 +164,6 @@ class StatisticViewModel @Inject constructor(
     private fun updateData() {
         viewModelScope.launch {
             getCafeListUseCase()
-        }
-    }
-
-    private fun getTimeIntervalName(timeInterval: Statistic.TimeIntervalCode): String {
-        return when (timeInterval) {
-            Statistic.TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
-            Statistic.TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
-            Statistic.TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
         }
     }
 }

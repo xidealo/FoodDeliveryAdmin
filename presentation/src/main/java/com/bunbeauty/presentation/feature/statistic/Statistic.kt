@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.statistic
 
+import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -9,20 +10,18 @@ interface Statistic {
     data class ViewDataState(
         val cafeUuid: String?,
         val selectedCafe: SelectedCafe? = null,
-        val selectedTimeInterval: SelectedTimeInterval? = null,
+        val selectedTimeInterval: TimeIntervalCode = TimeIntervalCode.MONTH,
         val statisticList: List<StatisticItemModel> = emptyList(),
         val eventList: List<Event> = emptyList(),
         val isLoading: Boolean = false
     ) : BaseViewDataState {
 
-        val selectedTimeIntervalCode: String
-            get() = (selectedTimeInterval?.code ?: TimeIntervalCode.MONTH).toString()
-
         data class StatisticItemModel(
             val startMillis: Long,
             val period: String,
             val count: String,
-            val proceeds: String
+            val proceeds: String,
+            val date: String
         )
     }
 
@@ -37,7 +36,7 @@ interface Statistic {
     sealed interface Event : BaseEvent {
 
         data object GoBack : Event
-        class OpenCafeListEvent(val cafeList: List<Option>) : Event
+        class OpenCafeListEvent(val cafeList: List<Cafe>) : Event
         class OpenTimeIntervalListEvent(val timeIntervalList: List<Option>) : Event
         class ShowError(val retryAction: RetryAction) : Event
     }
@@ -49,12 +48,7 @@ interface Statistic {
 
     data class SelectedCafe(
         val uuid: String?,
-        val address: String
-    )
-
-    data class SelectedTimeInterval(
-        val code: TimeIntervalCode,
-        val name: String
+        val address: String?
     )
 
     enum class TimeIntervalCode {

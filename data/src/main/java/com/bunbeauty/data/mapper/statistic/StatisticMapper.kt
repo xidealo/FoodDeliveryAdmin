@@ -16,6 +16,7 @@ class StatisticMapper @Inject constructor(
             startPeriodTime = statisticServer.startPeriodTime,
             orderCount = statisticServer.orderCount,
             proceeds = statisticServer.proceeds,
+            currency = "₽"
         )
     }
 
