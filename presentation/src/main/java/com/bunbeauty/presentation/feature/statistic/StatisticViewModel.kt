@@ -54,7 +54,7 @@ class StatisticViewModel @Inject constructor(
 
             Statistic.Action.LoadStatisticClick -> {
                 loadStatistic(
-                    cafeUuid = dataState.cafeUuid,
+                    cafeUuid = dataState.selectedCafe?.uuid,
                     period = dataState.selectedTimeIntervalCode
                 )
             }

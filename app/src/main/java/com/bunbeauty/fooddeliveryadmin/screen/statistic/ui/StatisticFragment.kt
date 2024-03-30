@@ -3,40 +3,37 @@ package com.bunbeauty.fooddeliveryadmin.screen.statistic.ui
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
-import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet
-import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
 import com.bunbeauty.presentation.Option
-import com.bunbeauty.presentation.feature.editcafe.EditCafe
 import com.bunbeauty.presentation.feature.statistic.Statistic
+import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -130,7 +127,7 @@ class StatisticFragment :
 
                 NavigationTextCard(
                     modifier = Modifier
-                        .padding(top = 8.dp)
+                        .padding(vertical = 8.dp)
                         .padding(horizontal = 16.dp),
                     label = statisticViewState.period,
                     onClick = {
@@ -140,38 +137,57 @@ class StatisticFragment :
 
                 LazyColumn(
                     contentPadding = PaddingValues(
-                        vertical = 12.dp,
-                        horizontal = 16.dp
+                        top = 8.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = AdminTheme.dimensions.scrollScreenBottomSpace
                     ),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(statisticViewState.statisticList) { statisticItemModel ->
                         AdminCard(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            clickable = false
                         ) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(
+                                        vertical = 8.dp,
+                                        horizontal = 16.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    text = statisticItemModel.period,
+                                    style = AdminTheme.typography.titleSmall,
+                                    color = AdminTheme.colors.main.onSurface
+                                )
+                                Column(
+                                    modifier = Modifier
+                                        .padding(
+                                            start = 8.dp,
+                                        ),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = statisticItemModel.count,
+                                        style = AdminTheme.typography.bodySmall,
+                                        color = AdminTheme.colors.main.onSurface
+                                    )
+                                    Text(
+                                        modifier = Modifier
+                                            .padding(
+                                                top = 4.dp,
+                                            ),
+                                        text = statisticItemModel.proceeds,
+                                        style = AdminTheme.typography.bodyMedium.bold,
+                                        color = AdminTheme.colors.main.onSurface
+                                    )
+                                }
 
-                            Text(
-                                modifier = Modifier.padding(
-                                    vertical = 8.dp,
-                                    horizontal = 16.dp
-                                ),
-                                text = statisticItemModel.period
-                            )
-
-                            Text(
-                                modifier = Modifier.padding(
-                                    vertical = 8.dp,
-                                    horizontal = 16.dp
-                                ),
-                                text = statisticItemModel.proceeds
-                            )
-                            Text(
-                                modifier = Modifier.padding(
-                                    vertical = 8.dp,
-                                    horizontal = 16.dp
-                                ),
-                                text = statisticItemModel.count
-                            )
+                            }
                         }
                     }
                 }
@@ -188,15 +204,15 @@ class StatisticFragment :
                     statisticList = persistentListOf(
                         Statistic.ViewDataState.StatisticItemModel(
                             startMillis = 3064,
-                            period = "suas",
-                            count = "quaestio",
-                            proceeds = "oratio"
+                            period = "апрель",
+                            count = "Заказов: 20",
+                            proceeds = "2000 $"
                         ),
                         Statistic.ViewDataState.StatisticItemModel(
                             startMillis = 3064,
-                            period = "sssss",
-                            count = "quaestio",
-                            proceeds = "oratio"
+                            period = "май",
+                            count = "Заказов: 387",
+                            proceeds = "128234 $"
                         )
                     ),
                     selectedCafe = "Все кафе",
