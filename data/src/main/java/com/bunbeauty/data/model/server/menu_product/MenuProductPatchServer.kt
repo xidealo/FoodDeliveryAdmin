@@ -1,5 +1,6 @@
 package com.bunbeauty.data.model.server.menu_product
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,5 +14,8 @@ data class MenuProductPatchServer(
     val comboDescription: String?,
     val photoLink: String?,
     val categoryUuids: List<String>?,
-    val isVisible: Boolean?,
+    @SerialName("isVisible")
+    val isVisibleInMenu: Boolean?,
+    @SerialName("isRecommended")
+    val isVisibleInRecommendations: Boolean?,
 )

@@ -71,7 +71,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 onNutritionTextChanged = viewModel::onNutritionTextChanged,
                 onSuggestedUtilsSelected = viewModel::onSuggestedUtilsSelected,
                 onDescriptionTextChanged = viewModel::onDescriptionTextChanged,
-                onVisibleChanged = viewModel::onVisibleChanged,
+                onVisibleInMenuChanged = viewModel::onVisibleInMenuChanged,
+                onVisibleInRecommendationChanged = viewModel::onVisibleInRecommendationChanged,
                 onErrorClick = {
                     viewModel.loadData(editMenuProductFragmentArgs.menuProductUuid)
                 },
@@ -100,11 +101,13 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
         onDescriptionTextChanged: (value: String) -> Unit,
         onComboDescriptionTextChanged: (value: String) -> Unit,
-        onVisibleChanged: (value: Boolean) -> Unit,
+        onVisibleInMenuChanged: (value: Boolean) -> Unit,
+        onVisibleInRecommendationChanged: (value: Boolean) -> Unit,
         onErrorClick: () -> Unit,
         updateMenuProductClick: () -> Unit,
-        backAction: () -> Unit
-    ) {
+        backAction: () -> Unit,
+
+        ) {
         AdminScaffold(
             title = editMenuProductUIState.title,
             backActionClick = backAction,
@@ -132,7 +135,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                     onSuggestedUtilsSelected = onSuggestedUtilsSelected,
                     onDescriptionTextChanged = onDescriptionTextChanged,
                     onComboDescriptionTextChanged = onComboDescriptionTextChanged,
-                    onVisibleChanged = onVisibleChanged
+                    onVisibleInMenuChanged = onVisibleInMenuChanged,
+                    onVisibleInRecommendationChanged = onVisibleInRecommendationChanged
                 )
             }
         }
@@ -168,7 +172,8 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
         onSuggestedUtilsSelected: (value: Suggestion) -> Unit,
         onDescriptionTextChanged: (value: String) -> Unit,
         onComboDescriptionTextChanged: (value: String) -> Unit,
-        onVisibleChanged: (value: Boolean) -> Unit
+        onVisibleInMenuChanged: (value: Boolean) -> Unit,
+        onVisibleInRecommendationChanged: (value: Boolean) -> Unit
     ) {
         Column(
             modifier = Modifier
@@ -286,12 +291,19 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
 
             SwitcherCard(
                 modifier = Modifier.padding(top = 8.dp),
-                checked = state.isVisible,
-                onCheckChanged = onVisibleChanged,
+                checked = state.isVisibleInMenu,
+                onCheckChanged = onVisibleInMenuChanged,
                 labelStringId = R.string.title_edit_menu_product_is_visible,
                 enabled = !state.isLoadingButton
             )
 
+            SwitcherCard(
+                modifier = Modifier.padding(top = 8.dp),
+                checked = state.isVisibleInRecommendations,
+                onCheckChanged = onVisibleInRecommendationChanged,
+                labelStringId = R.string.title_edit_menu_product_is_recommended,
+                enabled = !state.isLoadingButton
+            )
 
             Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
         }
@@ -324,8 +336,9 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                         nutrition = "200",
                         utils = "г",
                         isLoadingButton = false,
-                        isVisible = true,
-                        comboDescription = "comboDescription"
+                        isVisibleInMenu = true,
+                        comboDescription = "comboDescription",
+                        isVisibleInRecommendations = true
                     )
                 ),
                 onNameTextChanged = {},
@@ -334,11 +347,12 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 onNutritionTextChanged = {},
                 onSuggestedUtilsSelected = {},
                 onDescriptionTextChanged = {},
-                onVisibleChanged = {},
+                onVisibleInMenuChanged = {},
                 onErrorClick = {},
                 updateMenuProductClick = {},
                 backAction = {},
-                onComboDescriptionTextChanged = {}
+                onComboDescriptionTextChanged = {},
+                onVisibleInRecommendationChanged = {},
             )
         }
     }
@@ -358,11 +372,12 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 onNutritionTextChanged = {},
                 onSuggestedUtilsSelected = {},
                 onDescriptionTextChanged = {},
-                onVisibleChanged = {},
+                onVisibleInMenuChanged = {},
                 onErrorClick = {},
                 updateMenuProductClick = {},
                 backAction = {},
-                onComboDescriptionTextChanged = {}
+                onComboDescriptionTextChanged = {},
+                onVisibleInRecommendationChanged ={}
             )
         }
     }

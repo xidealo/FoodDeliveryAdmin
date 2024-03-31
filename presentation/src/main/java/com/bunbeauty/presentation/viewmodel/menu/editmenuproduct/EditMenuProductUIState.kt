@@ -31,7 +31,9 @@ data class EditMenuProductUIState(
 
             val comboDescription: String,
 
-            val isVisible: Boolean,
+            val isVisibleInMenu: Boolean,
+
+            val isVisibleInRecommendations: Boolean
         ) : EditMenuProductState
 
         data object Error : EditMenuProductState

@@ -9,6 +9,7 @@ data class UpdateMenuProduct(
     val description: String? = null,
     val comboDescription: String? = null,
     val photoLink: String? = null,
-    val isVisible: Boolean? = null,
+    val isVisibleInMenu: Boolean? = null,
+    val isVisibleInRecommendations: Boolean? = null,
     val categoryUuids: List<String>? = null,
 )

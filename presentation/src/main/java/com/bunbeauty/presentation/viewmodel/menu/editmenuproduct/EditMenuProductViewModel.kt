@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class EditMenuProductViewModel @Inject constructor(
+class  EditMenuProductViewModel @Inject constructor(
     private val getMenuProductUseCase: GetMenuProductUseCase,
     private val updateMenuProductUseCase: UpdateMenuProductUseCase,
 ) : BaseViewModel() {
@@ -46,7 +46,7 @@ class EditMenuProductViewModel @Inject constructor(
                             oldPrice != 0
                         }?.toString() ?: "",
                         utils = menuProduct.utils ?: "",
-                        isVisible = menuProduct.isVisible,
+                        isVisibleInMenu = menuProduct.isVisible,
                         comboDescription = menuProduct.comboDescription ?: "",
                     )
                 }
@@ -86,7 +86,8 @@ class EditMenuProductViewModel @Inject constructor(
                             description = description.trim(),
                             comboDescription = comboDescription.trim(),
                             photoLink = null,
-                            isVisible = isVisible,
+                            isVisibleInMenu = isVisibleInMenu,
+                            isVisibleInRecommendations = isVisibleInRecommendation,
                             categoryUuids = null,
                         )
                     )
@@ -175,9 +176,15 @@ class EditMenuProductViewModel @Inject constructor(
         }
     }
 
-    fun onVisibleChanged(isVisible: Boolean) {
+    fun onVisibleInMenuChanged(isVisible: Boolean) {
         mutableState.update { state ->
-            state.copy(isVisible = isVisible)
+            state.copy(isVisibleInMenu = isVisible)
+        }
+    }
+
+    fun onVisibleInRecommendationChanged(isVisible: Boolean) {
+        mutableState.update { state ->
+            state.copy(isVisibleInRecommendation = isVisible)
         }
     }
 
@@ -203,8 +210,9 @@ class EditMenuProductViewModel @Inject constructor(
                         utils = dataState.utils,
                         nutrition = dataState.nutrition,
                         isLoadingButton = dataState.isLoadingButton,
-                        isVisible = dataState.isVisible,
-                        comboDescription = dataState.comboDescription
+                        isVisibleInMenu = dataState.isVisibleInMenu,
+                        comboDescription = dataState.comboDescription,
+                        isVisibleInRecommendations = dataState.isVisibleInRecommendation,
                     )
                 }
 

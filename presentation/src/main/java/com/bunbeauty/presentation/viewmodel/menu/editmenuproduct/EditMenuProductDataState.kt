@@ -18,7 +18,8 @@ data class EditMenuProductDataState(
     val comboDescription: String = "",
     val eventList: List<EditMenuProductEvent> = emptyList(),
     val isLoadingButton: Boolean = false,
-    val isVisible: Boolean = false
+    val isVisibleInMenu: Boolean = false,
+    val isVisibleInRecommendation: Boolean = false,
 ) {
 
     enum class State {

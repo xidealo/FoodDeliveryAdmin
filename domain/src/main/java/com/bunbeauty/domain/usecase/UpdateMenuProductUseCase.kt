@@ -43,7 +43,8 @@ class UpdateMenuProductUseCase @Inject constructor(
             description = updateMenuProduct.description,
             comboDescription = updateMenuProduct.comboDescription,
             photoLink = updateMenuProduct.photoLink,
-            isVisible = updateMenuProduct.isVisible,
+            isVisibleInMenu = updateMenuProduct.isVisibleInMenu,
+            isVisibleInRecommendations = updateMenuProduct.isVisibleInRecommendations,
             categoryUuids = updateMenuProduct.categoryUuids,
         )
 

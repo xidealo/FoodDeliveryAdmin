@@ -77,7 +77,8 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
                 description = description,
                 comboDescription = comboDescription,
                 photoLink = photoLink,
-                isVisible = isVisible,
+                isVisibleInMenu = isVisibleInMenu,
+                isVisibleInRecommendations = isVisibleInRecommendations,
                 categoryUuids = categoryUuids
             )
         }

@@ -109,7 +109,7 @@ class UpdateMenuProductUseCaseTest {
         description = "description",
         comboDescription = "comboDescription",
         photoLink = "photoLink",
-        isVisible = true,
+        isVisibleInMenu = true,
         categoryUuids = emptyList(),
     )
 }

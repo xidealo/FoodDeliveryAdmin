@@ -15,7 +15,7 @@ class UpdateVisibleMenuProductUseCase @Inject constructor(
 
         menuProductRepo.updateMenuProduct(
             menuProductUuid = menuProductUuid,
-            updateMenuProduct = UpdateMenuProduct(isVisible = isVisible),
+            updateMenuProduct = UpdateMenuProduct(isVisibleInMenu = isVisible),
             token = token
         )
     }

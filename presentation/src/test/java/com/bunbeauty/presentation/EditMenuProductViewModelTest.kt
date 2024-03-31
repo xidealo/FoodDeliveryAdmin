@@ -228,12 +228,12 @@ class EditMenuProductViewModelTest {
         // When
         with(viewModel) {
             loadData(productUuidMock)
-            onVisibleChanged(isVisible = false)
+            onVisibleInMenuChanged(isVisible = false)
         }
 
         // Then
         val actualIsVisible =
-            (viewModel.state.value.editMenuProductState as EditMenuProductUIState.EditMenuProductState.Success).isVisible
+            (viewModel.state.value.editMenuProductState as EditMenuProductUIState.EditMenuProductState.Success).isVisibleInMenu
         assertEquals(
             expected = visible,
             actual = actualIsVisible
