@@ -24,10 +24,10 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.feature.statistic.Statistic
@@ -68,17 +68,21 @@ class StatisticFragment :
                 StatisticViewState.StatisticItemModel(
                     startMillis = statisticItemModel.startMillis,
                     period = statisticItemModel.period,
-                    count = resources.getString(R.string.msg_statistic_orders, statisticItemModel.count),
+                    count = resources.getString(
+                        R.string.msg_statistic_orders,
+                        statisticItemModel.count
+                    ),
                     proceeds = statisticItemModel.proceeds,
                     date = statisticItemModel.date
-
                 )
             }.toPersistentList(),
             selectedCafe = state.selectedCafe?.address
                 ?: resources.getString(R.string.msg_statistic_all_cafes),
             period = getTimeIntervalName(
                 state.selectedTimeInterval
-            )
+            ),
+            isLoading = state.isLoading,
+            error = state.error
         )
     }
 
@@ -98,14 +102,6 @@ class StatisticFragment :
 
             is Statistic.Event.OpenTimeIntervalListEvent -> {
                 openTimeIntervals(event.timeIntervalList)
-            }
-
-            is Statistic.Event.ShowError -> {
-                lifecycleScope.launch {
-                    ErrorDialog.show(childFragmentManager).let {
-                        viewModel.onRetryClicked(event.retryAction)
-                    }
-                }
             }
 
             Statistic.Event.GoBack -> {
@@ -141,14 +137,16 @@ class StatisticFragment :
         AdminScaffold(
             title = stringResource(R.string.title_statistic),
             actionButton = {
-                LoadingButton(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_product_statistic_load,
-                    onClick = {
-                        onAction(Statistic.Action.LoadStatisticClick)
-                    },
-                    isLoading = false
-                )
+                if (statisticViewState.error == null) {
+                    LoadingButton(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        textStringId = R.string.action_product_statistic_load,
+                        onClick = {
+                            onAction(Statistic.Action.LoadStatisticClick)
+                        },
+                        isLoading = statisticViewState.isLoading
+                    )
+                }
             }
         ) {
             Column {
@@ -171,58 +169,76 @@ class StatisticFragment :
                     }
                 )
 
-                LazyColumn(
-                    contentPadding = PaddingValues(
-                        top = 8.dp,
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(statisticViewState.statisticList) { statisticItemModel ->
-                        AdminCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            clickable = false
+                when {
+                    statisticViewState.error != null -> {
+                        ErrorScreen(
+                            mainTextId = R.string.error_common_loading_failed,
+                            isLoading = statisticViewState.isLoading
                         ) {
-                            Row(
+                            onAction(Statistic.Action.LoadStatisticClick)
+                        }
+                    }
+
+                    else -> {
+                        StatisticSuccessScreen(statisticViewState)
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun StatisticSuccessScreen(statisticViewState: StatisticViewState) {
+        LazyColumn(
+            contentPadding = PaddingValues(
+                top = 8.dp,
+                start = 16.dp,
+                end = 16.dp,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
+            ),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(statisticViewState.statisticList) { statisticItemModel ->
+                AdminCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    clickable = false
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(
+                                vertical = 8.dp,
+                                horizontal = 16.dp
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .weight(1f),
+                            text = statisticItemModel.period,
+                            style = AdminTheme.typography.titleSmall,
+                            color = AdminTheme.colors.main.onSurface
+                        )
+                        Column(
+                            modifier = Modifier
+                                .padding(
+                                    start = 8.dp
+                                ),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = statisticItemModel.count,
+                                style = AdminTheme.typography.bodySmall,
+                                color = AdminTheme.colors.main.onSurface
+                            )
+                            Text(
                                 modifier = Modifier
                                     .padding(
-                                        vertical = 8.dp,
-                                        horizontal = 16.dp
+                                        top = 4.dp
                                     ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .weight(1f),
-                                    text = statisticItemModel.period,
-                                    style = AdminTheme.typography.titleSmall,
-                                    color = AdminTheme.colors.main.onSurface
-                                )
-                                Column(
-                                    modifier = Modifier
-                                        .padding(
-                                            start = 8.dp
-                                        ),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = statisticItemModel.count,
-                                        style = AdminTheme.typography.bodySmall,
-                                        color = AdminTheme.colors.main.onSurface
-                                    )
-                                    Text(
-                                        modifier = Modifier
-                                            .padding(
-                                                top = 4.dp
-                                            ),
-                                        text = statisticItemModel.proceeds,
-                                        style = AdminTheme.typography.bodyMedium.bold,
-                                        color = AdminTheme.colors.main.onSurface
-                                    )
-                                }
-                            }
+                                text = statisticItemModel.proceeds,
+                                style = AdminTheme.typography.bodyMedium.bold,
+                                color = AdminTheme.colors.main.onSurface
+                            )
                         }
                     }
                 }
@@ -253,7 +269,9 @@ class StatisticFragment :
                         )
                     ),
                     selectedCafe = "Все кафе",
-                    period = "По годам"
+                    period = "По годам",
+                    isLoading = false,
+                    error = null
                 ),
                 onAction = {}
             )

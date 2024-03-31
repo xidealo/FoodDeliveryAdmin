@@ -30,19 +30,12 @@ class StatisticViewModel @Inject constructor(
     )
 ) {
 
-    private val allCafes = Statistic.SelectedCafe(
-        uuid = null,
-        address = null
-    )
-
-    private var loadStatisticJob: Job? = null
-
     override fun reduce(action: Statistic.Action, dataState: Statistic.ViewDataState) {
         when (action) {
             is Statistic.Action.Init -> {
                 setState {
                     copy(
-                        selectedCafe = allCafes,
+                        selectedCafe = null,
                         selectedTimeInterval = Statistic.TimeIntervalCode.MONTH
                     )
                 }
@@ -72,7 +65,11 @@ class StatisticViewModel @Inject constructor(
                 }
             },
             onError = { throwable ->
-
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }
@@ -91,7 +88,7 @@ class StatisticViewModel @Inject constructor(
                         uuid = cafe.uuid,
                         address = cafe.address
                     )
-                } ?: allCafes
+                }
 
                 setState {
                     copy(
@@ -101,7 +98,11 @@ class StatisticViewModel @Inject constructor(
                 }
             },
             onError = { throwable ->
-
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }
@@ -120,7 +121,11 @@ class StatisticViewModel @Inject constructor(
                 }
             },
             onError = { throwable ->
-
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }
@@ -139,8 +144,7 @@ class StatisticViewModel @Inject constructor(
         cafeUuid: String?,
         period: Statistic.TimeIntervalCode
     ) {
-        loadStatisticJob?.cancel()
-        loadStatisticJob = viewModelScope.launchSafe(
+        viewModelScope.launchSafe(
             block = {
                 setState {
                     copy(isLoading = true)
@@ -160,25 +164,21 @@ class StatisticViewModel @Inject constructor(
                     setState {
                         copy(
                             statisticList = statisticItemList,
-                            isLoading = false
+                            isLoading = false,
+                            error = null
                         )
                     }
                 }
             },
             onError = { throwable ->
-
+                setState {
+                    copy(
+                        error = throwable,
+                        isLoading = false
+                    )
+                }
             }
         )
-    }
-
-    fun onRetryClicked(retryAction: Statistic.RetryAction) {
-        when (retryAction) {
-            Statistic.RetryAction.LOAD_CAFE_LIST -> updateData()
-            Statistic.RetryAction.LOAD_STATISTIC -> loadStatistic(
-                cafeUuid = null,
-                period = Statistic.TimeIntervalCode.MONTH
-            )
-        }
     }
 
     private fun updateData() {
@@ -187,7 +187,11 @@ class StatisticViewModel @Inject constructor(
                 getCafeListUseCase()
             },
             onError = { throwable ->
-
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }
