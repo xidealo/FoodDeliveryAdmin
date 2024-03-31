@@ -39,6 +39,7 @@ class StatisticViewModel @Inject constructor(
 
     override fun reduce(action: Statistic.Action, dataState: Statistic.ViewDataState) {
         when (action) {
+
             is Statistic.Action.Init -> {
                 setState {
                     copy(
