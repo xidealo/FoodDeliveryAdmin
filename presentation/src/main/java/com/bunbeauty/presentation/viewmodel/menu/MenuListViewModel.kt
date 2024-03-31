@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 // TODO TESTS
 @HiltViewModel
-class MenuViewModel @Inject constructor(
+class MenuListViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
     private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,

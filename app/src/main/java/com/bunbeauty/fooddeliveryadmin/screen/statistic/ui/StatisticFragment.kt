@@ -64,7 +64,16 @@ class StatisticFragment :
 
     override fun mapState(state: Statistic.ViewDataState): StatisticViewState {
         return StatisticViewState(
-            statisticList = state.statisticList.toPersistentList(),
+            statisticList = state.statisticList.map { statisticItemModel ->
+                StatisticViewState.StatisticItemModel(
+                    startMillis = statisticItemModel.startMillis,
+                    period = statisticItemModel.period,
+                    count = resources.getString(R.string.msg_statistic_orders, statisticItemModel.count),
+                    proceeds = statisticItemModel.proceeds,
+                    date = statisticItemModel.date
+
+                )
+            }.toPersistentList(),
             selectedCafe = state.selectedCafe?.address
                 ?: resources.getString(R.string.msg_statistic_all_cafes),
             period = getTimeIntervalName(
@@ -228,14 +237,14 @@ class StatisticFragment :
             StatisticScreen(
                 statisticViewState = StatisticViewState(
                     statisticList = persistentListOf(
-                        Statistic.ViewDataState.StatisticItemModel(
+                        StatisticViewState.StatisticItemModel(
                             startMillis = 3064,
                             period = "апрель",
                             count = "Заказов: 20",
                             proceeds = "2000 $",
                             date = "ssss"
                         ),
-                        Statistic.ViewDataState.StatisticItemModel(
+                        StatisticViewState.StatisticItemModel(
                             startMillis = 3064,
                             period = "май",
                             count = "Заказов: 387",

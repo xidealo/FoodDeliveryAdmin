@@ -10,7 +10,6 @@ interface IStringUtil {
     fun getOrderCodeString(orderCode: String): String
     fun getReceiveMethodString(isDelivery: Boolean): String
     fun getProductCountString(count: Int): String
-    fun getOrderCountString(count: Int): String
     fun getOrderStatusString(orderStatus: OrderStatus): String
     fun getOrderAddressString(address: OrderAddress): String
     fun getOrderStatusByString(orderStatus:String?): OrderStatus

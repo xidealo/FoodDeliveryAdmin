@@ -44,13 +44,13 @@ import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.model.MenuEvent
 import com.bunbeauty.presentation.model.MenuProductItem
 import com.bunbeauty.presentation.model.MenuUiState
-import com.bunbeauty.presentation.viewmodel.menu.MenuViewModel
+import com.bunbeauty.presentation.viewmodel.menu.MenuListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MenuFragment : BaseFragment<LayoutComposeBinding>() {
+class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
 
-    override val viewModel: MenuViewModel by viewModels()
+    override val viewModel: MenuListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,7 +70,7 @@ class MenuFragment : BaseFragment<LayoutComposeBinding>() {
             when (event) {
                 is MenuEvent.GoToEditMenuProduct -> {
                     findNavController().navigateSafe(
-                        MenuFragmentDirections.toEditMenuProductFragment(event.uuid)
+                        MenuListFragmentDirections.toEditMenuProductFragment(event.uuid)
                     )
                 }
             }

@@ -7,7 +7,15 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Stable
 data class StatisticViewState(
-    val statisticList: ImmutableList<Statistic.ViewDataState.StatisticItemModel>,
+    val statisticList: ImmutableList<StatisticItemModel>,
     val selectedCafe: String,
     val period: String
-) : BaseViewState
+) : BaseViewState{
+    data class StatisticItemModel(
+        val startMillis: Long,
+        val period: String,
+        val count: String,
+        val proceeds: String,
+        val date: String
+    )
+}

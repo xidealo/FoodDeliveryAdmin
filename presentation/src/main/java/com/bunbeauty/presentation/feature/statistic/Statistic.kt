@@ -19,7 +19,7 @@ interface Statistic {
         data class StatisticItemModel(
             val startMillis: Long,
             val period: String,
-            val count: String,
+            val count: Int,
             val proceeds: String,
             val date: String
         )

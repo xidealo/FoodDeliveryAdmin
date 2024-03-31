@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.MenuFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.MenuListFragment"
         android:label="MenuFragment">
         <action
             android:id="@+id/to_editMenuProductFragment"
