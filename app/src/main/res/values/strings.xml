@@ -11,7 +11,6 @@
     -->
 
     <!-- COMMON -->
-
     <string name="title_common_can_not_load_data">Не удается загрузить данные</string>
     <string name="title_common_select_date">Выбрать дату</string>
     <string name="title_common_select_time">Выбрать дату</string>
@@ -155,6 +154,12 @@
     <!-- SERVICE -->
     <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
     <string name="msg_notification_info">Ожидание заказов</string>
+
+    <!-- MENU -->
+    <string name="title_menu">Меню</string>
+    <string name="action_menu_positions">Позиции</string>
+    <string name="action_menu_addition_groups">Группы добавок</string>
+    <string name="action_menu_additions">Добавки</string>
 
     <!-- PROFILE -->
     <string name="title_profile">Профиль</string>

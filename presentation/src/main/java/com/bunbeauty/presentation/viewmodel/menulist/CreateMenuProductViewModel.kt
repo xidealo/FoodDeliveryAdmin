@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menu
+package com.bunbeauty.presentation.viewmodel.menulist
 
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menu
+package com.bunbeauty.fooddeliveryadmin.screen.menulist
 
 import android.os.Bundle
 import android.view.View
@@ -41,10 +41,10 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.presentation.model.MenuEvent
+import com.bunbeauty.presentation.model.MenuListEvent
+import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
-import com.bunbeauty.presentation.model.MenuUiState
-import com.bunbeauty.presentation.viewmodel.menu.MenuListViewModel
+import com.bunbeauty.presentation.viewmodel.menulist.MenuListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,17 +58,17 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
 
         binding.root.setContentWithTheme {
             val menuViewState by viewModel.menuState.collectAsStateWithLifecycle()
-            MenuScreen(menuUiState = menuViewState)
+            MenuListScreen(menuListViewState = menuViewState)
             LaunchedEffect(menuViewState.eventList) {
                 handleEventList(menuViewState.eventList)
             }
         }
     }
 
-    private fun handleEventList(eventList: List<MenuEvent>) {
+    private fun handleEventList(eventList: List<MenuListEvent>) {
         eventList.forEach { event ->
             when (event) {
-                is MenuEvent.GoToEditMenuProduct -> {
+                is MenuListEvent.GoToEditMenuProductList -> {
                     findNavController().navigateSafe(
                         MenuListFragmentDirections.toEditMenuProductFragment(event.uuid)
                     )
@@ -79,23 +79,27 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    private fun MenuScreen(menuUiState: MenuUiState) {
+    private fun MenuListScreen(menuListViewState: MenuListViewState) {
         AdminScaffold(
             title = stringResource(R.string.title_bottom_navigation_menu),
             pullRefreshEnabled = true,
-            refreshing = menuUiState.isRefreshing,
+            refreshing = menuListViewState.isRefreshing,
             onRefresh = viewModel::refreshData
         ) {
-            when (val state = menuUiState.state) {
-                is MenuUiState.State.Success -> {
-                    MenuSuccessScreen(state)
+            when (val state = menuListViewState.state) {
+                is MenuListViewState.State.Success -> {
+                    MenuListSuccessScreen(state)
                 }
 
-                is MenuUiState.State.Error -> {
-                    MenuErrorScreen()
+                is MenuListViewState.State.Error -> {
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = viewModel::loadData
+                    )
                 }
 
-                MenuUiState.State.Loading -> {
+                MenuListViewState.State.Loading -> {
                     LoadingScreen()
                 }
             }
@@ -103,8 +107,8 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
     }
 
     @Composable
-    private fun MenuSuccessScreen(
-        state: MenuUiState.State.Success
+    private fun MenuListSuccessScreen(
+        state: MenuListViewState.State.Success
     ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
@@ -118,7 +122,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     )
                 }
                 items(state.visibleMenuProductItems) { visibleMenuProduct ->
-                    MenuProductCard(visibleMenuProduct)
+                    MenuListProductCard(visibleMenuProduct)
                 }
             }
             if (state.hiddenMenuProductItems.isNotEmpty()) {
@@ -130,14 +134,14 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     )
                 }
                 items(state.hiddenMenuProductItems) { hiddenMenuProduct ->
-                    MenuProductCard(hiddenMenuProduct)
+                    MenuListProductCard(hiddenMenuProduct)
                 }
             }
         }
     }
 
     @Composable
-    private fun MenuProductCard(menuProduct: MenuProductItem) {
+    private fun MenuListProductCard(menuProduct: MenuProductItem) {
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
@@ -196,45 +200,30 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
         }
     }
 
-    @Composable
-    private fun MenuErrorScreen() {
-        ErrorScreen(
-            mainTextId = R.string.title_common_can_not_load_data,
-            extraTextId = R.string.msg_common_check_connection_and_retry,
-            onClick = viewModel::loadData
-        )
-    }
-
     @Preview
     @Composable
-    private fun MenuScreenPreview() {
+    private fun MenuListScreenPreview() {
         AdminTheme {
-            MenuScreen(
-                menuUiState = MenuUiState(
-                    state = MenuUiState.State.Success(
+            MenuListScreen(
+                menuListViewState = MenuListViewState(
+                    state = MenuListViewState.State.Success(
                         visibleMenuProductItems = listOf(
                             MenuProductItem(
                                 name = "name",
                                 photoLink = "",
                                 visible = true,
-                                newCost = "500",
-                                oldCost = "1000",
                                 uuid = "asdasd"
                             ),
                             MenuProductItem(
                                 name = "name 1 ",
                                 photoLink = "",
                                 visible = true,
-                                newCost = "500",
-                                oldCost = "1000",
                                 uuid = "asdasd"
                             ),
                             MenuProductItem(
                                 name = "name 2 32423423412ыфвафва вфавафвыафвыавыф3",
                                 photoLink = "",
                                 visible = true,
-                                newCost = "500",
-                                oldCost = "1000",
                                 uuid = "asdasd"
                             )
                         ),
@@ -243,24 +232,18 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                                 name = "name",
                                 photoLink = "",
                                 visible = true,
-                                newCost = "500",
-                                oldCost = "1000",
                                 uuid = "asdasd"
                             ),
                             MenuProductItem(
                                 name = "name 1 ",
                                 photoLink = "",
                                 visible = true,
-                                newCost = "500",
-                                oldCost = "1000",
                                 uuid = "asdasd"
                             ),
                             MenuProductItem(
                                 name = "name 2 32423423412ыфвафва вфавафвыафвыавыф3",
                                 photoLink = "",
                                 visible = true,
-                                newCost = "500",
-                                oldCost = "1000",
                                 uuid = "asdasd"
                             )
                         )

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menu
+package com.bunbeauty.fooddeliveryadmin.screen.menulist
 
 import android.os.Bundle
 import android.view.View
@@ -12,7 +12,7 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentCreateMenuProductBind
 import com.bunbeauty.fooddeliveryadmin.util.getBitmap
 import com.bunbeauty.fooddeliveryadmin.util.startedLaunch
 import com.bunbeauty.presentation.utils.IResourcesProvider
-import com.bunbeauty.presentation.viewmodel.menu.CreateMenuProductViewModel
+import com.bunbeauty.presentation.viewmodel.menulist.CreateMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject

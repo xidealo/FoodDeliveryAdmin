@@ -41,11 +41,6 @@ interface Statistic {
         class OpenTimeIntervalListEvent(val timeIntervalList: List<Option>) : Event
     }
 
-    enum class RetryAction {
-        LOAD_CAFE_LIST,
-        LOAD_STATISTIC
-    }
-
     data class SelectedCafe(
         val uuid: String?,
         val address: String?

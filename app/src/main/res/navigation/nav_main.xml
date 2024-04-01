@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.MenuListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.MenuListFragment"
         android:label="MenuFragment">
         <action
             android:id="@+id/to_editMenuProductFragment"
@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/editMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.EditMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.EditMenuProductFragment"
         android:label="EditMenuProductFragment">
         <argument
             android:name="menuProductUuid"
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/createNewMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menu.CreateMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.CreateMenuProductFragment"
         android:label="CreateNewMenuProductFragment"/>
     <fragment
         android:id="@+id/profileFragment"
