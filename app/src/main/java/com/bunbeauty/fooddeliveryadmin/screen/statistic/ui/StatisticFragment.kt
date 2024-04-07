@@ -62,6 +62,7 @@ class StatisticFragment :
         )
     }
 
+    @Composable
     override fun mapState(state: Statistic.ViewDataState): StatisticViewState {
         return StatisticViewState(
             statisticList = state.statisticList.map { statisticItemModel ->

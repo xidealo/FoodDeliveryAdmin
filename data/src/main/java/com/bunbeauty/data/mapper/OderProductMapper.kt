@@ -1,7 +1,7 @@
 package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.server.OrderProductServer
-import com.bunbeauty.domain.model.Addition
+import com.bunbeauty.domain.model.addition.OrderAddition
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
 import javax.inject.Inject
 
@@ -18,8 +18,8 @@ class OderProductMapper @Inject constructor() {
             description = orderProductServer.description,
             comboDescription = orderProductServer.comboDescription,
             barcode = orderProductServer.barcode,
-            additions = orderProductServer.additions.map { additionServer ->
-                Addition(
+            orderAdditions = orderProductServer.additions.map { additionServer ->
+                OrderAddition(
                     uuid = additionServer.uuid,
                     name = additionServer.name,
                     priority = additionServer.priority,

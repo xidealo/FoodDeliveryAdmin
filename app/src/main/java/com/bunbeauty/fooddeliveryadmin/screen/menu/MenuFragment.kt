@@ -1,7 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menu
 
-import android.os.Bundle
-import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -11,12 +9,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.menu.Menu
 import com.bunbeauty.presentation.feature.menu.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,10 +26,6 @@ class MenuFragment :
     BaseComposeFragment<Menu.ViewDataState, MenuViewState, Menu.Action, Menu.Event>() {
 
     override val viewModel: MenuViewModel by viewModels()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     @Composable
     override fun Screen(state: MenuViewState, onAction: (Menu.Action) -> Unit) {
@@ -75,6 +71,7 @@ class MenuFragment :
         }
     }
 
+    @Composable
     override fun mapState(state: Menu.ViewDataState): MenuViewState {
         return MenuViewState(error = state.error)
     }
@@ -82,12 +79,14 @@ class MenuFragment :
     override fun handleEvent(event: Menu.Event) {
         when (event) {
             Menu.Event.OnMenuListClick -> {
+                findNavController().navigateSafe(MenuFragmentDirections.toMenuListProductFragment())
             }
 
             Menu.Event.OnAdditionGroupsListClick -> {
             }
 
             Menu.Event.OnAdditionsListClick -> {
+                findNavController().navigateSafe(MenuFragmentDirections.toAdditionListProductFragment())
             }
         }
     }

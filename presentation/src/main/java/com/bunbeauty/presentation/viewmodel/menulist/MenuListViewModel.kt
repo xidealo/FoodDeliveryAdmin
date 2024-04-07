@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// TODO TESTS
 @HiltViewModel
 class MenuListViewModel @Inject constructor(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,

@@ -139,9 +139,9 @@
     <string name="error_product_updated">Что-то пошло не так</string>
     <string name="hint_edit_menu_product_utils">Ед</string>
 
-    <!--MENU FRAGMENT-->
-    <string name="title_menu_product_visible">Видимые позиции</string>
-    <string name="title_menu_product_hidden">Скрытые позиции</string>
+    <!--MENU LIST FRAGMENT-->
+    <string name="title_position_visible">Видимые позиции</string>
+    <string name="title_position_hidden">Скрытые позиции</string>
 
     <string-array name="utilsList">
         <item>г</item>
@@ -195,5 +195,8 @@
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>
+
+    <!-- ADDITION LIST -->
+    <string name="title_addition_list">Добавки</string>
 
 </resources>

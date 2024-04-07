@@ -84,7 +84,8 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             title = stringResource(R.string.title_bottom_navigation_menu),
             pullRefreshEnabled = true,
             refreshing = menuListViewState.isRefreshing,
-            onRefresh = viewModel::refreshData
+            onRefresh = viewModel::refreshData,
+            backActionClick = { findNavController().popBackStack() }
         ) {
             when (val state = menuListViewState.state) {
                 is MenuListViewState.State.Success -> {
@@ -117,7 +118,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             if (state.visibleMenuProductItems.isNotEmpty()) {
                 item {
                     Text(
-                        text = stringResource(id = R.string.title_menu_product_visible),
+                        text = stringResource(id = R.string.title_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
                     )
                 }
@@ -128,7 +129,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             if (state.hiddenMenuProductItems.isNotEmpty()) {
                 item {
                     Text(
-                        text = stringResource(id = R.string.title_menu_product_hidden),
+                        text = stringResource(id = R.string.title_position_hidden),
                         style = AdminTheme.typography.titleMedium.bold,
                         modifier = Modifier.padding(top = 8.dp)
                     )

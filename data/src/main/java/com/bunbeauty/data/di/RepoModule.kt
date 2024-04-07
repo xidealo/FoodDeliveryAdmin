@@ -53,4 +53,8 @@ abstract class RepoModule {
     @Binds
     abstract fun bindNonWorkingDayRepository(nonWorkingDayRepository: NonWorkingDayRepository): NonWorkingDayRepo
 
+    @Singleton
+    @Binds
+    abstract fun bindAdditionRepository(additionRepository: AdditionRepository): AdditionRepo
+
 }

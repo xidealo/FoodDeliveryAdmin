@@ -1,10 +1,10 @@
-package com.bunbeauty.data.model.server
+package com.bunbeauty.data.model.server.addition
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AdditionServer(
+data class OrderAdditionServer(
     @SerialName("uuid")
     val uuid: String,
     @SerialName("name")
