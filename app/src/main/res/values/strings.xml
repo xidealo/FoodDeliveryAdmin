@@ -11,7 +11,6 @@
     -->
 
     <!-- COMMON -->
-
     <string name="title_common_can_not_load_data">Не удается загрузить данные</string>
     <string name="title_common_select_date">Выбрать дату</string>
     <string name="title_common_select_time">Выбрать дату</string>
@@ -87,6 +86,7 @@
     <string name="title_statistic_select_time_interval">Выберите период</string>
     <string name="action_product_statistic_load">Загрузить</string>
     <string name="msg_statistic_all_cafes">Все кафе в вашем городе</string>
+    <string name="msg_statistic_orders">Заказов: %d</string>
     <string name="msg_statistic_day_interval">По дням</string>
     <string name="msg_statistic_week_interval">По неделям</string>
     <string name="msg_statistic_month_interval">По месяцам</string>
@@ -142,9 +142,9 @@
     <string name="error_product_updated">Что-то пошло не так</string>
     <string name="hint_edit_menu_product_utils">Ед</string>
 
-    <!--MENU FRAGMENT-->
-    <string name="title_menu_product_visible">Видимые позиции</string>
-    <string name="title_menu_product_hidden">Скрытые позиции</string>
+    <!--MENU LIST FRAGMENT-->
+    <string name="title_position_visible">Видимые позиции</string>
+    <string name="title_position_hidden">Скрытые позиции</string>
 
     <string-array name="utilsList">
         <item>г</item>
@@ -157,6 +157,12 @@
     <!-- SERVICE -->
     <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
     <string name="msg_notification_info">Ожидание заказов</string>
+
+    <!-- MENU -->
+    <string name="title_menu">Меню</string>
+    <string name="action_menu_positions">Позиции</string>
+    <string name="action_menu_addition_groups">Группы добавок</string>
+    <string name="action_menu_additions">Добавки</string>
 
     <!-- PROFILE -->
     <string name="title_profile">Профиль</string>
@@ -192,5 +198,8 @@
 
     <!-- LOGOUT -->
     <string name="title_logout">Выйти из профиля?</string>
+
+    <!-- ADDITION LIST -->
+    <string name="title_addition_list">Добавки</string>
 
 </resources>

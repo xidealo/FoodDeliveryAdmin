@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menu.editmenuproduct
+package com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct
 
 data class EditMenuProductUIState(
     val title: String,

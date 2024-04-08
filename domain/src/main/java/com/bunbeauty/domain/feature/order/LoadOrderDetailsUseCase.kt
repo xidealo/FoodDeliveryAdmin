@@ -21,7 +21,7 @@ class LoadOrderDetailsUseCase @Inject constructor(
             orderDetails.copy(
                 oderProductList = orderDetails.oderProductList.map { oderProduct ->
                     oderProduct.copy(
-                        additions = oderProduct.additions.sortedBy { addition ->
+                        orderAdditions = oderProduct.orderAdditions.sortedBy { addition ->
                             addition.priority
                         }
                     )

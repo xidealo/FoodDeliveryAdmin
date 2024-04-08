@@ -24,11 +24,19 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
 
         return SeparatedMenuProductList(
             visibleList = menuProductList
-                .filter { it.isVisible }
-                .sortedBy { it.name },
+                .filter { menuProduct ->
+                    menuProduct.isVisible
+                }
+                .sortedBy { menuProduct ->
+                    menuProduct.name
+                },
             hiddenList = menuProductList
-                .filterNot { it.isVisible }
-                .sortedBy { it.name },
+                .filterNot { menuProduct ->
+                    menuProduct.isVisible
+                }
+                .sortedBy { menuProduct ->
+                    menuProduct.name
+                },
         )
     }
 }

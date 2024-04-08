@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menu
+package com.bunbeauty.fooddeliveryadmin.screen.menulist
 
 import android.os.Bundle
 import android.view.View
@@ -42,9 +42,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductEvent
-import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductUIState
-import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductViewModel
+import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductEvent
+import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductUIState
+import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -13,13 +13,14 @@ interface Statistic {
         val selectedCafe: SelectedCafe? = null,
         val selectedTimeInterval: TimeIntervalCode = TimeIntervalCode.MONTH,
         val statisticList: List<StatisticItemModel> = emptyList(),
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
+        val error: Throwable? = null
     ) : BaseViewDataState {
 
         data class StatisticItemModel(
             val startMillis: Long,
             val period: String,
-            val count: String,
+            val count: Int,
             val proceeds: String,
             val date: String
         )
@@ -42,12 +43,6 @@ interface Statistic {
         data object GoBack : Event
         class OpenCafeListEvent(val cafeList: List<Cafe>) : Event
         class OpenTimeIntervalListEvent(val timeIntervalList: List<TimeIntervalCode>) : Event
-        class ShowError(val retryAction: RetryAction) : Event
-    }
-
-    enum class RetryAction {
-        LOAD_CAFE_LIST,
-        LOAD_STATISTIC
     }
 
     data class SelectedCafe(

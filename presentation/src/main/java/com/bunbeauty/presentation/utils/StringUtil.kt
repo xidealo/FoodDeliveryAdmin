@@ -65,10 +65,6 @@ class StringUtil @Inject constructor(
         return resourcesProvider.getString(R.string.msg_pieces) + count
     }
 
-    override fun getOrderCountString(count: Int): String {
-        return resourcesProvider.getString(R.string.msg_statistic_orders) + count
-    }
-
     override fun getOrderStatusString(orderStatus: OrderStatus): String {
         return when (orderStatus) {
             NOT_ACCEPTED -> resourcesProvider.getString(R.string.msg_status_not_accepted)

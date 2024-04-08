@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.model.cartproduct
 
 import android.os.Parcelable
-import com.bunbeauty.domain.model.Addition
+import com.bunbeauty.domain.model.addition.OrderAddition
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,5 +18,5 @@ data class OrderProduct(
     val description: String,
     val comboDescription: String?,
     val barcode: Int,
-    val additions: List<Addition>
+    val orderAdditions: List<OrderAddition>
 ) : Parcelable

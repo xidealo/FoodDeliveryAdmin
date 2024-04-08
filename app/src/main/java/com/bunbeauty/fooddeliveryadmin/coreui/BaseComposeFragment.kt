@@ -53,6 +53,7 @@ abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : B
 
     abstract fun handleEvent(event: E)
 
+    @Composable
     abstract fun mapState(state: DS): VS
 
     @Composable

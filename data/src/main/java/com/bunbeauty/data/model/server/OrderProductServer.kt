@@ -1,5 +1,6 @@
 package com.bunbeauty.data.model.server
 
+import com.bunbeauty.data.model.server.addition.OrderAdditionServer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,5 +21,5 @@ data class OrderProductServer(
     val additionsPrice: Int?,
     val barcode: Int = 0,
     @SerialName("additions")
-    val additions: List<AdditionServer>
+    val additions: List<OrderAdditionServer>
 )

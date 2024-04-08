@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menu.editmenuproduct
+package com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException

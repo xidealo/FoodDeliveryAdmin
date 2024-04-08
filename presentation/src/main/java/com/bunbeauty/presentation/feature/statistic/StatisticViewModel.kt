@@ -9,6 +9,7 @@ import com.bunbeauty.domain.feature.statistic.GetCafeListByCityUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.Option
+import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,6 @@ class StatisticViewModel @Inject constructor(
     private val getCafeListUseCase: GetCafeListUseCase,
     private val getCafeListByCityUuidUseCase: GetCafeListByCityUuidUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
-    private val stringUtil: IStringUtil,
     private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase,
 ) : BaseStateViewModel<Statistic.ViewDataState, Statistic.Action, Statistic.Event>(
@@ -30,20 +30,12 @@ class StatisticViewModel @Inject constructor(
     )
 ) {
 
-    private val allCafes = Statistic.SelectedCafe(
-        uuid = null,
-        address = null
-    )
-
-    private var loadStatisticJob: Job? = null
-
     override fun reduce(action: Statistic.Action, dataState: Statistic.ViewDataState) {
         when (action) {
-
             is Statistic.Action.Init -> {
                 setState {
                     copy(
-                        selectedCafe = allCafes,
+                        selectedCafe = null,
                         selectedTimeInterval = Statistic.TimeIntervalCode.MONTH
                     )
                 }
@@ -73,37 +65,55 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun onCafeClicked() {
-        viewModelScope.launch {
-            addEvent {
-                Statistic.Event.OpenCafeListEvent(
-                    getCafeListByCityUuidUseCase()
-                )
+        viewModelScope.launchSafe(
+            block = {
+                addEvent {
+                    Statistic.Event.OpenCafeListEvent(
+                        getCafeListByCityUuidUseCase()
+                    )
+                }
+            },
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
-        }
+        )
     }
 
     fun onCafeSelected(cafeUuid: String?) {
-        viewModelScope.launch {
-            setState {
-                copy(isLoading = true)
-            }
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(isLoading = true)
+                }
 
-            val selectedCafe = cafeUuid?.let { cafeUuid ->
-                getCafeByUuidUseCase(cafeUuid)
-            }?.let { cafe ->
-                Statistic.SelectedCafe(
-                    uuid = cafe.uuid,
-                    address = cafe.address
-                )
-            } ?: allCafes
+                val selectedCafe = cafeUuid?.let { cafeUuid ->
+                    getCafeByUuidUseCase(cafeUuid)
+                }?.let { cafe ->
+                    Statistic.SelectedCafe(
+                        uuid = cafe.uuid,
+                        address = cafe.address
+                    )
+                }
 
-            setState {
-                copy(
-                    selectedCafe = selectedCafe,
-                    isLoading = false
-                )
+                setState {
+                    copy(
+                        selectedCafe = selectedCafe,
+                        isLoading = false
+                    )
+                }
+            },
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
-        }
+        )
     }
 
     fun onGoBackClicked() {
@@ -113,11 +123,9 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun onTimeIntervalClicked() {
-        viewModelScope.launch {
             addEvent {
                 Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
             }
-        }
     }
 
     fun onTimeIntervalSelected(timeInterval: String) {
@@ -134,46 +142,55 @@ class StatisticViewModel @Inject constructor(
         cafeUuid: String?,
         period: Statistic.TimeIntervalCode
     ) {
-        loadStatisticJob?.cancel()
-        loadStatisticJob = viewModelScope.launch {
-            setState {
-                copy(isLoading = true)
-            }
-            getStatisticUseCase(
-                cafeUuid = cafeUuid,
-                period = period.name
-            ).map { statistic ->
-                Statistic.ViewDataState.StatisticItemModel(
-                    startMillis = statistic.startPeriodTime,
-                    period = statistic.period,
-                    count = stringUtil.getOrderCountString(statistic.orderCount),
-                    proceeds = "${statistic.proceeds} ${statistic.currency}",
-                    date = dateTimeUtil.formatDateTime(statistic.startPeriodTime, "MMMM")
-                )
-            }.let { statisticItemList ->
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(isLoading = true)
+                }
+                getStatisticUseCase(
+                    cafeUuid = cafeUuid,
+                    period = period.name
+                ).map { statistic ->
+                    Statistic.ViewDataState.StatisticItemModel(
+                        startMillis = statistic.startPeriodTime,
+                        period = statistic.period,
+                        count = statistic.orderCount,
+                        proceeds = "${statistic.proceeds} ${statistic.currency}",
+                        date = dateTimeUtil.formatDateTime(statistic.startPeriodTime, "MMMM")
+                    )
+                }.let { statisticItemList ->
+                    setState {
+                        copy(
+                            statisticList = statisticItemList,
+                            isLoading = false,
+                            error = null
+                        )
+                    }
+                }
+            },
+            onError = { throwable ->
                 setState {
                     copy(
-                        statisticList = statisticItemList,
+                        error = throwable,
                         isLoading = false
                     )
                 }
             }
-        }
-    }
-
-    fun onRetryClicked(retryAction: Statistic.RetryAction) {
-        when (retryAction) {
-            Statistic.RetryAction.LOAD_CAFE_LIST -> updateData()
-            Statistic.RetryAction.LOAD_STATISTIC -> loadStatistic(
-                cafeUuid = null,
-                period = Statistic.TimeIntervalCode.MONTH
-            )
-        }
+        )
     }
 
     private fun updateData() {
-        viewModelScope.launch {
-            getCafeListUseCase()
-        }
+        viewModelScope.launchSafe(
+            block = {
+                getCafeListUseCase()
+            },
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
+            }
+        )
     }
 }

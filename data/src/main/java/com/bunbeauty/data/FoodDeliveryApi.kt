@@ -3,6 +3,7 @@ package com.bunbeauty.data
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
+import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.menu_product.MenuProductServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
@@ -28,7 +29,11 @@ interface FoodDeliveryApi {
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
-    suspend fun patchCafe(cafeUuid: String, patchCafe: PatchCafeServer, token: String): ApiResult<CafeServer>
+    suspend fun patchCafe(
+        cafeUuid: String,
+        patchCafe: PatchCafeServer,
+        token: String
+    ): ApiResult<CafeServer>
 
     // CITY
     suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>
@@ -83,10 +88,13 @@ interface FoodDeliveryApi {
         token: String,
         postNonWorkingDay: PostNonWorkingDayServer,
     ): ApiResult<NonWorkingDayServer>
+
     suspend fun patchNonWorkingDay(
         token: String,
         uuid: String,
         patchNonWorkingDay: PatchNonWorkingDayServer
     ): ApiResult<NonWorkingDayServer>
 
+    //ADDITION LIST
+    suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>>
 }

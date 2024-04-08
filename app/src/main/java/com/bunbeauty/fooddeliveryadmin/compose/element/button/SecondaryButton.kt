@@ -38,7 +38,7 @@ fun SecondaryButton(
                 color = AdminTheme.colors.main.onSecondary
             ),
             shape = AdminButtonDefaults.buttonShape,
-            elevation = AdminButtonDefaults.getButtonElevation(false),
+            elevation = AdminButtonDefaults.getButtonElevation(elevated),
             enabled = isEnabled
         ) {
             Text(
