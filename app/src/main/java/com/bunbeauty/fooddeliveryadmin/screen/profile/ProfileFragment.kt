@@ -154,12 +154,15 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
                 ProfileEvent.OpenSettingsEvent -> {
                     findNavController().navigateSafe(toSettingsFragment())
                 }
+
                 ProfileEvent.OpenCafeListEvent -> {
                     findNavController().navigateSafe(toCafeListFragment())
                 }
+
                 ProfileEvent.OpenStatisticEvent -> {
                     findNavController().navigateSafe(toStatisticFragment())
                 }
+
                 ProfileEvent.OpenLogoutEvent -> {
                     lifecycleScope.launch {
                         LogoutBottomSheet.show(parentFragmentManager)?.let { confirmed ->

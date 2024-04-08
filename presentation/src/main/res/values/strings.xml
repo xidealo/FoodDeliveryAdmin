@@ -48,9 +48,7 @@
     <!-- STATISTIC -->
     <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>
-    <string name="msg_statistic_day_interval">По дням</string>
-    <string name="msg_statistic_week_interval">По неделям</string>
-    <string name="msg_statistic_month_interval">По месяцам</string>
+
 
     <!-- PRODUCT CODE -->
     <string name="msg_product_code_combo">Комбо</string>

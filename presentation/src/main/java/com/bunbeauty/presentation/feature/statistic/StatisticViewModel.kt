@@ -60,6 +60,15 @@ class StatisticViewModel @Inject constructor(
             Statistic.Action.SelectCafeClick -> {
                 onCafeClicked()
             }
+
+            Statistic.Action.SelectTimeIntervalClick -> {
+                onTimeIntervalClicked()
+            }
+
+            Statistic.Action.SelectGoBackClick -> {
+                onGoBackClicked()
+            }
+
         }
     }
 
@@ -97,16 +106,16 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
+    fun onGoBackClicked() {
+        addEvent {
+            Statistic.Event.GoBack
+        }
+    }
+
     fun onTimeIntervalClicked() {
         viewModelScope.launch {
-            val timeIntervalList = Statistic.TimeIntervalCode.entries.map { timeInterval ->
-                Option(
-                    id = timeInterval.name,
-                    title = timeInterval.name
-                )
-            }
             addEvent {
-                Statistic.Event.OpenTimeIntervalListEvent(timeIntervalList)
+                Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
             }
         }
     }

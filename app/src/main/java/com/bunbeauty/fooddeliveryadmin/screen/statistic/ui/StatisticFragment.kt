@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
@@ -75,9 +76,9 @@ class StatisticFragment :
 
     private fun getTimeIntervalName(timeInterval: Statistic.TimeIntervalCode): String {
         return when (timeInterval) {
-            Statistic.TimeIntervalCode.DAY -> resources.getString(com.bunbeauty.presentation.R.string.msg_statistic_day_interval)
-            Statistic.TimeIntervalCode.WEEK -> resources.getString(com.bunbeauty.presentation.R.string.msg_statistic_week_interval)
-            Statistic.TimeIntervalCode.MONTH -> resources.getString(com.bunbeauty.presentation.R.string.msg_statistic_month_interval)
+            Statistic.TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
+            Statistic.TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
+            Statistic.TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
         }
     }
 
@@ -88,7 +89,7 @@ class StatisticFragment :
             }
 
             is Statistic.Event.OpenTimeIntervalListEvent -> {
-                openTimeIntervals(event.timeIntervalList)
+                openTimeIntervals(buildOptionList(event))          // дублировать с кафе листа
             }
 
             is Statistic.Event.ShowError -> {
@@ -99,7 +100,8 @@ class StatisticFragment :
                 }
             }
 
-            Statistic.Event.GoBack -> {
+            is Statistic.Event.GoBack -> {
+                findNavController().navigateUp()
             }
         }
     }
@@ -124,13 +126,23 @@ class StatisticFragment :
         return optionsList
     }
 
+    private fun buildOptionList(event: Statistic.Event.OpenTimeIntervalListEvent): List<Option> {
+        return event.timeIntervalList.map { timeInterval ->
+            Option(
+                id = timeInterval.name,
+                title = getTimeIntervalName(timeInterval),
+                )
+        }
+    }
+
     @Composable
     private fun StatisticScreen(
         statisticViewState: StatisticViewState,
-        onAction: (Statistic.Action) -> Unit
+        onAction: (Statistic.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_statistic),
+            backActionClick = { onAction(Statistic.Action.SelectGoBackClick) },
             actionButton = {
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -159,6 +171,7 @@ class StatisticFragment :
                         .padding(horizontal = 16.dp),
                     label = statisticViewState.period,
                     onClick = {
+                        onAction(Statistic.Action.SelectTimeIntervalClick)
                     }
                 )
 
@@ -246,7 +259,7 @@ class StatisticFragment :
                     selectedCafe = "Все кафе",
                     period = "По годам"
                 ),
-                onAction = {}
+                onAction = {},
             )
         }
     }
