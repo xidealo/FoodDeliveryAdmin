@@ -106,14 +106,6 @@ class StatisticFragment :
                 openTimeIntervals(buildOptionList(event))          // дублировать с кафе листа
             }
 
-            is Statistic.Event.ShowError -> {
-                lifecycleScope.launch {
-                    ErrorDialog.show(childFragmentManager).let {
-                        viewModel.onRetryClicked(event.retryAction)
-                    }
-                }
-            }
-
             is Statistic.Event.GoBack -> {
                 findNavController().navigateUp()
             }

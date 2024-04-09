@@ -11,7 +11,6 @@ data class SeparatedMenuProductList(
     val hiddenList: List<Addition>
 )
 
-//todo Test
 class GetSeparatedAdditionListUseCase @Inject constructor(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo
