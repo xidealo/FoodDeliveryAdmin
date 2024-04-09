@@ -103,7 +103,7 @@ class StatisticFragment :
             }
 
             is Statistic.Event.OpenTimeIntervalListEvent -> {
-                openTimeIntervals(buildOptionList(event))          // дублировать с кафе листа
+                openTimeIntervals(buildOptionList(event))
             }
 
             is Statistic.Event.GoBack -> {
@@ -140,6 +140,8 @@ class StatisticFragment :
                 )
         }
     }
+
+
 
     @Composable
     private fun StatisticScreen(
@@ -228,7 +230,7 @@ class StatisticFragment :
                         Text(
                             modifier = Modifier
                                 .weight(1f),
-                            text = statisticItemModel.period,
+                            text = statisticItemModel.date,
                             style = AdminTheme.typography.titleSmall,
                             color = AdminTheme.colors.main.onSurface
                         )

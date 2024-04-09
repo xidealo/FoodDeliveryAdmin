@@ -8,6 +8,9 @@ import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeListByCityUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM
+import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
+import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.utils.IStringUtil
@@ -123,9 +126,9 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun onTimeIntervalClicked() {
-            addEvent {
-                Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
-            }
+        addEvent {
+            Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
+        }
     }
 
     fun onTimeIntervalSelected(timeInterval: String) {
@@ -156,7 +159,20 @@ class StatisticViewModel @Inject constructor(
                         period = statistic.period,
                         count = statistic.orderCount,
                         proceeds = "${statistic.proceeds} ${statistic.currency}",
-                        date = dateTimeUtil.formatDateTime(statistic.startPeriodTime, "MMMM")
+                        date = when (period) {
+                            Statistic.TimeIntervalCode.DAY -> dateTimeUtil.formatDateTime(
+                                statistic.startPeriodTime,
+                                PATTERN_DD_MMMM_YYYY
+                            )
+
+                            Statistic.TimeIntervalCode.MONTH -> dateTimeUtil.formatDateTime(
+                                statistic.startPeriodTime,
+                                PATTERN_MMMM
+                            )
+
+                            Statistic.TimeIntervalCode.WEEK -> dateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
+                        }
+
                     )
                 }.let { statisticItemList ->
                     setState {
