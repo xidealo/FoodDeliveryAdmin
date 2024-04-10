@@ -85,7 +85,6 @@ class AdditionListFragment :
                     ) { visibleAddition ->
                         AdditionCard(
                             additionItem = visibleAddition,
-                            visible = true,
                             onAction = onAction
                         )
                     }
@@ -103,7 +102,6 @@ class AdditionListFragment :
                     items(state.hiddenAdditionItems) { hiddenAddition ->
                         AdditionCard(
                             additionItem = hiddenAddition,
-                            visible = false,
                             onAction = onAction
                         )
                     }
@@ -115,7 +113,6 @@ class AdditionListFragment :
     @Composable
     private fun AdditionCard(
         additionItem: AdditionListViewState.AdditionItem,
-        visible: Boolean,
         onAction: (AdditionList.Action) -> Unit
     ) {
         AdminCard(
@@ -153,11 +150,11 @@ class AdditionListFragment :
                         .align(Alignment.CenterVertically)
                         .padding(end = AdminTheme.dimensions.smallSpace),
                     onClick = {
-                        onAction(AdditionList.Action.OnVisibleClick(visible))
+                        onAction(AdditionList.Action.OnVisibleClick(additionItem.isVisible))
                     }
                 ) {
                     Icon(
-                        painter = painterResource(additionItem.icon),
+                        painter = painterResource(R.drawable.ic_visible),
                         contentDescription = null,
                         tint = additionItem.iconColor
                     )
@@ -199,8 +196,8 @@ class AdditionListFragment :
                             uuid = "1",
                             name = "additio1",
                             photoLink = "",
-                            icon = R.drawable.ic_visible,
-                            iconColor = AdminTheme.colors.main.primary
+                            iconColor = AdminTheme.colors.main.primary,
+                            isVisible = true
                         )
                     ),
                     hiddenAdditionItems = persistentListOf(
@@ -208,8 +205,8 @@ class AdditionListFragment :
                             uuid = "2",
                             name = "additio2",
                             photoLink = "",
-                            icon = R.drawable.ic_visible,
-                            iconColor = AdminTheme.colors.main.primary
+                            iconColor = AdminTheme.colors.main.primary,
+                            isVisible = false
                         )
                     ),
                     isRefreshing = false,
