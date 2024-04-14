@@ -10,7 +10,6 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetSeparatedAdditionListUseCaseTest {
@@ -32,6 +31,10 @@ class GetSeparatedAdditionListUseCaseTest {
         // Given
         val token = "token"
         val isRefreshing = true
+        val expectedSeparatedAdditionList = SeparatedAdditionList(
+            visibleList = emptyList(),
+            hiddenList = emptyList()
+        )
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery {
             additionRepo.getAdditionList(
@@ -41,10 +44,9 @@ class GetSeparatedAdditionListUseCaseTest {
         } returns emptyList()
 
         // When
-        val separatedMenuProductList = useCase()
+        val separatedAdditionList = useCase()
         // Then
-        assertTrue(separatedMenuProductList.visibleList.isEmpty())
-        assertTrue(separatedMenuProductList.hiddenList.isEmpty())
+        assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
     }
 
     @Test
@@ -53,6 +55,27 @@ class GetSeparatedAdditionListUseCaseTest {
             // Given
             val token = "token"
             val isRefreshing = true
+            val expectedSeparatedAdditionList = SeparatedAdditionList(
+                visibleList = emptyList(),
+                hiddenList = listOf(
+                    additionMock.copy(
+                        uuid = "uuid1",
+                        isVisible = false
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid2",
+                        isVisible = false
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid3",
+                        isVisible = false
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid4",
+                        isVisible = false
+                    ),
+                )
+            )
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
@@ -78,18 +101,40 @@ class GetSeparatedAdditionListUseCaseTest {
                 ),
             )
             // When
-            val separatedMenuProductList = useCase()
+            val separatedAdditionList = useCase()
             // Then
-            assertTrue(separatedMenuProductList.visibleList.isEmpty())
-            assertTrue(separatedMenuProductList.hiddenList.isNotEmpty())
+            assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
 
-        @Test
+    @Test
     fun `return empty hidden products when additionRepo return list with full isVisible`() =
         runTest {
             // Given
             val token = "token"
             val isRefreshing = true
+
+            val expectedSeparatedAdditionList = SeparatedAdditionList(
+                visibleList = listOf(
+                    additionMock.copy(
+                        uuid = "uuid1",
+                        isVisible = true
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid2",
+                        isVisible = true
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid3",
+                        isVisible = true
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid4",
+                        isVisible = true
+                    ),
+                ),
+                hiddenList = emptyList()
+            )
+
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
@@ -115,10 +160,9 @@ class GetSeparatedAdditionListUseCaseTest {
                 ),
             )
             // When
-            val separatedMenuProductList = useCase()
+            val separatedAdditionList = useCase()
             // Then
-            assertTrue(separatedMenuProductList.visibleList.isNotEmpty())
-            assertTrue(separatedMenuProductList.hiddenList.isEmpty())
+            assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
 
     @Test
@@ -127,6 +171,34 @@ class GetSeparatedAdditionListUseCaseTest {
             // Given
             val token = "token"
             val isRefreshing = true
+
+            val expectedSeparatedAdditionList = SeparatedAdditionList(
+                visibleList = listOf(
+                    additionMock.copy(
+                        uuid = "uuid3",
+                        isVisible = true
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid4",
+                        isVisible = true
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid5",
+                        isVisible = true
+                    ),
+                ),
+                hiddenList = listOf(
+                    additionMock.copy(
+                        uuid = "uuid1",
+                        isVisible = false
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid2",
+                        isVisible = false
+                    ),
+                )
+            )
+
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
@@ -156,12 +228,10 @@ class GetSeparatedAdditionListUseCaseTest {
                 ),
             )
             // When
-            val separatedMenuProductList = useCase()
+            val separatedAdditionList = useCase()
             // Then
-            assertTrue(separatedMenuProductList.visibleList.size == 3)
-            assertTrue(separatedMenuProductList.hiddenList.size == 2)
+            assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
-
 
     @Test
     fun `return sorted by name started with A and finished with Z when additionRepo has not empty list`() =
@@ -194,10 +264,10 @@ class GetSeparatedAdditionListUseCaseTest {
                 ),
             )
             // When
-            val separatedMenuProductList = useCase()
+            val separatedAdditionList = useCase()
             // Then
-            assertEquals(separatedMenuProductList.visibleList.first().name, "A")
-            assertEquals(separatedMenuProductList.visibleList.last().name, "Z")
+            assertEquals(separatedAdditionList.visibleList.first().name, "A")
+            assertEquals(separatedAdditionList.visibleList.last().name, "Z")
         }
 
     private val additionMock = Addition(

@@ -4,6 +4,7 @@ import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
+import com.bunbeauty.domain.usecase.SeparatedMenuProductList
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,10 +13,9 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetSeparatedAdditionListUseCaseTest {
+class GetSeparatedMenuProductListUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val menuProductRepo: MenuProductRepo = mockk()
@@ -34,6 +34,10 @@ class GetSeparatedAdditionListUseCaseTest {
         // Given
         val companyUuid = "companyUuid"
         val isRefreshing = false
+        val expectedSeparatedMenuProductList = SeparatedMenuProductList(
+            visibleList = emptyList(),
+            hiddenList = emptyList()
+        )
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
         coEvery {
             menuProductRepo.getMenuProductList(
@@ -45,8 +49,7 @@ class GetSeparatedAdditionListUseCaseTest {
         // When
         val separatedMenuProductList = useCase(isRefreshing)
         // Then
-        assertTrue(separatedMenuProductList.visibleList.isEmpty())
-        assertTrue(separatedMenuProductList.hiddenList.isEmpty())
+        assertEquals(expectedSeparatedMenuProductList, separatedMenuProductList)
     }
 
     @Test
@@ -54,6 +57,27 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             val companyUuid = "companyUuid"
             val isRefreshing = false
+            val expectedSeparatedMenuProductList = SeparatedMenuProductList(
+                visibleList = emptyList(),
+                hiddenList = listOf(
+                    menuProductMock.copy(
+                        uuid = "uuid1",
+                        isVisible = false
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid2",
+                        isVisible = false
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid3",
+                        isVisible = false
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid4",
+                        isVisible = false
+                    ),
+                )
+            )
             coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
             coEvery {
                 menuProductRepo.getMenuProductList(
@@ -81,8 +105,7 @@ class GetSeparatedAdditionListUseCaseTest {
             // When
             val separatedMenuProductList = useCase(isRefreshing)
             // Then
-            assertTrue(separatedMenuProductList.visibleList.isEmpty())
-            assertTrue(separatedMenuProductList.hiddenList.isNotEmpty())
+            assertEquals(expectedSeparatedMenuProductList, separatedMenuProductList)
         }
 
     @Test
@@ -90,6 +113,28 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             val companyUuid = "companyUuid"
             val isRefreshing = false
+            val expectedSeparatedMenuProductList = SeparatedMenuProductList(
+                visibleList = listOf(
+                    menuProductMock.copy(
+                        uuid = "uuid1",
+                        isVisible = true
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid2",
+                        isVisible = true
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid3",
+                        isVisible = true
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid4",
+                        isVisible = true
+                    ),
+                ),
+                hiddenList = emptyList()
+            )
+
             coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
             coEvery {
                 menuProductRepo.getMenuProductList(
@@ -117,8 +162,7 @@ class GetSeparatedAdditionListUseCaseTest {
             // When
             val separatedMenuProductList = useCase(isRefreshing)
             // Then
-            assertTrue(separatedMenuProductList.visibleList.isNotEmpty())
-            assertTrue(separatedMenuProductList.hiddenList.isEmpty())
+            assertEquals(expectedSeparatedMenuProductList, separatedMenuProductList)
         }
 
     @Test
@@ -126,6 +170,32 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             val companyUuid = "companyUuid"
             val isRefreshing = false
+            val expectedSeparatedMenuProductList = SeparatedMenuProductList(
+                visibleList = listOf(
+                    menuProductMock.copy(
+                        uuid = "uuid3",
+                        isVisible = true
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid4",
+                        isVisible = true
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid5",
+                        isVisible = true
+                    ),
+                ),
+                hiddenList = listOf(
+                    menuProductMock.copy(
+                        uuid = "uuid1",
+                        isVisible = false
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid2",
+                        isVisible = false
+                    ),
+                )
+            )
             coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
             coEvery {
                 menuProductRepo.getMenuProductList(
@@ -157,16 +227,35 @@ class GetSeparatedAdditionListUseCaseTest {
             // When
             val separatedMenuProductList = useCase(isRefreshing)
             // Then
-            assertTrue(separatedMenuProductList.visibleList.size == 3)
-            assertTrue(separatedMenuProductList.hiddenList.size == 2)
+            assertEquals(expectedSeparatedMenuProductList, separatedMenuProductList)
         }
-
 
     @Test
     fun `return sorted by name started with A and finished with Z when menuProductRepo has not empty list`() =
         runTest {
             val companyUuid = "companyUuid"
             val isRefreshing = false
+            val expectedSeparatedMenuProductList = SeparatedMenuProductList(
+                visibleList = listOf(
+                    menuProductMock.copy(
+                        uuid = "uuid2",
+                        name = "A"
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid3",
+                        name = "B"
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid4",
+                        name = "C"
+                    ),
+                    menuProductMock.copy(
+                        uuid = "uuid5",
+                        name = "Z"
+                    ),
+                ),
+                hiddenList = emptyList()
+            )
             coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
             coEvery {
                 menuProductRepo.getMenuProductList(
@@ -179,12 +268,12 @@ class GetSeparatedAdditionListUseCaseTest {
                     name = "A"
                 ),
                 menuProductMock.copy(
-                    uuid = "uuid3",
-                    name = "B"
-                ),
-                menuProductMock.copy(
                     uuid = "uuid4",
                     name = "C"
+                ),
+                menuProductMock.copy(
+                    uuid = "uuid3",
+                    name = "B"
                 ),
                 menuProductMock.copy(
                     uuid = "uuid5",
@@ -194,8 +283,8 @@ class GetSeparatedAdditionListUseCaseTest {
             // When
             val separatedMenuProductList = useCase(isRefreshing)
             // Then
-            assertEquals(separatedMenuProductList.visibleList.first().name, "A")
-            assertEquals(separatedMenuProductList.visibleList.last().name, "Z")
+            assertEquals(expectedSeparatedMenuProductList, separatedMenuProductList)
+
         }
 
     private val menuProductMock = MenuProduct(
