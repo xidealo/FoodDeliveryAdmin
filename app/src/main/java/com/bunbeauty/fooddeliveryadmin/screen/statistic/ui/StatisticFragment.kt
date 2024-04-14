@@ -136,17 +136,15 @@ class StatisticFragment :
         return event.timeIntervalList.map { timeInterval ->
             Option(
                 id = timeInterval.name,
-                title = getTimeIntervalName(timeInterval),
-                )
+                title = getTimeIntervalName(timeInterval)
+            )
         }
     }
-
-
 
     @Composable
     private fun StatisticScreen(
         statisticViewState: StatisticViewState,
-        onAction: (Statistic.Action) -> Unit,
+        onAction: (Statistic.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_statistic),
@@ -289,7 +287,7 @@ class StatisticFragment :
                     isLoading = false,
                     error = null
                 ),
-                onAction = {},
+                onAction = {}
             )
         }
     }

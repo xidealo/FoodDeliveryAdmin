@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 import com.bunbeauty.domain.model.addition.Addition
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
