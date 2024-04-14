@@ -57,4 +57,8 @@ abstract class RepoModule {
     @Binds
     abstract fun bindAdditionRepository(additionRepository: AdditionRepository): AdditionRepo
 
+    @Singleton
+    @Binds
+    abstract fun bindAdditionGroupRepository(additionGroupRepository: AdditionGroupRepository): AdditionGroupRepo
+
 }

@@ -6,7 +6,7 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import javax.inject.Inject
 
-data class SeparatedMenuProductList(
+data class SeparatedAdditionList(
     val visibleList: List<Addition>,
     val hiddenList: List<Addition>
 )
@@ -15,11 +15,11 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(): SeparatedMenuProductList {
+    suspend operator fun invoke(): SeparatedAdditionList {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val additionList = additionRepo.getAdditionList(token = token)
 
-        return SeparatedMenuProductList(
+        return SeparatedAdditionList(
             visibleList = additionList
                 .filter { addition ->
                     addition.isVisible

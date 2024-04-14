@@ -8,6 +8,7 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.city.CityServer
@@ -293,6 +294,12 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>> {
         return get(
             path = "addition",
+            token = token
+        )
+    }
+    override suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>> {
+        return get(
+            path = "addition_group",
             token = token
         )
     }

@@ -180,8 +180,8 @@
     <string name="title_cafe_list">Рестораны</string>
     <string name="msg_cafe_open">Открыто</string>
     <plurals name="msg_cafe_close_soon">
-         <item quantity="one">Открыто. Закроется через %d минуту</item>
-         <item quantity="few">Открыто. Закроется через %d минуты</item>
+        <item quantity="one">Открыто. Закроется через %d минуту</item>
+        <item quantity="few">Открыто. Закроется через %d минуты</item>
         <item quantity="other">Открыто. Закроется через %d минут</item>
     </plurals>
     <string name="msg_cafe_closed">Закрыто</string>
@@ -201,5 +201,9 @@
 
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
+
+
+    <!-- ADDITION GROUP LIST -->
+    <string name="title_addition_group_list">Группы добавок</string>
 
 </resources>

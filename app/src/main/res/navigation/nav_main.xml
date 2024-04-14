@@ -137,12 +137,21 @@
         <action
             android:id="@+id/to_AdditionListProductFragment"
             app:destination="@id/additionListFragment" />
+        <action
+            android:id="@+id/to_AdditionGroupListProductFragment"
+            app:destination="@id/additionGroupListFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/additionListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additionlist.AdditionListFragment"
         android:label="AdditionListFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/additionGroupListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.AdditionGroupListFragment"
+        android:label="AdditionGroupListFragment">
     </fragment>
 
     <fragment

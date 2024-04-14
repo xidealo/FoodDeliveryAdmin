@@ -83,6 +83,7 @@ class MenuFragment :
             }
 
             Menu.Event.OnAdditionGroupsListClick -> {
+                findNavController().navigateSafe(MenuFragmentDirections.toAdditionGroupListProductFragment())
             }
 
             Menu.Event.OnAdditionsListClick -> {

@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetSeparatedMenuProductListUseCaseTest {
+class GetSeparatedAdditionListUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val menuProductRepo: MenuProductRepo = mockk()
