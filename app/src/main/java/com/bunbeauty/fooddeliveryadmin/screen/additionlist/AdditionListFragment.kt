@@ -150,7 +150,12 @@ class AdditionListFragment :
                         .align(Alignment.CenterVertically)
                         .padding(end = AdminTheme.dimensions.smallSpace),
                     onClick = {
-                        onAction(AdditionList.Action.OnVisibleClick(additionItem.isVisible))
+                        onAction(
+                            AdditionList.Action.OnVisibleClick(
+                                isVisible = additionItem.isVisible,
+                                uuid = additionItem.uuid
+                            )
+                        )
                     }
                 ) {
                     Icon(

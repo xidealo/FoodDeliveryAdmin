@@ -7,6 +7,7 @@ import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
+import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
@@ -296,6 +297,20 @@ class FoodDeliveryApiImpl @Inject constructor(
             token = token
         )
     }
+
+    override suspend fun patchAddition(
+        additionUuid: String,
+        additionPatchServer: AdditionPatchServer,
+        token: String
+    ): ApiResult<AdditionServer> {
+        return patch(
+            path = "addition",
+            body = additionPatchServer,
+            parameters = mapOf("uuid" to additionUuid),
+            token = token
+        )
+    }
+
 
     private suspend inline fun <reified T> get(
         path: String,
