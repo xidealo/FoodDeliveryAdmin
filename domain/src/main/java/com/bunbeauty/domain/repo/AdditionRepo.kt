@@ -2,8 +2,7 @@ package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.addition.UpdateAddition
-import com.bunbeauty.domain.model.menuproduct.MenuProduct
-import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
+
 
 interface AdditionRepo {
     /*GET*/
