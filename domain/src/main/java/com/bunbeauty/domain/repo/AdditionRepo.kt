@@ -1,8 +1,8 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.addition.Addition
-import com.bunbeauty.domain.model.menuproduct.MenuProduct
-import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
+import com.bunbeauty.domain.model.addition.UpdateAddition
+
 
 interface AdditionRepo {
     /*GET*/
@@ -15,8 +15,9 @@ interface AdditionRepo {
 
     /*UPDATE*/
     suspend fun updateAddition(
+        updateAddition: UpdateAddition,
         token: String,
-        addition: Addition,
+        additionUuid: String,
     )
 
     /*DELETE*/

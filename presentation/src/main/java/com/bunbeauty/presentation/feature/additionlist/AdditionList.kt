@@ -18,7 +18,7 @@ interface AdditionList {
 
         data object Init : Action
         data object OnAdditionClick : Action
-        data class OnVisibleClick(val isVisible: Boolean) : Action
+        data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action
     }
 

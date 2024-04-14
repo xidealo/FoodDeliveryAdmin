@@ -2,14 +2,17 @@ package com.bunbeauty.presentation.feature.additionlist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
+import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AdditionListViewModel @Inject constructor(
-    private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase
+    private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
+    private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase,
 ) : BaseStateViewModel<AdditionList.ViewDataState, AdditionList.Action, AdditionList.Event>(
     initState = AdditionList.ViewDataState(
         visibleAdditions = listOf(),
@@ -30,10 +33,21 @@ class AdditionListViewModel @Inject constructor(
             }
 
             is AdditionList.Action.OnVisibleClick -> {
-
+                updateVisible(uuid = action.uuid, isVisible = action.isVisible)
             }
 
             AdditionList.Action.Init -> loadData()
+        }
+    }
+
+
+    fun updateVisible(uuid: String, isVisible: Boolean) {
+        viewModelScope.launch() {
+            updateVisibleAdditionUseCase(
+                additionUuid = uuid,
+                isVisible = !isVisible
+            )
+            loadData()
         }
     }
 
@@ -57,7 +71,5 @@ class AdditionListViewModel @Inject constructor(
         )
     }
 
-    private fun updateVisible() {
 
-    }
 }

@@ -3,6 +3,7 @@ package com.bunbeauty.data
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
+import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.menu_product.MenuProductServer
@@ -98,7 +99,11 @@ interface FoodDeliveryApi {
 
     //ADDITION LIST
     suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>>
-
+    suspend fun patchAddition(
+        additionUuid: String,
+        additionPatchServer: AdditionPatchServer,
+        token: String,
+    ): ApiResult<AdditionServer>
 
     //ADDITION GROUP LIST
     suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>>
