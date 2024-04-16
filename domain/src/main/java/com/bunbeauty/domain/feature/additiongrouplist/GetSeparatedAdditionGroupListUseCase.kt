@@ -12,12 +12,12 @@ data class SeparatedAdditionGroupList(
 )
 
 class GetSeparatedAdditionGroupListUseCase @Inject constructor(
-    private val additionGroupRepository: AdditionGroupRepo,
+    private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(): SeparatedAdditionGroupList {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        val additionGroupList = additionGroupRepository.getAdditionGroupList(token = token)
+        val additionGroupList = additionGroupRepo.getAdditionGroupList(token = token)
 
         return SeparatedAdditionGroupList(
             visibleList = additionGroupList
