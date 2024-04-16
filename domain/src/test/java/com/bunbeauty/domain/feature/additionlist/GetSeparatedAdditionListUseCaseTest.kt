@@ -233,12 +233,34 @@ class GetSeparatedAdditionListUseCaseTest {
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
 
+
     @Test
     fun `return sorted by name started with A and finished with Z when additionRepo has not empty list`() =
         runTest {
             // Given
             val token = "token"
             val isRefreshing = true
+            val expectedSeparatedAdditionList = SeparatedAdditionList(
+                visibleList = listOf(
+                    additionMock.copy(
+                        uuid = "uuid2",
+                        name = "A"
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid3",
+                        name = "B"
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid4",
+                        name = "C"
+                    ),
+                    additionMock.copy(
+                        uuid = "uuid5",
+                        name = "Z"
+                    )
+                ),
+                hiddenList = emptyList()
+            )
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
@@ -247,27 +269,26 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             } returns listOf(
                 additionMock.copy(
-                    uuid = "uuid2",
-                    name = "A"
+                    uuid = "uuid5",
+                    name = "Z"
                 ),
                 additionMock.copy(
-                    uuid = "uuid3",
-                    name = "B"
+                    uuid = "uuid2",
+                    name = "A"
                 ),
                 additionMock.copy(
                     uuid = "uuid4",
                     name = "C"
                 ),
                 additionMock.copy(
-                    uuid = "uuid5",
-                    name = "Z"
+                    uuid = "uuid3",
+                    name = "B"
                 ),
             )
             // When
             val separatedAdditionList = useCase()
             // Then
-            assertEquals(separatedAdditionList.visibleList.first().name, "A")
-            assertEquals(separatedAdditionList.visibleList.last().name, "Z")
+            assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
 
     private val additionMock = Addition(
