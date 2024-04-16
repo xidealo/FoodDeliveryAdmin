@@ -10,7 +10,7 @@ class UpdateVisibleAdditionUseCase @Inject constructor(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo
     ) {
-        suspend operator fun invoke( additionUuid: String, isVisible: Boolean) {
+        suspend operator fun invoke(additionUuid: String, isVisible: Boolean) {
             val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
             additionRepo.updateAddition(
@@ -18,6 +18,5 @@ class UpdateVisibleAdditionUseCase @Inject constructor(
                 updateAddition = UpdateAddition(isVisible = isVisible),
                 token = token
             )
-
         }
     }
