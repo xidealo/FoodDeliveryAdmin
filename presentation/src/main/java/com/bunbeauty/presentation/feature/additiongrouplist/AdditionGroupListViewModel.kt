@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.additiongrouplist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additiongrouplist.GetSeparatedAdditionGroupListUseCase
+import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroupUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdditionGroupListViewModel @Inject constructor(
-    private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase
+    private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
+    private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupUseCase
 ) : BaseStateViewModel<AdditionGroupList.ViewDataState, AdditionGroupList.Action, AdditionGroupList.Event>(
     initState = AdditionGroupList.ViewDataState(
         visibleAdditionGroups = listOf(),
@@ -31,7 +33,9 @@ class AdditionGroupListViewModel @Inject constructor(
             AdditionGroupList.Action.OnAdditionClick -> {
             }
 
-            is AdditionGroupList.Action.OnVisibleClick -> updateVisible()
+            is AdditionGroupList.Action.OnVisibleClick -> updateVisible(
+                uuid = action.uuid, isVisible = action.isVisible,
+            )
 
             AdditionGroupList.Action.Init -> loadData()
         }
@@ -56,6 +60,18 @@ class AdditionGroupListViewModel @Inject constructor(
         )
     }
 
-    private fun updateVisible() {
+    private fun updateVisible(uuid: String, isVisible: Boolean) {
+        viewModelScope.launchSafe(
+            block = {
+                updateVisibleAdditionGroupListUseCase(
+                    additionUuidGroup = uuid,
+                    isVisible = !isVisible,
+                )
+                loadData()
+            },
+            onError = {
+                // show error
+            }
+        )
     }
 }

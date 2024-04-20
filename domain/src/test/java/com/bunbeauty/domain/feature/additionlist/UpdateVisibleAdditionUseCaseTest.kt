@@ -32,7 +32,7 @@ class UpdateVisibleAdditionUseCaseTest {
 
         assertFailsWith(
             exceptionClass = NoTokenException::class,
-            block = { useCase("", true) }
+            block = { useCase(additionUuid = "", isVisible = true) }
         )
     }
 
@@ -42,10 +42,18 @@ class UpdateVisibleAdditionUseCaseTest {
         val token = "token"
         val additionUuidMock = ""
         val isVisible = true
+        val updateAdditionMock = UpdateAddition(isVisible = isVisible)
         coEvery { dataStoreRepo.getToken() } returns token
+        coEvery {
+            additionRepo.updateAddition(
+                updateAddition = updateAdditionMock,
+                token = token,
+                additionUuid = additionUuidMock
+            )
+        } returns Unit
 
         // When
-        useCase(additionUuidMock, isVisible)
+        useCase(additionUuid = additionUuidMock, isVisible = isVisible)
 
         // Then
         coVerify {
@@ -56,13 +64,4 @@ class UpdateVisibleAdditionUseCaseTest {
             )
         }
     }
-
-    private val updateAdditionMock = UpdateAddition(
-        name = "name",
-        priority = 1,
-        fullName = "fullName",
-        price = 2,
-        photoLink = "photo",
-        isVisible = false
-    )
 }
