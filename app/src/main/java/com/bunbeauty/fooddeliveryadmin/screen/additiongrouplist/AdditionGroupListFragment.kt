@@ -49,11 +49,11 @@ class AdditionGroupListFragment :
         state: AdditionGroupListViewState,
         onAction: (AdditionGroupList.Action) -> Unit
     ) {
-        AdditionListScreen(state = state, onAction = onAction)
+        AdditionGroupListScreen(state = state, onAction = onAction)
     }
 
     @Composable
-    fun AdditionListScreen(
+    fun AdditionGroupListScreen(
         state: AdditionGroupListViewState,
         onAction: (AdditionGroupList.Action) -> Unit
     ) {
@@ -179,7 +179,7 @@ class AdditionGroupListFragment :
     @Composable
     fun AdditionListScreenPreview() {
         AdminTheme {
-            AdditionListScreen(
+            AdditionGroupListScreen(
                 state = AdditionGroupListViewState(
                     visibleAdditionItems = persistentListOf(
                         AdditionGroupListViewState.AdditionGroupItem(

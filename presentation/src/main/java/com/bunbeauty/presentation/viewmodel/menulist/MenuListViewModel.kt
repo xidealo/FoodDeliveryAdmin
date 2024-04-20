@@ -89,7 +89,7 @@ class MenuListViewModel @Inject constructor(
                 isVisible = !menuProductItem.visible
             )
             loadData()
-        }
+             }
     }
 
     fun goToEditMenuProduct(menuProductItemUuid: String) {

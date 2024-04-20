@@ -6,6 +6,7 @@ import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,30 +19,33 @@ class AdditionListViewModel @Inject constructor(
         visibleAdditions = listOf(),
         hiddenAdditions = listOf(),
         isLoading = false,
-        isRefreshing = false
+        isRefreshing = false,
+        throwable = null
     )
 ) {
 
     override fun reduce(action: AdditionList.Action, dataState: AdditionList.ViewDataState) {
         when (action) {
-            AdditionList.Action.OnBackClick -> {
-                addEvent { AdditionList.Event.Back }
+            AdditionList.Action.OnBackClick -> addEvent { AdditionList.Event.Back }
+
+            is AdditionList.Action.OnAdditionClick -> addEvent {
+                AdditionList.Event.OnAdditionClick(
+                    additionUuid = action.additionUuid
+                )
             }
 
-            AdditionList.Action.OnAdditionClick -> {
-
-            }
-
-            is AdditionList.Action.OnVisibleClick -> {
-                updateVisible(uuid = action.uuid, isVisible = action.isVisible)
-            }
+            is AdditionList.Action.OnVisibleClick -> updateVisible(
+                uuid = action.uuid,
+                isVisible = action.isVisible
+            )
 
             AdditionList.Action.Init -> loadData()
+
+            AdditionList.Action.RefreshData -> refreshData()
         }
     }
 
-
-    fun updateVisible(uuid: String, isVisible: Boolean) {
+    private fun updateVisible(uuid: String, isVisible: Boolean) {
         viewModelScope.launch() {
             updateVisibleAdditionUseCase(
                 additionUuid = uuid,
@@ -51,6 +55,37 @@ class AdditionListViewModel @Inject constructor(
         }
     }
 
+    private fun refreshData() {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        isRefreshing = true,
+                        throwable = null
+                    )
+                }
+
+                val separatedAdditionList = getSeparatedAdditionListUseCase()
+
+                setState {
+                    copy(
+                        visibleAdditions = separatedAdditionList.visibleList,
+                        hiddenAdditions = separatedAdditionList.hiddenList,
+                        isLoading = false,
+                        isRefreshing = false,
+                        throwable = null
+                    )
+                }
+            },
+            onError = {
+                setState {
+                    copy(
+                        throwable = throwable
+                    )
+                }
+            }
+        )
+    }
 
     private fun loadData() {
         viewModelScope.launchSafe(
@@ -61,15 +96,18 @@ class AdditionListViewModel @Inject constructor(
                         visibleAdditions = separatedAdditionList.visibleList,
                         hiddenAdditions = separatedAdditionList.hiddenList,
                         isLoading = false,
-                        isRefreshing = false
+                        isRefreshing = false,
+                        throwable = null
                     )
                 }
             },
-            onError = {
-                //show error
+            onError = { throwable ->
+                setState {
+                    copy(
+                        throwable = throwable
+                    )
+                }
             }
         )
     }
-
-
 }

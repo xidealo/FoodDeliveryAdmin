@@ -60,6 +60,10 @@ class AdditionListFragment :
         AdminScaffold(
             title = stringResource(R.string.title_addition_list),
             pullRefreshEnabled = true,
+            refreshing = state.isRefreshing,
+            onRefresh = {
+                onAction(AdditionList.Action.RefreshData)
+            },
             backActionClick = {
                 onAction(AdditionList.Action.OnBackClick)
             }
@@ -118,7 +122,7 @@ class AdditionListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionList.Action.OnAdditionClick)
+                onAction(AdditionList.Action.OnAdditionClick(additionItem.uuid))
             }
         ) {
             Row(

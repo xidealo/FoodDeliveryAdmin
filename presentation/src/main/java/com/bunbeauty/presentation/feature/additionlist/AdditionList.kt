@@ -11,13 +11,14 @@ interface AdditionList {
         val hiddenAdditions: List<Addition>,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
-
-        ) : BaseViewDataState
+        val throwable: Throwable?
+    ) : BaseViewDataState
 
     sealed interface Action : BaseAction {
 
         data object Init : Action
-        data object OnAdditionClick : Action
+        data object RefreshData : Action
+        data class OnAdditionClick(val additionUuid: String)  : Action
         data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action
     }
