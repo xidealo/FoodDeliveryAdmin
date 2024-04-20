@@ -85,7 +85,6 @@ class AdditionGroupListFragment :
                     ) { visibleAddition ->
                         AdditionCard(
                             additionItem = visibleAddition,
-                            visible = true,
                             onAction = onAction
                         )
                     }
@@ -103,7 +102,6 @@ class AdditionGroupListFragment :
                     items(state.hiddenAdditionItems) { hiddenAddition ->
                         AdditionCard(
                             additionItem = hiddenAddition,
-                            visible = false,
                             onAction = onAction
                         )
                     }
@@ -115,7 +113,6 @@ class AdditionGroupListFragment :
     @Composable
     private fun AdditionCard(
         additionItem: AdditionGroupListViewState.AdditionGroupItem,
-        visible: Boolean,
         onAction: (AdditionGroupList.Action) -> Unit
     ) {
         AdminCard(
@@ -140,7 +137,12 @@ class AdditionGroupListFragment :
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
                     onClick = {
-                        onAction(AdditionGroupList.Action.OnVisibleClick(visible))
+                        onAction(
+                            AdditionGroupList.Action.OnVisibleClick(
+                                isVisible = additionItem.isVisible,
+                                uuid = additionItem.uuid
+                            )
+                        )
                     }
                 ) {
                     Icon(
@@ -185,14 +187,16 @@ class AdditionGroupListFragment :
                         AdditionGroupListViewState.AdditionGroupItem(
                             uuid = "1",
                             name = "additio1",
-                            iconColor = AdminTheme.colors.main.primary
+                            iconColor = AdminTheme.colors.main.primary,
+                            isVisible = true
                         )
                     ),
                     hiddenAdditionItems = persistentListOf(
                         AdditionGroupListViewState.AdditionGroupItem(
                             uuid = "2",
                             name = "additio2",
-                            iconColor = AdminTheme.colors.main.onSecondary
+                            iconColor = AdminTheme.colors.main.onSecondary,
+                            isVisible = false
                         )
                     ),
                     isRefreshing = false,

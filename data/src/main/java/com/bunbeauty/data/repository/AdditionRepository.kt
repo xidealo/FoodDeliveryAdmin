@@ -39,7 +39,6 @@ class AdditionRepository @Inject constructor(
             additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
             token = token
         )
-
     }
 
     override suspend fun clearCache() {

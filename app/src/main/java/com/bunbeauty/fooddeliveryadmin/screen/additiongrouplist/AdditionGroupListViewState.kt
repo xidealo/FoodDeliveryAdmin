@@ -19,7 +19,8 @@ data class AdditionGroupListViewState(
     data class AdditionGroupItem(
         val uuid: String,
         val name: String,
-        val iconColor: Color
+        val iconColor: Color,
+        val isVisible: Boolean
     )
 }
 
@@ -32,6 +33,7 @@ fun AdditionGroup.toItem(): AdditionGroupListViewState.AdditionGroupItem {
             AdminTheme.colors.main.primary
         } else {
             AdminTheme.colors.main.onSurfaceVariant
-        }
+        },
+        isVisible = isVisible
     )
 }
