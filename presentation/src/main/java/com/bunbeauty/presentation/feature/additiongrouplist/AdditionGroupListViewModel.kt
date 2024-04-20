@@ -63,14 +63,18 @@ class AdditionGroupListViewModel @Inject constructor(
         )
     }
 
-    private fun updateVisible(uuid: String, isVisible: Boolean, ) {
-        viewModelScope.launch() {
-            updateVisibleAdditionGroupListUseCase(
-                additionUuidGroup = uuid,
-                isVisible = !isVisible,
-
-            )
-            loadData()
-        }
+    private fun updateVisible(uuid: String, isVisible: Boolean) {
+        viewModelScope.launchSafe(
+            block = {
+                updateVisibleAdditionGroupListUseCase(
+                    additionUuidGroup = uuid,
+                    isVisible = !isVisible,
+                )
+                loadData()
+            },
+            onError = {
+                // show error
+            }
+        )
     }
 }

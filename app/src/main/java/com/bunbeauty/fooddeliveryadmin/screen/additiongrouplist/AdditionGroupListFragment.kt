@@ -83,7 +83,7 @@ class AdditionGroupListFragment :
                             additionItem.uuid
                         }
                     ) { visibleAddition ->
-                        AdditionCard(
+                        AdditionGroupCard(
                             additionItem = visibleAddition,
                             onAction = onAction
                         )
@@ -100,7 +100,7 @@ class AdditionGroupListFragment :
                         )
                     }
                     items(state.hiddenAdditionItems) { hiddenAddition ->
-                        AdditionCard(
+                        AdditionGroupCard(
                             additionItem = hiddenAddition,
                             onAction = onAction
                         )
@@ -111,7 +111,7 @@ class AdditionGroupListFragment :
     }
 
     @Composable
-    private fun AdditionCard(
+    private fun AdditionGroupCard(
         additionItem: AdditionGroupListViewState.AdditionGroupItem,
         onAction: (AdditionGroupList.Action) -> Unit
     ) {
