@@ -9,6 +9,7 @@ import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
@@ -314,6 +315,19 @@ class FoodDeliveryApiImpl @Inject constructor(
             path = "addition",
             body = additionPatchServer,
             parameters = mapOf("uuid" to additionUuid),
+            token = token
+        )
+    }
+
+    override suspend fun patchAdditionGroup(
+        additionGroupUuid: String,
+        additionGroupPatchServer: AdditionGroupPatchServer,
+        token: String
+    ): ApiResult<AdditionGroupServer> {
+        return patch(
+            path = "addition_group",
+            body = additionGroupPatchServer,
+            parameters = mapOf("uuid" to additionGroupUuid),
             token = token
         )
     }
