@@ -8,11 +8,12 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
-
+@OptIn(ExperimentalCoroutinesApi::class)
 class UpdateVisibleAdditionGroupUseCaseTest {
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val additionGroupRepo: AdditionGroupRepo = mockk()
