@@ -22,7 +22,7 @@ class UpdateVisibleAdditionUseCaseTest {
     fun setup() {
         useCase = UpdateVisibleAdditionUseCase(
             additionRepo = additionRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -47,7 +47,7 @@ class UpdateVisibleAdditionUseCaseTest {
         // When
         useCase(additionUuidMock, isVisible)
 
-        //Then
+        // Then
         coVerify {
             additionRepo.updateAddition(
                 updateAddition = updateAdditionMock,
@@ -63,6 +63,6 @@ class UpdateVisibleAdditionUseCaseTest {
         fullName = "fullName",
         price = 2,
         photoLink = "photo",
-        isVisible = false,
+        isVisible = false
     )
 }

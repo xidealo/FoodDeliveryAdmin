@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class OrderAddition(
     val uuid: String,
     val name: String,
-    val priority: Int,
+    val priority: Int
 ) : Parcelable

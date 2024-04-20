@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.repo
 
-import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 
 interface AdditionGroupRepo {
@@ -15,7 +14,7 @@ interface AdditionGroupRepo {
     /*UPDATE*/
     suspend fun updateAdditionGroup(
         token: String,
-        addition: AdditionGroup,
+        addition: AdditionGroup
     )
 
     /*DELETE*/

@@ -18,5 +18,5 @@ data class AdditionServer(
     @SerialName("photoLink")
     val photoLink: String,
     @SerialName("isVisible")
-    val isVisible: Boolean,
+    val isVisible: Boolean
 )

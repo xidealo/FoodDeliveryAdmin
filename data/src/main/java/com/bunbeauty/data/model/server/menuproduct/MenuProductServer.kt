@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.server.menu_product
+package com.bunbeauty.data.model.server.menuproduct
 
 import com.bunbeauty.data.model.server.CategoryServer
 import kotlinx.serialization.Serializable

@@ -10,13 +10,13 @@ data class ProfileDataState(
 
     data class User(
         val role: UserRole,
-        val userName: String,
+        val userName: String
     )
 
     enum class State {
         LOADING,
         SUCCESS,
-        ERROR,
+        ERROR
     }
 
     operator fun plus(event: ProfileEvent) = copy(eventList = eventList + event)

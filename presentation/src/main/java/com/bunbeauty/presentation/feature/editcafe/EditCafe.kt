@@ -17,7 +17,7 @@ interface EditCafe {
         val nonWorkingDays: NonWorkingDays,
         val initialNonWorkingDayDate: LocalDate,
         val yearRange: IntRange,
-        val minNonWorkingDayDate: LocalDate,
+        val minNonWorkingDayDate: LocalDate
     ) : BaseViewDataState {
 
         sealed interface NonWorkingDays {
@@ -27,14 +27,13 @@ interface EditCafe {
                 val days: List<FormattedNonWorkingDay>
             ) : NonWorkingDays
         }
-
     }
 
     sealed interface Action : BaseAction {
 
         data class Init(
             val cafeUuid: String,
-            val cafeAddress: String,
+            val cafeAddress: String
         ) : Action
 
         data class UpdateFromTime(val time: LocalTime) : Action
@@ -53,5 +52,4 @@ interface EditCafe {
         data object ShowDeleteDataError : Event
         data class ShowConfirmDeletion(val uuid: String) : Event
     }
-
 }

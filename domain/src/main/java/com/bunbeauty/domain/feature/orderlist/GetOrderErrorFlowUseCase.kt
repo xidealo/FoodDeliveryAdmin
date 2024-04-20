@@ -20,8 +20,7 @@ class GetOrderErrorFlowUseCase @Inject constructor(
 
         return orderRepository.getOrderErrorFlow(
             token = token,
-            cafeUuid = cafeUuid,
+            cafeUuid = cafeUuid
         )
     }
-
 }

@@ -13,7 +13,7 @@ class GetNonWorkingDayListByCafeUuidUseCase @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val dateTimeUtil: IDateTimeUtil,
-    private val timeService: TimeService,
+    private val timeService: TimeService
 ) {
 
     suspend operator fun invoke(cafeUuid: String): List<FormattedNonWorkingDay> {
@@ -21,8 +21,8 @@ class GetNonWorkingDayListByCafeUuidUseCase @Inject constructor(
         val currentDayStartMillis = timeService.getCurrentDayStartMillis(cafe.offset)
         return nonWorkingDayRepo.getNonWorkingDayListByCafeUuid(cafeUuid)
             .filter { nonWorkingDay ->
-                (nonWorkingDay.timestamp >= currentDayStartMillis)
-                    && nonWorkingDay.isVisible
+                (nonWorkingDay.timestamp >= currentDayStartMillis) &&
+                    nonWorkingDay.isVisible
             }
             .sortedBy { nonWorkingDay ->
                 nonWorkingDay.timestamp
@@ -34,9 +34,8 @@ class GetNonWorkingDayListByCafeUuidUseCase @Inject constructor(
                         pattern = PATTERN_DD_MMMM,
                         offset = cafe.offset
                     ),
-                    cafeUuid = nonWorkingDay.cafeUuid,
+                    cafeUuid = nonWorkingDay.cafeUuid
                 )
             }
     }
-
 }

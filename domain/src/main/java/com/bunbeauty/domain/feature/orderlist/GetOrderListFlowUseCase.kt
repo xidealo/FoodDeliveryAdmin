@@ -20,12 +20,11 @@ class GetOrderListFlowUseCase @Inject constructor(
 
         return orderRepo.getOrderListFlow(
             token = token,
-            cafeUuid = cafeUuid,
+            cafeUuid = cafeUuid
         ).map { orderList ->
-            orderList.filter {  order ->
+            orderList.filter { order ->
                 order.orderStatus != OrderStatus.CANCELED
             }
         }
     }
-
 }

@@ -15,13 +15,12 @@ class ProfileStateMapper @Inject constructor() {
                     } else {
                         ProfileUiState.State.Success(
                             role = dataState.user.role,
-                            userName = dataState.user.userName,
+                            userName = dataState.user.userName
                         )
                     }
                 }
             },
-            eventList = dataState.eventList,
+            eventList = dataState.eventList
         )
     }
-
 }

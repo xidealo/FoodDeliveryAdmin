@@ -11,12 +11,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,
+    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase
 ) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
     initState = Main.ViewDataState(
         connectionLost = false,
         nonWorkingDay = false,
-        navigationBarOptions = Main.NavigationBarOptions.Hidden,
+        navigationBarOptions = Main.NavigationBarOptions.Hidden
     )
 ) {
 
@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
             is Main.Action.UpdateNavDestination -> {
                 updateNavDestination(
                     navigationBarItem = action.navigationBarItem,
-                    navController = action.navController,
+                    navController = action.navController
                 )
             }
 
@@ -49,7 +49,7 @@ class MainViewModel @Inject constructor(
 
     private fun updateNavDestination(
         navigationBarItem: Main.NavigationBarItem?,
-        navController: NavController,
+        navController: NavController
     ) {
         val navigationBarOptions = navigationBarItem?.let {
             Main.NavigationBarOptions.Visible(
@@ -73,5 +73,4 @@ class MainViewModel @Inject constructor(
             )
         }
     }
-
 }

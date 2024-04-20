@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
-    private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
+    private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase
 ) : BaseViewModel() {
 
     private val mutableIsUnlimitedNotifications = MutableStateFlow<Boolean?>(null)
@@ -46,5 +46,4 @@ class SettingsViewModel @Inject constructor(
             }
         )
     }
-
 }

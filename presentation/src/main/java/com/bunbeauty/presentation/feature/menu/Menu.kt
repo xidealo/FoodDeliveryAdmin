@@ -21,5 +21,4 @@ interface Menu {
         data object OnAdditionGroupsListClick : Event
         data object OnAdditionsListClick : Event
     }
-
 }

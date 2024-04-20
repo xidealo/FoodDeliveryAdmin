@@ -15,7 +15,7 @@ private const val MILLIS_IN_ONE_DAY = 24 * 60 * 60 * 1_000
 class GetIsNonWorkingDayFlowUseCase @Inject constructor(
     private val getSelectedCafeFlow: GetSelectedCafeFlowUseCase,
     private val getCurrentTimeMillisFlow: GetCurrentTimeMillisFlowUseCase,
-    private val nonWorkingDayRepo: NonWorkingDayRepo,
+    private val nonWorkingDayRepo: NonWorkingDayRepo
 ) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -36,5 +36,4 @@ class GetIsNonWorkingDayFlowUseCase @Inject constructor(
                 }
             }
     }
-
 }

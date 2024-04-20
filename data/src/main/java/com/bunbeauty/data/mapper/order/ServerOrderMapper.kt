@@ -4,8 +4,8 @@ import com.bunbeauty.data.mapper.OderProductMapper
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.order.details.ClientUser
 import com.bunbeauty.domain.model.order.Order
+import com.bunbeauty.domain.model.order.details.ClientUser
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.model.order.details.PaymentMethod
@@ -24,7 +24,7 @@ class ServerOrderMapper @Inject constructor(
             timeZone = orderDetailsServer.timeZone,
             isDelivery = orderDetailsServer.isDelivery,
             deferredTime = orderDetailsServer.deferredTime,
-            paymentMethod = PaymentMethod.entries.firstOrNull { paymentMethod  ->
+            paymentMethod = PaymentMethod.entries.firstOrNull { paymentMethod ->
                 paymentMethod.name == orderDetailsServer.paymentMethod
             },
             address = OrderAddress(
@@ -34,13 +34,13 @@ class ServerOrderMapper @Inject constructor(
                 flat = orderDetailsServer.address.flat,
                 entrance = orderDetailsServer.address.entrance,
                 floor = orderDetailsServer.address.floor,
-                comment = orderDetailsServer.address.comment,
+                comment = orderDetailsServer.address.comment
             ),
             comment = orderDetailsServer.comment,
             clientUser = ClientUser(
                 uuid = orderDetailsServer.clientUser.uuid,
                 phoneNumber = orderDetailsServer.clientUser.phoneNumber,
-                email = orderDetailsServer.clientUser.email,
+                email = orderDetailsServer.clientUser.email
             ),
             cafeUuid = orderDetailsServer.cafeUuid,
             deliveryCost = orderDetailsServer.deliveryCost,
@@ -48,7 +48,7 @@ class ServerOrderMapper @Inject constructor(
             oldTotalCost = orderDetailsServer.oldTotalCost,
             newTotalCost = orderDetailsServer.newTotalCost,
             oderProductList = orderDetailsServer.oderProductList.map(oderProductMapper::toModel),
-            availableStatusList = orderDetailsServer.availableStatusList.mapNotNull(::getOrderStatusNullable),
+            availableStatusList = orderDetailsServer.availableStatusList.mapNotNull(::getOrderStatusNullable)
         )
     }
 
@@ -59,7 +59,7 @@ class ServerOrderMapper @Inject constructor(
             time = orderServer.time,
             deferredTime = orderServer.deferredTime,
             timeZone = orderServer.timeZone,
-            orderStatus = getOrderStatus(orderServer.status),
+            orderStatus = getOrderStatus(orderServer.status)
         )
     }
 
@@ -77,5 +77,4 @@ class ServerOrderMapper @Inject constructor(
             null
         }
     }
-
 }

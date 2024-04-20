@@ -11,7 +11,7 @@ class CategoryMapper @Inject constructor() {
         return Category(
             uuid = categoryEntity.uuid,
             name = categoryEntity.name,
-            priority = categoryEntity.priority,
+            priority = categoryEntity.priority
         )
     }
 
@@ -19,7 +19,7 @@ class CategoryMapper @Inject constructor() {
         return Category(
             uuid = categoryServer.uuid,
             name = categoryServer.name,
-            priority = categoryServer.priority,
+            priority = categoryServer.priority
         )
     }
 
@@ -27,7 +27,7 @@ class CategoryMapper @Inject constructor() {
         return CategoryEntity(
             uuid = categoryServer.uuid,
             name = categoryServer.name,
-            priority = categoryServer.priority,
+            priority = categoryServer.priority
         )
     }
 }

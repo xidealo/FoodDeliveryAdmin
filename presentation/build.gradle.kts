@@ -3,6 +3,7 @@ plugins {
     id(Plugin.androidLibrary)
     id(Plugin.kapt)
     id(Plugin.hiltPlugin)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {

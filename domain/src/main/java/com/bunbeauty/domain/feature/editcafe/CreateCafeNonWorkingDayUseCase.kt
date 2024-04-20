@@ -14,7 +14,7 @@ import javax.inject.Inject
 class CreateCafeNonWorkingDayUseCase @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
 
     suspend operator fun invoke(date: LocalDate, cafeUuid: String) {
@@ -28,9 +28,8 @@ class CreateCafeNonWorkingDayUseCase @Inject constructor(
             token = token,
             newNonWorkingDay = NewNonWorkingDay(
                 timestamp = timestamp,
-                cafeUuid = cafeUuid,
+                cafeUuid = cafeUuid
             )
         ) ?: throw DataSavingFailedException()
     }
-
 }

@@ -1,4 +1,4 @@
-import org.gradle.api.Plugin
+
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
@@ -16,15 +16,12 @@ buildscript {
         classpath(ClassPath.crashlytics)
     }
 }
-plugins {
-    id("org.jlleitschuh.gradle.ktlint") version Versions.ktLint
-}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
-
 }
 
 tasks.register("clean", Delete::class) {

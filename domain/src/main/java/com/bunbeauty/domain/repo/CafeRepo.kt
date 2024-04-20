@@ -10,5 +10,4 @@ interface CafeRepo {
     suspend fun updateCafeFromTime(cafeUuid: String, fromDaySeconds: Int, token: String): Cafe?
     suspend fun updateCafeToTime(cafeUuid: String, toDaySeconds: Int, token: String): Cafe?
     fun clearCache()
-
 }

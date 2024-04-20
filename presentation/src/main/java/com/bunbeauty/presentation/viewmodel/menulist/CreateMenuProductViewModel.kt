@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateMenuProductViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
-    private val menuProductRepo: MenuProductRepo,
+    private val menuProductRepo: MenuProductRepo
 ) : BaseViewModel() {
 
     private val mutableIsVisible: MutableStateFlow<Boolean> = MutableStateFlow(true)
@@ -45,7 +45,7 @@ class CreateMenuProductViewModel @Inject constructor(
         comboDescription: String
     ) {
         if (photo == null) {
-            //sendError(resourcesProvider.getString(R.string.error_create_menu_product_image_not_loaded))
+            // sendError(resourcesProvider.getString(R.string.error_create_menu_product_image_not_loaded))
             return
         }
 
@@ -59,7 +59,7 @@ class CreateMenuProductViewModel @Inject constructor(
 
         val productCode = stringUtil.getProductCode(productCodeString)
         if (productCode == null) {
-           // sendError(resourcesProvider.getString(R.string.error_create_menu_product_category_not_selected))
+            // sendError(resourcesProvider.getString(R.string.error_create_menu_product_category_not_selected))
             return
         }
 

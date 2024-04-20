@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.feature.additiongrouplist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additiongrouplist.GetSeparatedAdditionGroupListUseCase
-import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +29,6 @@ class AdditionGroupListViewModel @Inject constructor(
             }
 
             AdditionGroupList.Action.OnAdditionClick -> {
-
             }
 
             is AdditionGroupList.Action.OnVisibleClick -> updateVisible()
@@ -38,7 +36,6 @@ class AdditionGroupListViewModel @Inject constructor(
             AdditionGroupList.Action.Init -> loadData()
         }
     }
-
 
     private fun loadData() {
         viewModelScope.launchSafe(
@@ -54,12 +51,11 @@ class AdditionGroupListViewModel @Inject constructor(
                 }
             },
             onError = {
-                //show error
+                // show error
             }
         )
     }
 
     private fun updateVisible() {
-
     }
 }

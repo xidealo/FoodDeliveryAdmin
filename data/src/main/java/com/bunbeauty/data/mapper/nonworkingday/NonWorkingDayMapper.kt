@@ -15,7 +15,7 @@ class NonWorkingDayMapper @Inject constructor() {
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
     }
@@ -26,7 +26,7 @@ class NonWorkingDayMapper @Inject constructor() {
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
     }
@@ -37,7 +37,7 @@ class NonWorkingDayMapper @Inject constructor() {
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
     }
@@ -46,9 +46,8 @@ class NonWorkingDayMapper @Inject constructor() {
         return newNonWorkingDay.run {
             PostNonWorkingDayServer(
                 timestamp = timestamp,
-                cafeUuid = cafeUuid,
+                cafeUuid = cafeUuid
             )
         }
     }
-
 }

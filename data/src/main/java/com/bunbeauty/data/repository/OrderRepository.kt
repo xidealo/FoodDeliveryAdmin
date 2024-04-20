@@ -9,8 +9,8 @@ import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.exception.ServerConnectionException
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.model.order.OrderError
+import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.repo.OrderRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -24,7 +24,7 @@ import javax.inject.Singleton
 @Singleton
 class OrderRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val serverOrderMapper: IServerOrderMapper,
+    private val serverOrderMapper: IServerOrderMapper
 ) : OrderRepo {
 
     private var cachedOrderList: List<Order> = emptyList()
@@ -36,7 +36,7 @@ class OrderRepository @Inject constructor(
     override suspend fun getOrderListFlow(token: String, cafeUuid: String): Flow<List<Order>> {
         val orderList = getOrderListByCafeUuid(
             token = token,
-            cafeUuid = cafeUuid,
+            cafeUuid = cafeUuid
         )
         cachedOrderList = orderList
         val updatedOrderListFlow = networkConnector.getUpdatedOrderFlowByCafeUuid(token, cafeUuid)

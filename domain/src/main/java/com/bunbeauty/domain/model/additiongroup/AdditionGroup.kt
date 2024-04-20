@@ -5,5 +5,5 @@ data class AdditionGroup(
     val name: String,
     val priority: Int,
     val isVisible: Boolean,
-    val singleChoice: Boolean,
+    val singleChoice: Boolean
 )

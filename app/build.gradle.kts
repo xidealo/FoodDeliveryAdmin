@@ -10,6 +10,7 @@ plugins {
     id(Plugin.googleServices)
     id(Plugin.crashlytics)
     id(Plugin.kotlinParcelize)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {

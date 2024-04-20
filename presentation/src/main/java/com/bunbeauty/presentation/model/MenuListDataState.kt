@@ -34,7 +34,7 @@ data class MenuListViewState(
     sealed interface State {
         data class Success(
             val visibleMenuProductItems: List<MenuProductItem>,
-            val hiddenMenuProductItems: List<MenuProductItem>,
+            val hiddenMenuProductItems: List<MenuProductItem>
         ) : State
 
         data object Loading : State
@@ -46,5 +46,5 @@ data class MenuProductItem(
     val uuid: String,
     val name: String,
     val photoLink: String,
-    val visible: Boolean,
+    val visible: Boolean
 )

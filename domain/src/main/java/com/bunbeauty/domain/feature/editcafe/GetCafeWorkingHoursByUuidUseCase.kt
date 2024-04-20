@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetCafeWorkingHoursByUuidUseCase @Inject constructor(
     private val cafeRepo: CafeRepo,
-    private val dateTimeUtil: IDateTimeUtil,
+    private val dateTimeUtil: IDateTimeUtil
 ) {
 
     suspend operator fun invoke(uuid: String): CafeWorkingHours {
@@ -17,8 +17,7 @@ class GetCafeWorkingHoursByUuidUseCase @Inject constructor(
             fromTimeText = dateTimeUtil.getTimeHHMM(cafe.fromTime),
             fromTime = dateTimeUtil.getLocalTime(cafe.fromTime),
             toTimeText = dateTimeUtil.getTimeHHMM(cafe.toTime),
-            toTime = dateTimeUtil.getLocalTime(cafe.toTime),
+            toTime = dateTimeUtil.getLocalTime(cafe.toTime)
         )
     }
-
 }

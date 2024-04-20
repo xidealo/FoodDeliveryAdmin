@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DeleteCafeNonWorkingDayUseCase @Inject constructor(
     private val nonWorkingDayRepo: NonWorkingDayRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
 
     suspend operator fun invoke(uuid: String) {
@@ -16,8 +16,7 @@ class DeleteCafeNonWorkingDayUseCase @Inject constructor(
         nonWorkingDayRepo.updateNonWorkingDay(
             token = token,
             uuid = uuid,
-            isVisible = false,
+            isVisible = false
         ) ?: throw DataDeletingFailedException()
     }
-
 }

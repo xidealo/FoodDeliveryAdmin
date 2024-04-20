@@ -1,6 +1,8 @@
 package com.bunbeauty.data.model.entity.menuproduct
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Junction
+import androidx.room.Relation
 import com.bunbeauty.data.model.entity.CategoryEntity
 
 data class MenuProductWithCategoriesEntity(
@@ -17,5 +19,5 @@ data class MenuProductWithCategoriesEntity(
             entityColumn = "categoryUuid"
         )
     )
-    val categories: List<CategoryEntity>,
+    val categories: List<CategoryEntity>
 )

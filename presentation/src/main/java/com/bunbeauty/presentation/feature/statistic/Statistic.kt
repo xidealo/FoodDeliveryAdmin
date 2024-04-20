@@ -1,8 +1,6 @@
 package com.bunbeauty.presentation.feature.statistic
 
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.presentation.Option
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
@@ -34,8 +32,6 @@ interface Statistic {
         data object SelectCafeClick : Action
         data object SelectTimeIntervalClick : Action
         data object SelectGoBackClick : Action
-
-
     }
 
     sealed interface Event : BaseEvent {

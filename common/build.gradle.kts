@@ -1,6 +1,7 @@
 plugins {
     kotlin(Plugin.android)
     id(Plugin.androidLibrary)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {

@@ -7,8 +7,8 @@ import com.bunbeauty.domain.usecase.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.model.MenuListDataState
 import com.bunbeauty.presentation.model.MenuListEvent
-import com.bunbeauty.presentation.model.MenuProductItem
 import com.bunbeauty.presentation.model.MenuListViewState
+import com.bunbeauty.presentation.model.MenuProductItem
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuListViewModel @Inject constructor(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
-    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
+    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(MenuListDataState())
@@ -89,7 +89,7 @@ class MenuListViewModel @Inject constructor(
                 isVisible = !menuProductItem.visible
             )
             loadData()
-             }
+        }
     }
 
     fun goToEditMenuProduct(menuProductItemUuid: String) {
@@ -105,7 +105,7 @@ class MenuListViewModel @Inject constructor(
             uuid = menuProduct.uuid,
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,
-            visible = menuProduct.isVisible,
+            visible = menuProduct.isVisible
         )
     }
 
@@ -115,7 +115,7 @@ class MenuListViewModel @Inject constructor(
                 MenuListDataState.State.SUCCESS -> {
                     MenuListViewState.State.Success(
                         visibleMenuProductItems = dataState.visibleMenuProductItems,
-                        hiddenMenuProductItems = dataState.hiddenMenuProductItems,
+                        hiddenMenuProductItems = dataState.hiddenMenuProductItems
                     )
                 }
 
@@ -123,7 +123,7 @@ class MenuListViewModel @Inject constructor(
                 MenuListDataState.State.ERROR -> MenuListViewState.State.Error(dataState.throwable)
             },
             eventList = dataState.eventList,
-            isRefreshing = dataState.isRefreshing,
+            isRefreshing = dataState.isRefreshing
         )
     }
 

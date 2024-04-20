@@ -13,7 +13,7 @@ import javax.inject.Inject
 class OrderMapper @Inject constructor(
     private val orderStatusMapper: OrderStatusMapper,
     private val dateTimeUtil: DateTimeUtil,
-    private val resources: Resources,
+    private val resources: Resources
 ) {
 
     fun map(order: Order): OrderListUiState.OrderItem {
@@ -23,7 +23,7 @@ class OrderMapper @Inject constructor(
             statusString = orderStatusMapper.map(order.orderStatus),
             code = order.code,
             deferredTime = getDeferredTime(order.deferredTime),
-            dateTime = dateTimeUtil.formatDateTime(order.time, PATTERN_DD_MMMM_HH_MM),
+            dateTime = dateTimeUtil.formatDateTime(order.time, PATTERN_DD_MMMM_HH_MM)
         )
     }
 

@@ -16,5 +16,4 @@ class GetCurrentTimeMillisFlowUseCase @Inject constructor(
             delay(intervalInMillis - currentTimeMillis % intervalInMillis)
         }
     }
-
 }

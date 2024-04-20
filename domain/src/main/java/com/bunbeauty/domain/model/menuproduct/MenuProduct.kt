@@ -17,5 +17,5 @@ data class MenuProduct(
     val photoLink: String,
     val barcode: Int?,
     val isVisible: Boolean,
-    val categories: List<Category>,
+    val categories: List<Category>
 ) : Parcelable

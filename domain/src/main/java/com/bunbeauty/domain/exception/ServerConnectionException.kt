@@ -1,3 +1,3 @@
 package com.bunbeauty.domain.exception
 
-class ServerConnectionException: Exception()
+class ServerConnectionException : Exception()

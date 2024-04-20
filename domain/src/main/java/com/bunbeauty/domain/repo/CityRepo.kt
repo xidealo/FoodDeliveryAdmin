@@ -7,5 +7,4 @@ interface CityRepo {
     suspend fun getCityByUuid(companyUuid: String, cityUuid: String): City?
 
     fun clearCache()
-
 }

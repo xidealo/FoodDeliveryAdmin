@@ -24,7 +24,7 @@ data class EditMenuProductDataState(
     enum class State {
         LOADING,
         SUCCESS,
-        ERROR,
+        ERROR
     }
 
     operator fun plus(event: EditMenuProductEvent) = copy(eventList = eventList + event)

@@ -18,7 +18,7 @@ private const val SECONDS_IN_DAY = 24 * 60 * 60
 class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
     private val getCafeList: GetCafeListUseCase,
     private val getCurrentTimeFlow: GetCurrentTimeFlowUseCase,
-    private val dateTimeUtil: IDateTimeUtil,
+    private val dateTimeUtil: IDateTimeUtil
 ) {
 
     suspend operator fun invoke(): Flow<List<CafeWithWorkingHours>> {
@@ -33,7 +33,7 @@ class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
                     address = cafe.address,
                     workingHours = getWorkingHours(cafe),
                     status = getStatus(cafe.fromTime, cafe.toTime, currentDaySeconds),
-                    cityUuid = cafe.cityUuid,
+                    cityUuid = cafe.cityUuid
                 )
             }
         }.flattenFlow()
@@ -75,5 +75,4 @@ class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
             }
         }
     }
-
 }

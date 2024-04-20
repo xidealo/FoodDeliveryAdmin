@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditMenuProductViewModel @Inject constructor(
     private val getMenuProductUseCase: GetMenuProductUseCase,
-    private val updateMenuProductUseCase: UpdateMenuProductUseCase,
+    private val updateMenuProductUseCase: UpdateMenuProductUseCase
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(EditMenuProductDataState())
@@ -47,7 +47,7 @@ class EditMenuProductViewModel @Inject constructor(
                         }?.toString() ?: "",
                         utils = menuProduct.utils ?: "",
                         isVisible = menuProduct.isVisible,
-                        comboDescription = menuProduct.comboDescription ?: "",
+                        comboDescription = menuProduct.comboDescription ?: ""
                     )
                 }
             },
@@ -69,7 +69,7 @@ class EditMenuProductViewModel @Inject constructor(
                         isLoadingButton = true,
                         hasNameError = false,
                         hasDescriptionError = false,
-                        hasNewPriceError = false,
+                        hasNewPriceError = false
                     )
                 }
 
@@ -87,7 +87,7 @@ class EditMenuProductViewModel @Inject constructor(
                             comboDescription = comboDescription.trim(),
                             photoLink = null,
                             isVisible = isVisible,
-                            categoryUuids = null,
+                            categoryUuids = null
                         )
                     )
                     mutableState.update { oldState ->
@@ -214,5 +214,4 @@ class EditMenuProductViewModel @Inject constructor(
             eventList = dataState.eventList
         )
     }
-
 }

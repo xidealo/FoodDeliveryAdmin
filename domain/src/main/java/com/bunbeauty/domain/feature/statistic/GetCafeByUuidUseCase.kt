@@ -4,7 +4,7 @@ import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
 import javax.inject.Inject
 
-//todo test
+// todo test
 class GetCafeByUuidUseCase @Inject constructor(
     private val cafeRepo: CafeRepo
 ) {

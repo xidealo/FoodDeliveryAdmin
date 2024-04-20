@@ -1,23 +1,17 @@
 package com.bunbeauty.presentation.feature.statistic
 
 import android.annotation.SuppressLint
-import android.icu.util.Calendar
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeListByCityUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
-import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
 import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
-import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +20,7 @@ class StatisticViewModel @Inject constructor(
     private val getCafeListByCityUuidUseCase: GetCafeListByCityUuidUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,
-    private val getStatisticUseCase: GetStatisticUseCase,
+    private val getStatisticUseCase: GetStatisticUseCase
 ) : BaseStateViewModel<Statistic.ViewDataState, Statistic.Action, Statistic.Event>(
     initState = Statistic.ViewDataState(
         cafeUuid = null
@@ -63,7 +57,6 @@ class StatisticViewModel @Inject constructor(
             Statistic.Action.SelectGoBackClick -> {
                 onGoBackClicked()
             }
-
         }
     }
 
@@ -135,7 +128,7 @@ class StatisticViewModel @Inject constructor(
         val timeIntervalCode = Statistic.TimeIntervalCode.valueOf(timeInterval)
         setState {
             copy(
-                selectedTimeInterval = timeIntervalCode,
+                selectedTimeInterval = timeIntervalCode
             )
         }
     }

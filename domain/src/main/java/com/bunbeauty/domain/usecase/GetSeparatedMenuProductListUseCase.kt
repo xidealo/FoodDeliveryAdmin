@@ -14,7 +14,7 @@ data class SeparatedMenuProductList(
 
 class GetSeparatedMenuProductListUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(takeRemote: Boolean): SeparatedMenuProductList {
         val menuProductList = menuProductRepo.getMenuProductList(
@@ -36,7 +36,7 @@ class GetSeparatedMenuProductListUseCase @Inject constructor(
                 }
                 .sortedBy { menuProduct ->
                     menuProduct.name
-                },
+                }
         )
     }
 }

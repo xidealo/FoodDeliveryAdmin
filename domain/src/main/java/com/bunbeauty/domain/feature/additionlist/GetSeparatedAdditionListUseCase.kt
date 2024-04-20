@@ -33,7 +33,7 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
                 }
                 .sortedBy { addition ->
                     addition.name
-                },
+                }
         )
     }
 }

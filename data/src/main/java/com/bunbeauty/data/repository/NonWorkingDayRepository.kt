@@ -14,7 +14,7 @@ import javax.inject.Inject
 class NonWorkingDayRepository @Inject constructor(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val nonWorkingDayDao: NonWorkingDayDao,
-    private val nonWorkingDayMapper: NonWorkingDayMapper,
+    private val nonWorkingDayMapper: NonWorkingDayMapper
 ) : NonWorkingDayRepo {
 
     private var nonWorkingDayMapCache: MutableMap<String, List<NonWorkingDay>> = mutableMapOf()
@@ -38,7 +38,7 @@ class NonWorkingDayRepository @Inject constructor(
     override suspend fun saveNonWorkingDay(token: String, newNonWorkingDay: NewNonWorkingDay): NonWorkingDay? {
         return foodDeliveryApi.postNonWorkingDay(
             token = token,
-            postNonWorkingDay = nonWorkingDayMapper.toPostNonWorkingDayServer(newNonWorkingDay),
+            postNonWorkingDay = nonWorkingDayMapper.toPostNonWorkingDayServer(newNonWorkingDay)
         ).dataOrNull()?.let { nonWorkingDayServer ->
             val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
             nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
@@ -53,7 +53,7 @@ class NonWorkingDayRepository @Inject constructor(
         return foodDeliveryApi.patchNonWorkingDay(
             token = token,
             uuid = uuid,
-            patchNonWorkingDay = PatchNonWorkingDayServer(isVisible = isVisible),
+            patchNonWorkingDay = PatchNonWorkingDayServer(isVisible = isVisible)
         ).dataOrNull()?.let { nonWorkingDayServer ->
             val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
             nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
@@ -91,5 +91,4 @@ class NonWorkingDayRepository @Inject constructor(
             nonWorkingDayList.map(nonWorkingDayMapper::toNonWorkingDayEntity)
         )
     }
-
 }

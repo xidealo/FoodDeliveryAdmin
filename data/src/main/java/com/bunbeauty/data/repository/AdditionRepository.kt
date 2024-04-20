@@ -10,7 +10,7 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import javax.inject.Inject
 
 class AdditionRepository @Inject constructor(
-    private val networkConnector: FoodDeliveryApi,
+    private val networkConnector: FoodDeliveryApi
 ) : AdditionRepo {
 
     override suspend fun getAdditionList(token: String, takeRemote: Boolean): List<Addition> {
@@ -32,14 +32,13 @@ class AdditionRepository @Inject constructor(
     override suspend fun updateAddition(
         updateAddition: UpdateAddition,
         token: String,
-        additionUuid: String,
+        additionUuid: String
     ) {
         networkConnector.patchAddition(
             additionUuid = additionUuid,
             additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
             token = token
         )
-
     }
 
     override suspend fun clearCache() {

@@ -9,6 +9,6 @@ val mapAdditionGroupServerToAdditionGroup: AdditionGroupServer.() -> AdditionGro
         name = name,
         uuid = uuid,
         priority = priority,
-        singleChoice = singleChoice,
+        singleChoice = singleChoice
     )
 }

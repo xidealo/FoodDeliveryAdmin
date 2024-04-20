@@ -25,7 +25,7 @@ class GetSeparatedMenuProductListUseCaseTest {
     fun setup() {
         useCase = GetSeparatedMenuProductListUseCase(
             menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -75,7 +75,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                     menuProductMock.copy(
                         uuid = "uuid4",
                         isVisible = false
-                    ),
+                    )
                 )
             )
             coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
@@ -100,7 +100,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                 menuProductMock.copy(
                     uuid = "uuid4",
                     isVisible = false
-                ),
+                )
             )
             // When
             val separatedMenuProductList = useCase(isRefreshing)
@@ -130,7 +130,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                     menuProductMock.copy(
                         uuid = "uuid4",
                         isVisible = true
-                    ),
+                    )
                 ),
                 hiddenList = emptyList()
             )
@@ -157,7 +157,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                 menuProductMock.copy(
                     uuid = "uuid4",
                     isVisible = true
-                ),
+                )
             )
             // When
             val separatedMenuProductList = useCase(isRefreshing)
@@ -183,7 +183,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                     menuProductMock.copy(
                         uuid = "uuid5",
                         isVisible = true
-                    ),
+                    )
                 ),
                 hiddenList = listOf(
                     menuProductMock.copy(
@@ -193,7 +193,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                     menuProductMock.copy(
                         uuid = "uuid2",
                         isVisible = false
-                    ),
+                    )
                 )
             )
             coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
@@ -222,7 +222,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                 menuProductMock.copy(
                     uuid = "uuid5",
                     isVisible = true
-                ),
+                )
             )
             // When
             val separatedMenuProductList = useCase(isRefreshing)
@@ -252,7 +252,7 @@ class GetSeparatedMenuProductListUseCaseTest {
                     menuProductMock.copy(
                         uuid = "uuid5",
                         name = "Z"
-                    ),
+                    )
                 ),
                 hiddenList = emptyList()
             )
@@ -278,13 +278,12 @@ class GetSeparatedMenuProductListUseCaseTest {
                 menuProductMock.copy(
                     uuid = "uuid5",
                     name = "Z"
-                ),
+                )
             )
             // When
             val separatedMenuProductList = useCase(isRefreshing)
             // Then
             assertEquals(expectedSeparatedMenuProductList, separatedMenuProductList)
-
         }
 
     private val menuProductMock = MenuProduct(
@@ -299,6 +298,6 @@ class GetSeparatedMenuProductListUseCaseTest {
         photoLink = "photoLink",
         barcode = 2,
         isVisible = true,
-        categories = emptyList(),
+        categories = emptyList()
     )
 }

@@ -7,5 +7,5 @@ data class ProductStatisticServer(
     val name: String,
     val orderCount: Int,
     val productCount: Int,
-    val proceeds: Int,
+    val proceeds: Int
 )

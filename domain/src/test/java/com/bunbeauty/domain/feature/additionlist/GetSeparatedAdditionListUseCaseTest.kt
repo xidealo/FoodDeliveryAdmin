@@ -22,7 +22,7 @@ class GetSeparatedAdditionListUseCaseTest {
     fun setup() {
         useCase = GetSeparatedAdditionListUseCase(
             additionRepo = additionRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -73,7 +73,7 @@ class GetSeparatedAdditionListUseCaseTest {
                     additionMock.copy(
                         uuid = "uuid4",
                         isVisible = false
-                    ),
+                    )
                 )
             )
             coEvery { dataStoreRepo.getToken() } returns token
@@ -98,7 +98,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 additionMock.copy(
                     uuid = "uuid4",
                     isVisible = false
-                ),
+                )
             )
             // When
             val separatedAdditionList = useCase()
@@ -130,7 +130,7 @@ class GetSeparatedAdditionListUseCaseTest {
                     additionMock.copy(
                         uuid = "uuid4",
                         isVisible = true
-                    ),
+                    )
                 ),
                 hiddenList = emptyList()
             )
@@ -157,7 +157,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 additionMock.copy(
                     uuid = "uuid4",
                     isVisible = true
-                ),
+                )
             )
             // When
             val separatedAdditionList = useCase()
@@ -185,7 +185,7 @@ class GetSeparatedAdditionListUseCaseTest {
                     additionMock.copy(
                         uuid = "uuid5",
                         isVisible = true
-                    ),
+                    )
                 ),
                 hiddenList = listOf(
                     additionMock.copy(
@@ -195,7 +195,7 @@ class GetSeparatedAdditionListUseCaseTest {
                     additionMock.copy(
                         uuid = "uuid2",
                         isVisible = false
-                    ),
+                    )
                 )
             )
 
@@ -225,14 +225,13 @@ class GetSeparatedAdditionListUseCaseTest {
                 additionMock.copy(
                     uuid = "uuid5",
                     isVisible = true
-                ),
+                )
             )
             // When
             val separatedAdditionList = useCase()
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
-
 
     @Test
     fun `return sorted by name started with A and finished with Z when additionRepo has not empty list`() =
@@ -283,7 +282,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 additionMock.copy(
                     uuid = "uuid3",
                     name = "B"
-                ),
+                )
             )
             // When
             val separatedAdditionList = useCase()
@@ -298,6 +297,6 @@ class GetSeparatedAdditionListUseCaseTest {
         isVisible = true,
         priority = 0,
         fullName = null,
-        price = null,
+        price = null
     )
 }

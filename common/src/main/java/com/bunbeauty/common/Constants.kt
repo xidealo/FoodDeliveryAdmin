@@ -14,7 +14,7 @@ object Constants {
 
     const val IMAGES_FOLDER = "image/*"
 
-    //API
+    // API
     const val WEB_SOCKET_TAG = "webSocketTag"
     const val ORDER_TAG = "orderTag"
     const val NOTIFICATION_TAG = "notificationTag"
@@ -24,5 +24,4 @@ object Constants {
     const val X_SYMBOL = "×"
     const val BULLET_SYMBOL = "•"
     const val PERCENT = "%"
-
 }

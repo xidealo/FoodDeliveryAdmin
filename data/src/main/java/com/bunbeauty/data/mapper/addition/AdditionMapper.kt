@@ -17,15 +17,13 @@ val mapAdditionServerToAddition: AdditionServer.() -> Addition = {
     )
 }
 
-
-val mapUpdateAdditionServerToPatchAddition: UpdateAddition.() -> AdditionPatchServer= {
+val mapUpdateAdditionServerToPatchAddition: UpdateAddition.() -> AdditionPatchServer = {
     AdditionPatchServer(
-    isVisible = isVisible,
-    name = name,
-    photoLink = photoLink,
-    price = price,
-    fullName = fullName,
-    priority = priority
+        isVisible = isVisible,
+        name = name,
+        photoLink = photoLink,
+        price = price,
+        fullName = fullName,
+        priority = priority
     )
 }
-

@@ -33,7 +33,7 @@ class GetSeparatedAdditionGroupListUseCase @Inject constructor(
                 }
                 .sortedBy { additionGroup ->
                     additionGroup.name
-                },
+                }
         )
     }
 }

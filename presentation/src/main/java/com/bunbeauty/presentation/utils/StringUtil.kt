@@ -29,7 +29,7 @@ import javax.inject.Inject
 class StringUtil @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
     private val resources: Resources,
-    private val dateTimeUtil: DateTimeUtil,
+    private val dateTimeUtil: DateTimeUtil
 ) : IStringUtil {
 
     override fun getDeferredTimeString(deferred: Long?): String {
@@ -181,5 +181,4 @@ class StringUtil @Inject constructor(
             part
         }
     }
-
 }

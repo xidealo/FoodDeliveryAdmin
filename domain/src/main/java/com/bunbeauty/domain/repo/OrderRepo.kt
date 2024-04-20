@@ -2,8 +2,8 @@ package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.model.order.OrderError
+import com.bunbeauty.domain.model.order.details.OrderDetails
 import kotlinx.coroutines.flow.Flow
 
 interface OrderRepo {

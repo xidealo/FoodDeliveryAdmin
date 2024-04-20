@@ -6,5 +6,5 @@ data class CafeWorkingHours(
     val fromTimeText: String,
     val fromTime: LocalTime,
     val toTimeText: String,
-    val toTime: LocalTime,
+    val toTime: LocalTime
 )

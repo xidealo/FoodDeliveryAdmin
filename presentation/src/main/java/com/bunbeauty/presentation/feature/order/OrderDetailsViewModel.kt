@@ -16,16 +16,16 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
-import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     private val orderStatusMapper: OrderStatusMapper,
     private val loadOrderDetails: LoadOrderDetailsUseCase,
     private val updateOrderStatus: UpdateOrderStatusUseCase,
-    private val resources: Resources,
+    private val resources: Resources
 ) : BaseViewModel() {
 
     private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
@@ -35,7 +35,7 @@ class OrderDetailsViewModel @Inject constructor(
         mutableDataState.update { dataState ->
             dataState.copy(
                 state = OrderDetailsDataState.State.LOADING,
-                code = orderCode,
+                code = orderCode
             )
         }
         viewModelScope.launchSafe(
@@ -57,7 +57,7 @@ class OrderDetailsViewModel @Inject constructor(
             val statusList = availableStatusList.map { orderStatus ->
                 Option(
                     id = orderStatus.name,
-                    title = orderStatusMapper.map(orderStatus),
+                    title = orderStatusMapper.map(orderStatus)
                 )
             }
             mutableDataState.update { dataState ->
@@ -117,7 +117,7 @@ class OrderDetailsViewModel @Inject constructor(
         mutableDataState.update { dataState ->
             dataState.copy(
                 state = OrderDetailsDataState.State.SUCCESS,
-                orderDetails = orderDetails,
+                orderDetails = orderDetails
             )
         }
     }
@@ -127,7 +127,7 @@ class OrderDetailsViewModel @Inject constructor(
             block = {
                 updateOrderStatus(
                     orderUuid = orderUuid,
-                    status = status,
+                    status = status
                 )
                 mutableDataState.update { dataState ->
                     dataState + OrderDetailsEvent.GoBackEvent
@@ -141,5 +141,4 @@ class OrderDetailsViewModel @Inject constructor(
             }
         )
     }
-
 }

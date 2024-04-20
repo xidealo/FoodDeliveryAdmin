@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetCafeListUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val cafeRepository: CafeRepo,
+    private val cafeRepository: CafeRepo
 ) {
 
     suspend operator fun invoke(): List<Cafe> {

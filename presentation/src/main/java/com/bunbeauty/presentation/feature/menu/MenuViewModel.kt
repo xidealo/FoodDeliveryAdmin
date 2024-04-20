@@ -23,5 +23,4 @@ class MenuViewModel : BaseStateViewModel<Menu.ViewDataState, Menu.Action, Menu.E
             }
         }
     }
-
 }

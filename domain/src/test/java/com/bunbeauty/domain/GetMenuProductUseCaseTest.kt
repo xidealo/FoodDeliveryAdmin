@@ -14,7 +14,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
-
 class GetMenuProductUseCaseTest {
 
     private val menuProductRepo: MenuProductRepo = mockk()
@@ -23,7 +22,7 @@ class GetMenuProductUseCaseTest {
     @BeforeTest
     fun setup() {
         useCase = GetMenuProductUseCase(
-            menuProductRepo = menuProductRepo,
+            menuProductRepo = menuProductRepo
         )
     }
 
@@ -32,7 +31,7 @@ class GetMenuProductUseCaseTest {
         // Given
         coEvery { menuProductRepo.getMenuProduct("uuid") } returns null
 
-        //Result
+        // Result
         assertFailsWith(
             exceptionClass = NotFoundMenuProductException::class,
             block = { useCase("uuid") }
@@ -63,6 +62,6 @@ class GetMenuProductUseCaseTest {
         photoLink = "photoLink",
         barcode = 2,
         isVisible = true,
-        categories = emptyList(),
+        categories = emptyList()
     )
 }

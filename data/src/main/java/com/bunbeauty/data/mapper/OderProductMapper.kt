@@ -22,7 +22,7 @@ class OderProductMapper @Inject constructor() {
                 OrderAddition(
                     uuid = additionServer.uuid,
                     name = additionServer.name,
-                    priority = additionServer.priority,
+                    priority = additionServer.priority
                 )
             },
             newTotalCost = orderProductServer.newTotalCost,

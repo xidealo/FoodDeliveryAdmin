@@ -13,7 +13,6 @@ import com.bunbeauty.domain.feature.editcafe.UpdateCafeToTimeUseCase
 import com.bunbeauty.domain.model.cafe.CafeWorkingHours
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.statistic.Statistic
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -31,7 +30,7 @@ class EditCafeViewModel @Inject constructor(
     private val dateTimeUtil: DateTimeUtil,
     getInitialNonWorkingDayDate: GetInitialNonWorkingDayDateUseCase,
     getNonWorkingDayYearRange: GetNonWorkingDayYearRangeUseCase,
-    getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase,
+    getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase
 ) : BaseStateViewModel<EditCafe.ViewDataState, EditCafe.Action, EditCafe.Event> (
     initState = EditCafe.ViewDataState(
         cafeUuid = null,
@@ -40,12 +39,12 @@ class EditCafeViewModel @Inject constructor(
             fromTimeText = "",
             fromTime = LocalTime.MIN,
             toTimeText = "",
-            toTime = LocalTime.MAX,
+            toTime = LocalTime.MAX
         ),
         nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Loading,
         initialNonWorkingDayDate = getInitialNonWorkingDayDate(),
         yearRange = getNonWorkingDayYearRange(),
-        minNonWorkingDayDate = getMinNonWorkingDayDate(),
+        minNonWorkingDayDate = getMinNonWorkingDayDate()
     )
 ) {
 
@@ -55,7 +54,7 @@ class EditCafeViewModel @Inject constructor(
                 setState {
                     copy(
                         cafeUuid = action.cafeUuid,
-                        cafeAddress = action.cafeAddress,
+                        cafeAddress = action.cafeAddress
                     )
                 }
                 fetchCafeData(action.cafeUuid)
@@ -103,14 +102,14 @@ class EditCafeViewModel @Inject constructor(
                             EditCafe.ViewDataState.NonWorkingDays.Success(
                                 days = nonWorkingDayList
                             )
-                        },
+                        }
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        nonWorkingDays =   EditCafe.ViewDataState.NonWorkingDays.Empty,
+                        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Empty
                     )
                 }
                 addEvent {
@@ -129,7 +128,7 @@ class EditCafeViewModel @Inject constructor(
                     copy(
                         cafeWorkingHours = state.value.cafeWorkingHours.copy(
                             fromTimeText = dateTimeUtil.getTimeHHMM(time),
-                            fromTime = time,
+                            fromTime = time
                         )
                     )
                 }
@@ -151,7 +150,7 @@ class EditCafeViewModel @Inject constructor(
                     copy(
                         cafeWorkingHours = cafeWorkingHours.copy(
                             toTimeText = dateTimeUtil.getTimeHHMM(time),
-                            toTime = time,
+                            toTime = time
                         )
                     )
                 }
@@ -176,9 +175,9 @@ class EditCafeViewModel @Inject constructor(
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
                 setState {
                     copy(
-                        nonWorkingDays =   EditCafe.ViewDataState.NonWorkingDays.Success(
+                        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Success(
                             days = nonWorkingDayList
-                        ),
+                        )
                     )
                 }
             },
@@ -210,7 +209,7 @@ class EditCafeViewModel @Inject constructor(
                             EditCafe.ViewDataState.NonWorkingDays.Success(
                                 days = nonWorkingDayList
                             )
-                        },
+                        }
                     )
                 }
             },
@@ -221,5 +220,4 @@ class EditCafeViewModel @Inject constructor(
             }
         )
     }
-
 }

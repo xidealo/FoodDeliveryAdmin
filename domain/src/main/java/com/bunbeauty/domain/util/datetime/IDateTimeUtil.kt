@@ -11,5 +11,4 @@ interface IDateTimeUtil {
     fun formatDateTime(millis: Long, pattern: String, offset: Int? = null): String
     fun getTimeHHMM(daySeconds: Int): String
     fun getTimeHHMM(localTime: LocalTime): String
-
 }

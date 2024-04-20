@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CafeListViewModel @Inject constructor(
-    private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursListFlowUseCase,
+    private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursListFlowUseCase
 ) : BaseViewModel() {
 
     private val mutableDataState = MutableStateFlow(
@@ -48,5 +48,4 @@ class CafeListViewModel @Inject constructor(
             }
         )
     }
-
 }

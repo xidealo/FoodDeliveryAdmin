@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class StatisticMapper @Inject constructor(
     private val dateTimeUtil: DateTimeUtil
-    ) {
+) {
 
     fun toModel(statisticServer: StatisticServer): Statistic {
         return Statistic(
@@ -19,5 +19,4 @@ class StatisticMapper @Inject constructor(
             currency = "₽"
         )
     }
-
 }

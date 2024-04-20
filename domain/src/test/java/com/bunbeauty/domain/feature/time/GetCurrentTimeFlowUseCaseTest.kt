@@ -23,7 +23,7 @@ class GetCurrentTimeFlowUseCaseTest {
     @BeforeTest
     fun setup() {
         getCurrentTimeFlow = GetCurrentTimeFlowUseCase(
-            timeService = timeService,
+            timeService = timeService
         )
     }
 
@@ -52,6 +52,4 @@ class GetCurrentTimeFlowUseCaseTest {
         coVerify(exactly = count) { timeService.getCurrentTime(timeZone) }
         assertEquals(count, results.size)
     }
-
-
 }

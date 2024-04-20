@@ -17,7 +17,7 @@ class GetStatisticUseCase @Inject constructor(
         return statisticRepo.getStatistic(
             token = dataStoreRepo.token.first(),
             cafeUuid = cafeUuid,
-            period = period,
+            period = period
         )
     }
 }

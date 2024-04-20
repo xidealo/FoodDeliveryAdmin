@@ -22,7 +22,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
     fun setup() {
         useCase = GetSeparatedAdditionGroupListUseCase(
             additionGroupRepo = additionGroupRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -73,7 +73,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                     additionGroupMock.copy(
                         uuid = "uuid4",
                         isVisible = false
-                    ),
+                    )
                 )
             )
             coEvery { dataStoreRepo.getToken() } returns token
@@ -98,7 +98,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 additionGroupMock.copy(
                     uuid = "uuid4",
                     isVisible = false
-                ),
+                )
             )
             // When
             val separatedAdditionGroupList = useCase()
@@ -130,7 +130,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                     additionGroupMock.copy(
                         uuid = "uuid4",
                         isVisible = true
-                    ),
+                    )
                 ),
                 hiddenList = emptyList()
             )
@@ -157,7 +157,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 additionGroupMock.copy(
                     uuid = "uuid4",
                     isVisible = true
-                ),
+                )
             )
             // When
             val separatedAdditionGroupList = useCase()
@@ -185,7 +185,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                     additionGroupMock.copy(
                         uuid = "uuid5",
                         isVisible = true
-                    ),
+                    )
                 ),
                 hiddenList = listOf(
                     additionGroupMock.copy(
@@ -195,7 +195,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                     additionGroupMock.copy(
                         uuid = "uuid2",
                         isVisible = false
-                    ),
+                    )
                 )
             )
 
@@ -225,7 +225,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 additionGroupMock.copy(
                     uuid = "uuid5",
                     isVisible = true
-                ),
+                )
             )
             // When
             val separatedAdditionGroupList = useCase()
@@ -257,7 +257,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                     additionGroupMock.copy(
                         uuid = "uuid5",
                         name = "Z"
-                    ),
+                    )
                 ),
                 hiddenList = listOf()
             )
@@ -284,7 +284,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 additionGroupMock.copy(
                     uuid = "uuid5",
                     name = "Z"
-                ),
+                )
             )
             // When
             val separatedAdditionGroupList = useCase()
@@ -297,6 +297,6 @@ class GetSeparatedAdditionGroupListUseCaseTest {
         name = "name",
         isVisible = true,
         priority = 0,
-        singleChoice = false,
+        singleChoice = false
     )
 }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class CafeRepository @Inject constructor(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val cafeMapper: CafeMapper,
-    private val cafeDao: CafeDao,
+    private val cafeDao: CafeDao
 ) : CafeRepo {
 
     private var cafeListCache: List<Cafe>? = null
@@ -89,7 +89,7 @@ class CafeRepository @Inject constructor(
         val patchedCafeServer = foodDeliveryApi.patchCafe(
             cafeUuid = cafeUuid,
             patchCafe = patchCafe,
-            token = token,
+            token = token
         ).dataOrNull() ?: return null
 
         cafeDao.insert(cafeMapper.toCafeEntity(patchedCafeServer))
@@ -109,5 +109,4 @@ class CafeRepository @Inject constructor(
             }
         }
     }
-
 }

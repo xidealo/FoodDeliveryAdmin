@@ -22,5 +22,4 @@ class CategoryRepository @Inject constructor(
             is ApiResult.Error -> {}
         }
     }
-
 }

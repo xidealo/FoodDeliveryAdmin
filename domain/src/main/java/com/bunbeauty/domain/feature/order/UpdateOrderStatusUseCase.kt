@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class UpdateOrderStatusUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val orderRepo: OrderRepo,
+    private val orderRepo: OrderRepo
 ) {
 
     suspend operator fun invoke(orderUuid: String, status: OrderStatus) {
@@ -16,7 +16,7 @@ class UpdateOrderStatusUseCase @Inject constructor(
         orderRepo.updateStatus(
             token = token,
             orderUuid = orderUuid,
-            status = status,
+            status = status
         )
     }
 }

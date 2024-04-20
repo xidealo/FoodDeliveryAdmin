@@ -16,5 +16,4 @@ class GetCurrentTimeFlowUseCase @Inject constructor(
             delay((interval - currentTime.second) * 1_000L)
         }
     }
-
 }

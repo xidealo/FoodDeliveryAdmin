@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class GetIsUnlimitedNotificationUseCase @Inject constructor(
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
 
     suspend operator fun invoke(): Boolean {

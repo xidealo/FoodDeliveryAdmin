@@ -14,7 +14,7 @@ import javax.inject.Inject
 class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper,
-    private val menuProductDao: MenuProductDao,
+    private val menuProductDao: MenuProductDao
 ) : MenuProductRepo {
 
     override suspend fun getMenuProductList(

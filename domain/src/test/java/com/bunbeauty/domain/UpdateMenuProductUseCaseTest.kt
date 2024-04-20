@@ -30,7 +30,7 @@ class UpdateMenuProductUseCaseTest {
     fun setup() {
         useCase = UpdateMenuProductUseCase(
             menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -39,7 +39,7 @@ class UpdateMenuProductUseCaseTest {
         // Given
         coEvery { dataStoreRepo.getToken() } returns null
 
-        //Result
+        // Result
         assertFailsWith(
             exceptionClass = NoTokenException::class,
             block = { useCase(menuProductUuid, mockk()) }
@@ -51,7 +51,7 @@ class UpdateMenuProductUseCaseTest {
         // Given
         coEvery { dataStoreRepo.getToken() } returns token
 
-        //Result
+        // Result
         assertFailsWith(
             exceptionClass = MenuProductNameException::class,
             block = { useCase(menuProductUuid, menuProductMock.copy(name = "")) }
@@ -63,7 +63,7 @@ class UpdateMenuProductUseCaseTest {
         // Given
         coEvery { dataStoreRepo.getToken() } returns token
 
-        //Result
+        // Result
         assertFailsWith(
             exceptionClass = MenuProductNewPriceException::class,
             block = { useCase(menuProductUuid, menuProductMock.copy(newPrice = 0)) }
@@ -75,7 +75,7 @@ class UpdateMenuProductUseCaseTest {
         // Given
         coEvery { dataStoreRepo.getToken() } returns token
 
-        //Result
+        // Result
         assertFailsWith(
             exceptionClass = MenuProductDescriptionException::class,
             block = { useCase(menuProductUuid, menuProductMock.copy(description = "")) }
@@ -110,6 +110,6 @@ class UpdateMenuProductUseCaseTest {
         comboDescription = "comboDescription",
         photoLink = "photoLink",
         isVisible = true,
-        categoryUuids = emptyList(),
+        categoryUuids = emptyList()
     )
 }

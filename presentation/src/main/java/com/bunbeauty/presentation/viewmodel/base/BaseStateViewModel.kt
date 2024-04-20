@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 
 abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEvent>(
     initState: DS
-): ViewModel() {
+) : ViewModel() {
 
     protected val mutableDataState = MutableStateFlow(initState)
     val state = mutableDataState.asStateFlow()
@@ -36,5 +36,4 @@ abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEv
             list + block(mutableDataState.value)
         }
     }
-
 }

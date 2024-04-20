@@ -15,8 +15,7 @@ data class ProfileUiState(
         object Error : State
         data class Success(
             val role: UserRole,
-            val userName: String,
+            val userName: String
         ) : State
     }
-
 }

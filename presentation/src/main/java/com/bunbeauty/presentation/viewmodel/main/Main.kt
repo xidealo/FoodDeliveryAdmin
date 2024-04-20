@@ -10,13 +10,13 @@ interface Main {
     data class ViewDataState(
         val connectionLost: Boolean,
         val nonWorkingDay: Boolean,
-        val navigationBarOptions: NavigationBarOptions,
+        val navigationBarOptions: NavigationBarOptions
     ) : BaseViewDataState
 
     enum class NavigationBarItem {
         ORDERS,
         MENU,
-        PROFILE,
+        PROFILE
     }
 
     sealed interface NavigationBarOptions {
@@ -30,7 +30,7 @@ interface Main {
     sealed interface Action : BaseAction {
         data class UpdateNavDestination(
             val navigationBarItem: NavigationBarItem?,
-            val navController: NavController,
+            val navController: NavController
         ) : Action
 
         data class ShowErrorMessage(val text: String) : Action
@@ -47,8 +47,7 @@ interface Main {
     ) {
         enum class Type {
             INFO,
-            ERROR,
+            ERROR
         }
     }
-
 }
