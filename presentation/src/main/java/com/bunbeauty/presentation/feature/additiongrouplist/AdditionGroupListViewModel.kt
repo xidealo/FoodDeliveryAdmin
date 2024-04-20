@@ -6,7 +6,6 @@ import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroup
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
