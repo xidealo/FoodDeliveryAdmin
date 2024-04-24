@@ -10,12 +10,14 @@ interface AdditionGroupList {
         val visibleAdditionGroups: List<AdditionGroup>,
         val hiddenAdditionGroups: List<AdditionGroup>,
         val isLoading: Boolean,
-        val isRefreshing: Boolean
+        val isRefreshing: Boolean,
+        val throwable: Throwable?
     ) : BaseViewDataState
 
     sealed interface Action : BaseAction {
 
         data object Init : Action
+        data object RefreshData : Action
         data object OnAdditionClick : Action
         data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action

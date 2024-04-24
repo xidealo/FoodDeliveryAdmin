@@ -44,12 +44,10 @@ class AdditionListFragment :
     BaseComposeFragment<AdditionList.ViewDataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
 
     override val viewModel: AdditionListViewModel by viewModels()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(AdditionList.Action.Init)
     }
-
     @Composable
     override fun Screen(state: AdditionListViewState, onAction: (AdditionList.Action) -> Unit) {
         AdditionListScreen(state = state, onAction = onAction)
