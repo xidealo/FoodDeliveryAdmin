@@ -145,6 +145,7 @@
     <!--MENU LIST FRAGMENT-->
     <string name="title_position_visible">Видимые позиции</string>
     <string name="title_position_hidden">Скрытые позиции</string>
+    <string name="action_menu_list_add">Добавить</string>
 
     <string-array name="utilsList">
         <item>г</item>
@@ -205,5 +206,8 @@
 
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
+
+    <!-- ADD MENU PRODUCT -->
+    <string name="title_add_menu_product">Добавление продукта</string>
 
 </resources>

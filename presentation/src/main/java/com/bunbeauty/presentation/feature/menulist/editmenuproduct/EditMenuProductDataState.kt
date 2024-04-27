@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct
+package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 

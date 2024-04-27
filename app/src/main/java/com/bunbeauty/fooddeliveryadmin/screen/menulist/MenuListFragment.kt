@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,6 +33,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -44,7 +46,7 @@ import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.model.MenuListEvent
 import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
-import com.bunbeauty.presentation.viewmodel.menulist.MenuListViewModel
+import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -85,7 +87,19 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             pullRefreshEnabled = true,
             refreshing = menuListViewState.isRefreshing,
             onRefresh = viewModel::refreshData,
-            backActionClick = { findNavController().popBackStack() }
+            backActionClick = { findNavController().popBackStack() },
+            actionButton = {
+                if (menuListViewState.state is MenuListViewState.State.Success) {
+                    FloatingButton(
+                        iconId = R.drawable.ic_plus,
+                        textStringId = R.string.action_menu_list_add,
+                        onClick = {
+                            findNavController().navigateSafe(MenuListFragmentDirections.toCreateMenuProductFragment())
+                        }
+                    )
+                }
+            },
+            actionButtonPosition = FabPosition.End
         ) {
             when (val state = menuListViewState.state) {
                 is MenuListViewState.State.Success -> {
@@ -112,7 +126,12 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
         state: MenuListViewState.State.Success
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = 16.dp,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
+            ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (state.visibleMenuProductItems.isNotEmpty()) {

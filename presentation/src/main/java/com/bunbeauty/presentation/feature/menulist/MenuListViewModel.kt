@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menulist
+package com.bunbeauty.presentation.feature.menulist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menuproduct.MenuProduct

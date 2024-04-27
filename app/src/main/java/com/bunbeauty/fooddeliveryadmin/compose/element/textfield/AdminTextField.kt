@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.applyIfNotNull
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @Composable
@@ -25,7 +26,7 @@ fun AdminTextField(
     modifier: Modifier = Modifier,
     value: String = "",
     @StringRes labelStringId: Int,
-    keyboardType: KeyboardType = KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Ascii,
     imeAction: ImeAction = ImeAction.Next,
     onValueChange: (value: String) -> Unit,
     maxSymbols: Int = Int.MAX_VALUE,
@@ -34,7 +35,11 @@ fun AdminTextField(
     readOnly: Boolean = false,
     enabled: Boolean = true
 ) {
-    Column(modifier = modifier) {
+    AdminCard(
+        modifier = modifier,
+        elevated = false,
+        clickable = false
+    ) {
         AdminBaseTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
