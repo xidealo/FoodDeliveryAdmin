@@ -1,6 +1,7 @@
 package com.bunbeauty.presentation.feature.menulist
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.menu.menulist.FetchCategoryListUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
 import com.bunbeauty.domain.usecase.UpdateVisibleMenuProductUseCase
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuListViewModel @Inject constructor(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
-    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase
+    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
+    private val fetchCategoryListUseCase: FetchCategoryListUseCase
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(MenuListDataState())
@@ -46,6 +48,8 @@ class MenuListViewModel @Inject constructor(
                     throwable = null
                 )
             }
+
+            fetchCategoryListUseCase()
 
             val items =
                 getSeparatedMenuProductListUseCase(takeRemote = mutableState.value.isEmptyMenuProductListSize)

@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.applyIfNotNull
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @Composable
@@ -35,11 +34,7 @@ fun AdminTextField(
     readOnly: Boolean = false,
     enabled: Boolean = true
 ) {
-    AdminCard(
-        modifier = modifier,
-        elevated = false,
-        clickable = false
-    ) {
+    Column(modifier = modifier) {
         AdminBaseTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,

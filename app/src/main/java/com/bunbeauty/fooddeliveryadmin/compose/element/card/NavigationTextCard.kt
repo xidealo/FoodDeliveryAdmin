@@ -34,7 +34,11 @@ fun NavigationTextCard(
         Row(
             modifier = Modifier.padding(
                 horizontal = AdminTheme.dimensions.mediumSpace,
-                vertical = AdminTheme.dimensions.smallSpace
+                vertical = if (hintStringId == null) {
+                    12.dp
+                } else {
+                    8.dp
+                }
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -73,6 +77,19 @@ private fun TextNavigationCardPreview() {
         NavigationTextCard(
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
             hintStringId = R.string.hint_login_login,
+            label = "+7 999 000-00-00",
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun TextNavigationCardNoHintPreview() {
+    AdminTheme {
+        NavigationTextCard(
+            modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
+            hintStringId = null,
             label = "+7 999 000-00-00",
             onClick = {}
         )

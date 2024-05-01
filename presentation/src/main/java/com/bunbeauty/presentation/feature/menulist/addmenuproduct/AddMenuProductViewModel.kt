@@ -1,35 +1,40 @@
 package com.bunbeauty.presentation.feature.menulist.addmenuproduct
 
+import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
+import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
-
-) : BaseStateViewModel<AddMenuProduct.ViewDataState, AddMenuProduct.Action, AddMenuProduct.Event>(
-    initState = AddMenuProduct.ViewDataState(
-        name = "",
-        hasNameError = false,
-        description = "",
-        hasDescriptionError = false,
-        newPrice = "",
-        hasNewPriceError = false,
-        oldPrice = "",
-        nutrition = "",
-        utils = "",
-        comboDescription = "",
-        isLoadingButton = false,
-        isVisible = false,
-        throwable = null
-    )
-) {
+    private val getCategoryListUseCase: GetCategoryListUseCase
+) :
+    BaseStateViewModel<AddMenuProduct.ViewDataState, AddMenuProduct.Action, AddMenuProduct.Event>(
+        initState = AddMenuProduct.ViewDataState(
+            name = "",
+            hasNameError = false,
+            description = "",
+            hasDescriptionError = false,
+            newPrice = "",
+            hasNewPriceError = false,
+            oldPrice = "",
+            hasOldPriceError = false,
+            nutrition = "",
+            utils = "",
+            comboDescription = "",
+            isLoadingButton = false,
+            isVisibleInMenu = true,
+            isVisibleInRecommendation = false,
+            throwable = null,
+            selectableCategoryList = listOf()
+        )
+    ) {
 
     override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.ViewDataState) {
         when (action) {
-            AddMenuProduct.Action.Init -> {
-
-            }
+            AddMenuProduct.Action.Init -> loadData()
 
             AddMenuProduct.Action.OnBackClick -> {
                 addEvent {
@@ -73,45 +78,110 @@ class AddMenuProductViewModel @Inject constructor(
                 )
             }
 
+            is AddMenuProduct.Action.OnUtilsTextChanged -> setState {
+                copy(
+                    utils = action.utils
+                )
+            }
+
+            AddMenuProduct.Action.OnCreateMenuProductClick -> createMenuProduct()
+            AddMenuProduct.Action.OnSelectCategoriesClick -> addEvent {
+                AddMenuProduct.Event.OpenSelectCategoriesBottomSheet(dataState.selectableCategoryList)
+            }
+
+            is AddMenuProduct.Action.OnRecommendationVisibleChangeClick -> {
+                setState {
+                    copy(
+                        isVisibleInRecommendation = action.isVisible
+                    )
+                }
+            }
+
+            is AddMenuProduct.Action.OnVisibleInMenuChangeClick -> {
+                setState {
+                    copy(
+                        isVisibleInMenu = action.isVisible
+                    )
+                }
+            }
+
+            AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
+                AddMenuProduct.Event.GoToGallery
+            }
         }
     }
 
-    fun createMenuProduct(
-        name: String,
-        productCodeString: String,
-        cost: String,
-        discountCost: String,
-        weight: String,
-        description: String,
-        comboDescription: String
-    ) {
+    private fun loadData() {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        selectableCategoryList = getCategoryListUseCase().map { category ->
+                            AddMenuProduct.ViewDataState.SelectableCategory(
+                                category = category,
+                                selected = false
+                            )
+                        }
+                    )
+                }
+            },
+            onError = { throwable ->
+                setState {
+                    copy(throwable = throwable)
+                }
+            }
+        )
+    }
 
-        if (name.isEmpty()) {
-            /*  sendFieldError(
-                  PRODUCT_NAME_ERROR_KEY,
-                  resourcesProvider.getString(R.string.error_create_menu_product_empty_name)
-              )*/
+    private fun createMenuProduct() {
+        setState {
+            copy(
+                hasNameError = false,
+                hasNewPriceError = false,
+                hasOldPriceError = false,
+            )
+        }
+
+        if (mutableDataState.value.name.isEmpty()) {
+            setState {
+                copy(
+                    hasNameError = true
+                )
+            }
             return
         }
 
+        val newPrice = mutableDataState.value.newPrice.toIntOrNull()
 
-        val costInt = cost.toIntOrNull()
-        if (costInt == null) {
-            /* sendFieldError(
-                 PRODUCT_COST_ERROR_KEY,
-                 resourcesProvider.getString(R.string.error_create_menu_product_cost_incorrect)
-             )*/
+        if (newPrice == null) {
+            setState {
+                copy(
+                    hasNewPriceError = true
+                )
+            }
             return
         }
 
-        val discountCostInt = discountCost.toIntOrNull()
-        if (discountCostInt != null && discountCostInt >= costInt) {
-            /*     sendFieldError(
-                     PRODUCT_DISCOUNT_COST_ERROR_KEY,
-                     resourcesProvider.getString(R.string.error_create_menu_product_discount_cost_incorrect)
-                 )*/
+        val oldPrice = mutableDataState.value.oldPrice.toIntOrNull()
+
+        if (oldPrice != null && oldPrice <= newPrice) {
+            setState {
+                copy(
+                    hasOldPriceError = true
+                )
+            }
             return
         }
+
+        if (mutableDataState.value.description.isEmpty()) {
+            setState {
+                copy(
+                    hasDescriptionError = true
+                )
+            }
+            return
+        }
+
 
     }
 
