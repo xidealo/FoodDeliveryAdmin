@@ -41,6 +41,8 @@ class AdditionGroupListViewModel @Inject constructor(
             )
 
             AdditionGroupList.Action.Init -> loadData()
+
+            AdditionGroupList.Action.RefreshData -> refreshData()
         }
     }
 
@@ -67,6 +69,7 @@ class AdditionGroupListViewModel @Inject constructor(
         )
     }
 
+
     private fun updateVisible(uuid: String, isVisible: Boolean) {
         viewModelScope.launchSafe(
             block = {
@@ -84,5 +87,39 @@ class AdditionGroupListViewModel @Inject constructor(
                 }
             }
         )
+    }
+
+    private fun refreshData() {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        isRefreshing = true,
+                        throwable = null
+                    )
+                }
+
+                val separatedAdditionGroupList = getSeparatedAdditionGroupListUseCase()
+
+                setState {
+                    copy(
+                        visibleAdditionGroups = separatedAdditionGroupList.visibleList,
+                        hiddenAdditionGroups = separatedAdditionGroupList.hiddenList,
+                        isLoading = false,
+                        isRefreshing = false,
+                        throwable = null
+                    )
+                }
+            },
+            onError =
+            {
+                setState {
+                    copy(
+                        throwable = throwable
+                    )
+                }
+            }
+        )
+
     }
 }

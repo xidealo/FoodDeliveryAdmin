@@ -65,6 +65,10 @@ class AdditionGroupListFragment :
         AdminScaffold(
             title = stringResource(R.string.title_addition_group_list),
             pullRefreshEnabled = true,
+            refreshing = state.isRefreshing,
+            onRefresh = {
+                onAction(AdditionGroupList.Action.RefreshData)
+            },
             backActionClick = {
                 onAction(AdditionGroupList.Action.OnBackClick)
             }

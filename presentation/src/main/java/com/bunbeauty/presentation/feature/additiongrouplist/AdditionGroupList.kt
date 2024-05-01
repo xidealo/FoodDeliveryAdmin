@@ -17,6 +17,7 @@ interface AdditionGroupList {
     sealed interface Action : BaseAction {
 
         data object Init : Action
+        data object RefreshData : Action
         data object OnAdditionClick : Action
         data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action
