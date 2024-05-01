@@ -53,6 +53,7 @@ class AdditionListFragment :
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(AdditionList.Action.Init)
     }
+
     @Composable
     override fun Screen(state: AdditionListViewState, onAction: (AdditionList.Action) -> Unit) {
         AdditionListScreen(state = state, onAction = onAction)

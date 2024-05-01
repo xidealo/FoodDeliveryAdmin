@@ -69,7 +69,6 @@ class AdditionGroupListViewModel @Inject constructor(
         )
     }
 
-
     private fun updateVisible(uuid: String, isVisible: Boolean) {
         viewModelScope.launchSafe(
             block = {
@@ -95,7 +94,7 @@ class AdditionGroupListViewModel @Inject constructor(
                 setState {
                     copy(
                         isRefreshing = true,
-                        throwable = null
+                        error = null
                     )
                 }
 
@@ -107,19 +106,17 @@ class AdditionGroupListViewModel @Inject constructor(
                         hiddenAdditionGroups = separatedAdditionGroupList.hiddenList,
                         isLoading = false,
                         isRefreshing = false,
-                        throwable = null
+                        error = null
                     )
                 }
             },
-            onError =
-            {
+            onError = { throwable ->
                 setState {
                     copy(
-                        throwable = throwable
+                        error = throwable
                     )
                 }
             }
         )
-
     }
 }
