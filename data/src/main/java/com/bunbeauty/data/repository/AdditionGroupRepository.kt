@@ -35,16 +35,14 @@ class AdditionGroupRepository @Inject constructor(
     override suspend fun updateAdditionGroup(
         updateAdditionGroup: UpdateAdditionGroup,
         token: String,
-        additionGroupUuid: String,
+        additionGroupUuid: String
     ) {
         networkConnector.patchAdditionGroup(
             additionGroupUuid = additionGroupUuid,
             additionGroupPatchServer = updateAdditionGroup.mapUpdateAdditionGroupServerToPatchAdditionGroup(),
             token = token
         )
-
     }
-
 
     override suspend fun clearCache() {
         TODO("Not yet implemented")

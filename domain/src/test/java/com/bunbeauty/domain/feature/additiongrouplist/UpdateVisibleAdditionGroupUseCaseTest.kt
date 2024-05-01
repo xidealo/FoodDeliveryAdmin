@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.additiongrouplist
 
-
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
@@ -23,10 +22,9 @@ class UpdateVisibleAdditionGroupUseCaseTest {
     fun setup() {
         useCase = UpdateVisibleAdditionGroupUseCase(
             additionGroupRepo = additionGroupRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
-
 
     @Test
     fun `should throw NoTokenException when token is null`() = runTest {
@@ -57,7 +55,7 @@ class UpdateVisibleAdditionGroupUseCaseTest {
         // When
         useCase(additionUuidGroup = additionGroupUuidMock, isVisible = isVisible)
 
-        //Then
+        // Then
         coVerify {
             additionGroupRepo.updateAdditionGroup(
                 updateAdditionGroup = updateAdditionGroupMock,

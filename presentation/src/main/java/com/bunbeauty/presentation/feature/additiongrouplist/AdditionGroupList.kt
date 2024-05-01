@@ -10,7 +10,8 @@ interface AdditionGroupList {
         val visibleAdditionGroups: List<AdditionGroup>,
         val hiddenAdditionGroups: List<AdditionGroup>,
         val isLoading: Boolean,
-        val isRefreshing: Boolean
+        val isRefreshing: Boolean,
+        val error: Throwable?
     ) : BaseViewDataState
 
     sealed interface Action : BaseAction {

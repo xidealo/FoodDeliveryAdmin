@@ -17,7 +17,8 @@ class AdditionGroupListViewModel @Inject constructor(
         visibleAdditionGroups = listOf(),
         hiddenAdditionGroups = listOf(),
         isLoading = false,
-        isRefreshing = false
+        isRefreshing = false,
+        error = null
     )
 ) {
 
@@ -31,10 +32,12 @@ class AdditionGroupListViewModel @Inject constructor(
             }
 
             AdditionGroupList.Action.OnAdditionClick -> {
+                // TODO (implement)
             }
 
             is AdditionGroupList.Action.OnVisibleClick -> updateVisible(
-                uuid = action.uuid, isVisible = action.isVisible,
+                uuid = action.uuid,
+                isVisible = action.isVisible
             )
 
             AdditionGroupList.Action.Init -> loadData()
@@ -54,8 +57,12 @@ class AdditionGroupListViewModel @Inject constructor(
                     )
                 }
             },
-            onError = {
-                // show error
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }
@@ -65,12 +72,16 @@ class AdditionGroupListViewModel @Inject constructor(
             block = {
                 updateVisibleAdditionGroupListUseCase(
                     additionUuidGroup = uuid,
-                    isVisible = !isVisible,
+                    isVisible = !isVisible
                 )
                 loadData()
             },
-            onError = {
-                // show error
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }

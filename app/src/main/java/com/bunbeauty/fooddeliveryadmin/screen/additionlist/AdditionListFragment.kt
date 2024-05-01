@@ -43,6 +43,11 @@ import kotlinx.collections.immutable.toPersistentList
 class AdditionListFragment :
     BaseComposeFragment<AdditionList.ViewDataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
 
+    companion object {
+        private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+        private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+    }
+
     override val viewModel: AdditionListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +79,7 @@ class AdditionListFragment :
             ) {
                 if (state.visibleAdditionItems.isNotEmpty()) {
                     item(
-                        key = R.string.title_position_visible
+                        key = TITLE_POSITION_VISIBLE_KEY
                     ) {
                         Text(
                             text = stringResource(id = R.string.title_position_visible),
@@ -82,7 +87,7 @@ class AdditionListFragment :
                         )
                     }
                     items(
-                        state.visibleAdditionItems,
+                        items = state.visibleAdditionItems,
                         key = { additionItem ->
                             additionItem.uuid
                         }
@@ -95,7 +100,7 @@ class AdditionListFragment :
                 }
                 if (state.hiddenAdditionItems.isNotEmpty()) {
                     item(
-                        key = R.string.title_position_hidden
+                        key = TITLE_POSITION_HIDDEN_KEY
                     ) {
                         Text(
                             text = stringResource(id = R.string.title_position_hidden),
@@ -103,7 +108,12 @@ class AdditionListFragment :
                             modifier = Modifier.padding(top = 8.dp)
                         )
                     }
-                    items(state.hiddenAdditionItems) { hiddenAddition ->
+                    items(
+                        items = state.hiddenAdditionItems,
+                        key = { additionGroupItem ->
+                            additionGroupItem.uuid
+                        }
+                    ) { hiddenAddition ->
                         AdditionCard(
                             additionItem = hiddenAddition,
                             onAction = onAction
@@ -190,6 +200,7 @@ class AdditionListFragment :
         when (event) {
             AdditionList.Event.Back -> findNavController().popBackStack()
             is AdditionList.Event.OnAdditionClick -> {
+                // TODO (implement)
             }
         }
     }

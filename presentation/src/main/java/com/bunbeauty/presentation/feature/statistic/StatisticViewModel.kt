@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.statistic
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
@@ -60,7 +59,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    fun onCafeClicked() {
+    private fun onCafeClicked() {
         viewModelScope.launchSafe(
             block = {
                 addEvent {
@@ -112,13 +111,13 @@ class StatisticViewModel @Inject constructor(
         )
     }
 
-    fun onGoBackClicked() {
+    private fun onGoBackClicked() {
         addEvent {
             Statistic.Event.GoBack
         }
     }
 
-    fun onTimeIntervalClicked() {
+    private fun onTimeIntervalClicked() {
         addEvent {
             Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
         }
@@ -133,8 +132,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("StringFormatMatches")
-    fun loadStatistic(
+    private fun loadStatistic(
         cafeUuid: String?,
         period: Statistic.TimeIntervalCode
     ) {

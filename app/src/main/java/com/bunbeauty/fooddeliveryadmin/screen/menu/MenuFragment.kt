@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
-import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
@@ -37,43 +36,38 @@ class MenuFragment :
         AdminScaffold(
             title = stringResource(R.string.title_bottom_navigation_menu)
         ) {
-            if (state.error != null) {
-                ErrorScreen(mainTextId = R.string.error_common_loading_failed) {
-                }
-            } else {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    NavigationIconCard(
-                        iconId = R.drawable.ic_products,
-                        labelStringId = R.string.action_menu_positions,
-                        onClick = {
-                            onAction(Menu.Action.OnMenuListClick)
-                        }
-                    )
-                    NavigationIconCard(
-                        iconId = R.drawable.ic_addition_group,
-                        labelStringId = R.string.action_menu_addition_groups,
-                        onClick = {
-                            onAction(Menu.Action.OnAdditionGroupsListClick)
-                        }
-                    )
-                    NavigationIconCard(
-                        iconId = R.drawable.ic_addition,
-                        labelStringId = R.string.action_menu_additions,
-                        onClick = {
-                            onAction(Menu.Action.OnAdditionsListClick)
-                        }
-                    )
-                }
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                NavigationIconCard(
+                    iconId = R.drawable.ic_products,
+                    labelStringId = R.string.action_menu_positions,
+                    onClick = {
+                        onAction(Menu.Action.OnMenuListClick)
+                    }
+                )
+                NavigationIconCard(
+                    iconId = R.drawable.ic_addition_group,
+                    labelStringId = R.string.action_menu_addition_groups,
+                    onClick = {
+                        onAction(Menu.Action.OnAdditionGroupsListClick)
+                    }
+                )
+                NavigationIconCard(
+                    iconId = R.drawable.ic_addition,
+                    labelStringId = R.string.action_menu_additions,
+                    onClick = {
+                        onAction(Menu.Action.OnAdditionsListClick)
+                    }
+                )
             }
         }
     }
 
     @Composable
     override fun mapState(state: Menu.ViewDataState): MenuViewState {
-        return MenuViewState(error = state.error)
+        return MenuViewState
     }
 
     override fun handleEvent(event: Menu.Event) {
@@ -96,7 +90,7 @@ class MenuFragment :
     @Composable
     private fun MenuScreenPreview() {
         AdminTheme {
-            MenuScreen(state = MenuViewState(error = null), onAction = {})
+            MenuScreen(state = MenuViewState, onAction = {})
         }
     }
 }

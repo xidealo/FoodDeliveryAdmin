@@ -37,6 +37,11 @@ import kotlinx.collections.immutable.toPersistentList
 class AdditionGroupListFragment :
     BaseComposeFragment<AdditionGroupList.ViewDataState, AdditionGroupListViewState, AdditionGroupList.Action, AdditionGroupList.Event>() {
 
+    companion object {
+        private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+        private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+    }
+
     override val viewModel: AdditionGroupListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,7 +75,7 @@ class AdditionGroupListFragment :
             ) {
                 if (state.visibleAdditionItems.isNotEmpty()) {
                     item(
-                        key = R.string.title_position_visible
+                        key = TITLE_POSITION_VISIBLE_KEY
                     ) {
                         Text(
                             text = stringResource(id = R.string.title_position_visible),
@@ -91,7 +96,7 @@ class AdditionGroupListFragment :
                 }
                 if (state.hiddenAdditionItems.isNotEmpty()) {
                     item(
-                        key = R.string.title_position_hidden
+                        key = TITLE_POSITION_HIDDEN_KEY
                     ) {
                         Text(
                             text = stringResource(id = R.string.title_position_hidden),
@@ -99,7 +104,12 @@ class AdditionGroupListFragment :
                             modifier = Modifier.padding(top = 8.dp)
                         )
                     }
-                    items(state.hiddenAdditionItems) { hiddenAddition ->
+                    items(
+                        items = state.hiddenAdditionItems,
+                        key = { additionGroupItem ->
+                            additionGroupItem.uuid
+                        }
+                    ) { hiddenAddition ->
                         AdditionGroupCard(
                             additionItem = hiddenAddition,
                             onAction = onAction
@@ -173,6 +183,7 @@ class AdditionGroupListFragment :
         when (event) {
             AdditionGroupList.Event.Back -> findNavController().popBackStack()
             is AdditionGroupList.Event.OnAdditionClick -> {
+                // TODO (implement)
             }
         }
     }

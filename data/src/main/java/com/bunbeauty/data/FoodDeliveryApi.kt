@@ -111,6 +111,6 @@ interface FoodDeliveryApi {
     suspend fun patchAdditionGroup(
         additionGroupUuid: String,
         additionGroupPatchServer: AdditionGroupPatchServer,
-        token: String,
+        token: String
     ): ApiResult<AdditionGroupServer>
 }

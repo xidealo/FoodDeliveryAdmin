@@ -10,7 +10,7 @@ class UpdateVisibleAdditionGroupUseCase @Inject constructor(
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(additionUuidGroup: String, isVisible: Boolean ) {
+    suspend operator fun invoke(additionUuidGroup: String, isVisible: Boolean) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
         additionGroupRepo.updateAdditionGroup(

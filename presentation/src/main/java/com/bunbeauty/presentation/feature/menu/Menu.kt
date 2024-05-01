@@ -5,9 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface Menu {
-    data class ViewDataState(
-        val error: Throwable? = null
-    ) : BaseViewDataState
+    data object ViewDataState : BaseViewDataState
 
     sealed interface Action : BaseAction {
 

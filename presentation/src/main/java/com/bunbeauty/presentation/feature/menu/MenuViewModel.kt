@@ -3,9 +3,7 @@ package com.bunbeauty.presentation.feature.menu
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class MenuViewModel : BaseStateViewModel<Menu.ViewDataState, Menu.Action, Menu.Event>(
-    initState = Menu.ViewDataState(
-        error = null
-    )
+    initState = Menu.ViewDataState
 ) {
 
     override fun reduce(action: Menu.Action, dataState: Menu.ViewDataState) {
