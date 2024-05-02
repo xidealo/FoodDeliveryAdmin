@@ -11,7 +11,7 @@ interface AdditionList {
         val hiddenAdditions: List<Addition>,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
-        val throwable: Throwable?
+        val hasError: Boolean
     ) : BaseViewDataState
 
     sealed interface Action : BaseAction {

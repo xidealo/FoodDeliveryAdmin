@@ -13,7 +13,8 @@ data class AdditionListViewState(
     val visibleAdditionItems: ImmutableList<AdditionItem>,
     val hiddenAdditionItems: ImmutableList<AdditionItem>,
     val isRefreshing: Boolean,
-    val isLoading: Boolean
+    val isLoading: Boolean,
+    val hasError: Boolean
 ) : BaseViewState {
     @Immutable
     data class AdditionItem(

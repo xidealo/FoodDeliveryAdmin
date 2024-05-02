@@ -10,7 +10,7 @@ data class StatisticViewState(
     val selectedCafe: String,
     val period: String,
     val isLoading: Boolean,
-    val error: Throwable?
+    val hasError: Boolean
 ) : BaseViewState {
     @Immutable
     data class StatisticItemModel(

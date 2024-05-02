@@ -84,7 +84,7 @@ class StatisticFragment :
                 state.selectedTimeInterval
             ),
             isLoading = state.isLoading,
-            error = state.error
+            hasError = state.hasError
         )
     }
 
@@ -150,7 +150,7 @@ class StatisticFragment :
             title = stringResource(R.string.title_statistic),
             backActionClick = { onAction(Statistic.Action.SelectGoBackClick) },
             actionButton = {
-                if (statisticViewState.error == null) {
+                if (statisticViewState.hasError) {
                     LoadingButton(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         textStringId = R.string.action_product_statistic_load,
@@ -184,7 +184,7 @@ class StatisticFragment :
                 )
 
                 when {
-                    statisticViewState.error != null -> {
+                    statisticViewState.hasError -> {
                         ErrorScreen(
                             mainTextId = R.string.error_common_loading_failed,
                             isLoading = statisticViewState.isLoading
@@ -290,7 +290,7 @@ class StatisticFragment :
                     selectedCafe = "Все кафе",
                     period = "По годам",
                     isLoading = false,
-                    error = null
+                    hasError = false
                 ),
                 onAction = {}
             )

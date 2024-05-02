@@ -19,7 +19,7 @@ class AdditionListViewModel @Inject constructor(
         hiddenAdditions = listOf(),
         isLoading = false,
         isRefreshing = false,
-        throwable = null
+        hasError = false
     )
 ) {
 
@@ -60,7 +60,7 @@ class AdditionListViewModel @Inject constructor(
                 setState {
                     copy(
                         isRefreshing = true,
-                        throwable = null
+                        hasError = false
                     )
                 }
 
@@ -72,14 +72,14 @@ class AdditionListViewModel @Inject constructor(
                         hiddenAdditions = separatedAdditionList.hiddenList,
                         isLoading = false,
                         isRefreshing = false,
-                        throwable = null
+                        hasError = false
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        throwable = throwable
+                        hasError = true
                     )
                 }
             }
@@ -96,14 +96,14 @@ class AdditionListViewModel @Inject constructor(
                         hiddenAdditions = separatedAdditionList.hiddenList,
                         isLoading = false,
                         isRefreshing = false,
-                        throwable = null
+                        hasError = false
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        throwable = throwable
+                        hasError = true
                     )
                 }
             }

@@ -12,7 +12,7 @@ interface Statistic {
         val selectedTimeInterval: TimeIntervalCode = TimeIntervalCode.MONTH,
         val statisticList: List<StatisticItemModel> = emptyList(),
         val isLoading: Boolean = false,
-        val error: Throwable? = null
+        val hasError: Boolean = false
     ) : BaseViewDataState {
 
         data class StatisticItemModel(

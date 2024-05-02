@@ -68,10 +68,10 @@ class StatisticViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable
+                        hasError = true
                     )
                 }
             }
@@ -101,10 +101,10 @@ class StatisticViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable
+                        hasError = true
                     )
                 }
             }
@@ -170,15 +170,15 @@ class StatisticViewModel @Inject constructor(
                         copy(
                             statisticList = statisticItemList,
                             isLoading = false,
-                            error = null
+                            hasError = false
                         )
                     }
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable,
+                        hasError = true,
                         isLoading = false
                     )
                 }
@@ -191,10 +191,10 @@ class StatisticViewModel @Inject constructor(
             block = {
                 getCafeListUseCase()
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable
+                        hasError = true
                     )
                 }
             }
