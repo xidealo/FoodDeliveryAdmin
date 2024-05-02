@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.feature.statistic
 
-import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.exception.NoCityUuidException
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -13,7 +13,7 @@ class GetCafeListByCityUuidUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(): List<Cafe> {
-        val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: throw NoTokenException()
+        val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: throw NoCityUuidException()
         return cafeRepo.getCafeListByCityUuid(cityUuid = cityUuid)
     }
 }
