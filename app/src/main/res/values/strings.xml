@@ -218,4 +218,7 @@
     <string name="error_add_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
     <string name="error_add_menu_product_old_price_incorrect">Должна быть больше цены</string>
 
+    <!-- Gallery -->
+    <string name="title_gallery">Галерея</string>
+
 </resources>

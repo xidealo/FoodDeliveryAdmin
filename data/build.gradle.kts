@@ -36,6 +36,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
+    // Firebase
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.storage)
+
     // Database
     implementation(RoomDatabase.roomDatabaseRuntime)
     implementation(RoomDatabase.roomDatabaseKtx)

@@ -365,7 +365,7 @@ class AddMenuProductFragment :
             }
 
             AddMenuProduct.Event.GoToGallery -> {
-
+                findNavController().navigate(AddMenuProductFragmentDirections.toGalleryFragment())
             }
         }
     }

@@ -188,5 +188,4 @@ class AddMenuProductViewModel @Inject constructor(
     fun goToProductCodeList() {
 
     }
-
 }

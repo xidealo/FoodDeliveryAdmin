@@ -5,5 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
 data class GalleryViewState(
-    val photos: List<String>
+    val photos: List<String>,
+    val isLoading: Boolean,
+    val hasError: Boolean
 ) : BaseViewState
