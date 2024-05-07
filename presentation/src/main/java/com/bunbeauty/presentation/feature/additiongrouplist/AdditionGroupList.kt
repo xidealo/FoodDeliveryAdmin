@@ -2,17 +2,17 @@ package com.bunbeauty.presentation.feature.additiongrouplist
 
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
+import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
-import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface AdditionGroupList {
-    data class ViewDataState(
+    data class DataState(
         val visibleAdditionGroups: List<AdditionGroup>,
         val hiddenAdditionGroups: List<AdditionGroup>,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
         val error: Throwable?
-    ) : BaseViewDataState
+    ) : BaseDataState
 
     sealed interface Action : BaseAction {
 

@@ -13,8 +13,8 @@ import javax.inject.Inject
 class AdditionListViewModel @Inject constructor(
     private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
     private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase
-) : BaseStateViewModel<AdditionList.ViewDataState, AdditionList.Action, AdditionList.Event>(
-    initState = AdditionList.ViewDataState(
+) : BaseStateViewModel<AdditionList.DataState, AdditionList.Action, AdditionList.Event>(
+    initState = AdditionList.DataState(
         visibleAdditions = listOf(),
         hiddenAdditions = listOf(),
         isLoading = false,
@@ -23,7 +23,7 @@ class AdditionListViewModel @Inject constructor(
     )
 ) {
 
-    override fun reduce(action: AdditionList.Action, dataState: AdditionList.ViewDataState) {
+    override fun reduce(action: AdditionList.Action, dataState: AdditionList.DataState) {
         when (action) {
             AdditionList.Action.OnBackClick -> addEvent { AdditionList.Event.Back }
 

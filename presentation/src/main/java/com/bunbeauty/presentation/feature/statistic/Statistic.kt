@@ -2,18 +2,18 @@ package com.bunbeauty.presentation.feature.statistic
 
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
+import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
-import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface Statistic {
-    data class ViewDataState(
+    data class DataState(
         val cafeUuid: String?,
         val selectedCafe: SelectedCafe? = null,
         val selectedTimeInterval: TimeIntervalCode = TimeIntervalCode.MONTH,
         val statisticList: List<StatisticItemModel> = emptyList(),
         val isLoading: Boolean = false,
         val hasError: Boolean = false
-    ) : BaseViewDataState {
+    ) : BaseDataState {
 
         data class StatisticItemModel(
             val startMillis: Long,

@@ -1,11 +1,11 @@
 package com.bunbeauty.presentation.feature.menu
 
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
+import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
-import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface Menu {
-    data object ViewDataState : BaseViewDataState
+    data object DataState : BaseDataState
 
     sealed interface Action : BaseAction {
 

@@ -20,13 +20,13 @@ class StatisticViewModel @Inject constructor(
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase
-) : BaseStateViewModel<Statistic.ViewDataState, Statistic.Action, Statistic.Event>(
-    initState = Statistic.ViewDataState(
+) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
+    initState = Statistic.DataState(
         cafeUuid = null
     )
 ) {
 
-    override fun reduce(action: Statistic.Action, dataState: Statistic.ViewDataState) {
+    override fun reduce(action: Statistic.Action, dataState: Statistic.DataState) {
         when (action) {
             is Statistic.Action.Init -> {
                 setState {
@@ -145,7 +145,7 @@ class StatisticViewModel @Inject constructor(
                     cafeUuid = cafeUuid,
                     period = period.name
                 ).map { statistic ->
-                    Statistic.ViewDataState.StatisticItemModel(
+                    Statistic.DataState.StatisticItemModel(
                         startMillis = statistic.startPeriodTime,
                         period = statistic.period,
                         count = statistic.orderCount,

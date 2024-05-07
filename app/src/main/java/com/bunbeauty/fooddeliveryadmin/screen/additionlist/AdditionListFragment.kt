@@ -42,7 +42,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @AndroidEntryPoint
 class AdditionListFragment :
-    BaseComposeFragment<AdditionList.ViewDataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
+    BaseComposeFragment<AdditionList.DataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
 
     companion object {
         private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
@@ -196,7 +196,7 @@ class AdditionListFragment :
     }
 
     @Composable
-    override fun mapState(state: AdditionList.ViewDataState): AdditionListViewState {
+    override fun mapState(state: AdditionList.DataState): AdditionListViewState {
         return AdditionListViewState(
             visibleAdditionItems = state.visibleAdditions.map { addition ->
                 addition.toItem()

@@ -12,8 +12,8 @@ import javax.inject.Inject
 class AdditionGroupListViewModel @Inject constructor(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
     private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupUseCase
-) : BaseStateViewModel<AdditionGroupList.ViewDataState, AdditionGroupList.Action, AdditionGroupList.Event>(
-    initState = AdditionGroupList.ViewDataState(
+) : BaseStateViewModel<AdditionGroupList.DataState, AdditionGroupList.Action, AdditionGroupList.Event>(
+    initState = AdditionGroupList.DataState(
         visibleAdditionGroups = listOf(),
         hiddenAdditionGroups = listOf(),
         isLoading = false,
@@ -24,7 +24,7 @@ class AdditionGroupListViewModel @Inject constructor(
 
     override fun reduce(
         action: AdditionGroupList.Action,
-        dataState: AdditionGroupList.ViewDataState
+        dataState: AdditionGroupList.DataState
     ) {
         when (action) {
             AdditionGroupList.Action.OnBackClick -> {

@@ -2,17 +2,17 @@ package com.bunbeauty.presentation.feature.additionlist
 
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
+import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
-import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface AdditionList {
-    data class ViewDataState(
+    data class DataState(
         val visibleAdditions: List<Addition>,
         val hiddenAdditions: List<Addition>,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
         val hasError: Boolean
-    ) : BaseViewDataState
+    ) : BaseDataState
 
     sealed interface Action : BaseAction {
 

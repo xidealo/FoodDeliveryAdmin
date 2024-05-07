@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StatisticFragment :
-    BaseComposeFragment<Statistic.ViewDataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
+    BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
 
     override val viewModel: StatisticViewModel by viewModels()
 
@@ -64,7 +64,7 @@ class StatisticFragment :
     }
 
     @Composable
-    override fun mapState(state: Statistic.ViewDataState): StatisticViewState {
+    override fun mapState(state: Statistic.DataState): StatisticViewState {
         return StatisticViewState(
             statisticList = state.statisticList.map { statisticItemModel ->
                 StatisticViewState.StatisticItemModel(

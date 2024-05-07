@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MenuFragment :
-    BaseComposeFragment<Menu.ViewDataState, MenuViewState, Menu.Action, Menu.Event>() {
+    BaseComposeFragment<Menu.DataState, MenuViewState, Menu.Action, Menu.Event>() {
 
     override val viewModel: MenuViewModel by viewModels()
 
@@ -66,7 +66,7 @@ class MenuFragment :
     }
 
     @Composable
-    override fun mapState(state: Menu.ViewDataState): MenuViewState {
+    override fun mapState(state: Menu.DataState): MenuViewState {
         return MenuViewState
     }
 
