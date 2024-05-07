@@ -40,14 +40,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
+private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+
 @AndroidEntryPoint
 class AdditionListFragment :
     BaseComposeFragment<AdditionList.DataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
-
-    companion object {
-        private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
-        private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
-    }
 
     override val viewModel: AdditionListViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

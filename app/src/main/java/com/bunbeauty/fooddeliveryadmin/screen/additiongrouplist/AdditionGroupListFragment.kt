@@ -33,14 +33,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
+private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+
 @AndroidEntryPoint
 class AdditionGroupListFragment :
     BaseComposeFragment<AdditionGroupList.DataState, AdditionGroupListViewState, AdditionGroupList.Action, AdditionGroupList.Event>() {
-
-    companion object {
-        private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
-        private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
-    }
 
     override val viewModel: AdditionGroupListViewModel by viewModels()
 
@@ -186,7 +184,7 @@ class AdditionGroupListFragment :
     override fun handleEvent(event: AdditionGroupList.Event) {
         when (event) {
             AdditionGroupList.Event.Back -> findNavController().popBackStack()
-            is AdditionGroupList.Event.OnAdditionClick -> {
+            is AdditionGroupList.Event.OnAdditionGroupClick -> {
                 // TODO (implement)
             }
         }

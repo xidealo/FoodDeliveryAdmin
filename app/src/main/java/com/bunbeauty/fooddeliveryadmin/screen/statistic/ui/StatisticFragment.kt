@@ -212,7 +212,12 @@ class StatisticFragment :
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = statisticViewState.statisticList) { statisticItemModel ->
+            items(
+                items = statisticViewState.statisticList,
+                key = { statisticItemModel ->
+                    statisticItemModel.startMillis
+                }
+            ) { statisticItemModel ->
                 StatisticItem(statisticItemModel)
             }
         }
@@ -265,7 +270,7 @@ class StatisticFragment :
         }
     }
 
-    @Preview
+    @Preview(showSystemUi = true)
     @Composable
     private fun StatisticScreenPreview() {
         AdminTheme {

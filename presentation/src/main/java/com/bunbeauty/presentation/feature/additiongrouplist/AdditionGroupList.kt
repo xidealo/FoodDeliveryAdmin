@@ -24,7 +24,7 @@ interface AdditionGroupList {
     }
 
     sealed interface Event : BaseEvent {
-        data class OnAdditionClick(val additionUuid: String) : Event
+        data class OnAdditionGroupClick(val additionUuid: String) : Event
         data object Back : Event
     }
 }
