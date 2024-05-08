@@ -74,7 +74,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafe.ViewDataState, Edit
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.handleAction(
+        viewModel.onAction(
             EditCafe.Action.Init(
                 cafeUuid = editCafeFragmentArgs.cafeUuid,
                 cafeAddress = editCafeFragmentArgs.cafeAddress
@@ -223,7 +223,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafe.ViewDataState, Edit
                 lifecycleScope.launch {
                     ConfirmDeletionBottomSheet.show(parentFragmentManager)?.let { confirmed ->
                         if (confirmed) {
-                            viewModel.handleAction(
+                            viewModel.onAction(
                                 EditCafe.Action.ConfirmDeleteNonWorkingDay(uuid = event.uuid)
                             )
                         }

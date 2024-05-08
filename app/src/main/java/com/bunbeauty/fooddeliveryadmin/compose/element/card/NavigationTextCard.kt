@@ -21,8 +21,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 @Composable
 fun NavigationTextCard(
     modifier: Modifier = Modifier,
-    @StringRes hintStringId: Int,
     label: String?,
+    @StringRes hintStringId: Int? = null,
     clickable: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -43,11 +43,13 @@ fun NavigationTextCard(
                     .weight(1f)
                     .padding(end = AdminTheme.dimensions.smallSpace)
             ) {
-                Text(
-                    text = stringResource(hintStringId),
-                    style = AdminTheme.typography.labelSmall.medium,
-                    color = AdminTheme.colors.main.onSurfaceVariant
-                )
+                hintStringId?.let {
+                    Text(
+                        text = stringResource(hintStringId),
+                        style = AdminTheme.typography.labelSmall.medium,
+                        color = AdminTheme.colors.main.onSurfaceVariant
+                    )
+                }
                 Text(
                     text = label ?: "",
                     style = AdminTheme.typography.bodyMedium,

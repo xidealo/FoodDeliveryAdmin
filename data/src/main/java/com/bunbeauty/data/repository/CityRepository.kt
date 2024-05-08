@@ -11,7 +11,7 @@ import javax.inject.Inject
 class CityRepository @Inject constructor(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val cityDao: CityDao,
-    private val cityMapper: CityMapper,
+    private val cityMapper: CityMapper
 ) : CityRepo {
 
     var cityListCache: List<City>? = null
@@ -58,5 +58,4 @@ class CityRepository @Inject constructor(
             cityList.map(cityMapper::map)
         )
     }
-
 }

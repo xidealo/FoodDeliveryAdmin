@@ -9,5 +9,4 @@ interface CityDao : BaseDao<CityEntity> {
 
     @Query("SELECT * FROM CityEntity")
     suspend fun getCityList(): List<CityEntity>
-
 }

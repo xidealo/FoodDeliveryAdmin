@@ -10,5 +10,5 @@ data class UpdateMenuProduct(
     val comboDescription: String? = null,
     val photoLink: String? = null,
     val isVisible: Boolean? = null,
-    val categoryUuids: List<String>? = null,
+    val categoryUuids: List<String>? = null
 )

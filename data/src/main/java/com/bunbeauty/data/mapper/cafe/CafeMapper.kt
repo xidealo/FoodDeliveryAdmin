@@ -20,7 +20,7 @@ class CafeMapper @Inject constructor() {
                 offset = offset,
                 phone = phone,
                 visible = isVisible,
-                cityUuid = cityUuid,
+                cityUuid = cityUuid
             )
         }
     }
@@ -85,9 +85,8 @@ class CafeMapper @Inject constructor() {
                 fromTime = fromTime,
                 toTime = toTime,
                 phone = phone,
-                isVisible = visible,
+                isVisible = visible
             )
         }
     }
-
 }

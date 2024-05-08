@@ -14,5 +14,5 @@ data class Cafe(
     val offset: Int,
     val phone: String,
     val visible: Boolean,
-    val cityUuid: String,
+    val cityUuid: String
 ) : Parcelable

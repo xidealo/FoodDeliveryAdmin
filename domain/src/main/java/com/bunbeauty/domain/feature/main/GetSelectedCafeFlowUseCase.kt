@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class GetSelectedCafeFlowUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val cafeRepo: CafeRepo,
+    private val cafeRepo: CafeRepo
 ) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,11 +31,10 @@ class GetSelectedCafeFlowUseCase @Inject constructor(
                 cafe?.let {
                     SelectedCafe(
                         uuid = cafe.uuid,
-                        address = cafe.address,
+                        address = cafe.address
                     )
                 }
             }
         }
     }
-
 }

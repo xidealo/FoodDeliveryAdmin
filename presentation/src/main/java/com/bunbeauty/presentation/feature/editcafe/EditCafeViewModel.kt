@@ -30,8 +30,8 @@ class EditCafeViewModel @Inject constructor(
     private val dateTimeUtil: DateTimeUtil,
     getInitialNonWorkingDayDate: GetInitialNonWorkingDayDateUseCase,
     getNonWorkingDayYearRange: GetNonWorkingDayYearRangeUseCase,
-    getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase,
-) : BaseStateViewModel<EditCafe.ViewDataState, EditCafe.Action, EditCafe.Event>(
+    getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase
+) : BaseStateViewModel<EditCafe.ViewDataState, EditCafe.Action, EditCafe.Event> (
     initState = EditCafe.ViewDataState(
         cafeUuid = null,
         cafeAddress = "",
@@ -39,22 +39,22 @@ class EditCafeViewModel @Inject constructor(
             fromTimeText = "",
             fromTime = LocalTime.MIN,
             toTimeText = "",
-            toTime = LocalTime.MAX,
+            toTime = LocalTime.MAX
         ),
         nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Loading,
         initialNonWorkingDayDate = getInitialNonWorkingDayDate(),
         yearRange = getNonWorkingDayYearRange(),
-        minNonWorkingDayDate = getMinNonWorkingDayDate(),
+        minNonWorkingDayDate = getMinNonWorkingDayDate()
     )
 ) {
 
-    override fun handleAction(action: EditCafe.Action) {
+    override fun reduce(action: EditCafe.Action, dataState: EditCafe.ViewDataState) {
         when (action) {
             is EditCafe.Action.Init -> {
-                setState { state ->
-                    state.copy(
+                setState {
+                    copy(
                         cafeUuid = action.cafeUuid,
-                        cafeAddress = action.cafeAddress,
+                        cafeAddress = action.cafeAddress
                     )
                 }
                 fetchCafeData(action.cafeUuid)
@@ -93,8 +93,8 @@ class EditCafeViewModel @Inject constructor(
             block = {
                 val cafeWorkingHours = getCafeWorkingHoursByUuid(cafeUuid)
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
-                setState { state ->
-                    state.copy(
+                setState {
+                    copy(
                         cafeWorkingHours = cafeWorkingHours,
                         nonWorkingDays = if (nonWorkingDayList.isEmpty()) {
                             EditCafe.ViewDataState.NonWorkingDays.Empty
@@ -102,14 +102,14 @@ class EditCafeViewModel @Inject constructor(
                             EditCafe.ViewDataState.NonWorkingDays.Success(
                                 days = nonWorkingDayList
                             )
-                        },
+                        }
                     )
                 }
             },
             onError = {
-                setState { state ->
-                    state.copy(
-                        nonWorkingDays =   EditCafe.ViewDataState.NonWorkingDays.Empty,
+                setState {
+                    copy(
+                        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Empty
                     )
                 }
                 addEvent {
@@ -124,11 +124,11 @@ class EditCafeViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 updateCafeFromTime(cafeUuid, time)
-                setState { state ->
-                    state.copy(
-                        cafeWorkingHours = state.cafeWorkingHours.copy(
+                setState {
+                    copy(
+                        cafeWorkingHours = state.value.cafeWorkingHours.copy(
                             fromTimeText = dateTimeUtil.getTimeHHMM(time),
-                            fromTime = time,
+                            fromTime = time
                         )
                     )
                 }
@@ -146,11 +146,11 @@ class EditCafeViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 updateCafeToTime(cafeUuid, time)
-                setState { state ->
-                    state.copy(
-                        cafeWorkingHours = state.cafeWorkingHours.copy(
+                setState {
+                    copy(
+                        cafeWorkingHours = cafeWorkingHours.copy(
                             toTimeText = dateTimeUtil.getTimeHHMM(time),
-                            toTime = time,
+                            toTime = time
                         )
                     )
                 }
@@ -173,11 +173,11 @@ class EditCafeViewModel @Inject constructor(
                     cafeUuid = cafeUuid
                 )
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
-                setState { state ->
-                    state.copy(
-                        nonWorkingDays =   EditCafe.ViewDataState.NonWorkingDays.Success(
+                setState {
+                    copy(
+                        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Success(
                             days = nonWorkingDayList
-                        ),
+                        )
                     )
                 }
             },
@@ -201,15 +201,15 @@ class EditCafeViewModel @Inject constructor(
             block = {
                 deleteCafeNonWorkingDay(uuid)
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
-                setState { state ->
-                    state.copy(
+                setState {
+                    copy(
                         nonWorkingDays = if (nonWorkingDayList.isEmpty()) {
                             EditCafe.ViewDataState.NonWorkingDays.Empty
                         } else {
                             EditCafe.ViewDataState.NonWorkingDays.Success(
                                 days = nonWorkingDayList
                             )
-                        },
+                        }
                     )
                 }
             },
@@ -220,5 +220,4 @@ class EditCafeViewModel @Inject constructor(
             }
         )
     }
-
 }

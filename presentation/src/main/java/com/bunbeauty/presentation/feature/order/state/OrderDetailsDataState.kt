@@ -8,13 +8,13 @@ data class OrderDetailsDataState(
 
     val orderDetails: OrderDetails?,
 
-    val eventList: List<OrderDetailsEvent>,
+    val eventList: List<OrderDetailsEvent>
 ) {
 
     enum class State {
         LOADING,
         SUCCESS,
-        ERROR,
+        ERROR
     }
 
     operator fun plus(event: OrderDetailsEvent) = copy(eventList = eventList + event)
@@ -27,7 +27,7 @@ data class OrderDetailsDataState(
             state = State.LOADING,
             code = "",
             orderDetails = null,
-            eventList = emptyList(),
+            eventList = emptyList()
         )
     }
 }

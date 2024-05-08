@@ -1,8 +1,29 @@
 package com.bunbeauty.data.di
 
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.repository.*
-import com.bunbeauty.domain.repo.*
+import com.bunbeauty.data.repository.AdditionGroupRepository
+import com.bunbeauty.data.repository.AdditionRepository
+import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.data.repository.CategoryRepository
+import com.bunbeauty.data.repository.CityRepository
+import com.bunbeauty.data.repository.DataStoreRepository
+import com.bunbeauty.data.repository.FoodDeliveryApiImpl
+import com.bunbeauty.data.repository.MenuProductRepository
+import com.bunbeauty.data.repository.NonWorkingDayRepository
+import com.bunbeauty.data.repository.OrderRepository
+import com.bunbeauty.data.repository.StatisticRepository
+import com.bunbeauty.data.repository.UserAuthorizationRepository
+import com.bunbeauty.domain.repo.AdditionGroupRepo
+import com.bunbeauty.domain.repo.AdditionRepo
+import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.repo.CategoryRepo
+import com.bunbeauty.domain.repo.CityRepo
+import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.MenuProductRepo
+import com.bunbeauty.domain.repo.NonWorkingDayRepo
+import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.domain.repo.StatisticRepo
+import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -53,4 +74,11 @@ abstract class RepoModule {
     @Binds
     abstract fun bindNonWorkingDayRepository(nonWorkingDayRepository: NonWorkingDayRepository): NonWorkingDayRepo
 
+    @Singleton
+    @Binds
+    abstract fun bindAdditionRepository(additionRepository: AdditionRepository): AdditionRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindAdditionGroupRepository(additionGroupRepository: AdditionGroupRepository): AdditionGroupRepo
 }

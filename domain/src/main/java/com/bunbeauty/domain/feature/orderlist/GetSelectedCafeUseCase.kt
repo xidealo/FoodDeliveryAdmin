@@ -6,11 +6,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class GetSelectedCafeUseCase @Inject constructor(
-    private val getSelectedCafeFlow: GetSelectedCafeFlowUseCase,
+    private val getSelectedCafeFlow: GetSelectedCafeFlowUseCase
 ) {
 
     suspend operator fun invoke(): SelectedCafe? {
         return getSelectedCafeFlow().firstOrNull()
     }
-
 }

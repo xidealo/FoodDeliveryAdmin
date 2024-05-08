@@ -27,7 +27,7 @@ class GetSelectedCafeFlowUseCaseTest {
     fun setup() {
         getSelectedCafe = GetSelectedCafeFlowUseCase(
             dataStoreRepo = dataStoreRepo,
-            cafeRepo = cafeRepo,
+            cafeRepo = cafeRepo
         )
     }
 
@@ -40,11 +40,11 @@ class GetSelectedCafeFlowUseCaseTest {
         coEvery { cafeRepo.getCafeList(cityUuid) } returns listOf(
             createCafe("uuid1", "address1"),
             createCafe("uuid2", "address2"),
-            createCafe("uuid3", "address3"),
+            createCafe("uuid3", "address3")
         )
         val selectedCafe = SelectedCafe(
             uuid = "uuid1",
-            address = "address1",
+            address = "address1"
         )
 
         // When
@@ -64,11 +64,11 @@ class GetSelectedCafeFlowUseCaseTest {
         coEvery { cafeRepo.getCafeList(cityUuid) } returns listOf(
             createCafe("uuid1", "address1"),
             createCafe("uuid2", "address2"),
-            createCafe("uuid3", "address3"),
+            createCafe("uuid3", "address3")
         )
         val selectedCafe = SelectedCafe(
             uuid = "uuid3",
-            address = "address3",
+            address = "address3"
         )
 
         // When
@@ -89,7 +89,7 @@ class GetSelectedCafeFlowUseCaseTest {
             offset = 3,
             phone = "phone",
             visible = true,
-            cityUuid = "cityUuid",
+            cityUuid = "cityUuid"
         )
     }
 }

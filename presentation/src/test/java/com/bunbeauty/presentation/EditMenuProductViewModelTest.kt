@@ -7,9 +7,9 @@ import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.usecase.GetMenuProductUseCase
 import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
-import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductEvent
-import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductUIState
-import com.bunbeauty.presentation.viewmodel.menu.editmenuproduct.EditMenuProductViewModel
+import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductEvent
+import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductUIState
+import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -37,7 +37,7 @@ class EditMenuProductViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         viewModel = EditMenuProductViewModel(
             getMenuProductUseCase = getMenuProductUseCase,
-            updateMenuProductUseCase = updateMenuProductUseCase,
+            updateMenuProductUseCase = updateMenuProductUseCase
         )
     }
 
@@ -279,8 +279,10 @@ class EditMenuProductViewModelTest {
 
         // Then
         assertTrue(
-            actual = (viewModel.state.value.editMenuProductState
-                    as EditMenuProductUIState.EditMenuProductState.Success).hasNameError
+            actual = (
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).hasNameError
         )
     }
 
@@ -298,8 +300,10 @@ class EditMenuProductViewModelTest {
 
         // Then
         assertTrue(
-            actual = (viewModel.state.value.editMenuProductState
-                    as EditMenuProductUIState.EditMenuProductState.Success).hasNewPriceError
+            actual = (
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).hasNewPriceError
         )
     }
 
@@ -317,8 +321,10 @@ class EditMenuProductViewModelTest {
 
         // Then
         assertTrue(
-            actual = (viewModel.state.value.editMenuProductState
-                    as EditMenuProductUIState.EditMenuProductState.Success).hasDescriptionError
+            actual = (
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).hasDescriptionError
         )
     }
 
@@ -336,8 +342,10 @@ class EditMenuProductViewModelTest {
 
         // Then
         assertFalse(
-            actual = (viewModel.state.value.editMenuProductState
-                    as EditMenuProductUIState.EditMenuProductState.Success).isLoadingButton
+            actual = (
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).isLoadingButton
         )
     }
 
@@ -407,7 +415,6 @@ class EditMenuProductViewModelTest {
         photoLink = "photoLink",
         barcode = 2,
         isVisible = true,
-        categories = emptyList(),
+        categories = emptyList()
     )
-
 }

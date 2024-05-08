@@ -7,11 +7,15 @@ import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
+import com.bunbeauty.data.model.server.addition.AdditionPatchServer
+import com.bunbeauty.data.model.server.addition.AdditionServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.city.CityServer
-import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
-import com.bunbeauty.data.model.server.menu_product.MenuProductServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
@@ -59,7 +63,7 @@ import javax.inject.Inject
 
 class FoodDeliveryApiImpl @Inject constructor(
     private val client: HttpClient,
-    private val json: Json,
+    private val json: Json
 ) : FoodDeliveryApi {
 
     private var webSocketSession: DefaultClientWebSocketSession? = null
@@ -71,7 +75,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     private var webSocketSessionOpened = false
 
     override suspend fun login(
-        userAuthorizationRequest: UserAuthorizationRequest,
+        userAuthorizationRequest: UserAuthorizationRequest
     ): ApiResult<UserAuthorizationResponse> {
         return post(
             path = "user/login",
@@ -82,34 +86,34 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>> {
         return get(
             path = "cafe",
-            parameters = mapOf("cityUuid" to cityUuid),
+            parameters = mapOf("cityUuid" to cityUuid)
         )
     }
 
     override suspend fun patchCafe(
         cafeUuid: String,
         patchCafe: PatchCafeServer,
-        token: String,
+        token: String
     ): ApiResult<CafeServer> {
         return patch(
             path = "cafe",
             parameters = mapOf("cafeUuid" to cafeUuid),
             body = patchCafe,
-            token = token,
+            token = token
         )
     }
 
     override suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>> {
         return get(
             path = "city",
-            parameters = mapOf("companyUuid" to companyUuid),
+            parameters = mapOf("companyUuid" to companyUuid)
         )
     }
 
     override suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>> {
         return get(
             path = "menu_product",
-            parameters = mapOf("companyUuid" to companyUuid),
+            parameters = mapOf("companyUuid" to companyUuid)
         )
     }
 
@@ -120,7 +124,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun patchMenuProduct(
         menuProductUuid: String,
         menuProductPatchServer: MenuProductPatchServer,
-        token: String,
+        token: String
     ): ApiResult<MenuProductServer> {
         return patch(
             path = "menu_product",
@@ -133,7 +137,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String,
+        period: String
     ): List<StatisticServer> {
         // TODO refactor
         return client.get {
@@ -149,7 +153,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
-        cafeUuid: String,
+        cafeUuid: String
     ): Flow<ApiResult<OrderServer>> {
         mutex.withLock {
             if (!webSocketSessionOpened) {
@@ -214,7 +218,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getOrderListByCafeUuid(
         token: String,
-        cafeUuid: String,
+        cafeUuid: String
     ): ApiResult<ServerList<OrderServer>> {
         return get(
             path = "order",
@@ -225,7 +229,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getOrderByUuid(
         token: String,
-        orderUuid: String,
+        orderUuid: String
     ): ApiResult<OrderDetailsServer> {
         return get(
             path = "v2/order/details",
@@ -237,7 +241,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
-        status: OrderStatus,
+        status: OrderStatus
     ): ApiResult<OrderDetailsServer> {
         return patch(
             path = "order",
@@ -249,7 +253,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun getCategoriesByCompanyUuid(
         token: String,
-        companyUuid: String,
+        companyUuid: String
     ): ApiResult<ServerList<CategoryServer>> {
         return get(
             path = "category",
@@ -267,7 +271,7 @@ class FoodDeliveryApiImpl @Inject constructor(
 
     override suspend fun postNonWorkingDay(
         token: String,
-        postNonWorkingDay: PostNonWorkingDayServer,
+        postNonWorkingDay: PostNonWorkingDayServer
     ): ApiResult<NonWorkingDayServer> {
         return post(
             path = "non_working_day",
@@ -289,10 +293,49 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
+    override suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>> {
+        return get(
+            path = "addition",
+            token = token
+        )
+    }
+    override suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>> {
+        return get(
+            path = "addition_group",
+            token = token
+        )
+    }
+
+    override suspend fun patchAddition(
+        additionUuid: String,
+        additionPatchServer: AdditionPatchServer,
+        token: String
+    ): ApiResult<AdditionServer> {
+        return patch(
+            path = "addition",
+            body = additionPatchServer,
+            parameters = mapOf("uuid" to additionUuid),
+            token = token
+        )
+    }
+
+    override suspend fun patchAdditionGroup(
+        additionGroupUuid: String,
+        additionGroupPatchServer: AdditionGroupPatchServer,
+        token: String
+    ): ApiResult<AdditionGroupServer> {
+        return patch(
+            path = "addition_group",
+            body = additionGroupPatchServer,
+            parameters = mapOf("uuid" to additionGroupUuid),
+            token = token
+        )
+    }
+
     private suspend inline fun <reified T> get(
         path: String,
         parameters: Map<String, String?> = mapOf(),
-        token: String? = null,
+        token: String? = null
     ): ApiResult<T> {
         return safeCall {
             client.get {
@@ -310,7 +353,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         body: Any,
         parameters: Map<String, String> = mapOf(),
-        token: String? = null,
+        token: String? = null
     ): ApiResult<T> {
         return safeCall {
             client.post {
@@ -328,7 +371,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         body: Any,
         parameters: Map<String, String?> = mapOf(),
-        token: String? = null,
+        token: String? = null
     ): ApiResult<T> {
         return safeCall {
             client.patch {
@@ -345,7 +388,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     private suspend inline fun <reified T> delete(
         path: String,
         parameters: Map<String, String?> = mapOf(),
-        token: String? = null,
+        token: String? = null
     ): ApiResult<T> {
         return safeCall {
             client.delete {
@@ -363,7 +406,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         path: String,
         body: Any?,
         parameters: Map<String, String?> = mapOf(),
-        token: String? = null,
+        token: String? = null
     ) {
         if (body != null) {
             setBody(body)
@@ -378,7 +421,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     }
 
     private suspend inline fun <reified R> safeCall(
-        networkCall: () -> HttpResponse,
+        networkCall: () -> HttpResponse
     ): ApiResult<R> {
         return try {
             ApiResult.Success(networkCall().body())
@@ -388,5 +431,4 @@ class FoodDeliveryApiImpl @Inject constructor(
             ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }
     }
-
 }

@@ -11,20 +11,23 @@ import javax.inject.Inject
 
 class UpdateMenuProductUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(
         menuProductUuid: String,
-        updateMenuProduct: UpdateMenuProduct,
+        updateMenuProduct: UpdateMenuProduct
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
-        if (updateMenuProduct.name.isNullOrBlank())
+        if (updateMenuProduct.name.isNullOrBlank()) {
             throw MenuProductNameException()
-        if (updateMenuProduct.newPrice == null || updateMenuProduct.newPrice == 0)
+        }
+        if (updateMenuProduct.newPrice == null || updateMenuProduct.newPrice == 0) {
             throw MenuProductNewPriceException()
-        if (updateMenuProduct.description.isNullOrBlank())
+        }
+        if (updateMenuProduct.description.isNullOrBlank()) {
             throw MenuProductDescriptionException()
+        }
 
         val processedUpdateMenuProduct = UpdateMenuProduct(
             name = updateMenuProduct.name,
@@ -44,7 +47,7 @@ class UpdateMenuProductUseCase @Inject constructor(
             comboDescription = updateMenuProduct.comboDescription,
             photoLink = updateMenuProduct.photoLink,
             isVisible = updateMenuProduct.isVisible,
-            categoryUuids = updateMenuProduct.categoryUuids,
+            categoryUuids = updateMenuProduct.categoryUuids
         )
 
         menuProductRepo.updateMenuProduct(

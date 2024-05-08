@@ -16,14 +16,14 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val profileStateMapper: ProfileStateMapper,
     private val getUsername: GetUsernameUseCase,
-    private val logout: LogoutUseCase,
+    private val logout: LogoutUseCase
 ) : BaseViewModel() {
 
     private val mutableDataState = MutableStateFlow(
         ProfileDataState(
             state = ProfileDataState.State.LOADING,
             user = null,
-            eventList = emptyList(),
+            eventList = emptyList()
         )
     )
     val uiState = mutableDataState.mapToStateFlow(viewModelScope, profileStateMapper::map)
@@ -43,8 +43,8 @@ class ProfileViewModel @Inject constructor(
                             role = UserRole.MANAGER,
                             userName = getUsername().lowercase().replaceFirstChar { char ->
                                 char.titlecase()
-                            },
-                        ),
+                            }
+                        )
                     )
                 }
             }
@@ -96,5 +96,4 @@ class ProfileViewModel @Inject constructor(
             state - events
         }
     }
-
 }

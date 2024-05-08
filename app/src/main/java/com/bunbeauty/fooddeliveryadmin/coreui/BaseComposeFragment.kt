@@ -5,6 +5,7 @@ import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -29,9 +30,15 @@ abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : B
 
         viewBinding.root.setContentWithTheme {
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val onAction = remember {
+                { action: A ->
+                    viewModel.onAction(action)
+                }
+            }
+
             Screen(
                 state = mapState(state),
-                onAction = viewModel::handleAction
+                onAction = onAction
             )
 
             val events by viewModel.events.collectAsStateWithLifecycle()
@@ -46,6 +53,7 @@ abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : B
 
     abstract fun handleEvent(event: E)
 
+    @Composable
     abstract fun mapState(state: DS): VS
 
     @Composable

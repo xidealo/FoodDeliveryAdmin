@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class UserAuthorizationResponse(
     val token: String = "",
     val cityUuid: String = "",
-    val companyUuid : String = ""
+    val companyUuid: String = ""
 )

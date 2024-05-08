@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.feature.orderlist.state
 
-import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.cafe.SelectedCafe
+import com.bunbeauty.domain.model.order.Order
 
 internal data class OrderListDataState(
     val refreshing: Boolean,
@@ -15,7 +15,7 @@ internal data class OrderListDataState(
     enum class State {
         LOADING,
         SUCCESS,
-        ERROR,
+        ERROR
     }
 
     operator fun plus(event: OrderListEvent) = copy(eventList = eventList + event)

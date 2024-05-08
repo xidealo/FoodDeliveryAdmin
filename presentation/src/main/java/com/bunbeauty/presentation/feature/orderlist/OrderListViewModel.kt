@@ -3,9 +3,9 @@ package com.bunbeauty.presentation.feature.orderlist
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsLastOrderUseCase
-import com.bunbeauty.domain.feature.orderlist.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
@@ -38,7 +38,7 @@ class OrderListViewModel @Inject constructor(
     private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
     private val unsubscribeFromCafeNotification: UnsubscribeFromCafeNotificationUseCase,
     private val subscribeToCafeNotification: SubscribeToCafeNotificationUseCase,
-    private val orderMapper: OrderMapper,
+    private val orderMapper: OrderMapper
 ) : BaseViewModel(), DefaultLifecycleObserver {
 
     private val mutableDataState = MutableStateFlow(
@@ -48,9 +48,10 @@ class OrderListViewModel @Inject constructor(
             cafeState = OrderListDataState.State.LOADING,
             orderList = null,
             orderListState = OrderListDataState.State.LOADING,
-            eventList = emptyList(),
+            eventList = emptyList()
         )
     )
+
     val orderListUiState = mutableDataState.mapToStateFlow(viewModelScope) { dataState ->
         OrderListUiState(
             state = when (dataState.cafeState) {
@@ -58,7 +59,7 @@ class OrderListViewModel @Inject constructor(
                 OrderListDataState.State.ERROR -> OrderListUiState.State.Error
                 OrderListDataState.State.SUCCESS -> OrderListUiState.State.Success(
                     cafeAddress = dataState.selectedCafe?.address ?: "",
-                    orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList(),
+                    orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList()
                 )
             },
             connectionError = dataState.orderListState == OrderListDataState.State.ERROR,
@@ -109,7 +110,7 @@ class OrderListViewModel @Inject constructor(
                     SelectableCafeItem(
                         uuid = cafe.uuid,
                         address = cafe.address,
-                        isSelected = cafe.uuid == mutableDataState.value.selectedCafe?.uuid,
+                        isSelected = cafe.uuid == mutableDataState.value.selectedCafe?.uuid
                     )
                 }
                 mutableDataState.update { state ->
@@ -140,7 +141,7 @@ class OrderListViewModel @Inject constructor(
         mutableDataState.update { state ->
             state + OrderListEvent.OpenOrderDetailsEvent(
                 orderUuid = orderItem.uuid,
-                orderCode = orderItem.code,
+                orderCode = orderItem.code
             )
         }
         viewModelScope.launch {
@@ -179,7 +180,7 @@ class OrderListViewModel @Inject constructor(
                         subscribeToCafeNotification(selectedCafe.uuid)
                         state.copy(
                             cafeState = OrderListDataState.State.SUCCESS,
-                            selectedCafe = selectedCafe,
+                            selectedCafe = selectedCafe
                         )
                     }
                 }
@@ -195,12 +196,15 @@ class OrderListViewModel @Inject constructor(
         mutableDataState.update { state ->
             state.copy(orderListState = OrderListDataState.State.SUCCESS)
         }
+
+        if (orderListJob != null) return
+
         orderListJob = viewModelScope.launchSafe(
             onError = {
                 mutableDataState.update { state ->
                     state.copy(
                         refreshing = false,
-                        orderListState = OrderListDataState.State.ERROR,
+                        orderListState = OrderListDataState.State.ERROR
                     )
                 }
             },
@@ -209,10 +213,10 @@ class OrderListViewModel @Inject constructor(
                     mutableDataState.update { state ->
                         state.copy(
                             orderList = orderList,
-                            refreshing = false,
+                            refreshing = false
                         ).let { newState ->
-                            if (!state.orderList.isNullOrEmpty()
-                                && (state.orderList.size < orderList.size)
+                            if (!state.orderList.isNullOrEmpty() &&
+                                (state.orderList.size < orderList.size)
                             ) {
                                 newState + OrderListEvent.ScrollToTop
                             } else {
@@ -241,6 +245,9 @@ class OrderListViewModel @Inject constructor(
     private fun stopObservingOrderList() {
         orderListJob?.cancel()
         orderErrorJob?.cancel()
+
+        orderListJob = null
+        orderErrorJob = null
     }
 
     private suspend fun checkToCancelNotification(orderCode: String) {
@@ -250,5 +257,4 @@ class OrderListViewModel @Inject constructor(
             }
         }
     }
-
 }

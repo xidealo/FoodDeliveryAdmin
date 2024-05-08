@@ -33,5 +33,4 @@ class UserAuthorizationRepository @Inject constructor(
             is ApiResult.Error -> null
         }
     }
-
 }

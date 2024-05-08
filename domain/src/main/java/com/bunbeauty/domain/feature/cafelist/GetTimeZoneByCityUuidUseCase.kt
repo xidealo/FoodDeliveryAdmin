@@ -9,7 +9,7 @@ private const val DEFAULT_TIME_ZONE = "UTC+3"
 
 class GetTimeZoneByCityUuidUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val cityRepo: CityRepo,
+    private val cityRepo: CityRepo
 ) {
 
     suspend operator fun invoke(cityUuid: String): String {

@@ -1,3 +1,3 @@
 package com.bunbeauty.domain.exception
 
-class DataSavingFailedException: Exception()
+class DataSavingFailedException : Exception()

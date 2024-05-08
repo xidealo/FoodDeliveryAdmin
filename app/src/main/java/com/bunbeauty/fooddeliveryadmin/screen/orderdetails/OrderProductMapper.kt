@@ -42,7 +42,7 @@ class OrderProductMapper @Inject constructor() {
     }
 
     private fun getAdditionsString(orderProduct: OrderProduct): String? {
-        return orderProduct.additions.takeIf { additions ->
+        return orderProduct.orderAdditions.takeIf { additions ->
             additions.isNotEmpty()
         }?.let { additions ->
             additions.joinToString(" $BULLET_SYMBOL ") { orderAddition ->

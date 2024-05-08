@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/mainBackground"
     android:scrollbars="none"
-    tools:context=".screen.menu.CreateMenuProductFragment">
+    tools:context=".screen.menulist.CreateMenuProductFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

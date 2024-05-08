@@ -11,29 +11,29 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,
+    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase
 ) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
     initState = Main.ViewDataState(
         connectionLost = false,
         nonWorkingDay = false,
-        navigationBarOptions = Main.NavigationBarOptions.Hidden,
+        navigationBarOptions = Main.NavigationBarOptions.Hidden
     )
 ) {
 
     init {
         getIsNonWorkingDayFlow().onEach { isNonWorkingDay ->
-            setState { state ->
-                state.copy(nonWorkingDay = isNonWorkingDay)
+            setState {
+                copy(nonWorkingDay = isNonWorkingDay)
             }
         }.launchIn(viewModelScope)
     }
 
-    override fun handleAction(action: Main.Action) {
+    override fun reduce(action: Main.Action, dataState: Main.ViewDataState) {
         when (action) {
             is Main.Action.UpdateNavDestination -> {
                 updateNavDestination(
                     navigationBarItem = action.navigationBarItem,
-                    navController = action.navController,
+                    navController = action.navController
                 )
             }
 
@@ -49,7 +49,7 @@ class MainViewModel @Inject constructor(
 
     private fun updateNavDestination(
         navigationBarItem: Main.NavigationBarItem?,
-        navController: NavController,
+        navController: NavController
     ) {
         val navigationBarOptions = navigationBarItem?.let {
             Main.NavigationBarOptions.Visible(
@@ -58,8 +58,8 @@ class MainViewModel @Inject constructor(
             )
         } ?: Main.NavigationBarOptions.Hidden
 
-        setState { state ->
-            state.copy(navigationBarOptions = navigationBarOptions)
+        setState {
+            copy(navigationBarOptions = navigationBarOptions)
         }
     }
 
@@ -73,5 +73,4 @@ class MainViewModel @Inject constructor(
             )
         }
     }
-
 }

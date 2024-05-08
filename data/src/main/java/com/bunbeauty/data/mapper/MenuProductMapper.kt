@@ -2,8 +2,8 @@ package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductWithCategoriesEntity
-import com.bunbeauty.data.model.server.menu_product.MenuProductPatchServer
-import com.bunbeauty.data.model.server.menu_product.MenuProductServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
                 comboDescription = comboDescription,
                 photoLink = photoLink,
                 barcode = barcode,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
     }

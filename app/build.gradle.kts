@@ -70,6 +70,7 @@ android {
         buildFeatures {
             viewBinding = true
             compose = true
+            buildConfig = true
         }
 
         compileOptions {
@@ -143,6 +144,8 @@ dependencies {
     // Coil
     implementation(Coil.coil)
     implementation(Coil.coilCompose)
+
+    implementation(KotlinxCollectionsImmutable.collectionsImmutable)
 
     // Time
     implementation(KotlinxDatetime.datetime)

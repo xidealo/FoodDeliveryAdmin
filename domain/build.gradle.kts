@@ -4,6 +4,7 @@ plugins {
     id(Plugin.kapt)
     id(Plugin.kotlinParcelize)
     id(Plugin.hiltPlugin)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {

@@ -1,3 +1,3 @@
 package com.bunbeauty.domain.exception
 
-class DataUpdateFailedException: Exception()
+class DataUpdateFailedException : Exception()

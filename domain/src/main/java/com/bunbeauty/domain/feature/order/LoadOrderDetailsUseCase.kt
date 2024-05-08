@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class LoadOrderDetailsUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val orderRepo: OrderRepo,
+    private val orderRepo: OrderRepo
 ) {
 
     suspend operator fun invoke(orderUuid: String): OrderDetails? {
@@ -21,7 +21,7 @@ class LoadOrderDetailsUseCase @Inject constructor(
             orderDetails.copy(
                 oderProductList = orderDetails.oderProductList.map { oderProduct ->
                     oderProduct.copy(
-                        additions = oderProduct.additions.sortedBy { addition ->
+                        orderAdditions = oderProduct.orderAdditions.sortedBy { addition ->
                             addition.priority
                         }
                     )

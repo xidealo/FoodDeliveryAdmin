@@ -5,5 +5,4 @@ interface NotificationService {
     fun subscribeOnNotifications(topic: String)
 
     fun unsubscribeFromNotifications(topic: String)
-
 }

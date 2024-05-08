@@ -11,14 +11,14 @@ private const val SECONDS_IN_MINUTE = 60
 private const val MINUTE_IN_HOUR = 60
 private const val SECONDS_IN_HOUR = 60 * 60
 
-class DateTimeUtil @Inject constructor(): IDateTimeUtil {
+class DateTimeUtil @Inject constructor() : IDateTimeUtil {
 
     override fun getWeekPeriod(millis: Long): String {
         val dateTime = DateTime(millis)
         val mondayDateTimeMillis = dateTime.withDayOfWeek(MONDAY).millis
         val sundayDateTimeMillis = dateTime.withDayOfWeek(SUNDAY).millis
         val formatMondayDateTime = formatDateTime(mondayDateTimeMillis, PATTERN_DD_MMMM_YYYY)
-        val formatSundayDateTime =  formatDateTime(sundayDateTimeMillis, PATTERN_DD_MMMM_YYYY)
+        val formatSundayDateTime = formatDateTime(sundayDateTimeMillis, PATTERN_DD_MMMM_YYYY)
 
         return "$formatMondayDateTime - $formatSundayDateTime"
     }
@@ -72,5 +72,4 @@ class DateTimeUtil @Inject constructor(): IDateTimeUtil {
 
         return "$hours:$minutesString"
     }
-
 }

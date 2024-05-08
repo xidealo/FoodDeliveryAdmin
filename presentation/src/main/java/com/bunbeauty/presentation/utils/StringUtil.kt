@@ -29,7 +29,7 @@ import javax.inject.Inject
 class StringUtil @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
     private val resources: Resources,
-    private val dateTimeUtil: DateTimeUtil,
+    private val dateTimeUtil: DateTimeUtil
 ) : IStringUtil {
 
     override fun getDeferredTimeString(deferred: Long?): String {
@@ -63,10 +63,6 @@ class StringUtil @Inject constructor(
 
     override fun getProductCountString(count: Int): String {
         return resourcesProvider.getString(R.string.msg_pieces) + count
-    }
-
-    override fun getOrderCountString(count: Int): String {
-        return resourcesProvider.getString(R.string.msg_statistic_orders) + count
     }
 
     override fun getOrderStatusString(orderStatus: OrderStatus): String {
@@ -185,5 +181,4 @@ class StringUtil @Inject constructor(
             part
         }
     }
-
 }

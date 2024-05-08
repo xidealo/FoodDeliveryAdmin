@@ -33,5 +33,5 @@ class OrderAddressServer(
     val flat: String?,
     val entrance: String?,
     val floor: String?,
-    val comment: String?,
+    val comment: String?
 )

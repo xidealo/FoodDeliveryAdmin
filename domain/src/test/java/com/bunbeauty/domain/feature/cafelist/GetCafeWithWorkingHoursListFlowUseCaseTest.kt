@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.feature.cafelist
 
-import com.bunbeauty.domain.feature.orderlist.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.time.GetCurrentTimeFlowUseCase
 import com.bunbeauty.domain.feature.time.Time
 import com.bunbeauty.domain.model.cafe.Cafe
@@ -42,7 +42,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         offset = timeZone,
         phone = "phone",
         visible = true,
-        cityUuid = cityUuid,
+        cityUuid = cityUuid
     )
     private val nightCafe = Cafe(
         uuid = "uuid",
@@ -54,21 +54,21 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         offset = timeZone,
         phone = "phone",
         visible = true,
-        cityUuid = cityUuid,
+        cityUuid = cityUuid
     )
     private val cafeWithWorkingHours = CafeWithWorkingHours(
         uuid = "uuid",
         address = "address",
         workingHours = "8:00 - 20:00",
         status = CafeStatus.Open,
-        cityUuid = cityUuid,
+        cityUuid = cityUuid
     )
     private val nightCafeWithWorkingHours = CafeWithWorkingHours(
         uuid = "uuid",
         address = "address",
         workingHours = "20:00 - 8:00",
         status = CafeStatus.Open,
-        cityUuid = cityUuid,
+        cityUuid = cityUuid
     )
 
     @BeforeTest
@@ -78,7 +78,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         getCafeWithWorkingHoursListFlow = GetCafeWithWorkingHoursListFlowUseCase(
             getCafeList = getCafeList,
             getCurrentTimeFlow = getCurrentTimeFlow,
-            dateTimeUtil = dateTimeUtil,
+            dateTimeUtil = dateTimeUtil
         )
     }
 
@@ -89,7 +89,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 0,
             minute = 0,
-            second = 0,
+            second = 0
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
 
@@ -107,7 +107,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 1,
             minute = 0,
-            second = 1,
+            second = 1
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(
@@ -128,7 +128,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 19,
             minute = 30,
-            second = 1,
+            second = 1
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(
@@ -151,7 +151,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 12,
             minute = 0,
-            second = 0,
+            second = 0
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(cafeWithWorkingHours)
@@ -170,7 +170,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 7,
             minute = 59,
-            second = 59,
+            second = 59
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(cafeWithWorkingHours.copy(status = CafeStatus.Closed))
@@ -189,7 +189,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 1,
             minute = 0,
-            second = 30,
+            second = 30
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(nightCafeWithWorkingHours)
@@ -208,7 +208,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 7,
             minute = 1,
-            second = 0,
+            second = 0
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(
@@ -231,7 +231,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 12,
             minute = 30,
-            second = 0,
+            second = 0
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(nightCafeWithWorkingHours.copy(status = CafeStatus.Closed))
@@ -250,7 +250,7 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         val currentTime = Time(
             hour = 20,
             minute = 0,
-            second = 1,
+            second = 1
         )
         coEvery { getCurrentTimeFlow(timeZone, 60) } returns flowOf(currentTime)
         val expectedList = listOf(nightCafeWithWorkingHours)
@@ -261,5 +261,4 @@ class GetCafeWithWorkingHoursListFlowUseCaseTest {
         // Then
         assertEquals(expectedList, result.first())
     }
-
 }

@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class SaveSelectedCafeUuidUseCase @Inject constructor(
     private val getSelectedCafe: GetSelectedCafeUseCase,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
 
     suspend operator fun invoke(cafeUuid: String) {
@@ -15,5 +15,4 @@ class SaveSelectedCafeUuidUseCase @Inject constructor(
 
         dataStoreRepo.saveCafeUuid(cafeUuid)
     }
-
 }

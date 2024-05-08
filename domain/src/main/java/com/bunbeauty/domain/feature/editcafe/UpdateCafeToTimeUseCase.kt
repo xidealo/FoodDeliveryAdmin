@@ -11,7 +11,7 @@ import javax.inject.Inject
 class UpdateCafeToTimeUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
     private val dateTimeUtil: DateTimeUtil,
-    private val cafeRepo: CafeRepo,
+    private val cafeRepo: CafeRepo
 ) {
 
     suspend operator fun invoke(cafeUuid: String, time: LocalTime) {
@@ -20,8 +20,7 @@ class UpdateCafeToTimeUseCase @Inject constructor(
         cafeRepo.updateCafeToTime(
             cafeUuid = cafeUuid,
             toDaySeconds = daySeconds,
-            token = token,
+            token = token
         ) ?: throw DataUpdateFailedException()
     }
-
 }

@@ -6,16 +6,16 @@ data class OrderListUiState(
     val state: State,
     val connectionError: Boolean,
     val refreshing: Boolean,
-    val eventList: List<OrderListEvent>,
+    val eventList: List<OrderListEvent>
 ) {
 
     sealed interface State {
-        object Loading: State
-        object Error: State
+        object Loading : State
+        object Error : State
         data class Success(
             val cafeAddress: String,
-            val orderList: List<OrderItem>,
-        ): State
+            val orderList: List<OrderItem>
+        ) : State
     }
 
     data class OrderItem(

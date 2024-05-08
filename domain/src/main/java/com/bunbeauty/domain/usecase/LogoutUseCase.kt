@@ -16,7 +16,7 @@ class LogoutUseCase @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val cityRepo: CityRepo,
     private val menuProductRepo: MenuProductRepo,
-    private val nonWorkingDayRepo: NonWorkingDayRepo,
+    private val nonWorkingDayRepo: NonWorkingDayRepo
 ) {
 
     suspend operator fun invoke() {
@@ -29,5 +29,4 @@ class LogoutUseCase @Inject constructor(
         menuProductRepo.clearCache()
         nonWorkingDayRepo.clearCache()
     }
-
 }
