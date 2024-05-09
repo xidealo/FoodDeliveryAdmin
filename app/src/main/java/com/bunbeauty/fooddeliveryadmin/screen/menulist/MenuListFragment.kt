@@ -43,10 +43,10 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
+import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import com.bunbeauty.presentation.model.MenuListEvent
 import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
-import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

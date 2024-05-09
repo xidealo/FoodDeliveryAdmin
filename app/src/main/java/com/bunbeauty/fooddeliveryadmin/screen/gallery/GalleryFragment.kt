@@ -20,7 +20,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.gallery.Gallery
@@ -53,9 +52,8 @@ class GalleryFragment :
             title = stringResource(R.string.title_gallery),
             backActionClick = {
                 onAction(Gallery.Action.Back)
-            },
+            }
         ) {
-
             when {
                 state.isLoading -> {
                     LoadingScreen()
@@ -66,10 +64,11 @@ class GalleryFragment :
                         columns = GridCells.Fixed(count = 2),
                         contentPadding = PaddingValues(all = 16.dp),
                         horizontalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp),
-                        verticalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp),
+                        verticalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp)
                     ) {
                         items(
-                            state.photos, key = { photoLink ->
+                            state.photos,
+                            key = { photoLink ->
                                 photoLink
                             }
                         ) { photoLink ->

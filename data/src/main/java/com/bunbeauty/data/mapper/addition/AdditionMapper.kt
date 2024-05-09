@@ -35,7 +35,6 @@ val mapUpdateAdditionGroupServerToPatchAdditionGroup: UpdateAdditionGroup.() -> 
         name = name,
         priority = priority,
         singleChoice = singleChoice,
-        isVisible = isVisible,
+        isVisible = isVisible
     )
 }
-

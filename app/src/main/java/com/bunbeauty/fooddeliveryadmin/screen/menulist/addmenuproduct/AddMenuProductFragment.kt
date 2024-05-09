@@ -250,7 +250,7 @@ class AddMenuProductFragment :
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
                             modifier = Modifier
@@ -321,7 +321,7 @@ class AddMenuProductFragment :
                 R.string.hint_add_menu_product_categories
             },
             isVisibleInMenu = state.isVisibleInMenu,
-            isVisibleInRecommendation = state.isVisibleInRecommendation,
+            isVisibleInRecommendation = state.isVisibleInRecommendation
         )
     }
 
@@ -347,7 +347,7 @@ class AddMenuProductFragment :
                     categoryLabel = "Выбрать категории",
                     categoryHint = R.string.hint_add_menu_product_categories,
                     isVisibleInMenu = false,
-                    isVisibleInRecommendation = false,
+                    isVisibleInRecommendation = false
                 ),
                 onAction = {}
             )
@@ -361,7 +361,6 @@ class AddMenuProductFragment :
             }
 
             is AddMenuProduct.Event.OpenSelectCategoriesBottomSheet -> {
-
             }
 
             AddMenuProduct.Event.GoToGallery -> {
@@ -369,5 +368,4 @@ class AddMenuProductFragment :
             }
         }
     }
-
 }

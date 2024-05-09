@@ -2,13 +2,11 @@ package com.bunbeauty.presentation.feature.menu
 
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-class MenuViewModel : BaseStateViewModel<Menu.ViewDataState, Menu.Action, Menu.Event>(
-    initState = Menu.ViewDataState(
-        error = null
-    )
+class MenuViewModel : BaseStateViewModel<Menu.DataState, Menu.Action, Menu.Event>(
+    initState = Menu.DataState
 ) {
 
-    override fun reduce(action: Menu.Action, dataState: Menu.ViewDataState) {
+    override fun reduce(action: Menu.Action, dataState: Menu.DataState) {
         when (action) {
             Menu.Action.OnAdditionGroupsListClick -> addEvent {
                 Menu.Event.OnAdditionGroupsListClick

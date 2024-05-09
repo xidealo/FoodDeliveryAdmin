@@ -159,12 +159,14 @@
     <fragment
         android:id="@+id/additionListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additionlist.AdditionListFragment"
-        android:label="AdditionListFragment"></fragment>
+        android:label="AdditionListFragment">
+    </fragment>
 
     <fragment
         android:id="@+id/additionGroupListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.AdditionGroupListFragment"
-        android:label="AdditionGroupListFragment"></fragment>
+        android:label="AdditionGroupListFragment">
+    </fragment>
 
     <fragment
         android:id="@+id/editCafeFragment"

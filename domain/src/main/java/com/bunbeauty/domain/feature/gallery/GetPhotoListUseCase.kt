@@ -5,7 +5,7 @@ import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
-//todo tests
+// todo tests
 class GetPhotoListUseCase @Inject constructor(
     private val photoRepo: PhotoRepo,
     private val getUsernameUseCase: GetUsernameUseCase

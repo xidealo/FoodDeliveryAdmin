@@ -12,18 +12,19 @@ import javax.inject.Inject
 class AdditionGroupListViewModel @Inject constructor(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
     private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupUseCase
-) : BaseStateViewModel<AdditionGroupList.ViewDataState, AdditionGroupList.Action, AdditionGroupList.Event>(
-    initState = AdditionGroupList.ViewDataState(
+) : BaseStateViewModel<AdditionGroupList.DataState, AdditionGroupList.Action, AdditionGroupList.Event>(
+    initState = AdditionGroupList.DataState(
         visibleAdditionGroups = listOf(),
         hiddenAdditionGroups = listOf(),
         isLoading = false,
-        isRefreshing = false
+        isRefreshing = false,
+        error = null
     )
 ) {
 
     override fun reduce(
         action: AdditionGroupList.Action,
-        dataState: AdditionGroupList.ViewDataState
+        dataState: AdditionGroupList.DataState
     ) {
         when (action) {
             AdditionGroupList.Action.OnBackClick -> {
@@ -31,13 +32,17 @@ class AdditionGroupListViewModel @Inject constructor(
             }
 
             AdditionGroupList.Action.OnAdditionClick -> {
+                // TODO (implement)
             }
 
             is AdditionGroupList.Action.OnVisibleClick -> updateVisible(
-                uuid = action.uuid, isVisible = action.isVisible,
+                uuid = action.uuid,
+                isVisible = action.isVisible
             )
 
             AdditionGroupList.Action.Init -> loadData()
+
+            AdditionGroupList.Action.RefreshData -> refreshData()
         }
     }
 
@@ -54,8 +59,12 @@ class AdditionGroupListViewModel @Inject constructor(
                     )
                 }
             },
-            onError = {
-                // show error
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }
@@ -65,12 +74,48 @@ class AdditionGroupListViewModel @Inject constructor(
             block = {
                 updateVisibleAdditionGroupListUseCase(
                     additionUuidGroup = uuid,
-                    isVisible = !isVisible,
+                    isVisible = !isVisible
                 )
                 loadData()
             },
-            onError = {
-                // show error
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
+            }
+        )
+    }
+
+    private fun refreshData() {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        isRefreshing = true,
+                        error = null
+                    )
+                }
+
+                val separatedAdditionGroupList = getSeparatedAdditionGroupListUseCase()
+
+                setState {
+                    copy(
+                        visibleAdditionGroups = separatedAdditionGroupList.visibleList,
+                        hiddenAdditionGroups = separatedAdditionGroupList.hiddenList,
+                        isLoading = false,
+                        isRefreshing = false,
+                        error = null
+                    )
+                }
+            },
+            onError = { throwable ->
+                setState {
+                    copy(
+                        error = throwable
+                    )
+                }
             }
         )
     }

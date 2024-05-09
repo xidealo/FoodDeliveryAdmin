@@ -138,7 +138,7 @@ class AddMenuProductViewModel @Inject constructor(
             copy(
                 hasNameError = false,
                 hasNewPriceError = false,
-                hasOldPriceError = false,
+                hasOldPriceError = false
             )
         }
 
@@ -181,11 +181,8 @@ class AddMenuProductViewModel @Inject constructor(
             }
             return
         }
-
-
     }
 
     fun goToProductCodeList() {
-
     }
 }

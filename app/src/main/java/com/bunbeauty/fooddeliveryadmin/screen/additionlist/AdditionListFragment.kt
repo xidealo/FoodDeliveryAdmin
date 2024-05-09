@@ -30,6 +30,7 @@ import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -39,12 +40,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
+private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+
 @AndroidEntryPoint
 class AdditionListFragment :
-    BaseComposeFragment<AdditionList.ViewDataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
+    BaseComposeFragment<AdditionList.DataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
 
     override val viewModel: AdditionListViewModel by viewModels()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(AdditionList.Action.Init)
@@ -68,46 +71,64 @@ class AdditionListFragment :
                 onAction(AdditionList.Action.OnBackClick)
             }
         ) {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                if (state.visibleAdditionItems.isNotEmpty()) {
-                    item(
-                        key = R.string.title_position_visible
+            when {
+                state.hasError -> {
+                    ErrorScreen(
+                        mainTextId = R.string.error_common_loading_failed,
+                        isLoading = state.isLoading
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.title_position_visible),
-                            style = AdminTheme.typography.titleMedium.bold
-                        )
-                    }
-                    items(
-                        state.visibleAdditionItems,
-                        key = { additionItem ->
-                            additionItem.uuid
-                        }
-                    ) { visibleAddition ->
-                        AdditionCard(
-                            additionItem = visibleAddition,
-                            onAction = onAction
-                        )
+                        onAction(AdditionList.Action.Init)
                     }
                 }
-                if (state.hiddenAdditionItems.isNotEmpty()) {
-                    item(
-                        key = R.string.title_position_hidden
+
+                else -> {
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.title_position_hidden),
-                            style = AdminTheme.typography.titleMedium.bold,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                    }
-                    items(state.hiddenAdditionItems) { hiddenAddition ->
-                        AdditionCard(
-                            additionItem = hiddenAddition,
-                            onAction = onAction
-                        )
+                        if (state.visibleAdditionItems.isNotEmpty()) {
+                            item(
+                                key = TITLE_POSITION_VISIBLE_KEY
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.title_position_visible),
+                                    style = AdminTheme.typography.titleMedium.bold
+                                )
+                            }
+                            items(
+                                items = state.visibleAdditionItems,
+                                key = { additionItem ->
+                                    additionItem.uuid
+                                }
+                            ) { visibleAddition ->
+                                AdditionCard(
+                                    additionItem = visibleAddition,
+                                    onAction = onAction
+                                )
+                            }
+                        }
+                        if (state.hiddenAdditionItems.isNotEmpty()) {
+                            item(
+                                key = TITLE_POSITION_HIDDEN_KEY
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.title_position_hidden),
+                                    style = AdminTheme.typography.titleMedium.bold,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                            }
+                            items(
+                                items = state.hiddenAdditionItems,
+                                key = { additionGroupItem ->
+                                    additionGroupItem.uuid
+                                }
+                            ) { hiddenAddition ->
+                                AdditionCard(
+                                    additionItem = hiddenAddition,
+                                    onAction = onAction
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -173,7 +194,7 @@ class AdditionListFragment :
     }
 
     @Composable
-    override fun mapState(state: AdditionList.ViewDataState): AdditionListViewState {
+    override fun mapState(state: AdditionList.DataState): AdditionListViewState {
         return AdditionListViewState(
             visibleAdditionItems = state.visibleAdditions.map { addition ->
                 addition.toItem()
@@ -182,7 +203,8 @@ class AdditionListFragment :
                 addition.toItem()
             }.toPersistentList(),
             isRefreshing = state.isRefreshing,
-            isLoading = state.isLoading
+            isLoading = state.isLoading,
+            hasError = state.hasError
         )
     }
 
@@ -190,6 +212,7 @@ class AdditionListFragment :
         when (event) {
             AdditionList.Event.Back -> findNavController().popBackStack()
             is AdditionList.Event.OnAdditionClick -> {
+                // TODO (implement)
             }
         }
     }
@@ -219,7 +242,8 @@ class AdditionListFragment :
                         )
                     ),
                     isRefreshing = false,
-                    isLoading = false
+                    isLoading = false,
+                    hasError = false
                 ),
                 onAction = {
                 }

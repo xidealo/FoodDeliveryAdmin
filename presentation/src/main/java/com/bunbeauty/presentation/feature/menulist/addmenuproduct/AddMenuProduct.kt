@@ -22,7 +22,7 @@ interface AddMenuProduct {
         val isVisibleInMenu: Boolean,
         val isVisibleInRecommendation: Boolean,
         val throwable: Throwable?,
-        val selectableCategoryList: List<SelectableCategory>,
+        val selectableCategoryList: List<SelectableCategory>
     ) : BaseViewDataState {
 
         fun getSelectedCategory() =
