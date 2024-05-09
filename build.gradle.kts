@@ -14,6 +14,7 @@ buildscript {
         classpath(ClassPath.googleServices)
         classpath(ClassPath.hiltServices)
         classpath(ClassPath.crashlytics)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0")
     }
 }
 

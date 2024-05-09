@@ -117,7 +117,9 @@
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
     <string name="hint_edit_menu_product_name">Название</string>
+    <string name="hint_edit_menu_product_full_name">Полное название</string>
     <string name="hint_edit_menu_product_new_price">Актуальная цена</string>
+    <string name="hint_edit_menu_product_priority">Приоритет</string>
     <string name="hint_edit_menu_product_old_price">Цена до скидки</string>
     <string name="hint_edit_menu_product_cost">Цена, ₽</string>
     <string name="hint_edit_menu_product_discount_cost">Цена без скидки, ₽</string>
@@ -205,5 +207,7 @@
 
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

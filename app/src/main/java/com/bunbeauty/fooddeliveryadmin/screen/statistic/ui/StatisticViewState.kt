@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
-data class StatisticViewState(
+data class  StatisticViewState(
     val statisticList: ImmutableList<StatisticItemModel>,
     val selectedCafe: String,
     val period: String,

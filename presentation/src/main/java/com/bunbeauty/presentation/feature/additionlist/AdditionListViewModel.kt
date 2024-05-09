@@ -4,8 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
+import com.bunbeauty.presentation.model.MenuListEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

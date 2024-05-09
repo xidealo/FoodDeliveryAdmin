@@ -33,6 +33,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.additionlist.AdditionList
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +49,7 @@ class AdditionListFragment :
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(AdditionList.Action.Init)
     }
+
     @Composable
     override fun Screen(state: AdditionListViewState, onAction: (AdditionList.Action) -> Unit) {
         AdditionListScreen(state = state, onAction = onAction)
@@ -63,9 +65,9 @@ class AdditionListFragment :
                 onAction(AdditionList.Action.RefreshData)
             },
             backActionClick = {
-                onAction(AdditionList.Action.OnBackClick)
-            }
-        ) {
+                onAction(AdditionList.Action.OnBackClick) },
+            )
+        {
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -120,9 +122,10 @@ class AdditionListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionList.Action.OnAdditionClick(additionItem.uuid))
-            }
-        ) {
+                onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
+            },
+        )
+        {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -186,8 +189,16 @@ class AdditionListFragment :
 
     override fun handleEvent(event: AdditionList.Event) {
         when (event) {
-            AdditionList.Event.Back -> findNavController().popBackStack()
+            is AdditionList.Event.Back -> {
+                findNavController().popBackStack()
+            }
+
             is AdditionList.Event.OnAdditionClick -> {
+                findNavController().navigateSafe(
+                    AdditionListFragmentDirections.toEditAdditionFragment(
+                        event.additionUuid
+                    )
+                )
             }
         }
     }

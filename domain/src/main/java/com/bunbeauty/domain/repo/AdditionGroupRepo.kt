@@ -16,7 +16,7 @@ interface AdditionGroupRepo {
     suspend fun updateAdditionGroup(
         updateAdditionGroup: UpdateAdditionGroup,
         token: String,
-        additionGroupUuid: String,
+        additionGroupUuid: String
     )
 
     /*DELETE*/
