@@ -33,9 +33,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
+private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+
 @AndroidEntryPoint
 class AdditionGroupListFragment :
-    BaseComposeFragment<AdditionGroupList.ViewDataState, AdditionGroupListViewState, AdditionGroupList.Action, AdditionGroupList.Event>() {
+    BaseComposeFragment<AdditionGroupList.DataState, AdditionGroupListViewState, AdditionGroupList.Action, AdditionGroupList.Event>() {
 
     override val viewModel: AdditionGroupListViewModel by viewModels()
 
@@ -70,14 +73,14 @@ class AdditionGroupListFragment :
             ) {
                 if (state.visibleAdditionItems.isNotEmpty()) {
                     item(
-                        key = R.string.title_position_visible
+                        key = TITLE_POSITION_VISIBLE_KEY
                     ) {
                         Text(
                             text = stringResource(id = R.string.title_position_visible),
                             style = AdminTheme.typography.titleMedium.bold
                         )
                     }
-                    items(state.visibleAdditionItems, key = { additionItem ->
+                    items(items =state.visibleAdditionItems, key = { additionItem ->
                         additionItem.uuid
                     }) { visibleAddition ->
                         AdditionGroupCard(
@@ -87,7 +90,7 @@ class AdditionGroupListFragment :
                 }
                 if (state.hiddenAdditionItems.isNotEmpty()) {
                     item(
-                        key = R.string.title_position_hidden
+                        key = TITLE_POSITION_HIDDEN_KEY
                     ) {
                         Text(
                             text = stringResource(id = R.string.title_position_hidden),
@@ -95,7 +98,12 @@ class AdditionGroupListFragment :
                             modifier = Modifier.padding(top = 8.dp)
                         )
                     }
-                    items(state.hiddenAdditionItems) { hiddenAddition ->
+                    items(
+                        items = state.hiddenAdditionItems,
+                        key = { additionGroupItem ->
+                            additionGroupItem.uuid
+                        }
+                    ) { hiddenAddition ->
                         AdditionGroupCard(
                             additionItem = hiddenAddition, onAction = onAction
                         )
@@ -141,7 +149,7 @@ class AdditionGroupListFragment :
     }
 
     @Composable
-    override fun mapState(state: AdditionGroupList.ViewDataState): AdditionGroupListViewState {
+    override fun mapState(state: AdditionGroupList.DataState): AdditionGroupListViewState {
         return AdditionGroupListViewState(visibleAdditionItems = state.visibleAdditionGroups.map { additionGroup ->
             additionGroup.toItem()
         }.toPersistentList(),
@@ -156,7 +164,8 @@ class AdditionGroupListFragment :
     override fun handleEvent(event: AdditionGroupList.Event) {
         when (event) {
             AdditionGroupList.Event.Back -> findNavController().popBackStack()
-            is AdditionGroupList.Event.OnAdditionClick -> {
+            is AdditionGroupList.Event.OnAdditionGroupClick -> {
+                // TODO (implement)
             }
         }
     }

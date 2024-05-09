@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.statistic
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
@@ -21,13 +20,13 @@ class StatisticViewModel @Inject constructor(
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase
-) : BaseStateViewModel<Statistic.ViewDataState, Statistic.Action, Statistic.Event>(
-    initState = Statistic.ViewDataState(
+) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
+    initState = Statistic.DataState(
         cafeUuid = null
     )
 ) {
 
-    override fun reduce(action: Statistic.Action, dataState: Statistic.ViewDataState) {
+    override fun reduce(action: Statistic.Action, dataState: Statistic.DataState) {
         when (action) {
             is Statistic.Action.Init -> {
                 setState {
@@ -60,7 +59,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    fun onCafeClicked() {
+    private fun onCafeClicked() {
         viewModelScope.launchSafe(
             block = {
                 addEvent {
@@ -69,10 +68,10 @@ class StatisticViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable
+                        hasError = true
                     )
                 }
             }
@@ -102,23 +101,23 @@ class StatisticViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable
+                        hasError = true
                     )
                 }
             }
         )
     }
 
-    fun onGoBackClicked() {
+    private fun onGoBackClicked() {
         addEvent {
             Statistic.Event.GoBack
         }
     }
 
-    fun onTimeIntervalClicked() {
+    private fun onTimeIntervalClicked() {
         addEvent {
             Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
         }
@@ -133,8 +132,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("StringFormatMatches")
-    fun loadStatistic(
+    private fun loadStatistic(
         cafeUuid: String?,
         period: Statistic.TimeIntervalCode
     ) {
@@ -147,7 +145,7 @@ class StatisticViewModel @Inject constructor(
                     cafeUuid = cafeUuid,
                     period = period.name
                 ).map { statistic ->
-                    Statistic.ViewDataState.StatisticItemModel(
+                    Statistic.DataState.StatisticItemModel(
                         startMillis = statistic.startPeriodTime,
                         period = statistic.period,
                         count = statistic.orderCount,
@@ -172,15 +170,15 @@ class StatisticViewModel @Inject constructor(
                         copy(
                             statisticList = statisticItemList,
                             isLoading = false,
-                            error = null
+                            hasError = false
                         )
                     }
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable,
+                        hasError = true,
                         isLoading = false
                     )
                 }
@@ -193,10 +191,10 @@ class StatisticViewModel @Inject constructor(
             block = {
                 getCafeListUseCase()
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        error = throwable
+                        hasError = true
                     )
                 }
             }

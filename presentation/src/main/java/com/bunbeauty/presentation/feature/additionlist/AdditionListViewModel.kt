@@ -15,17 +15,17 @@ import javax.inject.Inject
 class AdditionListViewModel @Inject constructor(
     private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
     private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase
-) : BaseStateViewModel<AdditionList.ViewDataState, AdditionList.Action, AdditionList.Event>(
-    initState = AdditionList.ViewDataState(
+) : BaseStateViewModel<AdditionList.DataState, AdditionList.Action, AdditionList.Event>(
+    initState = AdditionList.DataState(
         visibleAdditions = listOf(),
         hiddenAdditions = listOf(),
         isLoading = false,
         isRefreshing = false,
-        throwable = null
+        hasError = false
     )
 ) {
 
-    override fun reduce(action: AdditionList.Action, dataState: AdditionList.ViewDataState) {
+    override fun reduce(action: AdditionList.Action, dataState: AdditionList.DataState) {
         when (action) {
             AdditionList.Action.OnBackClick -> addEvent { AdditionList.Event.Back }
 
@@ -62,7 +62,7 @@ class AdditionListViewModel @Inject constructor(
                 setState {
                     copy(
                         isRefreshing = true,
-                        throwable = null
+                        hasError = false
                     )
                 }
 
@@ -74,14 +74,14 @@ class AdditionListViewModel @Inject constructor(
                         hiddenAdditions = separatedAdditionList.hiddenList,
                         isLoading = false,
                         isRefreshing = false,
-                        throwable = null
+                        hasError = false
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        throwable = throwable
+                        hasError = true
                     )
                 }
             }
@@ -98,14 +98,14 @@ class AdditionListViewModel @Inject constructor(
                         hiddenAdditions = separatedAdditionList.hiddenList,
                         isLoading = false,
                         isRefreshing = false,
-                        throwable = null
+                        hasError = false
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
                     copy(
-                        throwable = throwable
+                        hasError = true
                     )
                 }
             }

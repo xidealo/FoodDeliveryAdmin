@@ -70,11 +70,11 @@
             android:id="@+id/to_statisticDetailsFragment"
             app:destination="@id/statisticDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/statisticDetailsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.statisticdetails.StatisticDetailsFragment"
-        android:label="StatisticDetailsFragment">
-    </fragment>
+        android:label="StatisticDetailsFragment"/>
 
     <fragment
         android:id="@+id/menuListFragment"
@@ -85,7 +85,7 @@
             app:destination="@id/editMenuProductFragment" />
         <action
             android:id="@+id/to_createMenuProductFragment"
-            app:destination="@id/createNewMenuProductFragment" />
+            app:destination="@id/addMenuProductFragment" />
     </fragment>
 
     <fragment
@@ -96,10 +96,23 @@
             android:name="menuProductUuid"
             app:argType="string" />
     </fragment>
+
     <fragment
-        android:id="@+id/createNewMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.CreateMenuProductFragment"
-        android:label="CreateNewMenuProductFragment"/>
+        android:id="@+id/addMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct.AddMenuProductFragment"
+        android:label="AddMenuProductFragment" >
+
+        <action
+            android:id="@+id/to_galleryFragment"
+            app:destination="@id/galleryFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.GalleryFragment"
+        android:label="GalleryFragment" />
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragment"
@@ -114,6 +127,7 @@
             android:id="@+id/to_statisticFragment"
             app:destination="@id/statisticFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
@@ -121,7 +135,7 @@
     <fragment
         android:id="@+id/cafeLisFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragment"
-        android:label="cafeLisFragment" >
+        android:label="cafeLisFragment">
         <action
             android:id="@+id/to_editCafeFragment"
             app:destination="@id/editCafeFragment" />
@@ -169,7 +183,7 @@
     <fragment
         android:id="@+id/editCafeFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.editcafe.EditCafeFragment"
-        android:label="editCafeFragment" >
+        android:label="editCafeFragment">
         <argument
             android:name="cafeUuid"
             app:argType="string" />

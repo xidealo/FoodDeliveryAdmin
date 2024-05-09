@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StatisticFragment :
-    BaseComposeFragment<Statistic.ViewDataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
+    BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
 
     override val viewModel: StatisticViewModel by viewModels()
 
@@ -64,7 +64,7 @@ class StatisticFragment :
     }
 
     @Composable
-    override fun mapState(state: Statistic.ViewDataState): StatisticViewState {
+    override fun mapState(state: Statistic.DataState): StatisticViewState {
         return StatisticViewState(
             statisticList = state.statisticList.map { statisticItemModel ->
                 StatisticViewState.StatisticItemModel(
@@ -84,7 +84,7 @@ class StatisticFragment :
                 state.selectedTimeInterval
             ),
             isLoading = state.isLoading,
-            error = state.error
+            hasError = state.hasError
         )
     }
 
@@ -150,7 +150,7 @@ class StatisticFragment :
             title = stringResource(R.string.title_statistic),
             backActionClick = { onAction(Statistic.Action.SelectGoBackClick) },
             actionButton = {
-                if (statisticViewState.error == null) {
+                if (statisticViewState.hasError) {
                     LoadingButton(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         textStringId = R.string.action_product_statistic_load,
@@ -184,7 +184,7 @@ class StatisticFragment :
                 )
 
                 when {
-                    statisticViewState.error != null -> {
+                    statisticViewState.hasError -> {
                         ErrorScreen(
                             mainTextId = R.string.error_common_loading_failed,
                             isLoading = statisticViewState.isLoading
@@ -212,55 +212,65 @@ class StatisticFragment :
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(statisticViewState.statisticList) { statisticItemModel ->
-                AdminCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    clickable = false
+            items(
+                items = statisticViewState.statisticList,
+                key = { statisticItemModel ->
+                    statisticItemModel.startMillis
+                }
+            ) { statisticItemModel ->
+                StatisticItem(statisticItemModel)
+            }
+        }
+    }
+
+    @Composable
+    private fun StatisticItem(statisticItemModel: StatisticViewState.StatisticItemModel) {
+        AdminCard(
+            modifier = Modifier.fillMaxWidth(),
+            clickable = false
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(
+                        vertical = 8.dp,
+                        horizontal = 16.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = statisticItemModel.date,
+                    style = AdminTheme.typography.titleSmall,
+                    color = AdminTheme.colors.main.onSurface
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            start = 8.dp
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row(
+                    Text(
+                        text = statisticItemModel.count,
+                        style = AdminTheme.typography.bodySmall,
+                        color = AdminTheme.colors.main.onSurface
+                    )
+                    Text(
                         modifier = Modifier
                             .padding(
-                                vertical = 8.dp,
-                                horizontal = 16.dp
+                                top = 4.dp
                             ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .weight(1f),
-                            text = statisticItemModel.date,
-                            style = AdminTheme.typography.titleSmall,
-                            color = AdminTheme.colors.main.onSurface
-                        )
-                        Column(
-                            modifier = Modifier
-                                .padding(
-                                    start = 8.dp
-                                ),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = statisticItemModel.count,
-                                style = AdminTheme.typography.bodySmall,
-                                color = AdminTheme.colors.main.onSurface
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .padding(
-                                        top = 4.dp
-                                    ),
-                                text = statisticItemModel.proceeds,
-                                style = AdminTheme.typography.bodyMedium.bold,
-                                color = AdminTheme.colors.main.onSurface
-                            )
-                        }
-                    }
+                        text = statisticItemModel.proceeds,
+                        style = AdminTheme.typography.bodyMedium.bold,
+                        color = AdminTheme.colors.main.onSurface
+                    )
                 }
             }
         }
     }
 
-    @Preview
+    @Preview(showSystemUi = true)
     @Composable
     private fun StatisticScreenPreview() {
         AdminTheme {
@@ -285,7 +295,7 @@ class StatisticFragment :
                     selectedCafe = "Все кафе",
                     period = "По годам",
                     isLoading = false,
-                    error = null
+                    hasError = false
                 ),
                 onAction = {}
             )
