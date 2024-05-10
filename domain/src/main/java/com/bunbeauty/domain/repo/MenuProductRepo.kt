@@ -1,9 +1,13 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 interface MenuProductRepo {
+
+    suspend fun post(token: String, menuProductPost: MenuProductPost)
+
     /*GET*/
     suspend fun getMenuProductList(
         companyUuid: String,

@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
-//todo tests
+// todo tests
 class FetchCategoryListUseCase @Inject constructor(
     private val categoryRepo: CategoryRepo,
     private val dataStoreRepo: DataStoreRepo

@@ -1,7 +1,6 @@
 package com.bunbeauty.data
 
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
@@ -9,8 +8,10 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
@@ -48,6 +49,11 @@ interface FoodDeliveryApi {
         menuProductUuid: String,
         menuProductPatchServer: MenuProductPatchServer,
         token: String
+    ): ApiResult<MenuProductServer>
+
+    suspend fun postMenuProduct(
+        token: String,
+        menuProductPostServer: MenuProductPostServer
     ): ApiResult<MenuProductServer>
 
     // STATISTIC

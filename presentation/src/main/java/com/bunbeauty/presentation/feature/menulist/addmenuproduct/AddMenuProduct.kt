@@ -18,11 +18,14 @@ interface AddMenuProduct {
         val nutrition: String,
         val utils: String,
         val comboDescription: String,
+        val photoLink: String,
+        val hasPhotoLinkError: Boolean,
         val isLoadingButton: Boolean,
         val isVisibleInMenu: Boolean,
         val isVisibleInRecommendation: Boolean,
-        val throwable: Throwable?,
-        val selectableCategoryList: List<SelectableCategory>
+        val hasError: Boolean?,
+        val selectableCategoryList: List<SelectableCategory>,
+        val hasCategoriesError: Boolean
     ) : BaseViewDataState {
 
         fun getSelectedCategory() =

@@ -5,7 +5,6 @@ import com.bunbeauty.common.ApiError
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.model.server.CategoryServer
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
@@ -13,8 +12,10 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
@@ -130,6 +131,17 @@ class FoodDeliveryApiImpl @Inject constructor(
             path = "menu_product",
             body = menuProductPatchServer,
             parameters = mapOf("uuid" to menuProductUuid),
+            token = token
+        )
+    }
+
+    override suspend fun postMenuProduct(
+        token: String,
+        menuProductPostServer: MenuProductPostServer
+    ): ApiResult<MenuProductServer> {
+        return post<MenuProductServer>(
+            path = "menu_product",
+            body = menuProductPostServer,
             token = token
         )
     }
@@ -299,6 +311,7 @@ class FoodDeliveryApiImpl @Inject constructor(
             token = token
         )
     }
+
     override suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>> {
         return get(
             path = "addition_group",
