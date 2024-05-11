@@ -1,7 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.Color
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
@@ -18,9 +20,12 @@ data class AddMenuProductViewState(
     val nutrition: String,
     val comboDescription: String,
     val isLoadingButton: Boolean,
-    val throwable: Throwable?,
+    val hasError: Boolean?,
     val categoryLabel: String,
     @StringRes val categoryHint: Int?,
     val isVisibleInMenu: Boolean,
-    val isVisibleInRecommendation: Boolean
+    val isVisibleInRecommendation: Boolean,
+    val categoriesErrorBorder: BorderStroke?,
+    val photoErrorBorder: BorderStroke?,
+    val photoContainsColor: Color
 ) : BaseViewState

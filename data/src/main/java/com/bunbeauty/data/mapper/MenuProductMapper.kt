@@ -98,6 +98,7 @@ val mapMenuProductPostToMenuProductPostServer: MenuProductPost.() -> MenuProduct
         description = description,
         comboDescription = comboDescription,
         barcode = barcode,
-        categories = categories
+        categories = categories,
+        isRecommended = isRecommended
     )
 }

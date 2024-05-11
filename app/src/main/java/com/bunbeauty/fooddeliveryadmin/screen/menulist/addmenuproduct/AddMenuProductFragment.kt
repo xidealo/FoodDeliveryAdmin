@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import android.os.Bundle
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +25,6 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
@@ -208,6 +208,7 @@ class AddMenuProductFragment :
                     modifier = Modifier
                         .padding(top = 8.dp),
                     hintStringId = state.categoryHint,
+                    border = state.categoriesErrorBorder,
                     label = state.categoryLabel,
                     onClick = {
                         onAction(AddMenuProduct.Action.OnSelectCategoriesClick)
@@ -244,7 +245,8 @@ class AddMenuProductFragment :
                         .padding(top = 8.dp),
                     onClick = {
                         onAction(AddMenuProduct.Action.OnAddPhotoClick)
-                    }
+                    },
+                    border = state.photoErrorBorder
                 ) {
                     Column(
                         modifier = Modifier
@@ -256,7 +258,7 @@ class AddMenuProductFragment :
                             modifier = Modifier
                                 .size(24.dp),
                             painter = painterResource(R.drawable.ic_add_photo),
-                            tint = AdminTheme.colors.main.onSurface,
+                            tint = state.photoContainsColor,
                             contentDescription = stringResource(R.string.description_common_navigate)
                         )
 
@@ -265,7 +267,7 @@ class AddMenuProductFragment :
                                 .padding(top = 8.dp),
                             text = stringResource(id = R.string.title_add_menu_product_add_photo),
                             style = AdminTheme.typography.labelLarge.medium,
-                            overflow = TextOverflow.Ellipsis
+                            color = state.photoContainsColor
                         )
                     }
                 }
@@ -278,7 +280,7 @@ class AddMenuProductFragment :
     @Composable
     override fun mapState(state: AddMenuProduct.ViewDataState): AddMenuProductViewState {
         return AddMenuProductViewState(
-            throwable = state.throwable,
+            hasError = state.hasError,
             name = state.name,
             nameError = if (state.hasNameError) {
                 R.string.error_add_menu_product_empty_name
@@ -321,7 +323,22 @@ class AddMenuProductFragment :
                 R.string.hint_add_menu_product_categories
             },
             isVisibleInMenu = state.isVisibleInMenu,
-            isVisibleInRecommendation = state.isVisibleInRecommendation
+            isVisibleInRecommendation = state.isVisibleInRecommendation,
+            photoErrorBorder = if (state.hasPhotoLinkError) {
+                BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
+            } else {
+                null
+            },
+            photoContainsColor = if (state.hasPhotoLinkError) {
+                AdminTheme.colors.main.error
+            } else {
+                AdminTheme.colors.main.onSurface
+            },
+            categoriesErrorBorder = if (state.hasCategoriesError) {
+                BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
+            } else {
+                null
+            }
         )
     }
 
@@ -341,13 +358,16 @@ class AddMenuProductFragment :
                     nutrition = "",
                     comboDescription = "",
                     isLoadingButton = false,
-                    throwable = null,
+                    hasError = false,
                     utils = "ss",
                     oldPriceError = null,
                     categoryLabel = "Выбрать категории",
                     categoryHint = R.string.hint_add_menu_product_categories,
                     isVisibleInMenu = false,
-                    isVisibleInRecommendation = false
+                    isVisibleInRecommendation = false,
+                    photoErrorBorder = null,
+                    categoriesErrorBorder = null,
+                    photoContainsColor = AdminTheme.colors.main.onSurface
                 ),
                 onAction = {}
             )

@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.card
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -24,11 +25,13 @@ fun NavigationTextCard(
     label: String?,
     @StringRes hintStringId: Int? = null,
     clickable: Boolean = true,
+    border: BorderStroke? = null,
     onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
         clickable = clickable,
+        border = border,
         onClick = onClick
     ) {
         Row(

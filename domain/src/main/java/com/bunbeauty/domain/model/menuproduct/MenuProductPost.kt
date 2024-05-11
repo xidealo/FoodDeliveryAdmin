@@ -11,5 +11,6 @@ data class MenuProductPost(
     val photoLink: String,
     val barcode: Int,
     val isVisible: Boolean,
+    val isRecommended: Boolean,
     val categories: List<String>
 )

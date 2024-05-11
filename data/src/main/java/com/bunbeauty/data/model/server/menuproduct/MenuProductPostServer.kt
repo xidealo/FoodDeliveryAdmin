@@ -25,6 +25,8 @@ data class MenuProductPostServer(
     val barcode: Int,
     @SerialName("isVisible")
     val isVisible: Boolean,
+    @SerialName("isRecommended")
+    val isRecommended: Boolean,
     @SerialName("categories")
     val categories: List<String>
 )

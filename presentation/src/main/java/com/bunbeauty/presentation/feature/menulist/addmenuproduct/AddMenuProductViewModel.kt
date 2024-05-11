@@ -171,7 +171,8 @@ class AddMenuProductViewModel @Inject constructor(
                             photoLink = "",
                             barcode = 0,
                             isVisible = isVisibleInMenu,
-                            categories = listOf()
+                            categories = listOf(),
+                            isRecommended = isVisibleInRecommendation
                         )
                     }
                 )
