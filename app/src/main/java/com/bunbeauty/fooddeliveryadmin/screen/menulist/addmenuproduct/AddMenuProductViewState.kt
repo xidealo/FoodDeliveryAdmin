@@ -27,5 +27,14 @@ data class AddMenuProductViewState(
     val isVisibleInRecommendation: Boolean,
     val categoriesErrorBorder: BorderStroke?,
     val photoErrorBorder: BorderStroke?,
-    val photoContainsColor: Color
-) : BaseViewState
+    val photoContainsColor: Color,
+    val isShowCategoriesBottomSheet: Boolean,
+    val selectableCategoryList: List<CategoryItem>
+) : BaseViewState {
+    @Immutable
+    data class CategoryItem(
+        val uuid: String,
+        val name: String,
+        val selected: Boolean
+    )
+}

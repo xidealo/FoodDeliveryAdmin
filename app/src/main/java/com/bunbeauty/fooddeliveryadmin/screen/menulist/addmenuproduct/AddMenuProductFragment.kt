@@ -211,7 +211,7 @@ class AddMenuProductFragment :
                     border = state.categoriesErrorBorder,
                     label = state.categoryLabel,
                     onClick = {
-                        onAction(AddMenuProduct.Action.OnSelectCategoriesClick)
+                        onAction(AddMenuProduct.Action.OnShowCategoriesClick)
                     }
                 )
 
@@ -274,6 +274,13 @@ class AddMenuProductFragment :
 
                 Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
             }
+
+            CategoryListBottomSheet(
+                modifier = Modifier,
+                onAction = onAction,
+                selectableCategories = state.selectableCategoryList,
+                show = state.isShowCategoriesBottomSheet
+            )
         }
     }
 
@@ -338,6 +345,14 @@ class AddMenuProductFragment :
                 BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
             } else {
                 null
+            },
+            isShowCategoriesBottomSheet = state.isShowCategoriesBottomSheet,
+            selectableCategoryList = state.selectableCategoryList.map { selectableCategory ->
+                AddMenuProductViewState.CategoryItem(
+                    uuid = selectableCategory.category.uuid,
+                    name = selectableCategory.category.name,
+                    selected = selectableCategory.selected
+                )
             }
         )
     }
@@ -367,7 +382,9 @@ class AddMenuProductFragment :
                     isVisibleInRecommendation = false,
                     photoErrorBorder = null,
                     categoriesErrorBorder = null,
-                    photoContainsColor = AdminTheme.colors.main.onSurface
+                    photoContainsColor = AdminTheme.colors.main.onSurface,
+                    isShowCategoriesBottomSheet = false,
+                    selectableCategoryList = emptyList()
                 ),
                 onAction = {}
             )

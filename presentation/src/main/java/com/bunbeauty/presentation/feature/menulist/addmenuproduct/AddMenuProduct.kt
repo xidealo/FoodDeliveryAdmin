@@ -25,7 +25,8 @@ interface AddMenuProduct {
         val isVisibleInRecommendation: Boolean,
         val hasError: Boolean?,
         val selectableCategoryList: List<SelectableCategory>,
-        val hasCategoriesError: Boolean
+        val hasCategoriesError: Boolean,
+        val isShowCategoriesBottomSheet: Boolean
     ) : BaseViewDataState {
 
         fun getSelectedCategory() =
@@ -49,9 +50,11 @@ interface AddMenuProduct {
         data class OnComboDescriptionTextChanged(val comboDescription: String) : Action
         data object OnCreateMenuProductClick : Action
         data object OnAddPhotoClick : Action
-        data object OnSelectCategoriesClick : Action
+        data object OnShowCategoriesClick : Action
+        data object OnHideCategoriesClick : Action
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
+        data class OnCategoryClick(val uuid: String, val selected: Boolean) : Action
     }
 
     sealed interface Event : BaseEvent {

@@ -39,7 +39,8 @@ class AddMenuProductViewModel @Inject constructor(
             selectableCategoryList = listOf(),
             photoLink = "",
             hasPhotoLinkError = false,
-            hasCategoriesError = false
+            hasCategoriesError = false,
+            isShowCategoriesBottomSheet = false
         )
     ) {
 
@@ -96,8 +97,16 @@ class AddMenuProductViewModel @Inject constructor(
             }
 
             AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
-            AddMenuProduct.Action.OnSelectCategoriesClick -> addEvent {
-                AddMenuProduct.Event.OpenSelectCategoriesBottomSheet(dataState.selectableCategoryList)
+            AddMenuProduct.Action.OnShowCategoriesClick -> setState {
+                copy(
+                    isShowCategoriesBottomSheet = true
+                )
+            }
+
+            AddMenuProduct.Action.OnHideCategoriesClick -> setState {
+                copy(
+                    isShowCategoriesBottomSheet = false
+                )
             }
 
             is AddMenuProduct.Action.OnRecommendationVisibleChangeClick -> {
@@ -119,6 +128,25 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
                 AddMenuProduct.Event.GoToGallery
             }
+
+            is AddMenuProduct.Action.OnCategoryClick -> selectCategory(
+                uuid = action.uuid,
+                selected = action.selected
+            )
+        }
+    }
+
+    private fun selectCategory(uuid: String, selected: Boolean) {
+        setState {
+            copy(
+                selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+                    if (uuid == selectableCategory.category.uuid) {
+                        selectableCategory.copy(selected = !selected)
+                    } else {
+                        selectableCategory
+                    }
+                }
+            )
         }
     }
 
@@ -171,7 +199,11 @@ class AddMenuProductViewModel @Inject constructor(
                             photoLink = "",
                             barcode = 0,
                             isVisible = isVisibleInMenu,
-                            categories = listOf(),
+                            categories = selectableCategoryList
+                                .filter { selectableCategory -> selectableCategory.selected }
+                                .map { selectableCategory ->
+                                    selectableCategory.category.uuid
+                                },
                             isRecommended = isVisibleInRecommendation
                         )
                     }
