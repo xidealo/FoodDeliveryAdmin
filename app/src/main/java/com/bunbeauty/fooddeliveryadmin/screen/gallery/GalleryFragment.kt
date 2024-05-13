@@ -25,6 +25,7 @@ import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.gallery.Gallery
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.collections.immutable.toPersistentList
 
 @AndroidEntryPoint
 class GalleryFragment :
@@ -68,9 +69,6 @@ class GalleryFragment :
                     ) {
                         items(
                             state.photos,
-                            key = { photoLink ->
-                                photoLink
-                            }
                         ) { photoLink ->
                             AsyncImage(
                                 modifier = Modifier,
@@ -92,7 +90,9 @@ class GalleryFragment :
     @Composable
     override fun mapState(state: Gallery.ViewDataState): GalleryViewState {
         return GalleryViewState(
-            photos = state.photoList.map { photo -> photo.photoLink },
+            photos = state.photoList
+                .map { photo -> photo.photoLink }
+                .toPersistentList(),
             isLoading = state.isLoading,
             hasError = state.hasError
         )
