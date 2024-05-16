@@ -22,7 +22,6 @@ import javax.inject.Inject
 class MenuListViewModel @Inject constructor(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
     private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
-    private val fetchCategoryListUseCase: FetchCategoryListUseCase
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(MenuListDataState())
@@ -48,8 +47,6 @@ class MenuListViewModel @Inject constructor(
                     throwable = null
                 )
             }
-
-            fetchCategoryListUseCase()
 
             val items =
                 getSeparatedMenuProductListUseCase(takeRemote = mutableState.value.isEmptyMenuProductListSize)
