@@ -68,7 +68,7 @@ class GalleryFragment :
                         verticalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp)
                     ) {
                         items(
-                            state.photos,
+                            state.photos
                         ) { photoLink ->
                             AsyncImage(
                                 modifier = Modifier,

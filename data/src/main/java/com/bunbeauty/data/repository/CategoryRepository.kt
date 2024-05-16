@@ -24,11 +24,6 @@ class CategoryRepository @Inject constructor(
 
             is ApiResult.Error -> {
                 throw Exception("categories load error")
-                result.data.results.map(categoryMapper::toModel)
-            }
-
-            is ApiResult.Error -> {
-                throw Exception("categories load error")
             }
         }
     }
