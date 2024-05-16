@@ -6,7 +6,7 @@ import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import javax.inject.Inject
 
-class UpdateVisibleAdditionGroupUseCase @Inject constructor(
+class UpdateVisibleAdditionGroupListUseCase @Inject constructor(
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

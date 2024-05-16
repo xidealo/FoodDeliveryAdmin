@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menulist
+package com.bunbeauty.presentation.feature.menulist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuListViewModel @Inject constructor(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
-    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase
+    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
 ) : BaseViewModel() {
 
     private val mutableState = MutableStateFlow(MenuListDataState())

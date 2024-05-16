@@ -42,9 +42,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductEvent
-import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductUIState
-import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductViewModel
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductEvent
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductUIState
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -180,7 +180,9 @@ class EditMenuProductFragment : BaseFragment<LayoutComposeBinding>() {
                 clickable = false
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier
+                        .padding(top = 8.dp, bottom = 16.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     AdminTextField(
                         modifier = Modifier.fillMaxWidth(),

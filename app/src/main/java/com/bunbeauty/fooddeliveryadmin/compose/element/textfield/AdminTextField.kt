@@ -25,7 +25,7 @@ fun AdminTextField(
     modifier: Modifier = Modifier,
     value: String = "",
     @StringRes labelStringId: Int,
-    keyboardType: KeyboardType = KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Ascii,
     imeAction: ImeAction = ImeAction.Next,
     onValueChange: (value: String) -> Unit,
     maxSymbols: Int = Int.MAX_VALUE,

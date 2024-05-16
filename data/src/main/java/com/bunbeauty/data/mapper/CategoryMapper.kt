@@ -1,7 +1,7 @@
 package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.entity.CategoryEntity
-import com.bunbeauty.data.model.server.CategoryServer
+import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.domain.model.Category
 import javax.inject.Inject
 

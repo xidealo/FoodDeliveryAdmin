@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct
+package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
 sealed interface EditMenuProductEvent {
     data class ShowUpdateProductSuccess(val productName: String) : EditMenuProductEvent

@@ -11,6 +11,7 @@ import com.bunbeauty.data.repository.FoodDeliveryApiImpl
 import com.bunbeauty.data.repository.MenuProductRepository
 import com.bunbeauty.data.repository.NonWorkingDayRepository
 import com.bunbeauty.data.repository.OrderRepository
+import com.bunbeauty.data.repository.PhotoRepository
 import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.data.repository.UserAuthorizationRepository
 import com.bunbeauty.domain.repo.AdditionGroupRepo
@@ -22,6 +23,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import dagger.Binds
@@ -81,4 +83,8 @@ abstract class RepoModule {
     @Singleton
     @Binds
     abstract fun bindAdditionGroupRepository(additionGroupRepository: AdditionGroupRepository): AdditionGroupRepo
+
+    @Singleton
+    @Binds
+    abstract fun bindPhotoRepository(photoRepository: PhotoRepository): PhotoRepo
 }

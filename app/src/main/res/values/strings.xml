@@ -145,6 +145,7 @@
     <!--MENU LIST FRAGMENT-->
     <string name="title_position_visible">Видимые позиции</string>
     <string name="title_position_hidden">Скрытые позиции</string>
+    <string name="action_menu_list_add">Добавить</string>
 
     <string-array name="utilsList">
         <item>г</item>
@@ -202,8 +203,22 @@
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
 
-
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
+
+    <!-- ADD MENU PRODUCT -->
+    <string name="title_add_menu_product">Добавление продукта</string>
+    <string name="hint_add_menu_product_categories">Категории</string>
+    <string name="title_add_menu_product_categories">Выбрать категории</string>
+    <string name="title_add_menu_product_is_visible_in_menu">Показывать в меню</string>
+    <string name="title_add_menu_product_is_recommendation">Рекомендовать</string>
+    <string name="title_add_menu_product_add_photo">Добавить фото</string>
+    <string name="error_add_menu_product_empty_name">Название не может быть пустым</string>
+    <string name="error_add_menu_product_empty_description">Описание не может быть пустым</string>
+    <string name="error_add_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
+    <string name="error_add_menu_product_old_price_incorrect">Должна быть больше цены</string>
+
+    <!-- Gallery -->
+    <string name="title_gallery">Галерея</string>
 
 </resources>

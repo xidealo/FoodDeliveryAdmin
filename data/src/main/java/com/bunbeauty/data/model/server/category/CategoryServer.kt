@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.server
+package com.bunbeauty.data.model.server.category
 
 import kotlinx.serialization.Serializable
 

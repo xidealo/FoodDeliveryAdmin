@@ -7,9 +7,9 @@ import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.usecase.GetMenuProductUseCase
 import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
-import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductEvent
-import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductUIState
-import com.bunbeauty.presentation.viewmodel.menulist.editmenuproduct.EditMenuProductViewModel
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductEvent
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductUIState
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

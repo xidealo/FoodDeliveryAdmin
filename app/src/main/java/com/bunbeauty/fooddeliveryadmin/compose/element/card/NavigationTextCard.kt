@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.card
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -24,17 +25,23 @@ fun NavigationTextCard(
     label: String?,
     @StringRes hintStringId: Int? = null,
     clickable: Boolean = true,
+    border: BorderStroke? = null,
     onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
         clickable = clickable,
+        border = border,
         onClick = onClick
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = AdminTheme.dimensions.mediumSpace,
-                vertical = AdminTheme.dimensions.smallSpace
+                vertical = if (hintStringId == null) {
+                    12.dp
+                } else {
+                    8.dp
+                }
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -73,6 +80,19 @@ private fun TextNavigationCardPreview() {
         NavigationTextCard(
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
             hintStringId = R.string.hint_login_login,
+            label = "+7 999 000-00-00",
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun TextNavigationCardNoHintPreview() {
+    AdminTheme {
+        NavigationTextCard(
+            modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
+            hintStringId = null,
             label = "+7 999 000-00-00",
             onClick = {}
         )
