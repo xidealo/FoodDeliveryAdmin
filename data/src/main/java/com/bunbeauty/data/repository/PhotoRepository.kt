@@ -4,48 +4,31 @@ import android.util.Log
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 class PhotoRepository @Inject constructor() : PhotoRepo {
 
     private val photoListCache: List<Photo>? = null
 
-    override suspend fun getPhotoList(username: String): List<Photo> {
+    override suspend fun getPhotoList(username: String): List<Photo> = coroutineScope {
         val imagesRef = FirebaseStorage.getInstance().reference.child("gustopab")
 
-        val storageReferenceList = suspendCoroutine { continuation ->
-            imagesRef.listAll()
-                .addOnSuccessListener { listResult ->
-                    continuation.resume(listResult.items)
-                }
-                .addOnFailureListener { exception ->
-                    continuation.resumeWithException(exception)
-                }
-        }
-        Log.d("TAG_PhotoRepository", "start load")
+        Log.d("testTag", "start")
 
-        val photoList = storageReferenceList.map { storageReference ->
-            coroutineScope {
-                async(Dispatchers.IO) {
-                    suspendCoroutine { continuation ->
-                        storageReference.downloadUrl.addOnSuccessListener { photoUri ->
-                            android.util.Log.d(
-                                "TAG_PhotoRepository",
-                                "getPhotoList: gotPhoto $photoUri"
-                            )
-                            continuation.resume(com.bunbeauty.domain.model.Photo(photoLink = photoUri.toString()))
-                        }
-                    }
-                }
+        val referenceListResult = imagesRef.listAll().await()
+        Log.d("testTag", "referenceListResult")
+
+        val photoList = referenceListResult.items.map { reference ->
+            async {
+                Photo(link = reference.downloadUrl.await().toString())
             }
-        }
-        return photoList.awaitAll()
+        }.awaitAll()
+        Log.d("testTag", "photoList ${photoList.joinToString()}")
+
+        photoList
     }
 }

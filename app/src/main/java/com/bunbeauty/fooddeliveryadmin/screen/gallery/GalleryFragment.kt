@@ -91,7 +91,7 @@ class GalleryFragment :
     override fun mapState(state: Gallery.ViewDataState): GalleryViewState {
         return GalleryViewState(
             photos = state.photoList
-                .map { photo -> photo.photoLink }
+                .map { photo -> photo.link }
                 .toPersistentList(),
             isLoading = state.isLoading,
             hasError = state.hasError
