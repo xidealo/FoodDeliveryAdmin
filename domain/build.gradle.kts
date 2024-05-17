@@ -45,7 +45,7 @@ dependencies {
     implementation(Mockk.common)
 
     // Coroutine
-    implementation(Coroutine.test)
+    implementation(Coroutines.test)
 
     // Test
     testImplementation(kotlin(Test.test))
