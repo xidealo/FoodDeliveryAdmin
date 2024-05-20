@@ -28,7 +28,6 @@ data class AddMenuProductViewState(
     val categoriesErrorBorder: BorderStroke?,
     val photoErrorBorder: BorderStroke?,
     val photoContainsColor: Color,
-    val isShowCategoriesBottomSheet: Boolean,
     val selectableCategoryList: List<CategoryItem>
 ) : BaseViewState {
     @Immutable

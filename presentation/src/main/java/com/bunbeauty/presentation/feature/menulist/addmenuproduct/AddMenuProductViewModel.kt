@@ -7,7 +7,6 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.AddMenuProductUseCase
-import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -16,11 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
-    private val getCategoryListUseCase: GetCategoryListUseCase,
     private val addMenuProductUseCase: AddMenuProductUseCase
 ) :
-    BaseStateViewModel<AddMenuProduct.ViewDataState, AddMenuProduct.Action, AddMenuProduct.Event>(
-        initState = AddMenuProduct.ViewDataState(
+    BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
+        initState = AddMenuProduct.DataState(
             name = "",
             hasNameError = false,
             description = "",
@@ -40,11 +38,10 @@ class AddMenuProductViewModel @Inject constructor(
             photoLink = "",
             hasPhotoLinkError = false,
             hasCategoriesError = false,
-            isShowCategoriesBottomSheet = false
         )
     ) {
 
-    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.ViewDataState) {
+    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.DataState) {
         when (action) {
             AddMenuProduct.Action.Init -> loadData()
 
@@ -97,15 +94,10 @@ class AddMenuProductViewModel @Inject constructor(
             }
 
             AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
-            AddMenuProduct.Action.OnShowCategoriesClick -> setState {
-                copy(
-                    isShowCategoriesBottomSheet = true
-                )
-            }
-
-            AddMenuProduct.Action.OnHideCategoriesClick -> setState {
-                copy(
-                    isShowCategoriesBottomSheet = false
+            AddMenuProduct.Action.OnShowCategoryListClick -> addEvent {
+                AddMenuProduct.Event.GoToCategoryList(
+                    dataState.getSelectedCategory()
+                        .map { selectableCategory -> selectableCategory.category.uuid }
                 )
             }
 
@@ -128,25 +120,6 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
                 AddMenuProduct.Event.GoToGallery
             }
-
-            is AddMenuProduct.Action.OnCategoryClick -> selectCategory(
-                uuid = action.uuid,
-                selected = action.selected
-            )
-        }
-    }
-
-    private fun selectCategory(uuid: String, selected: Boolean) {
-        setState {
-            copy(
-                selectableCategoryList = selectableCategoryList.map { selectableCategory ->
-                    if (uuid == selectableCategory.category.uuid) {
-                        selectableCategory.copy(selected = !selected)
-                    } else {
-                        selectableCategory
-                    }
-                }
-            )
         }
     }
 
@@ -155,12 +128,6 @@ class AddMenuProductViewModel @Inject constructor(
             block = {
                 setState {
                     copy(
-                        selectableCategoryList = getCategoryListUseCase().map { category ->
-                            AddMenuProduct.ViewDataState.SelectableCategory(
-                                category = category,
-                                selected = false
-                            )
-                        },
                         hasError = false
                     )
                 }

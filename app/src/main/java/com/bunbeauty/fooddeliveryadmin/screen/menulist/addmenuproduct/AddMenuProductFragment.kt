@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import android.os.Bundle
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bunbeauty.common.Constants
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -48,7 +46,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddMenuProductFragment :
-    BaseComposeFragment<AddMenuProduct.ViewDataState, AddMenuProductViewState, AddMenuProduct.Action, AddMenuProduct.Event>() {
+    BaseComposeFragment<AddMenuProduct.DataState, AddMenuProductViewState, AddMenuProduct.Action, AddMenuProduct.Event>() {
 
     override val viewModel: AddMenuProductViewModel by viewModels()
 
@@ -211,7 +209,7 @@ class AddMenuProductFragment :
                     border = state.categoriesErrorBorder,
                     label = state.categoryLabel,
                     onClick = {
-                        onAction(AddMenuProduct.Action.OnShowCategoriesClick)
+                        onAction(AddMenuProduct.Action.OnShowCategoryListClick)
                     }
                 )
 
@@ -274,87 +272,12 @@ class AddMenuProductFragment :
 
                 Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
             }
-
-            CategoryListBottomSheet(
-                modifier = Modifier,
-                onAction = onAction,
-                selectableCategories = state.selectableCategoryList,
-                show = state.isShowCategoriesBottomSheet
-            )
         }
     }
 
     @Composable
-    override fun mapState(state: AddMenuProduct.ViewDataState): AddMenuProductViewState {
-        return AddMenuProductViewState(
-            hasError = state.hasError,
-            name = state.name,
-            nameError = if (state.hasNameError) {
-                R.string.error_add_menu_product_empty_name
-            } else {
-                null
-            },
-            newPrice = state.newPrice,
-            newPriceError = if (state.hasNewPriceError) {
-                R.string.error_add_menu_product_empty_new_price
-            } else {
-                null
-            },
-            oldPrice = state.oldPrice,
-            oldPriceError = if (state.hasOldPriceError) {
-                R.string.error_add_menu_product_old_price_incorrect
-            } else {
-                null
-            },
-            description = state.description,
-            descriptionError = if (state.hasDescriptionError) {
-                R.string.error_add_menu_product_empty_description
-            } else {
-                null
-            },
-            nutrition = state.nutrition,
-            comboDescription = state.comboDescription,
-            isLoadingButton = false,
-            utils = state.utils,
-            categoryLabel = if (state.getSelectedCategory().isEmpty()) {
-                stringResource(id = R.string.title_add_menu_product_categories)
-            } else {
-                state.getSelectedCategory()
-                    .joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
-                        category.category.name
-                    }
-            },
-            categoryHint = if (state.getSelectedCategory().isEmpty()) {
-                null
-            } else {
-                R.string.hint_add_menu_product_categories
-            },
-            isVisibleInMenu = state.isVisibleInMenu,
-            isVisibleInRecommendation = state.isVisibleInRecommendation,
-            photoErrorBorder = if (state.hasPhotoLinkError) {
-                BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
-            } else {
-                null
-            },
-            photoContainsColor = if (state.hasPhotoLinkError) {
-                AdminTheme.colors.main.error
-            } else {
-                AdminTheme.colors.main.onSurface
-            },
-            categoriesErrorBorder = if (state.hasCategoriesError) {
-                BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
-            } else {
-                null
-            },
-            isShowCategoriesBottomSheet = state.isShowCategoriesBottomSheet,
-            selectableCategoryList = state.selectableCategoryList.map { selectableCategory ->
-                AddMenuProductViewState.CategoryItem(
-                    uuid = selectableCategory.category.uuid,
-                    name = selectableCategory.category.name,
-                    selected = selectableCategory.selected
-                )
-            }
-        )
+    override fun mapState(state: AddMenuProduct.DataState): AddMenuProductViewState {
+        return state.toAddMenuProductViewState()
     }
 
     @Preview(showSystemUi = true)
@@ -383,7 +306,6 @@ class AddMenuProductFragment :
                     photoErrorBorder = null,
                     categoriesErrorBorder = null,
                     photoContainsColor = AdminTheme.colors.main.onSurface,
-                    isShowCategoriesBottomSheet = false,
                     selectableCategoryList = emptyList()
                 ),
                 onAction = {}
@@ -397,7 +319,8 @@ class AddMenuProductFragment :
                 findNavController().popBackStack()
             }
 
-            is AddMenuProduct.Event.OpenSelectCategoriesBottomSheet -> {
+            is AddMenuProduct.Event.GoToCategoryList -> {
+                findNavController().navigate(AddMenuProductFragmentDirections.toCategoryListFragment())
             }
 
             AddMenuProduct.Event.GoToGallery -> {

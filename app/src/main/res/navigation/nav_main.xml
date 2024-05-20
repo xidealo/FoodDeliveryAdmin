@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/editMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.EditMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct.EditMenuProductFragment"
         android:label="EditMenuProductFragment">
         <argument
             android:name="menuProductUuid"
@@ -105,7 +105,15 @@
         <action
             android:id="@+id/to_galleryFragment"
             app:destination="@id/galleryFragment" />
+        <action
+            android:id="@+id/to_categoryListFragment"
+            app:destination="@id/categoryListFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/categoryListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment"
+        android:label="CategoryListFragment" >
     </fragment>
 
     <fragment

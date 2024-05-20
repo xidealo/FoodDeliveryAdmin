@@ -214,11 +214,14 @@
     <string name="title_add_menu_product_is_visible_in_menu">Показывать в меню</string>
     <string name="title_add_menu_product_is_recommendation">Рекомендовать</string>
     <string name="title_add_menu_product_add_photo">Добавить фото</string>
-    <string name="title_categories">Категории</string>
     <string name="error_add_menu_product_empty_name">Название не может быть пустым</string>
     <string name="error_add_menu_product_empty_description">Описание не может быть пустым</string>
     <string name="error_add_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
     <string name="error_add_menu_product_old_price_incorrect">Должна быть больше цены</string>
+
+    <!--CATEGORY LIST-->
+    <string name="title_category_list">Категории</string>
+    <string name="action_category_list_save">Сохранить</string>
 
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>

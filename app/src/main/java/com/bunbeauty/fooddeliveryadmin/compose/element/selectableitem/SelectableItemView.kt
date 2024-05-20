@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.compose.element
+package com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,10 +20,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 @Composable
 fun SelectableItemView(
     modifier: Modifier = Modifier,
-    title: String,
+    selectableItem: SelectableItem,
     isClickable: Boolean,
     elevated: Boolean,
-    isSelected: Boolean = false,
     onClick: (() -> Unit)
 ) {
     AdminCard(
@@ -40,11 +39,11 @@ fun SelectableItemView(
             Text(
                 modifier = Modifier
                     .weight(1f),
-                text = title,
+                text = selectableItem.title,
                 style = AdminTheme.typography.bodyLarge,
                 color = AdminTheme.colors.main.onSurface
             )
-            if (isSelected) {
+            if (selectableItem.isSelected) {
                 Icon(
                     modifier = Modifier
                         .padding(start = AdminTheme.dimensions.smallSpace)
@@ -59,12 +58,16 @@ fun SelectableItemView(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun SelectableItemPreview() {
     AdminTheme {
         SelectableItemView(
-            title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
+            selectableItem = SelectableItem(
+                uuid = "1",
+                title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
+                isSelected = false
+            ),
             isClickable = false,
             elevated = false,
             onClick = {}
@@ -72,15 +75,18 @@ private fun SelectableItemPreview() {
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun SelectableItemSelectedPreview() {
     AdminTheme {
         SelectableItemView(
-            title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
+            selectableItem = SelectableItem(
+                uuid = "1",
+                title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
+                isSelected = false
+            ),
             isClickable = false,
             elevated = false,
-            isSelected = true,
             onClick = {}
         )
     }

@@ -21,6 +21,12 @@ import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
+@Deprecated(
+    "Use AdminModalBottomSheet",
+    ReplaceWith(
+        "AdminModalBottomSheet",
+    )
+)
 @Composable
 fun AdminBottomSheet(
     @StringRes titleStringId: Int,
