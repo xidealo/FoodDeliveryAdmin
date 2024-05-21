@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
@@ -33,6 +33,11 @@ import kotlinx.collections.immutable.toPersistentList
 @AndroidEntryPoint
 class CategoryListFragment :
     BaseComposeFragment<CategoryList.DataState, CategoryListViewState, CategoryList.Action, CategoryList.Event>() {
+
+    companion object {
+        const val CATEGORY_LIST_REQUEST_KEY = "CATEGORY_LIST_REQUEST_KEY"
+        const val CATEGORY_LIST_KEY = "CATEGORY_LIST_KEY"
+    }
 
     override val viewModel: CategoryListViewModel by viewModels()
 
@@ -62,7 +67,7 @@ class CategoryListFragment :
                     text = stringResource(id = R.string.action_category_list_save),
                     onClick = {
                         onAction(CategoryList.Action.OnSaveClick)
-                    },
+                    }
                 )
             }
         ) {
@@ -127,7 +132,9 @@ class CategoryListFragment :
                 state = CategoryListViewState(
                     selectableCategoryList = persistentListOf(
                         CategoryListViewState.CategoryItem(
-                            uuid = "movet", name = "Roy Faulkner", selected = false
+                            uuid = "movet",
+                            name = "Roy Faulkner",
+                            selected = false
                         )
                     )
                 ),
@@ -142,8 +149,12 @@ class CategoryListFragment :
                 findNavController().popBackStack()
             }
 
-            CategoryList.Event.Save -> {
-                findNavController()
+            is CategoryList.Event.Save -> {
+                setFragmentResult(
+                    CATEGORY_LIST_REQUEST_KEY,
+                    bundleOf(CATEGORY_LIST_KEY to event.selectedCategoryUuidList)
+                )
+                findNavController().popBackStack()
             }
         }
     }

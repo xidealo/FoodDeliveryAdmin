@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
-    private val getCategoryListUseCase: GetCategoryListUseCase,
+    private val getCategoryListUseCase: GetCategoryListUseCase
 ) :
     BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(
         initState = CategoryList.DataState(
@@ -25,8 +25,17 @@ class CategoryListViewModel @Inject constructor(
                 CategoryList.Event.Back
             }
 
-            CategoryList.Action.OnSaveClick -> addEvent { CategoryList.Event.Save }
-            is CategoryList.Action.OnCategoryClick -> selectCategory(uuid = action.uuid, selected = action.selected)
+            CategoryList.Action.OnSaveClick -> addEvent {
+                CategoryList.Event.Save(
+                    dataState.getSelectedCategory()
+                        .map { selectableCategory -> selectableCategory.category.uuid }
+                )
+            }
+
+            is CategoryList.Action.OnCategoryClick -> selectCategory(
+                uuid = action.uuid,
+                selected = action.selected
+            )
         }
     }
 
@@ -65,5 +74,4 @@ class CategoryListViewModel @Inject constructor(
             }
         )
     }
-
 }

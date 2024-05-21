@@ -7,6 +7,7 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.AddMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
-    private val addMenuProductUseCase: AddMenuProductUseCase
+    private val addMenuProductUseCase: AddMenuProductUseCase,
+    private val getCategoryListUseCase: GetCategoryListUseCase
 ) :
     BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
         initState = AddMenuProduct.DataState(
@@ -37,7 +39,7 @@ class AddMenuProductViewModel @Inject constructor(
             selectableCategoryList = listOf(),
             photoLink = "",
             hasPhotoLinkError = false,
-            hasCategoriesError = false,
+            hasCategoriesError = false
         )
     ) {
 
@@ -120,6 +122,16 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
                 AddMenuProduct.Event.GoToGallery
             }
+
+            is AddMenuProduct.Action.SelectCategoryList -> setState {
+                copy(
+                    selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+                        selectableCategory.copy(
+                            selected = action.categoryUuidList.contains(selectableCategory.category.uuid)
+                        )
+                    }
+                )
+            }
         }
     }
 
@@ -128,7 +140,13 @@ class AddMenuProductViewModel @Inject constructor(
             block = {
                 setState {
                     copy(
-                        hasError = false
+                        hasError = false,
+                        selectableCategoryList = getCategoryListUseCase().map { category ->
+                            AddMenuProduct.DataState.SelectableCategory(
+                                category = category,
+                                selected = false
+                            )
+                        }
                     )
                 }
             },

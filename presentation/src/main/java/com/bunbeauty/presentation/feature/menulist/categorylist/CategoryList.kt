@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.categorylist
 
 import com.bunbeauty.domain.model.Category
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -9,8 +8,10 @@ import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 interface CategoryList {
     data class DataState(
         val selectableCategoryList: List<SelectableCategory>,
-        val hasError: Boolean,
+        val hasError: Boolean
     ) : BaseDataState {
+        fun getSelectedCategory() =
+            selectableCategoryList.filter { selectableCategory -> selectableCategory.selected }
 
         data class SelectableCategory(
             val category: Category,
@@ -27,6 +28,6 @@ interface CategoryList {
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-        data object Save : Event
+        data class Save(val selectedCategoryUuidList: List<String>) : Event
     }
 }

@@ -24,7 +24,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 @Deprecated(
     "Use AdminModalBottomSheet",
     ReplaceWith(
-        "AdminModalBottomSheet",
+        "AdminModalBottomSheet"
     )
 )
 @Composable

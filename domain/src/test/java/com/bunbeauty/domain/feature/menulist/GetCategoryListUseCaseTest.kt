@@ -2,14 +2,15 @@ package com.bunbeauty.domain.feature.menulist
 
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.feature.menu.menulist.FetchCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
+import com.bunbeauty.domain.model.Category
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -17,34 +18,39 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FetchCategoryListUseCaseTest {
+class GetCategoryListUseCaseTest {
 
     private val categoryRepo: CategoryRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
-    private lateinit var fetchCategoryListUseCase: FetchCategoryListUseCase
+    private lateinit var getCategoryListUseCase: GetCategoryListUseCase
 
     @BeforeTest
     fun setup() {
-        fetchCategoryListUseCase = FetchCategoryListUseCase(
+        getCategoryListUseCase = GetCategoryListUseCase(
             categoryRepo = categoryRepo,
             dataStoreRepo = dataStoreRepo
         )
     }
 
     @Test
-    fun `invoke calls fetchCategories with correct parameters`() = runTest {
+    fun `invoke returns filtered category list`() = runTest {
         // Given
         val token = "test_token"
         val companyUuid = "test_company_uuid"
+        val categories = listOf(
+            categoryMock.copy(uuid = "1"),
+            categoryMock.copy(uuid = "2"),
+            categoryMock.copy(uuid = "")
+        )
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { categoryRepo.fetchCategories(token = token, companyUuid = companyUuid) } returns emptyList()
+        coEvery { categoryRepo.getCategoryList(token, companyUuid) } returns categories
 
         // When
-        fetchCategoryListUseCase()
+        val result = getCategoryListUseCase()
 
         // Then
-        coVerify { categoryRepo.fetchCategories(token = token, companyUuid = companyUuid) }
+        assertEquals(listOf(categoryMock.copy(uuid = "1"), categoryMock.copy(uuid = "2")), result)
     }
 
     @Test
@@ -55,7 +61,7 @@ class FetchCategoryListUseCaseTest {
 
         // When & Then
         assertFailsWith<NoTokenException> {
-            fetchCategoryListUseCase()
+            getCategoryListUseCase()
         }
     }
 
@@ -63,11 +69,11 @@ class FetchCategoryListUseCaseTest {
     fun `invoke throws NoCompanyUuidException when companyUuid is null`() = runTest {
         // Given
         coEvery { dataStoreRepo.getToken() } returns "test_token"
-        coEvery { dataStoreRepo.companyUuid } returns flow { }
+        coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
 
         // When & Then
         assertFailsWith<NoCompanyUuidException> {
-            fetchCategoryListUseCase()
+            getCategoryListUseCase()
         }
     }
 
@@ -79,7 +85,13 @@ class FetchCategoryListUseCaseTest {
 
         // When & Then
         assertFailsWith<NoCompanyUuidException> {
-            fetchCategoryListUseCase()
+            getCategoryListUseCase()
         }
     }
+
+    private val categoryMock = Category(
+        uuid = "",
+        name = "",
+        priority = 0
+    )
 }

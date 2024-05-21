@@ -25,7 +25,7 @@ interface AddMenuProduct {
         val isVisibleInRecommendation: Boolean,
         val hasError: Boolean?,
         val selectableCategoryList: List<SelectableCategory>,
-        val hasCategoriesError: Boolean,
+        val hasCategoriesError: Boolean
     ) : BaseDataState {
 
         fun getSelectedCategory() =
@@ -52,6 +52,7 @@ interface AddMenuProduct {
         data object OnShowCategoryListClick : Action
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
+        data class SelectCategoryList(val categoryUuidList: List<String>) : Action
     }
 
     sealed interface Event : BaseEvent {

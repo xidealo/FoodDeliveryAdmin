@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.model.Suggestion
@@ -40,6 +41,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +56,17 @@ class AddMenuProductFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(AddMenuProduct.Action.Init)
+        setFragmentResultListener(
+            CATEGORY_LIST_REQUEST_KEY
+        ) { requestKey, bundle ->
+            val result = bundle.getStringArrayList(CATEGORY_LIST_KEY)
+
+            viewModel.onAction(
+                AddMenuProduct.Action.SelectCategoryList(
+                    categoryUuidList = result?.toList() ?: emptyList()
+                )
+            )
+        }
     }
 
     @Composable
