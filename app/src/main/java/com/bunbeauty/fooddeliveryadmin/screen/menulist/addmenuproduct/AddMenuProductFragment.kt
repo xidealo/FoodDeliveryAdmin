@@ -334,7 +334,11 @@ class AddMenuProductFragment :
             }
 
             is AddMenuProduct.Event.GoToCategoryList -> {
-                findNavController().navigate(AddMenuProductFragmentDirections.toCategoryListFragment())
+                findNavController().navigate(
+                    AddMenuProductFragmentDirections.toCategoryListFragment(
+                        event.selectedCategoryList.toTypedArray()
+                    )
+                )
             }
 
             AddMenuProduct.Event.GoToGallery -> {

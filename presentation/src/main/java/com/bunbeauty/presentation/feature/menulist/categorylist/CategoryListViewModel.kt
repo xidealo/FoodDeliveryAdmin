@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.categorylist
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -7,9 +8,12 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
+
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
-    private val getCategoryListUseCase: GetCategoryListUseCase
+    savedStateHandle: SavedStateHandle,
+    private val getCategoryListUseCase: GetCategoryListUseCase,
 ) :
     BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(
         initState = CategoryList.DataState(
@@ -17,6 +21,10 @@ class CategoryListViewModel @Inject constructor(
             hasError = false
         )
     ) {
+
+    private val selectedCategoryUuidList: List<String> = savedStateHandle.get<Array<String>>(
+        SELECTED_CATEGORY_UUID_LIST
+    )?.toList() ?: emptyList()
 
     override fun reduce(action: CategoryList.Action, dataState: CategoryList.DataState) {
         when (action) {
@@ -62,6 +70,12 @@ class CategoryListViewModel @Inject constructor(
                             CategoryList.DataState.SelectableCategory(
                                 category = category,
                                 selected = false
+                            )
+                        }.map { selectableCategory ->
+                            selectableCategory.copy(
+                                selected = selectedCategoryUuidList.contains(
+                                    selectableCategory.category.uuid
+                                )
                             )
                         }
                     )

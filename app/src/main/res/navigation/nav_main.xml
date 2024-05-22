@@ -114,6 +114,9 @@
         android:id="@+id/categoryListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment"
         android:label="CategoryListFragment" >
+        <argument
+            android:name="selectedCategoryUuidList"
+            app:argType="string[]" />
     </fragment>
 
     <fragment
