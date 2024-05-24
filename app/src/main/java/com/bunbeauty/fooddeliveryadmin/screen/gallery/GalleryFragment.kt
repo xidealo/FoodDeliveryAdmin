@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @AndroidEntryPoint
 class GalleryFragment :
-    BaseComposeFragment<Gallery.ViewDataState, GalleryViewState, Gallery.Action, Gallery.Event>() {
+    BaseComposeFragment<Gallery.DataState, GalleryViewState, Gallery.Action, Gallery.Event>() {
 
     override val viewModel: GalleryViewModel by viewModels()
 
@@ -88,7 +88,7 @@ class GalleryFragment :
     }
 
     @Composable
-    override fun mapState(state: Gallery.ViewDataState): GalleryViewState {
+    override fun mapState(state: Gallery.DataState): GalleryViewState {
         return GalleryViewState(
             photos = state.photoList
                 .map { photo -> photo.link }
