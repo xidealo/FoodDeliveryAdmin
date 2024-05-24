@@ -109,7 +109,7 @@ class EditAdditionViewModel @Inject constructor(
                     copy(
                         uuid = additionUuidNavigation.toString(),
                         name = addition.name,
-                        priority = addition.priority?: 0,
+                        priority = addition.priority,
                         fullName = addition.fullName,
                         prise = addition.price,
                         isVisible = addition.isVisible,
