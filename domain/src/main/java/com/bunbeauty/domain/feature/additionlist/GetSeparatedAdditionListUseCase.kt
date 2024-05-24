@@ -17,7 +17,7 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): SeparatedAdditionList {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        val additionList = additionRepo.getAdditionList(token = token)
+        val additionList = additionRepo.getAdditionCacheList(token = token)
 
         return SeparatedAdditionList(
             visibleList = additionList
@@ -33,7 +33,7 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
                 }
                 .sortedBy { addition ->
                     addition.name
-                }
+                },
         )
     }
 }

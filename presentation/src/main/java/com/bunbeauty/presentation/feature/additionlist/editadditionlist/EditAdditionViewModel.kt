@@ -1,82 +1,71 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-
-class EditAdditionViewModel(
+import javax.inject.Inject
+private const val ADDITION_UUID = "additionUuid"
+class EditAdditionViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase,
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
     initState = EditAddition.DataState(
         uuid = "",
         name = "",
-        priority = null,
+        priority = 0,
         prise = null,
         isLoading = false,
         isVisible = false,
         fullName = "",
-        hasFullNameError = false,
-        hasNameError = false
+        hasEditFullNameError = false,
+        hasEditError = true,
     )
 ) {
+    private val additionUuidNavigation: String? = savedStateHandle.get<String>(
+        ADDITION_UUID
+    )
+
     override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
         when (action) {
             EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
-            EditAddition.Action.Init -> loadData(dataState.uuid)
-            is EditAddition.Action.OnVisibleClick -> updateVisible(
-                isVisible = action.isVisible
-            )
+
+            EditAddition.Action.InitAddition -> loadData(dataState.uuid)
+
+            is EditAddition.Action.OnVisibleClick -> setState {
+                copy(
+                    isVisible = action.isVisible
+                )
+            }
 
             EditAddition.Action.SaveEditAdditionClick -> updateEditAddition()
-            EditAddition.Action.FullName -> onFullNameTextChanged(
-                fullName = dataState.fullName
-            )
+            is EditAddition.Action.EditFullNameAddition -> setState {
+                copy(
+                    fullName = action.fullName
+                )
+            }
 
-            EditAddition.Action.Name -> onNameTextChanged(
-                name = dataState.name
-            )
+            is EditAddition.Action.EditNameAddition -> setState {
+                copy(
+                    name = action.name
+                )
+            }
 
-            EditAddition.Action.Priority -> onPriorityTextChanged(
-                priority = dataState.priority
-            )
+            is EditAddition.Action.EditPriorityAddition -> setState {
+                copy(
+                    priority = action.priority.toIntOrNull() ?: 0
+                )
+            }
 
-            EditAddition.Action.Prise -> onPriseTextChanged(
-                prise = dataState.prise
-            )
-        }
-    }
-
-    private fun onNameTextChanged(name: String) {
-        setState {
-            copy(name = name)
-        }
-    }
-
-    private fun onPriorityTextChanged(priority: Int?) {
-        setState {
-            copy(priority = priority)
-        }
-    }
-
-    private fun onPriseTextChanged(prise: Int?) {
-        setState {
-            copy(prise = prise)
-        }
-    }
-
-    private fun onFullNameTextChanged(fullName: String?) {
-        setState {
-            copy(fullName = fullName)
-        }
-    }
-
-    private fun updateVisible(isVisible: Boolean) {
-        setState {
-            copy(isVisible = isVisible)
+            is EditAddition.Action.EditPriseAddition -> setState {
+                copy(
+                    prise = action.prise.toIntOrNull()
+                )
+            }
         }
     }
 
@@ -86,8 +75,8 @@ class EditAdditionViewModel(
                 setState {
                     copy(
                         isLoading = isLoading,
-                        hasNameError = hasNameError,
-                        hasFullNameError = hasFullNameError
+                        hasEditError = hasEditError,
+                        hasEditFullNameError = hasEditFullNameError
                     )
                 }
                 with(state.value) {
@@ -104,7 +93,11 @@ class EditAdditionViewModel(
                 }
 
             },
-            onError = {}
+            onError = {
+                setState {
+                    copy(hasEditError = true)
+                }
+            }
         )
     }
 
@@ -114,15 +107,20 @@ class EditAdditionViewModel(
                 val addition = getAdditionUseCase(additionUuid)
                 setState {
                     copy(
+                        uuid = additionUuidNavigation.toString(),
                         name = addition.name,
-                        priority = addition.priority,
+                        priority = addition.priority?: 0,
                         fullName = addition.fullName,
                         prise = addition.price,
                         isVisible = addition.isVisible,
                     )
                 }
             },
-            onError = {}
+            onError = {
+                setState {
+                    copy(hasEditError = true)
+                }
+            }
         )
     }
 }

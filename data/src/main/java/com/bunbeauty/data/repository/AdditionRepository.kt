@@ -13,21 +13,44 @@ class AdditionRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi
 ) : AdditionRepo {
 
-    override suspend fun getAdditionList(token: String, takeRemote: Boolean): List<Addition> {
+    private var additionListCache: List<Addition>? = null
+
+
+
+    override suspend fun getAdditionCacheList(token: String): List<Addition> {
+        val cache = additionListCache
+        return cache
+            ?: getAdditionListFromRemote(token = token, takeRemote = true)
+    }
+
+    override suspend fun getAddition(additionUuid: String, token: String): Addition? {
+        val getAddition = additionListCache?.find { addition ->
+            addition.uuid == additionUuid
+        }
+        return getAddition ?: getAdditionListFromRemote(
+            token = token,
+            takeRemote = true
+        ).find { addition -> addition.uuid == additionUuid }
+    }
+
+
+    override suspend fun getAdditionListFromRemote(
+        token: String,
+        takeRemote: Boolean
+    ): List<Addition> {
         return when (val result = networkConnector.getAdditionList(token = token)) {
             is ApiResult.Error -> {
                 throw result.apiError
             }
 
             is ApiResult.Success -> {
-                result.data.results.map(mapAdditionServerToAddition)
+                val additionList = result.data.results.map(mapAdditionServerToAddition)
+                additionListCache = additionList
+                additionList
             }
         }
     }
 
-    override suspend fun getAddition(additionUuid: String): Addition? {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun updateAddition(
         updateAddition: UpdateAddition,
