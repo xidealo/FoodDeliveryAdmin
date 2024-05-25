@@ -132,6 +132,12 @@ class AddMenuProductViewModel @Inject constructor(
                     }
                 )
             }
+
+            is AddMenuProduct.Action.SelectPhoto -> setState {
+                copy(
+                    photoLink = action.selectedPhotoUrl
+                )
+            }
         }
     }
 

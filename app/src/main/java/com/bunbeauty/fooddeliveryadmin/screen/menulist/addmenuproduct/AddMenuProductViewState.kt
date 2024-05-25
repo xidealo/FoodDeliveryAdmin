@@ -26,8 +26,7 @@ data class AddMenuProductViewState(
     val isVisibleInMenu: Boolean,
     val isVisibleInRecommendation: Boolean,
     val categoriesErrorBorder: BorderStroke?,
-    val photoErrorBorder: BorderStroke?,
-    val photoContainsColor: Color,
+    val photoBlock: PhotoBlock,
     val selectableCategoryList: List<CategoryItem>
 ) : BaseViewState {
     @Immutable
@@ -36,4 +35,17 @@ data class AddMenuProductViewState(
         val name: String,
         val selected: Boolean
     )
+
+
+    @Immutable
+    sealed interface PhotoBlock {
+        @Immutable
+        data class HasPhoto(val photoLink: String) : PhotoBlock
+
+        @Immutable
+        data class EmptyPhoto(
+            val photoErrorBorder: BorderStroke?,
+            val photoContainsColor: Color,
+        ) : PhotoBlock
+    }
 }

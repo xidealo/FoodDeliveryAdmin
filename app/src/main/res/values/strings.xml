@@ -226,4 +226,8 @@
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>
 
+    <!-- Select photo -->
+    <string name="title_select_photo">Выбор фото</string>
+    <string name="action_select_photo_save">Сохранить</string>
+
 </resources>

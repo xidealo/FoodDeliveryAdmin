@@ -56,15 +56,22 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
         },
         isVisibleInMenu = isVisibleInMenu,
         isVisibleInRecommendation = isVisibleInRecommendation,
-        photoErrorBorder = if (hasPhotoLinkError) {
-            BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
+
+        photoBlock = if (photoLink.isEmpty()) {
+            AddMenuProductViewState.PhotoBlock.EmptyPhoto(
+                photoErrorBorder = if (hasPhotoLinkError) {
+                    BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
+                } else {
+                    null
+                },
+                photoContainsColor = if (hasPhotoLinkError) {
+                    AdminTheme.colors.main.error
+                } else {
+                    AdminTheme.colors.main.onSurface
+                },
+            )
         } else {
-            null
-        },
-        photoContainsColor = if (hasPhotoLinkError) {
-            AdminTheme.colors.main.error
-        } else {
-            AdminTheme.colors.main.onSurface
+            AddMenuProductViewState.PhotoBlock.HasPhoto(photoLink = photoLink)
         },
         categoriesErrorBorder = if (hasCategoriesError) {
             BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)

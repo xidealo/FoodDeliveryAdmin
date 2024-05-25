@@ -53,6 +53,7 @@ interface AddMenuProduct {
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
         data class SelectCategoryList(val categoryUuidList: List<String>) : Action
+        data class SelectPhoto(val selectedPhotoUrl: String) : Action
     }
 
     sealed interface Event : BaseEvent {
