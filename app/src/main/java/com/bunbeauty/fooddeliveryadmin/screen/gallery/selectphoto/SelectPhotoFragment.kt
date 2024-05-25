@@ -20,7 +20,6 @@ class SelectPhotoFragment :
 
     @Composable
     fun SelectPhotoSuccess(state: SelectPhotoViewState, onAction: (SelectPhoto.Action) -> Unit) {
-
     }
 
     @Composable
@@ -35,9 +34,7 @@ class SelectPhotoFragment :
     override fun handleEvent(event: SelectPhoto.Event) {
         when (event) {
             SelectPhoto.Event.Back -> {
-
             }
         }
     }
-
 }
