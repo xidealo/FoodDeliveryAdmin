@@ -2,11 +2,11 @@ package com.bunbeauty.presentation.feature.menulist.addmenuproduct
 
 import com.bunbeauty.domain.model.Category
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
+import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
-import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface AddMenuProduct {
-    data class ViewDataState(
+    data class DataState(
         val name: String,
         val hasNameError: Boolean,
         val description: String,
@@ -26,7 +26,7 @@ interface AddMenuProduct {
         val hasError: Boolean?,
         val selectableCategoryList: List<SelectableCategory>,
         val hasCategoriesError: Boolean
-    ) : BaseViewDataState {
+    ) : BaseDataState {
 
         fun getSelectedCategory() =
             selectableCategoryList.filter { selectableCategory -> selectableCategory.selected }
@@ -49,15 +49,16 @@ interface AddMenuProduct {
         data class OnComboDescriptionTextChanged(val comboDescription: String) : Action
         data object OnCreateMenuProductClick : Action
         data object OnAddPhotoClick : Action
-        data object OnSelectCategoriesClick : Action
+        data object OnShowCategoryListClick : Action
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
+        data class SelectCategoryList(val categoryUuidList: List<String>) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
         data object GoToGallery : Event
-        data class OpenSelectCategoriesBottomSheet(val options: List<ViewDataState.SelectableCategory>) :
+        data class GoToCategoryList(val selectedCategoryList: List<String>) :
             Event
     }
 }

@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
-    private val getCategoryListUseCase: GetCategoryListUseCase,
-    private val addMenuProductUseCase: AddMenuProductUseCase
+    private val addMenuProductUseCase: AddMenuProductUseCase,
+    private val getCategoryListUseCase: GetCategoryListUseCase
 ) :
-    BaseStateViewModel<AddMenuProduct.ViewDataState, AddMenuProduct.Action, AddMenuProduct.Event>(
-        initState = AddMenuProduct.ViewDataState(
+    BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
+        initState = AddMenuProduct.DataState(
             name = "",
             hasNameError = false,
             description = "",
@@ -43,7 +43,7 @@ class AddMenuProductViewModel @Inject constructor(
         )
     ) {
 
-    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.ViewDataState) {
+    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.DataState) {
         when (action) {
             AddMenuProduct.Action.Init -> loadData()
 
@@ -96,8 +96,11 @@ class AddMenuProductViewModel @Inject constructor(
             }
 
             AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
-            AddMenuProduct.Action.OnSelectCategoriesClick -> addEvent {
-                AddMenuProduct.Event.OpenSelectCategoriesBottomSheet(dataState.selectableCategoryList)
+            AddMenuProduct.Action.OnShowCategoryListClick -> addEvent {
+                AddMenuProduct.Event.GoToCategoryList(
+                    dataState.getSelectedCategory()
+                        .map { selectableCategory -> selectableCategory.category.uuid }
+                )
             }
 
             is AddMenuProduct.Action.OnRecommendationVisibleChangeClick -> {
@@ -119,6 +122,16 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
                 AddMenuProduct.Event.GoToGallery
             }
+
+            is AddMenuProduct.Action.SelectCategoryList -> setState {
+                copy(
+                    selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+                        selectableCategory.copy(
+                            selected = action.categoryUuidList.contains(selectableCategory.category.uuid)
+                        )
+                    }
+                )
+            }
         }
     }
 
@@ -127,13 +140,13 @@ class AddMenuProductViewModel @Inject constructor(
             block = {
                 setState {
                     copy(
+                        hasError = false,
                         selectableCategoryList = getCategoryListUseCase().map { category ->
-                            AddMenuProduct.ViewDataState.SelectableCategory(
+                            AddMenuProduct.DataState.SelectableCategory(
                                 category = category,
                                 selected = false
                             )
-                        },
-                        hasError = false
+                        }
                     )
                 }
             },
@@ -171,7 +184,11 @@ class AddMenuProductViewModel @Inject constructor(
                             photoLink = "",
                             barcode = 0,
                             isVisible = isVisibleInMenu,
-                            categories = listOf(),
+                            categories = selectableCategoryList
+                                .filter { selectableCategory -> selectableCategory.selected }
+                                .map { selectableCategory ->
+                                    selectableCategory.category.uuid
+                                },
                             isRecommended = isVisibleInRecommendation
                         )
                     }

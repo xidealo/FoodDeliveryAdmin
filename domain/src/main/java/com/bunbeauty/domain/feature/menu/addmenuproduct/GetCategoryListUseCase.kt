@@ -8,7 +8,6 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
-// todo Tests
 class GetCategoryListUseCase @Inject constructor(
     private val categoryRepo: CategoryRepo,
     private val dataStoreRepo: DataStoreRepo
@@ -17,6 +16,8 @@ class GetCategoryListUseCase @Inject constructor(
         return categoryRepo.getCategoryList(
             token = dataStoreRepo.getToken() ?: throw NoTokenException(),
             companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
-        )
+        ).filter { category -> !isHits(category = category) }
     }
+
+    private fun isHits(category: Category) = category.uuid == ""
 }

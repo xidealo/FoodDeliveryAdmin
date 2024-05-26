@@ -1,27 +1,27 @@
-package com.bunbeauty.presentation.feature.gallery
+package com.bunbeauty.presentation.feature.gallery.selectphoto
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.gallery.GetPhotoListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class GalleryViewModel @Inject constructor(
-    private val getPhotoListUseCase: GetPhotoListUseCase
-) : BaseStateViewModel<Gallery.DataState, Gallery.Action, Gallery.Event>(
-    initState = Gallery.DataState(
-        photoList = listOf(),
+class SelectPhotoViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle
+) : BaseStateViewModel<SelectPhoto.DataState, SelectPhoto.Action, SelectPhoto.Event>(
+    initState = SelectPhoto.DataState(
+        photo = null,
         isLoading = true,
         hasError = false
     )
 ) {
 
-    override fun reduce(action: Gallery.Action, dataState: Gallery.DataState) {
+    override fun reduce(action: SelectPhoto.Action, dataState: SelectPhoto.DataState) {
         when (action) {
-            Gallery.Action.Init -> loadData()
-            Gallery.Action.Back -> addEvent { Gallery.Event.Back }
+            SelectPhoto.Action.Init -> {}
+            SelectPhoto.Action.Back -> {}
         }
     }
 
@@ -30,7 +30,7 @@ class GalleryViewModel @Inject constructor(
             block = {
                 setState {
                     copy(
-                        photoList = getPhotoListUseCase(),
+                        photo = "",
                         isLoading = false,
                         hasError = false
                     )

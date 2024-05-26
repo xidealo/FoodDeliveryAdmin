@@ -40,6 +40,9 @@ dependencies {
     implementation(platform(Firebase.bom))
     implementation(Firebase.storage)
 
+    // Coroutine
+    implementation(Coroutines.playServices)
+
     // Database
     implementation(RoomDatabase.roomDatabaseRuntime)
     implementation(RoomDatabase.roomDatabaseKtx)

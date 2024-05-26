@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct
 
 import android.os.Bundle
 import android.view.View

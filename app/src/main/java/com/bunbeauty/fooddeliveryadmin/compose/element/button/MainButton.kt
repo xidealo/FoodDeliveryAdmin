@@ -47,7 +47,8 @@ fun MainButton(
             } ?: ""
             Text(
                 text = buttonText,
-                style = AdminTheme.typography.labelLarge.medium
+                style = AdminTheme.typography.labelLarge.medium,
+                color = AdminTheme.colors.main.onPrimary
             )
         }
     }

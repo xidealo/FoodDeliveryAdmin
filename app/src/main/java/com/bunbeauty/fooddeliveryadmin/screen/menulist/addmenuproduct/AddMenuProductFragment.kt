@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import android.os.Bundle
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,9 +26,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bunbeauty.common.Constants
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -42,19 +41,32 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddMenuProductFragment :
-    BaseComposeFragment<AddMenuProduct.ViewDataState, AddMenuProductViewState, AddMenuProduct.Action, AddMenuProduct.Event>() {
+    BaseComposeFragment<AddMenuProduct.DataState, AddMenuProductViewState, AddMenuProduct.Action, AddMenuProduct.Event>() {
 
     override val viewModel: AddMenuProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(AddMenuProduct.Action.Init)
+        setFragmentResultListener(
+            CATEGORY_LIST_REQUEST_KEY
+        ) { requestKey, bundle ->
+            val result = bundle.getStringArrayList(CATEGORY_LIST_KEY)
+
+            viewModel.onAction(
+                AddMenuProduct.Action.SelectCategoryList(
+                    categoryUuidList = result?.toList() ?: emptyList()
+                )
+            )
+        }
     }
 
     @Composable
@@ -211,7 +223,7 @@ class AddMenuProductFragment :
                     border = state.categoriesErrorBorder,
                     label = state.categoryLabel,
                     onClick = {
-                        onAction(AddMenuProduct.Action.OnSelectCategoriesClick)
+                        onAction(AddMenuProduct.Action.OnShowCategoryListClick)
                     }
                 )
 
@@ -278,68 +290,8 @@ class AddMenuProductFragment :
     }
 
     @Composable
-    override fun mapState(state: AddMenuProduct.ViewDataState): AddMenuProductViewState {
-        return AddMenuProductViewState(
-            hasError = state.hasError,
-            name = state.name,
-            nameError = if (state.hasNameError) {
-                R.string.error_add_menu_product_empty_name
-            } else {
-                null
-            },
-            newPrice = state.newPrice,
-            newPriceError = if (state.hasNewPriceError) {
-                R.string.error_add_menu_product_empty_new_price
-            } else {
-                null
-            },
-            oldPrice = state.oldPrice,
-            oldPriceError = if (state.hasOldPriceError) {
-                R.string.error_add_menu_product_old_price_incorrect
-            } else {
-                null
-            },
-            description = state.description,
-            descriptionError = if (state.hasDescriptionError) {
-                R.string.error_add_menu_product_empty_description
-            } else {
-                null
-            },
-            nutrition = state.nutrition,
-            comboDescription = state.comboDescription,
-            isLoadingButton = false,
-            utils = state.utils,
-            categoryLabel = if (state.getSelectedCategory().isEmpty()) {
-                stringResource(id = R.string.title_add_menu_product_categories)
-            } else {
-                state.getSelectedCategory()
-                    .joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
-                        category.category.name
-                    }
-            },
-            categoryHint = if (state.getSelectedCategory().isEmpty()) {
-                null
-            } else {
-                R.string.hint_add_menu_product_categories
-            },
-            isVisibleInMenu = state.isVisibleInMenu,
-            isVisibleInRecommendation = state.isVisibleInRecommendation,
-            photoErrorBorder = if (state.hasPhotoLinkError) {
-                BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
-            } else {
-                null
-            },
-            photoContainsColor = if (state.hasPhotoLinkError) {
-                AdminTheme.colors.main.error
-            } else {
-                AdminTheme.colors.main.onSurface
-            },
-            categoriesErrorBorder = if (state.hasCategoriesError) {
-                BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
-            } else {
-                null
-            }
-        )
+    override fun mapState(state: AddMenuProduct.DataState): AddMenuProductViewState {
+        return state.toAddMenuProductViewState()
     }
 
     @Preview(showSystemUi = true)
@@ -367,7 +319,8 @@ class AddMenuProductFragment :
                     isVisibleInRecommendation = false,
                     photoErrorBorder = null,
                     categoriesErrorBorder = null,
-                    photoContainsColor = AdminTheme.colors.main.onSurface
+                    photoContainsColor = AdminTheme.colors.main.onSurface,
+                    selectableCategoryList = emptyList()
                 ),
                 onAction = {}
             )
@@ -380,7 +333,12 @@ class AddMenuProductFragment :
                 findNavController().popBackStack()
             }
 
-            is AddMenuProduct.Event.OpenSelectCategoriesBottomSheet -> {
+            is AddMenuProduct.Event.GoToCategoryList -> {
+                findNavController().navigate(
+                    AddMenuProductFragmentDirections.toCategoryListFragment(
+                        event.selectedCategoryList.toTypedArray()
+                    )
+                )
             }
 
             AddMenuProduct.Event.GoToGallery -> {
