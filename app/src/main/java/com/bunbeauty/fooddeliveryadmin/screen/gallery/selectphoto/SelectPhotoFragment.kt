@@ -99,18 +99,6 @@ class SelectPhotoFragment :
             SelectPhoto.Event.Back -> {
                 findNavController().popBackStack()
             }
-
-            is SelectPhoto.Event.Saved -> {
-                //todo add toast
-                setFragmentResult(
-                    SELECT_PHOTO_REQUEST_KEY,
-                    bundleOf(SELECTED_PHOTO_KEY to event.photoUrl)
-                )
-                findNavController().popBackStack(
-                    destinationId = R.id.addMenuProductFragment,
-                    inclusive = false
-                )
-            }
         }
     }
 

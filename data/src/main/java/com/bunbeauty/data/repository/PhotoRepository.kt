@@ -22,6 +22,8 @@ class PhotoRepository @Inject constructor() : PhotoRepo {
 
         val referenceListResult = imagesRef.listAll().await()
 
+        val referenceListResult = imagesRef.listAll().await()
+
         val photoList = referenceListResult.items.map { reference ->
             async {
                 Photo(link = reference.downloadUrl.await().toString())
