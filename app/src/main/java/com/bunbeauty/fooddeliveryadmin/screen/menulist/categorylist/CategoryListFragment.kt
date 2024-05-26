@@ -150,6 +150,7 @@ class CategoryListFragment :
             }
 
             is CategoryList.Event.Save -> {
+                //todo add toast
                 setFragmentResult(
                     CATEGORY_LIST_REQUEST_KEY,
                     bundleOf(CATEGORY_LIST_KEY to event.selectedCategoryUuidList)

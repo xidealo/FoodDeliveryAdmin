@@ -101,6 +101,7 @@ class SelectPhotoFragment :
             }
 
             is SelectPhoto.Event.Saved -> {
+                //todo add toast
                 setFragmentResult(
                     SELECT_PHOTO_REQUEST_KEY,
                     bundleOf(SELECTED_PHOTO_KEY to event.photoUrl)
