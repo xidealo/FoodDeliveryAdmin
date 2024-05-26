@@ -25,7 +25,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhoto
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,7 +75,7 @@ class SelectPhotoFragment :
                     .fillMaxWidth()
                     .clip(AdminCardDefaults.cardShape),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(state.photoLink)
+                    .data(state.photoUrl)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.default_product),
@@ -88,7 +88,7 @@ class SelectPhotoFragment :
     @Composable
     override fun mapState(state: SelectPhoto.DataState): SelectPhotoViewState {
         return SelectPhotoViewState(
-            photoLink = state.photoUrl,
+            photoUrl = state.photoUrl,
             isLoading = state.isLoading,
             hasError = state.hasError
         )
@@ -99,6 +99,20 @@ class SelectPhotoFragment :
             SelectPhoto.Event.Back -> {
                 findNavController().popBackStack()
             }
+
+            is SelectPhoto.Event.Saved -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_select_photo_selected)
+                )
+                setFragmentResult(
+                    SELECT_PHOTO_REQUEST_KEY,
+                    bundleOf(SELECTED_PHOTO_KEY to event.photoUrl)
+                )
+                findNavController().popBackStack(
+                    destinationId = R.id.addMenuProductFragment,
+                    inclusive = false
+                )
+            }
         }
     }
 
@@ -108,7 +122,7 @@ class SelectPhotoFragment :
         AdminTheme {
             SelectPhotoSuccess(
                 state = SelectPhotoViewState(
-                    photoLink = "https://vk.com/xidealo?z=photo48589095_457256794%2Falbum48589095_0%2Frev",
+                    photoUrl = "https://vk.com/xidealo?z=photo48589095_457256794%2Falbum48589095_0%2Frev",
                     isLoading = false,
                     hasError = false
                 ),

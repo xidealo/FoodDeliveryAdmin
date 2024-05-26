@@ -24,6 +24,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem.Selectable
 import com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem.SelectableItemView
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryList
 import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -150,7 +151,9 @@ class CategoryListFragment :
             }
 
             is CategoryList.Event.Save -> {
-                //todo add toast
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_category_list_selected)
+                )
                 setFragmentResult(
                     CATEGORY_LIST_REQUEST_KEY,
                     bundleOf(CATEGORY_LIST_KEY to event.selectedCategoryUuidList)

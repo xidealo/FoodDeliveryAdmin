@@ -36,7 +36,6 @@ data class AddMenuProductViewState(
         val selected: Boolean
     )
 
-
     @Immutable
     sealed interface PhotoBlock {
         @Immutable
@@ -45,7 +44,7 @@ data class AddMenuProductViewState(
         @Immutable
         data class EmptyPhoto(
             val photoErrorBorder: BorderStroke?,
-            val photoContainsColor: Color,
+            val photoContainsColor: Color
         ) : PhotoBlock
     }
 }

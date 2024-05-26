@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -20,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,7 +38,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
@@ -52,7 +49,6 @@ import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFra
 import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECT_PHOTO_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
-import com.bunbeauty.presentation.feature.gallery.Gallery
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -373,7 +369,7 @@ class AddMenuProductFragment :
                     selectableCategoryList = emptyList(),
                     photoBlock = AddMenuProductViewState.PhotoBlock.EmptyPhoto(
                         photoErrorBorder = null,
-                        photoContainsColor = AdminTheme.colors.main.onSurface,
+                        photoContainsColor = AdminTheme.colors.main.onSurface
                     )
                 ),
                 onAction = {}

@@ -68,7 +68,7 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
                     AdminTheme.colors.main.error
                 } else {
                     AdminTheme.colors.main.onSurface
-                },
+                }
             )
         } else {
             AddMenuProductViewState.PhotoBlock.HasPhoto(photoLink = photoLink)

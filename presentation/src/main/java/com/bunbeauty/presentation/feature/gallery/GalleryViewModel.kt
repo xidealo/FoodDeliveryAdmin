@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GalleryViewModel @Inject constructor(
     private val getPhotoListUseCase: GetPhotoListUseCase,
-    private val fetchPhotoListUseCase: FetchPhotoListUseCase,
+    private val fetchPhotoListUseCase: FetchPhotoListUseCase
 ) : BaseStateViewModel<Gallery.DataState, Gallery.Action, Gallery.Event>(
     initState = Gallery.DataState(
         photoList = listOf(),
@@ -47,7 +47,7 @@ class GalleryViewModel @Inject constructor(
                 setState {
                     copy(
                         hasError = true,
-                        isLoading = false,
+                        isLoading = false
                     )
                 }
             }
@@ -75,7 +75,7 @@ class GalleryViewModel @Inject constructor(
                 setState {
                     copy(
                         hasError = true,
-                        isRefreshing = false,
+                        isRefreshing = false
                     )
                 }
             }

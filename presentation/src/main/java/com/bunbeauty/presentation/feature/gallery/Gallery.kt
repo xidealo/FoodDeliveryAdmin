@@ -23,6 +23,5 @@ interface Gallery {
     sealed interface Event : BaseEvent {
         data object Back : Event
         data class SelectPhoto(val photoUrl: String) : Event
-
     }
 }

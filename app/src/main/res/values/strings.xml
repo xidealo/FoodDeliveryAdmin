@@ -222,6 +222,7 @@
     <!--CATEGORY LIST-->
     <string name="title_category_list">Категории</string>
     <string name="action_category_list_save">Сохранить</string>
+    <string name="msg_category_list_selected">Категории добавлены</string>
 
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>
@@ -229,5 +230,6 @@
     <!-- Select photo -->
     <string name="title_select_photo">Выбор фото</string>
     <string name="action_select_photo_save">Сохранить</string>
+    <string name="msg_select_photo_selected">Фото добавлено</string>
 
 </resources>
