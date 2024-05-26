@@ -199,6 +199,9 @@ class AddMenuProductViewModel @Inject constructor(
                         )
                     }
                 )
+                addEvent {
+                    AddMenuProduct.Event.AddedMenuProduct(menuProductName = state.value.name)
+                }
             },
             onError = { throwable ->
                 setState {

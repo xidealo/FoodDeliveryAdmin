@@ -45,6 +45,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECTED_PHOTO_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECT_PHOTO_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
@@ -393,6 +394,13 @@ class AddMenuProductFragment :
 
             AddMenuProduct.Event.GoToGallery -> {
                 findNavController().navigate(AddMenuProductFragmentDirections.toGalleryFragment())
+            }
+
+            is AddMenuProduct.Event.AddedMenuProduct -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_add_menu_added)
+                )
+                findNavController().popBackStack()
             }
         }
     }

@@ -59,6 +59,7 @@ interface AddMenuProduct {
     sealed interface Event : BaseEvent {
         data object Back : Event
         data object GoToGallery : Event
+        data class AddedMenuProduct(val menuProductName: String) : Event
         data class GoToCategoryList(val selectedCategoryList: List<String>) :
             Event
     }
