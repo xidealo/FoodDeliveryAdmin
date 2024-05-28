@@ -123,6 +123,12 @@ class AddMenuProductViewModel @Inject constructor(
                 AddMenuProduct.Event.GoToGallery
             }
 
+            AddMenuProduct.Action.OnClearPhotoClick -> setState {
+                copy(
+                    photoLink = ""
+                )
+            }
+
             is AddMenuProduct.Action.SelectCategoryList -> setState {
                 copy(
                     selectableCategoryList = selectableCategoryList.map { selectableCategory ->
@@ -187,7 +193,7 @@ class AddMenuProductViewModel @Inject constructor(
                             nutrition = nutrition.toIntOrNull(),
                             description = description,
                             comboDescription = comboDescription,
-                            photoLink = "",
+                            photoLink = photoLink,
                             barcode = 0,
                             isVisible = isVisibleInMenu,
                             categories = selectableCategoryList

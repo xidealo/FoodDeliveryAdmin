@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import android.os.Bundle
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,14 +37,15 @@ import coil.request.ImageRequest
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECTED_PHOTO_KEY
@@ -269,29 +271,44 @@ class AddMenuProductFragment :
 
                 when (val photoBlock = state.photoBlock) {
                     is AddMenuProductViewState.PhotoBlock.EmptyPhoto -> AddPhotoItem(
-                        emptyPhoto = photoBlock,
+                        modifier = Modifier
+                            .padding(top = 8.dp),
                         onAction = onAction
                     )
 
-                    is AddMenuProductViewState.PhotoBlock.HasPhoto -> AdminCard(
-                        modifier = Modifier
-                            .padding(top = 8.dp),
-                        onClick = {
-                            onAction(AddMenuProduct.Action.OnAddPhotoClick)
-                        }
-                    ) {
-                        AsyncImage(
+                    is AddMenuProductViewState.PhotoBlock.HasPhoto ->
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(photoBlock.photoLink)
-                                .crossfade(true)
-                                .build(),
-                            placeholder = painterResource(R.drawable.default_product),
-                            contentDescription = stringResource(R.string.description_product),
-                            contentScale = ContentScale.FillWidth
-                        )
-                    }
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            contentAlignment = Alignment.TopEnd
+                        ) {
+                            AdminCard(
+                                onClick = {
+                                    onAction(AddMenuProduct.Action.OnAddPhotoClick)
+                                }
+                            ) {
+                                AsyncImage(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(photoBlock.photoLink)
+                                        .crossfade(true)
+                                        .build(),
+                                    placeholder = painterResource(R.drawable.default_product),
+                                    contentDescription = stringResource(R.string.description_product),
+                                    contentScale = ContentScale.FillWidth
+                                )
+                            }
+                            IconButton(onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) }) {
+                                Icon(
+                                    modifier = Modifier.size(24.dp),
+                                    painter = painterResource(R.drawable.ic_clear),
+                                    contentDescription = null,
+                                    tint = AdminTheme.colors.main.surface
+                                )
+                            }
+                        }
                 }
 
                 Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
@@ -301,41 +318,19 @@ class AddMenuProductFragment :
 
     @Composable
     private fun AddPhotoItem(
-        emptyPhoto: AddMenuProductViewState.PhotoBlock.EmptyPhoto,
+        modifier: Modifier = Modifier,
         onAction: (AddMenuProduct.Action) -> Unit
     ) {
-        AdminCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
+        SecondaryButton(
+            modifier = modifier,
+            textStringId = R.string.title_add_menu_product_add_photo,
             onClick = {
                 onAction(AddMenuProduct.Action.OnAddPhotoClick)
             },
-            border = emptyPhoto.photoErrorBorder
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(24.dp),
-                    painter = painterResource(R.drawable.ic_add_photo),
-                    tint = emptyPhoto.photoContainsColor,
-                    contentDescription = stringResource(R.string.description_common_navigate)
-                )
-
-                Text(
-                    modifier = Modifier
-                        .padding(top = 8.dp),
-                    text = stringResource(id = R.string.title_add_menu_product_add_photo),
-                    style = AdminTheme.typography.labelLarge.medium,
-                    color = emptyPhoto.photoContainsColor
-                )
-            }
-        }
+            icon = R.drawable.ic_add_photo,
+            borderColor = AdminTheme.colors.main.primary,
+            buttonColors = AdminButtonDefaults.secondaryPrimaryButtonColors
+        )
     }
 
     @Composable
