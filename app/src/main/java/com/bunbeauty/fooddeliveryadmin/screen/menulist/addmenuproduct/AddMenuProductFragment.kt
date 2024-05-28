@@ -393,7 +393,7 @@ class AddMenuProductFragment :
 
             is AddMenuProduct.Event.AddedMenuProduct -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_add_menu_added)
+                    resources.getString(R.string.msg_add_menu_added, event.menuProductName)
                 )
                 findNavController().popBackStack()
             }

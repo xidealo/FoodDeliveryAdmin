@@ -30,4 +30,8 @@ class PhotoRepository @Inject constructor() : PhotoRepo {
         photoListCache = photoList
         photoList
     }
+
+    override suspend fun clearCache() {
+        photoListCache = null
+    }
 }
