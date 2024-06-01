@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,12 +14,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
@@ -68,19 +64,14 @@ class SelectPhotoFragment :
                 )
             }
         ) {
-            AsyncImage(
+            AdminAsyncImage(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .padding(top = 16.dp)
                     .fillMaxWidth()
                     .clip(AdminCardDefaults.cardShape),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(state.photoUrl)
-                    .crossfade(true)
-                    .build(),
-                placeholder = painterResource(R.drawable.default_product),
-                contentDescription = stringResource(R.string.description_product),
-                contentScale = ContentScale.FillWidth
+                photoUrl = state.photoUrl,
+                contentDescription = R.string.description_product
             )
         }
     }
@@ -122,7 +113,7 @@ class SelectPhotoFragment :
         AdminTheme {
             SelectPhotoSuccess(
                 state = SelectPhotoViewState(
-                    photoUrl = "https://vk.com/xidealo?z=photo48589095_457256794%2Falbum48589095_0%2Frev",
+                    photoUrl = "",
                     isLoading = false,
                     hasError = false
                 ),

@@ -48,7 +48,6 @@ class MenuProductRepository @Inject constructor(
             )
         ) {
             is ApiResult.Success -> {
-                // stub
             }
 
             is ApiResult.Error -> {

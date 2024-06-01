@@ -20,8 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -32,8 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -43,6 +39,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -288,16 +285,11 @@ class AddMenuProductFragment :
                                     onAction(AddMenuProduct.Action.OnAddPhotoClick)
                                 }
                             ) {
-                                AsyncImage(
+                                AdminAsyncImage(
                                     modifier = Modifier
                                         .fillMaxWidth(),
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(photoBlock.photoLink)
-                                        .crossfade(true)
-                                        .build(),
-                                    placeholder = painterResource(R.drawable.default_product),
-                                    contentDescription = stringResource(R.string.description_product),
-                                    contentScale = ContentScale.FillWidth
+                                    photoUrl = photoBlock.photoLink,
+                                    contentDescription = R.string.description_product
                                 )
                             }
                             IconButton(onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) }) {

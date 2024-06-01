@@ -9,20 +9,15 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -87,15 +82,9 @@ class GalleryFragment :
                                     onAction(Gallery.Action.OnSelectedPhotoClick(photoUrl = photoUrl))
                                 }
                             ) {
-                                AsyncImage(
-                                    modifier = Modifier,
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(photoUrl)
-                                        .crossfade(true)
-                                        .build(),
-                                    placeholder = painterResource(R.drawable.default_product),
-                                    contentDescription = stringResource(R.string.description_product),
-                                    contentScale = ContentScale.FillWidth
+                                AdminAsyncImage(
+                                    photoUrl = photoUrl,
+                                    contentDescription = R.string.description_product
                                 )
                             }
                         }
@@ -111,7 +100,7 @@ class GalleryFragment :
         AdminTheme {
             GalleryScreen(
                 state = GalleryViewState(
-                    photos = persistentListOf("https://vk.com/xidealo?z=photo48589095_457256794%2Falbum48589095_0%2Frev"),
+                    photos = persistentListOf(""),
                     isLoading = false,
                     isRefreshing = false,
                     hasError = false
