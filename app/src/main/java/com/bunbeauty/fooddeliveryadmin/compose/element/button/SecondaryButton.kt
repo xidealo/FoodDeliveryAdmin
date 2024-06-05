@@ -32,8 +32,8 @@ fun SecondaryButton(
     elevated: Boolean = true,
     isEnabled: Boolean = true,
     @DrawableRes icon: Int? = null,
-    borderColor: Color? = AdminTheme.colors.main.onSecondary,
-    buttonColors: ButtonColors? = AdminButtonDefaults.secondaryButtonColors
+    borderColor: Color = AdminTheme.colors.main.onSecondary,
+    buttonColors: ButtonColors = AdminButtonDefaults.secondaryButtonColors
 ) {
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentEnforcement provides false
