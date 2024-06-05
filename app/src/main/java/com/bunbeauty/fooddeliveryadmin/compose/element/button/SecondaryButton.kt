@@ -41,10 +41,10 @@ fun SecondaryButton(
         OutlinedButton(
             modifier = modifier.fillMaxWidth(),
             onClick = onClick,
-            colors = buttonColors ?: AdminButtonDefaults.secondaryButtonColors,
+            colors = buttonColors,
             border = BorderStroke(
                 width = 2.dp,
-                color = borderColor ?: AdminTheme.colors.main.onSecondary
+                color = borderColor
             ),
             shape = AdminButtonDefaults.buttonShape,
             elevation = AdminButtonDefaults.getButtonElevation(elevated),
