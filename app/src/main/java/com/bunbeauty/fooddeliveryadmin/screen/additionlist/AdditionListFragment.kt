@@ -217,7 +217,7 @@ class AdditionListFragment :
             }
 
             is AdditionList.Event.OnAdditionClick -> {
-                findNavController().navigateSafe(
+                findNavController().navigate(
                     AdditionListFragmentDirections.toEditAdditionFragment(
                         event.additionUuid
                     )

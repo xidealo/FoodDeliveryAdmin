@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.model.addition.UpdateAddition
@@ -7,10 +8,15 @@ import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
 import javax.inject.Inject
+
 private const val ADDITION_UUID = "additionUuid"
+
+@HiltViewModel
 class EditAdditionViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase,
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
@@ -18,23 +24,24 @@ class EditAdditionViewModel @Inject constructor(
         uuid = "",
         name = "",
         priority = 0,
-        prise = null,
+        prise = "",
         isLoading = false,
         isVisible = false,
         fullName = "",
         hasEditFullNameError = false,
-        hasEditError = true,
+        hasEditError = false,
+        hasEditNameError = false,
+        hasEditPriseError = false
+
     )
 ) {
-    private val additionUuidNavigation: String? = savedStateHandle.get<String>(
-        ADDITION_UUID
-    )
+
 
     override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
         when (action) {
             EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
 
-            EditAddition.Action.InitAddition -> loadData(dataState.uuid)
+            EditAddition.Action.InitAddition -> loadData()
 
             is EditAddition.Action.OnVisibleClick -> setState {
                 copy(
@@ -63,7 +70,7 @@ class EditAdditionViewModel @Inject constructor(
 
             is EditAddition.Action.EditPriseAddition -> setState {
                 copy(
-                    prise = action.prise.toIntOrNull()
+                    prise = action.prise
                 )
             }
         }
@@ -82,12 +89,12 @@ class EditAdditionViewModel @Inject constructor(
                 with(state.value) {
                     updateAdditionUseCase(
                         additionUuid = uuid,
-                        isVisible = isVisible,
+                        isVisible = !isVisible,
                         updateAddition = UpdateAddition(
                             name = name.trim(),
                             priority = priority,
                             fullName = fullName,
-                            price = prise,
+                            price = prise.toIntOrNull(),
                         ),
                     )
                 }
@@ -101,20 +108,23 @@ class EditAdditionViewModel @Inject constructor(
         )
     }
 
-    private fun loadData(additionUuid: String) {
+    private fun loadData() {
         viewModelScope.launchSafe(
             block = {
-                val addition = getAdditionUseCase(additionUuid)
+                val additionUuidNavigation = savedStateHandle.get<String>(ADDITION_UUID) ?: ""
+                Log.d("my_tag", "loadData: $additionUuidNavigation")
+                val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                 setState {
                     copy(
-                        uuid = additionUuidNavigation.toString(),
+                        uuid = addition.uuid,
                         name = addition.name,
                         priority = addition.priority,
                         fullName = addition.fullName,
-                        prise = addition.price,
+                        prise = addition.price.toString(),
                         isVisible = addition.isVisible,
                     )
                 }
+                Log.d("my_prise", "loadData: ${addition.price}")
             },
             onError = {
                 setState {

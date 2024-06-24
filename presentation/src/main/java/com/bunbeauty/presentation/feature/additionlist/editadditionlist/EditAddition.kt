@@ -8,15 +8,15 @@ interface EditAddition {
     data class DataState(
         val uuid: String,
         val name: String,
-        val hasEditNameError: Boolean = false,
+        val hasEditNameError: Boolean,
         val priority: Int,
-        val prise: Int?,
+        val prise: String,
+        val hasEditPriseError: Boolean,
         val fullName: String?,
-        val hasEditFullNameError: Boolean = false,
+        val hasEditFullNameError: Boolean,
         val isLoading: Boolean,
         val isVisible: Boolean,
-        val hasEditError: Boolean = false,
-        val error: Throwable? = null
+        val hasEditError: Boolean,
     ) : BaseDataState
 
     sealed interface Action : BaseAction {

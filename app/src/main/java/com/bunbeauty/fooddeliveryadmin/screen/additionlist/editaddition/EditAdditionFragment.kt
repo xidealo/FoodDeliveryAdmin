@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.additionlist.editaddition
 
 import android.os.Bundle
-import android.view.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,8 +28,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class EditAdditionFragment :
     BaseComposeFragment<EditAddition.DataState, EditAdditionViewState, EditAddition.Action, EditAddition.Event>() {
     companion object {
@@ -39,20 +39,22 @@ class EditAdditionFragment :
     }
 
     override val viewModel: EditAdditionViewModel by viewModels()
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.onAction(EditAddition.Action.InitAddition)
     }
 
+
     @Composable
     override fun Screen(state: EditAdditionViewState, onAction: (EditAddition.Action) -> Unit) {
-        EditAdditionScreen(onAction = onAction, editAdditionViewState = state)
+        EditAdditionScreen(onAction = onAction, state = state)
     }
 
     @Composable
     fun EditAdditionScreen(
+        state: EditAdditionViewState,
         onAction: (EditAddition.Action) -> Unit,
-        editAdditionViewState: EditAdditionViewState,
     ) {
         AdminScaffold(title = "Редактировать добавку",
             pullRefreshEnabled = true,
@@ -62,22 +64,22 @@ class EditAdditionFragment :
                     modifier = Modifier.padding(horizontal = 16.dp),
                     textStringId = R.string.action_order_details_save,
                     onClick = { onAction(EditAddition.Action.SaveEditAdditionClick) },
-                    isLoading = editAdditionViewState.isLoading
+                    isLoading = state.isLoading
                 )
             }) {
 
             when {
-                editAdditionViewState.hasError -> {
+                state.hasError -> {
                     ErrorScreen(
                         mainTextId = R.string.error_common_loading_failed,
-                        isLoading = editAdditionViewState.isLoading
+                        isLoading = state.isLoading
                     ) {
                         onAction(EditAddition.Action.SaveEditAdditionClick)
                     }
                 }
 
                 else -> {
-                    EditAdditionSuccessScreen(editAdditionViewState, onAction)
+                    EditAdditionSuccessScreen(state, onAction)
                 }
             }
         }
@@ -86,7 +88,8 @@ class EditAdditionFragment :
 
     @Composable
     private fun EditAdditionSuccessScreen(
-        state: EditAdditionViewState, onAction: (EditAddition.Action) -> Unit
+        state: EditAdditionViewState,
+        onAction: (EditAddition.Action) -> Unit,
     ) {
         Column(
             modifier = Modifier
@@ -111,6 +114,7 @@ class EditAdditionFragment :
                         },
                         errorMessageId = null,
                         enabled = !state.isLoading,
+                        keyboardType = KeyboardType.Text
                     )
 
                     AdminTextField(
@@ -139,17 +143,16 @@ class EditAdditionFragment :
                         },
                         maxLines = 20,
                         enabled = !state.isLoading,
+                        keyboardType = KeyboardType.Text
                     )
 
                     AdminTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.price,
                         labelStringId = R.string.hint_edit_menu_product_new_price,
-                        errorMessageId = null,
-                        onValueChange = { prise ->
-                            onAction(
-                                EditAddition.Action.EditFullNameAddition(prise)
-                            )
+                        errorMessageId = state.editPriseError,
+                        onValueChange = { price ->
+                            onAction(EditAddition.Action.EditPriseAddition(price))
                         },
                         enabled = !state.isLoading,
                         keyboardType = KeyboardType.Number
@@ -158,11 +161,11 @@ class EditAdditionFragment :
             }
             SwitcherCard(
                 modifier = Modifier.padding(top = 8.dp),
-                checked = true,
-                onCheckChanged = {
+                checked = state.isVisible,
+                onCheckChanged = {isVisible ->
                     onAction(
                         EditAddition.Action.OnVisibleClick(
-                            isVisible = state.isVisible,
+                            isVisible = isVisible,
                         )
                     )
                 },
@@ -178,24 +181,28 @@ class EditAdditionFragment :
     override fun mapState(state: EditAddition.DataState): EditAdditionViewState {
         return EditAdditionViewState(
             name = state.name,
-            priority = state.priority.toString(),
-            fullName = state.fullName ?: "",
-            price = state.prise.toString(),
-            isVisible = state.isVisible,
-            isLoading = state.isLoading,
-            error = state.error,
-            hasError = true,
             editNameError = if (state.hasEditError) {
                 R.string.error_edit_menu_product_empty_name
             } else {
                 null
             },
+            priority = state.priority.toString(),
+            fullName = state.fullName ?: "",
             editFullNameError = if (state.hasEditFullNameError) {
                 R.string.error_edit_menu_product_empty_name
             } else {
                 null
             },
-        )
+            price = state.prise.toString(),
+            editPriseError = if (state.hasEditPriseError) {
+                R.string.error_add_menu_product_empty_new_price
+            } else {
+                null
+            },
+            isVisible = state.isVisible,
+            isLoading = state.isLoading,
+            hasError = state.hasEditError,
+            )
     }
 
     override fun handleEvent(event: EditAddition.Event) {
@@ -219,16 +226,16 @@ class EditAdditionFragment :
     fun EditAdditionScreenPreview() {
         AdminTheme {
             EditAdditionScreen(
-                editAdditionViewState = EditAdditionViewState(
+                state = EditAdditionViewState(
                     name = "",
                     priority = "",
                     fullName = "",
-                    price = "50",
-                    isVisible = true,
+                    price = "",
+                    isVisible = false,
                     isLoading = false,
-                    error = null,
                     editNameError = null,
                     editFullNameError = null,
+                    editPriseError = null,
                     hasError = false,
                 ),
                 onAction = {},
