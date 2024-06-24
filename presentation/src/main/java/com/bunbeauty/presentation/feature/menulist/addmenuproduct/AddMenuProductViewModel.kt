@@ -1,7 +1,14 @@
 package com.bunbeauty.presentation.feature.menulist.addmenuproduct
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
+import com.bunbeauty.domain.feature.menu.addmenuproduct.AddMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
+import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,10 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
+    private val addMenuProductUseCase: AddMenuProductUseCase,
     private val getCategoryListUseCase: GetCategoryListUseCase
 ) :
-    BaseStateViewModel<AddMenuProduct.ViewDataState, AddMenuProduct.Action, AddMenuProduct.Event>(
-        initState = AddMenuProduct.ViewDataState(
+    BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
+        initState = AddMenuProduct.DataState(
             name = "",
             hasNameError = false,
             description = "",
@@ -27,12 +35,15 @@ class AddMenuProductViewModel @Inject constructor(
             isLoadingButton = false,
             isVisibleInMenu = true,
             isVisibleInRecommendation = false,
-            throwable = null,
-            selectableCategoryList = listOf()
+            hasError = null,
+            selectableCategoryList = listOf(),
+            photoLink = "",
+            hasPhotoLinkError = false,
+            hasCategoriesError = false
         )
     ) {
 
-    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.ViewDataState) {
+    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.DataState) {
         when (action) {
             AddMenuProduct.Action.Init -> loadData()
 
@@ -84,9 +95,12 @@ class AddMenuProductViewModel @Inject constructor(
                 )
             }
 
-            AddMenuProduct.Action.OnCreateMenuProductClick -> createMenuProduct()
-            AddMenuProduct.Action.OnSelectCategoriesClick -> addEvent {
-                AddMenuProduct.Event.OpenSelectCategoriesBottomSheet(dataState.selectableCategoryList)
+            AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
+            AddMenuProduct.Action.OnShowCategoryListClick -> addEvent {
+                AddMenuProduct.Event.GoToCategoryList(
+                    dataState.getSelectedCategory()
+                        .map { selectableCategory -> selectableCategory.category.uuid }
+                )
             }
 
             is AddMenuProduct.Action.OnRecommendationVisibleChangeClick -> {
@@ -108,6 +122,16 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
                 AddMenuProduct.Event.GoToGallery
             }
+
+            is AddMenuProduct.Action.SelectCategoryList -> setState {
+                copy(
+                    selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+                        selectableCategory.copy(
+                            selected = action.categoryUuidList.contains(selectableCategory.category.uuid)
+                        )
+                    }
+                )
+            }
         }
     }
 
@@ -116,8 +140,9 @@ class AddMenuProductViewModel @Inject constructor(
             block = {
                 setState {
                     copy(
+                        hasError = false,
                         selectableCategoryList = getCategoryListUseCase().map { category ->
-                            AddMenuProduct.ViewDataState.SelectableCategory(
+                            AddMenuProduct.DataState.SelectableCategory(
                                 category = category,
                                 selected = false
                             )
@@ -125,64 +150,77 @@ class AddMenuProductViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { throwable ->
+            onError = {
                 setState {
-                    copy(throwable = throwable)
+                    copy(hasError = true)
                 }
             }
         )
     }
 
-    private fun createMenuProduct() {
+    private fun addMenuProduct() {
         setState {
             copy(
                 hasNameError = false,
                 hasNewPriceError = false,
-                hasOldPriceError = false
+                hasOldPriceError = false,
+                hasPhotoLinkError = false,
+                hasCategoriesError = false,
+                hasError = false
             )
         }
-
-        if (mutableDataState.value.name.isEmpty()) {
-            setState {
-                copy(
-                    hasNameError = true
+        viewModelScope.launchSafe(
+            block = {
+                addMenuProductUseCase(
+                    menuProductPost = state.value.run {
+                        MenuProductPost(
+                            name = name,
+                            newPrice = newPrice.toIntOrNull() ?: 0,
+                            oldPrice = oldPrice.toIntOrNull(),
+                            utils = utils,
+                            nutrition = nutrition.toIntOrNull(),
+                            description = description,
+                            comboDescription = comboDescription,
+                            photoLink = "",
+                            barcode = 0,
+                            isVisible = isVisibleInMenu,
+                            categories = selectableCategoryList
+                                .filter { selectableCategory -> selectableCategory.selected }
+                                .map { selectableCategory ->
+                                    selectableCategory.category.uuid
+                                },
+                            isRecommended = isVisibleInRecommendation
+                        )
+                    }
                 )
+            },
+            onError = { throwable ->
+                setState {
+                    when (throwable) {
+                        is MenuProductNameException -> {
+                            copy(hasNameError = true)
+                        }
+
+                        is MenuProductNewPriceException -> {
+                            copy(hasNewPriceError = true)
+                        }
+
+                        is MenuProductDescriptionException -> {
+                            copy(hasDescriptionError = true)
+                        }
+
+                        is MenuProductPhotoLinkException -> {
+                            copy(hasPhotoLinkError = true)
+                        }
+
+                        is MenuProductCategoriesException -> {
+                            copy(hasCategoriesError = true)
+                        }
+
+                        else -> copy(hasError = true)
+                    }
+                }
             }
-            return
-        }
-
-        val newPrice = mutableDataState.value.newPrice.toIntOrNull()
-
-        if (newPrice == null) {
-            setState {
-                copy(
-                    hasNewPriceError = true
-                )
-            }
-            return
-        }
-
-        val oldPrice = mutableDataState.value.oldPrice.toIntOrNull()
-
-        if (oldPrice != null && oldPrice <= newPrice) {
-            setState {
-                copy(
-                    hasOldPriceError = true
-                )
-            }
-            return
-        }
-
-        if (mutableDataState.value.description.isEmpty()) {
-            setState {
-                copy(
-                    hasDescriptionError = true
-                )
-            }
-            return
-        }
-    }
-
-    fun goToProductCodeList() {
+        )
     }
 }

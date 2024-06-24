@@ -3,8 +3,10 @@ package com.bunbeauty.data.mapper
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductWithCategoriesEntity
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import javax.inject.Inject
 
@@ -82,4 +84,21 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
             )
         }
     }
+}
+
+val mapMenuProductPostToMenuProductPostServer: MenuProductPost.() -> MenuProductPostServer = {
+    MenuProductPostServer(
+        isVisible = isVisible,
+        name = name,
+        photoLink = photoLink,
+        newPrice = newPrice,
+        oldPrice = oldPrice,
+        utils = utils,
+        nutrition = nutrition,
+        description = description,
+        comboDescription = comboDescription,
+        barcode = barcode,
+        categories = categories,
+        isRecommended = isRecommended
+    )
 }

@@ -13,14 +13,14 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 @OptIn(ExperimentalCoroutinesApi::class)
-class UpdateVisibleAdditionGroupUseCaseTest {
+class UpdateVisibleAdditionGroupListUseCaseTest {
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val additionGroupRepo: AdditionGroupRepo = mockk()
-    private lateinit var useCase: UpdateVisibleAdditionGroupUseCase
+    private lateinit var useCase: UpdateVisibleAdditionGroupListUseCase
 
     @BeforeTest
     fun setup() {
-        useCase = UpdateVisibleAdditionGroupUseCase(
+        useCase = UpdateVisibleAdditionGroupListUseCase(
             additionGroupRepo = additionGroupRepo,
             dataStoreRepo = dataStoreRepo
         )

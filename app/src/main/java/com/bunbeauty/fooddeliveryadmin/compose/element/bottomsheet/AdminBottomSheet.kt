@@ -21,6 +21,12 @@ import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
+@Deprecated(
+    "Use AdminModalBottomSheet",
+    ReplaceWith(
+        "AdminModalBottomSheet"
+    )
+)
 @Composable
 fun AdminBottomSheet(
     @StringRes titleStringId: Int,
@@ -59,7 +65,7 @@ private fun AdminBottomSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(AdminBottomSheetDefaults.bottomSheetShape)
+            .clip(AdminBottomSheetDefaults.shape)
             .background(AdminTheme.colors.main.surface)
             .padding(horizontal = AdminTheme.dimensions.screenContentSpace)
             .padding(bottom = AdminTheme.dimensions.screenContentSpace, top = 8.dp)

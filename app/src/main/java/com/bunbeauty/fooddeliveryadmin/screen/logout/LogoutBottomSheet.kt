@@ -31,6 +31,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
                     }
                 )
                 SecondaryButton(
+                    elevated = false,
                     textStringId = R.string.action_common_cancel,
                     onClick = {
                         callback?.onResult(false)

@@ -19,14 +19,10 @@ class UpdateMenuProductUseCase @Inject constructor(
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
-        if (updateMenuProduct.name.isNullOrBlank()) {
-            throw MenuProductNameException()
-        }
-        if (updateMenuProduct.newPrice == null || updateMenuProduct.newPrice == 0) {
-            throw MenuProductNewPriceException()
-        }
-        if (updateMenuProduct.description.isNullOrBlank()) {
-            throw MenuProductDescriptionException()
+        when {
+            updateMenuProduct.name.isNullOrBlank() -> throw MenuProductNameException()
+            updateMenuProduct.newPrice == null || updateMenuProduct.newPrice == 0 -> throw MenuProductNewPriceException()
+            updateMenuProduct.description.isNullOrBlank() -> throw MenuProductDescriptionException()
         }
 
         val processedUpdateMenuProduct = UpdateMenuProduct(

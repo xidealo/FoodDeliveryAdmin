@@ -216,11 +216,11 @@ class AdditionListFragment :
             }
 
             is AdditionList.Event.OnAdditionClick -> {
-                findNavController().navigate(
-                    AdditionListFragmentDirections.toEditAdditionFragment(
-                        event.additionUuid
-                    )
-                )
+//                findNavController().navigate(
+//                    AdditionListFragmentDirections.toEditAdditionFragment(
+//                        event.additionUuid
+//                    )
+//                )
             }
         }
     }

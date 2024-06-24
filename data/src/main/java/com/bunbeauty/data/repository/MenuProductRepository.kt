@@ -6,7 +6,9 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
+import com.bunbeauty.data.mapper.mapMenuProductPostToMenuProductPostServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import javax.inject.Inject
@@ -35,6 +37,22 @@ class MenuProductRepository @Inject constructor(
                 }
         } else {
             menuProductListFromLocal
+        }
+    }
+
+    override suspend fun post(token: String, menuProductPost: MenuProductPost) {
+        when (
+            val result =
+                networkConnector.postMenuProduct(
+                    token = token,
+                    menuProductPostServer = menuProductPost.mapMenuProductPostToMenuProductPostServer()
+                )
+        ) {
+            is ApiResult.Success -> {
+            }
+            is ApiResult.Error -> {
+                // throw result.apiError.cause
+            }
         }
     }
 

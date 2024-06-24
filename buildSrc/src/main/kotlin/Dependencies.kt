@@ -18,11 +18,11 @@ object Versions {
     const val crashlytics = "2.9.2"
     const val firebase = "32.2.0"
     const val composeCompiler = "1.5.0"
-    const val composeBom = "2023.10.01"
+    const val composeBom = "2024.05.00"
     const val lifecycleRuntimeCompose = "2.6.1"
     const val ktLint = "11.5.1"
     const val mockk = "1.12.5"
-    const val coroutines = "1.6.4"
+    const val coroutines = "1.8.0"
     const val kotlinxDatetime = "0.4.0"
     const val materialDialogsDatetime = "0.9.0"
     const val kotlinxCollectionsImmutable = "0.3.7"
@@ -172,8 +172,9 @@ object Mockk {
     const val common = "io.mockk:mockk-common:${Versions.mockk}"
 }
 
-object Coroutine {
+object Coroutines {
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines}"
     const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 }
 

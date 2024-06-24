@@ -1,6 +1,6 @@
 package com.bunbeauty.data.model.server.menuproduct
 
-import com.bunbeauty.data.model.server.CategoryServer
+import com.bunbeauty.data.model.server.category.CategoryServer
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -18,6 +18,7 @@
     <string name="msg_common_non_working_day">Сегодня запланирован нерабочий день</string>
     <string name="msg_common_cafe">Ресторан</string>
     <string name="description_product">Фото блюда</string>
+    <string name="description_ic_checked">Иконка выбрано</string>
     <string name="description_common_navigate">Перейти</string>
     <string name="description_common_selected">Выбран</string>
     <string name="action_retry">Повторить попытку</string>
@@ -221,6 +222,10 @@
     <string name="error_add_menu_product_empty_description">Описание не может быть пустым</string>
     <string name="error_add_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
     <string name="error_add_menu_product_old_price_incorrect">Должна быть больше цены</string>
+
+    <!--CATEGORY LIST-->
+    <string name="title_category_list">Категории</string>
+    <string name="action_category_list_save">Сохранить</string>
 
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>
