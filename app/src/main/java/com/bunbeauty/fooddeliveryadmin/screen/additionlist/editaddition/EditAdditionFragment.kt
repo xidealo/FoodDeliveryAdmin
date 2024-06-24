@@ -193,7 +193,7 @@ class EditAdditionFragment :
             } else {
                 null
             },
-            price = state.prise.toString(),
+            price = state.prise,
             editPriseError = if (state.hasEditPriseError) {
                 R.string.error_add_menu_product_empty_new_price
             } else {
