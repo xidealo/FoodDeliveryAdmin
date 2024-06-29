@@ -33,6 +33,7 @@ interface EditAddition {
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-        data class Save(val additionUuid: String) : Event
+        data class ShowUpdateAdditionSuccess(val additionName: String): Event
+        data class ShowUpdateAdditionError(val additionName: String): Event
     }
 }

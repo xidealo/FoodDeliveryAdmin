@@ -12,7 +12,11 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
@@ -44,6 +48,7 @@ class AddMenuProductViewModel @Inject constructor(
     ) {
 
     override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.DataState) {
+
         when (action) {
             AddMenuProduct.Action.Init -> loadData()
 

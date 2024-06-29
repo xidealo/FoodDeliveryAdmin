@@ -15,21 +15,15 @@ class UpdateAdditionUseCase @Inject constructor(
     suspend operator fun invoke(
         additionUuid: String,
         updateAddition: UpdateAddition,
-        isVisible: Boolean
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
-        if (updateAddition.name.isNullOrBlank()) {
-            throw AdditionNameException()
-        }
-        if (updateAddition.priority == null || updateAddition.price == 0) {
-            throw AdditionPriorityException()
+        when {
+            updateAddition.name.isNullOrBlank() -> throw AdditionNameException()
+            updateAddition.priority == null || updateAddition.prise == 0 -> throw AdditionPriorityException()
+
         }
 
-        additionRepo.updateAddition(
-            additionUuid = additionUuid,
-            updateAddition = UpdateAddition(isVisible = isVisible),
-            token = token
-        )
+        additionRepo.updateAddition(additionUuid = additionUuid, token = token, updateAddition = updateAddition)
     }
 }

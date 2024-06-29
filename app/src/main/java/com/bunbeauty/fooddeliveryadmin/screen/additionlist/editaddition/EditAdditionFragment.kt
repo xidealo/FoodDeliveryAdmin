@@ -13,8 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
@@ -26,6 +25,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +43,11 @@ class EditAdditionFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(EditAddition.Action.InitAddition)
+        setFragmentResultListener(ADDITION_REQUEST_KEY) { requestKey, bundle ->
+            val result = bundle.getBundle(ADDITION_KEY)
+
+            viewModel.onAction(EditAddition.Action.SaveEditAdditionClick)
+        }
     }
 
 
@@ -162,7 +167,7 @@ class EditAdditionFragment :
             SwitcherCard(
                 modifier = Modifier.padding(top = 8.dp),
                 checked = state.isVisible,
-                onCheckChanged = {isVisible ->
+                onCheckChanged = { isVisible ->
                     onAction(
                         EditAddition.Action.OnVisibleClick(
                             isVisible = isVisible,
@@ -202,7 +207,7 @@ class EditAdditionFragment :
             isVisible = state.isVisible,
             isLoading = state.isLoading,
             hasError = state.hasEditError,
-            )
+        )
     }
 
     override fun handleEvent(event: EditAddition.Event) {
@@ -211,10 +216,16 @@ class EditAdditionFragment :
                 findNavController().navigateUp()
             }
 
-            is EditAddition.Event.Save -> {
-                setFragmentResult(
-                    ADDITION_REQUEST_KEY,
-                    bundleOf(ADDITION_KEY to event.additionUuid)
+            is EditAddition.Event.ShowUpdateAdditionSuccess -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_product_updated, event.additionName)
+                )
+                findNavController().popBackStack()
+            }
+
+            is EditAddition.Event.ShowUpdateAdditionError -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(R.string.error_product_updated)
                 )
             }
         }
@@ -243,3 +254,6 @@ class EditAdditionFragment :
         }
     }
 }
+
+
+

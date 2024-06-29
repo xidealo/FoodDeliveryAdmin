@@ -3,6 +3,10 @@ package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.exception.updateaddition.AdditionFullNameException
+import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
+import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
+import com.bunbeauty.domain.exception.updateaddition.AdditionPriseException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
@@ -38,7 +42,17 @@ class EditAdditionViewModel @Inject constructor(
 
     override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
         when (action) {
-            EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
+            is EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
+
+            is EditAddition.Action.SaveEditAdditionClick ->
+                addEvent {
+                    EditAddition.Event.ShowUpdateAdditionSuccess(
+                        additionName = dataState.name
+                    )
+                }
+
+            EditAddition.Action.SaveEditAdditionClick -> updateEditAddition()
+
 
             EditAddition.Action.InitAddition -> loadData()
 
@@ -48,7 +62,6 @@ class EditAdditionViewModel @Inject constructor(
                 )
             }
 
-            EditAddition.Action.SaveEditAdditionClick -> updateEditAddition()
             is EditAddition.Action.EditFullNameAddition -> setState {
                 copy(
                     fullName = action.fullName
@@ -76,32 +89,48 @@ class EditAdditionViewModel @Inject constructor(
     }
 
     private fun updateEditAddition() {
+        setState {
+            copy(
+                hasEditError = false,
+                hasEditNameError = false,
+                hasEditFullNameError = false,
+                hasEditPriseError = false,
+            )
+        }
         viewModelScope.launchSafe(
             block = {
-                setState {
-                    copy(
-                        isLoading = isLoading,
-                        hasEditError = hasEditError,
-                        hasEditFullNameError = hasEditFullNameError
-                    )
-                }
-                with(state.value) {
-                    updateAdditionUseCase(
-                        additionUuid = uuid,
-                        isVisible = !isVisible,
-                        updateAddition = UpdateAddition(
-                            name = name.trim(),
+                updateAdditionUseCase(
+                    updateAddition = state.value.run {
+                        UpdateAddition(
+                            name = name,
                             priority = priority,
                             fullName = fullName,
-                            price = prise.toIntOrNull(),
-                        ),
-                    )
-                }
-
+                            prise = prise.toIntOrNull() ?: 0,
+                            isVisible = isVisible,
+                        )
+                    },
+                    additionUuid = state.value.uuid
+                )
             },
-            onError = {
+            onError =
+            { throwable ->
                 setState {
-                    copy(hasEditError = true)
+                    when (throwable) {
+                        is AdditionNameException -> {
+                            copy(hasEditError = true)
+                        }
+
+                        is AdditionPriseException -> {
+                            copy(hasEditPriseError = true)
+                        }
+
+                        is AdditionFullNameException -> {
+                            copy(hasEditFullNameError = true)
+                        }
+
+                        else -> copy(hasEditError = true)
+
+                    }
                 }
             }
         )
