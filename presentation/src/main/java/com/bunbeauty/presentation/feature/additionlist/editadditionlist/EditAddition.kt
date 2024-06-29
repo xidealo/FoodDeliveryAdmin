@@ -26,7 +26,7 @@ interface EditAddition {
         data class EditPriorityAddition(val priority: String) : Action
         data class EditFullNameAddition(val fullName: String?) : Action
         data class EditPriseAddition(val prise: String) : Action
-        data object SaveEditAdditionClick : Action
+        data object OnSaveEditAdditionClick : Action
         data class OnVisibleClick(val isVisible: Boolean) : Action
         data object OnBackClick : Action
     }

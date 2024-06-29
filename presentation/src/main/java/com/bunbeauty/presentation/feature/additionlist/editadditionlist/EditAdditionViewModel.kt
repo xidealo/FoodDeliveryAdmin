@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateaddition.AdditionFullNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriseException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
@@ -44,14 +43,14 @@ class EditAdditionViewModel @Inject constructor(
         when (action) {
             is EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
 
-            is EditAddition.Action.SaveEditAdditionClick ->
-                addEvent {
-                    EditAddition.Event.ShowUpdateAdditionSuccess(
-                        additionName = dataState.name
-                    )
-                }
+//            is EditAddition.Action.OnSaveEditAdditionClick ->
+//                addEvent {
+//                    EditAddition.Event.ShowUpdateAdditionSuccess(
+//                        additionName = dataState.name
+//                    )
+//                }
 
-            EditAddition.Action.SaveEditAdditionClick -> updateEditAddition()
+            EditAddition.Action.OnSaveEditAdditionClick -> updateEditAddition()
 
 
             EditAddition.Action.InitAddition -> loadData()
@@ -111,6 +110,7 @@ class EditAdditionViewModel @Inject constructor(
                     },
                     additionUuid = state.value.uuid
                 )
+
             },
             onError =
             { throwable ->

@@ -46,7 +46,7 @@ class EditAdditionFragment :
         setFragmentResultListener(ADDITION_REQUEST_KEY) { requestKey, bundle ->
             val result = bundle.getBundle(ADDITION_KEY)
 
-            viewModel.onAction(EditAddition.Action.SaveEditAdditionClick)
+            viewModel.onAction(EditAddition.Action.OnSaveEditAdditionClick)
         }
     }
 
@@ -68,7 +68,7 @@ class EditAdditionFragment :
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     textStringId = R.string.action_order_details_save,
-                    onClick = { onAction(EditAddition.Action.SaveEditAdditionClick) },
+                    onClick = { onAction(EditAddition.Action.OnSaveEditAdditionClick) },
                     isLoading = state.isLoading
                 )
             }) {
@@ -79,7 +79,7 @@ class EditAdditionFragment :
                         mainTextId = R.string.error_common_loading_failed,
                         isLoading = state.isLoading
                     ) {
-                        onAction(EditAddition.Action.SaveEditAdditionClick)
+                        onAction(EditAddition.Action.OnSaveEditAdditionClick)
                     }
                 }
 
