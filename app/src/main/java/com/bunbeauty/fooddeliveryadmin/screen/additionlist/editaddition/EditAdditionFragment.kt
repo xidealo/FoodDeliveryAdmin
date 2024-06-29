@@ -44,7 +44,7 @@ class EditAdditionFragment :
         super.onCreate(savedInstanceState)
         viewModel.onAction(EditAddition.Action.InitAddition)
         setFragmentResultListener(ADDITION_REQUEST_KEY) { requestKey, bundle ->
-            val result = bundle.getBundle(ADDITION_KEY)
+        //    val result = bundle.getBundle(ADDITION_KEY)
 
             viewModel.onAction(EditAddition.Action.OnSaveEditAdditionClick)
         }
