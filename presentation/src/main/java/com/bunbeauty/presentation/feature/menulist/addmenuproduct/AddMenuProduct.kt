@@ -49,15 +49,18 @@ interface AddMenuProduct {
         data class OnComboDescriptionTextChanged(val comboDescription: String) : Action
         data object OnCreateMenuProductClick : Action
         data object OnAddPhotoClick : Action
+        data object OnClearPhotoClick : Action
         data object OnShowCategoryListClick : Action
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
         data class SelectCategoryList(val categoryUuidList: List<String>) : Action
+        data class SelectPhoto(val selectedPhotoUrl: String) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
         data object GoToGallery : Event
+        data class AddedMenuProduct(val menuProductName: String) : Event
         data class GoToCategoryList(val selectedCategoryList: List<String>) :
             Event
     }

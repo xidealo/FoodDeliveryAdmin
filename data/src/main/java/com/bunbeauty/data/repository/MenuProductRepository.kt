@@ -42,16 +42,16 @@ class MenuProductRepository @Inject constructor(
 
     override suspend fun post(token: String, menuProductPost: MenuProductPost) {
         when (
-            val result =
-                networkConnector.postMenuProduct(
-                    token = token,
-                    menuProductPostServer = menuProductPost.mapMenuProductPostToMenuProductPostServer()
-                )
+            val result = networkConnector.postMenuProduct(
+                token = token,
+                menuProductPostServer = menuProductPost.mapMenuProductPostToMenuProductPostServer()
+            )
         ) {
             is ApiResult.Success -> {
             }
+
             is ApiResult.Error -> {
-                // throw result.apiError.cause
+                throw result.apiError
             }
         }
     }

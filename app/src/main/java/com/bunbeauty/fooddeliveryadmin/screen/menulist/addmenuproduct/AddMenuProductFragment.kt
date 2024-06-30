@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import android.os.Bundle
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,15 +33,20 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECTED_PHOTO_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECT_PHOTO_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
@@ -59,11 +65,20 @@ class AddMenuProductFragment :
         setFragmentResultListener(
             CATEGORY_LIST_REQUEST_KEY
         ) { requestKey, bundle ->
-            val result = bundle.getStringArrayList(CATEGORY_LIST_KEY)
-
             viewModel.onAction(
                 AddMenuProduct.Action.SelectCategoryList(
-                    categoryUuidList = result?.toList() ?: emptyList()
+                    categoryUuidList = bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
+                        ?: emptyList()
+                )
+            )
+        }
+
+        setFragmentResultListener(
+            SELECT_PHOTO_REQUEST_KEY
+        ) { requestKey, bundle ->
+            viewModel.onAction(
+                AddMenuProduct.Action.SelectPhoto(
+                    selectedPhotoUrl = bundle.getString(SELECTED_PHOTO_KEY) ?: ""
                 )
             )
         }
@@ -251,42 +266,63 @@ class AddMenuProductFragment :
                     enabled = !state.isLoadingButton
                 )
 
-                AdminCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    onClick = {
-                        onAction(AddMenuProduct.Action.OnAddPhotoClick)
-                    },
-                    border = state.photoErrorBorder
-                ) {
-                    Column(
+                when (val photoBlock = state.photoBlock) {
+                    is AddMenuProductViewState.PhotoBlock.EmptyPhoto -> AddPhotoItem(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(24.dp),
-                            painter = painterResource(R.drawable.ic_add_photo),
-                            tint = state.photoContainsColor,
-                            contentDescription = stringResource(R.string.description_common_navigate)
-                        )
+                            .padding(top = 8.dp),
+                        onAction = onAction
+                    )
 
-                        Text(
+                    is AddMenuProductViewState.PhotoBlock.HasPhoto ->
+                        Box(
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(top = 8.dp),
-                            text = stringResource(id = R.string.title_add_menu_product_add_photo),
-                            style = AdminTheme.typography.labelLarge.medium,
-                            color = state.photoContainsColor
-                        )
-                    }
+                            contentAlignment = Alignment.TopEnd
+                        ) {
+                            AdminCard(
+                                onClick = {
+                                    onAction(AddMenuProduct.Action.OnAddPhotoClick)
+                                }
+                            ) {
+                                AdminAsyncImage(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    photoUrl = photoBlock.photoLink,
+                                    contentDescription = R.string.description_product
+                                )
+                            }
+                            IconButton(onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) }) {
+                                Icon(
+                                    modifier = Modifier.size(24.dp),
+                                    painter = painterResource(R.drawable.ic_clear),
+                                    contentDescription = null,
+                                    tint = AdminTheme.colors.main.surface
+                                )
+                            }
+                        }
                 }
 
                 Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
             }
         }
+    }
+
+    @Composable
+    private fun AddPhotoItem(
+        modifier: Modifier = Modifier,
+        onAction: (AddMenuProduct.Action) -> Unit
+    ) {
+        SecondaryButton(
+            modifier = modifier,
+            textStringId = R.string.title_add_menu_product_add_photo,
+            onClick = {
+                onAction(AddMenuProduct.Action.OnAddPhotoClick)
+            },
+            icon = R.drawable.ic_add_photo,
+            borderColor = AdminTheme.colors.main.primary,
+            buttonColors = AdminButtonDefaults.secondaryPrimaryButtonColors
+        )
     }
 
     @Composable
@@ -317,10 +353,12 @@ class AddMenuProductFragment :
                     categoryHint = R.string.hint_add_menu_product_categories,
                     isVisibleInMenu = false,
                     isVisibleInRecommendation = false,
-                    photoErrorBorder = null,
                     categoriesErrorBorder = null,
-                    photoContainsColor = AdminTheme.colors.main.onSurface,
-                    selectableCategoryList = emptyList()
+                    selectableCategoryList = emptyList(),
+                    photoBlock = AddMenuProductViewState.PhotoBlock.EmptyPhoto(
+                        photoErrorBorder = null,
+                        photoContainsColor = AdminTheme.colors.main.onSurface
+                    )
                 ),
                 onAction = {}
             )
@@ -343,6 +381,13 @@ class AddMenuProductFragment :
 
             AddMenuProduct.Event.GoToGallery -> {
                 findNavController().navigate(AddMenuProductFragmentDirections.toGalleryFragment())
+            }
+
+            is AddMenuProduct.Event.AddedMenuProduct -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_add_menu_added, event.menuProductName)
+                )
+                findNavController().popBackStack()
             }
         }
     }

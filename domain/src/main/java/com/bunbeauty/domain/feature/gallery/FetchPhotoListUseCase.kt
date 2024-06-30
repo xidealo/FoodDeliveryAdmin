@@ -5,11 +5,11 @@ import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
-class GetPhotoListUseCase @Inject constructor(
+class FetchPhotoListUseCase @Inject constructor(
     private val photoRepo: PhotoRepo,
     private val getUsernameUseCase: GetUsernameUseCase
 ) {
     suspend operator fun invoke(): List<Photo> {
-        return photoRepo.getPhotoList(username = getUsernameUseCase().lowercase())
+        return photoRepo.fetchPhotoList(username = getUsernameUseCase().lowercase())
     }
 }

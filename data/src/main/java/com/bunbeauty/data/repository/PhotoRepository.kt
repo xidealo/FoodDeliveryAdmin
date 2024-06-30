@@ -11,19 +11,27 @@ import javax.inject.Inject
 
 class PhotoRepository @Inject constructor() : PhotoRepo {
 
-    private val photoListCache: List<Photo>? = null
+    private var photoListCache: List<Photo>? = null
 
     override suspend fun getPhotoList(username: String): List<Photo> = coroutineScope {
-        val imagesRef = FirebaseStorage.getInstance().reference.child("gustopab")
+        photoListCache ?: fetchPhotoList(username = username)
+    }
+
+    override suspend fun fetchPhotoList(username: String): List<Photo> = coroutineScope {
+        val imagesRef = FirebaseStorage.getInstance().reference.child(username)
 
         val referenceListResult = imagesRef.listAll().await()
 
         val photoList = referenceListResult.items.map { reference ->
             async {
-                Photo(link = reference.downloadUrl.await().toString())
+                Photo(url = reference.downloadUrl.await().toString())
             }
         }.awaitAll()
-
+        photoListCache = photoList
         photoList
+    }
+
+    override suspend fun clearCache() {
+        photoListCache = null
     }
 }

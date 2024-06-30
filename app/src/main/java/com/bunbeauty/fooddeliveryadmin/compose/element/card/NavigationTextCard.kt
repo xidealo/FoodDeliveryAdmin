@@ -59,7 +59,7 @@ fun NavigationTextCard(
                 }
                 Text(
                     text = label ?: "",
-                    style = AdminTheme.typography.bodyMedium,
+                    style = AdminTheme.typography.bodyLarge,
                     color = AdminTheme.colors.main.onSurface
                 )
             }

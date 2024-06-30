@@ -8,5 +8,6 @@ import kotlinx.collections.immutable.ImmutableList
 data class GalleryViewState(
     val photos: ImmutableList<String>,
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val hasError: Boolean
 ) : BaseViewState
