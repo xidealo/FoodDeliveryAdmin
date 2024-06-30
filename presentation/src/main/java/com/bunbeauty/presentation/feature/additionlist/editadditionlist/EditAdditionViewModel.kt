@@ -12,6 +12,7 @@ import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 private const val ADDITION_UUID = "additionUuid"
@@ -43,12 +44,12 @@ class EditAdditionViewModel @Inject constructor(
         when (action) {
             is EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
 
-//            is EditAddition.Action.OnSaveEditAdditionClick ->
-//                addEvent {
-//                    EditAddition.Event.ShowUpdateAdditionSuccess(
-//                        additionName = dataState.name
-//                    )
-//                }
+            is EditAddition.Action.OnSaveEditAdditionClick ->
+                addEvent {
+                    EditAddition.Event.ShowUpdateAdditionSuccess(
+                        additionName = dataState.name
+                    )
+                }
 
             EditAddition.Action.OnSaveEditAdditionClick -> updateEditAddition()
 
@@ -110,7 +111,6 @@ class EditAdditionViewModel @Inject constructor(
                     },
                     additionUuid = state.value.uuid
                 )
-
             },
             onError =
             { throwable ->
