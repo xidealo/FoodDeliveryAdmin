@@ -27,6 +27,6 @@ data class MenuProductPostServer(
     val isVisible: Boolean,
     @SerialName("isRecommended")
     val isRecommended: Boolean,
-    @SerialName("categories")
+    @SerialName("categoryUuids")
     val categories: List<String>
 )

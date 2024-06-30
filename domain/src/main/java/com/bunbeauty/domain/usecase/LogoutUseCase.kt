@@ -7,6 +7,7 @@ import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
+import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
 class LogoutUseCase @Inject constructor(
@@ -16,7 +17,8 @@ class LogoutUseCase @Inject constructor(
     private val cafeRepo: CafeRepo,
     private val cityRepo: CityRepo,
     private val menuProductRepo: MenuProductRepo,
-    private val nonWorkingDayRepo: NonWorkingDayRepo
+    private val nonWorkingDayRepo: NonWorkingDayRepo,
+    private val photoRepo: PhotoRepo
 ) {
 
     suspend operator fun invoke() {

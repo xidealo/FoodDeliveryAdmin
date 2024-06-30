@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
 data class SelectPhotoViewState(
-    val photo: String?,
+    val photoUrl: String?,
     val isLoading: Boolean,
     val hasError: Boolean
 ) : BaseViewState

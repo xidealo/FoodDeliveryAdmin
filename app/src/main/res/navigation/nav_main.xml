@@ -122,7 +122,20 @@
     <fragment
         android:id="@+id/galleryFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.GalleryFragment"
-        android:label="GalleryFragment" />
+        android:label="GalleryFragment" >
+        <action
+            android:id="@+id/to_selectPhotoFragment"
+            app:destination="@id/selectPhotoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectPhotoFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment"
+        android:label="SelectPhotoFragment" >
+        <argument
+            android:name="selectedPhotoUrl"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"

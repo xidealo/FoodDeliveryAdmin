@@ -5,7 +5,6 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesExcepti
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -22,7 +21,6 @@ class AddMenuProductUseCase @Inject constructor(
             menuProductPost.name.isEmpty() -> throw MenuProductNameException()
             menuProductPost.newPrice == 0 -> throw MenuProductNewPriceException()
             menuProductPost.description.isEmpty() -> throw MenuProductDescriptionException()
-            menuProductPost.photoLink.isEmpty() -> throw MenuProductPhotoLinkException()
             menuProductPost.categories.isEmpty() -> throw MenuProductCategoriesException()
         }
 

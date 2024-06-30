@@ -40,6 +40,14 @@ object AdminButtonDefaults {
             disabledContentColor = AdminTheme.colors.main.onDisabled
         )
 
+    val secondaryPrimaryButtonColors: ButtonColors
+        @Composable get() = ButtonDefaults.buttonColors(
+            containerColor = AdminTheme.colors.main.secondary,
+            contentColor = AdminTheme.colors.main.primary,
+            disabledContainerColor = AdminTheme.colors.main.disabled,
+            disabledContentColor = AdminTheme.colors.main.onDisabled
+        )
+
     val buttonShape: RoundedCornerShape
         @Composable get() = RoundedCornerShape(AdminTheme.dimensions.buttonRadius)
 
