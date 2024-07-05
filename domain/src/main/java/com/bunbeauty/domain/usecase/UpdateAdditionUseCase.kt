@@ -15,7 +15,7 @@ class UpdateAdditionUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         additionUuid: String,
-        updateAddition: UpdateAddition,
+        updateAddition: UpdateAddition
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
@@ -23,7 +23,6 @@ class UpdateAdditionUseCase @Inject constructor(
             updateAddition.name.isNullOrBlank() -> throw AdditionNameException()
             updateAddition.priority == null -> throw AdditionPriorityException()
             updateAddition.prise == 0 -> throw AdditionPriseException()
-
         }
 
         additionRepo.updateAddition(additionUuid = additionUuid, token = token, updateAddition = updateAddition)

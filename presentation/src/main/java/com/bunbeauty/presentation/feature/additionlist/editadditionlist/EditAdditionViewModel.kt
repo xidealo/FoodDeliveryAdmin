@@ -12,7 +12,6 @@ import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 private const val ADDITION_UUID = "additionUuid"
@@ -21,7 +20,7 @@ private const val ADDITION_UUID = "additionUuid"
 class EditAdditionViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
-    private val updateAdditionUseCase: UpdateAdditionUseCase,
+    private val updateAdditionUseCase: UpdateAdditionUseCase
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
     initState = EditAddition.DataState(
         uuid = "",
@@ -39,13 +38,11 @@ class EditAdditionViewModel @Inject constructor(
     )
 ) {
 
-
     override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
         when (action) {
             is EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
 
             EditAddition.Action.OnSaveEditAdditionClick -> updateEditAddition()
-
 
             EditAddition.Action.InitAddition -> loadData()
 
@@ -87,7 +84,7 @@ class EditAdditionViewModel @Inject constructor(
                 hasEditError = false,
                 hasEditNameError = false,
                 hasEditFullNameError = false,
-                hasEditPriseError = false,
+                hasEditPriseError = false
             )
         }
         viewModelScope.launchSafe(
@@ -99,7 +96,7 @@ class EditAdditionViewModel @Inject constructor(
                             priority = priority,
                             fullName = fullName,
                             prise = prise.toIntOrNull() ?: 0,
-                            isVisible = isVisible,
+                            isVisible = isVisible
                         )
                     },
                     additionUuid = state.value.uuid
@@ -128,7 +125,6 @@ class EditAdditionViewModel @Inject constructor(
                         }
 
                         else -> copy(hasEditError = true)
-
                     }
                 }
             }
@@ -148,7 +144,7 @@ class EditAdditionViewModel @Inject constructor(
                         priority = addition.priority,
                         fullName = addition.fullName,
                         prise = addition.price.toString(),
-                        isVisible = addition.isVisible,
+                        isVisible = addition.isVisible
                     )
                 }
                 Log.d("my_prise", "loadData: ${addition.price}")
@@ -161,7 +157,3 @@ class EditAdditionViewModel @Inject constructor(
         )
     }
 }
-
-
-
-

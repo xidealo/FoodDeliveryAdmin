@@ -25,7 +25,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
-import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
@@ -50,13 +49,10 @@ class EditAdditionFragment :
             ADDITION_REQUEST_KEY
         ) { requestKey, bundle ->
             viewModel.onAction(
-                EditAddition.Action.OnSaveEditAdditionClick)
-            //    val result = bundle.getBundle(ADDITION_KEY)
-
-
+                EditAddition.Action.OnSaveEditAdditionClick
+            )
         }
     }
-
 
     @Composable
     override fun Screen(state: EditAdditionViewState, onAction: (EditAddition.Action) -> Unit) {
@@ -66,7 +62,7 @@ class EditAdditionFragment :
     @Composable
     fun EditAdditionScreen(
         state: EditAdditionViewState,
-        onAction: (EditAddition.Action) -> Unit,
+        onAction: (EditAddition.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_edit_addition),
@@ -81,7 +77,6 @@ class EditAdditionFragment :
                 )
             }
         ) {
-
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -155,7 +150,7 @@ class EditAdditionFragment :
                     onCheckChanged = { isVisible ->
                         onAction(
                             EditAddition.Action.OnVisibleClick(
-                                isVisible = isVisible,
+                                isVisible = isVisible
                             )
                         )
                     },
@@ -166,7 +161,6 @@ class EditAdditionFragment :
             }
         }
     }
-
 
     @Composable
     override fun mapState(state: EditAddition.DataState): EditAdditionViewState {
@@ -192,10 +186,9 @@ class EditAdditionFragment :
             },
             isVisible = state.isVisible,
             isLoading = state.isLoading,
-            hasError = state.hasEditError,
+            hasError = state.hasEditError
         )
     }
-
     override fun handleEvent(event: EditAddition.Event) {
         when (event) {
             is EditAddition.Event.Back -> {
@@ -207,13 +200,13 @@ class EditAdditionFragment :
                     resources.getString(R.string.msg_edit_addition_updated, event.additionName)
                 )
                 setFragmentResult(
-                    ADDITION_REQUEST_KEY, bundleOf(ADDITION_KEY to event.additionName)
+                    ADDITION_REQUEST_KEY,
+                    bundleOf(ADDITION_KEY to event.additionName)
                 )
                 findNavController().popBackStack()
             }
         }
     }
-
 
     @Preview(showSystemUi = true)
     @Composable
@@ -230,13 +223,10 @@ class EditAdditionFragment :
                     editNameError = null,
                     editFullNameError = null,
                     editPriseError = null,
-                    hasError = false,
+                    hasError = false
                 ),
-                onAction = {},
+                onAction = {}
             )
         }
     }
 }
-
-
-

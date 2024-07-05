@@ -15,7 +15,6 @@ class AdditionRepository @Inject constructor(
 
     private var additionListCache: List<Addition>? = null
 
-
     override suspend fun getAdditionCacheList(token: String): List<Addition> {
         val cache = additionListCache
         return cache
@@ -31,7 +30,6 @@ class AdditionRepository @Inject constructor(
             takeRemote = true
         ).find { addition -> addition.uuid == additionUuid }
     }
-
 
     override suspend fun getAdditionListFromRemote(
         token: String,
@@ -50,7 +48,6 @@ class AdditionRepository @Inject constructor(
         }
     }
 
-
     override suspend fun updateAddition(
         updateAddition: UpdateAddition,
         token: String,
@@ -61,9 +58,8 @@ class AdditionRepository @Inject constructor(
             additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
             token = token
         )
-        getAdditionCacheList(token =token)
+        getAdditionCacheList(token = token)
     }
-
 
     override suspend fun clearCache() {
         TODO("Not yet implemented")

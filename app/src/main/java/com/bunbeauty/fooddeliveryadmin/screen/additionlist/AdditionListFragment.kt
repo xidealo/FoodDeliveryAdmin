@@ -68,9 +68,9 @@ class AdditionListFragment :
                 onAction(AdditionList.Action.RefreshData)
             },
             backActionClick = {
-                onAction(AdditionList.Action.OnBackClick) },
-            )
-        {
+                onAction(AdditionList.Action.OnBackClick)
+            }
+        ) {
             when {
                 state.hasError -> {
                     ErrorScreen(
@@ -144,9 +144,8 @@ class AdditionListFragment :
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
-            },
-        )
-        {
+            }
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {

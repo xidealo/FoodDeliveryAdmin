@@ -73,7 +73,6 @@ class EditMenuProductViewModel @Inject constructor(
                     )
                 }
 
-
                 with(mutableState.value) {
                     val menuProductUuid = menuProduct?.uuid ?: return@with
                     updateMenuProductUseCase(
