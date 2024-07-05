@@ -44,13 +44,6 @@ class EditAdditionViewModel @Inject constructor(
         when (action) {
             is EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
 
-            is EditAddition.Action.OnSaveEditAdditionClick ->
-                addEvent {
-                    EditAddition.Event.ShowUpdateAdditionSuccess(
-                        additionName = dataState.name
-                    )
-                }
-
             EditAddition.Action.OnSaveEditAdditionClick -> updateEditAddition()
 
 
@@ -110,14 +103,20 @@ class EditAdditionViewModel @Inject constructor(
                         )
                     },
                     additionUuid = state.value.uuid
+
                 )
+                addEvent {
+                    EditAddition.Event.ShowUpdateAdditionSuccess(
+                        additionName = state.value.name
+                    )
+                }
             },
             onError =
             { throwable ->
                 setState {
                     when (throwable) {
                         is AdditionNameException -> {
-                            copy(hasEditError = true)
+                            copy(hasEditNameError = true)
                         }
 
                         is AdditionPriseException -> {

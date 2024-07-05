@@ -16,7 +16,7 @@ interface EditAddition {
         val hasEditFullNameError: Boolean,
         val isLoading: Boolean,
         val isVisible: Boolean,
-        val hasEditError: Boolean,
+        val hasEditError: Boolean?,
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
@@ -34,6 +34,5 @@ interface EditAddition {
     sealed interface Event : BaseEvent {
         data object Back : Event
         data class ShowUpdateAdditionSuccess(val additionName: String): Event
-        data class ShowUpdateAdditionError(val additionName: String): Event
     }
 }

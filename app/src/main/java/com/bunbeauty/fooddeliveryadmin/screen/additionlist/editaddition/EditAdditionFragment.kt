@@ -10,9 +10,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -43,10 +46,14 @@ class EditAdditionFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(EditAddition.Action.InitAddition)
-        setFragmentResultListener(ADDITION_REQUEST_KEY) { requestKey, bundle ->
-        //    val result = bundle.getBundle(ADDITION_KEY)
+        setFragmentResultListener(
+            ADDITION_REQUEST_KEY
+        ) { requestKey, bundle ->
+            viewModel.onAction(
+                EditAddition.Action.OnSaveEditAdditionClick)
+            //    val result = bundle.getBundle(ADDITION_KEY)
 
-            viewModel.onAction(EditAddition.Action.OnSaveEditAdditionClick)
+
         }
     }
 
@@ -61,123 +68,102 @@ class EditAdditionFragment :
         state: EditAdditionViewState,
         onAction: (EditAddition.Action) -> Unit,
     ) {
-        AdminScaffold(title = "Редактировать добавку",
+        AdminScaffold(
+            title = stringResource(R.string.title_edit_addition),
             pullRefreshEnabled = true,
             backActionClick = { onAction(EditAddition.Action.OnBackClick) },
             actionButton = {
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_order_details_save,
+                    textStringId = R.string.action_edit_addition_save,
                     onClick = { onAction(EditAddition.Action.OnSaveEditAdditionClick) },
                     isLoading = state.isLoading
                 )
-            }) {
+            }
+        ) {
 
-            when {
-                state.hasError -> {
-                    ErrorScreen(
-                        mainTextId = R.string.error_common_loading_failed,
-                        isLoading = state.isLoading
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp)
+            ) {
+                AdminCard(
+                    clickable = false
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
                     ) {
-                        onAction(EditAddition.Action.OnSaveEditAdditionClick)
+                        AdminTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.name,
+                            labelStringId = R.string.hint_edit_addition_name,
+                            onValueChange = { name ->
+                                onAction(
+                                    EditAddition.Action.EditNameAddition(name)
+                                )
+                            },
+                            errorMessageId = state.editNameError,
+                            enabled = !state.isLoading,
+                            keyboardType = KeyboardType.Text
+                        )
+
+                        AdminTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.priority,
+                            labelStringId = R.string.hint_edit_addition_priority,
+                            onValueChange = { priority ->
+                                onAction(
+                                    EditAddition.Action.EditPriorityAddition(priority)
+                                )
+                            },
+                            enabled = !state.isLoading,
+                            keyboardType = KeyboardType.Number
+                        )
+
+                        AdminTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.fullName,
+                            labelStringId = R.string.hint_edit_addition_full_name,
+                            errorMessageId = state.editFullNameError,
+                            onValueChange = { fullName ->
+                                onAction(
+                                    EditAddition.Action.EditFullNameAddition(fullName)
+                                )
+                            },
+                            maxLines = 20,
+                            enabled = !state.isLoading,
+                            keyboardType = KeyboardType.Text
+                        )
+
+                        AdminTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.price,
+                            labelStringId = R.string.hint_edit_addition_new_price,
+                            errorMessageId = state.editPriseError,
+                            onValueChange = { price ->
+                                onAction(EditAddition.Action.EditPriseAddition(price))
+                            },
+                            enabled = !state.isLoading,
+                            keyboardType = KeyboardType.Number
+                        )
                     }
                 }
-
-                else -> {
-                    EditAdditionSuccessScreen(state, onAction)
-                }
-            }
-        }
-    }
-
-
-    @Composable
-    private fun EditAdditionSuccessScreen(
-        state: EditAdditionViewState,
-        onAction: (EditAddition.Action) -> Unit,
-    ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp)
-        ) {
-            AdminCard(
-                clickable = false
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    AdminTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.name,
-                        labelStringId = R.string.hint_edit_menu_product_name,
-                        onValueChange = { name ->
-                            onAction(
-                                EditAddition.Action.EditNameAddition(name)
+                SwitcherCard(
+                    modifier = Modifier.padding(top = 8.dp),
+                    checked = state.isVisible,
+                    onCheckChanged = { isVisible ->
+                        onAction(
+                            EditAddition.Action.OnVisibleClick(
+                                isVisible = isVisible,
                             )
-                        },
-                        errorMessageId = null,
-                        enabled = !state.isLoading,
-                        keyboardType = KeyboardType.Text
-                    )
-
-                    AdminTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.priority,
-                        labelStringId = R.string.hint_edit_menu_product_priority,
-                        onValueChange = { priority ->
-                            onAction(
-                                EditAddition.Action.EditPriorityAddition(priority)
-                            )
-                        },
-                        errorMessageId = state.editNameError,
-                        enabled = !state.isLoading,
-                        keyboardType = KeyboardType.Number
-                    )
-
-                    AdminTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.fullName,
-                        labelStringId = R.string.hint_edit_menu_product_full_name,
-                        errorMessageId = state.editFullNameError,
-                        onValueChange = { fullName ->
-                            onAction(
-                                EditAddition.Action.EditFullNameAddition(fullName)
-                            )
-                        },
-                        maxLines = 20,
-                        enabled = !state.isLoading,
-                        keyboardType = KeyboardType.Text
-                    )
-
-                    AdminTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = state.price,
-                        labelStringId = R.string.hint_edit_menu_product_new_price,
-                        errorMessageId = state.editPriseError,
-                        onValueChange = { price ->
-                            onAction(EditAddition.Action.EditPriseAddition(price))
-                        },
-                        enabled = !state.isLoading,
-                        keyboardType = KeyboardType.Number
-                    )
-                }
-            }
-            SwitcherCard(
-                modifier = Modifier.padding(top = 8.dp),
-                checked = state.isVisible,
-                onCheckChanged = { isVisible ->
-                    onAction(
-                        EditAddition.Action.OnVisibleClick(
-                            isVisible = isVisible,
                         )
-                    )
-                },
-                labelStringId = R.string.title_edit_menu_product_is_visible,
-                enabled = !state.isLoading
-            )
-            Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
+                    },
+                    labelStringId = R.string.title_edit_addition_is_visible,
+                    enabled = !state.isLoading
+                )
+                Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
+            }
         }
     }
 
@@ -186,21 +172,21 @@ class EditAdditionFragment :
     override fun mapState(state: EditAddition.DataState): EditAdditionViewState {
         return EditAdditionViewState(
             name = state.name,
-            editNameError = if (state.hasEditError) {
-                R.string.error_edit_menu_product_empty_name
+            editNameError = if (state.hasEditNameError) {
+                R.string.error_edit_addition_empty_name
             } else {
                 null
             },
             priority = state.priority.toString(),
             fullName = state.fullName ?: "",
             editFullNameError = if (state.hasEditFullNameError) {
-                R.string.error_edit_menu_product_empty_name
+                R.string.error_edit_addition_empty_full_name
             } else {
                 null
             },
             price = state.prise,
             editPriseError = if (state.hasEditPriseError) {
-                R.string.error_add_menu_product_empty_new_price
+                R.string.error_add_addition_empty_new_price
             } else {
                 null
             },
@@ -218,15 +204,12 @@ class EditAdditionFragment :
 
             is EditAddition.Event.ShowUpdateAdditionSuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_product_updated, event.additionName)
+                    resources.getString(R.string.msg_edit_addition_updated, event.additionName)
+                )
+                setFragmentResult(
+                    ADDITION_REQUEST_KEY, bundleOf(ADDITION_KEY to event.additionName)
                 )
                 findNavController().popBackStack()
-            }
-
-            is EditAddition.Event.ShowUpdateAdditionError -> {
-                (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_product_updated)
-                )
             }
         }
     }
