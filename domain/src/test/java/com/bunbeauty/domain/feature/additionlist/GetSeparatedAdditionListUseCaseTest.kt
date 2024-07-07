@@ -37,7 +37,6 @@ class GetSeparatedAdditionListUseCaseTest {
         )
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery {
-
             additionRepo.getAdditionListFromRemote(
                 token = token,
                 takeRemote = isRefreshing
