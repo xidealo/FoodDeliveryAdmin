@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateaddition.AdditionFullNameException
