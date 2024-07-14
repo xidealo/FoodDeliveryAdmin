@@ -10,8 +10,8 @@ interface EditAddition {
         val name: String,
         val hasEditNameError: Boolean,
         val priority: Int,
-        val prise: String,
-        val hasEditPriseError: Boolean,
+        val price: String,
+        val hasEditPriceError: Boolean,
         val fullName: String?,
         val hasEditFullNameError: Boolean,
         val isLoading: Boolean,
@@ -25,7 +25,7 @@ interface EditAddition {
         data class EditNameAddition(val name: String) : Action
         data class EditPriorityAddition(val priority: String) : Action
         data class EditFullNameAddition(val fullName: String?) : Action
-        data class EditPriseAddition(val prise: String) : Action
+        data class EditPriceAddition(val price: String) : Action
         data object OnSaveEditAdditionClick : Action
         data class OnVisibleClick(val isVisible: Boolean) : Action
         data object OnBackClick : Action

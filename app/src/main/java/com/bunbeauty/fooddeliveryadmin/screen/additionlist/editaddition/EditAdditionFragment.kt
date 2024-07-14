@@ -135,9 +135,9 @@ class EditAdditionFragment :
                             modifier = Modifier.fillMaxWidth(),
                             value = state.price,
                             labelStringId = R.string.hint_edit_addition_new_price,
-                            errorMessageId = state.editPriseError,
+                            errorMessageId = state.editPriceError,
                             onValueChange = { price ->
-                                onAction(EditAddition.Action.EditPriseAddition(price))
+                                onAction(EditAddition.Action.EditPriceAddition(price))
                             },
                             enabled = !state.isLoading,
                             keyboardType = KeyboardType.Number
@@ -178,8 +178,8 @@ class EditAdditionFragment :
             } else {
                 null
             },
-            price = state.prise,
-            editPriseError = if (state.hasEditPriseError) {
+            price = state.price,
+            editPriceError = if (state.hasEditPriceError) {
                 R.string.error_add_addition_empty_new_price
             } else {
                 null
@@ -222,7 +222,7 @@ class EditAdditionFragment :
                     isLoading = false,
                     editNameError = null,
                     editFullNameError = null,
-                    editPriseError = null,
+                    editPriceError = null,
                     hasError = false
                 ),
                 onAction = {}

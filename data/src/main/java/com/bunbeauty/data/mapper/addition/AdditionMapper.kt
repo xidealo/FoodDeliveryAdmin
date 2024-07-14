@@ -24,7 +24,7 @@ val mapUpdateAdditionServerToPatchAddition: UpdateAddition.() -> AdditionPatchSe
         isVisible = isVisible,
         name = name,
         photoLink = photoLink,
-        price = prise,
+        price = price,
         fullName = fullName,
         priority = priority
     )
