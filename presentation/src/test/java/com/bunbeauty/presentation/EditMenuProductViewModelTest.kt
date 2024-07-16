@@ -280,9 +280,9 @@ class EditMenuProductViewModelTest {
         // Then
         assertTrue(
             actual = (
-                    viewModel.state.value.editMenuProductState
-                            as EditMenuProductUIState.EditMenuProductState.Success
-                    ).hasNameError
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).hasNameError
         )
     }
 
@@ -301,9 +301,9 @@ class EditMenuProductViewModelTest {
         // Then
         assertTrue(
             actual = (
-                    viewModel.state.value.editMenuProductState
-                            as EditMenuProductUIState.EditMenuProductState.Success
-                    ).hasNewPriceError
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).hasNewPriceError
         )
     }
 
@@ -322,9 +322,9 @@ class EditMenuProductViewModelTest {
         // Then
         assertTrue(
             actual = (
-                    viewModel.state.value.editMenuProductState
-                            as EditMenuProductUIState.EditMenuProductState.Success
-                    ).hasDescriptionError
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).hasDescriptionError
         )
     }
 
@@ -343,9 +343,9 @@ class EditMenuProductViewModelTest {
         // Then
         assertFalse(
             actual = (
-                    viewModel.state.value.editMenuProductState
-                            as EditMenuProductUIState.EditMenuProductState.Success
-                    ).isLoadingButton
+                viewModel.state.value.editMenuProductState
+                    as EditMenuProductUIState.EditMenuProductState.Success
+                ).isLoadingButton
         )
     }
 
