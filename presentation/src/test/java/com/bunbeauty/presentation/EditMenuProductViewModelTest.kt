@@ -389,7 +389,7 @@ class EditMenuProductViewModelTest {
             updateMenuProduct()
             consumeEvents(
                 listOf(
-                    com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductEvent.ShowUpdateProductError(
+                    EditMenuProductEvent.ShowUpdateProductError(
                         menuProductMock.name
                     )
                 )

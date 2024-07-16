@@ -13,5 +13,5 @@ data class EditAdditionViewState(
     @StringRes val editPriceError: Int?,
     val isVisible: Boolean,
     val isLoading: Boolean,
-    val hasError: Boolean?
+    val hasError: Boolean
 ) : BaseViewState

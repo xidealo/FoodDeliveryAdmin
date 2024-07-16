@@ -66,7 +66,6 @@ class EditAdditionFragment :
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_edit_addition),
-            pullRefreshEnabled = true,
             backActionClick = { onAction(EditAddition.Action.OnBackClick) },
             actionButton = {
                 LoadingButton(

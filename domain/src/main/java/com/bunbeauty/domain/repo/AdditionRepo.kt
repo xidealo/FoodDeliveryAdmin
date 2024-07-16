@@ -8,8 +8,7 @@ interface AdditionRepo {
     suspend fun getAdditionCacheList(token: String): List<Addition>
 
     suspend fun getAdditionListFromRemote(
-        token: String,
-        takeRemote: Boolean = true
+        token: String
     ): List<Addition>
 
     suspend fun getAddition(additionUuid: String, token: String): Addition?

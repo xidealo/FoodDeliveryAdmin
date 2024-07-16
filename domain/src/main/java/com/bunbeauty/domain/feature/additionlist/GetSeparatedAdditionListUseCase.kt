@@ -17,7 +17,7 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): SeparatedAdditionList {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        val additionList = additionRepo.getAdditionListFromRemote(token = token, takeRemote = true)
+        val additionList = additionRepo.getAdditionListFromRemote(token = token)
 
         return SeparatedAdditionList(
             visibleList = additionList

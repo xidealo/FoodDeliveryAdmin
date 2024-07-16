@@ -16,24 +16,20 @@ class AdditionRepository @Inject constructor(
     private var additionListCache: List<Addition>? = null
 
     override suspend fun getAdditionCacheList(token: String): List<Addition> {
-        val cache = additionListCache
-        return cache
-            ?: getAdditionListFromRemote(token = token, takeRemote = true)
+        return additionListCache ?: getAdditionListFromRemote(token = token)
     }
 
     override suspend fun getAddition(additionUuid: String, token: String): Addition? {
-        val getAddition = additionListCache?.find { addition ->
+        val additions = additionListCache?.find { addition ->
             addition.uuid == additionUuid
         }
-        return getAddition ?: getAdditionListFromRemote(
-            token = token,
-            takeRemote = true
+        return additions ?: getAdditionListFromRemote(
+            token = token
         ).find { addition -> addition.uuid == additionUuid }
     }
 
     override suspend fun getAdditionListFromRemote(
-        token: String,
-        takeRemote: Boolean
+        token: String
     ): List<Addition> {
         return when (val result = networkConnector.getAdditionList(token = token)) {
             is ApiResult.Error -> {

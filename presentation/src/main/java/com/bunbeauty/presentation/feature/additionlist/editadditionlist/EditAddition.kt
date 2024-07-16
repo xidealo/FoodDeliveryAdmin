@@ -16,7 +16,7 @@ interface EditAddition {
         val hasEditFullNameError: Boolean,
         val isLoading: Boolean,
         val isVisible: Boolean,
-        val hasEditError: Boolean?
+        val hasEditError: Boolean
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
