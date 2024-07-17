@@ -53,7 +53,6 @@ class EditAdditionFragment :
             )
         }
     }
-
     @Composable
     override fun Screen(state: EditAdditionViewState, onAction: (EditAddition.Action) -> Unit) {
         EditAdditionScreen(onAction = onAction, state = state)
