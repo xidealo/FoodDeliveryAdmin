@@ -37,7 +37,7 @@ class GetSeparatedAdditionListUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery {
             additionRepo.getAdditionListFromRemote(
-                token = token,
+                token = token
 
             )
         } returns emptyList()
@@ -77,7 +77,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionListFromRemote(
-                    token = token,
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -134,7 +134,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionListFromRemote(
-                    token = token,
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -196,7 +196,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionListFromRemote(
-                    token = token,
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -255,7 +255,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionListFromRemote(
-                    token = token,
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
