@@ -39,7 +39,7 @@ class GetSeparatedAdditionListUseCaseTest {
         coEvery {
             additionRepo.getAdditionListFromRemote(
                 token = token,
-                takeRemote = isRefreshing
+
             )
         } returns emptyList()
 
@@ -80,7 +80,6 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery {
                 additionRepo.getAdditionListFromRemote(
                     token = token,
-                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 additionMock.copy(
@@ -139,7 +138,6 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery {
                 additionRepo.getAdditionListFromRemote(
                     token = token,
-                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 additionMock.copy(
@@ -203,7 +201,6 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery {
                 additionRepo.getAdditionListFromRemote(
                     token = token,
-                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 additionMock.copy(
@@ -264,7 +261,6 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery {
                 additionRepo.getAdditionListFromRemote(
                     token = token,
-                    takeRemote = isRefreshing
                 )
             } returns listOf(
                 additionMock.copy(
