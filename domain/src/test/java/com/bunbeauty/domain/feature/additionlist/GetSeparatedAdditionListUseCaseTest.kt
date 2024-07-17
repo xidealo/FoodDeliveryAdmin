@@ -30,7 +30,6 @@ class GetSeparatedAdditionListUseCaseTest {
     fun `return empty lists when additionRepo return empty list`() = runTest {
         // Given
         val token = "token"
-        val isRefreshing = true
         val expectedSeparatedAdditionList = SeparatedAdditionList(
             visibleList = emptyList(),
             hiddenList = emptyList()
@@ -54,7 +53,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = emptyList(),
                 hiddenList = listOf(
@@ -110,7 +108,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
 
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = listOf(
@@ -168,7 +165,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
 
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = listOf(
@@ -235,7 +231,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = listOf(
                     additionMock.copy(
