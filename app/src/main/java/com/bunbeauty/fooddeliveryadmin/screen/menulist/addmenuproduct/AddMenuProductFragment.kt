@@ -250,7 +250,7 @@ class AddMenuProductFragment :
                             AddMenuProduct.Action.OnVisibleInMenuChangeClick(isVisible = isVisible)
                         )
                     },
-                    labelStringId = R.string.title_add_menu_product_is_visible_in_menu,
+                    text = stringResource(R.string.title_add_menu_product_is_visible_in_menu),
                     enabled = !state.isLoadingButton
                 )
 
@@ -262,7 +262,7 @@ class AddMenuProductFragment :
                             AddMenuProduct.Action.OnRecommendationVisibleChangeClick(isVisible = isVisible)
                         )
                     },
-                    labelStringId = R.string.title_add_menu_product_is_recommendation,
+                    text = stringResource(R.string.title_add_menu_product_is_recommendation),
                     enabled = !state.isLoadingButton
                 )
 

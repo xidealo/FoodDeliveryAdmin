@@ -62,7 +62,7 @@ class StatisticViewModel @Inject constructor(
     private fun onCafeClicked() {
         viewModelScope.launchSafe(
             block = {
-                addEvent {
+                sendEvent {
                     Statistic.Event.OpenCafeListEvent(
                         getCafeListByCityUuidUseCase()
                     )
@@ -112,13 +112,13 @@ class StatisticViewModel @Inject constructor(
     }
 
     private fun onGoBackClicked() {
-        addEvent {
+        sendEvent {
             Statistic.Event.GoBack
         }
     }
 
     private fun onTimeIntervalClicked() {
-        addEvent {
+        sendEvent {
             Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
         }
     }

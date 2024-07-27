@@ -173,6 +173,8 @@
     <string name="action_profile_cafes">Рестораны</string>
     <string name="action_profile_settings">Настройки</string>
     <string name="action_profile_statistic">Статистика</string>
+    <string name="msg_accept_orders">Принимаем заказы</string>
+    <string name="msg_accept_orders_description">Когда выключено, пользователи не могут делать заказы</string>
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>

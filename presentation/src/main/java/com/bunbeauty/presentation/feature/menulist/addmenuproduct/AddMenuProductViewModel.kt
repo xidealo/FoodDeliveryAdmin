@@ -48,7 +48,7 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.Init -> loadData()
 
             AddMenuProduct.Action.OnBackClick -> {
-                addEvent {
+                sendEvent {
                     AddMenuProduct.Event.Back
                 }
             }
@@ -96,7 +96,7 @@ class AddMenuProductViewModel @Inject constructor(
             }
 
             AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
-            AddMenuProduct.Action.OnShowCategoryListClick -> addEvent {
+            AddMenuProduct.Action.OnShowCategoryListClick -> sendEvent {
                 AddMenuProduct.Event.GoToCategoryList(
                     dataState.getSelectedCategory()
                         .map { selectableCategory -> selectableCategory.category.uuid }
@@ -119,7 +119,7 @@ class AddMenuProductViewModel @Inject constructor(
                 }
             }
 
-            AddMenuProduct.Action.OnAddPhotoClick -> addEvent {
+            AddMenuProduct.Action.OnAddPhotoClick -> sendEvent {
                 AddMenuProduct.Event.GoToGallery
             }
 
@@ -205,7 +205,7 @@ class AddMenuProductViewModel @Inject constructor(
                         )
                     }
                 )
-                addEvent {
+                sendEvent {
                     AddMenuProduct.Event.AddedMenuProduct(menuProductName = state.value.name)
                 }
             },

@@ -28,7 +28,7 @@ class AdditionGroupListViewModel @Inject constructor(
     ) {
         when (action) {
             AdditionGroupList.Action.OnBackClick -> {
-                addEvent { AdditionGroupList.Event.Back }
+                sendEvent { AdditionGroupList.Event.Back }
             }
 
             AdditionGroupList.Action.OnAdditionClick -> {

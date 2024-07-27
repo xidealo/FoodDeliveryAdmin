@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun showMessage(text: String, type: Main.Message.Type) {
-        addEvent {
+        sendEvent {
             Main.Event.ShowMessageEvent(
                 message = Main.Message(
                     type = type,

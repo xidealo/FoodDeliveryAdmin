@@ -8,15 +8,15 @@ class MenuViewModel : BaseStateViewModel<Menu.DataState, Menu.Action, Menu.Event
 
     override fun reduce(action: Menu.Action, dataState: Menu.DataState) {
         when (action) {
-            Menu.Action.OnAdditionGroupsListClick -> addEvent {
+            Menu.Action.OnAdditionGroupsListClick -> sendEvent {
                 Menu.Event.OnAdditionGroupsListClick
             }
 
-            Menu.Action.OnAdditionsListClick -> addEvent {
+            Menu.Action.OnAdditionsListClick -> sendEvent {
                 Menu.Event.OnAdditionsListClick
             }
 
-            Menu.Action.OnMenuListClick -> addEvent {
+            Menu.Action.OnMenuListClick -> sendEvent {
                 Menu.Event.OnMenuListClick
             }
         }

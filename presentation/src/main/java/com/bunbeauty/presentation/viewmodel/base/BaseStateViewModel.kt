@@ -31,7 +31,7 @@ abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEv
         mutableDataState.update(block)
     }
 
-    protected inline fun addEvent(block: (DS) -> E) {
+    protected inline fun sendEvent(block: (DS) -> E) {
         mutableEvents.update { list ->
             list + block(mutableDataState.value)
         }

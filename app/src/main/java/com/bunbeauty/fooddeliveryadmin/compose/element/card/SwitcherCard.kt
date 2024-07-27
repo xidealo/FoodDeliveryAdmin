@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.card
 
-import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,8 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.element.switcher.AdminSwitchDefaults
@@ -18,40 +17,49 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @Composable
 fun SwitcherCard(
-    modifier: Modifier = Modifier,
-    @StringRes labelStringId: Int? = null,
-    label: String = "",
+    text: String,
     checked: Boolean,
+    modifier: Modifier = Modifier,
+    hint: String? = null,
     elevated: Boolean = true,
     enabled: Boolean = true,
     onCheckChanged: (Boolean) -> Unit
 ) {
     AdminCard(
         modifier = modifier,
-        clickable = false,
+        onClick = {
+            onCheckChanged(!checked)
+        },
         elevated = elevated
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AdminTheme.dimensions.mediumSpace,
-                    vertical = 12.dp
+                    horizontal = 16.dp,
+                    vertical = 8.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val labelText = labelStringId?.let { id ->
-                stringResource(id)
-            } ?: label
-            Text(
+            Column(
                 modifier = Modifier
                     .padding(end = AdminTheme.dimensions.mediumSpace)
                     .weight(1f),
-                text = labelText,
-                style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.main.onSurface,
-                overflow = TextOverflow.Ellipsis
-            )
+                verticalArrangement = spacedBy(4.dp)
+            ) {
+                Text(
+                    text = text,
+                    style = AdminTheme.typography.bodyLarge,
+                    color = AdminTheme.colors.main.onSurface,
+                )
+                hint?.let {
+                    Text(
+                        text = hint,
+                        style = AdminTheme.typography.bodySmall,
+                        color = AdminTheme.colors.main.onSurfaceVariant,
+                    )
+                }
+            }
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckChanged,
@@ -67,7 +75,8 @@ fun SwitcherCard(
 private fun SelectedSelectableCard() {
     AdminTheme {
         SwitcherCard(
-            label = "Текст",
+            text = "Текст",
+            hint = "Длинное динное динное динное динное динное описание карточки",
             checked = true,
             onCheckChanged = {}
         )
@@ -79,7 +88,7 @@ private fun SelectedSelectableCard() {
 private fun UnselectedSelectableCard() {
     AdminTheme {
         SwitcherCard(
-            label = "Текст",
+            text = "Текст",
             checked = false,
             onCheckChanged = {}
         )
