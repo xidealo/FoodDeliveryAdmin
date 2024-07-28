@@ -22,7 +22,7 @@ import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
-import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo

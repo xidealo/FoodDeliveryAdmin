@@ -2,6 +2,8 @@ package com.bunbeauty.presentation.feature.profile
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
+import com.bunbeauty.domain.feature.profile.IsOrderAvailableUseCase
+import com.bunbeauty.domain.feature.profile.UpdateOrderAvailabilityUseCase
 import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -12,6 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUsernameUseCase: GetUsernameUseCase,
+    private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
+    private val updateOrderAvailabilityUseCase: UpdateOrderAvailabilityUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
     initState = Profile.DataState(
@@ -45,7 +49,7 @@ class ProfileViewModel @Inject constructor(
                                 char.uppercase()
                             }
                         ),
-                        acceptOrders = true
+                        acceptOrders = isOrderAvailableUseCase()
                     )
                 }
             },
@@ -76,10 +80,23 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun handleAcceptOrdersToggle(checked: Boolean) {
-        // TODO sent to server
         setState {
             copy(acceptOrders = checked)
         }
+
+        viewModelScope.launchSafe(
+            block = {
+                val updatedValue = updateOrderAvailabilityUseCase(isAvailable = checked)
+                setState {
+                    copy(acceptOrders = updatedValue)
+                }
+            },
+            onError = {
+                setState {
+                    copy(acceptOrders = !checked)
+                }
+            }
+        )
     }
 
     private fun handleLogoutClick() {
@@ -91,15 +108,15 @@ class ProfileViewModel @Inject constructor(
     private fun handleLogoutConfirm(confirmed: Boolean) {
         if (confirmed) {
             viewModelScope.launchSafe(
-                onError = {
-                    // Not handled
-                },
                 block = {
                     logoutUseCase()
                     sendEvent {
                         Profile.Event.OpenLogin
                     }
-                }
+                },
+                onError = {
+                    // Not handled
+                },
             )
         }
     }

@@ -1,6 +1,7 @@
-package com.bunbeauty.domain.repo
+package com.bunbeauty.domain.feature.order
 
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.feature.order.model.OrderAvailability
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.model.order.details.OrderDetails
@@ -12,4 +13,11 @@ interface OrderRepo {
     suspend fun getOrderListFlow(token: String, cafeUuid: String): Flow<List<Order>>
     suspend fun getOrderErrorFlow(token: String, cafeUuid: String): Flow<OrderError>
     suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails?
+    suspend fun getOrderAvailability(companyUuid: String): OrderAvailability?
+    suspend fun updateOrderAvailability(
+        token: String,
+        isAvailable: Boolean,
+        companyUuid: String
+    ): Boolean?
+
 }

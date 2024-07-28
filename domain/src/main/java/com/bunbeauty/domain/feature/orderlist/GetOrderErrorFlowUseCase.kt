@@ -2,7 +2,7 @@ package com.bunbeauty.domain.feature.orderlist
 
 import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.OrderRepo
+import com.bunbeauty.domain.feature.order.OrderRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.firstOrNull

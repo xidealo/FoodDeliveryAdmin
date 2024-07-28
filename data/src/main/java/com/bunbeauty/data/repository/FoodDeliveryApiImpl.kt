@@ -14,12 +14,15 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.city.CityServer
+import com.bunbeauty.data.model.server.company.CompanyPatchServer
+import com.bunbeauty.data.model.server.company.CompanyServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
+import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -250,6 +253,13 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
+    override suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer> {
+        return get(
+            path = "order_availability",
+            parameters = mapOf("companyUuid" to companyUuid)
+        )
+    }
+
     override suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
@@ -259,6 +269,19 @@ class FoodDeliveryApiImpl @Inject constructor(
             path = "order",
             body = mapOf("status" to status.toString()),
             parameters = mapOf("uuid" to orderUuid),
+            token = token
+        )
+    }
+
+    override suspend fun patchCompany(
+        token: String,
+        companyPatch: CompanyPatchServer,
+        companyUuid: String,
+    ): ApiResult<CompanyServer> {
+        return patch(
+            path = "company",
+            body = companyPatch,
+            parameters = mapOf("companyUuid" to companyUuid),
             token = token
         )
     }

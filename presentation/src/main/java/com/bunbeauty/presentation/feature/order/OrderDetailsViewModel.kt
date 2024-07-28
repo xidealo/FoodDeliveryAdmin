@@ -3,8 +3,8 @@ package com.bunbeauty.presentation.feature.order
 import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.feature.order.LoadOrderDetailsUseCase
-import com.bunbeauty.domain.feature.order.UpdateOrderStatusUseCase
+import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
+import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
