@@ -109,4 +109,4 @@ jobs:
           \nRELEASE_KEY_ALIAS=$RELEASE_KEY_ALIAS
           \nRELEASE_KEY_PASSWORD=$RELEASE_KEY_PASSWORD" > local.properties
       - name: run tests
-        run: ./gradlew testDebug
+        run: ./gradlew test
