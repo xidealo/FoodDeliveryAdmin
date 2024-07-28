@@ -4,7 +4,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 data class ProfileViewState(
     val state: State
-): BaseViewState {
+) : BaseViewState {
 
     sealed interface State {
         data object Loading : State

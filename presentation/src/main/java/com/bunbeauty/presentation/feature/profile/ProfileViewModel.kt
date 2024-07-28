@@ -21,7 +21,7 @@ class ProfileViewModel @Inject constructor(
     initState = Profile.DataState(
         state = Profile.DataState.State.LOADING,
         user = null,
-        acceptOrders = null,
+        acceptOrders = null
     )
 ) {
 
@@ -116,9 +116,8 @@ class ProfileViewModel @Inject constructor(
                 },
                 onError = {
                     // Not handled
-                },
+                }
             )
         }
     }
-
 }

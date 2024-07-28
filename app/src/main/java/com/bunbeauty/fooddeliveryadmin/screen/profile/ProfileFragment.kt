@@ -178,12 +178,11 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                     state = ProfileViewState.State.Success(
                         role = "Менеджер",
                         userName = "UserName",
-                        acceptOrders = true,
+                        acceptOrders = true
                     )
                 ),
                 onAction = {}
             )
         }
     }
-
 }

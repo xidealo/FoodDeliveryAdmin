@@ -10,8 +10,8 @@ interface Profile {
     data class DataState(
         val state: State,
         val user: User?,
-        val acceptOrders: Boolean?,
-    ): BaseDataState {
+        val acceptOrders: Boolean?
+    ) : BaseDataState {
 
         data class User(
             val role: UserRole,
@@ -25,7 +25,7 @@ interface Profile {
         }
     }
 
-    sealed interface Action: BaseAction {
+    sealed interface Action : BaseAction {
         data object UpdateData : Action
         data object CafeClick : Action
         data object SettingsClick : Action
@@ -35,13 +35,11 @@ interface Profile {
         data class LogoutConfirm(val confirmed: Boolean) : Action
     }
 
-    sealed interface Event: BaseEvent {
+    sealed interface Event : BaseEvent {
         data object OpenSettings : Event
         data object OpenCafeList : Event
         data object OpenStatistic : Event
         data object OpenLogout : Event
         data object OpenLogin : Event
     }
-
-
 }

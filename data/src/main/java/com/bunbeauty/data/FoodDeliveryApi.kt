@@ -93,7 +93,7 @@ interface FoodDeliveryApi {
     suspend fun patchCompany(
         token: String,
         companyPatch: CompanyPatchServer,
-        companyUuid: String,
+        companyUuid: String
     ): ApiResult<CompanyServer>
 
     // CATEGORIES

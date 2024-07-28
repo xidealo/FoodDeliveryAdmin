@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
-class OrderAvailabilityNotUpdated: Exception()
+class OrderAvailabilityNotUpdated : Exception()
 
 class UpdateOrderAvailabilityUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
@@ -20,8 +20,7 @@ class UpdateOrderAvailabilityUseCase @Inject constructor(
         return orderRepo.updateOrderAvailability(
             token = token,
             isAvailable = isAvailable,
-            companyUuid = companyUuid,
+            companyUuid = companyUuid
         ) ?: throw OrderAvailabilityNotUpdated()
     }
-
 }

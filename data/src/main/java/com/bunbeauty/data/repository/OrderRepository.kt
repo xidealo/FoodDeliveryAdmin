@@ -123,11 +123,13 @@ class OrderRepository @Inject constructor(
         isAvailable: Boolean,
         companyUuid: String
     ): Boolean? {
-        return when (val result = networkConnector.patchCompany(
-            token = token,
-            companyPatch = CompanyPatchServer(isOpen = isAvailable),
-            companyUuid = companyUuid,
-        )) {
+        return when (
+            val result = networkConnector.patchCompany(
+                token = token,
+                companyPatch = CompanyPatchServer(isOpen = isAvailable),
+                companyUuid = companyUuid
+            )
+        ) {
             is ApiResult.Success -> {
                 cachedOrderAvailability = OrderAvailability(isAvailable = result.data.isOpen)
                 result.data.isOpen

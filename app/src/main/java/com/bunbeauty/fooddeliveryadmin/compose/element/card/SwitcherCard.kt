@@ -50,13 +50,13 @@ fun SwitcherCard(
                 Text(
                     text = text,
                     style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
                 hint?.let {
                     Text(
                         text = hint,
                         style = AdminTheme.typography.bodySmall,
-                        color = AdminTheme.colors.main.onSurfaceVariant,
+                        color = AdminTheme.colors.main.onSurfaceVariant
                     )
                 }
             }

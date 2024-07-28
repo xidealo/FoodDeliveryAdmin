@@ -276,7 +276,7 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun patchCompany(
         token: String,
         companyPatch: CompanyPatchServer,
-        companyUuid: String,
+        companyUuid: String
     ): ApiResult<CompanyServer> {
         return patch(
             path = "company",

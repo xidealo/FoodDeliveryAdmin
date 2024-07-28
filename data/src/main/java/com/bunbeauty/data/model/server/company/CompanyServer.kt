@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class CompanyServer(
-    val isOpen: Boolean,
+    val isOpen: Boolean
 )

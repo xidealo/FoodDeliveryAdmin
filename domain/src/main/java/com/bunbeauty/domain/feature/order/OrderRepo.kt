@@ -19,5 +19,4 @@ interface OrderRepo {
         isAvailable: Boolean,
         companyUuid: String
     ): Boolean?
-
 }

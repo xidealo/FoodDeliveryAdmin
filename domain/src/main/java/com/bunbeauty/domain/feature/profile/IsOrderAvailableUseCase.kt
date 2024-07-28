@@ -15,5 +15,4 @@ class IsOrderAvailableUseCase @Inject constructor(
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         return orderRepo.getOrderAvailability(companyUuid = companyUuid)?.isAvailable ?: true
     }
-
 }
