@@ -1,4 +1,4 @@
-# 👩‍🍳 FoodDeliveryAdmin app
+# 👩‍🍳 Food Delivery Admin App
 
 The app allows restaurant managers to track orders and statistics, edit menus, send push notifications
 
