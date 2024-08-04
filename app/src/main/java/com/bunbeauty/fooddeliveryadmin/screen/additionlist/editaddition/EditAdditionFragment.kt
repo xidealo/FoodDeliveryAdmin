@@ -177,7 +177,7 @@ class EditAdditionFragment :
             } else {
                 null
             },
-            price = state.price,
+            price = state.price.toString(),
             editPriceError = if (state.hasEditPriceError) {
                 R.string.error_add_addition_empty_new_price
             } else {
@@ -188,6 +188,7 @@ class EditAdditionFragment :
             hasError = state.hasEditError
         )
     }
+
     override fun handleEvent(event: EditAddition.Event) {
         when (event) {
             is EditAddition.Event.Back -> {

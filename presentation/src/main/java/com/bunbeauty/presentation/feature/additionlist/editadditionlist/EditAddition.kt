@@ -10,7 +10,7 @@ interface EditAddition {
         val name: String,
         val hasEditNameError: Boolean,
         val priority: Int,
-        val price: String,
+        val price: Int?,
         val hasEditPriceError: Boolean,
         val fullName: String?,
         val hasEditFullNameError: Boolean,

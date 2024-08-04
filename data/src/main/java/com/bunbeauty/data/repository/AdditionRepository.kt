@@ -1,6 +1,7 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.addition.mapAdditionServerToAddition
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionServerToPatchAddition
@@ -53,12 +54,36 @@ class AdditionRepository @Inject constructor(
             additionUuid = additionUuid,
             additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
             token = token
-        )
-        getAdditionCacheList(token = token)
+        ).onSuccess {
+            updateLocalCache(
+                uuid = additionUuid,
+                updateAddition = updateAddition
+            )
+        }
+    }
+
+    private fun updateLocalCache(
+        uuid: String,
+        updateAddition: UpdateAddition
+    ) {
+        additionListCache = additionListCache?.map { addition: Addition ->
+            if (uuid == addition.uuid) {
+                addition.copy(
+                    uuid = uuid,
+                    name = updateAddition.name ?: addition.name,
+                    priority = updateAddition.priority ?: addition.priority,
+                    fullName = updateAddition.fullName ?: addition.fullName,
+                    price = updateAddition.price ?: addition.price,
+                    photoLink = updateAddition.photoLink ?: addition.photoLink,
+                    isVisible = updateAddition.isVisible ?: addition.isVisible
+                )
+            } else {
+                addition
+            }
+        }
     }
 
     override suspend fun clearCache() {
-        TODO("Not yet implemented")
-        // additionDao.deleteAll()
+        additionListCache = null
     }
 }
