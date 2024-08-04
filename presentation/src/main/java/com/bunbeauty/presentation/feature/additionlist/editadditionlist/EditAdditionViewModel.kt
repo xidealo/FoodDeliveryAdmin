@@ -82,8 +82,7 @@ class EditAdditionViewModel @Inject constructor(
     }
 
     private fun updateEditAddition() {
-
-        //TODO(Добавить состояние загрузки)
+        // TODO(Добавить состояние загрузки)
 
         setState {
             copy(
