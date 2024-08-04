@@ -25,12 +25,14 @@ class AdditionRepository @Inject constructor(
     }
 
     override suspend fun getAddition(additionUuid: String, token: String): Addition? {
-        val additive = additionListCache?.find { addition ->
+        val addition = additionListCache?.find { addition ->
             addition.uuid == additionUuid
         }
-        return additions ?: fetchAdditionList(
+        return addition ?: fetchAdditionList(
             token = token
-        ).find { addition -> addition.uuid == additionUuid }
+        ).find { foundAddition ->
+            foundAddition.uuid == additionUuid
+        }
     }
 
     private suspend fun fetchAdditionList(
