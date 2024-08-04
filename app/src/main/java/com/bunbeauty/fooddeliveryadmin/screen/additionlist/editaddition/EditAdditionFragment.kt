@@ -14,9 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
@@ -35,23 +32,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EditAdditionFragment :
     BaseComposeFragment<EditAddition.DataState, EditAdditionViewState, EditAddition.Action, EditAddition.Event>() {
-    companion object {
-        const val ADDITION_REQUEST_KEY = "ADDITION_REQUEST_KEY"
-        const val ADDITION_KEY = "ADDITION_KEY"
-    }
 
     override val viewModel: EditAdditionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(EditAddition.Action.InitAddition)
-        setFragmentResultListener(
-            ADDITION_REQUEST_KEY
-        ) { requestKey, bundle ->
-            viewModel.onAction(
-                EditAddition.Action.OnSaveEditAdditionClick
-            )
-        }
     }
 
     @Composable
@@ -198,10 +184,6 @@ class EditAdditionFragment :
             is EditAddition.Event.ShowUpdateAdditionSuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(R.string.msg_edit_addition_updated, event.additionName)
-                )
-                setFragmentResult(
-                    ADDITION_REQUEST_KEY,
-                    bundleOf(ADDITION_KEY to event.additionName)
                 )
                 findNavController().popBackStack()
             }
