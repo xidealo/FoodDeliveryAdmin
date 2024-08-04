@@ -64,7 +64,7 @@ class DataSourceModule {
         install(Logging) {
             logger = object : KtorLogger {
                 override fun log(message: String) {
-                    Log.v("Ktor", message)
+                    Log.d("Ktor", message)
                 }
             }
             level = LogLevel.ALL

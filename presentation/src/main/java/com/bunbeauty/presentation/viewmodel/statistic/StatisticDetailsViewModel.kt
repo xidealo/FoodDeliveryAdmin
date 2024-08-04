@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StatisticDetailsViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
-    dataStoreRepo: DataStoreRepo,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
