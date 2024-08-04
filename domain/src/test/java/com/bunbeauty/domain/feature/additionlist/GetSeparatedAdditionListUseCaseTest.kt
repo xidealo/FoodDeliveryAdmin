@@ -5,13 +5,11 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetSeparatedAdditionListUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()
@@ -36,14 +34,13 @@ class GetSeparatedAdditionListUseCaseTest {
         )
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery {
-            additionRepo.getAdditionListFromRemote(
+            additionRepo.getAdditionList(
                 token = token
-
             )
         } returns emptyList()
 
         // When
-        val separatedAdditionList = useCase()
+        val separatedAdditionList = useCase(refreshing = false)
         // Then
         assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
     }
@@ -76,7 +73,7 @@ class GetSeparatedAdditionListUseCaseTest {
             )
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
-                additionRepo.getAdditionListFromRemote(
+                additionRepo.getAdditionList(
                     token = token
                 )
             } returns listOf(
@@ -98,7 +95,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
@@ -133,7 +130,7 @@ class GetSeparatedAdditionListUseCaseTest {
 
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
-                additionRepo.getAdditionListFromRemote(
+                additionRepo.getAdditionList(
                     token = token
                 )
             } returns listOf(
@@ -155,7 +152,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
@@ -192,10 +189,9 @@ class GetSeparatedAdditionListUseCaseTest {
                     )
                 )
             )
-
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
-                additionRepo.getAdditionListFromRemote(
+                additionRepo.getAdditionList(
                     token = token
                 )
             } returns listOf(
@@ -221,7 +217,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
@@ -254,7 +250,7 @@ class GetSeparatedAdditionListUseCaseTest {
             )
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
-                additionRepo.getAdditionListFromRemote(
+                additionRepo.getAdditionList(
                     token = token
                 )
             } returns listOf(
@@ -276,7 +272,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }

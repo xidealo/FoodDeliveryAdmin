@@ -11,13 +11,11 @@ import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class UpdateMenuProductUseCaseTest {
 
     private val menuProductRepo: MenuProductRepo = mockk(relaxed = true)

@@ -25,8 +25,8 @@ class EditAdditionViewModel @Inject constructor(
         uuid = "",
         name = "",
         priority = 0,
-        price = "",
-        isLoading = false,
+        price = null,
+        isLoading = true,
         isVisible = false,
         fullName = "",
         hasEditFullNameError = false,
@@ -69,15 +69,21 @@ class EditAdditionViewModel @Inject constructor(
                 )
             }
 
-            is EditAddition.Action.EditPriceAddition -> setState {
-                copy(
-                    price = action.price
-                )
+            is EditAddition.Action.EditPriceAddition -> {
+                action.price.toIntOrNull()?.let { price ->
+                    setState {
+                        copy(
+                            price = price
+                        )
+                    }
+                }
             }
         }
     }
 
     private fun updateEditAddition() {
+        // TODO(Добавить состояние загрузки)
+
         setState {
             copy(
                 hasEditError = false,
@@ -94,12 +100,11 @@ class EditAdditionViewModel @Inject constructor(
                             name = name,
                             priority = priority,
                             fullName = fullName,
-                            price = price.toIntOrNull() ?: 0,
+                            price = price,
                             isVisible = isVisible
                         )
                     },
                     additionUuid = state.value.uuid
-
                 )
                 addEvent {
                     EditAddition.Event.ShowUpdateAdditionSuccess(
@@ -107,8 +112,7 @@ class EditAdditionViewModel @Inject constructor(
                     )
                 }
             },
-            onError =
-            { throwable ->
+            onError = { throwable ->
                 setState {
                     when (throwable) {
                         is AdditionNameException -> {
@@ -141,8 +145,9 @@ class EditAdditionViewModel @Inject constructor(
                         name = addition.name,
                         priority = addition.priority,
                         fullName = addition.fullName,
-                        price = addition.price.toString(),
-                        isVisible = addition.isVisible
+                        price = addition.price,
+                        isVisible = addition.isVisible,
+                        isLoading = false
                     )
                 }
             },
