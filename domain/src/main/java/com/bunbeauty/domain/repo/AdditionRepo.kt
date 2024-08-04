@@ -5,7 +5,7 @@ import com.bunbeauty.domain.model.addition.UpdateAddition
 
 interface AdditionRepo {
     /*GET*/
-    suspend fun getAdditionCacheList(token: String): List<Addition>
+    suspend fun getAdditionCacheList(additionUuid: String, token: String): List<Addition>
 
     suspend fun getAdditionListFromRemote(
         token: String

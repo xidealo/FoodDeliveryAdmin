@@ -15,15 +15,18 @@ class AdditionRepository @Inject constructor(
 
     private var additionListCache: List<Addition>? = null
 
-    override suspend fun getAdditionCacheList(token: String): List<Addition> {
+    override suspend fun getAdditionCacheList(
+        additionUuid: String,
+        token: String
+    ): List<Addition> {
         return additionListCache ?: getAdditionListFromRemote(token = token)
     }
 
     override suspend fun getAddition(additionUuid: String, token: String): Addition? {
-        val additions = additionListCache?.find { addition ->
+        val additive = additionListCache?.find { addition ->
             addition.uuid == additionUuid
         }
-        return additions ?: getAdditionListFromRemote(
+        return additive ?: getAdditionListFromRemote(
             token = token
         ).find { addition -> addition.uuid == additionUuid }
     }
@@ -54,7 +57,7 @@ class AdditionRepository @Inject constructor(
             additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
             token = token
         )
-        getAdditionCacheList(token = token)
+        // getAdditionCacheList(additionUuid = additionUuid, token = token)
     }
 
     override suspend fun clearCache() {
