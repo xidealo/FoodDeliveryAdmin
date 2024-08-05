@@ -82,10 +82,9 @@ class EditAdditionViewModel @Inject constructor(
     }
 
     private fun updateEditAddition() {
-        // TODO(Добавить состояние загрузки)
-
         setState {
             copy(
+                isLoading = true,
                 hasEditError = false,
                 hasEditNameError = false,
                 hasEditFullNameError = false,
@@ -106,6 +105,9 @@ class EditAdditionViewModel @Inject constructor(
                     },
                     additionUuid = state.value.uuid
                 )
+                setState {
+                    copy(isLoading = false)
+                }
                 addEvent {
                     EditAddition.Event.ShowUpdateAdditionSuccess(
                         additionName = state.value.name
@@ -116,18 +118,18 @@ class EditAdditionViewModel @Inject constructor(
                 setState {
                     when (throwable) {
                         is AdditionNameException -> {
-                            copy(hasEditNameError = true)
+                            copy(hasEditNameError = true, isLoading = false)
                         }
 
                         is AdditionPriceException -> {
-                            copy(hasEditPriceError = true)
+                            copy(hasEditPriceError = true, isLoading = false)
                         }
 
                         is AdditionFullNameException -> {
-                            copy(hasEditFullNameError = true)
+                            copy(hasEditFullNameError = true, isLoading = false)
                         }
 
-                        else -> copy(hasEditError = true)
+                        else -> copy(hasEditError = true, isLoading = false)
                     }
                 }
             }
