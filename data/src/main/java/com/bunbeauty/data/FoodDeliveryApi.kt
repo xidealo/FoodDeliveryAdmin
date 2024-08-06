@@ -10,12 +10,15 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.city.CityServer
+import com.bunbeauty.data.model.server.company.CompanyPatchServer
+import com.bunbeauty.data.model.server.company.CompanyServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
+import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
@@ -78,12 +81,20 @@ interface FoodDeliveryApi {
     ): ApiResult<ServerList<OrderServer>>
 
     suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<OrderDetailsServer>
+    suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer>
 
     suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
         status: OrderStatus
     ): ApiResult<OrderDetailsServer>
+
+    // COMPANY
+    suspend fun patchCompany(
+        token: String,
+        companyPatch: CompanyPatchServer,
+        companyUuid: String
+    ): ApiResult<CompanyServer>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(

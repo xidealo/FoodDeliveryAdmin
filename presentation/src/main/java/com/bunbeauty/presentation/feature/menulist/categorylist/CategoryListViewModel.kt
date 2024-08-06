@@ -29,11 +29,11 @@ class CategoryListViewModel @Inject constructor(
     override fun reduce(action: CategoryList.Action, dataState: CategoryList.DataState) {
         when (action) {
             CategoryList.Action.Init -> loadData()
-            CategoryList.Action.OnBackClick -> addEvent {
+            CategoryList.Action.OnBackClick -> sendEvent {
                 CategoryList.Event.Back
             }
 
-            CategoryList.Action.OnSaveClick -> addEvent {
+            CategoryList.Action.OnSaveClick -> sendEvent {
                 CategoryList.Event.Save(
                     dataState.getSelectedCategory()
                         .map { selectableCategory -> selectableCategory.category.uuid }

@@ -14,6 +14,7 @@ import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.data.repository.PhotoRepository
 import com.bunbeauty.data.repository.StatisticRepository
 import com.bunbeauty.data.repository.UserAuthorizationRepository
+import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.CafeRepo
@@ -22,7 +23,6 @@ import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
-import com.bunbeauty.domain.repo.OrderRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
