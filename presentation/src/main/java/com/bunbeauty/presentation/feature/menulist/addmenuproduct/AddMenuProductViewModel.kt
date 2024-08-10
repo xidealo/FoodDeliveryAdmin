@@ -5,10 +5,10 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesExcepti
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductOldPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.AddMenuProductUseCase
-import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
-import com.bunbeauty.domain.model.menuproduct.MenuProductPost
+import com.bunbeauty.domain.feature.menu.addmenuproduct.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddMenuProductViewModel @Inject constructor(
     private val addMenuProductUseCase: AddMenuProductUseCase,
-    private val getCategoryListUseCase: GetCategoryListUseCase
+    private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase
 ) :
     BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
         initState = AddMenuProduct.DataState(
@@ -36,8 +36,8 @@ class AddMenuProductViewModel @Inject constructor(
             isVisibleInMenu = true,
             isVisibleInRecommendation = false,
             hasError = null,
-            selectableCategoryList = listOf(),
-            photoLink = "",
+            categoryList = listOf(),
+            photoLink = null,
             hasPhotoLinkError = false,
             hasCategoriesError = false
         )
@@ -98,8 +98,9 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
             AddMenuProduct.Action.OnShowCategoryListClick -> sendEvent {
                 AddMenuProduct.Event.GoToCategoryList(
-                    dataState.getSelectedCategory()
-                        .map { selectableCategory -> selectableCategory.category.uuid }
+                    dataState.selectedCategoryList.map { selectableCategory ->
+                        selectableCategory.category.uuid
+                    }
                 )
             }
 
@@ -124,16 +125,14 @@ class AddMenuProductViewModel @Inject constructor(
             }
 
             AddMenuProduct.Action.OnClearPhotoClick -> setState {
-                copy(
-                    photoLink = ""
-                )
+                copy(photoLink = null)
             }
 
             is AddMenuProduct.Action.SelectCategoryList -> setState {
                 copy(
-                    selectableCategoryList = selectableCategoryList.map { selectableCategory ->
-                        selectableCategory.copy(
-                            selected = action.categoryUuidList.contains(selectableCategory.category.uuid)
+                    categoryList = categoryList.map { category ->
+                        category.copy(
+                            selected = action.categoryUuidList.contains(category.category.uuid)
                         )
                     }
                 )
@@ -153,12 +152,7 @@ class AddMenuProductViewModel @Inject constructor(
                 setState {
                     copy(
                         hasError = false,
-                        selectableCategoryList = getCategoryListUseCase().map { category ->
-                            AddMenuProduct.DataState.SelectableCategory(
-                                category = category,
-                                selected = false
-                            )
-                        }
+                        categoryList = getSelectableCategoryListUseCase()
                     )
                 }
             },
@@ -176,6 +170,7 @@ class AddMenuProductViewModel @Inject constructor(
                 hasNameError = false,
                 hasNewPriceError = false,
                 hasOldPriceError = false,
+                hasDescriptionError = false,
                 hasPhotoLinkError = false,
                 hasCategoriesError = false,
                 hasError = false
@@ -184,24 +179,19 @@ class AddMenuProductViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 addMenuProductUseCase(
-                    menuProductPost = state.value.run {
-                        MenuProductPost(
+                    params =  state.value.run {
+                        AddMenuProductUseCase.Params(
                             name = name,
-                            newPrice = newPrice.toIntOrNull() ?: 0,
-                            oldPrice = oldPrice.toIntOrNull(),
+                            newPrice = newPrice,
+                            oldPrice = oldPrice,
                             utils = utils,
-                            nutrition = nutrition.toIntOrNull(),
+                            nutrition = nutrition,
                             description = description,
                             comboDescription = comboDescription,
                             photoLink = photoLink,
-                            barcode = 0,
                             isVisible = isVisibleInMenu,
-                            categories = selectableCategoryList
-                                .filter { selectableCategory -> selectableCategory.selected }
-                                .map { selectableCategory ->
-                                    selectableCategory.category.uuid
-                                },
-                            isRecommended = isVisibleInRecommendation
+                            isRecommended = isVisibleInRecommendation,
+                            categories = selectedCategoryList,
                         )
                     }
                 )
@@ -220,16 +210,20 @@ class AddMenuProductViewModel @Inject constructor(
                             copy(hasNewPriceError = true)
                         }
 
+                        is MenuProductOldPriceException -> {
+                            copy(hasOldPriceError = true)
+                        }
+
                         is MenuProductDescriptionException -> {
                             copy(hasDescriptionError = true)
                         }
 
-                        is MenuProductPhotoLinkException -> {
-                            copy(hasPhotoLinkError = true)
-                        }
-
                         is MenuProductCategoriesException -> {
                             copy(hasCategoriesError = true)
+                        }
+
+                        is MenuProductPhotoLinkException -> {
+                            copy(hasPhotoLinkError = true)
                         }
 
                         else -> copy(hasError = true)

@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.graphics.Color
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
@@ -25,9 +24,10 @@ data class AddMenuProductViewState(
     @StringRes val categoryHint: Int?,
     val isVisibleInMenu: Boolean,
     val isVisibleInRecommendation: Boolean,
-    val categoriesErrorBorder: BorderStroke?,
-    val photoBlock: PhotoBlock,
-    val selectableCategoryList: List<CategoryItem>
+    val categoriesBorder: BorderStroke?,
+    val selectableCategoryList: List<CategoryItem>,
+    val photoLink: String?,
+    val photoError: Boolean,
 ) : BaseViewState {
     @Immutable
     data class CategoryItem(
@@ -35,16 +35,4 @@ data class AddMenuProductViewState(
         val name: String,
         val selected: Boolean
     )
-
-    @Immutable
-    sealed interface PhotoBlock {
-        @Immutable
-        data class HasPhoto(val photoLink: String) : PhotoBlock
-
-        @Immutable
-        data class EmptyPhoto(
-            val photoErrorBorder: BorderStroke?,
-            val photoContainsColor: Color
-        ) : PhotoBlock
-    }
 }

@@ -31,9 +31,10 @@ fun SecondaryButton(
     onClick: () -> Unit,
     elevated: Boolean = true,
     isEnabled: Boolean = true,
+    isError: Boolean = false,
     @DrawableRes icon: Int? = null,
     borderColor: Color = AdminTheme.colors.main.onSecondary,
-    buttonColors: ButtonColors = AdminButtonDefaults.secondaryButtonColors
+    buttonColors: ButtonColors = AdminButtonDefaults.neutralSecondaryButtonColors
 ) {
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentEnforcement provides false
@@ -41,10 +42,18 @@ fun SecondaryButton(
         OutlinedButton(
             modifier = modifier.fillMaxWidth(),
             onClick = onClick,
-            colors = buttonColors,
+            colors = if (isError) {
+                AdminButtonDefaults.errorSecondaryButtonColors
+            } else {
+                buttonColors
+            },
             border = BorderStroke(
                 width = 2.dp,
-                color = borderColor
+                color = if (isError) {
+                    AdminTheme.colors.main.error
+                } else {
+                    borderColor
+                }
             ),
             shape = AdminButtonDefaults.buttonShape,
             elevation = AdminButtonDefaults.getButtonElevation(elevated),
@@ -60,7 +69,7 @@ fun SecondaryButton(
             }
             Text(
                 text = stringResource(textStringId),
-                style = AdminTheme.typography.labelLarge.medium
+                style = AdminTheme.typography.labelLarge.medium,
             )
         }
     }
@@ -86,7 +95,7 @@ private fun SecondaryButtonWithIconPreview() {
             onClick = { },
             icon = R.drawable.ic_add_photo,
             borderColor = AdminTheme.colors.main.primary,
-            buttonColors = AdminButtonDefaults.secondaryPrimaryButtonColors
+            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
         )
     }
 }

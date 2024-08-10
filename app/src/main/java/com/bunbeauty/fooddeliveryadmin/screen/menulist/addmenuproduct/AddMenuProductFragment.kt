@@ -1,6 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
 
 import android.os.Bundle
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -64,7 +68,7 @@ class AddMenuProductFragment :
         viewModel.onAction(AddMenuProduct.Action.Init)
         setFragmentResultListener(
             CATEGORY_LIST_REQUEST_KEY
-        ) { requestKey, bundle ->
+        ) { _, bundle ->
             viewModel.onAction(
                 AddMenuProduct.Action.SelectCategoryList(
                     categoryUuidList = bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
@@ -75,7 +79,7 @@ class AddMenuProductFragment :
 
         setFragmentResultListener(
             SELECT_PHOTO_REQUEST_KEY
-        ) { requestKey, bundle ->
+        ) { _, bundle ->
             viewModel.onAction(
                 AddMenuProduct.Action.SelectPhoto(
                     selectedPhotoUrl = bundle.getString(SELECTED_PHOTO_KEY) ?: ""
@@ -100,14 +104,24 @@ class AddMenuProductFragment :
                 onAction(AddMenuProduct.Action.OnBackClick)
             },
             actionButton = {
-                LoadingButton(
+                Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_order_details_save,
-                    onClick = {
-                        onAction(AddMenuProduct.Action.OnCreateMenuProductClick)
-                    },
-                    isLoading = state.isLoadingButton
-                )
+                    verticalArrangement = spacedBy(8.dp)
+                ) {
+                    if (state.photoLink == null) {
+                        AddPhotoButton(
+                            onAction = onAction,
+                            isError = state.photoError,
+                        )
+                    }
+                    LoadingButton(
+                        textStringId = R.string.action_order_details_save,
+                        onClick = {
+                            onAction(AddMenuProduct.Action.OnCreateMenuProductClick)
+                        },
+                        isLoading = state.isLoadingButton
+                    )
+                }
             }
         ) {
             Column(
@@ -154,9 +168,9 @@ class AddMenuProductFragment :
                             onValueChange = { oldPrice ->
                                 onAction(AddMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
                             },
+                            errorMessageId = state.oldPriceError,
                             enabled = !state.isLoadingButton,
                             keyboardType = KeyboardType.Number,
-                            errorMessageId = state.oldPriceError
                         )
 
                         Row(
@@ -235,13 +249,12 @@ class AddMenuProductFragment :
                     modifier = Modifier
                         .padding(top = 8.dp),
                     hintStringId = state.categoryHint,
-                    border = state.categoriesErrorBorder,
+                    border = state.categoriesBorder,
                     label = state.categoryLabel,
                     onClick = {
                         onAction(AddMenuProduct.Action.OnShowCategoryListClick)
                     }
                 )
-
                 SwitcherCard(
                     modifier = Modifier.padding(top = 8.dp),
                     checked = state.isVisibleInMenu,
@@ -253,7 +266,6 @@ class AddMenuProductFragment :
                     text = stringResource(R.string.title_add_menu_product_is_visible_in_menu),
                     enabled = !state.isLoadingButton
                 )
-
                 SwitcherCard(
                     modifier = Modifier.padding(top = 8.dp),
                     checked = state.isVisibleInRecommendation,
@@ -265,53 +277,24 @@ class AddMenuProductFragment :
                     text = stringResource(R.string.title_add_menu_product_is_recommendation),
                     enabled = !state.isLoadingButton
                 )
+                PhotoBlock(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    photoLink = state.photoLink,
+                    onAction = onAction
+                )
 
-                when (val photoBlock = state.photoBlock) {
-                    is AddMenuProductViewState.PhotoBlock.EmptyPhoto -> AddPhotoItem(
-                        modifier = Modifier
-                            .padding(top = 8.dp),
-                        onAction = onAction
-                    )
-
-                    is AddMenuProductViewState.PhotoBlock.HasPhoto ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            AdminCard(
-                                onClick = {
-                                    onAction(AddMenuProduct.Action.OnAddPhotoClick)
-                                }
-                            ) {
-                                AdminAsyncImage(
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                    photoUrl = photoBlock.photoLink,
-                                    contentDescription = R.string.description_product
-                                )
-                            }
-                            IconButton(onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) }) {
-                                Icon(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = painterResource(R.drawable.ic_clear),
-                                    contentDescription = null,
-                                    tint = AdminTheme.colors.main.surface
-                                )
-                            }
-                        }
-                }
-
-                Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
+                Spacer(modifier = Modifier.height(136.dp))
             }
         }
     }
 
     @Composable
-    private fun AddPhotoItem(
+    private fun AddPhotoButton(
+        isError: Boolean,
+        onAction: (AddMenuProduct.Action) -> Unit,
         modifier: Modifier = Modifier,
-        onAction: (AddMenuProduct.Action) -> Unit
     ) {
         SecondaryButton(
             modifier = modifier,
@@ -319,10 +302,47 @@ class AddMenuProductFragment :
             onClick = {
                 onAction(AddMenuProduct.Action.OnAddPhotoClick)
             },
-            icon = R.drawable.ic_add_photo,
-            borderColor = AdminTheme.colors.main.primary,
-            buttonColors = AdminButtonDefaults.secondaryPrimaryButtonColors
+            isError = isError,
+            borderColor = if (isError) {
+                AdminTheme.colors.main.error
+            } else {
+                AdminTheme.colors.main.primary
+            },
+            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
         )
+    }
+
+    @Composable
+    private fun PhotoBlock(
+        photoLink: String?,
+        onAction: (AddMenuProduct.Action) -> Unit,
+        modifier: Modifier = Modifier,
+    ) {
+        photoLink ?: return
+
+        Box(modifier = modifier) {
+            AdminAsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable {
+                        onAction(AddMenuProduct.Action.OnAddPhotoClick)
+                    },
+                photoUrl = photoLink,
+                contentDescription = R.string.description_product
+            )
+            IconButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) }
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(R.drawable.ic_clear),
+                    contentDescription = null,
+                    tint = AdminTheme.colors.main.surface
+                )
+            }
+        }
     }
 
     @Composable
@@ -353,12 +373,10 @@ class AddMenuProductFragment :
                     categoryHint = R.string.hint_add_menu_product_categories,
                     isVisibleInMenu = false,
                     isVisibleInRecommendation = false,
-                    categoriesErrorBorder = null,
+                    categoriesBorder = null,
                     selectableCategoryList = emptyList(),
-                    photoBlock = AddMenuProductViewState.PhotoBlock.EmptyPhoto(
-                        photoErrorBorder = null,
-                        photoContainsColor = AdminTheme.colors.main.onSurface
-                    )
+                    photoLink = "",
+                    photoError = false,
                 ),
                 onAction = {}
             )

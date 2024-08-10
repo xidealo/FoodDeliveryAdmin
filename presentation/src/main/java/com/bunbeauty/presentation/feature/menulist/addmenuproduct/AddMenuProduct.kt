@@ -1,6 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.addmenuproduct
 
-import com.bunbeauty.domain.model.Category
+import com.bunbeauty.domain.model.category.SelectableCategory
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -18,23 +18,23 @@ interface AddMenuProduct {
         val nutrition: String,
         val utils: String,
         val comboDescription: String,
-        val photoLink: String,
+        val photoLink: String?,
         val hasPhotoLinkError: Boolean,
         val isLoadingButton: Boolean,
         val isVisibleInMenu: Boolean,
         val isVisibleInRecommendation: Boolean,
         val hasError: Boolean?,
-        val selectableCategoryList: List<SelectableCategory>,
+        val categoryList: List<SelectableCategory>,
         val hasCategoriesError: Boolean
     ) : BaseDataState {
 
-        fun getSelectedCategory() =
-            selectableCategoryList.filter { selectableCategory -> selectableCategory.selected }
+        val selectedCategoryList: List<SelectableCategory>
+            get() {
+                return categoryList.filter { category ->
+                    category.selected
+                }
+            }
 
-        data class SelectableCategory(
-            val category: Category,
-            val selected: Boolean
-        )
     }
 
     sealed interface Action : BaseAction {

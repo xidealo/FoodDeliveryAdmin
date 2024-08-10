@@ -41,49 +41,33 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
         comboDescription = comboDescription,
         isLoadingButton = false,
         utils = utils,
-        categoryLabel = if (getSelectedCategory().isEmpty()) {
+        categoryLabel = if (selectedCategoryList.isEmpty()) {
             stringResource(id = R.string.title_add_menu_product_categories)
         } else {
-            getSelectedCategory()
-                .joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
+            selectedCategoryList.joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
                     category.category.name
                 }
         },
-        categoryHint = if (getSelectedCategory().isEmpty()) {
+        categoryHint = if (selectedCategoryList.isEmpty()) {
             null
         } else {
             R.string.hint_add_menu_product_categories
         },
         isVisibleInMenu = isVisibleInMenu,
         isVisibleInRecommendation = isVisibleInRecommendation,
-
-        photoBlock = if (photoLink.isEmpty()) {
-            AddMenuProductViewState.PhotoBlock.EmptyPhoto(
-                photoErrorBorder = if (hasPhotoLinkError) {
-                    BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
-                } else {
-                    null
-                },
-                photoContainsColor = if (hasPhotoLinkError) {
-                    AdminTheme.colors.main.error
-                } else {
-                    AdminTheme.colors.main.onSurface
-                }
-            )
-        } else {
-            AddMenuProductViewState.PhotoBlock.HasPhoto(photoLink = photoLink)
-        },
-        categoriesErrorBorder = if (hasCategoriesError) {
+        categoriesBorder = if (hasCategoriesError) {
             BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
         } else {
             null
         },
-        selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+        selectableCategoryList = selectedCategoryList.map { selectableCategory ->
             AddMenuProductViewState.CategoryItem(
                 uuid = selectableCategory.category.uuid,
                 name = selectableCategory.category.name,
                 selected = selectableCategory.selected
             )
-        }
+        },
+        photoLink = photoLink,
+        photoError = hasPhotoLinkError,
     )
 }
