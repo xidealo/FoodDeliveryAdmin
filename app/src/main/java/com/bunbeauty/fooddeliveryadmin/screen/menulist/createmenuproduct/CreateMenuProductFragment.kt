@@ -1,6 +1,8 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
 import android.os.Bundle
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -49,16 +51,16 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECTED_PHOTO_KEY
-import com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment.Companion.SELECT_PHOTO_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val IMAGE = "image/*"
+
 @AndroidEntryPoint
-class AddMenuProductFragment :
+class CreateMenuProductFragment :
     BaseComposeFragment<AddMenuProduct.DataState, AddMenuProductViewState, AddMenuProduct.Action, AddMenuProduct.Event>() {
 
     override val viewModel: AddMenuProductViewModel by viewModels()
@@ -76,28 +78,18 @@ class AddMenuProductFragment :
                 )
             )
         }
-
-        setFragmentResultListener(
-            SELECT_PHOTO_REQUEST_KEY
-        ) { _, bundle ->
-            viewModel.onAction(
-                AddMenuProduct.Action.SelectPhoto(
-                    selectedPhotoUrl = bundle.getString(SELECTED_PHOTO_KEY) ?: ""
-                )
-            )
-        }
     }
 
     @Composable
     override fun Screen(state: AddMenuProductViewState, onAction: (AddMenuProduct.Action) -> Unit) {
-        AddMenuProductScreen(state = state, onAction = onAction)
-    }
+        val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                onAction(AddMenuProduct.Action.SelectPhoto(uri = uri.toString()))
+            } else {
+                onAction(AddMenuProduct.Action.OnCreateMenuProductClick)
+            }
+        }
 
-    @Composable
-    fun AddMenuProductScreen(
-        state: AddMenuProductViewState,
-        onAction: (AddMenuProduct.Action) -> Unit
-    ) {
         AdminScaffold(
             title = stringResource(R.string.title_add_menu_product),
             backActionClick = {
@@ -108,10 +100,12 @@ class AddMenuProductFragment :
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalArrangement = spacedBy(8.dp)
                 ) {
-                    if (state.photoLink == null) {
+                    if (state.photoUri == null) {
                         AddPhotoButton(
-                            onAction = onAction,
                             isError = state.photoError,
+                            onClick = {
+                                galleryLauncher.launch(IMAGE)
+                            }
                         )
                     }
                     LoadingButton(
@@ -130,120 +124,10 @@ class AddMenuProductFragment :
                     .padding(horizontal = 16.dp)
                     .padding(top = 16.dp)
             ) {
-                AdminCard(
-                    clickable = false
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(top = 8.dp, bottom = 16.dp)
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = state.name,
-                            labelStringId = R.string.hint_edit_menu_product_name,
-                            onValueChange = { name ->
-                                onAction(AddMenuProduct.Action.OnNameTextChanged(name))
-                            },
-                            errorMessageId = state.nameError,
-                            enabled = !state.isLoadingButton
-                        )
-
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = state.newPrice,
-                            labelStringId = R.string.hint_edit_menu_product_new_price,
-                            onValueChange = { newPrice ->
-                                onAction(AddMenuProduct.Action.OnNewPriceTextChanged(newPrice))
-                            },
-                            errorMessageId = state.newPriceError,
-                            enabled = !state.isLoadingButton,
-                            keyboardType = KeyboardType.Number
-                        )
-
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = state.oldPrice,
-                            labelStringId = R.string.hint_edit_menu_product_old_price,
-                            onValueChange = { oldPrice ->
-                                onAction(AddMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
-                            },
-                            errorMessageId = state.oldPriceError,
-                            enabled = !state.isLoadingButton,
-                            keyboardType = KeyboardType.Number,
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            AdminTextField(
-                                modifier = Modifier.weight(0.6f),
-                                value = state.nutrition,
-                                labelStringId = R.string.hint_edit_menu_product_nutrition,
-                                onValueChange = { nutrition ->
-                                    onAction(AddMenuProduct.Action.OnNutritionTextChanged(nutrition))
-                                },
-                                enabled = !state.isLoadingButton,
-                                keyboardType = KeyboardType.Number
-                            )
-
-                            var expanded by remember {
-                                mutableStateOf(false)
-                            }
-
-                            AdminTextFieldWithMenu(
-                                modifier = Modifier
-                                    .weight(0.4f)
-                                    .padding(start = 8.dp),
-                                expanded = expanded,
-                                onExpandedChange = { value ->
-                                    expanded = value
-                                },
-                                value = state.utils,
-                                labelStringId = R.string.hint_edit_menu_product_utils,
-                                suggestionsList = stringArrayResource(id = R.array.utilsList)
-                                    .mapIndexed { index, util ->
-                                        Suggestion(index.toString(), util)
-                                    },
-                                onSuggestionClick = { suggestion ->
-                                    expanded = false
-                                    onAction(AddMenuProduct.Action.OnUtilsTextChanged(suggestion.value))
-                                },
-                                enabled = !state.isLoadingButton
-                            )
-                        }
-
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = state.description,
-                            labelStringId = R.string.hint_edit_menu_product_description,
-                            imeAction = ImeAction.None,
-                            onValueChange = { description ->
-                                onAction(AddMenuProduct.Action.OnDescriptionTextChanged(description))
-                            },
-                            maxLines = 20,
-                            errorMessageId = state.descriptionError,
-                            enabled = !state.isLoadingButton
-                        )
-
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = state.comboDescription,
-                            labelStringId = R.string.hint_edit_menu_product_combo_description,
-                            imeAction = ImeAction.None,
-                            onValueChange = { comboDescription ->
-                                onAction(
-                                    AddMenuProduct.Action.OnComboDescriptionTextChanged(
-                                        comboDescription
-                                    )
-                                )
-                            },
-                            maxLines = 20,
-                            enabled = !state.isLoadingButton
-                        )
-                    }
-                }
+                TextFieldsCard(
+                    state = state,
+                    onAction = onAction,
+                )
 
                 NavigationTextCard(
                     modifier = Modifier
@@ -281,7 +165,7 @@ class AddMenuProductFragment :
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
-                    photoLink = state.photoLink,
+                    photoLink = state.photoUri,
                     onAction = onAction
                 )
 
@@ -291,17 +175,136 @@ class AddMenuProductFragment :
     }
 
     @Composable
+    private fun TextFieldsCard(
+        state: AddMenuProductViewState,
+        onAction: (AddMenuProduct.Action) -> Unit
+    ) {
+        AdminCard(
+            clickable = false
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 16.dp)
+                    .padding(horizontal = 16.dp)
+            ) {
+                AdminTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.name,
+                    labelStringId = R.string.hint_edit_menu_product_name,
+                    onValueChange = { name ->
+                        onAction(AddMenuProduct.Action.OnNameTextChanged(name))
+                    },
+                    errorMessageId = state.nameError,
+                    enabled = !state.isLoadingButton
+                )
+
+                AdminTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.newPrice,
+                    labelStringId = R.string.hint_edit_menu_product_new_price,
+                    onValueChange = { newPrice ->
+                        onAction(AddMenuProduct.Action.OnNewPriceTextChanged(newPrice))
+                    },
+                    errorMessageId = state.newPriceError,
+                    enabled = !state.isLoadingButton,
+                    keyboardType = KeyboardType.Number
+                )
+
+                AdminTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.oldPrice,
+                    labelStringId = R.string.hint_edit_menu_product_old_price,
+                    onValueChange = { oldPrice ->
+                        onAction(AddMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
+                    },
+                    errorMessageId = state.oldPriceError,
+                    enabled = !state.isLoadingButton,
+                    keyboardType = KeyboardType.Number,
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    AdminTextField(
+                        modifier = Modifier.weight(0.6f),
+                        value = state.nutrition,
+                        labelStringId = R.string.hint_edit_menu_product_nutrition,
+                        onValueChange = { nutrition ->
+                            onAction(AddMenuProduct.Action.OnNutritionTextChanged(nutrition))
+                        },
+                        enabled = !state.isLoadingButton,
+                        keyboardType = KeyboardType.Number
+                    )
+
+                    var expanded by remember {
+                        mutableStateOf(false)
+                    }
+
+                    AdminTextFieldWithMenu(
+                        modifier = Modifier
+                            .weight(0.4f)
+                            .padding(start = 8.dp),
+                        expanded = expanded,
+                        onExpandedChange = { value ->
+                            expanded = value
+                        },
+                        value = state.utils,
+                        labelStringId = R.string.hint_edit_menu_product_utils,
+                        suggestionsList = stringArrayResource(id = R.array.utilsList)
+                            .mapIndexed { index, util ->
+                                Suggestion(index.toString(), util)
+                            },
+                        onSuggestionClick = { suggestion ->
+                            expanded = false
+                            onAction(AddMenuProduct.Action.OnUtilsTextChanged(suggestion.value))
+                        },
+                        enabled = !state.isLoadingButton
+                    )
+                }
+
+                AdminTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.description,
+                    labelStringId = R.string.hint_edit_menu_product_description,
+                    imeAction = ImeAction.None,
+                    onValueChange = { description ->
+                        onAction(AddMenuProduct.Action.OnDescriptionTextChanged(description))
+                    },
+                    maxLines = 20,
+                    errorMessageId = state.descriptionError,
+                    enabled = !state.isLoadingButton
+                )
+
+                AdminTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.comboDescription,
+                    labelStringId = R.string.hint_edit_menu_product_combo_description,
+                    imeAction = ImeAction.None,
+                    onValueChange = { comboDescription ->
+                        onAction(
+                            AddMenuProduct.Action.OnComboDescriptionTextChanged(
+                                comboDescription
+                            )
+                        )
+                    },
+                    maxLines = 20,
+                    enabled = !state.isLoadingButton
+                )
+            }
+        }
+    }
+
+    @Composable
     private fun AddPhotoButton(
         isError: Boolean,
-        onAction: (AddMenuProduct.Action) -> Unit,
+        onClick: () -> Unit,
         modifier: Modifier = Modifier,
     ) {
         SecondaryButton(
             modifier = modifier,
             textStringId = R.string.title_add_menu_product_add_photo,
-            onClick = {
-                onAction(AddMenuProduct.Action.OnAddPhotoClick)
-            },
+            onClick = onClick,
             isError = isError,
             borderColor = if (isError) {
                 AdminTheme.colors.main.error
@@ -350,11 +353,46 @@ class AddMenuProductFragment :
         return state.toAddMenuProductViewState()
     }
 
+    override fun handleEvent(event: AddMenuProduct.Event) {
+        when (event) {
+            AddMenuProduct.Event.Back -> {
+                findNavController().popBackStack()
+            }
+
+            is AddMenuProduct.Event.GoToCategoryList -> {
+                findNavController().navigate(
+                    directions = CreateMenuProductFragmentDirections.toCategoryListFragment(
+                        selectedCategoryUuidList = event.selectedCategoryList.toTypedArray()
+                    )
+                )
+            }
+
+            AddMenuProduct.Event.GoToGallery -> {
+                findNavController().navigate(
+                    directions = CreateMenuProductFragmentDirections.toGalleryFragment()
+                )
+            }
+
+            is AddMenuProduct.Event.AddedMenuProduct -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_add_menu_added, event.menuProductName)
+                )
+                findNavController().popBackStack()
+            }
+
+            AddMenuProduct.Event.ShowSomethingWentWrong -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(R.string.error_common_something_went_wrong)
+                )
+            }
+        }
+    }
+
     @Preview(showSystemUi = true)
     @Composable
     fun AddMenuProductScreenPreview() {
         AdminTheme {
-            AddMenuProductScreen(
+            Screen(
                 state = AddMenuProductViewState(
                     name = "",
                     nameError = null,
@@ -375,38 +413,11 @@ class AddMenuProductFragment :
                     isVisibleInRecommendation = false,
                     categoriesBorder = null,
                     selectableCategoryList = emptyList(),
-                    photoLink = "",
+                    photoUri = "",
                     photoError = false,
                 ),
                 onAction = {}
             )
-        }
-    }
-
-    override fun handleEvent(event: AddMenuProduct.Event) {
-        when (event) {
-            AddMenuProduct.Event.Back -> {
-                findNavController().popBackStack()
-            }
-
-            is AddMenuProduct.Event.GoToCategoryList -> {
-                findNavController().navigate(
-                    AddMenuProductFragmentDirections.toCategoryListFragment(
-                        event.selectedCategoryList.toTypedArray()
-                    )
-                )
-            }
-
-            AddMenuProduct.Event.GoToGallery -> {
-                findNavController().navigate(AddMenuProductFragmentDirections.toGalleryFragment())
-            }
-
-            is AddMenuProduct.Event.AddedMenuProduct -> {
-                (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_add_menu_added, event.menuProductName)
-                )
-                findNavController().popBackStack()
-            }
         }
     }
 }

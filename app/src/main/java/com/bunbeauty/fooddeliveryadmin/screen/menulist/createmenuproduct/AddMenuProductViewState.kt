@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -26,7 +26,7 @@ data class AddMenuProductViewState(
     val isVisibleInRecommendation: Boolean,
     val categoriesBorder: BorderStroke?,
     val selectableCategoryList: List<CategoryItem>,
-    val photoLink: String?,
+    val photoUri: String?,
     val photoError: Boolean,
 ) : BaseViewState {
     @Immutable

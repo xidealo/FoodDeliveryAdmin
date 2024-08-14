@@ -23,6 +23,7 @@ object Versions {
     const val ktLint = "11.5.1"
     const val mockk = "1.12.5"
     const val coroutines = "1.8.0"
+    const val imageCpropper = "4.6.0"
     const val kotlinxDatetime = "0.4.0"
     const val materialDialogsDatetime = "0.9.0"
     const val kotlinxCollectionsImmutable = "0.3.7"
@@ -151,6 +152,7 @@ object Compose {
     const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview"
     const val uiTooling = "androidx.compose.ui:ui-tooling"
     const val uiViewbinding = "androidx.compose.ui:ui-viewbinding"
+    const val activity = "androidx.activity:activity-compose"
     const val lifecycle =
         "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleRuntimeCompose}"
 }
@@ -176,6 +178,10 @@ object Coroutines {
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines}"
     const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+}
+
+object ImageCropper {
+    const val imageCpropper = "com.vanniktech:android-image-cropper:${Versions.imageCpropper}"
 }
 
 object Test {

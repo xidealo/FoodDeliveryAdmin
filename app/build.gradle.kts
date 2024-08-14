@@ -132,6 +132,7 @@ dependencies {
     implementation(Compose.material)
     implementation(Compose.uiToolingPreview)
     implementation(Compose.uiViewbinding)
+    implementation(Compose.activity)
     implementation(Compose.lifecycle)
 
     // Date time picker
@@ -146,6 +147,9 @@ dependencies {
     implementation(Coil.coilCompose)
 
     implementation(KotlinxCollectionsImmutable.collectionsImmutable)
+
+    // Image cropper
+    implementation(ImageCropper.imageCpropper)
 
     // Time
     implementation(KotlinxDatetime.datetime)

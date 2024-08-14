@@ -100,7 +100,7 @@ class SelectPhotoFragment :
                     bundleOf(SELECTED_PHOTO_KEY to event.photoUrl)
                 )
                 findNavController().popBackStack(
-                    destinationId = R.id.addMenuProductFragment,
+                    destinationId = R.id.createMenuProductFragment,
                     inclusive = false
                 )
             }

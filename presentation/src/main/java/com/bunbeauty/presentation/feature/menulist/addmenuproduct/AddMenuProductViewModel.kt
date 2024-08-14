@@ -37,7 +37,7 @@ class AddMenuProductViewModel @Inject constructor(
             isVisibleInRecommendation = false,
             hasError = null,
             categoryList = listOf(),
-            photoLink = null,
+            photoUri = null,
             hasPhotoLinkError = false,
             hasCategoriesError = false
         )
@@ -125,7 +125,7 @@ class AddMenuProductViewModel @Inject constructor(
             }
 
             AddMenuProduct.Action.OnClearPhotoClick -> setState {
-                copy(photoLink = null)
+                copy(photoUri = null)
             }
 
             is AddMenuProduct.Action.SelectCategoryList -> setState {
@@ -140,8 +140,12 @@ class AddMenuProductViewModel @Inject constructor(
 
             is AddMenuProduct.Action.SelectPhoto -> setState {
                 copy(
-                    photoLink = action.selectedPhotoUrl
+                    photoUri = action.uri
                 )
+            }
+
+            AddMenuProduct.Action.SomethingWentWrong -> sendEvent {
+                AddMenuProduct.Event.ShowSomethingWentWrong
             }
         }
     }
@@ -179,7 +183,7 @@ class AddMenuProductViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 addMenuProductUseCase(
-                    params =  state.value.run {
+                    params = state.value.run {
                         AddMenuProductUseCase.Params(
                             name = name,
                             newPrice = newPrice,
@@ -188,7 +192,7 @@ class AddMenuProductViewModel @Inject constructor(
                             nutrition = nutrition,
                             description = description,
                             comboDescription = comboDescription,
-                            photoLink = photoLink,
+                            photoLink = photoUri,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendation,
                             categories = selectedCategoryList,

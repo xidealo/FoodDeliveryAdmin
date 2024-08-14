@@ -85,7 +85,7 @@
             app:destination="@id/editMenuProductFragment" />
         <action
             android:id="@+id/to_createMenuProductFragment"
-            app:destination="@id/addMenuProductFragment" />
+            app:destination="@id/createMenuProductFragment" />
     </fragment>
 
     <fragment
@@ -98,8 +98,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/addMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct.AddMenuProductFragment"
+        android:id="@+id/createMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.CreateMenuProductFragment"
         android:label="AddMenuProductFragment" >
 
         <action

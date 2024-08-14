@@ -18,7 +18,7 @@ interface AddMenuProduct {
         val nutrition: String,
         val utils: String,
         val comboDescription: String,
-        val photoLink: String?,
+        val photoUri: String?,
         val hasPhotoLinkError: Boolean,
         val isLoadingButton: Boolean,
         val isVisibleInMenu: Boolean,
@@ -54,14 +54,15 @@ interface AddMenuProduct {
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
         data class SelectCategoryList(val categoryUuidList: List<String>) : Action
-        data class SelectPhoto(val selectedPhotoUrl: String) : Action
+        data class SelectPhoto(val uri: String) : Action
+        data object SomethingWentWrong : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
         data object GoToGallery : Event
         data class AddedMenuProduct(val menuProductName: String) : Event
-        data class GoToCategoryList(val selectedCategoryList: List<String>) :
-            Event
+        data class GoToCategoryList(val selectedCategoryList: List<String>) : Event
+        data object ShowSomethingWentWrong : Event
     }
 }

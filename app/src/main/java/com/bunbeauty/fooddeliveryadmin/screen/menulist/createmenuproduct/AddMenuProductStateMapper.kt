@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Composable
@@ -67,7 +67,7 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
                 selected = selectableCategory.selected
             )
         },
-        photoLink = photoLink,
+        photoUri = photoUri,
         photoError = hasPhotoLinkError,
     )
 }
