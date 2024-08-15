@@ -105,7 +105,6 @@ class EditAdditionFragment :
                             modifier = Modifier.fillMaxWidth(),
                             value = state.fullName,
                             labelStringId = R.string.hint_edit_addition_full_name,
-                            errorMessageId = state.editFullNameError,
                             onValueChange = { fullName ->
                                 onAction(
                                     EditAddition.Action.EditFullNameAddition(fullName)
@@ -158,11 +157,6 @@ class EditAdditionFragment :
             },
             priority = state.priority.toString(),
             fullName = state.fullName ?: "",
-            editFullNameError = if (state.hasEditFullNameError) {
-                R.string.error_edit_addition_empty_full_name
-            } else {
-                null
-            },
             price = state.price.toString(),
             editPriceError = if (state.hasEditPriceError) {
                 R.string.error_add_addition_empty_new_price
@@ -170,8 +164,7 @@ class EditAdditionFragment :
                 null
             },
             isVisible = state.isVisible,
-            isLoading = state.isLoading,
-            hasError = state.hasEditError
+            isLoading = state.isLoading
         )
     }
 
@@ -203,9 +196,7 @@ class EditAdditionFragment :
                     isVisible = false,
                     isLoading = false,
                     editNameError = null,
-                    editFullNameError = null,
-                    editPriceError = null,
-                    hasError = false
+                    editPriceError = null
                 ),
                 onAction = {}
             )

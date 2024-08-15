@@ -5,6 +5,7 @@ import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.addition.mapAdditionServerToAddition
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionServerToPatchAddition
+import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -60,28 +61,21 @@ class AdditionRepository @Inject constructor(
             additionUuid = additionUuid,
             additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
             token = token
-        ).onSuccess {
+        ).onSuccess { additionServer ->
             updateLocalCache(
                 uuid = additionUuid,
-                updateAddition = updateAddition
+                additionServer = additionServer
             )
         }
     }
 
     private fun updateLocalCache(
         uuid: String,
-        updateAddition: UpdateAddition
+        additionServer: AdditionServer
     ) {
-        additionListCache = additionListCache?.map { addition: Addition ->
+        additionListCache = additionListCache?.map { addition ->
             if (uuid == addition.uuid) {
-                addition.copy(
-                    name = updateAddition.name ?: addition.name,
-                    priority = updateAddition.priority ?: addition.priority,
-                    fullName = updateAddition.fullName ?: addition.fullName,
-                    price = updateAddition.price ?: addition.price,
-                    photoLink = updateAddition.photoLink ?: addition.photoLink,
-                    isVisible = updateAddition.isVisible ?: addition.isVisible
-                )
+                additionServer.mapAdditionServerToAddition()
             } else {
                 addition
             }

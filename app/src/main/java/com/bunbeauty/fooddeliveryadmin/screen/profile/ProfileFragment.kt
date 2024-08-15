@@ -3,8 +3,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.profile
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -126,41 +126,42 @@ class ProfileFragment : BaseFragment<LayoutComposeBinding>() {
         onSettingsClicked: () -> Unit,
         onStatisticClicked: () -> Unit
     ) {
-        Box(
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TextWithHintCard(
+                hint = profileMapper.mapUserRole(uiStateSuccess.role),
+                label = uiStateSuccess.userName
+            )
+            NavigationIconCard(
+                iconId = R.drawable.ic_cafe,
+                labelStringId = R.string.action_profile_cafes,
+                onClick = onCafesClicked
+            )
+            NavigationIconCard(
+                iconId = R.drawable.ic_settings,
+                labelStringId = R.string.action_profile_settings,
+                onClick = onSettingsClicked
+            )
+            NavigationIconCard(
+                iconId = R.drawable.ic_statistic,
+                labelStringId = R.string.action_profile_statistic,
+                onClick = onStatisticClicked
+            )
+        }
+        Column(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                TextWithHintCard(
-                    hint = profileMapper.mapUserRole(uiStateSuccess.role),
-                    label = uiStateSuccess.userName
-                )
-                NavigationIconCard(
-                    iconId = R.drawable.ic_cafe,
-                    labelStringId = R.string.action_profile_cafes,
-                    onClick = onCafesClicked
-                )
-                NavigationIconCard(
-                    iconId = R.drawable.ic_settings,
-                    labelStringId = R.string.action_profile_settings,
-                    onClick = onSettingsClicked
-                )
-                NavigationIconCard(
-                    iconId = R.drawable.ic_statistic,
-                    labelStringId = R.string.action_profile_statistic,
-                    onClick = onStatisticClicked
-                )
-            }
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = resources.getString(R.string.version_app, versionApp),
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 70.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 72.dp)
             )
         }
     }

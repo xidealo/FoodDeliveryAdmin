@@ -13,10 +13,8 @@ interface EditAddition {
         val price: Int?,
         val hasEditPriceError: Boolean,
         val fullName: String?,
-        val hasEditFullNameError: Boolean,
         val isLoading: Boolean,
-        val isVisible: Boolean,
-        val hasEditError: Boolean
+        val isVisible: Boolean
     ) : BaseDataState
 
     sealed interface Action : BaseAction {

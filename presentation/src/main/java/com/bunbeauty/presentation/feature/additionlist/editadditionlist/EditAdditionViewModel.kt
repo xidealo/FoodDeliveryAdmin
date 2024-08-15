@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.exception.updateaddition.AdditionFullNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriceException
 import com.bunbeauty.domain.model.addition.UpdateAddition
@@ -29,11 +28,8 @@ class EditAdditionViewModel @Inject constructor(
         isLoading = true,
         isVisible = false,
         fullName = "",
-        hasEditFullNameError = false,
-        hasEditError = false,
         hasEditNameError = false,
         hasEditPriceError = false
-
     )
 ) {
 
@@ -69,14 +65,10 @@ class EditAdditionViewModel @Inject constructor(
                 )
             }
 
-            is EditAddition.Action.EditPriceAddition -> {
-                action.price.toIntOrNull()?.let { price ->
-                    setState {
-                        copy(
-                            price = price
-                        )
-                    }
-                }
+            is EditAddition.Action.EditPriceAddition -> setState {
+                copy(
+                    price = action.price.toIntOrNull()
+                )
             }
         }
     }
@@ -85,9 +77,7 @@ class EditAdditionViewModel @Inject constructor(
         setState {
             copy(
                 isLoading = true,
-                hasEditError = false,
                 hasEditNameError = false,
-                hasEditFullNameError = false,
                 hasEditPriceError = false
             )
         }
@@ -98,7 +88,7 @@ class EditAdditionViewModel @Inject constructor(
                         UpdateAddition(
                             name = name,
                             priority = priority,
-                            fullName = fullName,
+                            fullName = fullName?.takeIf { it.isNotBlank() },
                             price = price,
                             isVisible = isVisible
                         )
@@ -125,11 +115,7 @@ class EditAdditionViewModel @Inject constructor(
                             copy(hasEditPriceError = true, isLoading = false)
                         }
 
-                        is AdditionFullNameException -> {
-                            copy(hasEditFullNameError = true, isLoading = false)
-                        }
-
-                        else -> copy(hasEditError = true, isLoading = false)
+                        else -> copy(isLoading = false)
                     }
                 }
             }
@@ -139,9 +125,9 @@ class EditAdditionViewModel @Inject constructor(
     private fun loadData() {
         viewModelScope.launchSafe(
             block = {
-                val additionUuidNavigation = savedStateHandle.get<String>(ADDITION_UUID) ?: ""
-                val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                 setState {
+                    val additionUuidNavigation = savedStateHandle.get<String>(ADDITION_UUID) ?: ""
+                    val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                     copy(
                         uuid = addition.uuid,
                         name = addition.name,
@@ -154,9 +140,7 @@ class EditAdditionViewModel @Inject constructor(
                 }
             },
             onError = {
-                setState {
-                    copy(hasEditError = true)
-                }
+                // No errors
             }
         )
     }

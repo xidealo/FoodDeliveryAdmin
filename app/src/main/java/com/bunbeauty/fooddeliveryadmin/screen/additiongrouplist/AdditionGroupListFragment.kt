@@ -84,9 +84,12 @@ class AdditionGroupListFragment :
                             style = AdminTheme.typography.titleMedium.bold
                         )
                     }
-                    items(items = state.visibleAdditionItems, key = { additionItem ->
-                        additionItem.uuid
-                    }) { visibleAddition ->
+                    items(
+                        items = state.visibleAdditionItems,
+                        key = { additionItem ->
+                            additionItem.uuid
+                        }
+                    ) { visibleAddition ->
                         AdditionGroupCard(
                             additionItem = visibleAddition,
                             onAction = onAction
@@ -103,9 +106,12 @@ class AdditionGroupListFragment :
                             modifier = Modifier.padding(top = 8.dp)
                         )
                     }
-                    items(items = state.hiddenAdditionItems, key = { additionGroupItem ->
-                        additionGroupItem.uuid
-                    }) { hiddenAddition ->
+                    items(
+                        items = state.hiddenAdditionItems,
+                        key = { additionGroupItem ->
+                            additionGroupItem.uuid
+                        }
+                    ) { hiddenAddition ->
                         AdditionGroupCard(
                             additionItem = hiddenAddition,
                             onAction = onAction
