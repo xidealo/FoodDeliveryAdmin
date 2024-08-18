@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.cropimage
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage
 
 import android.graphics.Color
 import com.bunbeauty.fooddeliveryadmin.R
@@ -11,6 +11,7 @@ object CropImageDefaults {
         return CropImageOptions(
             imageSourceIncludeCamera = false,
             cropShape = CropImageView.CropShape.RECTANGLE,
+            showProgressBar = false,
             autoZoomEnabled = false,
             aspectRatioX = 1000,
             aspectRatioY = 667,

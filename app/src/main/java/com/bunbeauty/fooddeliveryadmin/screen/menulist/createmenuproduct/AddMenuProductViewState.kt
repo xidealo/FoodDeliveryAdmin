@@ -1,8 +1,10 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
@@ -26,9 +28,16 @@ data class AddMenuProductViewState(
     val isVisibleInRecommendation: Boolean,
     val categoriesBorder: BorderStroke?,
     val selectableCategoryList: List<CategoryItem>,
-    val photoUri: String?,
-    val photoError: Boolean,
+    val imageUris: ImageUris?,
+    val imageError: Boolean,
 ) : BaseViewState {
+
+    @Immutable
+    data class ImageUris(
+        val originalImageUri: Uri,
+        val croppedImageData: ImageData.LocalUri
+    )
+
     @Immutable
     data class CategoryItem(
         val uuid: String,

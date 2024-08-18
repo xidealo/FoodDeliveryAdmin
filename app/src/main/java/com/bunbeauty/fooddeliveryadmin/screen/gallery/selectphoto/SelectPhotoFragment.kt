@@ -19,6 +19,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
@@ -70,7 +71,7 @@ class SelectPhotoFragment :
                     .padding(top = 16.dp)
                     .fillMaxWidth()
                     .clip(AdminCardDefaults.cardShape),
-                photoUrl = state.photoUrl,
+                imageData = ImageData.HttpUrl(state.photoUrl.orEmpty()),
                 contentDescription = R.string.description_product
             )
         }

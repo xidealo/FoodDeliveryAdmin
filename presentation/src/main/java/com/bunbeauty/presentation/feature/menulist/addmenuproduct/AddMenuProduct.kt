@@ -18,8 +18,9 @@ interface AddMenuProduct {
         val nutrition: String,
         val utils: String,
         val comboDescription: String,
-        val photoUri: String?,
-        val hasPhotoLinkError: Boolean,
+        val originalImageUri: String?,
+        val croppedImageUri: String?,
+        val hasImageError: Boolean,
         val isLoadingButton: Boolean,
         val isVisibleInMenu: Boolean,
         val isVisibleInRecommendation: Boolean,
@@ -48,13 +49,15 @@ interface AddMenuProduct {
         data class OnDescriptionTextChanged(val description: String) : Action
         data class OnComboDescriptionTextChanged(val comboDescription: String) : Action
         data object OnCreateMenuProductClick : Action
-        data object OnAddPhotoClick : Action
         data object OnClearPhotoClick : Action
         data object OnShowCategoryListClick : Action
         data class OnVisibleInMenuChangeClick(val isVisible: Boolean) : Action
         data class OnRecommendationVisibleChangeClick(val isVisible: Boolean) : Action
         data class SelectCategoryList(val categoryUuidList: List<String>) : Action
-        data class SelectPhoto(val uri: String) : Action
+        data class SetImage(
+            val originalImageUri: String,
+            val croppedImageUri: String,
+        ) : Action
         data object SomethingWentWrong : Action
     }
 

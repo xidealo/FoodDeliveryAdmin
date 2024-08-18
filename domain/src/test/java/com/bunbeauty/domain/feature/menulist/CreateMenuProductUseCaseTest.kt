@@ -5,7 +5,9 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesExcepti
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
-import com.bunbeauty.domain.feature.menu.addmenuproduct.AddMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.addmenuproduct.CreateMenuProductUseCase
+import com.bunbeauty.domain.model.category.Category
+import com.bunbeauty.domain.model.category.SelectableCategory
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -17,15 +19,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-class AddMenuProductUseCaseTest {
+class CreateMenuProductUseCaseTest {
 
-    private val menuProductRepo: MenuProductRepo = mockk()
+    private val menuProductRepo: MenuProductRepo = mockk(relaxed = true)
     private val dataStoreRepo: DataStoreRepo = mockk()
-    private lateinit var addMenuProductUseCase: AddMenuProductUseCase
+    private lateinit var createMenuProductUseCase: CreateMenuProductUseCase
 
     @BeforeTest
     fun setup() {
-        addMenuProductUseCase = AddMenuProductUseCase(
+        createMenuProductUseCase = CreateMenuProductUseCase(
             menuProductRepo = menuProductRepo,
             dataStoreRepo = dataStoreRepo
         )
@@ -34,18 +36,31 @@ class AddMenuProductUseCaseTest {
     @Test
     fun `invoke successfully adds menu product`() = runTest {
         // Given
-        val token = "valid_token"
-        val menuProductPost = menuProductPostMock.copy(
+        val token = "token"
+        val params = paramsMock.copy(
+            name = "Pizza",
+            newPrice = "1000",
+            description = "Delicious pizza",
+            categories = categoriesMock
+        )
+        val menuProductPost = MenuProductPost(
             name = "Pizza",
             newPrice = 1000,
+            oldPrice = null,
+            utils = "",
+            nutrition = null,
             description = "Delicious pizza",
-            categories = listOf("Food")
+            comboDescription = "",
+            photoLink = "",
+            isVisible = false,
+            isRecommended = false,
+            barcode = 0,
+            categories = listOf("123")
         )
         coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { menuProductRepo.post(token, menuProductPost) } returns Unit
 
         // When
-        addMenuProductUseCase.invoke(menuProductPost)
+        createMenuProductUseCase.invoke(params)
 
         // Then
         coVerify { dataStoreRepo.getToken() }
@@ -55,17 +70,17 @@ class AddMenuProductUseCaseTest {
     @Test
     fun `invoke throws NoTokenException when token is null`() = runTest {
         // Given
-        val menuProductPost = menuProductPostMock.copy(
+        val menuProductPost = paramsMock.copy(
             name = "Pizza",
-            newPrice = 1000,
+            newPrice = "1000",
             description = "Delicious pizza",
-            categories = listOf("Food")
+            categories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns null
 
         // When & Then
         assertFailsWith<NoTokenException> {
-            addMenuProductUseCase.invoke(menuProductPost)
+            createMenuProductUseCase.invoke(menuProductPost)
         }
     }
 
@@ -73,17 +88,17 @@ class AddMenuProductUseCaseTest {
     fun `invoke throws MenuProductNameException when name is empty`() = runTest {
         // Given
         val token = "valid_token"
-        val menuProductPost = menuProductPostMock.copy(
+        val menuProductPost = paramsMock.copy(
             name = "",
-            newPrice = 1000,
+            newPrice = "1000",
             description = "Delicious pizza",
-            categories = listOf("Food")
+            categories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
         // When & Then
         assertFailsWith<MenuProductNameException> {
-            addMenuProductUseCase.invoke(menuProductPost)
+            createMenuProductUseCase.invoke(menuProductPost)
         }
     }
 
@@ -91,17 +106,17 @@ class AddMenuProductUseCaseTest {
     fun `invoke throws MenuProductNewPriceException when new price is zero`() = runTest {
         // Given
         val token = "valid_token"
-        val menuProductPost = menuProductPostMock.copy(
+        val menuProductPost = paramsMock.copy(
             name = "Pizza",
-            newPrice = 0,
+            newPrice = "0",
             description = "Delicious pizza",
-            categories = listOf("Food")
+            categories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
         // When & Then
         assertFailsWith<MenuProductNewPriceException> {
-            addMenuProductUseCase.invoke(menuProductPost)
+            createMenuProductUseCase.invoke(menuProductPost)
         }
     }
 
@@ -109,17 +124,17 @@ class AddMenuProductUseCaseTest {
     fun `invoke throws MenuProductDescriptionException when description is empty`() = runTest {
         // Given
         val token = "valid_token"
-        val menuProductPost = menuProductPostMock.copy(
+        val menuProductPost = paramsMock.copy(
             name = "Pizza",
-            newPrice = 1000,
+            newPrice = "1000",
             description = "",
-            categories = listOf("Food")
+            categories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
         // When & Then
         assertFailsWith<MenuProductDescriptionException> {
-            addMenuProductUseCase.invoke(menuProductPost)
+            createMenuProductUseCase.invoke(menuProductPost)
         }
     }
 
@@ -127,9 +142,9 @@ class AddMenuProductUseCaseTest {
     fun `invoke throws MenuProductCategoriesException when categories are empty`() = runTest {
         // Given
         val token = "valid_token"
-        val menuProductPost = menuProductPostMock.copy(
+        val menuProductPost = paramsMock.copy(
             name = "Pizza",
-            newPrice = 1000,
+            newPrice = "1000",
             description = "Delicious pizza",
             categories = emptyList()
         )
@@ -137,22 +152,32 @@ class AddMenuProductUseCaseTest {
 
         // When & Then
         assertFailsWith<MenuProductCategoriesException> {
-            addMenuProductUseCase.invoke(menuProductPost)
+            createMenuProductUseCase.invoke(menuProductPost)
         }
     }
 
-    private val menuProductPostMock = MenuProductPost(
+    private val paramsMock = CreateMenuProductUseCase.Params(
         name = "",
-        newPrice = 0,
-        oldPrice = null,
-        utils = null,
-        nutrition = null,
+        newPrice = "0",
+        oldPrice = "",
+        utils = "",
+        nutrition = "",
         description = "",
-        comboDescription = null,
+        comboDescription = "",
         photoLink = "",
-        barcode = 0,
         isVisible = false,
         isRecommended = false,
-        categories = listOf()
+        categories = emptyList()
+    )
+
+    private val categoriesMock = listOf(
+        SelectableCategory(
+            category = Category(
+                uuid = "123",
+                name = "",
+                priority = 0
+            ),
+            selected = true
+        )
     )
 }

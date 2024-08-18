@@ -18,6 +18,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -83,7 +84,7 @@ class GalleryFragment :
                                 }
                             ) {
                                 AdminAsyncImage(
-                                    photoUrl = photoUrl,
+                                    imageData = ImageData.HttpUrl(photoUrl),
                                     contentDescription = R.string.description_product
                                 )
                             }

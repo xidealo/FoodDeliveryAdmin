@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,8 +54,12 @@ import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.ORIGINAL_IMAGE_URI_KEY
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProductViewModel
+import com.canhub.cropper.parcelable
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val IMAGE = "image/*"
@@ -68,13 +73,22 @@ class CreateMenuProductFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(AddMenuProduct.Action.Init)
-        setFragmentResultListener(
-            CATEGORY_LIST_REQUEST_KEY
-        ) { _, bundle ->
+        setFragmentResultListener(CATEGORY_LIST_REQUEST_KEY) { _, bundle ->
             viewModel.onAction(
                 AddMenuProduct.Action.SelectCategoryList(
                     categoryUuidList = bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
                         ?: emptyList()
+                )
+            )
+        }
+        setFragmentResultListener(CROP_IMAGE_REQUEST_KEY) { _, bundle ->
+            val originalImageUri = bundle.parcelable<Uri>(ORIGINAL_IMAGE_URI_KEY) ?: return@setFragmentResultListener
+            val croppedImageUri = bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
+
+            viewModel.onAction(
+                action = AddMenuProduct.Action.SetImage(
+                    originalImageUri = originalImageUri.toString(),
+                    croppedImageUri = croppedImageUri.toString(),
                 )
             )
         }
@@ -83,11 +97,7 @@ class CreateMenuProductFragment :
     @Composable
     override fun Screen(state: AddMenuProductViewState, onAction: (AddMenuProduct.Action) -> Unit) {
         val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) {
-                onAction(AddMenuProduct.Action.SelectPhoto(uri = uri.toString()))
-            } else {
-                onAction(AddMenuProduct.Action.OnCreateMenuProductClick)
-            }
+            navigateToCropImage(uri)
         }
 
         AdminScaffold(
@@ -100,9 +110,9 @@ class CreateMenuProductFragment :
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalArrangement = spacedBy(8.dp)
                 ) {
-                    if (state.photoUri == null) {
+                    if (state.imageUris == null) {
                         AddPhotoButton(
-                            isError = state.photoError,
+                            isError = state.imageError,
                             onClick = {
                                 galleryLauncher.launch(IMAGE)
                             }
@@ -165,7 +175,7 @@ class CreateMenuProductFragment :
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
-                    photoLink = state.photoUri,
+                    imageUris = state.imageUris,
                     onAction = onAction
                 )
 
@@ -317,11 +327,11 @@ class CreateMenuProductFragment :
 
     @Composable
     private fun PhotoBlock(
-        photoLink: String?,
+        imageUris: AddMenuProductViewState.ImageUris?,
         onAction: (AddMenuProduct.Action) -> Unit,
         modifier: Modifier = Modifier,
     ) {
-        photoLink ?: return
+        imageUris ?: return
 
         Box(modifier = modifier) {
             AdminAsyncImage(
@@ -329,9 +339,9 @@ class CreateMenuProductFragment :
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .clickable {
-                        onAction(AddMenuProduct.Action.OnAddPhotoClick)
+                        navigateToCropImage(imageUris.originalImageUri)
                     },
-                photoUrl = photoLink,
+                imageData = imageUris.croppedImageData,
                 contentDescription = R.string.description_product
             )
             IconButton(
@@ -388,6 +398,17 @@ class CreateMenuProductFragment :
         }
     }
 
+    private fun navigateToCropImage(uri: Uri?) {
+        uri ?: return
+
+        findNavController()
+            .navigate(
+                directions = CreateMenuProductFragmentDirections.toCropImageFragment(
+                    uri = uri
+                )
+            )
+    }
+
     @Preview(showSystemUi = true)
     @Composable
     fun AddMenuProductScreenPreview() {
@@ -413,8 +434,8 @@ class CreateMenuProductFragment :
                     isVisibleInRecommendation = false,
                     categoriesBorder = null,
                     selectableCategoryList = emptyList(),
-                    photoUri = "",
-                    photoError = false,
+                    imageUris = null,
+                    imageError = false,
                 ),
                 onAction = {}
             )

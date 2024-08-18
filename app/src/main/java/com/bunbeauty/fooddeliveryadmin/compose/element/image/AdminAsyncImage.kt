@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.image
 
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -12,17 +13,27 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 
+sealed interface ImageData {
+    data class HttpUrl(val url: String): ImageData
+    data class LocalUri(val uri: Uri): ImageData
+}
+
 @Composable
 fun AdminAsyncImage(
     @StringRes contentDescription: Int,
-    photoUrl: String?,
+    imageData: ImageData,
     modifier: Modifier = Modifier,
     @DrawableRes placeholder: Int = R.drawable.default_product
 ) {
     AsyncImage(
         modifier = modifier,
         model = ImageRequest.Builder(LocalContext.current)
-            .data(photoUrl)
+            .data(
+                when (imageData) {
+                    is ImageData.HttpUrl -> imageData.url
+                    is ImageData.LocalUri -> imageData.uri
+                }
+            )
             .crossfade(true)
             .build(),
         placeholder = painterResource(placeholder),

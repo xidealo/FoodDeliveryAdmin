@@ -13,7 +13,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import javax.inject.Inject
 
-class AddMenuProductUseCase @Inject constructor(
+class CreateMenuProductUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

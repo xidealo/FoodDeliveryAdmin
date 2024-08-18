@@ -4,8 +4,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.bunbeauty.common.Constants
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 
@@ -45,8 +47,8 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
             stringResource(id = R.string.title_add_menu_product_categories)
         } else {
             selectedCategoryList.joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
-                    category.category.name
-                }
+                category.category.name
+            }
         },
         categoryHint = if (selectedCategoryList.isEmpty()) {
             null
@@ -67,7 +69,14 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
                 selected = selectableCategory.selected
             )
         },
-        photoUri = photoUri,
-        photoError = hasPhotoLinkError,
+        imageUris = run {
+            val original = originalImageUri ?: return@run null
+            val cropped = croppedImageUri ?: return@run null
+            AddMenuProductViewState.ImageUris(
+                originalImageUri = original.toUri(),
+                croppedImageData =  ImageData.LocalUri(uri = cropped.toUri()),
+            )
+        },
+        imageError = hasImageError,
     )
 }
