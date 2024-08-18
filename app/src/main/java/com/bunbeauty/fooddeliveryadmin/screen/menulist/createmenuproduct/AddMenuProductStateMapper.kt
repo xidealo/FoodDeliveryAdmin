@@ -14,7 +14,6 @@ import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
 @Composable
 fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewState {
     return AddMenuProductViewState(
-        hasError = hasError,
         name = name,
         nameError = if (hasNameError) {
             R.string.error_add_menu_product_empty_name

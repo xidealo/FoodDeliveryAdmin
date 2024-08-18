@@ -20,7 +20,6 @@ data class AddMenuProductViewState(
     @StringRes val descriptionError: Int?,
     val nutrition: String,
     val comboDescription: String,
-    val hasError: Boolean?,
     val categoryLabel: String,
     @StringRes val categoryHint: Int?,
     val isVisibleInMenu: Boolean,

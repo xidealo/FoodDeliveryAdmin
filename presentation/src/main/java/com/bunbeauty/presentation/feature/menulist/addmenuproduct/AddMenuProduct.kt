@@ -24,7 +24,6 @@ interface AddMenuProduct {
         val isLoadingButton: Boolean,
         val isVisibleInMenu: Boolean,
         val isVisibleInRecommendation: Boolean,
-        val hasError: Boolean?,
         val categoryList: List<SelectableCategory>,
         val hasCategoriesError: Boolean,
         val sendingToServer: Boolean,
@@ -68,5 +67,6 @@ interface AddMenuProduct {
         data class AddedMenuProduct(val menuProductName: String) : Event
         data class GoToCategoryList(val selectedCategoryList: List<String>) : Event
         data object ShowSomethingWentWrong : Event
+        data object ShowImageUploadingFailed : Event
     }
 }

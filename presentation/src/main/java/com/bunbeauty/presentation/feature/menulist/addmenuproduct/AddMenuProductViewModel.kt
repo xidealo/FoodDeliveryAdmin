@@ -7,6 +7,7 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductOldPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.addmenuproduct.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -18,32 +19,30 @@ import javax.inject.Inject
 class AddMenuProductViewModel @Inject constructor(
     private val createMenuProductUseCase: CreateMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase
-) :
-    BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
-        initState = AddMenuProduct.DataState(
-            name = "",
-            hasNameError = false,
-            description = "",
-            hasDescriptionError = false,
-            newPrice = "",
-            hasNewPriceError = false,
-            oldPrice = "",
-            hasOldPriceError = false,
-            nutrition = "",
-            utils = "",
-            comboDescription = "",
-            originalImageUri = null,
-            croppedImageUri = null,
-            isLoadingButton = false,
-            isVisibleInMenu = true,
-            isVisibleInRecommendation = false,
-            hasError = null,
-            categoryList = listOf(),
-            hasImageError = false,
-            hasCategoriesError = false,
-            sendingToServer = false,
-        )
-    ) {
+) : BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
+    initState = AddMenuProduct.DataState(
+        name = "",
+        hasNameError = false,
+        description = "",
+        hasDescriptionError = false,
+        newPrice = "",
+        hasNewPriceError = false,
+        oldPrice = "",
+        hasOldPriceError = false,
+        nutrition = "",
+        utils = "",
+        comboDescription = "",
+        originalImageUri = null,
+        croppedImageUri = null,
+        isLoadingButton = false,
+        isVisibleInMenu = true,
+        isVisibleInRecommendation = false,
+        categoryList = listOf(),
+        hasImageError = false,
+        hasCategoriesError = false,
+        sendingToServer = false,
+    )
+) {
 
     override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.DataState) {
         when (action) {
@@ -156,16 +155,11 @@ class AddMenuProductViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    copy(
-                        hasError = false,
-                        categoryList = getSelectableCategoryListUseCase()
-                    )
+                    copy(categoryList = getSelectableCategoryListUseCase())
                 }
             },
             onError = {
-                setState {
-                    copy(hasError = true)
-                }
+                // No handling
             }
         )
     }
@@ -179,7 +173,6 @@ class AddMenuProductViewModel @Inject constructor(
                 hasDescriptionError = false,
                 hasImageError = false,
                 hasCategoriesError = false,
-                hasError = false,
                 sendingToServer = true,
             )
         }
@@ -208,33 +201,53 @@ class AddMenuProductViewModel @Inject constructor(
             },
             onError = { throwable ->
                 setState { copy(sendingToServer = false) }
-                setState {
-                    when (throwable) {
-                        is MenuProductNameException -> {
+                when (throwable) {
+                    is MenuProductNameException -> {
+                        setState {
                             copy(hasNameError = true)
                         }
+                    }
 
-                        is MenuProductNewPriceException -> {
+                    is MenuProductNewPriceException -> {
+                        setState {
                             copy(hasNewPriceError = true)
                         }
+                    }
 
-                        is MenuProductOldPriceException -> {
+                    is MenuProductOldPriceException -> {
+                        setState {
                             copy(hasOldPriceError = true)
                         }
+                    }
 
-                        is MenuProductDescriptionException -> {
+                    is MenuProductDescriptionException -> {
+                        setState {
                             copy(hasDescriptionError = true)
                         }
+                    }
 
-                        is MenuProductCategoriesException -> {
+                    is MenuProductCategoriesException -> {
+                        setState {
                             copy(hasCategoriesError = true)
                         }
+                    }
 
-                        is MenuProductImageException -> {
+                    is MenuProductImageException -> {
+                        setState {
                             copy(hasImageError = true)
                         }
+                    }
 
-                        else -> copy(hasError = true)
+                    is MenuProductUploadingImageException -> {
+                        sendEvent {
+                            AddMenuProduct.Event.ShowImageUploadingFailed
+                        }
+                    }
+
+                    else -> {
+                        sendEvent {
+                            AddMenuProduct.Event.ShowSomethingWentWrong
+                        }
                     }
                 }
             }

@@ -398,6 +398,12 @@ class CreateMenuProductFragment :
                     resources.getString(R.string.error_common_something_went_wrong)
                 )
             }
+
+            AddMenuProduct.Event.ShowImageUploadingFailed -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(R.string.error_common_something_went_wrong)
+                )
+            }
         }
     }
 
@@ -428,7 +434,6 @@ class CreateMenuProductFragment :
                     nutrition = "",
                     comboDescription = "",
                     sendingToServer = false,
-                    hasError = false,
                     utils = "ss",
                     oldPriceError = null,
                     categoryLabel = "Выбрать категории",
