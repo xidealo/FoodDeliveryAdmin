@@ -40,7 +40,8 @@ class AddMenuProductViewModel @Inject constructor(
             hasError = null,
             categoryList = listOf(),
             hasImageError = false,
-            hasCategoriesError = false
+            hasCategoriesError = false,
+            sendingToServer = false,
         )
     ) {
 
@@ -178,7 +179,8 @@ class AddMenuProductViewModel @Inject constructor(
                 hasDescriptionError = false,
                 hasImageError = false,
                 hasCategoriesError = false,
-                hasError = false
+                hasError = false,
+                sendingToServer = true,
             )
         }
         viewModelScope.launchSafe(
@@ -205,6 +207,7 @@ class AddMenuProductViewModel @Inject constructor(
                 }
             },
             onError = { throwable ->
+                setState { copy(sendingToServer = false) }
                 setState {
                     when (throwable) {
                         is MenuProductNameException -> {

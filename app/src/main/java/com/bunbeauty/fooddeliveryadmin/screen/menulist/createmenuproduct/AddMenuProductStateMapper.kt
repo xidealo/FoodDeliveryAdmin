@@ -41,7 +41,6 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
         },
         nutrition = nutrition,
         comboDescription = comboDescription,
-        isLoadingButton = false,
         utils = utils,
         categoryLabel = if (selectedCategoryList.isEmpty()) {
             stringResource(id = R.string.title_add_menu_product_categories)
@@ -78,5 +77,6 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
             )
         },
         imageError = hasImageError,
+        sendingToServer = sendingToServer,
     )
 }

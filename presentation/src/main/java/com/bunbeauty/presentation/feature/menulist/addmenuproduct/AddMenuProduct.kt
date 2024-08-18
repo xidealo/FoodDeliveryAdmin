@@ -26,7 +26,8 @@ interface AddMenuProduct {
         val isVisibleInRecommendation: Boolean,
         val hasError: Boolean?,
         val categoryList: List<SelectableCategory>,
-        val hasCategoriesError: Boolean
+        val hasCategoriesError: Boolean,
+        val sendingToServer: Boolean,
     ) : BaseDataState {
 
         val selectedCategoryList: List<SelectableCategory>

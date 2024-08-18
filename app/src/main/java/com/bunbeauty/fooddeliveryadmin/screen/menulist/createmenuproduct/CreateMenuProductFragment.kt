@@ -123,7 +123,7 @@ class CreateMenuProductFragment :
                         onClick = {
                             onAction(AddMenuProduct.Action.OnCreateMenuProductClick)
                         },
-                        isLoading = state.isLoadingButton
+                        isLoading = state.sendingToServer
                     )
                 }
             }
@@ -158,7 +158,7 @@ class CreateMenuProductFragment :
                         )
                     },
                     text = stringResource(R.string.title_add_menu_product_is_visible_in_menu),
-                    enabled = !state.isLoadingButton
+                    enabled = !state.sendingToServer
                 )
                 SwitcherCard(
                     modifier = Modifier.padding(top = 8.dp),
@@ -169,13 +169,14 @@ class CreateMenuProductFragment :
                         )
                     },
                     text = stringResource(R.string.title_add_menu_product_is_recommendation),
-                    enabled = !state.isLoadingButton
+                    enabled = !state.sendingToServer
                 )
                 PhotoBlock(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
                     imageUris = state.imageUris,
+                    enabled = !state.sendingToServer,
                     onAction = onAction
                 )
 
@@ -205,7 +206,7 @@ class CreateMenuProductFragment :
                         onAction(AddMenuProduct.Action.OnNameTextChanged(name))
                     },
                     errorMessageId = state.nameError,
-                    enabled = !state.isLoadingButton
+                    enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
@@ -216,7 +217,7 @@ class CreateMenuProductFragment :
                         onAction(AddMenuProduct.Action.OnNewPriceTextChanged(newPrice))
                     },
                     errorMessageId = state.newPriceError,
-                    enabled = !state.isLoadingButton,
+                    enabled = !state.sendingToServer,
                     keyboardType = KeyboardType.Number
                 )
 
@@ -228,7 +229,7 @@ class CreateMenuProductFragment :
                         onAction(AddMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
                     },
                     errorMessageId = state.oldPriceError,
-                    enabled = !state.isLoadingButton,
+                    enabled = !state.sendingToServer,
                     keyboardType = KeyboardType.Number,
                 )
 
@@ -243,7 +244,7 @@ class CreateMenuProductFragment :
                         onValueChange = { nutrition ->
                             onAction(AddMenuProduct.Action.OnNutritionTextChanged(nutrition))
                         },
-                        enabled = !state.isLoadingButton,
+                        enabled = !state.sendingToServer,
                         keyboardType = KeyboardType.Number
                     )
 
@@ -269,7 +270,7 @@ class CreateMenuProductFragment :
                             expanded = false
                             onAction(AddMenuProduct.Action.OnUtilsTextChanged(suggestion.value))
                         },
-                        enabled = !state.isLoadingButton
+                        enabled = !state.sendingToServer
                     )
                 }
 
@@ -283,7 +284,7 @@ class CreateMenuProductFragment :
                     },
                     maxLines = 20,
                     errorMessageId = state.descriptionError,
-                    enabled = !state.isLoadingButton
+                    enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
@@ -299,7 +300,7 @@ class CreateMenuProductFragment :
                         )
                     },
                     maxLines = 20,
-                    enabled = !state.isLoadingButton
+                    enabled = !state.sendingToServer
                 )
             }
         }
@@ -328,6 +329,7 @@ class CreateMenuProductFragment :
     @Composable
     private fun PhotoBlock(
         imageUris: AddMenuProductViewState.ImageUris?,
+        enabled: Boolean,
         onAction: (AddMenuProduct.Action) -> Unit,
         modifier: Modifier = Modifier,
     ) {
@@ -338,7 +340,7 @@ class CreateMenuProductFragment :
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable {
+                    .clickable(enabled = enabled) {
                         navigateToCropImage(imageUris.originalImageUri)
                     },
                 imageData = imageUris.croppedImageData,
@@ -346,7 +348,8 @@ class CreateMenuProductFragment :
             )
             IconButton(
                 modifier = Modifier.align(Alignment.TopEnd),
-                onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) }
+                onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) },
+                enabled = enabled,
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -424,7 +427,7 @@ class CreateMenuProductFragment :
                     descriptionError = null,
                     nutrition = "",
                     comboDescription = "",
-                    isLoadingButton = false,
+                    sendingToServer = false,
                     hasError = false,
                     utils = "ss",
                     oldPriceError = null,

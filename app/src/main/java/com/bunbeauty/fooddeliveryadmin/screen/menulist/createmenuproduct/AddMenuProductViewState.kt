@@ -20,7 +20,6 @@ data class AddMenuProductViewState(
     @StringRes val descriptionError: Int?,
     val nutrition: String,
     val comboDescription: String,
-    val isLoadingButton: Boolean,
     val hasError: Boolean?,
     val categoryLabel: String,
     @StringRes val categoryHint: Int?,
@@ -30,6 +29,7 @@ data class AddMenuProductViewState(
     val selectableCategoryList: List<CategoryItem>,
     val imageUris: ImageUris?,
     val imageError: Boolean,
+    val sendingToServer: Boolean,
 ) : BaseViewState {
 
     @Immutable
