@@ -8,7 +8,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 data class CropImageViewState(
     val isLoading: Boolean,
     val imageContent: ImageContent
-): BaseViewState
+) : BaseViewState
 
 @Immutable
 data class ImageContent(

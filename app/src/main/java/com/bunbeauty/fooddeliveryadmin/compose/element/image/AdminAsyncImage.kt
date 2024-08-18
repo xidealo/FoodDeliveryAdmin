@@ -14,8 +14,8 @@ import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 
 sealed interface ImageData {
-    data class HttpUrl(val url: String): ImageData
-    data class LocalUri(val uri: Uri): ImageData
+    data class HttpUrl(val url: String) : ImageData
+    data class LocalUri(val uri: Uri) : ImageData
 }
 
 @Composable

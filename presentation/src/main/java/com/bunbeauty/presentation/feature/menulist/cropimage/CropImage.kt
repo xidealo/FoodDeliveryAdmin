@@ -9,15 +9,14 @@ interface CropImage {
     data class DataState(
         val isLoading: Boolean,
         val uri: String?
-    ): BaseDataState
+    ) : BaseDataState
 
-    sealed interface Action: BaseAction {
-        data class SetImageUrl(val uri: String): Action
-        data object SaveClick: Action
+    sealed interface Action : BaseAction {
+        data class SetImageUrl(val uri: String) : Action
+        data object SaveClick : Action
     }
 
-    sealed interface Event: BaseEvent {
-        data object CropImage: Event
+    sealed interface Event : BaseEvent {
+        data object CropImage : Event
     }
-
 }

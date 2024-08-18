@@ -72,10 +72,10 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
             val cropped = croppedImageUri ?: return@run null
             AddMenuProductViewState.ImageUris(
                 originalImageUri = original.toUri(),
-                croppedImageData =  ImageData.LocalUri(uri = cropped.toUri()),
+                croppedImageData = ImageData.LocalUri(uri = cropped.toUri())
             )
         },
         imageError = hasImageError,
-        sendingToServer = sendingToServer,
+        sendingToServer = sendingToServer
     )
 }

@@ -26,7 +26,7 @@ interface AddMenuProduct {
         val isVisibleInRecommendation: Boolean,
         val categoryList: List<SelectableCategory>,
         val hasCategoriesError: Boolean,
-        val sendingToServer: Boolean,
+        val sendingToServer: Boolean
     ) : BaseDataState {
 
         val selectedCategoryList: List<SelectableCategory>
@@ -35,7 +35,6 @@ interface AddMenuProduct {
                     category.selected
                 }
             }
-
     }
 
     sealed interface Action : BaseAction {
@@ -56,7 +55,7 @@ interface AddMenuProduct {
         data class SelectCategoryList(val categoryUuidList: List<String>) : Action
         data class SetImage(
             val originalImageUri: String,
-            val croppedImageUri: String,
+            val croppedImageUri: String
         ) : Action
         data object SomethingWentWrong : Action
     }

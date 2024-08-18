@@ -9,7 +9,7 @@ class CropImageViewModel @Inject constructor() :
     BaseStateViewModel<CropImage.DataState, CropImage.Action, CropImage.Event>(
         initState = CropImage.DataState(
             isLoading = false,
-            uri = null,
+            uri = null
         )
     ) {
 
@@ -27,5 +27,4 @@ class CropImageViewModel @Inject constructor() :
             }
         }
     }
-
 }

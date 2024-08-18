@@ -3,10 +3,10 @@ package com.bunbeauty.domain.feature.menu.addmenuproduct
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductOldPriceException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.category.SelectableCategory
@@ -20,7 +20,7 @@ class CreateMenuProductUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
     private val photoRepo: PhotoRepo,
-    private val getUsernameUseCase: GetUsernameUseCase,
+    private val getUsernameUseCase: GetUsernameUseCase
 ) {
 
     data class Params(
@@ -52,7 +52,7 @@ class CreateMenuProductUseCase @Inject constructor(
 
         val photo = photoRepo.uploadPhoto(
             uri = imageUri,
-            username = getUsernameUseCase(),
+            username = getUsernameUseCase()
         ) ?: throw MenuProductUploadingImageException()
 
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -72,7 +72,7 @@ class CreateMenuProductUseCase @Inject constructor(
                 isRecommended = params.isRecommended,
                 categories = categories.map { category ->
                     category.category.uuid
-                },
+                }
             )
         )
     }

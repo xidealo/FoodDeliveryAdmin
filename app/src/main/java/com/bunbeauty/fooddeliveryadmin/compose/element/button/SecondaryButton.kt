@@ -69,7 +69,7 @@ fun SecondaryButton(
             }
             Text(
                 text = stringResource(textStringId),
-                style = AdminTheme.typography.labelLarge.medium,
+                style = AdminTheme.typography.labelLarge.medium
             )
         }
     }

@@ -3,10 +3,10 @@ package com.bunbeauty.presentation.feature.menulist.addmenuproduct
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductOldPriceException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.addmenuproduct.GetSelectableCategoryListUseCase
@@ -40,7 +40,7 @@ class AddMenuProductViewModel @Inject constructor(
         categoryList = listOf(),
         hasImageError = false,
         hasCategoriesError = false,
-        sendingToServer = false,
+        sendingToServer = false
     )
 ) {
 
@@ -124,7 +124,7 @@ class AddMenuProductViewModel @Inject constructor(
             AddMenuProduct.Action.OnClearPhotoClick -> setState {
                 copy(
                     originalImageUri = null,
-                    croppedImageUri = null,
+                    croppedImageUri = null
                 )
             }
 
@@ -141,7 +141,7 @@ class AddMenuProductViewModel @Inject constructor(
             is AddMenuProduct.Action.SetImage -> setState {
                 copy(
                     originalImageUri = action.originalImageUri,
-                    croppedImageUri = action.croppedImageUri,
+                    croppedImageUri = action.croppedImageUri
                 )
             }
 
@@ -173,7 +173,7 @@ class AddMenuProductViewModel @Inject constructor(
                 hasDescriptionError = false,
                 hasImageError = false,
                 hasCategoriesError = false,
-                sendingToServer = true,
+                sendingToServer = true
             )
         }
         viewModelScope.launchSafe(
@@ -191,7 +191,7 @@ class AddMenuProductViewModel @Inject constructor(
                             imageUri = croppedImageUri,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendation,
-                            categories = selectedCategoryList,
+                            categories = selectedCategoryList
                         )
                     }
                 )

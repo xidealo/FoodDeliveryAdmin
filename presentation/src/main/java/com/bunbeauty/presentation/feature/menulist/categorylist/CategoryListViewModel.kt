@@ -13,7 +13,7 @@ private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(
     initState = CategoryList.DataState(
         selectableCategoryList = listOf(),

@@ -24,8 +24,7 @@ object CropImageDefaults {
             activityBackgroundColor = Color.WHITE,
             activityMenuIconColor = Color.BLACK,
             activityMenuTextColor = Color.BLACK,
-            toolbarBackButtonColor = Color.BLACK,
+            toolbarBackButtonColor = Color.BLACK
         )
     }
-
 }

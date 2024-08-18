@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.compose.foundation.border
@@ -58,7 +57,7 @@ class CropImageFragment :
             CROP_IMAGE_REQUEST_KEY,
             bundleOf(
                 ORIGINAL_IMAGE_URI_KEY to result.originalUri,
-                CROPPED_IMAGE_URI_KEY to result.uriContent,
+                CROPPED_IMAGE_URI_KEY to result.uriContent
             )
         )
         findNavController().popBackStack()
@@ -80,7 +79,7 @@ class CropImageFragment :
     override fun mapState(state: CropImage.DataState): CropImageViewState {
         return CropImageViewState(
             isLoading = state.isLoading,
-            imageContent = ImageContent(uri = state.uri?.toUri()),
+            imageContent = ImageContent(uri = state.uri?.toUri())
         )
     }
 
@@ -95,7 +94,7 @@ class CropImageFragment :
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     horizontalAlignment = Alignment.End,
-                    verticalArrangement = spacedBy(8.dp),
+                    verticalArrangement = spacedBy(8.dp)
                 ) {
                     IconButton(
                         modifier = Modifier.border(
@@ -107,7 +106,7 @@ class CropImageFragment :
                         ),
                         colors = IconButtonDefaults.iconButtonColors(
                             containerColor = AdminTheme.colors.main.secondary,
-                            contentColor = AdminTheme.colors.main.primary,
+                            contentColor = AdminTheme.colors.main.primary
                         ),
                         onClick = {
                             cropImageView?.rotateImage(90)
@@ -139,7 +138,7 @@ class CropImageFragment :
     @Composable
     private fun CropImageView(
         imageContent: ImageContent,
-        modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier
     ) {
         val uri = imageContent.uri ?: return
 
@@ -182,5 +181,4 @@ class CropImageFragment :
             onAction = {}
         )
     }
-
 }

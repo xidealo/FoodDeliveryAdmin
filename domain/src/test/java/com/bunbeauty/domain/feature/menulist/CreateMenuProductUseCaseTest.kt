@@ -36,7 +36,7 @@ class CreateMenuProductUseCaseTest {
             menuProductRepo = menuProductRepo,
             dataStoreRepo = dataStoreRepo,
             photoRepo = photoRepo,
-            getUsernameUseCase = getUsernameUseCase,
+            getUsernameUseCase = getUsernameUseCase
         )
     }
 

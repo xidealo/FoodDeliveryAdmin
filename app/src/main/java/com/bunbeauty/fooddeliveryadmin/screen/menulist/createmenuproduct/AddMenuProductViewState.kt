@@ -28,7 +28,7 @@ data class AddMenuProductViewState(
     val selectableCategoryList: List<CategoryItem>,
     val imageUris: ImageUris?,
     val imageError: Boolean,
-    val sendingToServer: Boolean,
+    val sendingToServer: Boolean
 ) : BaseViewState {
 
     @Immutable

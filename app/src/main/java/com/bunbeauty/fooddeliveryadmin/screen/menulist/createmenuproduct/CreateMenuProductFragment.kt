@@ -88,7 +88,7 @@ class CreateMenuProductFragment :
             viewModel.onAction(
                 action = AddMenuProduct.Action.SetImage(
                     originalImageUri = originalImageUri.toString(),
-                    croppedImageUri = croppedImageUri.toString(),
+                    croppedImageUri = croppedImageUri.toString()
                 )
             )
         }
@@ -136,7 +136,7 @@ class CreateMenuProductFragment :
             ) {
                 TextFieldsCard(
                     state = state,
-                    onAction = onAction,
+                    onAction = onAction
                 )
 
                 NavigationTextCard(
@@ -230,7 +230,7 @@ class CreateMenuProductFragment :
                     },
                     errorMessageId = state.oldPriceError,
                     enabled = !state.sendingToServer,
-                    keyboardType = KeyboardType.Number,
+                    keyboardType = KeyboardType.Number
                 )
 
                 Row(
@@ -310,7 +310,7 @@ class CreateMenuProductFragment :
     private fun AddPhotoButton(
         isError: Boolean,
         onClick: () -> Unit,
-        modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier
     ) {
         SecondaryButton(
             modifier = modifier,
@@ -322,7 +322,7 @@ class CreateMenuProductFragment :
             } else {
                 AdminTheme.colors.main.primary
             },
-            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
+            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
         )
     }
 
@@ -331,7 +331,7 @@ class CreateMenuProductFragment :
         imageUris: AddMenuProductViewState.ImageUris?,
         enabled: Boolean,
         onAction: (AddMenuProduct.Action) -> Unit,
-        modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier
     ) {
         imageUris ?: return
 
@@ -349,7 +349,7 @@ class CreateMenuProductFragment :
             IconButton(
                 modifier = Modifier.align(Alignment.TopEnd),
                 onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) },
-                enabled = enabled,
+                enabled = enabled
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -443,7 +443,7 @@ class CreateMenuProductFragment :
                     categoriesBorder = null,
                     selectableCategoryList = emptyList(),
                     imageUris = null,
-                    imageError = false,
+                    imageError = false
                 ),
                 onAction = {}
             )
