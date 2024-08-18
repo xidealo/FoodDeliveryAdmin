@@ -68,14 +68,14 @@ class CreateMenuProductUseCaseTest {
             barcode = 0,
             categories = listOf("123")
         )
-        coEvery { dataStoreRepo.getToken() } returns token
         coEvery { getUsernameUseCase() } returns username
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
                 username = username
             )
-        } returns Photo(photoUrl)
+        } returns Photo(url = photoUrl)
+        coEvery { dataStoreRepo.getToken() } returns token
 
         // When
         createMenuProductUseCase.invoke(params)
@@ -95,6 +95,14 @@ class CreateMenuProductUseCaseTest {
             description = "Delicious pizza",
             categories = categoriesMock
         )
+        val username = "username"
+        coEvery { getUsernameUseCase() } returns username
+        coEvery {
+            photoRepo.uploadPhoto(
+                uri = any(),
+                username = username
+            )
+        } returns Photo(url = "url")
         coEvery { dataStoreRepo.getToken() } returns null
 
         // When & Then
