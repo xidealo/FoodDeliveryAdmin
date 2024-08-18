@@ -6,11 +6,14 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionExcept
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.CreateMenuProductUseCase
+import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
+import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.model.category.Category
 import com.bunbeauty.domain.model.category.SelectableCategory
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
+import com.bunbeauty.domain.repo.PhotoRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -23,24 +26,32 @@ class CreateMenuProductUseCaseTest {
 
     private val menuProductRepo: MenuProductRepo = mockk(relaxed = true)
     private val dataStoreRepo: DataStoreRepo = mockk()
+    private val photoRepo: PhotoRepo = mockk()
+    private val getUsernameUseCase: GetUsernameUseCase = mockk()
     private lateinit var createMenuProductUseCase: CreateMenuProductUseCase
 
     @BeforeTest
     fun setup() {
         createMenuProductUseCase = CreateMenuProductUseCase(
             menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo
+            dataStoreRepo = dataStoreRepo,
+            photoRepo = photoRepo,
+            getUsernameUseCase = getUsernameUseCase,
         )
     }
 
     @Test
     fun `invoke successfully adds menu product`() = runTest {
         // Given
+        val username = "username"
+        val imageUri = "uri"
+        val photoUrl = "url"
         val token = "token"
         val params = paramsMock.copy(
             name = "Pizza",
             newPrice = "1000",
             description = "Delicious pizza",
+            imageUri = imageUri,
             categories = categoriesMock
         )
         val menuProductPost = MenuProductPost(
@@ -51,18 +62,26 @@ class CreateMenuProductUseCaseTest {
             nutrition = null,
             description = "Delicious pizza",
             comboDescription = "",
-            photoLink = "",
+            photoLink = photoUrl,
             isVisible = false,
             isRecommended = false,
             barcode = 0,
             categories = listOf("123")
         )
         coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { getUsernameUseCase() } returns username
+        coEvery {
+            photoRepo.uploadPhoto(
+                uri = imageUri,
+                username = username
+            )
+        } returns Photo(photoUrl)
 
         // When
         createMenuProductUseCase.invoke(params)
 
         // Then
+        coVerify { getUsernameUseCase() }
         coVerify { dataStoreRepo.getToken() }
         coVerify { menuProductRepo.post(token, menuProductPost) }
     }
@@ -164,7 +183,7 @@ class CreateMenuProductUseCaseTest {
         nutrition = "",
         description = "",
         comboDescription = "",
-        photoLink = "",
+        imageUri = "",
         isVisible = false,
         isRecommended = false,
         categories = emptyList()

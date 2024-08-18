@@ -1,7 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage
 
-import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -143,7 +141,6 @@ class CropImageFragment :
         imageContent: ImageContent,
         modifier: Modifier = Modifier,
     ) {
-        Log.d("testTag", "CropImageView recompose ${imageContent.uri.hashCode()}")
         val uri = imageContent.uri ?: return
 
         Box(modifier = modifier.fillMaxSize()) {
@@ -166,20 +163,9 @@ class CropImageFragment :
 
     override fun handleEvent(event: CropImage.Event) {
         when (event) {
-            is CropImage.Event.CropImage -> {
-                cropImageView?.croppedImageAsync(
-                    saveCompressFormat = getCompressFormat(),
-                    saveCompressQuality = event.compressQuality
-                )
+            CropImage.Event.CropImage -> {
+                cropImageView?.croppedImageAsync(saveCompressQuality = 100)
             }
-        }
-    }
-
-    private fun getCompressFormat(): Bitmap.CompressFormat {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Bitmap.CompressFormat.WEBP_LOSSY
-        } else {
-            Bitmap.CompressFormat.WEBP
         }
     }
 

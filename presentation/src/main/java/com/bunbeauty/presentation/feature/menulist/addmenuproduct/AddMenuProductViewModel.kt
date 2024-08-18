@@ -6,7 +6,7 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionExcept
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductOldPriceException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.addmenuproduct.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -193,7 +193,7 @@ class AddMenuProductViewModel @Inject constructor(
                             nutrition = nutrition,
                             description = description,
                             comboDescription = comboDescription,
-                            photoLink = croppedImageUri,
+                            imageUri = croppedImageUri,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendation,
                             categories = selectedCategoryList,
@@ -227,7 +227,7 @@ class AddMenuProductViewModel @Inject constructor(
                             copy(hasCategoriesError = true)
                         }
 
-                        is MenuProductPhotoLinkException -> {
+                        is MenuProductImageException -> {
                             copy(hasImageError = true)
                         }
 

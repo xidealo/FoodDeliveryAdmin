@@ -17,7 +17,7 @@ interface CropImage {
     }
 
     sealed interface Event: BaseEvent {
-        data class CropImage(val compressQuality: Int): Event
+        data object CropImage: Event
     }
 
 }

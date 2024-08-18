@@ -6,16 +6,21 @@ import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionExcept
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
 import com.bunbeauty.domain.exception.updateproduct.MenuProductOldPriceException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductPhotoLinkException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductImageException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductUploadingImageException
+import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.category.SelectableCategory
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
+import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
 class CreateMenuProductUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
+    private val photoRepo: PhotoRepo,
+    private val getUsernameUseCase: GetUsernameUseCase,
 ) {
 
     data class Params(
@@ -26,15 +31,13 @@ class CreateMenuProductUseCase @Inject constructor(
         val utils: String,
         val description: String,
         val comboDescription: String,
-        val photoLink: String?,
+        val imageUri: String?,
         val isVisible: Boolean,
         val isRecommended: Boolean,
         val categories: List<SelectableCategory>
     )
 
     suspend operator fun invoke(params: Params) {
-        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-
         val name = params.name.takeIf { it.isNotBlank() } ?: throw MenuProductNameException()
         val newPrice = params.newPrice.toIntOrNull()
             ?.takeIf { it > 0 }
@@ -45,8 +48,14 @@ class CreateMenuProductUseCase @Inject constructor(
         }
         val description = params.description.takeIf { it.isNotBlank() } ?: throw MenuProductDescriptionException()
         val categories = params.categories.takeIf { it.isNotEmpty() } ?: throw MenuProductCategoriesException()
-        val photoLink = params.photoLink ?: throw MenuProductPhotoLinkException()
+        val imageUri = params.imageUri ?: throw MenuProductImageException()
 
+        val photo = photoRepo.uploadPhoto(
+            uri = imageUri,
+            username = getUsernameUseCase(),
+        ) ?: throw MenuProductUploadingImageException()
+
+        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         menuProductRepo.post(
             token = token,
             menuProductPost = MenuProductPost(
@@ -57,7 +66,7 @@ class CreateMenuProductUseCase @Inject constructor(
                 utils = params.utils,
                 description = description,
                 comboDescription = params.comboDescription,
-                photoLink = photoLink,
+                photoLink = photo.url,
                 barcode = 0,
                 isVisible = params.isVisible,
                 isRecommended = params.isRecommended,
