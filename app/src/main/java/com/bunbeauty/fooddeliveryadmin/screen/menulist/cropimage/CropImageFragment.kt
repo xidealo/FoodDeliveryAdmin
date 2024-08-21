@@ -43,6 +43,8 @@ import dagger.hilt.android.AndroidEntryPoint
 const val CROP_IMAGE_REQUEST_KEY = "crop image"
 const val ORIGINAL_IMAGE_URI_KEY = "original image uri"
 const val CROPPED_IMAGE_URI_KEY = "cropped image uri"
+const val ORIGINAL_QUALITY = 100
+const val DEFAULT_ANGEL = 90
 
 @AndroidEntryPoint
 class CropImageFragment :
@@ -88,7 +90,7 @@ class CropImageFragment :
         AdminScaffold(
             title = stringResource(R.string.title_add_menu_product),
             backActionClick = {
-                findNavController().popBackStack()
+                onAction(CropImage.Action.BackClick)
             },
             actionButton = {
                 Column(
@@ -109,7 +111,7 @@ class CropImageFragment :
                             contentColor = AdminTheme.colors.main.primary
                         ),
                         onClick = {
-                            cropImageView?.rotateImage(90)
+                            cropImageView?.rotateImage(DEFAULT_ANGEL)
                         }
                     ) {
                         Icon(
@@ -162,8 +164,13 @@ class CropImageFragment :
 
     override fun handleEvent(event: CropImage.Event) {
         when (event) {
+            CropImage.Event.GoBack -> {
+                findNavController().popBackStack()
+            }
             CropImage.Event.CropImage -> {
-                cropImageView?.croppedImageAsync(saveCompressQuality = 100)
+                cropImageView?.croppedImageAsync(
+                    saveCompressQuality = ORIGINAL_QUALITY
+                )
             }
         }
     }

@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 
-interface AddMenuProduct {
+interface CreateMenuProduct {
     data class DataState(
         val name: String,
         val hasNameError: Boolean,

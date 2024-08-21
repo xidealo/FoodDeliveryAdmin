@@ -9,10 +9,11 @@ import com.bunbeauty.common.Constants
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
+import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProduct
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewState {
+fun CreateMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewState {
     return AddMenuProductViewState(
         name = name,
         nameError = if (hasNameError) {
@@ -66,7 +67,7 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
                 name = selectableCategory.category.name,
                 selected = selectableCategory.selected
             )
-        },
+        }.toImmutableList(),
         imageUris = run {
             val original = originalImageUri ?: return@run null
             val cropped = croppedImageUri ?: return@run null

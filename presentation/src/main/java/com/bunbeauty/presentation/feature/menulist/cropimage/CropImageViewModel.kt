@@ -15,6 +15,11 @@ class CropImageViewModel @Inject constructor() :
 
     override fun reduce(action: CropImage.Action, dataState: CropImage.DataState) {
         when (action) {
+            CropImage.Action.BackClick -> {
+                sendEvent {
+                    CropImage.Event.GoBack
+                }
+            }
             is CropImage.Action.SetImageUrl -> setState {
                 copy(uri = action.uri)
             }

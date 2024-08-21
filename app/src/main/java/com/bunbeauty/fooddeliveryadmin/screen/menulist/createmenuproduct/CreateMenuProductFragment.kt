@@ -57,25 +57,26 @@ import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryList
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.ORIGINAL_IMAGE_URI_KEY
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProductViewModel
+import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProduct
+import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProductViewModel
 import com.canhub.cropper.parcelable
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.collections.immutable.persistentListOf
 
 private const val IMAGE = "image/*"
 
 @AndroidEntryPoint
 class CreateMenuProductFragment :
-    BaseComposeFragment<AddMenuProduct.DataState, AddMenuProductViewState, AddMenuProduct.Action, AddMenuProduct.Event>() {
+    BaseComposeFragment<CreateMenuProduct.DataState, AddMenuProductViewState, CreateMenuProduct.Action, CreateMenuProduct.Event>() {
 
-    override val viewModel: AddMenuProductViewModel by viewModels()
+    override val viewModel: CreateMenuProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.onAction(AddMenuProduct.Action.Init)
+        viewModel.onAction(CreateMenuProduct.Action.Init)
         setFragmentResultListener(CATEGORY_LIST_REQUEST_KEY) { _, bundle ->
             viewModel.onAction(
-                AddMenuProduct.Action.SelectCategoryList(
+                CreateMenuProduct.Action.SelectCategoryList(
                     categoryUuidList = bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
                         ?: emptyList()
                 )
@@ -86,7 +87,7 @@ class CreateMenuProductFragment :
             val croppedImageUri = bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
 
             viewModel.onAction(
-                action = AddMenuProduct.Action.SetImage(
+                action = CreateMenuProduct.Action.SetImage(
                     originalImageUri = originalImageUri.toString(),
                     croppedImageUri = croppedImageUri.toString()
                 )
@@ -95,7 +96,7 @@ class CreateMenuProductFragment :
     }
 
     @Composable
-    override fun Screen(state: AddMenuProductViewState, onAction: (AddMenuProduct.Action) -> Unit) {
+    override fun Screen(state: AddMenuProductViewState, onAction: (CreateMenuProduct.Action) -> Unit) {
         val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             navigateToCropImage(uri)
         }
@@ -103,7 +104,7 @@ class CreateMenuProductFragment :
         AdminScaffold(
             title = stringResource(R.string.title_add_menu_product),
             backActionClick = {
-                onAction(AddMenuProduct.Action.OnBackClick)
+                onAction(CreateMenuProduct.Action.OnBackClick)
             },
             actionButton = {
                 Column(
@@ -121,7 +122,7 @@ class CreateMenuProductFragment :
                     LoadingButton(
                         textStringId = R.string.action_order_details_save,
                         onClick = {
-                            onAction(AddMenuProduct.Action.OnCreateMenuProductClick)
+                            onAction(CreateMenuProduct.Action.OnCreateMenuProductClick)
                         },
                         isLoading = state.sendingToServer
                     )
@@ -146,7 +147,7 @@ class CreateMenuProductFragment :
                     border = state.categoriesBorder,
                     label = state.categoryLabel,
                     onClick = {
-                        onAction(AddMenuProduct.Action.OnShowCategoryListClick)
+                        onAction(CreateMenuProduct.Action.OnShowCategoryListClick)
                     }
                 )
                 SwitcherCard(
@@ -154,7 +155,7 @@ class CreateMenuProductFragment :
                     checked = state.isVisibleInMenu,
                     onCheckChanged = { isVisible ->
                         onAction(
-                            AddMenuProduct.Action.OnVisibleInMenuChangeClick(isVisible = isVisible)
+                            CreateMenuProduct.Action.OnVisibleInMenuChangeClick(isVisible = isVisible)
                         )
                     },
                     text = stringResource(R.string.title_add_menu_product_is_visible_in_menu),
@@ -165,7 +166,7 @@ class CreateMenuProductFragment :
                     checked = state.isVisibleInRecommendation,
                     onCheckChanged = { isVisible ->
                         onAction(
-                            AddMenuProduct.Action.OnRecommendationVisibleChangeClick(isVisible = isVisible)
+                            CreateMenuProduct.Action.OnRecommendationVisibleChangeClick(isVisible = isVisible)
                         )
                     },
                     text = stringResource(R.string.title_add_menu_product_is_recommendation),
@@ -188,7 +189,7 @@ class CreateMenuProductFragment :
     @Composable
     private fun TextFieldsCard(
         state: AddMenuProductViewState,
-        onAction: (AddMenuProduct.Action) -> Unit
+        onAction: (CreateMenuProduct.Action) -> Unit
     ) {
         AdminCard(
             clickable = false
@@ -203,7 +204,7 @@ class CreateMenuProductFragment :
                     value = state.name,
                     labelStringId = R.string.hint_edit_menu_product_name,
                     onValueChange = { name ->
-                        onAction(AddMenuProduct.Action.OnNameTextChanged(name))
+                        onAction(CreateMenuProduct.Action.OnNameTextChanged(name))
                     },
                     errorMessageId = state.nameError,
                     enabled = !state.sendingToServer
@@ -214,7 +215,7 @@ class CreateMenuProductFragment :
                     value = state.newPrice,
                     labelStringId = R.string.hint_edit_menu_product_new_price,
                     onValueChange = { newPrice ->
-                        onAction(AddMenuProduct.Action.OnNewPriceTextChanged(newPrice))
+                        onAction(CreateMenuProduct.Action.OnNewPriceTextChanged(newPrice))
                     },
                     errorMessageId = state.newPriceError,
                     enabled = !state.sendingToServer,
@@ -226,7 +227,7 @@ class CreateMenuProductFragment :
                     value = state.oldPrice,
                     labelStringId = R.string.hint_edit_menu_product_old_price,
                     onValueChange = { oldPrice ->
-                        onAction(AddMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
+                        onAction(CreateMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
                     },
                     errorMessageId = state.oldPriceError,
                     enabled = !state.sendingToServer,
@@ -242,7 +243,7 @@ class CreateMenuProductFragment :
                         value = state.nutrition,
                         labelStringId = R.string.hint_edit_menu_product_nutrition,
                         onValueChange = { nutrition ->
-                            onAction(AddMenuProduct.Action.OnNutritionTextChanged(nutrition))
+                            onAction(CreateMenuProduct.Action.OnNutritionTextChanged(nutrition))
                         },
                         enabled = !state.sendingToServer,
                         keyboardType = KeyboardType.Number
@@ -268,7 +269,7 @@ class CreateMenuProductFragment :
                             },
                         onSuggestionClick = { suggestion ->
                             expanded = false
-                            onAction(AddMenuProduct.Action.OnUtilsTextChanged(suggestion.value))
+                            onAction(CreateMenuProduct.Action.OnUtilsTextChanged(suggestion.value))
                         },
                         enabled = !state.sendingToServer
                     )
@@ -280,7 +281,7 @@ class CreateMenuProductFragment :
                     labelStringId = R.string.hint_edit_menu_product_description,
                     imeAction = ImeAction.None,
                     onValueChange = { description ->
-                        onAction(AddMenuProduct.Action.OnDescriptionTextChanged(description))
+                        onAction(CreateMenuProduct.Action.OnDescriptionTextChanged(description))
                     },
                     maxLines = 20,
                     errorMessageId = state.descriptionError,
@@ -294,7 +295,7 @@ class CreateMenuProductFragment :
                     imeAction = ImeAction.None,
                     onValueChange = { comboDescription ->
                         onAction(
-                            AddMenuProduct.Action.OnComboDescriptionTextChanged(
+                            CreateMenuProduct.Action.OnComboDescriptionTextChanged(
                                 comboDescription
                             )
                         )
@@ -330,7 +331,7 @@ class CreateMenuProductFragment :
     private fun PhotoBlock(
         imageUris: AddMenuProductViewState.ImageUris?,
         enabled: Boolean,
-        onAction: (AddMenuProduct.Action) -> Unit,
+        onAction: (CreateMenuProduct.Action) -> Unit,
         modifier: Modifier = Modifier
     ) {
         imageUris ?: return
@@ -348,7 +349,7 @@ class CreateMenuProductFragment :
             )
             IconButton(
                 modifier = Modifier.align(Alignment.TopEnd),
-                onClick = { onAction(AddMenuProduct.Action.OnClearPhotoClick) },
+                onClick = { onAction(CreateMenuProduct.Action.OnClearPhotoClick) },
                 enabled = enabled
             ) {
                 Icon(
@@ -362,17 +363,17 @@ class CreateMenuProductFragment :
     }
 
     @Composable
-    override fun mapState(state: AddMenuProduct.DataState): AddMenuProductViewState {
+    override fun mapState(state: CreateMenuProduct.DataState): AddMenuProductViewState {
         return state.toAddMenuProductViewState()
     }
 
-    override fun handleEvent(event: AddMenuProduct.Event) {
+    override fun handleEvent(event: CreateMenuProduct.Event) {
         when (event) {
-            AddMenuProduct.Event.Back -> {
+            CreateMenuProduct.Event.Back -> {
                 findNavController().popBackStack()
             }
 
-            is AddMenuProduct.Event.GoToCategoryList -> {
+            is CreateMenuProduct.Event.GoToCategoryList -> {
                 findNavController().navigate(
                     directions = CreateMenuProductFragmentDirections.toCategoryListFragment(
                         selectedCategoryUuidList = event.selectedCategoryList.toTypedArray()
@@ -380,26 +381,26 @@ class CreateMenuProductFragment :
                 )
             }
 
-            AddMenuProduct.Event.GoToGallery -> {
+            CreateMenuProduct.Event.GoToGallery -> {
                 findNavController().navigate(
                     directions = CreateMenuProductFragmentDirections.toGalleryFragment()
                 )
             }
 
-            is AddMenuProduct.Event.AddedMenuProduct -> {
+            is CreateMenuProduct.Event.AddedMenuProduct -> {
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(R.string.msg_add_menu_added, event.menuProductName)
                 )
                 findNavController().popBackStack()
             }
 
-            AddMenuProduct.Event.ShowSomethingWentWrong -> {
+            CreateMenuProduct.Event.ShowSomethingWentWrong -> {
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(R.string.error_common_something_went_wrong)
                 )
             }
 
-            AddMenuProduct.Event.ShowImageUploadingFailed -> {
+            CreateMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(R.string.error_common_something_went_wrong)
                 )
@@ -441,7 +442,7 @@ class CreateMenuProductFragment :
                     isVisibleInMenu = false,
                     isVisibleInRecommendation = false,
                     categoriesBorder = null,
-                    selectableCategoryList = emptyList(),
+                    selectableCategoryList = persistentListOf(),
                     imageUris = null,
                     imageError = false
                 ),

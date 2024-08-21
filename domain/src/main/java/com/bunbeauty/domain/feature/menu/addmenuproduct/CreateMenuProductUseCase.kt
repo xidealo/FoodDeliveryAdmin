@@ -16,6 +16,8 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
+private const val REQUIRED_IMAGE_SIZE = 100.0
+
 class CreateMenuProductUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
@@ -38,7 +40,9 @@ class CreateMenuProductUseCase @Inject constructor(
     )
 
     suspend operator fun invoke(params: Params) {
-        val name = params.name.takeIf { it.isNotBlank() } ?: throw MenuProductNameException()
+        val name = params.name.takeIf { name ->
+            name.isNotBlank()
+        } ?: throw MenuProductNameException()
         val newPrice = params.newPrice.toIntOrNull()
             ?.takeIf { it > 0 }
             ?: throw MenuProductNewPriceException()
@@ -50,8 +54,11 @@ class CreateMenuProductUseCase @Inject constructor(
         val categories = params.categories.takeIf { it.isNotEmpty() } ?: throw MenuProductCategoriesException()
         val imageUri = params.imageUri ?: throw MenuProductImageException()
 
+        val fileSize = photoRepo.getFileSizeInMb(uri = imageUri)
+        val compressQuality = calculateCompressQuality(fileSize = fileSize)
         val photo = photoRepo.uploadPhoto(
             uri = imageUri,
+            compressQuality = compressQuality,
             username = getUsernameUseCase()
         ) ?: throw MenuProductUploadingImageException()
 
@@ -76,4 +83,13 @@ class CreateMenuProductUseCase @Inject constructor(
             )
         )
     }
+
+    private fun calculateCompressQuality(fileSize: Long): Int {
+        return fileSize.takeIf { originalSize ->
+            originalSize > 0
+        }?.let { originalSize ->
+            ((REQUIRED_IMAGE_SIZE / originalSize) * 100).toInt()
+        }?.coerceIn(10..100) ?: 100
+    }
+
 }

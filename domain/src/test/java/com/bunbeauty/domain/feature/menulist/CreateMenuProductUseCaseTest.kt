@@ -69,9 +69,11 @@ class CreateMenuProductUseCaseTest {
             categories = listOf("123")
         )
         coEvery { getUsernameUseCase() } returns username
+        coEvery { photoRepo.getFileSizeInMb(imageUri) } returns 250
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
+                compressQuality = 40,
                 username = username
             )
         } returns Photo(url = photoUrl)
@@ -89,17 +91,21 @@ class CreateMenuProductUseCaseTest {
     @Test
     fun `invoke throws NoTokenException when token is null`() = runTest {
         // Given
-        val menuProductPost = paramsMock.copy(
+        val uri = "imageUri"
+        val params = paramsMock.copy(
             name = "Pizza",
             newPrice = "1000",
             description = "Delicious pizza",
-            categories = categoriesMock
+            categories = categoriesMock,
+            imageUri = uri
         )
         val username = "username"
         coEvery { getUsernameUseCase() } returns username
+        coEvery { photoRepo.getFileSizeInMb(uri) } returns 100L
         coEvery {
             photoRepo.uploadPhoto(
-                uri = any(),
+                uri = uri,
+                compressQuality = 100,
                 username = username
             )
         } returns Photo(url = "url")
@@ -107,7 +113,7 @@ class CreateMenuProductUseCaseTest {
 
         // When & Then
         assertFailsWith<NoTokenException> {
-            createMenuProductUseCase.invoke(menuProductPost)
+            createMenuProductUseCase.invoke(params)
         }
     }
 

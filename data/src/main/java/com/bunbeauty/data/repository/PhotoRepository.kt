@@ -21,8 +21,6 @@ import java.io.ByteArrayOutputStream
 import java.util.UUID
 import javax.inject.Inject
 
-private const val REQUIRED_IMAGE_SIZE = 100.0
-
 class PhotoRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) : PhotoRepo {
@@ -47,17 +45,35 @@ class PhotoRepository @Inject constructor(
         photoList
     }
 
+    override fun getFileSizeInMb(uri: String): Long {
+        var fileSize: Long = 0
+        context.contentResolver.query(
+            uri.toUri(),
+            null,
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+            if (cursor.moveToFirst()) {
+                fileSize = cursor.getLong(sizeIndex)
+            }
+        }
+
+        return fileSize / 1000
+    }
+
     override suspend fun uploadPhoto(
         uri: String,
+        compressQuality: Int,
         username: String
     ): Photo? {
         return withContext(Dispatchers.IO) {
             val photoUri = uri.toUri()
             val bitmap = photoUri.toBitmap() ?: return@withContext null
             val compressFormat = getCompressFormat()
-            val quality = photoUri.compressQuality()
             val outputStream = ByteArrayOutputStream()
-            bitmap.compress(compressFormat, quality, outputStream)
+            bitmap.compress(compressFormat, compressQuality, outputStream)
             val data = outputStream.toByteArray()
 
             val uuid = UUID.randomUUID()
@@ -77,26 +93,6 @@ class PhotoRepository @Inject constructor(
         return context.contentResolver.openInputStream(this).use { inputStream ->
             BitmapFactory.decodeStream(inputStream)
         }
-    }
-
-    private fun Uri.compressQuality(): Int {
-        return fileSize().takeIf { originalSize ->
-            originalSize > 0
-        }?.let { originalSize ->
-            ((REQUIRED_IMAGE_SIZE / originalSize) * 100).toInt()
-        }?.coerceIn(10..100) ?: 100
-    }
-
-    private fun Uri.fileSize(): Long {
-        var fileSize: Long = 0
-        context.contentResolver.query(this, null, null, null, null)?.use { cursor ->
-            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-            if (cursor.moveToFirst()) {
-                fileSize = cursor.getLong(sizeIndex)
-            }
-        }
-
-        return fileSize / 1000
     }
 
     private fun getCompressFormat(): Bitmap.CompressFormat {

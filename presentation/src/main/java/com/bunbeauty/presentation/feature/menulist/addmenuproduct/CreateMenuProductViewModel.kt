@@ -16,11 +16,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AddMenuProductViewModel @Inject constructor(
+class CreateMenuProductViewModel @Inject constructor(
     private val createMenuProductUseCase: CreateMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase
-) : BaseStateViewModel<AddMenuProduct.DataState, AddMenuProduct.Action, AddMenuProduct.Event>(
-    initState = AddMenuProduct.DataState(
+) : BaseStateViewModel<CreateMenuProduct.DataState, CreateMenuProduct.Action, CreateMenuProduct.Event>(
+    initState = CreateMenuProduct.DataState(
         name = "",
         hasNameError = false,
         description = "",
@@ -44,68 +44,68 @@ class AddMenuProductViewModel @Inject constructor(
     )
 ) {
 
-    override fun reduce(action: AddMenuProduct.Action, dataState: AddMenuProduct.DataState) {
+    override fun reduce(action: CreateMenuProduct.Action, dataState: CreateMenuProduct.DataState) {
         when (action) {
-            AddMenuProduct.Action.Init -> loadData()
+            CreateMenuProduct.Action.Init -> loadData()
 
-            AddMenuProduct.Action.OnBackClick -> {
+            CreateMenuProduct.Action.OnBackClick -> {
                 sendEvent {
-                    AddMenuProduct.Event.Back
+                    CreateMenuProduct.Event.Back
                 }
             }
 
-            is AddMenuProduct.Action.OnComboDescriptionTextChanged -> setState {
+            is CreateMenuProduct.Action.OnComboDescriptionTextChanged -> setState {
                 copy(
                     comboDescription = action.comboDescription
                 )
             }
 
-            is AddMenuProduct.Action.OnDescriptionTextChanged -> setState {
+            is CreateMenuProduct.Action.OnDescriptionTextChanged -> setState {
                 copy(
                     description = action.description
                 )
             }
 
-            is AddMenuProduct.Action.OnNameTextChanged -> setState {
+            is CreateMenuProduct.Action.OnNameTextChanged -> setState {
                 copy(
                     name = action.name
                 )
             }
 
-            is AddMenuProduct.Action.OnNewPriceTextChanged -> setState {
+            is CreateMenuProduct.Action.OnNewPriceTextChanged -> setState {
                 copy(
                     newPrice = action.newPrice
                 )
             }
 
-            is AddMenuProduct.Action.OnNutritionTextChanged -> setState {
+            is CreateMenuProduct.Action.OnNutritionTextChanged -> setState {
                 copy(
                     nutrition = action.nutrition
                 )
             }
 
-            is AddMenuProduct.Action.OnOldPriceTextChanged -> setState {
+            is CreateMenuProduct.Action.OnOldPriceTextChanged -> setState {
                 copy(
                     oldPrice = action.oldPrice
                 )
             }
 
-            is AddMenuProduct.Action.OnUtilsTextChanged -> setState {
+            is CreateMenuProduct.Action.OnUtilsTextChanged -> setState {
                 copy(
                     utils = action.utils
                 )
             }
 
-            AddMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
-            AddMenuProduct.Action.OnShowCategoryListClick -> sendEvent {
-                AddMenuProduct.Event.GoToCategoryList(
+            CreateMenuProduct.Action.OnCreateMenuProductClick -> addMenuProduct()
+            CreateMenuProduct.Action.OnShowCategoryListClick -> sendEvent {
+                CreateMenuProduct.Event.GoToCategoryList(
                     dataState.selectedCategoryList.map { selectableCategory ->
                         selectableCategory.category.uuid
                     }
                 )
             }
 
-            is AddMenuProduct.Action.OnRecommendationVisibleChangeClick -> {
+            is CreateMenuProduct.Action.OnRecommendationVisibleChangeClick -> {
                 setState {
                     copy(
                         isVisibleInRecommendation = action.isVisible
@@ -113,7 +113,7 @@ class AddMenuProductViewModel @Inject constructor(
                 }
             }
 
-            is AddMenuProduct.Action.OnVisibleInMenuChangeClick -> {
+            is CreateMenuProduct.Action.OnVisibleInMenuChangeClick -> {
                 setState {
                     copy(
                         isVisibleInMenu = action.isVisible
@@ -121,14 +121,14 @@ class AddMenuProductViewModel @Inject constructor(
                 }
             }
 
-            AddMenuProduct.Action.OnClearPhotoClick -> setState {
+            CreateMenuProduct.Action.OnClearPhotoClick -> setState {
                 copy(
                     originalImageUri = null,
                     croppedImageUri = null
                 )
             }
 
-            is AddMenuProduct.Action.SelectCategoryList -> setState {
+            is CreateMenuProduct.Action.SelectCategoryList -> setState {
                 copy(
                     categoryList = categoryList.map { category ->
                         category.copy(
@@ -138,15 +138,15 @@ class AddMenuProductViewModel @Inject constructor(
                 )
             }
 
-            is AddMenuProduct.Action.SetImage -> setState {
+            is CreateMenuProduct.Action.SetImage -> setState {
                 copy(
                     originalImageUri = action.originalImageUri,
                     croppedImageUri = action.croppedImageUri
                 )
             }
 
-            AddMenuProduct.Action.SomethingWentWrong -> sendEvent {
-                AddMenuProduct.Event.ShowSomethingWentWrong
+            CreateMenuProduct.Action.SomethingWentWrong -> sendEvent {
+                CreateMenuProduct.Event.ShowSomethingWentWrong
             }
         }
     }
@@ -196,7 +196,7 @@ class AddMenuProductViewModel @Inject constructor(
                     }
                 )
                 sendEvent {
-                    AddMenuProduct.Event.AddedMenuProduct(menuProductName = state.value.name)
+                    CreateMenuProduct.Event.AddedMenuProduct(menuProductName = state.value.name)
                 }
             },
             onError = { throwable ->
@@ -240,13 +240,13 @@ class AddMenuProductViewModel @Inject constructor(
 
                     is MenuProductUploadingImageException -> {
                         sendEvent {
-                            AddMenuProduct.Event.ShowImageUploadingFailed
+                            CreateMenuProduct.Event.ShowImageUploadingFailed
                         }
                     }
 
                     else -> {
                         sendEvent {
-                            AddMenuProduct.Event.ShowSomethingWentWrong
+                            CreateMenuProduct.Event.ShowSomethingWentWrong
                         }
                     }
                 }

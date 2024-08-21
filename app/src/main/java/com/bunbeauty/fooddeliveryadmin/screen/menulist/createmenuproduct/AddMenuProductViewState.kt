@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class AddMenuProductViewState(
@@ -25,7 +26,7 @@ data class AddMenuProductViewState(
     val isVisibleInMenu: Boolean,
     val isVisibleInRecommendation: Boolean,
     val categoriesBorder: BorderStroke?,
-    val selectableCategoryList: List<CategoryItem>,
+    val selectableCategoryList: ImmutableList<CategoryItem>,
     val imageUris: ImageUris?,
     val imageError: Boolean,
     val sendingToServer: Boolean

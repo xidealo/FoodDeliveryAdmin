@@ -5,6 +5,7 @@ import com.bunbeauty.domain.model.Photo
 interface PhotoRepo {
     suspend fun getPhotoList(username: String): List<Photo>
     suspend fun fetchPhotoList(username: String): List<Photo>
-    suspend fun uploadPhoto(uri: String, username: String): Photo?
+    fun getFileSizeInMb(uri: String): Long
+    suspend fun uploadPhoto(uri: String, compressQuality: Int, username: String): Photo?
     suspend fun clearCache()
 }

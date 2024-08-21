@@ -12,11 +12,13 @@ interface CropImage {
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
+        data object BackClick : Action
         data class SetImageUrl(val uri: String) : Action
         data object SaveClick : Action
     }
 
     sealed interface Event : BaseEvent {
+        data object GoBack : Event
         data object CropImage : Event
     }
 }
