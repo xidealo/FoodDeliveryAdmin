@@ -1,18 +1,20 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.bunbeauty.common.Constants
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.AddMenuProduct
+import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProduct
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewState {
+fun CreateMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewState {
     return AddMenuProductViewState(
-        hasError = hasError,
         name = name,
         nameError = if (hasNameError) {
             R.string.error_add_menu_product_empty_name
@@ -39,51 +41,42 @@ fun AddMenuProduct.DataState.toAddMenuProductViewState(): AddMenuProductViewStat
         },
         nutrition = nutrition,
         comboDescription = comboDescription,
-        isLoadingButton = false,
         utils = utils,
-        categoryLabel = if (getSelectedCategory().isEmpty()) {
+        categoryLabel = if (selectedCategoryList.isEmpty()) {
             stringResource(id = R.string.title_add_menu_product_categories)
         } else {
-            getSelectedCategory()
-                .joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
-                    category.category.name
-                }
+            selectedCategoryList.joinToString(" ${Constants.BULLET_SYMBOL} ") { category ->
+                category.category.name
+            }
         },
-        categoryHint = if (getSelectedCategory().isEmpty()) {
+        categoryHint = if (selectedCategoryList.isEmpty()) {
             null
         } else {
             R.string.hint_add_menu_product_categories
         },
         isVisibleInMenu = isVisibleInMenu,
         isVisibleInRecommendation = isVisibleInRecommendation,
-
-        photoBlock = if (photoLink.isEmpty()) {
-            AddMenuProductViewState.PhotoBlock.EmptyPhoto(
-                photoErrorBorder = if (hasPhotoLinkError) {
-                    BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
-                } else {
-                    null
-                },
-                photoContainsColor = if (hasPhotoLinkError) {
-                    AdminTheme.colors.main.error
-                } else {
-                    AdminTheme.colors.main.onSurface
-                }
-            )
-        } else {
-            AddMenuProductViewState.PhotoBlock.HasPhoto(photoLink = photoLink)
-        },
-        categoriesErrorBorder = if (hasCategoriesError) {
+        categoriesBorder = if (hasCategoriesError) {
             BorderStroke(width = 2.dp, color = AdminTheme.colors.main.error)
         } else {
             null
         },
-        selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+        selectableCategoryList = selectedCategoryList.map { selectableCategory ->
             AddMenuProductViewState.CategoryItem(
                 uuid = selectableCategory.category.uuid,
                 name = selectableCategory.category.name,
                 selected = selectableCategory.selected
             )
-        }
+        }.toImmutableList(),
+        imageUris = run {
+            val original = originalImageUri ?: return@run null
+            val cropped = croppedImageUri ?: return@run null
+            AddMenuProductViewState.ImageUris(
+                originalImageUri = original.toUri(),
+                croppedImageData = ImageData.LocalUri(uri = cropped.toUri())
+            )
+        },
+        imageError = hasImageError,
+        sendingToServer = sendingToServer
     )
 }

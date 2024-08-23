@@ -1,10 +1,7 @@
 package com.bunbeauty.domain.model.menuproduct
 
-import android.os.Parcelable
-import com.bunbeauty.domain.model.Category
-import kotlinx.parcelize.Parcelize
+import com.bunbeauty.domain.model.category.Category
 
-@Parcelize
 data class MenuProduct(
     val uuid: String,
     val name: String,
@@ -18,4 +15,4 @@ data class MenuProduct(
     val barcode: Int?,
     val isVisible: Boolean,
     val categories: List<Category>
-) : Parcelable
+)
