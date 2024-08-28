@@ -88,7 +88,7 @@ class EditAdditionViewModel @Inject constructor(
                         UpdateAddition(
                             name = name,
                             priority = priority,
-                            fullName = fullName?.takeIf { it.isNotBlank() },
+                            fullName = fullName?.takeIf { fullName.isNotBlank() },
                             price = price,
                             isVisible = isVisible
                         )
