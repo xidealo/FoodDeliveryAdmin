@@ -32,6 +32,7 @@
     <string name="error_common_loading_failed">При загрузке данных произошла ошибка</string>
     <string name="error_common_saving_failed">При сохранении данных произошла ошибка</string>
     <string name="error_common_deleting_failed">При удалении данных произошла ошибка</string>
+    <string name="error_common_something_went_wrong">Что-то пошло не так</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -115,6 +116,7 @@
     <string name="hint_create_menu_product_description">Описание</string>
     <string name="hint_create_menu_product_combo_description">Описание комбо</string>
     <string name="action_create_menu_product_create">Создать</string>
+    <string name="error_common_image_uploading_failed">Не удалось загрузить изображение</string>
 
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
@@ -176,6 +178,8 @@
     <string name="action_profile_cafes">Рестораны</string>
     <string name="action_profile_settings">Настройки</string>
     <string name="action_profile_statistic">Статистика</string>
+    <string name="msg_accept_orders">Принимаем заказы</string>
+    <string name="msg_accept_orders_description">Когда выключено, пользователи не могут делать заказы</string>
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>

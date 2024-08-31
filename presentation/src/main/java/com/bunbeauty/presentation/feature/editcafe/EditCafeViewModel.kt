@@ -81,7 +81,7 @@ class EditCafeViewModel @Inject constructor(
             }
 
             EditCafe.Action.BackClick -> {
-                addEvent {
+                sendEvent {
                     EditCafe.Event.GoBack
                 }
             }
@@ -112,7 +112,7 @@ class EditCafeViewModel @Inject constructor(
                         nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Empty
                     )
                 }
-                addEvent {
+                sendEvent {
                     EditCafe.Event.ShowFetchDataError
                 }
             }
@@ -134,7 +134,7 @@ class EditCafeViewModel @Inject constructor(
                 }
             },
             onError = {
-                addEvent {
+                sendEvent {
                     EditCafe.Event.ShowUpdateDataError
                 }
             }
@@ -156,7 +156,7 @@ class EditCafeViewModel @Inject constructor(
                 }
             },
             onError = {
-                addEvent {
+                sendEvent {
                     EditCafe.Event.ShowUpdateDataError
                 }
             }
@@ -182,7 +182,7 @@ class EditCafeViewModel @Inject constructor(
                 }
             },
             onError = {
-                addEvent {
+                sendEvent {
                     EditCafe.Event.ShowSaveDataError
                 }
             }
@@ -190,7 +190,7 @@ class EditCafeViewModel @Inject constructor(
     }
 
     private fun requestConfirmDelete(uuid: String) {
-        addEvent {
+        sendEvent {
             EditCafe.Event.ShowConfirmDeletion(uuid = uuid)
         }
     }
@@ -214,7 +214,7 @@ class EditCafeViewModel @Inject constructor(
                 }
             },
             onError = {
-                addEvent {
+                sendEvent {
                     EditCafe.Event.ShowDeleteDataError
                 }
             }

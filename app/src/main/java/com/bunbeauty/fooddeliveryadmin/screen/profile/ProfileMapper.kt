@@ -1,17 +1,33 @@
 package com.bunbeauty.fooddeliveryadmin.screen.profile
 
-import android.content.res.Resources
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.fooddeliveryadmin.R
-import javax.inject.Inject
+import com.bunbeauty.presentation.feature.profile.Profile
 
-class ProfileMapper @Inject constructor(private val resources: Resources) {
+@Composable
+internal fun Profile.DataState.toViewState(): ProfileViewState {
+    return ProfileViewState(
+        state = when (state) {
+            Profile.DataState.State.SUCCESS -> {
+                acceptOrders?.let { acceptOrders ->
+                    user?.let { user ->
+                        val userRoleStringId = when (user.role) {
+                            UserRole.MANAGER -> R.string.hint_profile_manager
+                            UserRole.ADMIN -> R.string.hint_profile_admin
+                        }
+                        ProfileViewState.State.Success(
+                            role = stringResource(id = userRoleStringId),
+                            userName = user.userName,
+                            acceptOrders = acceptOrders
+                        )
+                    } ?: ProfileViewState.State.Error
+                } ?: ProfileViewState.State.Error
+            }
 
-    fun mapUserRole(role: UserRole): String {
-        val roleResId = when (role) {
-            UserRole.MANAGER -> (R.string.hint_profile_manager)
-            UserRole.ADMIN -> (R.string.hint_profile_admin)
+            Profile.DataState.State.ERROR -> ProfileViewState.State.Error
+            Profile.DataState.State.LOADING -> ProfileViewState.State.Loading
         }
-        return resources.getString(roleResId)
-    }
+    )
 }

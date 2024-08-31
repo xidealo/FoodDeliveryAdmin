@@ -1,10 +1,12 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.addmenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.graphics.Color
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class AddMenuProductViewState(
@@ -19,32 +21,27 @@ data class AddMenuProductViewState(
     @StringRes val descriptionError: Int?,
     val nutrition: String,
     val comboDescription: String,
-    val isLoadingButton: Boolean,
-    val hasError: Boolean?,
     val categoryLabel: String,
     @StringRes val categoryHint: Int?,
     val isVisibleInMenu: Boolean,
     val isVisibleInRecommendation: Boolean,
-    val categoriesErrorBorder: BorderStroke?,
-    val photoBlock: PhotoBlock,
-    val selectableCategoryList: List<CategoryItem>
+    val categoriesBorder: BorderStroke?,
+    val selectableCategoryList: ImmutableList<CategoryItem>,
+    val imageUris: ImageUris?,
+    val imageError: Boolean,
+    val sendingToServer: Boolean
 ) : BaseViewState {
+
+    @Immutable
+    data class ImageUris(
+        val originalImageUri: Uri,
+        val croppedImageData: ImageData.LocalUri
+    )
+
     @Immutable
     data class CategoryItem(
         val uuid: String,
         val name: String,
         val selected: Boolean
     )
-
-    @Immutable
-    sealed interface PhotoBlock {
-        @Immutable
-        data class HasPhoto(val photoLink: String) : PhotoBlock
-
-        @Immutable
-        data class EmptyPhoto(
-            val photoErrorBorder: BorderStroke?,
-            val photoContainsColor: Color
-        ) : PhotoBlock
-    }
 }

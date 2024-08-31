@@ -25,9 +25,9 @@ class AdditionListViewModel @Inject constructor(
 
     override fun reduce(action: AdditionList.Action, dataState: AdditionList.DataState) {
         when (action) {
-            AdditionList.Action.OnBackClick -> addEvent { AdditionList.Event.Back }
+            AdditionList.Action.OnBackClick -> sendEvent { AdditionList.Event.Back }
 
-            is AdditionList.Action.OnAdditionClick -> addEvent {
+            is AdditionList.Action.OnAdditionClick -> sendEvent {
                 AdditionList.Event.OnAdditionClick(
                     additionUuid = action.additionUuid
                 )

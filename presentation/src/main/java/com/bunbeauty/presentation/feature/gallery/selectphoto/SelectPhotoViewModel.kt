@@ -28,11 +28,11 @@ class SelectPhotoViewModel @Inject constructor(
                 )
             }
 
-            SelectPhoto.Action.Back -> addEvent {
+            SelectPhoto.Action.Back -> sendEvent {
                 SelectPhoto.Event.Back
             }
 
-            SelectPhoto.Action.OnSavePhotoClick -> addEvent {
+            SelectPhoto.Action.OnSavePhotoClick -> sendEvent {
                 SelectPhoto.Event.Saved(
                     photoUrl = dataState.photoUrl ?: ""
                 )

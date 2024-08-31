@@ -3,7 +3,7 @@ package com.bunbeauty.domain.feature.menulist
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
-import com.bunbeauty.domain.model.Category
+import com.bunbeauty.domain.model.category.Category
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery

@@ -2,98 +2,122 @@ package com.bunbeauty.presentation.feature.profile
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
+import com.bunbeauty.domain.feature.profile.IsOrderAvailableUseCase
+import com.bunbeauty.domain.feature.profile.UpdateOrderAvailabilityUseCase
 import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val profileStateMapper: ProfileStateMapper,
-    private val getUsername: GetUsernameUseCase,
-    private val logout: LogoutUseCase
-) : BaseViewModel() {
-
-    private val mutableDataState = MutableStateFlow(
-        ProfileDataState(
-            state = ProfileDataState.State.LOADING,
-            user = null,
-            eventList = emptyList()
-        )
+    private val getUsernameUseCase: GetUsernameUseCase,
+    private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
+    private val updateOrderAvailabilityUseCase: UpdateOrderAvailabilityUseCase,
+    private val logoutUseCase: LogoutUseCase
+) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
+    initState = Profile.DataState(
+        state = Profile.DataState.State.LOADING,
+        user = null,
+        acceptOrders = null
     )
-    val uiState = mutableDataState.mapToStateFlow(viewModelScope, profileStateMapper::map)
+) {
 
-    fun updateData() {
+    override fun reduce(action: Profile.Action, dataState: Profile.DataState) {
+        when (action) {
+            Profile.Action.UpdateData -> handleUpdateData()
+            Profile.Action.CafeClick -> handleCafeClick()
+            Profile.Action.SettingsClick -> handleSettingsClick()
+            Profile.Action.StatisticClick -> handleStatisticClick()
+            is Profile.Action.AcceptOrdersToggle -> handleAcceptOrdersToggle(checked = action.checked)
+            Profile.Action.LogoutClick -> handleLogoutClick()
+            is Profile.Action.LogoutConfirm -> handleLogoutConfirm(confirmed = action.confirmed)
+        }
+    }
+
+    private fun handleUpdateData() {
         viewModelScope.launchSafe(
-            onError = {
-                mutableDataState.update { dataState ->
-                    dataState.copy(state = ProfileDataState.State.ERROR)
+            block = {
+                setState {
+                    copy(
+                        state = Profile.DataState.State.SUCCESS,
+                        user = Profile.DataState.User(
+                            role = UserRole.MANAGER,
+                            userName = getUsernameUseCase().lowercase().replaceFirstChar { char ->
+                                char.uppercase()
+                            }
+                        ),
+                        acceptOrders = isOrderAvailableUseCase()
+                    )
                 }
             },
-            block = {
-                mutableDataState.update { dataState ->
-                    dataState.copy(
-                        state = ProfileDataState.State.SUCCESS,
-                        user = ProfileDataState.User(
-                            role = UserRole.MANAGER,
-                            userName = getUsername().lowercase().replaceFirstChar { char ->
-                                char.titlecase()
-                            }
-                        )
-                    )
+            onError = {
+                setState {
+                    copy(state = Profile.DataState.State.ERROR)
                 }
             }
         )
     }
 
-    fun onSettingsClicked() {
-        mutableDataState.update { dataState ->
-            dataState + ProfileEvent.OpenSettingsEvent
+    private fun handleCafeClick() {
+        sendEvent {
+            Profile.Event.OpenCafeList
         }
     }
 
-    fun onCafesClicked() {
-        mutableDataState.update { dataState ->
-            dataState + ProfileEvent.OpenCafeListEvent
+    private fun handleSettingsClick() {
+        sendEvent {
+            Profile.Event.OpenSettings
         }
     }
 
-    fun onStatisticClicked() {
-        mutableDataState.update { dataState ->
-            dataState + ProfileEvent.OpenStatisticEvent
+    private fun handleStatisticClick() {
+        sendEvent {
+            Profile.Event.OpenStatistic
         }
     }
 
-    fun onLogoutClick() {
-        mutableDataState.update { dataState ->
-            dataState + ProfileEvent.OpenLogoutEvent
+    private fun handleAcceptOrdersToggle(checked: Boolean) {
+        setState {
+            copy(acceptOrders = checked)
+        }
+
+        viewModelScope.launchSafe(
+            block = {
+                val updatedValue = updateOrderAvailabilityUseCase(isAvailable = checked)
+                setState {
+                    copy(acceptOrders = updatedValue)
+                }
+            },
+            onError = {
+                setState {
+                    copy(acceptOrders = !checked)
+                }
+            }
+        )
+    }
+
+    private fun handleLogoutClick() {
+        sendEvent {
+            Profile.Event.OpenLogout
         }
     }
 
-    fun onLogoutConfirmed(confirmed: Boolean) {
+    private fun handleLogoutConfirm(confirmed: Boolean) {
         if (confirmed) {
             viewModelScope.launchSafe(
-                onError = {
-                    // No idea how to handle this
-                },
                 block = {
-                    logout()
-                    mutableDataState.update { state ->
-                        state + ProfileEvent.OpenLoginEvent
+                    logoutUseCase()
+                    sendEvent {
+                        Profile.Event.OpenLogin
                     }
+                },
+                onError = {
+                    // Not handled
                 }
             )
-        }
-    }
-
-    fun consumeEvents(events: List<ProfileEvent>) {
-        mutableDataState.update { state ->
-            state - events
         }
     }
 }

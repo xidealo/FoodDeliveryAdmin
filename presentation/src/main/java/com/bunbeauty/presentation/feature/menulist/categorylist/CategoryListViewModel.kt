@@ -2,7 +2,7 @@ package com.bunbeauty.presentation.feature.menulist.categorylist
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.menu.addmenuproduct.GetCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.addmenuproduct.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,15 +12,14 @@ private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
 
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val getCategoryListUseCase: GetCategoryListUseCase
-) :
-    BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(
-        initState = CategoryList.DataState(
-            selectableCategoryList = listOf(),
-            hasError = false
-        )
-    ) {
+    private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
+    savedStateHandle: SavedStateHandle
+) : BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(
+    initState = CategoryList.DataState(
+        selectableCategoryList = listOf(),
+        hasError = false
+    )
+) {
 
     private val selectedCategoryUuidList: List<String> = savedStateHandle.get<Array<String>>(
         SELECTED_CATEGORY_UUID_LIST
@@ -29,14 +28,15 @@ class CategoryListViewModel @Inject constructor(
     override fun reduce(action: CategoryList.Action, dataState: CategoryList.DataState) {
         when (action) {
             CategoryList.Action.Init -> loadData()
-            CategoryList.Action.OnBackClick -> addEvent {
+            CategoryList.Action.OnBackClick -> sendEvent {
                 CategoryList.Event.Back
             }
 
-            CategoryList.Action.OnSaveClick -> addEvent {
+            CategoryList.Action.OnSaveClick -> sendEvent {
                 CategoryList.Event.Save(
-                    dataState.getSelectedCategory()
-                        .map { selectableCategory -> selectableCategory.category.uuid }
+                    dataState.selectedCategoryList.map { selectableCategory ->
+                        selectableCategory.category.uuid
+                    }
                 )
             }
 
@@ -66,18 +66,9 @@ class CategoryListViewModel @Inject constructor(
             block = {
                 setState {
                     copy(
-                        selectableCategoryList = getCategoryListUseCase().map { category ->
-                            CategoryList.DataState.SelectableCategory(
-                                category = category,
-                                selected = false
-                            )
-                        }.map { selectableCategory ->
-                            selectableCategory.copy(
-                                selected = selectedCategoryUuidList.contains(
-                                    selectableCategory.category.uuid
-                                )
-                            )
-                        }
+                        selectableCategoryList = getSelectableCategoryListUseCase(
+                            selectedCategoryUuidList = selectedCategoryUuidList
+                        )
                     )
                 }
             },
