@@ -35,7 +35,7 @@ class EditAdditionViewModel @Inject constructor(
 
     override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
         when (action) {
-            is EditAddition.Action.OnBackClick -> addEvent { EditAddition.Event.Back }
+            is EditAddition.Action.OnBackClick -> sendEvent { EditAddition.Event.Back }
 
             EditAddition.Action.OnSaveEditAdditionClick -> updateEditAddition()
 
@@ -98,7 +98,7 @@ class EditAdditionViewModel @Inject constructor(
                 setState {
                     copy(isLoading = false)
                 }
-                addEvent {
+                sendEvent {
                     EditAddition.Event.ShowUpdateAdditionSuccess(
                         additionName = state.value.name
                     )

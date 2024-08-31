@@ -138,7 +138,7 @@ class EditAdditionFragment :
                             )
                         )
                     },
-                    labelStringId = R.string.title_edit_addition_is_visible,
+                    text = getString(R.string.title_edit_addition_is_visible),
                     enabled = !state.isLoading
                 )
                 Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))

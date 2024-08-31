@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,7 +22,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -42,7 +39,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
+class ProfileFragment :
+    BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
 
     override val viewModel: ProfileViewModel by viewModels()
     private val versionApp = BuildConfig.VERSION_NAME
@@ -177,36 +175,6 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 72.dp)
-            )
-        }
-    }
-
-    private fun handleEventList(
-        eventList: List<ProfileEvent>
-    ) {
-        eventList.forEach { event ->
-            when (event) {
-                ProfileEvent.OpenSettingsEvent -> {
-                    findNavController().navigateSafe(toSettingsFragment())
-                }
-
-                ProfileEvent.OpenCafeListEvent -> {
-                    findNavController().navigateSafe(toCafeListFragment())
-                }
-
-                ProfileEvent.OpenStatisticEvent -> {
-                    findNavController().navigateSafe(toStatisticFragment())
-                }
-            )
-            SwitcherCard(
-                text = stringResource(R.string.msg_accept_orders),
-                hint = stringResource(R.string.msg_accept_orders_description),
-                checked = state.acceptOrders,
-                onCheckChanged = { checked ->
-                    onAction(
-                        Profile.Action.AcceptOrdersToggle(checked = checked)
-                    )
-                }
             )
         }
     }
