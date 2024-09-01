@@ -1,7 +1,5 @@
 package com.bunbeauty.domain.model.menuproduct
 
-import com.bunbeauty.domain.model.category.Category
-
 data class MenuProduct(
     val uuid: String,
     val name: String,
@@ -14,5 +12,6 @@ data class MenuProduct(
     val photoLink: String,
     val barcode: Int?,
     val isVisible: Boolean,
-    val categories: List<Category>
+    val isRecommended: Boolean,
+    val categoryUuids: List<String>
 )

@@ -95,16 +95,18 @@
         <argument
             android:name="menuProductUuid"
             app:argType="string" />
+        <action
+            android:id="@+id/to_categoryListFragment"
+            app:destination="@id/categoryListFragment" />
+        <action
+            android:id="@+id/to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/createMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.CreateMenuProductFragment"
         android:label="AddMenuProductFragment" >
-
-        <action
-            android:id="@+id/to_galleryFragment"
-            app:destination="@id/galleryFragment" />
         <action
             android:id="@+id/to_categoryListFragment"
             app:destination="@id/categoryListFragment" />
@@ -129,15 +131,6 @@
         <argument
             android:name="selectedCategoryUuidList"
             app:argType="string[]" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/galleryFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.GalleryFragment"
-        android:label="GalleryFragment" >
-        <action
-            android:id="@+id/to_selectPhotoFragment"
-            app:destination="@id/selectPhotoFragment" />
     </fragment>
 
     <fragment

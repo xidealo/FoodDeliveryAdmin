@@ -27,6 +27,8 @@
     <string name="action_common_ok">Ок</string>
     <string name="action_common_logout">Выйти</string>
     <string name="action_common_delete">Удалить</string>
+    <string name="action_common_add_photo">Добавить фото</string>
+    <string name="action_common_replace_photo">Заменить фото</string>
     <string name="error_common_no_internet">Нет подключения к интернету</string>
     <string name="error_common_update_failed">При обновлении данных произошла ошибка</string>
     <string name="error_common_loading_failed">При загрузке данных произошла ошибка</string>
@@ -106,6 +108,9 @@
     <!-- MENU -->
     <string name="action_menu_create">Создать</string>
 
+    <!-- MENU PRODUCT COMMON -->
+    <string name="error_common_image_uploading_failed">Не удалось загрузить изображение</string>
+
     <!-- CREATE MENU PRODUCT -->
     <string name="title_create_menu_product_new_product">Новая позиция</string>
     <string name="hint_create_menu_product_name">Название</string>
@@ -116,7 +121,6 @@
     <string name="hint_create_menu_product_description">Описание</string>
     <string name="hint_create_menu_product_combo_description">Описание комбо</string>
     <string name="action_create_menu_product_create">Создать</string>
-    <string name="error_common_image_uploading_failed">Не удалось загрузить изображение</string>
 
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
@@ -234,11 +238,11 @@
     <string name="title_add_menu_product_categories">Выбрать категории</string>
     <string name="title_add_menu_product_is_visible_in_menu">Показывать в меню</string>
     <string name="title_add_menu_product_is_recommendation">Рекомендовать</string>
-    <string name="title_add_menu_product_add_photo">Добавить фото</string>
     <string name="error_add_menu_product_empty_name">Название не может быть пустым</string>
     <string name="error_add_menu_product_empty_description">Описание не может быть пустым</string>
     <string name="error_add_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
     <string name="error_add_menu_product_old_price_incorrect">Должна быть больше цены</string>
+    <string name="error_add_menu_product_categories">Выберите категории</string>
     <string name="msg_add_menu_added">%s добавлен</string>
 
     <!--CATEGORY LIST-->

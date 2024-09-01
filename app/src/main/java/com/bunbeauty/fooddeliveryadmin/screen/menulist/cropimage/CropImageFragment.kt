@@ -41,7 +41,6 @@ import com.canhub.cropper.CropImageView.OnCropImageCompleteListener
 import dagger.hilt.android.AndroidEntryPoint
 
 const val CROP_IMAGE_REQUEST_KEY = "crop image"
-const val ORIGINAL_IMAGE_URI_KEY = "original image uri"
 const val CROPPED_IMAGE_URI_KEY = "cropped image uri"
 const val ORIGINAL_QUALITY = 100
 const val DEFAULT_ANGEL = 90
@@ -57,10 +56,7 @@ class CropImageFragment :
     private val cropImageCompleteListener = OnCropImageCompleteListener { _, result ->
         setFragmentResult(
             CROP_IMAGE_REQUEST_KEY,
-            bundleOf(
-                ORIGINAL_IMAGE_URI_KEY to result.originalUri,
-                CROPPED_IMAGE_URI_KEY to result.uriContent
-            )
+            bundleOf(CROPPED_IMAGE_URI_KEY to result.uriContent)
         )
         findNavController().popBackStack()
     }

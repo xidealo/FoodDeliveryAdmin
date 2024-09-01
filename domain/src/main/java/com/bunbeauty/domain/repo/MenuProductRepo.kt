@@ -6,7 +6,7 @@ import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 interface MenuProductRepo {
 
-    suspend fun post(token: String, menuProductPost: MenuProductPost)
+    suspend fun saveMenuProduct(token: String, menuProductPost: MenuProductPost): MenuProduct?
 
     /*GET*/
     suspend fun getMenuProductList(
@@ -14,14 +14,17 @@ interface MenuProductRepo {
         takeRemote: Boolean = true
     ): List<MenuProduct>?
 
-    suspend fun getMenuProduct(menuProductUuid: String): MenuProduct?
+    suspend fun getMenuProduct(
+        menuProductUuid: String,
+        companyUuid: String
+    ): MenuProduct?
 
     /*UPDATE*/
     suspend fun updateMenuProduct(
         menuProductUuid: String,
         updateMenuProduct: UpdateMenuProduct,
         token: String
-    )
+    ):  MenuProduct?
 
     /*DELETE*/
     suspend fun clearCache()

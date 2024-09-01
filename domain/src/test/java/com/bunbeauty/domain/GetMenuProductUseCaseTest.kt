@@ -1,9 +1,9 @@
 package com.bunbeauty.domain
 
-import com.bunbeauty.domain.exception.updateproduct.NotFoundMenuProductException
+import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.NotFoundMenuProductException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.usecase.GetMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

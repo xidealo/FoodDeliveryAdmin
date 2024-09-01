@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
+import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -54,20 +56,20 @@ import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.mapper.toAddMenuProductViewState
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.ORIGINAL_IMAGE_URI_KEY
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProduct
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProductViewModel
+import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProductViewModel
 import com.canhub.cropper.parcelable
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.collections.immutable.persistentListOf
-
-private const val IMAGE = "image/*"
 
 @AndroidEntryPoint
 class CreateMenuProductFragment :
-    BaseComposeFragment<CreateMenuProduct.DataState, AddMenuProductViewState, CreateMenuProduct.Action, CreateMenuProduct.Event>() {
+    BaseComposeFragment<CreateMenuProduct.DataState, CreateMenuProductViewState, CreateMenuProduct.Action, CreateMenuProduct.Event>() {
 
     override val viewModel: CreateMenuProductViewModel by viewModels()
 
@@ -76,19 +78,17 @@ class CreateMenuProductFragment :
         viewModel.onAction(CreateMenuProduct.Action.Init)
         setFragmentResultListener(CATEGORY_LIST_REQUEST_KEY) { _, bundle ->
             viewModel.onAction(
-                CreateMenuProduct.Action.SelectCategoryList(
+                CreateMenuProduct.Action.SelectCategories(
                     categoryUuidList = bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
                         ?: emptyList()
                 )
             )
         }
         setFragmentResultListener(CROP_IMAGE_REQUEST_KEY) { _, bundle ->
-            val originalImageUri = bundle.parcelable<Uri>(ORIGINAL_IMAGE_URI_KEY) ?: return@setFragmentResultListener
             val croppedImageUri = bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
 
             viewModel.onAction(
                 action = CreateMenuProduct.Action.SetImage(
-                    originalImageUri = originalImageUri.toString(),
                     croppedImageUri = croppedImageUri.toString()
                 )
             )
@@ -96,7 +96,7 @@ class CreateMenuProductFragment :
     }
 
     @Composable
-    override fun Screen(state: AddMenuProductViewState, onAction: (CreateMenuProduct.Action) -> Unit) {
+    override fun Screen(state: CreateMenuProductViewState, onAction: (CreateMenuProduct.Action) -> Unit) {
         val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             navigateToCropImage(uri)
         }
@@ -104,82 +104,70 @@ class CreateMenuProductFragment :
         AdminScaffold(
             title = stringResource(R.string.title_add_menu_product),
             backActionClick = {
-                onAction(CreateMenuProduct.Action.OnBackClick)
+                onAction(CreateMenuProduct.Action.BackClick)
             },
             actionButton = {
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = spacedBy(8.dp)
-                ) {
-                    if (state.imageUris == null) {
-                        AddPhotoButton(
-                            isError = state.imageError,
-                            onClick = {
-                                galleryLauncher.launch(IMAGE)
-                            }
-                        )
-                    }
-                    LoadingButton(
-                        textStringId = R.string.action_order_details_save,
-                        onClick = {
-                            onAction(CreateMenuProduct.Action.OnCreateMenuProductClick)
-                        },
-                        isLoading = state.sendingToServer
-                    )
-                }
+                BottomButtons(
+                    state = state,
+                    addPhotoClick = {
+                        galleryLauncher.launch(IMAGE)
+                    },
+                    onAction = onAction
+                )
             }
         ) {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp)
-                    .padding(top = 16.dp)
+                    .padding(top = 16.dp),
+                verticalArrangement = spacedBy(8.dp)
             ) {
                 TextFieldsCard(
                     state = state,
                     onAction = onAction
                 )
-
+                // TODO fix
                 NavigationTextCard(
-                    modifier = Modifier
-                        .padding(top = 8.dp),
-                    hintStringId = state.categoryHint,
-                    border = state.categoriesBorder,
-                    label = state.categoryLabel,
+                    hintStringId = state.categoriesField.hintResId,
+                    border = if (state.categoriesField.isError) {
+                        BorderStroke(
+                            width = 2.dp,
+                            color = AdminTheme.colors.main.error
+                        )
+                    } else {
+                        null
+                    },
+                    label = state.categoriesField.value,
                     onClick = {
-                        onAction(CreateMenuProduct.Action.OnShowCategoryListClick)
+                        onAction(CreateMenuProduct.Action.CategoriesClick)
                     }
                 )
                 SwitcherCard(
-                    modifier = Modifier.padding(top = 8.dp),
                     checked = state.isVisibleInMenu,
-                    onCheckChanged = { isVisible ->
-                        onAction(
-                            CreateMenuProduct.Action.OnVisibleInMenuChangeClick(isVisible = isVisible)
-                        )
+                    onCheckChanged = {
+                        onAction(CreateMenuProduct.Action.ToggleVisibilityInMenu)
                     },
                     text = stringResource(R.string.title_add_menu_product_is_visible_in_menu),
                     enabled = !state.sendingToServer
                 )
                 SwitcherCard(
-                    modifier = Modifier.padding(top = 8.dp),
                     checked = state.isVisibleInRecommendation,
-                    onCheckChanged = { isVisible ->
-                        onAction(
-                            CreateMenuProduct.Action.OnRecommendationVisibleChangeClick(isVisible = isVisible)
-                        )
+                    onCheckChanged = {
+                        onAction(CreateMenuProduct.Action.ToggleVisibilityInRecommendations)
                     },
                     text = stringResource(R.string.title_add_menu_product_is_recommendation),
                     enabled = !state.sendingToServer
                 )
-                PhotoBlock(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    imageUris = state.imageUris,
-                    enabled = !state.sendingToServer,
-                    onAction = onAction
-                )
+                state.imageField.value?.let { imageData ->
+                    AdminAsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp)),
+                        imageData = imageData,
+                        contentDescription = R.string.description_product
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(136.dp))
             }
@@ -187,8 +175,44 @@ class CreateMenuProductFragment :
     }
 
     @Composable
+    private fun BottomButtons(
+        modifier: Modifier = Modifier,
+        state: CreateMenuProductViewState,
+        addPhotoClick: () -> Unit,
+        onAction: (CreateMenuProduct.Action) -> Unit
+    ) {
+        Column(
+            modifier = modifier.padding(horizontal = 16.dp),
+            verticalArrangement = spacedBy(8.dp)
+        ) {
+            SecondaryButton(
+                textStringId = if (state.imageField.isSelected) {
+                    R.string.action_common_replace_photo
+                } else {
+                    R.string.action_common_add_photo
+                },
+                onClick = addPhotoClick,
+                isError = state.imageField.isError,
+                borderColor = if (state.imageField.isError) {
+                    AdminTheme.colors.main.error
+                } else {
+                    AdminTheme.colors.main.primary
+                },
+                buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
+            )
+            LoadingButton(
+                textStringId = R.string.action_order_details_save,
+                onClick = {
+                    onAction(CreateMenuProduct.Action.CreateMenuProductClick)
+                },
+                isLoading = state.sendingToServer
+            )
+        }
+    }
+
+    @Composable
     private fun TextFieldsCard(
-        state: AddMenuProductViewState,
+        state: CreateMenuProductViewState,
         onAction: (CreateMenuProduct.Action) -> Unit
     ) {
         AdminCard(
@@ -196,54 +220,54 @@ class CreateMenuProductFragment :
         ) {
             Column(
                 modifier = Modifier
-                    .padding(top = 8.dp, bottom = 16.dp)
+                    .padding(
+                        top = 8.dp,
+                        bottom = 16.dp
+                    )
                     .padding(horizontal = 16.dp)
             ) {
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = state.name,
+                    value = state.nameField.value,
                     labelStringId = R.string.hint_edit_menu_product_name,
                     onValueChange = { name ->
-                        onAction(CreateMenuProduct.Action.OnNameTextChanged(name))
+                        onAction(CreateMenuProduct.Action.ChangeNameText(name))
                     },
-                    errorMessageId = state.nameError,
+                    errorMessageId = state.nameField.errorResIdToShow,
                     enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = state.newPrice,
+                    value = state.newPriceField.value,
                     labelStringId = R.string.hint_edit_menu_product_new_price,
                     onValueChange = { newPrice ->
-                        onAction(CreateMenuProduct.Action.OnNewPriceTextChanged(newPrice))
+                        onAction(CreateMenuProduct.Action.ChangeNewPriceText(newPrice))
                     },
-                    errorMessageId = state.newPriceError,
+                    errorMessageId = state.newPriceField.errorResIdToShow,
                     enabled = !state.sendingToServer,
                     keyboardType = KeyboardType.Number
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = state.oldPrice,
+                    value = state.oldPriceField.value,
                     labelStringId = R.string.hint_edit_menu_product_old_price,
                     onValueChange = { oldPrice ->
-                        onAction(CreateMenuProduct.Action.OnOldPriceTextChanged(oldPrice))
+                        onAction(CreateMenuProduct.Action.ChangeOldPriceText(oldPrice))
                     },
-                    errorMessageId = state.oldPriceError,
+                    errorMessageId = state.oldPriceField.errorResIdToShow,
                     enabled = !state.sendingToServer,
                     keyboardType = KeyboardType.Number
                 )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
+                Row(modifier = Modifier.fillMaxWidth()) {
                     AdminTextField(
                         modifier = Modifier.weight(0.6f),
                         value = state.nutrition,
                         labelStringId = R.string.hint_edit_menu_product_nutrition,
                         onValueChange = { nutrition ->
-                            onAction(CreateMenuProduct.Action.OnNutritionTextChanged(nutrition))
+                            onAction(CreateMenuProduct.Action.ChangeNutritionText(nutrition))
                         },
                         enabled = !state.sendingToServer,
                         keyboardType = KeyboardType.Number
@@ -269,7 +293,7 @@ class CreateMenuProductFragment :
                             },
                         onSuggestionClick = { suggestion ->
                             expanded = false
-                            onAction(CreateMenuProduct.Action.OnUtilsTextChanged(suggestion.value))
+                            onAction(CreateMenuProduct.Action.ChangeUtilsText(suggestion.value))
                         },
                         enabled = !state.sendingToServer
                     )
@@ -277,14 +301,14 @@ class CreateMenuProductFragment :
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = state.description,
+                    value = state.descriptionField.value,
                     labelStringId = R.string.hint_edit_menu_product_description,
                     imeAction = ImeAction.None,
                     onValueChange = { description ->
-                        onAction(CreateMenuProduct.Action.OnDescriptionTextChanged(description))
+                        onAction(CreateMenuProduct.Action.ChangeDescriptionText(description))
                     },
                     maxLines = 20,
-                    errorMessageId = state.descriptionError,
+                    errorMessageId = state.descriptionField.errorResIdToShow,
                     enabled = !state.sendingToServer
                 )
 
@@ -295,7 +319,7 @@ class CreateMenuProductFragment :
                     imeAction = ImeAction.None,
                     onValueChange = { comboDescription ->
                         onAction(
-                            CreateMenuProduct.Action.OnComboDescriptionTextChanged(
+                            CreateMenuProduct.Action.ChangeComboDescriptionText(
                                 comboDescription
                             )
                         )
@@ -308,72 +332,17 @@ class CreateMenuProductFragment :
     }
 
     @Composable
-    private fun AddPhotoButton(
-        isError: Boolean,
-        onClick: () -> Unit,
-        modifier: Modifier = Modifier
-    ) {
-        SecondaryButton(
-            modifier = modifier,
-            textStringId = R.string.title_add_menu_product_add_photo,
-            onClick = onClick,
-            isError = isError,
-            borderColor = if (isError) {
-                AdminTheme.colors.main.error
-            } else {
-                AdminTheme.colors.main.primary
-            },
-            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
-        )
-    }
-
-    @Composable
-    private fun PhotoBlock(
-        imageUris: AddMenuProductViewState.ImageUris?,
-        enabled: Boolean,
-        onAction: (CreateMenuProduct.Action) -> Unit,
-        modifier: Modifier = Modifier
-    ) {
-        imageUris ?: return
-
-        Box(modifier = modifier) {
-            AdminAsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable(enabled = enabled) {
-                        navigateToCropImage(imageUris.originalImageUri)
-                    },
-                imageData = imageUris.croppedImageData,
-                contentDescription = R.string.description_product
-            )
-            IconButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                onClick = { onAction(CreateMenuProduct.Action.OnClearPhotoClick) },
-                enabled = enabled
-            ) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = painterResource(R.drawable.ic_clear),
-                    contentDescription = null,
-                    tint = AdminTheme.colors.main.surface
-                )
-            }
-        }
-    }
-
-    @Composable
-    override fun mapState(state: CreateMenuProduct.DataState): AddMenuProductViewState {
+    override fun mapState(state: CreateMenuProduct.DataState): CreateMenuProductViewState {
         return state.toAddMenuProductViewState()
     }
 
     override fun handleEvent(event: CreateMenuProduct.Event) {
         when (event) {
-            CreateMenuProduct.Event.Back -> {
+            CreateMenuProduct.Event.NavigateBack -> {
                 findNavController().popBackStack()
             }
 
-            is CreateMenuProduct.Event.GoToCategoryList -> {
+            is CreateMenuProduct.Event.NavigateToCategoryList -> {
                 findNavController().navigate(
                     directions = CreateMenuProductFragmentDirections.toCategoryListFragment(
                         selectedCategoryUuidList = event.selectedCategoryList.toTypedArray()
@@ -381,26 +350,20 @@ class CreateMenuProductFragment :
                 )
             }
 
-            CreateMenuProduct.Event.GoToGallery -> {
-                findNavController().navigate(
-                    directions = CreateMenuProductFragmentDirections.toGalleryFragment()
-                )
-            }
-
-            is CreateMenuProduct.Event.AddedMenuProduct -> {
+            is CreateMenuProduct.Event.ShowMenuProductCreated -> {
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(R.string.msg_add_menu_added, event.menuProductName)
                 )
                 findNavController().popBackStack()
             }
 
-            CreateMenuProduct.Event.ShowSomethingWentWrong -> {
+            CreateMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_common_something_went_wrong)
+                    resources.getString(R.string.error_common_image_uploading_failed)
                 )
             }
 
-            CreateMenuProduct.Event.ShowImageUploadingFailed -> {
+            CreateMenuProduct.Event.ShowSomethingWentWrong -> {
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(R.string.error_common_something_went_wrong)
                 )
@@ -421,30 +384,46 @@ class CreateMenuProductFragment :
 
     @Preview(showSystemUi = true)
     @Composable
-    fun AddMenuProductScreenPreview() {
+    private fun AddMenuProductScreenPreview() {
         AdminTheme {
             Screen(
-                state = AddMenuProductViewState(
-                    name = "",
-                    nameError = null,
-                    newPrice = "",
-                    newPriceError = null,
-                    oldPrice = "",
-                    description = "",
-                    descriptionError = null,
+                state = CreateMenuProductViewState(
+                    nameField = TextFieldUi(
+                        value = "",
+                        isError = false,
+                        errorResId = R.string.error_add_menu_product_empty_name,
+                    ),
+                    newPriceField = TextFieldUi(
+                        value = "",
+                        isError = false,
+                        errorResId = R.string.error_add_menu_product_empty_new_price,
+                    ),
+                    oldPriceField = TextFieldUi(
+                        value = "",
+                        isError = false,
+                        errorResId = R.string.error_add_menu_product_old_price_incorrect,
+                    ),
                     nutrition = "",
+                    utils = "",
+                    descriptionField = TextFieldUi(
+                        value = "",
+                        isError = false,
+                        errorResId = R.string.error_add_menu_product_empty_description,
+                    ),
                     comboDescription = "",
-                    sendingToServer = false,
-                    utils = "ss",
-                    oldPriceError = null,
-                    categoryLabel = "Выбрать категории",
-                    categoryHint = R.string.hint_add_menu_product_categories,
-                    isVisibleInMenu = false,
+                    categoriesField = CardFieldUi(
+                        hintResId = R.string.hint_add_menu_product_categories,
+                        value = "Категория 1 • Категория 2",
+                        isError = false,
+                        errorResId = R.string.error_add_menu_product_categories,
+                    ),
+                    isVisibleInMenu = true,
                     isVisibleInRecommendation = false,
-                    categoriesBorder = null,
-                    selectableCategoryList = persistentListOf(),
-                    imageUris = null,
-                    imageError = false
+                    imageField = CreateMenuProductViewState.ImageFieldUi(
+                        value = null,
+                        isError = false
+                    ),
+                    sendingToServer = false,
                 ),
                 onAction = {}
             )

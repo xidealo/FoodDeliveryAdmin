@@ -1,15 +1,15 @@
 package com.bunbeauty.domain.feature.menulist
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductCategoriesException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
-import com.bunbeauty.domain.feature.menu.addmenuproduct.CreateMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.Photo
-import com.bunbeauty.domain.model.category.Category
-import com.bunbeauty.domain.model.category.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.model.Category
+import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -52,7 +52,7 @@ class CreateMenuProductUseCaseTest {
             newPrice = "1000",
             description = "Delicious pizza",
             imageUri = imageUri,
-            categories = categoriesMock
+            selectedCategories = categoriesMock
         )
         val menuProductPost = MenuProductPost(
             name = "Pizza",
@@ -85,7 +85,7 @@ class CreateMenuProductUseCaseTest {
         // Then
         coVerify { getUsernameUseCase() }
         coVerify { dataStoreRepo.getToken() }
-        coVerify { menuProductRepo.post(token, menuProductPost) }
+        coVerify { menuProductRepo.saveMenuProduct(token, menuProductPost) }
     }
 
     @Test
@@ -96,7 +96,7 @@ class CreateMenuProductUseCaseTest {
             name = "Pizza",
             newPrice = "1000",
             description = "Delicious pizza",
-            categories = categoriesMock,
+            selectedCategories = categoriesMock,
             imageUri = uri
         )
         val username = "username"
@@ -125,7 +125,7 @@ class CreateMenuProductUseCaseTest {
             name = "",
             newPrice = "1000",
             description = "Delicious pizza",
-            categories = categoriesMock
+            selectedCategories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
@@ -143,7 +143,7 @@ class CreateMenuProductUseCaseTest {
             name = "Pizza",
             newPrice = "0",
             description = "Delicious pizza",
-            categories = categoriesMock
+            selectedCategories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
@@ -161,7 +161,7 @@ class CreateMenuProductUseCaseTest {
             name = "Pizza",
             newPrice = "1000",
             description = "",
-            categories = categoriesMock
+            selectedCategories = categoriesMock
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
@@ -179,7 +179,7 @@ class CreateMenuProductUseCaseTest {
             name = "Pizza",
             newPrice = "1000",
             description = "Delicious pizza",
-            categories = emptyList()
+            selectedCategories = emptyList()
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
@@ -200,7 +200,7 @@ class CreateMenuProductUseCaseTest {
         imageUri = "",
         isVisible = false,
         isRecommended = false,
-        categories = emptyList()
+        selectedCategories = emptyList()
     )
 
     private val categoriesMock = listOf(

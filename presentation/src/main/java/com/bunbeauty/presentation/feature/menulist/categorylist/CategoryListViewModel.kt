@@ -2,7 +2,7 @@ package com.bunbeauty.presentation.feature.menulist.categorylist
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.menu.addmenuproduct.GetSelectableCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

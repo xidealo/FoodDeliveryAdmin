@@ -23,10 +23,10 @@ data class MenuProductPostServer(
     val photoLink: String,
     @SerialName("barcode")
     val barcode: Int,
+    @SerialName("categoryUuids")
+    val categories: List<String>,
     @SerialName("isVisible")
     val isVisible: Boolean,
     @SerialName("isRecommended")
     val isRecommended: Boolean,
-    @SerialName("categoryUuids")
-    val categories: List<String>
 )

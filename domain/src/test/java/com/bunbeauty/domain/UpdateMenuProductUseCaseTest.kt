@@ -1,13 +1,13 @@
 package com.bunbeauty.domain
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -108,6 +108,6 @@ class UpdateMenuProductUseCaseTest {
         comboDescription = "comboDescription",
         photoLink = "photoLink",
         isVisible = true,
-        categoryUuids = emptyList()
+        categories = emptyList()
     )
 }

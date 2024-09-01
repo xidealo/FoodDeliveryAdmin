@@ -1,12 +1,12 @@
 package com.bunbeauty.presentation
 
-import com.bunbeauty.domain.exception.updateproduct.MenuProductDescriptionException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
-import com.bunbeauty.domain.usecase.GetMenuProductUseCase
-import com.bunbeauty.domain.usecase.UpdateMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductEvent
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductUIState
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel

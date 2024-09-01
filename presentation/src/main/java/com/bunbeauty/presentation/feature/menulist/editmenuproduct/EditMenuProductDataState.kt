@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 
+@Deprecated("")
 data class EditMenuProductDataState(
     val state: State = State.LOADING,
     val menuProduct: MenuProduct? = null,

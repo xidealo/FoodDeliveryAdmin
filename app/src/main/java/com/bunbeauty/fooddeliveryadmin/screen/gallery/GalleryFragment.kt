@@ -129,11 +129,9 @@ class GalleryFragment :
                 findNavController().popBackStack()
             }
 
-            is Gallery.Event.SelectPhoto -> findNavController().navigate(
-                GalleryFragmentDirections.toSelectPhotoFragment(
-                    event.photoUrl
-                )
-            )
+            is Gallery.Event.SelectPhoto -> {
+                // TODO not implemented
+            }
         }
     }
 }
