@@ -2,6 +2,8 @@ package com.bunbeauty.domain.usecase
 
 import com.bunbeauty.domain.NotificationService
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
+import com.bunbeauty.domain.repo.AdditionGroupRepo
+import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -18,7 +20,9 @@ class LogoutUseCase @Inject constructor(
     private val cityRepo: CityRepo,
     private val menuProductRepo: MenuProductRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
-    private val photoRepo: PhotoRepo
+    private val photoRepo: PhotoRepo,
+    private val additionGroupRepo: AdditionGroupRepo,
+    private val additionRepo: AdditionRepo
 ) {
 
     suspend operator fun invoke() {
@@ -30,5 +34,8 @@ class LogoutUseCase @Inject constructor(
         cityRepo.clearCache()
         menuProductRepo.clearCache()
         nonWorkingDayRepo.clearCache()
+        additionGroupRepo.clearCache()
+        photoRepo.clearCache()
+        additionRepo.clearCache()
     }
 }

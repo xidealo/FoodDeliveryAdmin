@@ -143,7 +143,7 @@ class AdditionListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionList.Action.OnAdditionClick(additionItem.uuid))
+                onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
             }
         ) {
             Row(
@@ -210,9 +210,16 @@ class AdditionListFragment :
 
     override fun handleEvent(event: AdditionList.Event) {
         when (event) {
-            AdditionList.Event.Back -> findNavController().popBackStack()
+            is AdditionList.Event.Back -> {
+                findNavController().popBackStack()
+            }
+
             is AdditionList.Event.OnAdditionClick -> {
-                // TODO (implement)
+                findNavController().navigate(
+                    AdditionListFragmentDirections.toEditAdditionFragment(
+                        event.additionUuid
+                    )
+                )
             }
         }
     }

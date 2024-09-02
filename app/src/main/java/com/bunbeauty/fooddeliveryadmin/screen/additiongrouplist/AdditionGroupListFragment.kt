@@ -141,13 +141,11 @@ class AdditionGroupListFragment :
             ) {
                 Text(
                     text = additionItem.name,
-                    modifier = Modifier
-                        .weight(1f)
+                    modifier = Modifier.weight(1f)
                 )
 
                 IconButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically),
+                    modifier = Modifier.align(Alignment.CenterVertically),
                     onClick = {
                         onAction(
                             AdditionGroupList.Action.OnVisibleClick(
@@ -215,8 +213,7 @@ class AdditionGroupListFragment :
                     isRefreshing = false,
                     isLoading = false
                 ),
-                onAction = {
-                }
+                onAction = {}
             )
         }
     }

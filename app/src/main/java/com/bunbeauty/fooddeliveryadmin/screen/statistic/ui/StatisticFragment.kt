@@ -150,16 +150,14 @@ class StatisticFragment :
             title = stringResource(R.string.title_statistic),
             backActionClick = { onAction(Statistic.Action.SelectGoBackClick) },
             actionButton = {
-                if (statisticViewState.hasError) {
-                    LoadingButton(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        textStringId = R.string.action_product_statistic_load,
-                        onClick = {
-                            onAction(Statistic.Action.LoadStatisticClick)
-                        },
-                        isLoading = statisticViewState.isLoading
-                    )
-                }
+                LoadingButton(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    textStringId = R.string.action_product_statistic_load,
+                    onClick = {
+                        onAction(Statistic.Action.LoadStatisticClick)
+                    },
+                    isLoading = statisticViewState.isLoading
+                )
             }
         ) {
             Column {

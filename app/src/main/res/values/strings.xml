@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Админ</string>
+    <string name="version_app">Версия приложения %s</string>
     <!--
     title — заголовки;
     hint — подсказки в edittext;
@@ -120,7 +121,9 @@
     <!-- EDIT MENU PRODUCT -->
     <string name="title_edit_menu_product_editing">Редактирование</string>
     <string name="hint_edit_menu_product_name">Название</string>
+    <string name="hint_edit_menu_product_full_name">Полное название</string>
     <string name="hint_edit_menu_product_new_price">Актуальная цена</string>
+    <string name="hint_edit_menu_product_priority">Приоритет</string>
     <string name="hint_edit_menu_product_old_price">Цена до скидки</string>
     <string name="hint_edit_menu_product_cost">Цена, ₽</string>
     <string name="hint_edit_menu_product_discount_cost">Цена без скидки, ₽</string>
@@ -208,8 +211,22 @@
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
 
+    <!-- EDIT ADDITION  -->
+    <string name="title_edit_addition">Редактировать добавку</string>
+    <string name="action_edit_addition_save">Сохранить</string>
+    <string name="hint_edit_addition_name">Название</string>
+    <string name="hint_edit_addition_priority">Приоритет</string>
+    <string name="hint_edit_addition_full_name">Полное название</string>
+    <string name="hint_edit_addition_new_price">Актуальная цена</string>
+    <string name="title_edit_addition_is_visible">Показывать в меню</string>
+    <string name="msg_edit_addition_updated">%s обновлён</string>
+    <string name="error_edit_addition_empty_name">Название не может быть пустым</string>
+    <string name="error_edit_addition_empty_full_name">Полное название не может быть пустым</string>
+    <string name="error_add_addition_empty_new_price">Актульная цена не может быть пустой</string>
+
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
+
 
     <!-- ADD MENU PRODUCT -->
     <string name="title_add_menu_product">Добавление продукта</string>

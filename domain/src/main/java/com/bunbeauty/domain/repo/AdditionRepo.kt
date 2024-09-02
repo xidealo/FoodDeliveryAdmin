@@ -7,10 +7,10 @@ interface AdditionRepo {
     /*GET*/
     suspend fun getAdditionList(
         token: String,
-        takeRemote: Boolean = true
+        refreshing: Boolean = false
     ): List<Addition>
 
-    suspend fun getAddition(additionUuid: String): Addition?
+    suspend fun getAddition(additionUuid: String, token: String): Addition?
 
     /*UPDATE*/
     suspend fun updateAddition(

@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,11 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -35,7 +39,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
+class ProfileFragment :
+    BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
 
     override val viewModel: ProfileViewModel by viewModels()
 
@@ -128,7 +133,9 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
         onAction: (Profile.Action) -> Unit
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TextWithHintCard(
@@ -156,15 +163,17 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                     onAction(Profile.Action.StatisticClick)
                 }
             )
-            SwitcherCard(
-                text = stringResource(R.string.msg_accept_orders),
-                hint = stringResource(R.string.msg_accept_orders_description),
-                checked = state.acceptOrders,
-                onCheckChanged = { checked ->
-                    onAction(
-                        Profile.Action.AcceptOrdersToggle(checked = checked)
-                    )
-                }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = resources.getString(R.string.version_app, BuildConfig.VERSION_NAME),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 72.dp)
             )
         }
     }

@@ -45,7 +45,7 @@ class AdditionListViewModel @Inject constructor(
     }
 
     private fun updateVisible(uuid: String, isVisible: Boolean) {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             updateVisibleAdditionUseCase(
                 additionUuid = uuid,
                 isVisible = !isVisible
@@ -64,7 +64,7 @@ class AdditionListViewModel @Inject constructor(
                     )
                 }
 
-                val separatedAdditionList = getSeparatedAdditionListUseCase()
+                val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = true)
 
                 setState {
                     copy(
@@ -89,7 +89,7 @@ class AdditionListViewModel @Inject constructor(
     private fun loadData() {
         viewModelScope.launchSafe(
             block = {
-                val separatedAdditionList = getSeparatedAdditionListUseCase()
+                val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = false)
                 setState {
                     copy(
                         visibleAdditions = separatedAdditionList.visibleList,
