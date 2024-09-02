@@ -127,9 +127,12 @@ class AdditionGroupListFragment :
         additionItem: AdditionGroupListViewState.AdditionGroupItem,
         onAction: (AdditionGroupList.Action) -> Unit
     ) {
-        AdminCard(modifier = Modifier.fillMaxWidth(), onClick = {
-            onAction(AdditionGroupList.Action.OnAdditionClick)
-        }) {
+        AdminCard(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                onAction(AdditionGroupList.Action.OnAdditionClick)
+            }
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -141,14 +144,17 @@ class AdditionGroupListFragment :
                     modifier = Modifier.weight(1f)
                 )
 
-                IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = {
-                    onAction(
-                        AdditionGroupList.Action.OnVisibleClick(
-                            isVisible = additionItem.isVisible,
-                            uuid = additionItem.uuid
+                IconButton(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    onClick = {
+                        onAction(
+                            AdditionGroupList.Action.OnVisibleClick(
+                                isVisible = additionItem.isVisible,
+                                uuid = additionItem.uuid
+                            )
                         )
-                    )
-                }) {
+                    }
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_visible),
                         contentDescription = null,

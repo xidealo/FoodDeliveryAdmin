@@ -43,7 +43,6 @@ class ProfileFragment :
     BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
 
     override val viewModel: ProfileViewModel by viewModels()
-    private val versionApp = BuildConfig.VERSION_NAME
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -171,7 +170,7 @@ class ProfileFragment :
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = resources.getString(R.string.version_app, versionApp),
+                text = resources.getString(R.string.version_app, BuildConfig.VERSION_NAME),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 72.dp)
