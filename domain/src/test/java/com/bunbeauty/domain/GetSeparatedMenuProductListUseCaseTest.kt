@@ -298,6 +298,7 @@ class GetSeparatedMenuProductListUseCaseTest {
         photoLink = "photoLink",
         barcode = 2,
         isVisible = true,
-        categories = emptyList()
+        isRecommended = true,
+        categoryUuids = emptyList()
     )
 }

@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.feature.menulist
 
 import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.feature.menu.common.CalculateImageCompressQualityUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
@@ -28,6 +29,7 @@ class CreateMenuProductUseCaseTest {
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val photoRepo: PhotoRepo = mockk()
     private val getUsernameUseCase: GetUsernameUseCase = mockk()
+    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase = mockk()
     private lateinit var createMenuProductUseCase: CreateMenuProductUseCase
 
     @BeforeTest
@@ -36,7 +38,8 @@ class CreateMenuProductUseCaseTest {
             menuProductRepo = menuProductRepo,
             dataStoreRepo = dataStoreRepo,
             photoRepo = photoRepo,
-            getUsernameUseCase = getUsernameUseCase
+            getUsernameUseCase = getUsernameUseCase,
+            calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase,
         )
     }
 

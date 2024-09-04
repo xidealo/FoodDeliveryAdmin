@@ -1,50 +1,71 @@
-package com.bunbeauty.domain
+package com.bunbeauty.domain.feature.menulist
 
 import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.NotFoundMenuProductException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
+import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetMenuProductUseCaseTest {
 
+    private val dataStoreRepo: DataStoreRepo = mockk()
     private val menuProductRepo: MenuProductRepo = mockk()
-    private lateinit var useCase: GetMenuProductUseCase
+    private lateinit var getMenuProductUseCase: GetMenuProductUseCase
 
     @BeforeTest
     fun setup() {
-        useCase = GetMenuProductUseCase(
-            menuProductRepo = menuProductRepo
+        getMenuProductUseCase = GetMenuProductUseCase(
+            dataStoreRepo = dataStoreRepo,
+            menuProductRepo = menuProductRepo,
         )
     }
 
     @Test
     fun `throw NotFoundMenuProductException when menu product is null`() = runTest {
         // Given
-        coEvery { menuProductRepo.getMenuProduct("uuid") } returns null
+        val menuProductUuid = "menuProductUuid"
+        val companyUuid = "companyUuid"
+        every { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery {
+            menuProductRepo.getMenuProduct(
+                menuProductUuid = menuProductUuid,
+                companyUuid = companyUuid
+            )
+        } returns null
 
         // Result
         assertFailsWith(
             exceptionClass = NotFoundMenuProductException::class,
-            block = { useCase("uuid") }
+            block = {
+                getMenuProductUseCase(menuProductUuid = menuProductUuid)
+            }
         )
     }
 
     @Test
     fun `return menu product when menu product is not null`() = runTest {
         // Given
-        coEvery { menuProductRepo.getMenuProduct("uuid") } returns menuProductMock
+        val menuProductUuid = "menuProductUuid"
+        val companyUuid = "companyUuid"
+        every { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery {
+            menuProductRepo.getMenuProduct(
+                menuProductUuid = menuProductUuid,
+                companyUuid = companyUuid
+            )
+        } returns menuProductMock
 
         // When
-        val result = useCase("uuid")
+        val result = getMenuProductUseCase(menuProductUuid = menuProductUuid)
 
         // Then
         assertEquals(menuProductMock, result)
@@ -62,6 +83,7 @@ class GetMenuProductUseCaseTest {
         photoLink = "photoLink",
         barcode = 2,
         isVisible = true,
-        categories = emptyList()
+        isRecommended = true,
+        categoryUuids = emptyList()
     )
 }

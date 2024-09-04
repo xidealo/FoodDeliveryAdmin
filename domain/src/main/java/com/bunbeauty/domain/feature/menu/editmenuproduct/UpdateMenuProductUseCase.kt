@@ -56,7 +56,6 @@ class UpdateMenuProductUseCase @Inject constructor(
         val description = params.description.takeIf { it.isNotBlank() } ?: throw MenuProductDescriptionException()
         val selectableCategories =
             params.selectedCategories.takeIf { it.isNotEmpty() } ?: throw MenuProductCategoriesException()
-        params.photoLink ?: params.imageUri ?: throw MenuProductImageException()
 
         var updatedPhotoLink: String? = null
         if (params.photoLink == null) {
