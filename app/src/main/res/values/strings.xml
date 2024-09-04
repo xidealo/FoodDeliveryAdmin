@@ -224,6 +224,9 @@
     <string name="error_edit_addition_empty_full_name">Полное название не может быть пустым</string>
     <string name="error_add_addition_empty_new_price">Актульная цена не может быть пустой</string>
 
+    <!-- CREATE ADDITION  -->
+    <string name="title_create_addition">Создать добавку</string>
+
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
 
