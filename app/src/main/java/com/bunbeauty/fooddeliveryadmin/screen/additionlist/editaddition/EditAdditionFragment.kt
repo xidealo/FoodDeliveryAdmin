@@ -87,7 +87,7 @@ class EditAdditionFragment :
                             },
                             errorText = stringResource(state.nameField.errorResId),
                             isError = state.nameField.isError,
-                            enabled = !state.isLoading,
+                            enabled = !state.isLoading
                         )
 
                         AdminTextField(
@@ -115,7 +115,7 @@ class EditAdditionFragment :
                                 )
                             },
                             maxLines = 20,
-                            enabled = !state.isLoading,
+                            enabled = !state.isLoading
                         )
 
                         AdminTextField(
@@ -206,7 +206,7 @@ class EditAdditionFragment :
                         isError = false
                     ),
                     isVisible = false,
-                    isLoading = false,
+                    isLoading = false
                 ),
                 onAction = {}
             )

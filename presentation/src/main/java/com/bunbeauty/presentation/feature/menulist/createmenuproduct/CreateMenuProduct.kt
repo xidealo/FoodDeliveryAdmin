@@ -35,8 +35,8 @@ interface CreateMenuProduct {
 
     data class ImageFieldData(
         override val value: String?,
-        override val isError: Boolean,
-    ): FieldData<String?>()
+        override val isError: Boolean
+    ) : FieldData<String?>()
 
     sealed interface Action : BaseAction {
         data object Init : Action

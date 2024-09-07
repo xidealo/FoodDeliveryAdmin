@@ -10,7 +10,7 @@ fun TextFieldData.toTextFieldUi(@StringRes errorResId: Int): TextFieldUi {
     return TextFieldUi(
         value = value,
         isError = isError,
-        errorResId = errorResId,
+        errorResId = errorResId
     )
 }
 

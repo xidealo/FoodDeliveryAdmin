@@ -47,7 +47,7 @@ class UpdateMenuProductUseCaseTest {
             menuProductRepo = menuProductRepo,
             dataStoreRepo = dataStoreRepo,
             getUsernameUseCase = getUsernameUseCase,
-            calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase,
+            calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase
         )
     }
 
@@ -132,7 +132,7 @@ class UpdateMenuProductUseCaseTest {
             photoRepo.uploadPhoto(
                 uri = imageUri,
                 compressQuality = any(),
-                username = any(),
+                username = any()
             )
         } returns null
 
@@ -152,7 +152,7 @@ class UpdateMenuProductUseCaseTest {
             photoRepo.uploadPhoto(
                 uri = imageUri,
                 compressQuality = 50,
-                username = username,
+                username = username
             )
         }
     }
@@ -165,7 +165,7 @@ class UpdateMenuProductUseCaseTest {
             menuProductRepo.updateMenuProduct(
                 menuProductUuid = any(),
                 updateMenuProduct = any(),
-                token = any(),
+                token = any()
             )
         } returns menuProductMock
 
@@ -178,7 +178,7 @@ class UpdateMenuProductUseCaseTest {
                 menuProductUuid = menuProductUuid,
                 updateMenuProduct = UpdateMenuProduct(
                     name = "name",
-                    newPrice = 1,
+                    newPrice = 100,
                     oldPrice = null,
                     utils = "",
                     nutrition = null,
@@ -187,9 +187,9 @@ class UpdateMenuProductUseCaseTest {
                     photoLink = null,
                     isVisible = true,
                     isRecommended = false,
-                    categories = listOf("1"),
+                    categories = listOf("1")
                 ),
-                token = tokenMock,
+                token = tokenMock
             )
         }
     }
@@ -201,7 +201,7 @@ class UpdateMenuProductUseCaseTest {
             menuProductRepo.updateMenuProduct(
                 menuProductUuid = any(),
                 updateMenuProduct = any(),
-                token = any(),
+                token = any()
             )
         } returns null
 
@@ -242,7 +242,7 @@ class UpdateMenuProductUseCaseTest {
                 category = Category(
                     uuid = "1",
                     name = "Category",
-                    priority = 1,
+                    priority = 1
                 ),
                 selected = true
             )
@@ -250,6 +250,6 @@ class UpdateMenuProductUseCaseTest {
         isVisible = true,
         isRecommended = false,
         imageUri = null,
-        photoLink = "photoLink",
+        photoLink = "photoLink"
     )
 }

@@ -15,11 +15,11 @@ interface EditMenuProduct {
         val productName: String,
 
         val nameField: TextFieldData,
-        val descriptionField: TextFieldData,
         val newPriceField: TextFieldData,
         val oldPriceField: TextFieldData,
         val nutrition: String,
         val utils: String,
+        val descriptionField: TextFieldData,
         val comboDescription: String,
         val categoriesField: CategoriesFieldData,
         val isVisibleInMenu: Boolean,
@@ -36,15 +36,15 @@ interface EditMenuProduct {
         }
     }
 
-     sealed interface MenuProductImage {
-        data class PhotoLink(val value: String): MenuProductImage
-        data class ImageUri(val value: String): MenuProductImage
+    sealed interface MenuProductImage {
+        data class PhotoLink(val value: String) : MenuProductImage
+        data class ImageUri(val value: String) : MenuProductImage
     }
 
     data class ImageFieldData(
         override val value: MenuProductImage?,
-        override val isError: Boolean,
-    ): FieldData<MenuProductImage?>()
+        override val isError: Boolean
+    ) : FieldData<MenuProductImage?>()
 
     sealed interface Action : BaseAction {
         data class LoadData(val productUuid: String) : Action
@@ -73,5 +73,4 @@ interface EditMenuProduct {
         data object ShowImageUploadingFailed : Event
         data object ShowSomethingWentWrong : Event
     }
-
 }

@@ -157,7 +157,7 @@ fun AdminBaseTextField(
 private fun AdminBaseTextFieldPreview() {
     AdminTheme {
         AdminBaseTextField(
-            labelText ="Комментарий",
+            labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
             onValueChange = {}
         )
@@ -169,7 +169,7 @@ private fun AdminBaseTextFieldPreview() {
 private fun AdminBaseTextFieldWithErrorPreview() {
     AdminTheme {
         AdminBaseTextField(
-            labelText ="Комментарий",
+            labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
             onValueChange = {},
             isError = true
@@ -182,7 +182,7 @@ private fun AdminBaseTextFieldWithErrorPreview() {
 private fun AdminBaseTextFieldWithTrailingIconPreview() {
     AdminTheme {
         AdminBaseTextField(
-            labelText ="Комментарий",
+            labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
             onValueChange = {},
             trailingIcon = {

@@ -23,7 +23,7 @@ class UpdateMenuProductUseCase @Inject constructor(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
     private val getUsernameUseCase: GetUsernameUseCase,
-    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase,
+    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase
 ) {
 
     data class Params(
@@ -39,7 +39,7 @@ class UpdateMenuProductUseCase @Inject constructor(
         val isVisible: Boolean,
         val isRecommended: Boolean,
         val photoLink: String?,
-        val imageUri: String?,
+        val imageUri: String?
     )
 
     suspend operator fun invoke(params: Params) {

@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -308,7 +307,7 @@ class CreateMenuProductFragment :
                         onAction(CreateMenuProduct.Action.ChangeDescriptionText(description))
                     },
                     keyboardOptions = keyboardOptions(
-                        imeAction = ImeAction.None,
+                        imeAction = ImeAction.None
                     ),
                     maxLines = 20,
                     isError = state.descriptionField.isError,
@@ -328,10 +327,10 @@ class CreateMenuProductFragment :
                         )
                     },
                     keyboardOptions = keyboardOptions(
-                        imeAction = ImeAction.None,
+                        imeAction = ImeAction.None
                     ),
                     maxLines = 20,
-                    enabled = !state.sendingToServer,
+                    enabled = !state.sendingToServer
                 )
             }
         }
@@ -397,31 +396,31 @@ class CreateMenuProductFragment :
                     nameField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = 0,
+                        errorResId = 0
                     ),
                     newPriceField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = 0,
+                        errorResId = 0
                     ),
                     oldPriceField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = 0,
+                        errorResId = 0
                     ),
                     nutrition = "",
                     utils = "",
                     descriptionField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = 0,
+                        errorResId = 0
                     ),
                     comboDescription = "",
                     categoriesField = CardFieldUi(
                         labelResId = R.string.hint_common_menu_product_categories,
                         value = "Категория 1 • Категория 2",
                         isError = false,
-                        errorResId = 0,
+                        errorResId = 0
                     ),
                     isVisibleInMenu = true,
                     isVisibleInRecommendation = false,
@@ -429,7 +428,7 @@ class CreateMenuProductFragment :
                         value = null,
                         isError = false
                     ),
-                    sendingToServer = false,
+                    sendingToServer = false
                 ),
                 onAction = {}
             )

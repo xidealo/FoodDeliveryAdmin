@@ -24,7 +24,7 @@ interface MenuProductRepo {
         menuProductUuid: String,
         updateMenuProduct: UpdateMenuProduct,
         token: String
-    ):  MenuProduct?
+    ): MenuProduct?
 
     /*DELETE*/
     suspend fun clearCache()

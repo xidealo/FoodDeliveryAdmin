@@ -23,5 +23,4 @@ class CalculateImageCompressQualityUseCaseTest {
 
         assertEquals(expected, result)
     }
-
 }

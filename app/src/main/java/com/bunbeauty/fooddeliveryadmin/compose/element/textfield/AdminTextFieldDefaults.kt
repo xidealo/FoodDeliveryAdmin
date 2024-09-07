@@ -101,5 +101,4 @@ object AdminTextFieldDefaults {
             color = AdminTheme.colors.main.onSurface
         )
     }
-
 }

@@ -9,7 +9,7 @@ import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProdu
 fun EditMenuProduct.DataState.toEditMenuProductViewState(): EditMenuProductViewState {
     return EditMenuProductViewState(
         title = productName,
-        state =when(state) {
+        state = when (state) {
             EditMenuProduct.DataState.State.SUCCESS -> EditMenuProductViewState.State.Success(
                 nameField = nameField.toTextFieldUi(errorResId = R.string.error_common_menu_product_empty_name),
                 newPriceField = newPriceField.toTextFieldUi(errorResId = R.string.error_common_menu_product_empty_new_price),

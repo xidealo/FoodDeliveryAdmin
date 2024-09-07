@@ -1,10 +1,10 @@
 package com.bunbeauty.domain.feature.menulist
 
+import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.NotFoundMenuProductException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
-import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.MenuProductRepo
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +25,7 @@ class GetMenuProductUseCaseTest {
     fun setup() {
         getMenuProductUseCase = GetMenuProductUseCase(
             dataStoreRepo = dataStoreRepo,
-            menuProductRepo = menuProductRepo,
+            menuProductRepo = menuProductRepo
         )
     }
 

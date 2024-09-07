@@ -17,7 +17,7 @@ class GetSelectableCategoryListUseCaseTest {
         coEvery { this@mockk.invoke() } returns listOf(
             getMockCategory(1),
             getMockCategory(2),
-            getMockCategory(3),
+            getMockCategory(3)
         )
     }
     private lateinit var getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase
@@ -43,7 +43,7 @@ class GetSelectableCategoryListUseCaseTest {
             SelectableCategory(
                 category = getMockCategory(3),
                 selected = false
-            ),
+            )
         )
 
         val result = getSelectableCategoryListUseCase(selectedCategoryUuidList = emptyList())
@@ -65,7 +65,7 @@ class GetSelectableCategoryListUseCaseTest {
             SelectableCategory(
                 category = getMockCategory(3),
                 selected = true
-            ),
+            )
         )
 
         val result = getSelectableCategoryListUseCase(
@@ -79,8 +79,7 @@ class GetSelectableCategoryListUseCaseTest {
         return Category(
             "$priority",
             "Category $priority",
-            priority,
+            priority
         )
     }
-
 }

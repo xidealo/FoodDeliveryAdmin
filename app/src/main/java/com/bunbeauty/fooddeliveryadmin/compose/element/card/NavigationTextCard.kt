@@ -46,7 +46,7 @@ fun NavigationTextCard(
             Row(
                 modifier = Modifier.padding(
                     horizontal = 16.dp,
-                    vertical = 12.dp,
+                    vertical = 12.dp
                 ),
                 verticalAlignment = Alignment.CenterVertically
             ) {

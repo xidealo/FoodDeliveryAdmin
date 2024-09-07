@@ -33,7 +33,7 @@ fun AdminTextField(
     isError: Boolean = false,
     errorText: String? = null,
     enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null
 ) {
     Column(modifier = modifier) {
         AdminBaseTextField(
@@ -51,11 +51,11 @@ fun AdminTextField(
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
-            trailingIcon = trailingIcon,
+            trailingIcon = trailingIcon
         )
         ErrorText(
             isError = isError,
-            errorText = errorText,
+            errorText = errorText
         )
     }
 }
@@ -74,7 +74,7 @@ fun AdminTextField(
     isError: Boolean = false,
     errorText: String? = null,
     enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null
 ) {
     Column(modifier = modifier) {
         AdminBaseTextField(
@@ -92,11 +92,11 @@ fun AdminTextField(
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
-            trailingIcon = trailingIcon,
+            trailingIcon = trailingIcon
         )
         ErrorText(
             isError = isError,
-            errorText = errorText,
+            errorText = errorText
         )
     }
 }
@@ -104,7 +104,7 @@ fun AdminTextField(
 @Composable
 private fun ErrorText(
     isError: Boolean,
-    errorText: String?,
+    errorText: String?
 ) {
     if (isError && errorText != null) {
         Text(

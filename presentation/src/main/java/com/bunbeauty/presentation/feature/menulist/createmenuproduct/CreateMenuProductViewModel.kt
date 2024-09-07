@@ -1,6 +1,7 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
@@ -9,7 +10,6 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceExc
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
-import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
@@ -52,7 +52,7 @@ class CreateMenuProductViewModel @Inject constructor(
             value = null,
             isError = false
         ),
-        sendingToServer = false,
+        sendingToServer = false
     )
 ) {
 

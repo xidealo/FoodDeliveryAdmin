@@ -6,11 +6,11 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesE
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.menu.common.model.Category
+import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.Photo
-import com.bunbeauty.domain.feature.menu.common.model.Category
-import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -39,7 +39,7 @@ class CreateMenuProductUseCaseTest {
             dataStoreRepo = dataStoreRepo,
             photoRepo = photoRepo,
             getUsernameUseCase = getUsernameUseCase,
-            calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase,
+            calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase
         )
     }
 
@@ -73,6 +73,7 @@ class CreateMenuProductUseCaseTest {
         )
         coEvery { getUsernameUseCase() } returns username
         coEvery { photoRepo.getFileSizeInMb(imageUri) } returns 250
+        coEvery { calculateImageCompressQualityUseCase(250) } returns 40
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
@@ -104,7 +105,8 @@ class CreateMenuProductUseCaseTest {
         )
         val username = "username"
         coEvery { getUsernameUseCase() } returns username
-        coEvery { photoRepo.getFileSizeInMb(uri) } returns 100L
+        coEvery { photoRepo.getFileSizeInMb(uri) } returns 100
+        coEvery { calculateImageCompressQualityUseCase(100) } returns 100
         coEvery {
             photoRepo.uploadPhoto(
                 uri = uri,

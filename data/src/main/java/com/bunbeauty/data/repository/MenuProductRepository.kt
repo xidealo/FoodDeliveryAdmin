@@ -1,13 +1,11 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
-import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.toMenuProductPostServer
-import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
@@ -17,7 +15,7 @@ import javax.inject.Inject
 class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper,
-    private val menuProductDao: MenuProductDao,
+    private val menuProductDao: MenuProductDao
 ) : MenuProductRepo {
 
     private var menuProductCache: List<MenuProduct>? = null

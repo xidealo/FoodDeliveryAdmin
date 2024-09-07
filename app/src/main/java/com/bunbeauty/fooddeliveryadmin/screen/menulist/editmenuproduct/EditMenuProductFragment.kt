@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -230,7 +229,7 @@ class EditMenuProductFragment :
     @Composable
     private fun EditMenuProductSuccessScreen(
         state: EditMenuProductViewState.State.Success,
-        onAction: (EditMenuProduct.Action) -> Unit,
+        onAction: (EditMenuProduct.Action) -> Unit
     ) {
         Column(
             modifier = Modifier
@@ -241,7 +240,7 @@ class EditMenuProductFragment :
         ) {
             TextFieldsCard(
                 state = state,
-                onAction = onAction,
+                onAction = onAction
             )
             NavigationTextCard(
                 labelText = stringResource(state.categoriesField.labelResId),
@@ -287,7 +286,7 @@ class EditMenuProductFragment :
     @Composable
     fun TextFieldsCard(
         state: EditMenuProductViewState.State.Success,
-        onAction: (EditMenuProduct.Action) -> Unit,
+        onAction: (EditMenuProduct.Action) -> Unit
     ) {
         AdminCard(clickable = false) {
             Column(
@@ -367,7 +366,7 @@ class EditMenuProductFragment :
                         keyboardOptions = keyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
-                        enabled = !state.sendingToServer,
+                        enabled = !state.sendingToServer
                     )
 
                     var expanded by remember {
@@ -411,7 +410,7 @@ class EditMenuProductFragment :
                         )
                     },
                     keyboardOptions = keyboardOptions(
-                        imeAction = ImeAction.None,
+                        imeAction = ImeAction.None
                     ),
                     maxLines = 20,
                     isError = state.descriptionField.isError,
@@ -429,7 +428,7 @@ class EditMenuProductFragment :
                         )
                     },
                     keyboardOptions = keyboardOptions(
-                        imeAction = ImeAction.None,
+                        imeAction = ImeAction.None
                     ),
                     maxLines = 20,
                     enabled = !state.sendingToServer
@@ -469,31 +468,31 @@ class EditMenuProductFragment :
                         nameField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = 0,
+                            errorResId = 0
                         ),
                         newPriceField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = 0,
+                            errorResId = 0
                         ),
                         oldPriceField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = 0,
+                            errorResId = 0
                         ),
                         nutrition = "",
                         utils = "",
                         descriptionField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = 0,
+                            errorResId = 0
                         ),
                         comboDescription = "",
                         categoriesField = CardFieldUi(
                             labelResId = R.string.hint_common_menu_product_categories,
                             value = "Категория 1 • Категория 2",
                             isError = false,
-                            errorResId = 0,
+                            errorResId = 0
                         ),
                         isVisibleInMenu = true,
                         isVisibleInRecommendation = false,
@@ -501,7 +500,7 @@ class EditMenuProductFragment :
                             value = null,
                             isError = false
                         ),
-                        sendingToServer = false,
+                        sendingToServer = false
                     )
                 ),
                 onAction = {}

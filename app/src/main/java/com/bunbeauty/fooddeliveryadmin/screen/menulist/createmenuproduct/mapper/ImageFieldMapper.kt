@@ -10,6 +10,6 @@ fun CreateMenuProduct.ImageFieldData.toImageFieldUi(): CreateMenuProductViewStat
         value = value?.let { imageUri ->
             ImageData.LocalUri(uri = imageUri.toUri())
         },
-        isError = isError,
+        isError = isError
     )
 }

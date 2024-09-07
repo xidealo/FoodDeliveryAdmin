@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetMenuProductUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val menuProductRepo: MenuProductRepo,
+    private val menuProductRepo: MenuProductRepo
 ) {
     suspend operator fun invoke(menuProductUuid: String): MenuProduct {
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()

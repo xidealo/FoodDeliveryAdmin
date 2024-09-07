@@ -1,12 +1,12 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
 import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
@@ -58,7 +58,7 @@ class EditMenuProductViewModel @Inject constructor(
             value = null,
             isError = false
         ),
-        sendingToServer = false,
+        sendingToServer = false
     )
 ) {
 
@@ -277,7 +277,7 @@ class EditMenuProductViewModel @Inject constructor(
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendations,
                             photoLink = (imageField.value as? EditMenuProduct.MenuProductImage.PhotoLink)?.value,
-                            imageUri = (imageField.value as? EditMenuProduct.MenuProductImage.ImageUri)?.value,
+                            imageUri = (imageField.value as? EditMenuProduct.MenuProductImage.ImageUri)?.value
                         )
                     }
                 )
@@ -369,5 +369,4 @@ class EditMenuProductViewModel @Inject constructor(
             }
         }
     }
-
 }

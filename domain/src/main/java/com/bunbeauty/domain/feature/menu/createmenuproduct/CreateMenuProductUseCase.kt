@@ -9,9 +9,9 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameExcepti
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
-import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.feature.menu.createmenuproduct.exception.MenuProductNotCreatedException
+import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -23,7 +23,7 @@ class CreateMenuProductUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
     private val photoRepo: PhotoRepo,
     private val getUsernameUseCase: GetUsernameUseCase,
-    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase,
+    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase
 ) {
 
     data class Params(
@@ -37,7 +37,7 @@ class CreateMenuProductUseCase @Inject constructor(
         val selectedCategories: List<SelectableCategory>,
         val isVisible: Boolean,
         val isRecommended: Boolean,
-        val imageUri: String?,
+        val imageUri: String?
     )
 
     suspend operator fun invoke(params: Params) {
@@ -84,5 +84,4 @@ class CreateMenuProductUseCase @Inject constructor(
             )
         ) ?: throw MenuProductNotCreatedException()
     }
-
 }

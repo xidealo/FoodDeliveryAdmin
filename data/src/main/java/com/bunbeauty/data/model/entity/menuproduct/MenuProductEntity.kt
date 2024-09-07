@@ -18,5 +18,5 @@ data class MenuProductEntity(
     val barcode: Int,
     val isRecommended: Boolean,
     val isVisible: Boolean,
-    val categoryUuids: String,
+    val categoryUuids: String
 )

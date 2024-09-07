@@ -1,10 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct
 
-import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.FieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.FieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
@@ -15,8 +14,8 @@ data class EditMenuProductViewState(
 ) : BaseViewState {
 
     sealed interface State {
-        data object Loading: State
-        data object Error: State
+        data object Loading : State
+        data object Error : State
         data class Success(
             val nameField: TextFieldUi,
             val newPriceField: TextFieldUi,
@@ -29,18 +28,15 @@ data class EditMenuProductViewState(
             val isVisibleInMenu: Boolean,
             val isVisibleInRecommendation: Boolean,
             val imageField: ImageFieldUi,
-            val sendingToServer: Boolean,
-        ): State
+            val sendingToServer: Boolean
+        ) : State
     }
 
     @Immutable
     data class ImageFieldUi(
         override val value: ImageData?,
         override val isError: Boolean
-    ): FieldUi<ImageData?>() {
+    ) : FieldUi<ImageData?>() {
         val isSelected: Boolean = value != null
     }
 }
-
-
-

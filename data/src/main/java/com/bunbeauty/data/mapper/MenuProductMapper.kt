@@ -31,7 +31,7 @@ class MenuProductMapper @Inject constructor() {
                 isVisible = isVisible,
                 categoryUuids = menuProductServer.categories.joinToString(CATEGORY_SEPARATOR) { category ->
                     category.uuid
-                },
+                }
             )
         }
     }
@@ -51,7 +51,7 @@ class MenuProductMapper @Inject constructor() {
                 barcode = menuProductEntity.barcode,
                 isVisible = menuProductEntity.isVisible,
                 isRecommended = menuProductEntity.isRecommended,
-                categoryUuids =menuProductEntity.categoryUuids.split(CATEGORY_SEPARATOR)
+                categoryUuids = menuProductEntity.categoryUuids.split(CATEGORY_SEPARATOR)
             )
         }
     }

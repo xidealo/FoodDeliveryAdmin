@@ -17,5 +17,5 @@ data class MenuProductServer(
     val barcode: Int,
     val isVisible: Boolean,
     val isRecommended: Boolean,
-    val categories: List<CategoryServer>,
+    val categories: List<CategoryServer>
 )
