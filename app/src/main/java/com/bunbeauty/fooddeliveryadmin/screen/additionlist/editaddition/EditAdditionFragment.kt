@@ -22,9 +22,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,35 +78,37 @@ class EditAdditionFragment :
                     ) {
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = state.name,
-                            labelStringId = R.string.hint_edit_addition_name,
+                            labelText = stringResource(R.string.hint_edit_addition_name),
+                            value = state.nameField.value,
                             onValueChange = { name ->
                                 onAction(
                                     EditAddition.Action.EditNameAddition(name)
                                 )
                             },
-                            errorMessageId = state.editNameError,
+                            errorText = stringResource(state.nameField.errorResId),
+                            isError = state.nameField.isError,
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Text
                         )
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
+                            labelText = stringResource(R.string.hint_edit_addition_priority),
                             value = state.priority,
-                            labelStringId = R.string.hint_edit_addition_priority,
                             onValueChange = { priority ->
                                 onAction(
                                     EditAddition.Action.EditPriorityAddition(priority)
                                 )
                             },
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Number
+                            keyboardOptions = keyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            )
                         )
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
+                            labelText = stringResource(R.string.hint_edit_addition_full_name),
                             value = state.fullName,
-                            labelStringId = R.string.hint_edit_addition_full_name,
                             onValueChange = { fullName ->
                                 onAction(
                                     EditAddition.Action.EditFullNameAddition(fullName)
@@ -112,19 +116,21 @@ class EditAdditionFragment :
                             },
                             maxLines = 20,
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Text
                         )
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = state.price,
-                            labelStringId = R.string.hint_edit_addition_new_price,
-                            errorMessageId = state.editPriceError,
+                            labelText = stringResource(R.string.hint_edit_addition_price),
+                            value = state.priceField.value,
                             onValueChange = { price ->
                                 onAction(EditAddition.Action.EditPriceAddition(price))
                             },
+                            errorText = stringResource(state.priceField.errorResId),
+                            isError = state.priceField.isError,
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Number
+                            keyboardOptions = keyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            )
                         )
                     }
                 }
@@ -138,7 +144,7 @@ class EditAdditionFragment :
                             )
                         )
                     },
-                    text = getString(R.string.title_edit_addition_is_visible),
+                    text = stringResource(R.string.title_edit_addition_is_visible),
                     enabled = !state.isLoading
                 )
                 Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
@@ -149,20 +155,18 @@ class EditAdditionFragment :
     @Composable
     override fun mapState(state: EditAddition.DataState): EditAdditionViewState {
         return EditAdditionViewState(
-            name = state.name,
-            editNameError = if (state.hasEditNameError) {
-                R.string.error_edit_addition_empty_name
-            } else {
-                null
-            },
+            nameField = TextFieldUi(
+                value = state.name,
+                errorResId = R.string.error_edit_addition_empty_name,
+                isError = state.hasEditNameError
+            ),
             priority = state.priority.toString(),
-            fullName = state.fullName ?: "",
-            price = state.price.toString(),
-            editPriceError = if (state.hasEditPriceError) {
-                R.string.error_add_addition_empty_new_price
-            } else {
-                null
-            },
+            fullName = state.fullName.orEmpty(),
+            priceField = TextFieldUi(
+                value = state.price?.toString().orEmpty(),
+                errorResId = R.string.error_add_addition_empty_new_price,
+                isError = state.hasEditPriceError
+            ),
             isVisible = state.isVisible,
             isLoading = state.isLoading
         )
@@ -189,14 +193,20 @@ class EditAdditionFragment :
         AdminTheme {
             EditAdditionScreen(
                 state = EditAdditionViewState(
-                    name = "",
+                    nameField = TextFieldUi(
+                        value = "",
+                        errorResId = 0,
+                        isError = false
+                    ),
                     priority = "",
                     fullName = "",
-                    price = "",
+                    priceField = TextFieldUi(
+                        value = "",
+                        errorResId = 0,
+                        isError = false
+                    ),
                     isVisible = false,
                     isLoading = false,
-                    editNameError = null,
-                    editPriceError = null
                 ),
                 onAction = {}
             )
