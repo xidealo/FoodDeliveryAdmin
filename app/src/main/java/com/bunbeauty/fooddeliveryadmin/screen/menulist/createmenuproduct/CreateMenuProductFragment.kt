@@ -5,30 +5,23 @@ import android.os.Bundle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -48,8 +41,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
-import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.RubleSymbol
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -102,7 +96,7 @@ class CreateMenuProductFragment :
         }
 
         AdminScaffold(
-            title = stringResource(R.string.title_add_menu_product),
+            title = stringResource(R.string.title_create_menu_product_new_product),
             backActionClick = {
                 onAction(CreateMenuProduct.Action.BackClick)
             },
@@ -127,18 +121,11 @@ class CreateMenuProductFragment :
                     state = state,
                     onAction = onAction
                 )
-                // TODO fix
                 NavigationTextCard(
-                    hintStringId = state.categoriesField.hintResId,
-                    border = if (state.categoriesField.isError) {
-                        BorderStroke(
-                            width = 2.dp,
-                            color = AdminTheme.colors.main.error
-                        )
-                    } else {
-                        null
-                    },
-                    label = state.categoriesField.value,
+                    labelText = stringResource(state.categoriesField.labelResId),
+                    valueText = state.categoriesField.value,
+                    isError = state.categoriesField.isError,
+                    errorText = stringResource(state.categoriesField.errorResId),
                     onClick = {
                         onAction(CreateMenuProduct.Action.CategoriesClick)
                     }
@@ -148,7 +135,7 @@ class CreateMenuProductFragment :
                     onCheckChanged = {
                         onAction(CreateMenuProduct.Action.ToggleVisibilityInMenu)
                     },
-                    text = stringResource(R.string.title_add_menu_product_is_visible_in_menu),
+                    text = stringResource(R.string.action_common_menu_product_show_in_menu),
                     enabled = !state.sendingToServer
                 )
                 SwitcherCard(
@@ -156,7 +143,7 @@ class CreateMenuProductFragment :
                     onCheckChanged = {
                         onAction(CreateMenuProduct.Action.ToggleVisibilityInRecommendations)
                     },
-                    text = stringResource(R.string.title_add_menu_product_is_recommendation),
+                    text = stringResource(R.string.action_common_menu_product_recommend),
                     enabled = !state.sendingToServer
                 )
                 state.imageField.value?.let { imageData ->
@@ -228,49 +215,63 @@ class CreateMenuProductFragment :
             ) {
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_name),
                     value = state.nameField.value,
-                    labelStringId = R.string.hint_edit_menu_product_name,
                     onValueChange = { name ->
                         onAction(CreateMenuProduct.Action.ChangeNameText(name))
                     },
-                    errorMessageId = state.nameField.errorResIdToShow,
+                    isError = state.nameField.isError,
+                    errorText = stringResource(state.nameField.errorResId),
                     enabled = !state.sendingToServer
                 )
-
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_new_price),
                     value = state.newPriceField.value,
-                    labelStringId = R.string.hint_edit_menu_product_new_price,
                     onValueChange = { newPrice ->
                         onAction(CreateMenuProduct.Action.ChangeNewPriceText(newPrice))
                     },
-                    errorMessageId = state.newPriceField.errorResIdToShow,
+                    isError = state.newPriceField.isError,
+                    errorText = stringResource(state.newPriceField.errorResId),
                     enabled = !state.sendingToServer,
-                    keyboardType = KeyboardType.Number
+                    keyboardOptions = keyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    trailingIcon = {
+                        RubleSymbol()
+                    }
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_old_price),
                     value = state.oldPriceField.value,
-                    labelStringId = R.string.hint_edit_menu_product_old_price,
                     onValueChange = { oldPrice ->
                         onAction(CreateMenuProduct.Action.ChangeOldPriceText(oldPrice))
                     },
-                    errorMessageId = state.oldPriceField.errorResIdToShow,
+                    isError = state.oldPriceField.isError,
+                    errorText = stringResource(state.oldPriceField.errorResId),
                     enabled = !state.sendingToServer,
-                    keyboardType = KeyboardType.Number
+                    keyboardOptions = keyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    trailingIcon = {
+                        RubleSymbol()
+                    }
                 )
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     AdminTextField(
                         modifier = Modifier.weight(0.6f),
+                        labelText = stringResource(R.string.hint_common_menu_product_nutrition),
                         value = state.nutrition,
-                        labelStringId = R.string.hint_edit_menu_product_nutrition,
                         onValueChange = { nutrition ->
                             onAction(CreateMenuProduct.Action.ChangeNutritionText(nutrition))
                         },
                         enabled = !state.sendingToServer,
-                        keyboardType = KeyboardType.Number
+                        keyboardOptions = keyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        )
                     )
 
                     var expanded by remember {
@@ -285,9 +286,9 @@ class CreateMenuProductFragment :
                         onExpandedChange = { value ->
                             expanded = value
                         },
+                        labelText = stringResource(R.string.hint_common_menu_product_units),
                         value = state.utils,
-                        labelStringId = R.string.hint_edit_menu_product_utils,
-                        suggestionsList = stringArrayResource(id = R.array.utilsList)
+                        suggestionsList = stringArrayResource(id = R.array.array_common_menu_product_units)
                             .mapIndexed { index, util ->
                                 Suggestion(index.toString(), util)
                             },
@@ -301,22 +302,24 @@ class CreateMenuProductFragment :
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_description),
                     value = state.descriptionField.value,
-                    labelStringId = R.string.hint_edit_menu_product_description,
-                    imeAction = ImeAction.None,
                     onValueChange = { description ->
                         onAction(CreateMenuProduct.Action.ChangeDescriptionText(description))
                     },
+                    keyboardOptions = keyboardOptions(
+                        imeAction = ImeAction.None,
+                    ),
                     maxLines = 20,
-                    errorMessageId = state.descriptionField.errorResIdToShow,
+                    isError = state.descriptionField.isError,
+                    errorText = stringResource(state.descriptionField.errorResId),
                     enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_combo_description),
                     value = state.comboDescription,
-                    labelStringId = R.string.hint_edit_menu_product_combo_description,
-                    imeAction = ImeAction.None,
                     onValueChange = { comboDescription ->
                         onAction(
                             CreateMenuProduct.Action.ChangeComboDescriptionText(
@@ -324,8 +327,11 @@ class CreateMenuProductFragment :
                             )
                         )
                     },
+                    keyboardOptions = keyboardOptions(
+                        imeAction = ImeAction.None,
+                    ),
                     maxLines = 20,
-                    enabled = !state.sendingToServer
+                    enabled = !state.sendingToServer,
                 )
             }
         }
@@ -352,14 +358,14 @@ class CreateMenuProductFragment :
 
             is CreateMenuProduct.Event.ShowMenuProductCreated -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_add_menu_added, event.menuProductName)
+                    resources.getString(R.string.msg_create_menu_product_add_menu_added, event.menuProductName)
                 )
                 findNavController().popBackStack()
             }
 
             CreateMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_common_image_uploading_failed)
+                    resources.getString(R.string.error_common_menu_product_image_uploading)
                 )
             }
 
@@ -391,31 +397,31 @@ class CreateMenuProductFragment :
                     nameField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = R.string.error_add_menu_product_empty_name,
+                        errorResId = 0,
                     ),
                     newPriceField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = R.string.error_add_menu_product_empty_new_price,
+                        errorResId = 0,
                     ),
                     oldPriceField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = R.string.error_add_menu_product_old_price_incorrect,
+                        errorResId = 0,
                     ),
                     nutrition = "",
                     utils = "",
                     descriptionField = TextFieldUi(
                         value = "",
                         isError = false,
-                        errorResId = R.string.error_add_menu_product_empty_description,
+                        errorResId = 0,
                     ),
                     comboDescription = "",
                     categoriesField = CardFieldUi(
-                        hintResId = R.string.hint_add_menu_product_categories,
+                        labelResId = R.string.hint_common_menu_product_categories,
                         value = "Категория 1 • Категория 2",
                         isError = false,
-                        errorResId = R.string.error_add_menu_product_categories,
+                        errorResId = 0,
                     ),
                     isVisibleInMenu = true,
                     isVisibleInRecommendation = false,

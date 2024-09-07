@@ -13,5 +13,6 @@ data class MenuProductPatchServer(
     val comboDescription: String?,
     val photoLink: String?,
     val categoryUuids: List<String>?,
-    val isVisible: Boolean?
+    val isVisible: Boolean?,
+    val isRecommended: Boolean?,
 )

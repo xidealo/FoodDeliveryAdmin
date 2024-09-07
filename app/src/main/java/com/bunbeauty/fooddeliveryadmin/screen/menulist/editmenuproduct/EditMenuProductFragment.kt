@@ -43,6 +43,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.RubleSymbol
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -168,19 +170,19 @@ class EditMenuProductFragment :
 
             is EditMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_common_image_uploading_failed)
+                    resources.getString(R.string.error_common_menu_product_image_uploading)
                 )
             }
 
             is EditMenuProduct.Event.ShowSomethingWentWrong -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_product_updated)
+                    resources.getString(R.string.error_common_something_went_wrong)
                 )
             }
 
             is EditMenuProduct.Event.ShowUpdateProductSuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_product_updated, event.productName)
+                    resources.getString(R.string.msg_edit_menu_product_updated, event.productName)
                 )
                 findNavController().popBackStack()
             }
@@ -242,22 +244,16 @@ class EditMenuProductFragment :
                 onAction = onAction,
             )
             NavigationTextCard(
-                hintStringId = state.categoriesField.hintResId,
-                border = if (state.categoriesField.isError) {
-                    BorderStroke(
-                        width = 2.dp,
-                        color = AdminTheme.colors.main.error
-                    )
-                } else {
-                    null
-                },
-                label = state.categoriesField.value,
+                labelText = stringResource(state.categoriesField.labelResId),
+                valueText = state.categoriesField.value,
+                isError = state.categoriesField.isError,
+                errorText = stringResource(state.categoriesField.errorResId),
                 onClick = {
                     onAction(EditMenuProduct.Action.CategoriesClick)
                 }
             )
             SwitcherCard(
-                text = stringResource(R.string.title_edit_menu_product_is_visible),
+                text = stringResource(R.string.action_common_menu_product_show_in_menu),
                 checked = state.isVisibleInMenu,
                 onCheckChanged = {
                     onAction(
@@ -271,7 +267,7 @@ class EditMenuProductFragment :
                 onCheckChanged = {
                     onAction(EditMenuProduct.Action.ToggleVisibilityInRecommendations)
                 },
-                text = stringResource(R.string.title_add_menu_product_is_recommendation),
+                text = stringResource(R.string.action_common_menu_product_recommend),
                 enabled = !state.sendingToServer
             )
             state.imageField.value?.let { imageData ->
@@ -304,43 +300,56 @@ class EditMenuProductFragment :
             ) {
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_name),
                     value = state.nameField.value,
-                    labelStringId = R.string.hint_edit_menu_product_name,
                     onValueChange = { name ->
                         onAction(
                             EditMenuProduct.Action.ChangeNameText(name = name)
                         )
                     },
-                    errorMessageId = state.nameField.errorResIdToShow,
+                    isError = state.nameField.isError,
+                    errorText = stringResource(state.nameField.errorResId),
                     enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_new_price),
                     value = state.newPriceField.value,
-                    labelStringId = R.string.hint_edit_menu_product_new_price,
                     onValueChange = { newPrice ->
                         onAction(
                             EditMenuProduct.Action.ChangeNewPriceText(newPrice = newPrice)
                         )
                     },
-                    errorMessageId = state.newPriceField.errorResIdToShow,
+                    keyboardOptions = keyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    isError = state.newPriceField.isError,
+                    errorText = stringResource(state.newPriceField.errorResId),
                     enabled = !state.sendingToServer,
-                    keyboardType = KeyboardType.Number
+                    trailingIcon = {
+                        RubleSymbol()
+                    }
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_old_price),
                     value = state.oldPriceField.value,
-                    labelStringId = R.string.hint_edit_menu_product_old_price,
                     onValueChange = { oldPrice ->
                         onAction(
                             EditMenuProduct.Action.ChangeOldPriceText(oldPrice = oldPrice)
                         )
                     },
-                    errorMessageId = state.newPriceField.errorResIdToShow,
+                    keyboardOptions = keyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    isError = state.newPriceField.isError,
+                    errorText = stringResource(state.newPriceField.errorResId),
                     enabled = !state.sendingToServer,
-                    keyboardType = KeyboardType.Number
+                    trailingIcon = {
+                        RubleSymbol()
+                    }
                 )
 
                 Row(
@@ -348,15 +357,17 @@ class EditMenuProductFragment :
                 ) {
                     AdminTextField(
                         modifier = Modifier.weight(0.6f),
+                        labelText = stringResource(R.string.hint_common_menu_product_nutrition),
                         value = state.nutrition,
-                        labelStringId = R.string.hint_edit_menu_product_nutrition,
                         onValueChange = { nutrition ->
                             onAction(
                                 EditMenuProduct.Action.ChangeNutritionText(nutrition = nutrition)
                             )
                         },
+                        keyboardOptions = keyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
                         enabled = !state.sendingToServer,
-                        keyboardType = KeyboardType.Number
                     )
 
                     var expanded by remember {
@@ -371,9 +382,9 @@ class EditMenuProductFragment :
                         onExpandedChange = { value ->
                             expanded = value
                         },
+                        labelText = stringResource(R.string.hint_common_menu_product_units),
                         value = state.utils,
-                        labelStringId = R.string.hint_edit_menu_product_utils,
-                        suggestionsList = stringArrayResource(id = R.array.utilsList)
+                        suggestionsList = stringArrayResource(id = R.array.array_common_menu_product_units)
                             .mapIndexed { index, util ->
                                 Suggestion(
                                     id = index.toString(),
@@ -392,29 +403,34 @@ class EditMenuProductFragment :
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_description),
                     value = state.descriptionField.value,
-                    labelStringId = R.string.hint_edit_menu_product_description,
-                    imeAction = ImeAction.None,
                     onValueChange = { description ->
                         onAction(
                             EditMenuProduct.Action.ChangeDescriptionText(description = description)
                         )
                     },
+                    keyboardOptions = keyboardOptions(
+                        imeAction = ImeAction.None,
+                    ),
                     maxLines = 20,
-                    errorMessageId = state.descriptionField.errorResIdToShow,
+                    isError = state.descriptionField.isError,
+                    errorText = stringResource(state.descriptionField.errorResId),
                     enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    labelText = stringResource(R.string.hint_common_menu_product_combo_description),
                     value = state.comboDescription,
-                    labelStringId = R.string.hint_edit_menu_product_combo_description,
-                    imeAction = ImeAction.None,
                     onValueChange = { comboDescription ->
                         onAction(
                             EditMenuProduct.Action.ChangeComboDescriptionText(comboDescription = comboDescription)
                         )
                     },
+                    keyboardOptions = keyboardOptions(
+                        imeAction = ImeAction.None,
+                    ),
                     maxLines = 20,
                     enabled = !state.sendingToServer
                 )
@@ -453,31 +469,31 @@ class EditMenuProductFragment :
                         nameField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = R.string.error_add_menu_product_empty_name,
+                            errorResId = 0,
                         ),
                         newPriceField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = R.string.error_add_menu_product_empty_new_price,
+                            errorResId = 0,
                         ),
                         oldPriceField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = R.string.error_add_menu_product_old_price_incorrect,
+                            errorResId = 0,
                         ),
                         nutrition = "",
                         utils = "",
                         descriptionField = TextFieldUi(
                             value = "",
                             isError = false,
-                            errorResId = R.string.error_add_menu_product_empty_description,
+                            errorResId = 0,
                         ),
                         comboDescription = "",
                         categoriesField = CardFieldUi(
-                            hintResId = R.string.hint_add_menu_product_categories,
+                            labelResId = R.string.hint_common_menu_product_categories,
                             value = "Категория 1 • Категория 2",
                             isError = false,
-                            errorResId = R.string.error_add_menu_product_categories,
+                            errorResId = 0,
                         ),
                         isVisibleInMenu = true,
                         isVisibleInRecommendation = false,

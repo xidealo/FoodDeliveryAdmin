@@ -5,10 +5,8 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class CardFieldUi(
-    @StringRes val hintResId: Int,
-    override val value: String,
+    @StringRes val labelResId: Int,
+    override val value: String?,
     override val isError: Boolean,
     @StringRes val errorResId: Int
-) : FieldUi<String>() {
-    val errorResIdToShow: Int? = errorResId.takeIf { isError }
-}
+) : FieldUi<String?>()

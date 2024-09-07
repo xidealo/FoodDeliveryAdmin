@@ -16,11 +16,14 @@ fun TextFieldData.toTextFieldUi(@StringRes errorResId: Int): TextFieldUi {
 
 fun CategoriesFieldData.toCardFieldUi(): CardFieldUi {
     return CardFieldUi(
-        hintResId = R.string.hint_add_menu_product_categories,
-        value = selectedCategoryList.joinToString(" ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
-            selectableCategory.category.name
-        },
+        labelResId = R.string.hint_common_menu_product_categories,
+        value = selectedCategoryList
+            .takeIf { list ->
+                list.isNotEmpty()
+            }?.joinToString(" ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
+                selectableCategory.category.name
+            },
         isError = isError,
-        errorResId = R.string.error_add_menu_product_categories,
+        errorResId = R.string.error_common_menu_product_categories
     )
 }

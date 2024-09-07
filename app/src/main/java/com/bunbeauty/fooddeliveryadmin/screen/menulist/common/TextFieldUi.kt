@@ -7,7 +7,5 @@ import androidx.compose.runtime.Immutable
 data class TextFieldUi(
     override val value: String,
     override val isError: Boolean,
-     @StringRes private val errorResId: Int
-): FieldUi<String>() {
-    val errorResIdToShow: Int? = errorResId.takeIf { isError }
-}
+    @StringRes val errorResId: Int
+) : FieldUi<String>()

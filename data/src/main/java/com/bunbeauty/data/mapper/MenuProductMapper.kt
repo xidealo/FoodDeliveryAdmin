@@ -90,6 +90,7 @@ class MenuProductMapper @Inject constructor() {
                 comboDescription = comboDescription,
                 photoLink = photoLink,
                 isVisible = isVisible,
+                isRecommended = isRecommended,
                 categoryUuids = categories
             )
         }

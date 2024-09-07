@@ -218,7 +218,9 @@ class EditMenuProductViewModel @Inject constructor(
                             value = menuProduct.description,
                             isError = false
                         ),
-                        nutrition = menuProduct.nutrition?.toString() ?: "",
+                        nutrition = menuProduct.nutrition?.takeIf { nutrition ->
+                            nutrition != 0
+                        }?.toString() ?: "",
                         utils = menuProduct.utils ?: "",
                         comboDescription = menuProduct.comboDescription ?: "",
                         categoriesField = CategoriesFieldData(

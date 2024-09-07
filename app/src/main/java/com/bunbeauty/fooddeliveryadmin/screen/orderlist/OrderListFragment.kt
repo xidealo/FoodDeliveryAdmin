@@ -170,8 +170,8 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         ) {
             item(key = "cafeAddress") {
                 NavigationTextCard(
-                    hintStringId = R.string.msg_common_cafe,
-                    label = uiStateSuccess.cafeAddress,
+                    labelText = stringResource(R.string.msg_common_cafe),
+                    valueText = uiStateSuccess.cafeAddress,
                     onClick = onCafeClicked
                 )
                 Spacer(modifier = Modifier.height(8.dp))

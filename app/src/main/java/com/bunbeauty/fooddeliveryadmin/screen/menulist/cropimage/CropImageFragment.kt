@@ -84,7 +84,7 @@ class CropImageFragment :
     @Composable
     override fun Screen(state: CropImageViewState, onAction: (CropImage.Action) -> Unit) {
         AdminScaffold(
-            title = stringResource(R.string.title_add_menu_product),
+            title = stringResource(R.string.title_crop_image),
             backActionClick = {
                 onAction(CropImage.Action.BackClick)
             },
