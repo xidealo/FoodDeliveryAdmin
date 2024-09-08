@@ -117,7 +117,7 @@ class UpdateAdditionUseCaseTest {
         val updateAddition = updateAdditionMock.copy(
             name = "Бекон",
             priority = 1,
-            price = 0
+            price = null
         )
         coEvery { dataStoreRepo.getToken() } returns token
 
