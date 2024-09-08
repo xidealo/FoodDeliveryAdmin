@@ -157,7 +157,7 @@ class EditAdditionFragment :
             },
             priority = state.priority.toString(),
             fullName = state.fullName ?: "",
-            price = state.price.toString(),
+            price = state.price?.toString() ?: "",
             editPriceError = if (state.hasEditPriceError) {
                 R.string.error_add_addition_empty_new_price
             } else {
