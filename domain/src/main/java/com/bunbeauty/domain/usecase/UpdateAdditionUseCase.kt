@@ -22,7 +22,7 @@ class UpdateAdditionUseCase @Inject constructor(
         when {
             updateAddition.name.isNullOrBlank() -> throw AdditionNameException()
             updateAddition.priority == null -> throw AdditionPriorityException()
-            updateAddition.price == null -> throw AdditionPriceException()
+            updateAddition.price == 0 -> throw AdditionPriceException()
         }
 
         additionRepo.updateAddition(additionUuid = additionUuid, token = token, updateAddition = updateAddition)
