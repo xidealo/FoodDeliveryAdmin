@@ -43,19 +43,14 @@ class UpdateMenuProductUseCase @Inject constructor(
     )
 
     suspend operator fun invoke(params: Params) {
-        val name = params.name.takeIf { name ->
-            name.isNotBlank()
-        } ?: throw MenuProductNameException()
-        val newPrice = params.newPrice.toIntOrNull()
-            ?.takeIf { it > 0 }
-            ?: throw MenuProductNewPriceException()
-        val oldPrice = params.oldPrice.toIntOrNull()
-        if (oldPrice != null && oldPrice <= newPrice) {
-            throw MenuProductOldPriceException()
-        }
-        val description = params.description.takeIf { it.isNotBlank() } ?: throw MenuProductDescriptionException()
-        val selectableCategories =
-            params.selectedCategories.takeIf { it.isNotEmpty() } ?: throw MenuProductCategoriesException()
+        val name = validateName(name = params.name)
+        val newPrice = validateNewPrice(newPrice = params.newPrice)
+        val oldPrice = validateOldPrice(
+            oldPrice = params.oldPrice,
+            newPrice = newPrice
+        )
+        val description = validateDescription(description = params.description)
+        val selectableCategories = validateCategories(categories = params.selectedCategories)
 
         var updatedPhotoLink: String? = null
         if (params.photoLink == null) {
@@ -77,7 +72,7 @@ class UpdateMenuProductUseCase @Inject constructor(
             updateMenuProduct = UpdateMenuProduct(
                 name = name,
                 newPrice = newPrice,
-                oldPrice = params.oldPrice.toIntOrNull(),
+                oldPrice = oldPrice,
                 nutrition = params.nutrition.toIntOrNull(),
                 utils = params.utils,
                 description = description,
@@ -92,4 +87,43 @@ class UpdateMenuProductUseCase @Inject constructor(
             token = token
         ) ?: throw MenuProductNotUpdatedException()
     }
+
+    private fun validateName(name: String): String {
+        return name.takeIf { value ->
+            value.isNotBlank()
+        } ?: throw MenuProductNameException()
+    }
+
+    private fun validateNewPrice(newPrice: String): Int {
+        return newPrice.toIntOrNull()
+            ?.takeIf { value ->
+                value > 0
+            } ?: throw MenuProductNewPriceException()
+    }
+
+    private fun validateOldPrice(oldPrice: String, newPrice: Int): Int? {
+        if (oldPrice.isBlank()) {
+            return 0
+        }
+
+        val oldPriceInt = oldPrice.toIntOrNull()
+        if (oldPriceInt != null && oldPriceInt <= newPrice) {
+            throw MenuProductOldPriceException()
+        }
+
+        return oldPriceInt
+    }
+
+    private fun validateDescription(description: String): String {
+        return description.takeIf { value ->
+            value.isNotBlank()
+        } ?: throw MenuProductDescriptionException()
+    }
+
+    private fun validateCategories(categories: List<SelectableCategory>): List<SelectableCategory> {
+        return categories.takeIf {
+            categories.isNotEmpty()
+        } ?: throw MenuProductCategoriesException()
+    }
+
 }
