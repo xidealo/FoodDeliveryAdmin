@@ -1,12 +1,13 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNutritionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
@@ -29,24 +30,12 @@ class EditMenuProductViewModel @Inject constructor(
         productUuid = null,
         productName = "",
 
-        nameField = TextFieldData(
-            value = "",
-            isError = false
-        ),
-        newPriceField = TextFieldData(
-            value = "",
-            isError = false
-        ),
-        oldPriceField = TextFieldData(
-            value = "",
-            isError = false
-        ),
-        descriptionField = TextFieldData(
-            value = "",
-            isError = false
-        ),
-        nutrition = "",
-        utils = "",
+        nameField = TextFieldData.empty,
+        newPriceField = TextFieldData.empty,
+        oldPriceField = TextFieldData.empty,
+        descriptionField = TextFieldData.empty,
+        nutritionField = TextFieldData.empty,
+        units = "",
         comboDescription = "",
         categoriesField = CategoriesFieldData(
             value = listOf(),
@@ -107,7 +96,9 @@ class EditMenuProductViewModel @Inject constructor(
             is EditMenuProduct.Action.ChangeNutritionText -> {
                 setState {
                     copy(
-                        nutrition = action.nutrition
+                        nutritionField = nutritionField.copy(
+                            value = action.nutrition
+                        )
                     )
                 }
             }
@@ -115,7 +106,7 @@ class EditMenuProductViewModel @Inject constructor(
             is EditMenuProduct.Action.ChangeUtilsText -> {
                 setState {
                     copy(
-                        utils = action.utils
+                        units = action.units
                     )
                 }
             }
@@ -218,10 +209,13 @@ class EditMenuProductViewModel @Inject constructor(
                             value = menuProduct.description,
                             isError = false
                         ),
-                        nutrition = menuProduct.nutrition?.takeIf { nutrition ->
-                            nutrition != 0
-                        }?.toString() ?: "",
-                        utils = menuProduct.utils ?: "",
+                        nutritionField = TextFieldData(
+                            value = menuProduct.nutrition?.takeIf { nutrition ->
+                                nutrition != 0
+                            }?.toString() ?: "",
+                            isError = false
+                        ),
+                        units = menuProduct.units ?: "",
                         comboDescription = menuProduct.comboDescription ?: "",
                         categoriesField = CategoriesFieldData(
                             value = getSelectableCategoryListUseCase(
@@ -254,6 +248,7 @@ class EditMenuProductViewModel @Inject constructor(
                 nameField = nameField.copy(isError = false),
                 newPriceField = newPriceField.copy(isError = false),
                 oldPriceField = oldPriceField.copy(isError = false),
+                nutritionField = nutritionField.copy(isError = false),
                 descriptionField = descriptionField.copy(isError = false),
                 categoriesField = categoriesField.copy(isError = false),
                 imageField = imageField.copy(isError = false),
@@ -269,8 +264,8 @@ class EditMenuProductViewModel @Inject constructor(
                             name = nameField.value,
                             newPrice = newPriceField.value,
                             oldPrice = oldPriceField.value,
-                            utils = utils,
-                            nutrition = nutrition,
+                            nutrition = nutritionField.value,
+                            units = units,
                             description = descriptionField.value,
                             comboDescription = comboDescription,
                             selectedCategories = categoriesField.selectedCategoryList,
@@ -320,6 +315,16 @@ class EditMenuProductViewModel @Inject constructor(
                 setState {
                     copy(
                         oldPriceField = oldPriceField.copy(
+                            isError = true
+                        )
+                    )
+                }
+            }
+
+            is MenuProductNutritionException -> {
+                setState {
+                    copy(
+                        nutritionField = nutritionField.copy(
                             isError = true
                         )
                     )

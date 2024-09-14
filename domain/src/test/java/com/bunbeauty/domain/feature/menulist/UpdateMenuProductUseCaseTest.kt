@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.feature.menulist
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.feature.menu.common.CalculateImageCompressQualityUseCase
+import com.bunbeauty.domain.feature.menu.common.photo.CalculateImageCompressQualityUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
@@ -179,7 +179,7 @@ class UpdateMenuProductUseCaseTest {
                 updateMenuProduct = UpdateMenuProduct(
                     name = "name",
                     newPrice = 100,
-                    oldPrice = null,
+                    oldPrice = 0,
                     utils = "",
                     nutrition = null,
                     description = "description",
@@ -233,7 +233,7 @@ class UpdateMenuProductUseCaseTest {
         name = "name",
         newPrice = "100",
         oldPrice = "",
-        utils = "",
+        units = "",
         nutrition = "",
         description = "description",
         comboDescription = "comboDescription",

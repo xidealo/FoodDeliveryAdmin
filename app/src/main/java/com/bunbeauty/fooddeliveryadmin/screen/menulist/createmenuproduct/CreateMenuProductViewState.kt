@@ -12,7 +12,7 @@ data class CreateMenuProductViewState(
     val nameField: TextFieldUi,
     val newPriceField: TextFieldUi,
     val oldPriceField: TextFieldUi,
-    val nutrition: String,
+    val nutritionField: TextFieldUi,
     val utils: String,
     val descriptionField: TextFieldUi,
     val comboDescription: String,

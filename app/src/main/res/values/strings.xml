@@ -131,6 +131,7 @@
     <string name="error_common_menu_product_empty_name">Название не может быть пустым</string>
     <string name="error_common_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
     <string name="error_common_menu_product_low_old_price">Цена до скидки не может быть меньше актуальной</string>
+    <string name="error_common_menu_product_nutrition_without_units">Укажите единицы измерения</string>
     <string name="error_common_menu_product_empty_description">Описание не может быть пустым</string>
     <string name="error_common_menu_product_categories">Выберите категории</string>
     <string name="error_common_menu_product_image_uploading">Не удалось загрузить изображение</string>

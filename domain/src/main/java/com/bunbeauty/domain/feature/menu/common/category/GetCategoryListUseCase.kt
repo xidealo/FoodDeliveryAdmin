@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.menu.common
+package com.bunbeauty.domain.feature.menu.common.category
 
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException

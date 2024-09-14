@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.menu.common
+package com.bunbeauty.domain.feature.menu.common.photo
 
 import javax.inject.Inject
 

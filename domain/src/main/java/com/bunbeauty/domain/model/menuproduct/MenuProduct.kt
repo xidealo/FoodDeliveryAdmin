@@ -5,7 +5,7 @@ data class MenuProduct(
     val name: String,
     val newPrice: Int,
     val oldPrice: Int?,
-    val utils: String?,
+    val units: String?,
     val nutrition: Int?,
     val description: String,
     val comboDescription: String?,

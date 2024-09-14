@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.feature.menulist
 
-import com.bunbeauty.domain.feature.menu.common.GetCategoryListUseCase
-import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import io.mockk.coEvery

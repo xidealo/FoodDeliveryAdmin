@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.menu.common
+package com.bunbeauty.domain.feature.menu.common.category
 
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import javax.inject.Inject

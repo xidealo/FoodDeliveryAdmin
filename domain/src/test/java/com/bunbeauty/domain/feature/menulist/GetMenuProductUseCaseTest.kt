@@ -76,7 +76,7 @@ class GetMenuProductUseCaseTest {
         name = "name",
         newPrice = 1,
         oldPrice = 2,
-        utils = "utils",
+        units = "utils",
         nutrition = 2,
         description = "description",
         comboDescription = "comboDescription",

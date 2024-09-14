@@ -263,11 +263,13 @@ class CreateMenuProductFragment :
                     AdminTextField(
                         modifier = Modifier.weight(0.6f),
                         labelText = stringResource(R.string.hint_common_menu_product_nutrition),
-                        value = state.nutrition,
+                        value = state.nutritionField.value,
                         onValueChange = { nutrition ->
                             onAction(CreateMenuProduct.Action.ChangeNutritionText(nutrition))
                         },
                         enabled = !state.sendingToServer,
+                        isError = state.nutritionField.isError,
+                        errorText = stringResource(state.nutritionField.errorResId),
                         keyboardOptions = keyboardOptions(
                             keyboardType = KeyboardType.Number
                         )
@@ -276,7 +278,6 @@ class CreateMenuProductFragment :
                     var expanded by remember {
                         mutableStateOf(false)
                     }
-
                     AdminTextFieldWithMenu(
                         modifier = Modifier
                             .weight(0.4f)
@@ -293,7 +294,7 @@ class CreateMenuProductFragment :
                             },
                         onSuggestionClick = { suggestion ->
                             expanded = false
-                            onAction(CreateMenuProduct.Action.ChangeUtilsText(suggestion.value))
+                            onAction(CreateMenuProduct.Action.ChangeUnitsText(suggestion.value))
                         },
                         enabled = !state.sendingToServer
                     )
@@ -393,28 +394,12 @@ class CreateMenuProductFragment :
         AdminTheme {
             Screen(
                 state = CreateMenuProductViewState(
-                    nameField = TextFieldUi(
-                        value = "",
-                        isError = false,
-                        errorResId = 0
-                    ),
-                    newPriceField = TextFieldUi(
-                        value = "",
-                        isError = false,
-                        errorResId = 0
-                    ),
-                    oldPriceField = TextFieldUi(
-                        value = "",
-                        isError = false,
-                        errorResId = 0
-                    ),
-                    nutrition = "",
+                    nameField = TextFieldUi.empty,
+                    newPriceField = TextFieldUi.empty,
+                    oldPriceField = TextFieldUi.empty,
+                    nutritionField = TextFieldUi.empty,
                     utils = "",
-                    descriptionField = TextFieldUi(
-                        value = "",
-                        isError = false,
-                        errorResId = 0
-                    ),
+                    descriptionField = TextFieldUi.empty,
                     comboDescription = "",
                     categoriesField = CardFieldUi(
                         labelResId = R.string.hint_common_menu_product_categories,

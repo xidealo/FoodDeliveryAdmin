@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation
 
 import app.cash.turbine.test
-import com.bunbeauty.domain.feature.menu.common.GetSelectableCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
@@ -75,8 +75,11 @@ class EditMenuProductViewModelTest {
                 value = "2",
                 isError = false
             ),
-            nutrition = "3",
-            utils = "utils",
+            nutritionField = TextFieldData(
+                value = "3",
+                isError = false
+            ),
+            units = "utils",
             descriptionField = TextFieldData(
                 value = "description",
                 isError = false
@@ -120,7 +123,7 @@ class EditMenuProductViewModelTest {
         name = "name",
         newPrice = 1,
         oldPrice = 2,
-        utils = "utils",
+        units = "utils",
         nutrition = 3,
         description = "description",
         comboDescription = "comboDescription",

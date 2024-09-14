@@ -1,29 +1,30 @@
 package com.bunbeauty.domain.feature.menu.createmenuproduct
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.feature.menu.common.CalculateImageCompressQualityUseCase
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNameUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNewPriceUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNutritionUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductOldPriceUseCase
 import com.bunbeauty.domain.feature.menu.createmenuproduct.exception.MenuProductNotCreatedException
-import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
 class CreateMenuProductUseCase @Inject constructor(
+    private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
+    private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase,
+    private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase,
+    private val validateMenuProductNutritionUseCase: ValidateMenuProductNutritionUseCase,
+    private val validateMenuProductDescriptionUseCase: ValidateMenuProductDescriptionUseCase,
+    private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase,
+    private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
-    private val photoRepo: PhotoRepo,
-    private val getUsernameUseCase: GetUsernameUseCase,
-    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase
 ) {
 
     data class Params(
@@ -31,7 +32,7 @@ class CreateMenuProductUseCase @Inject constructor(
         val newPrice: String,
         val oldPrice: String,
         val nutrition: String,
-        val utils: String,
+        val units: String,
         val description: String,
         val comboDescription: String,
         val selectedCategories: List<SelectableCategory>,
@@ -41,27 +42,19 @@ class CreateMenuProductUseCase @Inject constructor(
     )
 
     suspend operator fun invoke(params: Params) {
-        val name = params.name.takeIf { name ->
-            name.isNotBlank()
-        } ?: throw MenuProductNameException()
-        val newPrice = params.newPrice.toIntOrNull()
-            ?.takeIf { it > 0 }
-            ?: throw MenuProductNewPriceException()
-        val oldPrice = params.oldPrice.toIntOrNull()
-        if (oldPrice != null && oldPrice <= newPrice) {
-            throw MenuProductOldPriceException()
-        }
-        val description = params.description.takeIf { it.isNotBlank() } ?: throw MenuProductDescriptionException()
-        val selectableCategories = params.selectedCategories.takeIf { it.isNotEmpty() } ?: throw MenuProductCategoriesException()
-        val imageUri = params.imageUri ?: throw MenuProductImageException()
-
-        val fileSize = photoRepo.getFileSizeInMb(uri = imageUri)
-        val compressQuality = calculateImageCompressQualityUseCase(fileSize = fileSize)
-        val photo = photoRepo.uploadPhoto(
-            uri = imageUri,
-            compressQuality = compressQuality,
-            username = getUsernameUseCase()
-        ) ?: throw MenuProductUploadingImageException()
+        val name = validateMenuProductNameUseCase(name = params.name)
+        val newPrice = validateMenuProductNewPriceUseCase(newPrice = params.newPrice)
+        val oldPrice = validateMenuProductOldPriceUseCase(
+            oldPrice = params.oldPrice,
+            newPrice = newPrice
+        )
+        val nutrition = validateMenuProductNutritionUseCase(
+            nutrition = params.nutrition,
+            units = params.units
+        )
+        val description = validateMenuProductDescriptionUseCase(description = params.description)
+        val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
+        val photoLink = uploadPhotoUseCase(imageUri = params.imageUri).url
 
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         menuProductRepo.saveMenuProduct(
@@ -69,12 +62,12 @@ class CreateMenuProductUseCase @Inject constructor(
             menuProductPost = MenuProductPost(
                 name = name,
                 newPrice = newPrice,
-                oldPrice = params.oldPrice.toIntOrNull(),
-                nutrition = params.nutrition.toIntOrNull(),
-                utils = params.utils,
+                oldPrice = oldPrice,
+                nutrition = nutrition,
+                utils = params.units,
                 description = description,
                 comboDescription = params.comboDescription,
-                photoLink = photo.url,
+                photoLink = photoLink,
                 barcode = 0,
                 isVisible = params.isVisible,
                 isRecommended = params.isRecommended,

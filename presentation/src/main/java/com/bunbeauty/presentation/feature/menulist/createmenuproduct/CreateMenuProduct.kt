@@ -13,8 +13,8 @@ interface CreateMenuProduct {
         val nameField: TextFieldData,
         val newPriceField: TextFieldData,
         val oldPriceField: TextFieldData,
-        val nutrition: String,
-        val utils: String,
+        val nutritionField: TextFieldData,
+        val units: String,
         val descriptionField: TextFieldData,
         val comboDescription: String,
         val categoriesField: CategoriesFieldData,
@@ -46,7 +46,7 @@ interface CreateMenuProduct {
         data class ChangeNewPriceText(val newPrice: String) : Action
         data class ChangeOldPriceText(val oldPrice: String) : Action
         data class ChangeNutritionText(val nutrition: String) : Action
-        data class ChangeUtilsText(val utils: String) : Action
+        data class ChangeUnitsText(val units: String) : Action
         data class ChangeDescriptionText(val description: String) : Action
         data class ChangeComboDescriptionText(val comboDescription: String) : Action
         data object CategoriesClick : Action

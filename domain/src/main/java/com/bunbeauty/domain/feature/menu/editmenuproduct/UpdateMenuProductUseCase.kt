@@ -1,29 +1,30 @@
 package com.bunbeauty.domain.feature.menu.editmenuproduct
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.feature.menu.common.CalculateImageCompressQualityUseCase
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNameUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNewPriceUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNutritionUseCase
+import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductOldPriceUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNotUpdatedException
-import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import com.bunbeauty.domain.repo.PhotoRepo
 import javax.inject.Inject
 
 class UpdateMenuProductUseCase @Inject constructor(
-    private val photoRepo: PhotoRepo,
+    private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
+    private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase,
+    private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase,
+    private val validateMenuProductNutritionUseCase: ValidateMenuProductNutritionUseCase,
+    private val validateMenuProductDescriptionUseCase: ValidateMenuProductDescriptionUseCase,
+    private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase,
+    private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
-    private val getUsernameUseCase: GetUsernameUseCase,
-    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase
 ) {
 
     data class Params(
@@ -32,7 +33,7 @@ class UpdateMenuProductUseCase @Inject constructor(
         val newPrice: String,
         val oldPrice: String,
         val nutrition: String,
-        val utils: String,
+        val units: String,
         val description: String,
         val comboDescription: String,
         val selectedCategories: List<SelectableCategory>,
@@ -43,27 +44,22 @@ class UpdateMenuProductUseCase @Inject constructor(
     )
 
     suspend operator fun invoke(params: Params) {
-        val name = validateName(name = params.name)
-        val newPrice = validateNewPrice(newPrice = params.newPrice)
-        val oldPrice = validateOldPrice(
+        val name = validateMenuProductNameUseCase(name = params.name)
+        val newPrice = validateMenuProductNewPriceUseCase(newPrice = params.newPrice)
+        val oldPrice = validateMenuProductOldPriceUseCase(
             oldPrice = params.oldPrice,
             newPrice = newPrice
         )
-        val description = validateDescription(description = params.description)
-        val selectableCategories = validateCategories(categories = params.selectedCategories)
+        val nutrition = validateMenuProductNutritionUseCase(
+            nutrition = params.nutrition,
+            units = params.units
+        )
+        val description = validateMenuProductDescriptionUseCase(description = params.description)
+        val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
 
         var updatedPhotoLink: String? = null
         if (params.photoLink == null) {
-            val imageUri = params.imageUri ?: throw MenuProductImageException()
-            val fileSize = photoRepo.getFileSizeInMb(uri = imageUri)
-            val compressQuality = calculateImageCompressQualityUseCase(fileSize = fileSize)
-            val photo = photoRepo.uploadPhoto(
-                uri = imageUri,
-                compressQuality = compressQuality,
-                username = getUsernameUseCase()
-            ) ?: throw MenuProductUploadingImageException()
-
-            updatedPhotoLink = photo.url
+            updatedPhotoLink = uploadPhotoUseCase(imageUri = params.imageUri).url
         }
 
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -73,8 +69,8 @@ class UpdateMenuProductUseCase @Inject constructor(
                 name = name,
                 newPrice = newPrice,
                 oldPrice = oldPrice,
-                nutrition = params.nutrition.toIntOrNull(),
-                utils = params.utils,
+                nutrition = nutrition,
+                utils = params.units,
                 description = description,
                 comboDescription = params.comboDescription,
                 photoLink = updatedPhotoLink,
@@ -86,44 +82,6 @@ class UpdateMenuProductUseCase @Inject constructor(
             ),
             token = token
         ) ?: throw MenuProductNotUpdatedException()
-    }
-
-    private fun validateName(name: String): String {
-        return name.takeIf { value ->
-            value.isNotBlank()
-        } ?: throw MenuProductNameException()
-    }
-
-    private fun validateNewPrice(newPrice: String): Int {
-        return newPrice.toIntOrNull()
-            ?.takeIf { value ->
-                value > 0
-            } ?: throw MenuProductNewPriceException()
-    }
-
-    private fun validateOldPrice(oldPrice: String, newPrice: Int): Int? {
-        if (oldPrice.isBlank()) {
-            return 0
-        }
-
-        val oldPriceInt = oldPrice.toIntOrNull()
-        if (oldPriceInt != null && oldPriceInt <= newPrice) {
-            throw MenuProductOldPriceException()
-        }
-
-        return oldPriceInt
-    }
-
-    private fun validateDescription(description: String): String {
-        return description.takeIf { value ->
-            value.isNotBlank()
-        } ?: throw MenuProductDescriptionException()
-    }
-
-    private fun validateCategories(categories: List<SelectableCategory>): List<SelectableCategory> {
-        return categories.takeIf {
-            categories.isNotEmpty()
-        } ?: throw MenuProductCategoriesException()
     }
 
 }

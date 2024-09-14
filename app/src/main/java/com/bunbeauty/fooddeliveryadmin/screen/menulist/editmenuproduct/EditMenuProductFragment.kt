@@ -343,8 +343,8 @@ class EditMenuProductFragment :
                     keyboardOptions = keyboardOptions(
                         keyboardType = KeyboardType.Number
                     ),
-                    isError = state.newPriceField.isError,
-                    errorText = stringResource(state.newPriceField.errorResId),
+                    isError = state.oldPriceField.isError,
+                    errorText = stringResource(state.oldPriceField.errorResId),
                     enabled = !state.sendingToServer,
                     trailingIcon = {
                         RubleSymbol()
@@ -357,7 +357,7 @@ class EditMenuProductFragment :
                     AdminTextField(
                         modifier = Modifier.weight(0.6f),
                         labelText = stringResource(R.string.hint_common_menu_product_nutrition),
-                        value = state.nutrition,
+                        value = state.nutritionField.value,
                         onValueChange = { nutrition ->
                             onAction(
                                 EditMenuProduct.Action.ChangeNutritionText(nutrition = nutrition)
@@ -366,6 +366,8 @@ class EditMenuProductFragment :
                         keyboardOptions = keyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
+                        errorText = stringResource(state.nutritionField.errorResId),
+                        isError = state.nutritionField.isError,
                         enabled = !state.sendingToServer
                     )
 
@@ -393,7 +395,7 @@ class EditMenuProductFragment :
                         onSuggestionClick = { suggestion ->
                             expanded = false
                             onAction(
-                                EditMenuProduct.Action.ChangeUtilsText(utils = suggestion.value)
+                                EditMenuProduct.Action.ChangeUtilsText(units = suggestion.value)
                             )
                         },
                         enabled = !state.sendingToServer
@@ -465,22 +467,10 @@ class EditMenuProductFragment :
                 state = EditMenuProductViewState(
                     title = "Бургер",
                     state = EditMenuProductViewState.State.Success(
-                        nameField = TextFieldUi(
-                            value = "",
-                            isError = false,
-                            errorResId = 0
-                        ),
-                        newPriceField = TextFieldUi(
-                            value = "",
-                            isError = false,
-                            errorResId = 0
-                        ),
-                        oldPriceField = TextFieldUi(
-                            value = "",
-                            isError = false,
-                            errorResId = 0
-                        ),
-                        nutrition = "",
+                        nameField = TextFieldUi.empty,
+                        newPriceField = TextFieldUi.empty,
+                        oldPriceField = TextFieldUi.empty,
+                        nutritionField = TextFieldUi.empty,
                         utils = "",
                         descriptionField = TextFieldUi(
                             value = "",
