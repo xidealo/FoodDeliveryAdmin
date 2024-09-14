@@ -1,6 +1,5 @@
-package com.bunbeauty.domain.feature.menulist
+package com.bunbeauty.domain.feature.menu.common.photo
 
-import com.bunbeauty.domain.feature.menu.common.photo.CalculateImageCompressQualityUseCase
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

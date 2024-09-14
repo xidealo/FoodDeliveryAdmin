@@ -1,6 +1,5 @@
-package com.bunbeauty.domain.feature.menulist
+package com.bunbeauty.domain.feature.menu.editmenuproduct
 
-import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.NotFoundMenuProductException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
