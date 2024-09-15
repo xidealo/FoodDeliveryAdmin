@@ -10,7 +10,7 @@ import javax.inject.Inject
 class UploadPhotoUseCase @Inject constructor(
     private val photoRepo: PhotoRepo,
     private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase,
-    private val getUsernameUseCase: GetUsernameUseCase,
+    private val getUsernameUseCase: GetUsernameUseCase
 ) {
 
     suspend operator fun invoke(imageUri: String?): Photo {
@@ -25,5 +25,4 @@ class UploadPhotoUseCase @Inject constructor(
             username = getUsernameUseCase()
         ) ?: throw MenuProductUploadingImageException()
     }
-
 }

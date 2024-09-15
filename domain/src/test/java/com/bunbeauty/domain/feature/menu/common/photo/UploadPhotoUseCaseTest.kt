@@ -37,7 +37,7 @@ class UploadPhotoUseCaseTest {
         uploadPhotoUseCase = UploadPhotoUseCase(
             photoRepo = photoRepo,
             calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase,
-            getUsernameUseCase = getUsernameUseCase,
+            getUsernameUseCase = getUsernameUseCase
         )
     }
 
@@ -54,7 +54,7 @@ class UploadPhotoUseCaseTest {
             photoRepo.uploadPhoto(
                 uri = imageUri,
                 compressQuality = quality,
-                username = username,
+                username = username
             )
         } returns null
 
@@ -70,7 +70,7 @@ class UploadPhotoUseCaseTest {
             photoRepo.uploadPhoto(
                 uri = imageUri,
                 compressQuality = quality,
-                username = username,
+                username = username
             )
         } returns photo
 
@@ -78,5 +78,4 @@ class UploadPhotoUseCaseTest {
 
         assertEquals(photo, result)
     }
-
 }

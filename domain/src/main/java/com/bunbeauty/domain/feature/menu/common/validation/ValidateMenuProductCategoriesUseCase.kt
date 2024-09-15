@@ -11,5 +11,4 @@ class ValidateMenuProductCategoriesUseCase @Inject constructor() {
             categories.isNotEmpty()
         } ?: throw MenuProductCategoriesException()
     }
-
 }

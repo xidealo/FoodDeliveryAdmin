@@ -88,7 +88,7 @@ class UpdateMenuProductUseCaseTest {
             validateMenuProductCategoriesUseCase = validateMenuProductCategoriesUseCase,
             uploadPhotoUseCase = uploadPhotoUseCase,
             menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -109,7 +109,7 @@ class UpdateMenuProductUseCaseTest {
                     photoLink = null,
                     isVisible = true,
                     isRecommended = false,
-                    categories = listOf("123"),
+                    categories = listOf("123")
                 )
             )
         } returns null
@@ -129,7 +129,7 @@ class UpdateMenuProductUseCaseTest {
                     isVisible = true,
                     isRecommended = false,
                     imageUri = null,
-                    photoLink = photoLinkInitial,
+                    photoLink = photoLinkInitial
                 )
             )
         }
@@ -152,7 +152,7 @@ class UpdateMenuProductUseCaseTest {
                     photoLink = null,
                     isVisible = true,
                     isRecommended = false,
-                    categories = listOf("123"),
+                    categories = listOf("123")
                 )
             )
         } returns mockk()
@@ -171,7 +171,7 @@ class UpdateMenuProductUseCaseTest {
                 isVisible = true,
                 isRecommended = false,
                 imageUri = null,
-                photoLink = photoLinkInitial,
+                photoLink = photoLinkInitial
             )
         )
 
@@ -195,7 +195,7 @@ class UpdateMenuProductUseCaseTest {
                     photoLink = photoLink,
                     isVisible = true,
                     isRecommended = false,
-                    categories = listOf("123"),
+                    categories = listOf("123")
                 )
             )
         } returns mockk()
@@ -214,11 +214,10 @@ class UpdateMenuProductUseCaseTest {
                 isVisible = true,
                 isRecommended = false,
                 imageUri = imageUri,
-                photoLink = null,
+                photoLink = null
             )
         )
 
         assertEquals(Unit, result)
     }
-
 }

@@ -17,5 +17,4 @@ class ValidateMenuProductNutritionUseCase @Inject constructor() {
 
         return nutritionInt
     }
-
 }

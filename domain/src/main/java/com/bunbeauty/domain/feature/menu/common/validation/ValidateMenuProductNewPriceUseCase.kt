@@ -11,5 +11,4 @@ class ValidateMenuProductNewPriceUseCase @Inject constructor() {
                 value > 0
             } ?: throw MenuProductNewPriceException()
     }
-
 }

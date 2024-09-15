@@ -31,7 +31,7 @@ class ValidateMenuProductCategoriesUseCaseTest {
                 category = Category(
                     uuid = "uuid",
                     name = "category",
-                    priority = 1,
+                    priority = 1
                 ),
                 selected = true
             )
@@ -41,5 +41,4 @@ class ValidateMenuProductCategoriesUseCaseTest {
 
         assertEquals(categories, result)
     }
-
 }

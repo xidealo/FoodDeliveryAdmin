@@ -46,5 +46,4 @@ class ValidateMenuProductOldPriceUseCaseTest {
 
         assertEquals(expected, result)
     }
-
 }

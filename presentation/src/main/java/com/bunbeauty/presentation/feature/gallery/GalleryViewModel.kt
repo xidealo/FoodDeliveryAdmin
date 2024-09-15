@@ -26,8 +26,8 @@ class GalleryViewModel @Inject constructor(
             Gallery.Action.Init -> loadData()
             Gallery.Action.Refresh -> refreshData()
             Gallery.Action.Back -> sendEvent { Gallery.Event.Back }
-            is Gallery.Action.OnSelectedPhotoClick -> sendEvent {
-                Gallery.Event.SelectPhoto(action.photoUrl)
+            is Gallery.Action.OnSelectedPhotoClick -> {
+                // TODO not implemented
             }
         }
     }

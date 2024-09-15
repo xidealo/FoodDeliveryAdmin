@@ -10,5 +10,4 @@ class ValidateMenuProductDescriptionUseCase @Inject constructor() {
             value.isNotBlank()
         } ?: throw MenuProductDescriptionException()
     }
-
 }

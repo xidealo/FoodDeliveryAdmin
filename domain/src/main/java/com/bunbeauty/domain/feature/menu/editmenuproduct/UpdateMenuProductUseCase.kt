@@ -24,7 +24,7 @@ class UpdateMenuProductUseCase @Inject constructor(
     private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
 
     data class Params(
@@ -83,5 +83,4 @@ class UpdateMenuProductUseCase @Inject constructor(
             token = token
         ) ?: throw MenuProductNotUpdatedException()
     }
-
 }

@@ -101,7 +101,7 @@ class GalleryFragment :
         AdminTheme {
             GalleryScreen(
                 state = GalleryViewState(
-                    photos = persistentListOf(""),
+                    photos = persistentListOf("", "", "", ""),
                     isLoading = false,
                     isRefreshing = false,
                     hasError = false
@@ -127,10 +127,6 @@ class GalleryFragment :
         when (event) {
             Gallery.Event.Back -> {
                 findNavController().popBackStack()
-            }
-
-            is Gallery.Event.SelectPhoto -> {
-                // TODO not implemented
             }
         }
     }

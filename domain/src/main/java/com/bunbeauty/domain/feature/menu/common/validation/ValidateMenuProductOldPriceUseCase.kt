@@ -17,5 +17,4 @@ class ValidateMenuProductOldPriceUseCase @Inject constructor() {
 
         return oldPriceInt
     }
-
 }

@@ -134,12 +134,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/selectPhotoFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.selectphoto.SelectPhotoFragment"
-        android:label="SelectPhotoFragment" >
-        <argument
-            android:name="selectedPhotoUrl"
-            app:argType="string" />
+        android:id="@+id/galleryFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.GalleryFragment"
+        android:label="GalleryFragment" >
     </fragment>
 
     <fragment
@@ -220,4 +217,5 @@
             android:name="cafeAddress"
             app:argType="string" />
     </fragment>
+
 </navigation>

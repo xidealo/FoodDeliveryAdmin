@@ -86,7 +86,7 @@ class CreateMenuProductUseCaseTest {
             validateMenuProductCategoriesUseCase = validateMenuProductCategoriesUseCase,
             uploadPhotoUseCase = uploadPhotoUseCase,
             menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo,
+            dataStoreRepo = dataStoreRepo
         )
     }
 
@@ -107,7 +107,7 @@ class CreateMenuProductUseCaseTest {
                     barcode = 0,
                     isVisible = true,
                     isRecommended = false,
-                    categories = listOf("123"),
+                    categories = listOf("123")
                 )
             )
         } returns null
@@ -125,7 +125,7 @@ class CreateMenuProductUseCaseTest {
                     selectedCategories = categories,
                     isVisible = true,
                     isRecommended = false,
-                    imageUri = imageUri,
+                    imageUri = imageUri
                 )
             )
         }
@@ -148,7 +148,7 @@ class CreateMenuProductUseCaseTest {
                     barcode = 0,
                     isVisible = true,
                     isRecommended = false,
-                    categories = listOf("123"),
+                    categories = listOf("123")
                 )
             )
         } returns mockk()
@@ -165,7 +165,7 @@ class CreateMenuProductUseCaseTest {
                 selectedCategories = categories,
                 isVisible = true,
                 isRecommended = false,
-                imageUri = imageUri,
+                imageUri = imageUri
             )
         )
 
