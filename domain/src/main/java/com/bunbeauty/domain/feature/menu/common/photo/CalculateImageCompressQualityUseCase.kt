@@ -11,6 +11,6 @@ class CalculateImageCompressQualityUseCase @Inject constructor() {
             originalSize > 0
         }?.let { originalSize ->
             ((REQUIRED_IMAGE_SIZE / originalSize) * 100).toInt()
-        }?.coerceIn(10..100) ?: 100
+        }?.coerceIn(1..100) ?: 100
     }
 }
