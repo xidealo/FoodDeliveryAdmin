@@ -91,7 +91,7 @@ class AdditionListFragment :
                                 key = TITLE_POSITION_VISIBLE_KEY
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.title_position_visible),
+                                    text = stringResource(id = R.string.title_menu_list_position_visible),
                                     style = AdminTheme.typography.titleMedium.bold
                                 )
                             }
@@ -112,7 +112,7 @@ class AdditionListFragment :
                                 key = TITLE_POSITION_HIDDEN_KEY
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.title_position_hidden),
+                                    text = stringResource(id = R.string.title_menu_list_position_hidden),
                                     style = AdminTheme.typography.titleMedium.bold,
                                     modifier = Modifier.padding(top = 8.dp)
                                 )
@@ -143,7 +143,7 @@ class AdditionListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionList.Action.OnAdditionClick(additionItem.uuid))
+                onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
             }
         ) {
             Row(
@@ -210,9 +210,16 @@ class AdditionListFragment :
 
     override fun handleEvent(event: AdditionList.Event) {
         when (event) {
-            AdditionList.Event.Back -> findNavController().popBackStack()
+            is AdditionList.Event.Back -> {
+                findNavController().popBackStack()
+            }
+
             is AdditionList.Event.OnAdditionClick -> {
-                // TODO (implement)
+                findNavController().navigate(
+                    AdditionListFragmentDirections.toEditAdditionFragment(
+                        event.additionUuid
+                    )
+                )
             }
         }
     }

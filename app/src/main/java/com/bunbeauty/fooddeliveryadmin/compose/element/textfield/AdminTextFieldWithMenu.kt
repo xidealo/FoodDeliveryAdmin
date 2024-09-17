@@ -1,17 +1,18 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.textfield
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
@@ -23,9 +24,10 @@ fun AdminTextFieldWithMenu(
     modifier: Modifier = Modifier,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
-    value: String = "",
-    @StringRes labelStringId: Int,
-    @StringRes errorMessageId: Int? = null,
+    labelText: String,
+    value: String,
+    isError: Boolean = false,
+    errorText: String? = null,
     suggestionsList: List<Suggestion> = emptyList(),
     onSuggestionClick: (suggestion: Suggestion) -> Unit,
     enabled: Boolean = true
@@ -41,16 +43,25 @@ fun AdminTextFieldWithMenu(
         ) {
             AdminBaseTextField(
                 modifier = Modifier.menuAnchor(),
+                labelText = labelText,
                 value = value,
-                labelStringId = labelStringId,
                 onValueChange = {},
-                isError = errorMessageId != null,
+                isError = isError,
                 readOnly = true,
                 enabled = false,
-                trailingIconId = if (expanded) {
-                    R.drawable.ic_collapse_arrow
-                } else {
-                    R.drawable.ic_expand_arrow
+                trailingIcon = {
+                    Icon(
+                        modifier = modifier.size(8.dp),
+                        painter = painterResource(
+                            if (expanded) {
+                                R.drawable.ic_collapse_arrow
+                            } else {
+                                R.drawable.ic_expand_arrow
+                            }
+                        ),
+                        tint = AdminTheme.colors.main.onSurfaceVariant,
+                        contentDescription = null
+                    )
                 }
             )
 
@@ -81,15 +92,17 @@ fun AdminTextFieldWithMenu(
                 }
             }
         }
-        errorMessageId?.let {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 4.dp),
-                text = stringResource(errorMessageId),
-                style = AdminTheme.typography.bodySmall,
-                color = AdminTheme.colors.main.error
-            )
+        if (isError) {
+            errorText?.let { text ->
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 4.dp),
+                    text = text,
+                    style = AdminTheme.typography.bodySmall,
+                    color = AdminTheme.colors.main.error
+                )
+            }
         }
     }
 }

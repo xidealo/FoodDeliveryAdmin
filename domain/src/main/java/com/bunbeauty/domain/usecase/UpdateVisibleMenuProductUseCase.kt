@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.usecase
 
 import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNotUpdatedException
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -17,6 +18,6 @@ class UpdateVisibleMenuProductUseCase @Inject constructor(
             menuProductUuid = menuProductUuid,
             updateMenuProduct = UpdateMenuProduct(isVisible = isVisible),
             token = token
-        )
+        ) ?: throw MenuProductNotUpdatedException()
     }
 }

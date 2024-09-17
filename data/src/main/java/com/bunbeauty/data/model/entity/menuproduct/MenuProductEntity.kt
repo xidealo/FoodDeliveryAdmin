@@ -16,5 +16,7 @@ data class MenuProductEntity(
     val comboDescription: String?,
     val photoLink: String,
     val barcode: Int,
-    val isVisible: Boolean
+    val isRecommended: Boolean,
+    val isVisible: Boolean,
+    val categoryUuids: String
 )

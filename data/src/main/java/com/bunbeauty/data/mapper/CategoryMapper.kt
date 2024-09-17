@@ -2,7 +2,7 @@ package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.entity.CategoryEntity
 import com.bunbeauty.data.model.server.category.CategoryServer
-import com.bunbeauty.domain.model.Category
+import com.bunbeauty.domain.feature.menu.common.model.Category
 import javax.inject.Inject
 
 class CategoryMapper @Inject constructor() {

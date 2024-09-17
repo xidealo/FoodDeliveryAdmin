@@ -5,13 +5,11 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetSeparatedAdditionListUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()
@@ -30,7 +28,6 @@ class GetSeparatedAdditionListUseCaseTest {
     fun `return empty lists when additionRepo return empty list`() = runTest {
         // Given
         val token = "token"
-        val isRefreshing = true
         val expectedSeparatedAdditionList = SeparatedAdditionList(
             visibleList = emptyList(),
             hiddenList = emptyList()
@@ -38,13 +35,12 @@ class GetSeparatedAdditionListUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery {
             additionRepo.getAdditionList(
-                token = token,
-                takeRemote = isRefreshing
+                token = token
             )
         } returns emptyList()
 
         // When
-        val separatedAdditionList = useCase()
+        val separatedAdditionList = useCase(refreshing = false)
         // Then
         assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
     }
@@ -54,7 +50,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = emptyList(),
                 hiddenList = listOf(
@@ -79,8 +74,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
-                    token = token,
-                    takeRemote = isRefreshing
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -101,7 +95,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
@@ -111,7 +105,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
 
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = listOf(
@@ -138,8 +131,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
-                    token = token,
-                    takeRemote = isRefreshing
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -160,7 +152,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
@@ -170,7 +162,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
 
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = listOf(
@@ -198,12 +189,10 @@ class GetSeparatedAdditionListUseCaseTest {
                     )
                 )
             )
-
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
-                    token = token,
-                    takeRemote = isRefreshing
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -228,7 +217,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
@@ -238,7 +227,6 @@ class GetSeparatedAdditionListUseCaseTest {
         runTest {
             // Given
             val token = "token"
-            val isRefreshing = true
             val expectedSeparatedAdditionList = SeparatedAdditionList(
                 visibleList = listOf(
                     additionMock.copy(
@@ -263,8 +251,7 @@ class GetSeparatedAdditionListUseCaseTest {
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionRepo.getAdditionList(
-                    token = token,
-                    takeRemote = isRefreshing
+                    token = token
                 )
             } returns listOf(
                 additionMock.copy(
@@ -285,7 +272,7 @@ class GetSeparatedAdditionListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionList = useCase()
+            val separatedAdditionList = useCase(refreshing = false)
             // Then
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }

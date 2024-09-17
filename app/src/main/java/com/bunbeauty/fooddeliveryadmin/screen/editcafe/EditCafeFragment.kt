@@ -113,8 +113,8 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafe.ViewDataState, Edit
                 val toTimeDialogState = rememberMaterialDialogState()
 
                 NavigationTextCard(
-                    hintStringId = R.string.hint_edit_cafe_from_time,
-                    label = state.cafeWorkingHours.fromTimeText,
+                    labelText = stringResource(R.string.hint_edit_cafe_from_time),
+                    valueText = state.cafeWorkingHours.fromTimeText,
                     onClick = {
                         fromTimeDialogState.show()
                     }
@@ -127,8 +127,8 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafe.ViewDataState, Edit
 
                 NavigationTextCard(
                     modifier = Modifier.padding(top = 8.dp),
-                    hintStringId = R.string.hint_edit_cafe_to_time,
-                    label = state.cafeWorkingHours.toTimeText,
+                    labelText = stringResource(R.string.hint_edit_cafe_to_time),
+                    valueText = state.cafeWorkingHours.toTimeText,
                     onClick = {
                         toTimeDialogState.show()
                     }

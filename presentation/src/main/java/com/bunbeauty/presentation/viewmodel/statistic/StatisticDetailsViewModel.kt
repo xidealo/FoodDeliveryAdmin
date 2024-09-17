@@ -3,7 +3,6 @@ package com.bunbeauty.presentation.viewmodel.statistic
 import androidx.lifecycle.SavedStateHandle
 import com.bunbeauty.common.Constants.STATISTIC_ARGS_KEY
 import com.bunbeauty.domain.model.statistic.Statistic
-import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.model.ProductStatisticItemModel
 import com.bunbeauty.presentation.utils.IStringUtil
@@ -14,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StatisticDetailsViewModel @Inject constructor(
     private val stringUtil: IStringUtil,
-    dataStoreRepo: DataStoreRepo,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 

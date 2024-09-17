@@ -3,7 +3,7 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.CategoryMapper
-import com.bunbeauty.domain.model.Category
+import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.repo.CategoryRepo
 import javax.inject.Inject
 

@@ -32,7 +32,7 @@ object AdminButtonDefaults {
             disabledContentColor = AdminTheme.colors.main.onDisabled
         )
 
-    val secondaryButtonColors: ButtonColors
+    val neutralSecondaryButtonColors: ButtonColors
         @Composable get() = ButtonDefaults.buttonColors(
             containerColor = AdminTheme.colors.main.secondary,
             contentColor = AdminTheme.colors.main.onSecondary,
@@ -40,10 +40,18 @@ object AdminButtonDefaults {
             disabledContentColor = AdminTheme.colors.main.onDisabled
         )
 
-    val secondaryPrimaryButtonColors: ButtonColors
+    val accentSecondaryButtonColors: ButtonColors
         @Composable get() = ButtonDefaults.buttonColors(
             containerColor = AdminTheme.colors.main.secondary,
             contentColor = AdminTheme.colors.main.primary,
+            disabledContainerColor = AdminTheme.colors.main.disabled,
+            disabledContentColor = AdminTheme.colors.main.onDisabled
+        )
+
+    val errorSecondaryButtonColors: ButtonColors
+        @Composable get() = ButtonDefaults.buttonColors(
+            containerColor = AdminTheme.colors.main.secondary,
+            contentColor = AdminTheme.colors.main.error,
             disabledContainerColor = AdminTheme.colors.main.disabled,
             disabledContentColor = AdminTheme.colors.main.onDisabled
         )

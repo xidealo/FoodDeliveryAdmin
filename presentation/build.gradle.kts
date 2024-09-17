@@ -57,4 +57,5 @@ dependencies {
 
     // Test
     testImplementation(kotlin(Test.test))
+    testImplementation(Turbine.turbine)
 }
