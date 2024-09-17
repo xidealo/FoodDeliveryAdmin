@@ -22,6 +22,7 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -161,6 +162,16 @@ class ProfileFragment :
                 labelStringId = R.string.action_profile_statistic,
                 onClick = {
                     onAction(Profile.Action.StatisticClick)
+                }
+            )
+            SwitcherCard(
+                text = stringResource(R.string.msg_accept_orders),
+                hint = stringResource(R.string.msg_accept_orders_description),
+                checked = state.acceptOrders,
+                onCheckChanged = { checked ->
+                    onAction(
+                        Profile.Action.AcceptOrdersToggle(checked = checked)
+                    )
                 }
             )
         }
