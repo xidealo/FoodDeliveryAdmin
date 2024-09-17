@@ -80,7 +80,7 @@ class AdditionGroupListFragment :
                         key = TITLE_POSITION_VISIBLE_KEY
                     ) {
                         Text(
-                            text = stringResource(id = R.string.title_position_visible),
+                            text = stringResource(id = R.string.title_menu_list_position_visible),
                             style = AdminTheme.typography.titleMedium.bold
                         )
                     }
@@ -101,7 +101,7 @@ class AdditionGroupListFragment :
                         key = TITLE_POSITION_HIDDEN_KEY
                     ) {
                         Text(
-                            text = stringResource(id = R.string.title_position_hidden),
+                            text = stringResource(id = R.string.title_menu_list_position_hidden),
                             style = AdminTheme.typography.titleMedium.bold,
                             modifier = Modifier.padding(top = 8.dp)
                         )

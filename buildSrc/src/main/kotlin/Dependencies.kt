@@ -27,6 +27,7 @@ object Versions {
     const val kotlinxDatetime = "0.4.0"
     const val materialDialogsDatetime = "0.9.0"
     const val kotlinxCollectionsImmutable = "0.3.7"
+    const val turbine = "1.1.0"
 }
 
 object Application {
@@ -186,6 +187,10 @@ object ImageCropper {
 
 object Test {
     const val test = "test"
+}
+
+object Turbine {
+    const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
 }
 
 object KotlinxCollectionsImmutable {

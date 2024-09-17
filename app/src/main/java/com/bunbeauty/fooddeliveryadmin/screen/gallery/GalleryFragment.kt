@@ -101,7 +101,7 @@ class GalleryFragment :
         AdminTheme {
             GalleryScreen(
                 state = GalleryViewState(
-                    photos = persistentListOf(""),
+                    photos = persistentListOf("", "", "", ""),
                     isLoading = false,
                     isRefreshing = false,
                     hasError = false
@@ -128,12 +128,6 @@ class GalleryFragment :
             Gallery.Event.Back -> {
                 findNavController().popBackStack()
             }
-
-            is Gallery.Event.SelectPhoto -> findNavController().navigate(
-                GalleryFragmentDirections.toSelectPhotoFragment(
-                    event.photoUrl
-                )
-            )
         }
     }
 }

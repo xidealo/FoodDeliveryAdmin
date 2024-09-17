@@ -10,7 +10,9 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import javax.inject.Inject
 
-class MenuProductMapper @Inject constructor(private val categoryMapper: CategoryMapper) {
+private const val CATEGORY_SEPARATOR = ","
+
+class MenuProductMapper @Inject constructor() {
 
     fun toEntity(menuProductServer: MenuProductServer): MenuProductEntity {
         return with(menuProductServer) {
@@ -25,45 +27,53 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
                 comboDescription = comboDescription,
                 photoLink = photoLink,
                 barcode = barcode,
-                isVisible = isVisible
+                isRecommended = isRecommended,
+                isVisible = isVisible,
+                categoryUuids = menuProductServer.categories.joinToString(CATEGORY_SEPARATOR) { category ->
+                    category.uuid
+                }
             )
         }
     }
 
     fun toModel(menuProductWithCategoriesEntity: MenuProductWithCategoriesEntity): MenuProduct {
-        return with(menuProductWithCategoriesEntity) {
+        return menuProductWithCategoriesEntity.run {
             MenuProduct(
                 uuid = menuProductEntity.uuid,
                 name = menuProductEntity.name,
                 newPrice = menuProductEntity.newPrice,
                 oldPrice = menuProductEntity.oldPrice,
-                utils = menuProductEntity.utils,
+                units = menuProductEntity.utils,
                 nutrition = menuProductEntity.nutrition,
                 description = menuProductEntity.description,
                 comboDescription = menuProductEntity.comboDescription,
                 photoLink = menuProductEntity.photoLink,
                 barcode = menuProductEntity.barcode,
                 isVisible = menuProductEntity.isVisible,
-                categories = categories.map(categoryMapper::toModel)
+                isRecommended = menuProductEntity.isRecommended,
+                categoryUuids = menuProductEntity.categoryUuids.split(CATEGORY_SEPARATOR)
             )
         }
     }
 
     fun toModel(menuProductServer: MenuProductServer): MenuProduct {
-        return with(menuProductServer) {
+        return menuProductServer.run {
             MenuProduct(
                 uuid = uuid,
                 name = name,
                 newPrice = newPrice,
                 oldPrice = oldPrice,
-                utils = utils ?: "",
+                units = utils ?: "",
                 nutrition = nutrition ?: 0,
                 description = description,
                 comboDescription = comboDescription,
                 photoLink = photoLink,
                 barcode = barcode,
                 isVisible = isVisible,
-                categories = categories.map(categoryMapper::toModel)
+                isRecommended = isRecommended,
+                categoryUuids = categories.map { category ->
+                    category.uuid
+                }
             )
         }
     }
@@ -80,15 +90,15 @@ class MenuProductMapper @Inject constructor(private val categoryMapper: Category
                 comboDescription = comboDescription,
                 photoLink = photoLink,
                 isVisible = isVisible,
-                categoryUuids = categoryUuids
+                isRecommended = isRecommended,
+                categoryUuids = categories
             )
         }
     }
 }
 
-val mapMenuProductPostToMenuProductPostServer: MenuProductPost.() -> MenuProductPostServer = {
+val toMenuProductPostServer: MenuProductPost.() -> MenuProductPostServer = {
     MenuProductPostServer(
-        isVisible = isVisible,
         name = name,
         photoLink = photoLink,
         newPrice = newPrice,
@@ -99,6 +109,7 @@ val mapMenuProductPostToMenuProductPostServer: MenuProductPost.() -> MenuProduct
         comboDescription = comboDescription,
         barcode = barcode,
         categories = categories,
+        isVisible = isVisible,
         isRecommended = isRecommended
     )
 }

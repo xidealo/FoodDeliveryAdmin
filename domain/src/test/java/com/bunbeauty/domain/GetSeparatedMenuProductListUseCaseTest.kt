@@ -291,13 +291,14 @@ class GetSeparatedMenuProductListUseCaseTest {
         name = "name",
         newPrice = 1,
         oldPrice = 2,
-        utils = "utils",
+        units = "utils",
         nutrition = 2,
         description = "description",
         comboDescription = "comboDescription",
         photoLink = "photoLink",
         barcode = 2,
         isVisible = true,
-        categories = emptyList()
+        isRecommended = true,
+        categoryUuids = emptyList()
     )
 }

@@ -92,7 +92,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                 if (menuListViewState.state is MenuListViewState.State.Success) {
                     FloatingButton(
                         iconId = R.drawable.ic_plus,
-                        textStringId = R.string.action_menu_list_add,
+                        textStringId = R.string.action_menu_list_create,
                         onClick = {
                             findNavController().navigateSafe(MenuListFragmentDirections.toCreateMenuProductFragment())
                         }
@@ -137,7 +137,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             if (state.visibleMenuProductItems.isNotEmpty()) {
                 item {
                     Text(
-                        text = stringResource(id = R.string.title_position_visible),
+                        text = stringResource(id = R.string.title_menu_list_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
                     )
                 }
@@ -148,7 +148,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             if (state.hiddenMenuProductItems.isNotEmpty()) {
                 item {
                     Text(
-                        text = stringResource(id = R.string.title_position_hidden),
+                        text = stringResource(id = R.string.title_menu_list_position_hidden),
                         style = AdminTheme.typography.titleMedium.bold,
                         modifier = Modifier.padding(top = 8.dp)
                     )
