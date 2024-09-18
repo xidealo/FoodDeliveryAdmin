@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
@@ -370,7 +369,6 @@ class EditMenuProductViewModel @Inject constructor(
             }
 
             else -> {
-                Log.d("testTag", "Error ${throwable.message}")
                 sendEvent {
                     EditMenuProduct.Event.ShowSomethingWentWrong
                 }
