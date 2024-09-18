@@ -125,7 +125,7 @@
     <string name="hint_common_menu_product_units">Единицы</string>
     <string name="hint_common_menu_product_description">Описание*</string>
     <string name="hint_common_menu_product_combo_description">Описание комбо</string>
-    <string name="hint_common_menu_product_categories">Категории</string>
+    <string name="hint_common_menu_product_categories">Категории*</string>
     <string name="action_common_menu_product_recommend">Рекомендовать</string>
     <string name="action_common_menu_product_show_in_menu">Показывать в меню</string>
     <string name="error_common_menu_product_empty_name">Название не может быть пустым</string>

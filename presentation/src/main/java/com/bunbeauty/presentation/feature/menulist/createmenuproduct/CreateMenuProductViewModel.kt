@@ -58,7 +58,8 @@ class CreateMenuProductViewModel @Inject constructor(
             is CreateMenuProduct.Action.ChangeNameText -> setState {
                 copy(
                     nameField = nameField.copy(
-                        value = action.name
+                        value = action.name,
+                        isError = false
                     )
                 )
             }
@@ -66,7 +67,8 @@ class CreateMenuProductViewModel @Inject constructor(
             is CreateMenuProduct.Action.ChangeNewPriceText -> setState {
                 copy(
                     newPriceField = newPriceField.copy(
-                        value = action.newPrice
+                        value = action.newPrice,
+                        isError = false
                     )
                 )
             }
@@ -74,14 +76,15 @@ class CreateMenuProductViewModel @Inject constructor(
             is CreateMenuProduct.Action.ChangeOldPriceText -> setState {
                 copy(
                     oldPriceField = oldPriceField.copy(
-                        value = action.oldPrice
+                        value = action.oldPrice,
+                        isError = false
                     )
                 )
             }
 
             is CreateMenuProduct.Action.ChangeNutritionText -> setState {
                 copy(
-                    nutritionField = oldPriceField.copy(
+                    nutritionField = nutritionField.copy(
                         value = action.nutrition
                     )
                 )
@@ -89,22 +92,24 @@ class CreateMenuProductViewModel @Inject constructor(
 
             is CreateMenuProduct.Action.ChangeUnitsText -> setState {
                 copy(
-                    units = action.units
+                    units = action.units,
+                    nutritionField = nutritionField.copy(
+                        isError = false
+                    )
                 )
             }
 
             is CreateMenuProduct.Action.ChangeDescriptionText -> setState {
                 copy(
                     descriptionField = descriptionField.copy(
-                        value = action.description
+                        value = action.description,
+                        isError = false
                     )
                 )
             }
 
             is CreateMenuProduct.Action.ChangeComboDescriptionText -> setState {
-                copy(
-                    comboDescription = action.comboDescription
-                )
+                copy(comboDescription = action.comboDescription)
             }
 
             CreateMenuProduct.Action.CategoriesClick -> sendEvent {
@@ -122,7 +127,8 @@ class CreateMenuProductViewModel @Inject constructor(
                             selectableCategory.copy(
                                 selected = action.categoryUuidList.contains(selectableCategory.category.uuid)
                             )
-                        }
+                        },
+                        isError = false
                     )
                 )
             }
@@ -142,7 +148,8 @@ class CreateMenuProductViewModel @Inject constructor(
             is CreateMenuProduct.Action.SetImage -> setState {
                 copy(
                     imageField = imageField.copy(
-                        value = action.croppedImageUri
+                        value = action.croppedImageUri,
+                        isError = false
                     )
                 )
             }

@@ -10,6 +10,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -73,11 +74,13 @@ object AdminTextFieldDefaults {
         )
 
     fun keyboardOptions(
+        capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
         autoCorrect: Boolean = false,
         keyboardType: KeyboardType = KeyboardType.Text,
         imeAction: ImeAction = ImeAction.Next
     ): KeyboardOptions {
         return KeyboardOptions(
+            capitalization = capitalization,
             autoCorrect = autoCorrect,
             keyboardType = keyboardType,
             imeAction = imeAction
