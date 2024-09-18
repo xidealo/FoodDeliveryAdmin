@@ -83,5 +83,4 @@ class UpdateMenuProductUseCase @Inject constructor(
             token = token
         ) ?: throw MenuProductNotUpdatedException()
     }
-
 }
