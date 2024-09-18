@@ -94,7 +94,7 @@ class EditMenuProductViewModelTest {
             imageField = EditMenuProduct.ImageFieldData(
                 value = EditMenuProduct.MenuProductImage(
                     photoLink = "photoLink",
-                    newImageUri = null,
+                    newImageUri = null
                 ),
                 isError = false
             ),
