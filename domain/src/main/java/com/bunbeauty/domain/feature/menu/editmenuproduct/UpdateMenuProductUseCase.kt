@@ -49,11 +49,11 @@ class UpdateMenuProductUseCase @Inject constructor(
         val oldPrice = validateMenuProductOldPriceUseCase(
             oldPrice = params.oldPrice,
             newPrice = newPrice
-        )
+        ) ?: 0
         val nutrition = validateMenuProductNutritionUseCase(
             nutrition = params.nutrition,
             units = params.units
-        )
+        ) ?: 0
         val description = validateMenuProductDescriptionUseCase(description = params.description)
         val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
 
@@ -72,7 +72,7 @@ class UpdateMenuProductUseCase @Inject constructor(
                 nutrition = nutrition,
                 utils = params.units,
                 description = description,
-                comboDescription = params.comboDescription,
+                comboDescription = params.comboDescription.trim(),
                 photoLink = updatedPhotoLink,
                 isVisible = params.isVisible,
                 isRecommended = params.isRecommended,
@@ -83,4 +83,5 @@ class UpdateMenuProductUseCase @Inject constructor(
             token = token
         ) ?: throw MenuProductNotUpdatedException()
     }
+
 }

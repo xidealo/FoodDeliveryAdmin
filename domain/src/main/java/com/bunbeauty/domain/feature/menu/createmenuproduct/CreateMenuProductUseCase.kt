@@ -66,7 +66,7 @@ class CreateMenuProductUseCase @Inject constructor(
                 nutrition = nutrition,
                 utils = params.units,
                 description = description,
-                comboDescription = params.comboDescription,
+                comboDescription = params.comboDescription.trim(),
                 photoLink = photoLink,
                 barcode = 0,
                 isVisible = params.isVisible,

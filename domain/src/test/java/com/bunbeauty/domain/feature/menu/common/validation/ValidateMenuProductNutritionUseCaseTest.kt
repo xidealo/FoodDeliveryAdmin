@@ -5,6 +5,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 class ValidateMenuProductNutritionUseCaseTest {
 
@@ -16,16 +17,14 @@ class ValidateMenuProductNutritionUseCaseTest {
     }
 
     @Test
-    fun `return zero when nutrition is blank`() {
-        val expected = 0
-
+    fun `return null when nutrition is blank`() {
         val result = validateMenuProductNutritionUseCase(nutrition = "  ", units = "кг")
 
-        assertEquals(expected, result)
+        assertNull(result)
     }
 
     @Test
-    fun `throw MenuProductNutritionException when nutrition is not blank and units are blank`() {
+    fun `throw MenuProductNutritionException when nutrition is not blank and units are empty`() {
         assertFailsWith<MenuProductNutritionException> {
             validateMenuProductNutritionUseCase(nutrition = "100", units = "")
         }

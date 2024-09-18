@@ -6,7 +6,8 @@ import javax.inject.Inject
 class ValidateMenuProductNewPriceUseCase @Inject constructor() {
 
     operator fun invoke(newPrice: String): Int {
-        return newPrice.toIntOrNull()
+        return newPrice.trim()
+            .toIntOrNull()
             ?.takeIf { value ->
                 value > 0
             } ?: throw MenuProductNewPriceException()
