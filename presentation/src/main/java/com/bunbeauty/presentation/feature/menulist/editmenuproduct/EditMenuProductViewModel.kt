@@ -29,7 +29,6 @@ class EditMenuProductViewModel @Inject constructor(
         state = EditMenuProduct.DataState.State.LOADING,
         productUuid = null,
         productName = "",
-
         nameField = TextFieldData.empty,
         newPriceField = TextFieldData.empty,
         oldPriceField = TextFieldData.empty,

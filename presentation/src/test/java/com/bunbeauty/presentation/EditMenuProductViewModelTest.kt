@@ -92,8 +92,9 @@ class EditMenuProductViewModelTest {
             isVisibleInMenu = true,
             isVisibleInRecommendations = false,
             imageField = EditMenuProduct.ImageFieldData(
-                value = EditMenuProduct.MenuProductImage.PhotoLink(
-                    value = "photoLink"
+                value = EditMenuProduct.MenuProductImage(
+                    photoLink = "photoLink",
+                    newImageUri = null,
                 ),
                 isError = false
             ),
