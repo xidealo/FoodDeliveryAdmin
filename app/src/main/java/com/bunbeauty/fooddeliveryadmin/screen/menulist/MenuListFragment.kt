@@ -173,7 +173,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                                 animationSpec = tween(500)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
-                        style = AdminTheme.typography.titleMedium.bold,
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
                 items(
@@ -196,7 +196,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun MenuListProductCard(
         menuProduct: MenuProductItem,
-        modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier
     ) {
         AdminCard(
             modifier = modifier.fillMaxWidth(),

@@ -9,19 +9,14 @@ import javax.inject.Inject
 
 class UploadPhotoUseCase @Inject constructor(
     private val photoRepo: PhotoRepo,
-    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase,
     private val getUsernameUseCase: GetUsernameUseCase
 ) {
 
     suspend operator fun invoke(imageUri: String?): Photo {
         imageUri ?: throw MenuProductImageException()
 
-        val fileSize = photoRepo.getFileSizeInMb(uri = imageUri)
-        val compressQuality = calculateImageCompressQualityUseCase(fileSize = fileSize)
-
         return photoRepo.uploadPhoto(
             uri = imageUri,
-            compressQuality = compressQuality,
             username = getUsernameUseCase()
         ) ?: throw MenuProductUploadingImageException()
     }

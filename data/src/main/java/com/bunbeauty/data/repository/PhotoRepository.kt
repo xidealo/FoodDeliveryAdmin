@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import android.provider.OpenableColumns
 import androidx.core.net.toUri
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
@@ -20,6 +19,10 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 import javax.inject.Inject
+
+private const val DEFAULT_WIDTH = 1000
+private const val DEFAULT_HEIGHT = 667
+private const val DEFAULT_BYTE_SIZE = 100 * 1024
 
 class PhotoRepository @Inject constructor(
     @ApplicationContext private val context: Context
@@ -45,37 +48,12 @@ class PhotoRepository @Inject constructor(
         photoList
     }
 
-    override fun getFileSizeInMb(uri: String): Long {
-        var fileSize: Long = 0
-        context.contentResolver.query(
-            uri.toUri(),
-            null,
-            null,
-            null,
-            null
-        )?.use { cursor ->
-            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-            if (cursor.moveToFirst()) {
-                fileSize = cursor.getLong(sizeIndex)
-            }
-        }
-
-        return fileSize / 1000
-    }
-
     override suspend fun uploadPhoto(
         uri: String,
-        compressQuality: Int,
         username: String
     ): Photo? {
         return withContext(Dispatchers.IO) {
-            val photoUri = uri.toUri()
-            val bitmap = photoUri.toBitmap() ?: return@withContext null
-            val compressFormat = getCompressFormat()
-            val outputStream = ByteArrayOutputStream()
-            bitmap.compress(compressFormat, compressQuality, outputStream)
-            val data = outputStream.toByteArray()
-
+            val data = compressPhoto(uri) ?: return@withContext null
             val uuid = UUID.randomUUID()
             val uploadReference = FirebaseStorage.getInstance().reference.child("$username/$uuid.webp")
             val uploadTask = uploadReference.putBytes(data)
@@ -87,6 +65,25 @@ class PhotoRepository @Inject constructor(
 
     override suspend fun clearCache() {
         photoListCache = null
+    }
+
+    private fun compressPhoto(uri: String): ByteArray? {
+        val photoUri = uri.toUri()
+        val bitmap = photoUri.toBitmap() ?: return null
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
+
+        var quality = 100
+        var resultByteArray: ByteArray
+        val compressFormat = getCompressFormat()
+        do {
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            scaledBitmap.compress(compressFormat, quality, byteArrayOutputStream)
+            resultByteArray = byteArrayOutputStream.toByteArray()
+
+            quality -= 3
+        } while (resultByteArray.size > DEFAULT_BYTE_SIZE && quality > 0)
+
+        return resultByteArray
     }
 
     private fun Uri.toBitmap(): Bitmap? {
