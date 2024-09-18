@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.menu.common.photo
 
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.Photo
@@ -30,13 +29,6 @@ class UploadPhotoUseCaseTest {
             photoRepo = photoRepo,
             getUsernameUseCase = getUsernameUseCase
         )
-    }
-
-    @Test
-    fun `throws MenuProductImageException when uri is null`() = runTest {
-        assertFailsWith<MenuProductImageException> {
-            uploadPhotoUseCase(imageUri = null)
-        }
     }
 
     @Test

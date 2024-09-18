@@ -63,6 +63,11 @@ class PhotoRepository @Inject constructor(
         }
     }
 
+    override suspend fun deletePhoto(photoLink: String) {
+        val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(photoLink)
+        storageRef.delete().await()
+    }
+
     override suspend fun clearCache() {
         photoListCache = null
     }

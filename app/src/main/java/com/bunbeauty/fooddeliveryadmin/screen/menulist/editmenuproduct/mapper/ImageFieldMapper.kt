@@ -8,9 +8,10 @@ import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProdu
 fun EditMenuProduct.ImageFieldData.toImageFieldUi(): EditMenuProductViewState.ImageFieldUi {
     return EditMenuProductViewState.ImageFieldUi(
         value = value?.let { image ->
-            when (image) {
-                is EditMenuProduct.MenuProductImage.PhotoLink -> ImageData.HttpUrl(image.value)
-                is EditMenuProduct.MenuProductImage.ImageUri -> ImageData.LocalUri(image.value.toUri())
+            val newImageUri = image.newImageUri
+            when {
+                newImageUri != null -> ImageData.LocalUri(newImageUri.toUri())
+                else -> ImageData.HttpUrl(image.photoLink)
             }
         },
         isError = isError

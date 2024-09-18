@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
@@ -169,8 +170,8 @@ class EditMenuProductViewModel @Inject constructor(
                 setState {
                     copy(
                         imageField = imageField.copy(
-                            value = EditMenuProduct.MenuProductImage.ImageUri(
-                                value = action.croppedImageUri
+                            value = imageField.value?.copy(
+                                newImageUri = action.croppedImageUri
                             )
                         )
                     )
@@ -226,8 +227,9 @@ class EditMenuProductViewModel @Inject constructor(
                         isVisibleInMenu = menuProduct.isVisible,
                         isVisibleInRecommendations = menuProduct.isRecommended,
                         imageField = EditMenuProduct.ImageFieldData(
-                            value = EditMenuProduct.MenuProductImage.PhotoLink(
-                                value = menuProduct.photoLink
+                            value = EditMenuProduct.MenuProductImage(
+                                photoLink = menuProduct.photoLink,
+                                newImageUri = null
                             ),
                             isError = false
                         )
@@ -271,8 +273,8 @@ class EditMenuProductViewModel @Inject constructor(
                             selectedCategories = categoriesField.selectedCategoryList,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendations,
-                            photoLink = (imageField.value as? EditMenuProduct.MenuProductImage.PhotoLink)?.value,
-                            imageUri = (imageField.value as? EditMenuProduct.MenuProductImage.ImageUri)?.value
+                            photoLink = imageField.value?.photoLink,
+                            newImageUri = imageField.value?.newImageUri
                         )
                     }
                 )
@@ -368,6 +370,7 @@ class EditMenuProductViewModel @Inject constructor(
             }
 
             else -> {
+                Log.d("testTag", "Error ${throwable.message}")
                 sendEvent {
                     EditMenuProduct.Event.ShowSomethingWentWrong
                 }

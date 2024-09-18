@@ -2,6 +2,7 @@ package com.bunbeauty.domain.feature.menu.editmenuproduct
 
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
@@ -71,6 +72,9 @@ class UpdateMenuProductUseCaseTest {
     private val uploadPhotoUseCase: UploadPhotoUseCase = mockk {
         coEvery { this@mockk.invoke(imageUri = imageUri) } returns Photo(url = photoLink)
     }
+    private val deletePhotoUseCase: DeletePhotoUseCase = mockk {
+        coEvery { this@mockk.invoke(photoLink = photoLinkInitial) } returns Unit
+    }
     private val menuProductRepo: MenuProductRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk {
         coEvery { getToken() } returns tokenMock
@@ -87,6 +91,7 @@ class UpdateMenuProductUseCaseTest {
             validateMenuProductDescriptionUseCase = validateMenuProductDescriptionUseCase,
             validateMenuProductCategoriesUseCase = validateMenuProductCategoriesUseCase,
             uploadPhotoUseCase = uploadPhotoUseCase,
+            deletePhotoUseCase = deletePhotoUseCase,
             menuProductRepo = menuProductRepo,
             dataStoreRepo = dataStoreRepo
         )
@@ -128,7 +133,7 @@ class UpdateMenuProductUseCaseTest {
                     selectedCategories = categories,
                     isVisible = true,
                     isRecommended = false,
-                    imageUri = null,
+                    newImageUri = null,
                     photoLink = photoLinkInitial
                 )
             )
@@ -170,7 +175,7 @@ class UpdateMenuProductUseCaseTest {
                 selectedCategories = categories,
                 isVisible = true,
                 isRecommended = false,
-                imageUri = null,
+                newImageUri = null,
                 photoLink = photoLinkInitial
             )
         )
@@ -213,7 +218,7 @@ class UpdateMenuProductUseCaseTest {
                 selectedCategories = categories,
                 isVisible = true,
                 isRecommended = false,
-                imageUri = imageUri,
+                newImageUri = imageUri,
                 photoLink = null
             )
         )
