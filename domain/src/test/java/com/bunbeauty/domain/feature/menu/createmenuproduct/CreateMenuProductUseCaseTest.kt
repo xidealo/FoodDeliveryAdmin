@@ -125,7 +125,7 @@ class CreateMenuProductUseCaseTest {
                     selectedCategories = categories,
                     isVisible = true,
                     isRecommended = false,
-                    imageUri = imageUri
+                    newImageUri = imageUri
                 )
             )
         }
@@ -165,7 +165,7 @@ class CreateMenuProductUseCaseTest {
                 selectedCategories = categories,
                 isVisible = true,
                 isRecommended = false,
-                imageUri = imageUri
+                newImageUri = imageUri
             )
         )
 

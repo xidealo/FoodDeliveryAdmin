@@ -6,11 +6,7 @@ import javax.inject.Inject
 class ValidateMenuProductOldPriceUseCase @Inject constructor() {
 
     operator fun invoke(oldPrice: String, newPrice: Int): Int? {
-        if (oldPrice.isBlank()) {
-            return 0
-        }
-
-        val oldPriceInt = oldPrice.toIntOrNull()
+        val oldPriceInt = oldPrice.trim().toIntOrNull()
         if (oldPriceInt != null && oldPriceInt <= newPrice) {
             throw MenuProductOldPriceException()
         }

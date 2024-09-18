@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.feature.menu.createmenuproduct
 
 import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
@@ -38,7 +39,7 @@ class CreateMenuProductUseCase @Inject constructor(
         val selectedCategories: List<SelectableCategory>,
         val isVisible: Boolean,
         val isRecommended: Boolean,
-        val imageUri: String?
+        val newImageUri: String?
     )
 
     suspend operator fun invoke(params: Params) {
@@ -54,7 +55,8 @@ class CreateMenuProductUseCase @Inject constructor(
         )
         val description = validateMenuProductDescriptionUseCase(description = params.description)
         val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
-        val photoLink = uploadPhotoUseCase(imageUri = params.imageUri).url
+        val newImageUri = params.newImageUri ?: throw MenuProductImageException()
+        val photoLink = uploadPhotoUseCase(imageUri = newImageUri).url
 
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         menuProductRepo.saveMenuProduct(
@@ -66,7 +68,7 @@ class CreateMenuProductUseCase @Inject constructor(
                 nutrition = nutrition,
                 utils = params.units,
                 description = description,
-                comboDescription = params.comboDescription,
+                comboDescription = params.comboDescription.trim(),
                 photoLink = photoLink,
                 barcode = 0,
                 isVisible = params.isVisible,

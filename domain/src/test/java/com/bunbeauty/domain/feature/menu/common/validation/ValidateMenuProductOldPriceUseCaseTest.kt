@@ -5,6 +5,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 class ValidateMenuProductOldPriceUseCaseTest {
 
@@ -16,12 +17,10 @@ class ValidateMenuProductOldPriceUseCaseTest {
     }
 
     @Test
-    fun `return zero when old price is blank`() {
-        val expected = 0
-
+    fun `return null when old price is blank`() {
         val result = validateMenuProductOldPriceUseCase(oldPrice = "  ", newPrice = 100)
 
-        assertEquals(expected, result)
+        assertNull(result)
     }
 
     @Test

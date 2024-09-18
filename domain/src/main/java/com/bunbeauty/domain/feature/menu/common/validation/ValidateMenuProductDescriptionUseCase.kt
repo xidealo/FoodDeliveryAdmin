@@ -6,8 +6,9 @@ import javax.inject.Inject
 class ValidateMenuProductDescriptionUseCase @Inject constructor() {
 
     operator fun invoke(description: String): String {
-        return description.takeIf { value ->
-            value.isNotBlank()
-        } ?: throw MenuProductDescriptionException()
+        return description.trim()
+            .takeIf { value ->
+                value.isNotEmpty()
+            } ?: throw MenuProductDescriptionException()
     }
 }

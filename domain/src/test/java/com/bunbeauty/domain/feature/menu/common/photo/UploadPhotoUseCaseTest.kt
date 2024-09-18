@@ -1,12 +1,10 @@
 package com.bunbeauty.domain.feature.menu.common.photo
 
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -17,16 +15,9 @@ import kotlin.test.assertFailsWith
 class UploadPhotoUseCaseTest {
 
     private val imageUri = "uri"
-    private val fileSize = 200L
-    private val quality = 50
     private val username = "username"
 
-    private val photoRepo: PhotoRepo = mockk {
-        every { getFileSizeInMb(uri = imageUri) } returns fileSize
-    }
-    private val calculateImageCompressQualityUseCase: CalculateImageCompressQualityUseCase = mockk {
-        every { this@mockk.invoke(fileSize) } returns quality
-    }
+    private val photoRepo: PhotoRepo = mockk()
     private val getUsernameUseCase: GetUsernameUseCase = mockk {
         coEvery { this@mockk.invoke() } returns username
     }
@@ -36,16 +27,8 @@ class UploadPhotoUseCaseTest {
     fun setup() {
         uploadPhotoUseCase = UploadPhotoUseCase(
             photoRepo = photoRepo,
-            calculateImageCompressQualityUseCase = calculateImageCompressQualityUseCase,
             getUsernameUseCase = getUsernameUseCase
         )
-    }
-
-    @Test
-    fun `throws MenuProductImageException when uri is null`() = runTest {
-        assertFailsWith<MenuProductImageException> {
-            uploadPhotoUseCase(imageUri = null)
-        }
     }
 
     @Test
@@ -53,7 +36,6 @@ class UploadPhotoUseCaseTest {
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
-                compressQuality = quality,
                 username = username
             )
         } returns null
@@ -69,7 +51,6 @@ class UploadPhotoUseCaseTest {
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
-                compressQuality = quality,
                 username = username
             )
         } returns photo
