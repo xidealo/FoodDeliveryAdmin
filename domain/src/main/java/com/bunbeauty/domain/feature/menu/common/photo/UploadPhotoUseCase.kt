@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.menu.common.photo
 
-import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.Photo
@@ -12,9 +11,7 @@ class UploadPhotoUseCase @Inject constructor(
     private val getUsernameUseCase: GetUsernameUseCase
 ) {
 
-    suspend operator fun invoke(imageUri: String?): Photo {
-        imageUri ?: throw MenuProductImageException()
-
+    suspend operator fun invoke(imageUri: String): Photo {
         return photoRepo.uploadPhoto(
             uri = imageUri,
             username = getUsernameUseCase()

@@ -1,7 +1,10 @@
 package com.bunbeauty.domain.feature.menu.editmenuproduct
 
+import android.util.Log
 import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
@@ -15,6 +18,8 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import javax.inject.Inject
 
+private const val UPDATE_MENU_PRODUCT_TAG = "UpdateMenuProduct"
+
 class UpdateMenuProductUseCase @Inject constructor(
     private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
     private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase,
@@ -23,6 +28,7 @@ class UpdateMenuProductUseCase @Inject constructor(
     private val validateMenuProductDescriptionUseCase: ValidateMenuProductDescriptionUseCase,
     private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
+    private val deletePhotoUseCase: DeletePhotoUseCase,
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
@@ -40,7 +46,7 @@ class UpdateMenuProductUseCase @Inject constructor(
         val isVisible: Boolean,
         val isRecommended: Boolean,
         val photoLink: String?,
-        val imageUri: String?
+        val newImageUri: String?
     )
 
     suspend operator fun invoke(params: Params) {
@@ -57,9 +63,19 @@ class UpdateMenuProductUseCase @Inject constructor(
         val description = validateMenuProductDescriptionUseCase(description = params.description)
         val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
 
-        var updatedPhotoLink: String? = null
-        if (params.photoLink == null) {
-            updatedPhotoLink = uploadPhotoUseCase(imageUri = params.imageUri).url
+        if (params.photoLink == null && params.newImageUri == null) {
+            throw MenuProductImageException()
+        }
+        var newPhotoLink: String? = null
+        if (params.newImageUri != null) {
+            newPhotoLink = uploadPhotoUseCase(imageUri = params.newImageUri).url
+        }
+        if (params.photoLink != null) {
+            runCatching {
+                deletePhotoUseCase(photoLink = params.photoLink)
+            }.onFailure {
+                Log.e(UPDATE_MENU_PRODUCT_TAG, "Photo deletion failed ${it.message}")
+            }
         }
 
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -73,7 +89,7 @@ class UpdateMenuProductUseCase @Inject constructor(
                 utils = params.units,
                 description = description,
                 comboDescription = params.comboDescription.trim(),
-                photoLink = updatedPhotoLink,
+                photoLink = newPhotoLink,
                 isVisible = params.isVisible,
                 isRecommended = params.isRecommended,
                 categories = selectableCategories.map { category ->

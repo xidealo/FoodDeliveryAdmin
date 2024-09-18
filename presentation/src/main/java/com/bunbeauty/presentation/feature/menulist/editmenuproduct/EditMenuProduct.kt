@@ -36,10 +36,10 @@ interface EditMenuProduct {
         }
     }
 
-    sealed interface MenuProductImage {
-        data class PhotoLink(val value: String) : MenuProductImage
-        data class ImageUri(val value: String) : MenuProductImage
-    }
+    data class MenuProductImage(
+        val photoLink: String,
+        val newImageUri: String?
+    )
 
     data class ImageFieldData(
         override val value: MenuProductImage?,

@@ -196,7 +196,7 @@ class CreateMenuProductViewModel @Inject constructor(
                             selectedCategories = selectedCategoryList,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendations,
-                            imageUri = imageField.value
+                            newImageUri = imageField.value
                         )
                     }
                 )
