@@ -193,13 +193,13 @@ class CreateMenuProductViewModel @Inject constructor(
                 createMenuProductUseCase(
                     params = state.value.run {
                         CreateMenuProductUseCase.Params(
-                            name = nameField.value,
-                            newPrice = newPriceField.value,
-                            oldPrice = oldPriceField.value,
-                            units = units,
-                            nutrition = nutritionField.value,
-                            description = descriptionField.value,
-                            comboDescription = comboDescription,
+                            name = nameField.value.trim(),
+                            newPrice = newPriceField.value.trim(),
+                            oldPrice = oldPriceField.value.trim(),
+                            units = units.trim(),
+                            nutrition = nutritionField.value.trim(),
+                            description = descriptionField.value.trim(),
+                            comboDescription = comboDescription.trim(),
                             selectedCategories = selectedCategoryList,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendations,

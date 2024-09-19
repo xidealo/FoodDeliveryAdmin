@@ -86,9 +86,9 @@ class EditAdditionViewModel @Inject constructor(
                 updateAdditionUseCase(
                     updateAddition = state.value.run {
                         UpdateAddition(
-                            name = name,
+                            name = name.trim(),
                             priority = priority,
-                            fullName = fullName?.takeIf { fullName.isNotBlank() },
+                            fullName = fullName?.takeIf { fullName.isNotBlank() }?.trim(),
                             price = price,
                             isVisible = isVisible
                         )
