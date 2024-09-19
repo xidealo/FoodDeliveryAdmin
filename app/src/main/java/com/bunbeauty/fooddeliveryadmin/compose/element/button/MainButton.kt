@@ -20,13 +20,13 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @StringRes textStringId: Int? = null,
     text: String? = null,
     colors: ButtonColors = AdminButtonDefaults.mainButtonColors,
     elevated: Boolean = true,
-    isEnabled: Boolean = true,
-    onClick: () -> Unit
+    isEnabled: Boolean = true
 ) {
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentEnforcement provides false
@@ -58,7 +58,10 @@ fun MainButton(
 @Composable
 private fun MainButtonPreview() {
     AdminTheme {
-        MainButton(textStringId = R.string.action_retry) {}
+        MainButton(
+            textStringId = R.string.action_retry,
+            onClick = {}
+        )
     }
 }
 
@@ -68,7 +71,8 @@ private fun MainButtonDisabledPreview() {
     AdminTheme {
         MainButton(
             textStringId = R.string.action_retry,
-            isEnabled = false
-        ) {}
+            isEnabled = false,
+            onClick = {}
+        )
     }
 }
