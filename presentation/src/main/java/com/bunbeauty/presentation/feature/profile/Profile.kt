@@ -10,7 +10,8 @@ interface Profile {
     data class DataState(
         val state: State,
         val user: User?,
-        val acceptOrders: Boolean?
+        val acceptOrders: Boolean,
+        val showAcceptOrdersConfirmation: Boolean
     ) : BaseDataState {
 
         data class User(
@@ -30,7 +31,9 @@ interface Profile {
         data object CafeClick : Action
         data object SettingsClick : Action
         data object StatisticClick : Action
-        data class AcceptOrdersToggle(val checked: Boolean) : Action
+        data object AcceptOrdersClick : Action
+        data object ConfirmAcceptOrders : Action
+        data object CancelAcceptOrders : Action
         data object LogoutClick : Action
         data class LogoutConfirm(val confirmed: Boolean) : Action
     }
