@@ -29,7 +29,6 @@ class EditAdditionViewModel @Inject constructor(
         isVisible = false,
         fullName = "",
         hasEditNameError = false,
-        hasEditPriceError = false
     )
 ) {
 
@@ -67,7 +66,7 @@ class EditAdditionViewModel @Inject constructor(
 
             is EditAddition.Action.EditPriceAddition -> setState {
                 copy(
-                    price = action.price.toIntOrNull()
+                    price = action.price
                 )
             }
         }
@@ -78,7 +77,6 @@ class EditAdditionViewModel @Inject constructor(
             copy(
                 isLoading = true,
                 hasEditNameError = false,
-                hasEditPriceError = false
             )
         }
         viewModelScope.launchSafe(
@@ -89,7 +87,11 @@ class EditAdditionViewModel @Inject constructor(
                             name = name,
                             priority = priority,
                             fullName = fullName?.takeIf { fullName.isNotBlank() },
-                            price = price,
+                            price = if (price.isNullOrEmpty() || price == "") {
+                                null
+                            } else {
+                                price.toInt()
+                            },
                             isVisible = isVisible
                         )
                     },
@@ -111,10 +113,6 @@ class EditAdditionViewModel @Inject constructor(
                             copy(hasEditNameError = true, isLoading = false)
                         }
 
-                        is AdditionPriceException -> {
-                            copy(hasEditPriceError = true, isLoading = false)
-                        }
-
                         else -> copy(isLoading = false)
                     }
                 }
@@ -133,7 +131,7 @@ class EditAdditionViewModel @Inject constructor(
                         name = addition.name,
                         priority = addition.priority,
                         fullName = addition.fullName,
-                        price = addition.price,
+                        price = addition.price.toString(),
                         isVisible = addition.isVisible,
                         isLoading = false
                     )

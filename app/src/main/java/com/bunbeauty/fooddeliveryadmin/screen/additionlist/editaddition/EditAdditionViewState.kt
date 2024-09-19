@@ -9,7 +9,6 @@ data class EditAdditionViewState(
     val priority: String,
     val fullName: String,
     val price: String,
-    @StringRes val editPriceError: Int?,
     val isVisible: Boolean,
     val isLoading: Boolean
 ) : BaseViewState
