@@ -99,7 +99,8 @@ class EditMenuProductViewModel @Inject constructor(
                 setState {
                     copy(
                         nutritionField = nutritionField.copy(
-                            value = action.nutrition
+                            value = action.nutrition,
+                            isError = false
                         )
                     )
                 }

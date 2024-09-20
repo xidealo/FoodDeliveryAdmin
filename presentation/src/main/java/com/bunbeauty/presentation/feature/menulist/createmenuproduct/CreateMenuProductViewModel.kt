@@ -85,7 +85,8 @@ class CreateMenuProductViewModel @Inject constructor(
             is CreateMenuProduct.Action.ChangeNutritionText -> setState {
                 copy(
                     nutritionField = nutritionField.copy(
-                        value = action.nutrition
+                        value = action.nutrition,
+                        isError = false
                     )
                 )
             }
