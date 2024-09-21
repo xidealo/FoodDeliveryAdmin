@@ -374,6 +374,11 @@ class CreateMenuProductFragment :
                     resources.getString(R.string.error_common_something_went_wrong)
                 )
             }
+            CreateMenuProduct.Event.ShowEmptyPhoto -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(R.string.error_common_menu_product_empty_photo)
+                )
+            }
         }
     }
 

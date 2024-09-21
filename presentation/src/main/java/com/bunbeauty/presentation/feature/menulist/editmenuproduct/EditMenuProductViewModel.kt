@@ -367,6 +367,9 @@ class EditMenuProductViewModel @Inject constructor(
                         )
                     )
                 }
+                sendEvent {
+                    EditMenuProduct.Event.ShowEmptyPhoto
+                }
             }
 
             is MenuProductUploadingImageException -> {
