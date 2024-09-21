@@ -11,18 +11,31 @@ internal fun Profile.DataState.toViewState(): ProfileViewState {
     return ProfileViewState(
         state = when (state) {
             Profile.DataState.State.SUCCESS -> {
-                acceptOrders?.let { acceptOrders ->
-                    user?.let { user ->
-                        val userRoleStringId = when (user.role) {
-                            UserRole.MANAGER -> R.string.hint_profile_manager
-                            UserRole.ADMIN -> R.string.hint_profile_admin
+                user?.let { user ->
+                    val userRoleStringId = when (user.role) {
+                        UserRole.MANAGER -> R.string.hint_profile_manager
+                        UserRole.ADMIN -> R.string.hint_profile_admin
+                    }
+                    ProfileViewState.State.Success(
+                        role = stringResource(id = userRoleStringId),
+                        userName = user.userName,
+                        acceptOrders = acceptOrders,
+                        acceptOrdersConfirmation = if (acceptOrders) {
+                            ProfileViewState.AcceptOrdersConfirmation(
+                                isShown = showAcceptOrdersConfirmation,
+                                titleResId = R.string.title_profile_enable_orders,
+                                descriptionResId = R.string.msg_profile_enable_orders,
+                                buttonResId = R.string.action_profile_enable
+                            )
+                        } else {
+                            ProfileViewState.AcceptOrdersConfirmation(
+                                isShown = showAcceptOrdersConfirmation,
+                                titleResId = R.string.title_profile_disable_orders,
+                                descriptionResId = R.string.msg_profile_disable_orders,
+                                buttonResId = R.string.action_profile_disable
+                            )
                         }
-                        ProfileViewState.State.Success(
-                            role = stringResource(id = userRoleStringId),
-                            userName = user.userName,
-                            acceptOrders = acceptOrders
-                        )
-                    } ?: ProfileViewState.State.Error
+                    )
                 } ?: ProfileViewState.State.Error
             }
 

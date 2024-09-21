@@ -21,7 +21,8 @@ class ProfileViewModel @Inject constructor(
     initState = Profile.DataState(
         state = Profile.DataState.State.LOADING,
         user = null,
-        acceptOrders = null
+        acceptOrders = true,
+        showAcceptOrdersConfirmation = false
     )
 ) {
 
@@ -31,7 +32,9 @@ class ProfileViewModel @Inject constructor(
             Profile.Action.CafeClick -> handleCafeClick()
             Profile.Action.SettingsClick -> handleSettingsClick()
             Profile.Action.StatisticClick -> handleStatisticClick()
-            is Profile.Action.AcceptOrdersToggle -> handleAcceptOrdersToggle(checked = action.checked)
+            Profile.Action.AcceptOrdersClick -> handleAcceptOrdersClick()
+            Profile.Action.ConfirmAcceptOrders -> handleConfirmAcceptOrders()
+            Profile.Action.CancelAcceptOrders -> handleCancelAcceptOrders()
             Profile.Action.LogoutClick -> handleLogoutClick()
             is Profile.Action.LogoutConfirm -> handleLogoutConfirm(confirmed = action.confirmed)
         }
@@ -79,24 +82,43 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun handleAcceptOrdersToggle(checked: Boolean) {
+    private fun handleAcceptOrdersClick() {
         setState {
-            copy(acceptOrders = checked)
+            copy(
+                acceptOrders = !acceptOrders,
+                showAcceptOrdersConfirmation = true
+            )
         }
+    }
 
+    private fun handleConfirmAcceptOrders() {
+        setState {
+            copy(showAcceptOrdersConfirmation = false)
+        }
         viewModelScope.launchSafe(
             block = {
-                val updatedValue = updateOrderAvailabilityUseCase(isAvailable = checked)
+                val updatedValue = updateOrderAvailabilityUseCase(
+                    isAvailable = mutableDataState.value.acceptOrders
+                )
                 setState {
                     copy(acceptOrders = updatedValue)
                 }
             },
             onError = {
                 setState {
-                    copy(acceptOrders = !checked)
+                    copy(acceptOrders = !acceptOrders)
                 }
             }
         )
+    }
+
+    private fun handleCancelAcceptOrders() {
+        setState {
+            copy(
+                acceptOrders = !acceptOrders,
+                showAcceptOrdersConfirmation = false
+            )
+        }
     }
 
     private fun handleLogoutClick() {

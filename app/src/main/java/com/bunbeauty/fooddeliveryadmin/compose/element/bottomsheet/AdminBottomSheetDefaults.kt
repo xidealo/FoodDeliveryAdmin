@@ -25,7 +25,7 @@ object AdminBottomSheetDefaults {
     fun DragHandle() {
         Spacer(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(top = 8.dp)
                 .width(36.dp)
                 .height(4.dp)
                 .background(

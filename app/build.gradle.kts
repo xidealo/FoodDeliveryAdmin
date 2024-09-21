@@ -148,6 +148,9 @@ dependencies {
 
     implementation(KotlinxCollectionsImmutable.collectionsImmutable)
 
+    // Coroutines
+    implementation(Coroutines.core)
+
     // Image cropper
     implementation(ImageCropper.imageCpropper)
 
