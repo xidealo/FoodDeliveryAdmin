@@ -7,7 +7,7 @@ interface AdditionGroupRepo {
     /*GET*/
     suspend fun getAdditionGroupList(
         token: String,
-        takeRemote: Boolean = true
+        refreshing: Boolean = false
     ): List<AdditionGroup>
 
     suspend fun getAdditionGroup(additionUuid: String): AdditionGroup?

@@ -72,5 +72,6 @@ interface EditMenuProduct {
         data class ShowUpdateProductSuccess(val productName: String) : Event
         data object ShowImageUploadingFailed : Event
         data object ShowSomethingWentWrong : Event
+        data object ShowEmptyPhoto : Event
     }
 }

@@ -87,7 +87,8 @@ class EditMenuProductFragment :
             )
         }
         setFragmentResultListener(CROP_IMAGE_REQUEST_KEY) { _, bundle ->
-            val croppedImageUri = bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
+            val croppedImageUri =
+                bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
 
             viewModel.onAction(
                 action = EditMenuProduct.Action.SetImage(
@@ -102,9 +103,10 @@ class EditMenuProductFragment :
         state: EditMenuProductViewState,
         onAction: (EditMenuProduct.Action) -> Unit
     ) {
-        val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            navigateToCropImage(uri)
-        }
+        val galleryLauncher =
+            rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+                navigateToCropImage(uri)
+            }
 
         AdminScaffold(
             title = state.title,
@@ -184,6 +186,12 @@ class EditMenuProductFragment :
                     resources.getString(R.string.msg_edit_menu_product_updated, event.productName)
                 )
                 findNavController().popBackStack()
+            }
+
+            is EditMenuProduct.Event.ShowEmptyPhoto -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.error_common_menu_product_empty_photo)
+                )
             }
         }
     }

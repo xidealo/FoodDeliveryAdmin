@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -71,52 +72,63 @@ class AdditionGroupListFragment :
                 onAction(AdditionGroupList.Action.OnBackClick)
             }
         ) {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                if (state.visibleAdditionItems.isNotEmpty()) {
-                    item(
-                        key = TITLE_POSITION_VISIBLE_KEY
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.title_menu_list_position_visible),
-                            style = AdminTheme.typography.titleMedium.bold
-                        )
-                    }
-                    items(
-                        items = state.visibleAdditionItems,
-                        key = { additionItem ->
-                            additionItem.uuid
-                        }
-                    ) { visibleAddition ->
-                        AdditionGroupCard(
-                            additionItem = visibleAddition,
-                            onAction = onAction
-                        )
-                    }
+            when {
+                state.isLoading -> LoadingScreen()
+                else -> AdditionGroupListSuccess(state = state, onAction = onAction)
+            }
+        }
+    }
+
+    @Composable
+    private fun AdditionGroupListSuccess(
+        state: AdditionGroupListViewState,
+        onAction: (AdditionGroupList.Action) -> Unit
+    ) {
+        LazyColumn(
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if (state.visibleAdditionItems.isNotEmpty()) {
+                item(
+                    key = TITLE_POSITION_VISIBLE_KEY
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.title_menu_list_position_visible),
+                        style = AdminTheme.typography.titleMedium.bold
+                    )
                 }
-                if (state.hiddenAdditionItems.isNotEmpty()) {
-                    item(
-                        key = TITLE_POSITION_HIDDEN_KEY
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.title_menu_list_position_hidden),
-                            style = AdminTheme.typography.titleMedium.bold,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
+                items(
+                    items = state.visibleAdditionItems,
+                    key = { additionItem ->
+                        additionItem.uuid
                     }
-                    items(
-                        items = state.hiddenAdditionItems,
-                        key = { additionGroupItem ->
-                            additionGroupItem.uuid
-                        }
-                    ) { hiddenAddition ->
-                        AdditionGroupCard(
-                            additionItem = hiddenAddition,
-                            onAction = onAction
-                        )
+                ) { visibleAddition ->
+                    AdditionGroupCard(
+                        additionItem = visibleAddition,
+                        onAction = onAction
+                    )
+                }
+            }
+            if (state.hiddenAdditionItems.isNotEmpty()) {
+                item(
+                    key = TITLE_POSITION_HIDDEN_KEY
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.title_menu_list_position_hidden),
+                        style = AdminTheme.typography.titleMedium.bold,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+                items(
+                    items = state.hiddenAdditionItems,
+                    key = { additionGroupItem ->
+                        additionGroupItem.uuid
                     }
+                ) { hiddenAddition ->
+                    AdditionGroupCard(
+                        additionItem = hiddenAddition,
+                        onAction = onAction
+                    )
                 }
             }
         }

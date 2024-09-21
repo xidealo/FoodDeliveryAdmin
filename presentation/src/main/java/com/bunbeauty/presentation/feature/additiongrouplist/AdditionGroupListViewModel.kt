@@ -16,7 +16,7 @@ class AdditionGroupListViewModel @Inject constructor(
     initState = AdditionGroupList.DataState(
         visibleAdditionGroups = listOf(),
         hiddenAdditionGroups = listOf(),
-        isLoading = false,
+        isLoading = true,
         isRefreshing = false,
         error = null
     )
@@ -49,7 +49,7 @@ class AdditionGroupListViewModel @Inject constructor(
     private fun loadData() {
         viewModelScope.launchSafe(
             block = {
-                val separatedAdditionList = getSeparatedAdditionGroupListUseCase()
+                val separatedAdditionList = getSeparatedAdditionGroupListUseCase(refreshing = false)
                 setState {
                     copy(
                         visibleAdditionGroups = separatedAdditionList.visibleList,
@@ -98,7 +98,7 @@ class AdditionGroupListViewModel @Inject constructor(
                     )
                 }
 
-                val separatedAdditionGroupList = getSeparatedAdditionGroupListUseCase()
+                val separatedAdditionGroupList = getSeparatedAdditionGroupListUseCase(refreshing = true)
 
                 setState {
                     copy(
