@@ -80,7 +80,7 @@ class AdditionGroupListFragment :
     }
 
     @Composable
-    private fun AdditionGroupListFragment.AdditionGroupListSuccess(
+    private fun AdditionGroupListSuccess(
         state: AdditionGroupListViewState,
         onAction: (AdditionGroupList.Action) -> Unit
     ) {
