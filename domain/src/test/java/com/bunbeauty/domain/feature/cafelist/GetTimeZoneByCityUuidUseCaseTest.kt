@@ -27,7 +27,7 @@ class GetTimeZoneByCityUuidUseCaseTest {
     fun setup() {
         getTimeZoneByCityUuid = GetTimeZoneByCityUuidUseCase(
             dataStoreRepo = dataStoreRepo,
-            cityRepo = cityRepo,
+            cityRepo = cityRepo
         )
     }
 
@@ -65,7 +65,7 @@ class GetTimeZoneByCityUuidUseCaseTest {
             uuid = "uuid",
             name = "name",
             timeZone = timeZone,
-            isVisible = true,
+            isVisible = true
         )
 
         // When
@@ -74,5 +74,4 @@ class GetTimeZoneByCityUuidUseCaseTest {
         // Then
         assertEquals(timeZone, result)
     }
-
 }

@@ -1,8 +1,8 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.statistic.StatisticMapper
+import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.StatisticRepo
 import javax.inject.Inject
 

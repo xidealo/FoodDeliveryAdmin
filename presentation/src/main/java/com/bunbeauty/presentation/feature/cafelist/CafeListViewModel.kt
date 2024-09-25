@@ -3,7 +3,7 @@ package com.bunbeauty.presentation.feature.cafelist
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.cafelist.GetCafeWithWorkingHoursListFlowUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CafeListViewModel @Inject constructor(
-    private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursListFlowUseCase,
+    private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursListFlowUseCase
 ) : BaseViewModel() {
 
     private val mutableDataState = MutableStateFlow(
@@ -48,5 +48,4 @@ class CafeListViewModel @Inject constructor(
             }
         )
     }
-
 }

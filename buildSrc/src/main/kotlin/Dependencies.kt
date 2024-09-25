@@ -1,6 +1,6 @@
 object Versions {
     const val kotlin = "1.9.0"
-    const val gradle = "8.1.0"
+    const val gradle = "8.1.1"
     const val ktor = "2.3.2"
     const val coil = "2.4.0"
     const val datastorePreferences = "1.0.0"
@@ -18,22 +18,26 @@ object Versions {
     const val crashlytics = "2.9.2"
     const val firebase = "32.2.0"
     const val composeCompiler = "1.5.0"
-    const val composeBom = "2023.08.00"
+    const val composeBom = "2024.05.00"
     const val lifecycleRuntimeCompose = "2.6.1"
     const val ktLint = "11.5.1"
     const val mockk = "1.12.5"
-    const val coroutines = "1.6.4"
-    const val datetime = "0.4.0"
+    const val coroutines = "1.8.0"
+    const val imageCpropper = "4.6.0"
+    const val kotlinxDatetime = "0.4.0"
+    const val materialDialogsDatetime = "0.9.0"
+    const val kotlinxCollectionsImmutable = "0.3.7"
+    const val turbine = "1.1.0"
 }
 
 object Application {
     const val versionMajor = 1
-    const val versionMinor = 4
-    const val versionPatch = 4
+    const val versionMinor = 6
+    const val versionPatch = 0
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 144
+    const val versionCode = 160
 }
 
 object Namespace {
@@ -87,7 +91,7 @@ object Dagger {
 }
 
 object KotlinxDatetime {
-    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.datetime}"
+    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
 }
 
 object Navigation {
@@ -149,14 +153,21 @@ object Compose {
     const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview"
     const val uiTooling = "androidx.compose.ui:ui-tooling"
     const val uiViewbinding = "androidx.compose.ui:ui-viewbinding"
+    const val activity = "androidx.activity:activity-compose"
     const val lifecycle =
         "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleRuntimeCompose}"
+}
+
+object MaterialDialogs {
+    const val datetime =
+        "io.github.vanpra.compose-material-dialogs:datetime:${Versions.materialDialogsDatetime}"
 }
 
 object Firebase {
     const val bom = "com.google.firebase:firebase-bom:${Versions.firebase}"
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+    const val storage = "com.google.firebase:firebase-storage"
 }
 
 object Mockk {
@@ -164,11 +175,25 @@ object Mockk {
     const val common = "io.mockk:mockk-common:${Versions.mockk}"
 }
 
-object Coroutine {
+object Coroutines {
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines}"
     const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+}
+
+object ImageCropper {
+    const val imageCpropper = "com.vanniktech:android-image-cropper:${Versions.imageCpropper}"
 }
 
 object Test {
     const val test = "test"
+}
+
+object Turbine {
+    const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
+}
+
+object KotlinxCollectionsImmutable {
+    const val collectionsImmutable =
+        "org.jetbrains.kotlinx:kotlinx-collections-immutable:${Versions.kotlinxCollectionsImmutable}"
 }

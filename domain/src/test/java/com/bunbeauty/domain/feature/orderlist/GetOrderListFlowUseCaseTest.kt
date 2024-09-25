@@ -1,9 +1,9 @@
 package com.bunbeauty.domain.feature.orderlist
 
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.OrderRepo
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +25,7 @@ internal class GetOrderListFlowUseCaseTest {
     fun setup() {
         getOrderListFlow = GetOrderListFlowUseCase(
             dataStoreRepo = dataStoreRepo,
-            orderRepo = orderRepo,
+            orderRepo = orderRepo
         )
     }
 
@@ -43,7 +43,7 @@ internal class GetOrderListFlowUseCaseTest {
                 createOrder(OrderStatus.SENT_OUT),
                 createOrder(OrderStatus.DELIVERED),
                 createOrder(OrderStatus.DONE),
-                createOrder(OrderStatus.CANCELED),
+                createOrder(OrderStatus.CANCELED)
             )
         )
         val filteredOrderList = arrayOf(
@@ -52,7 +52,7 @@ internal class GetOrderListFlowUseCaseTest {
             createOrder(OrderStatus.PREPARING),
             createOrder(OrderStatus.SENT_OUT),
             createOrder(OrderStatus.DELIVERED),
-            createOrder(OrderStatus.DONE),
+            createOrder(OrderStatus.DONE)
         )
 
         // When
@@ -63,13 +63,13 @@ internal class GetOrderListFlowUseCaseTest {
     }
 
     private fun createOrder(orderStatus: OrderStatus): Order {
-        return  Order(
+        return Order(
             uuid = "uuid",
             code = "code",
             time = 0L,
             deferredTime = null,
             timeZone = "timeZone",
-            orderStatus = orderStatus,
+            orderStatus = orderStatus
         )
     }
 }

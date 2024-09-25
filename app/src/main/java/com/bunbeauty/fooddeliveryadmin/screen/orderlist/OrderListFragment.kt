@@ -44,6 +44,7 @@ import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
+import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
 import com.bunbeauty.fooddeliveryadmin.screen.selectcafe.SelectCafeBottomSheet
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
@@ -169,8 +170,8 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
         ) {
             item(key = "cafeAddress") {
                 NavigationTextCard(
-                    hintStringId = R.string.msg_common_cafe,
-                    label = uiStateSuccess.cafeAddress,
+                    labelText = stringResource(R.string.msg_common_cafe),
+                    valueText = uiStateSuccess.cafeAddress,
                     onClick = onCafeClicked
                 )
                 Spacer(modifier = Modifier.height(8.dp))

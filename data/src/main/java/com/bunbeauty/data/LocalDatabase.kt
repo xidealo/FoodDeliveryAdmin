@@ -7,9 +7,11 @@ import com.bunbeauty.data.dao.CategoryDao
 import com.bunbeauty.data.dao.CityDao
 import com.bunbeauty.data.dao.MenuProductCategoryDao
 import com.bunbeauty.data.dao.MenuProductDao
+import com.bunbeauty.data.dao.NonWorkingDayDao
 import com.bunbeauty.data.model.entity.CafeEntity
 import com.bunbeauty.data.model.entity.CategoryEntity
-import com.bunbeauty.data.model.entity.city.CityEntity
+import com.bunbeauty.data.model.entity.CityEntity
+import com.bunbeauty.data.model.entity.NonWorkingDayEntity
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductCategoryEntity
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
 
@@ -20,7 +22,9 @@ import com.bunbeauty.data.model.entity.menuproduct.MenuProductEntity
         CategoryEntity::class,
         MenuProductCategoryEntity::class,
         CityEntity::class,
-    ], version = 24
+        NonWorkingDayEntity::class
+    ],
+    version = 27
 )
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun cafeDao(): CafeDao
@@ -28,4 +32,5 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
     abstract fun menuProductCategoryDao(): MenuProductCategoryDao
     abstract fun cityDao(): CityDao
+    abstract fun nonWorkingDayDao(): NonWorkingDayDao
 }

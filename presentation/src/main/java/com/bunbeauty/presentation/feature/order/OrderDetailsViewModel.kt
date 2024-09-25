@@ -3,44 +3,39 @@ package com.bunbeauty.presentation.feature.order
 import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.feature.order.LoadOrderDetailsUseCase
-import com.bunbeauty.domain.feature.order.UpdateOrderStatusUseCase
+import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
+import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.feature.order.mapper.OrderDetailsStateMapper
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
-import com.bunbeauty.presentation.feature.order.state.OrderDetailsUiState
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
-    private val orderDetailsStateMapper: OrderDetailsStateMapper,
     private val orderStatusMapper: OrderStatusMapper,
     private val loadOrderDetails: LoadOrderDetailsUseCase,
     private val updateOrderStatus: UpdateOrderStatusUseCase,
-    private val resources: Resources,
+    private val resources: Resources
 ) : BaseViewModel() {
 
-    private val mutableDataState =
-        MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
-    val uiState: StateFlow<OrderDetailsUiState> =
-        mutableDataState.mapToStateFlow(viewModelScope, orderDetailsStateMapper::map)
+    private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
+    val dataState: StateFlow<OrderDetailsDataState> = mutableDataState.asStateFlow()
 
     fun setupOrder(orderUuid: String, orderCode: String) {
         mutableDataState.update { dataState ->
             dataState.copy(
                 state = OrderDetailsDataState.State.LOADING,
-                code = orderCode,
+                code = orderCode
             )
         }
         viewModelScope.launchSafe(
@@ -62,7 +57,7 @@ class OrderDetailsViewModel @Inject constructor(
             val statusList = availableStatusList.map { orderStatus ->
                 Option(
                     id = orderStatus.name,
-                    title = orderStatusMapper.map(orderStatus),
+                    title = orderStatusMapper.map(orderStatus)
                 )
             }
             mutableDataState.update { dataState ->
@@ -122,7 +117,7 @@ class OrderDetailsViewModel @Inject constructor(
         mutableDataState.update { dataState ->
             dataState.copy(
                 state = OrderDetailsDataState.State.SUCCESS,
-                orderDetails = orderDetails,
+                orderDetails = orderDetails
             )
         }
     }
@@ -132,7 +127,7 @@ class OrderDetailsViewModel @Inject constructor(
             block = {
                 updateOrderStatus(
                     orderUuid = orderUuid,
-                    status = status,
+                    status = status
                 )
                 mutableDataState.update { dataState ->
                     dataState + OrderDetailsEvent.GoBackEvent
@@ -146,5 +141,4 @@ class OrderDetailsViewModel @Inject constructor(
             }
         )
     }
-
 }

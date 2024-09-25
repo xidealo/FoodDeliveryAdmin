@@ -3,60 +3,73 @@ package com.bunbeauty.domain.util.datetime
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.MONDAY
 import org.joda.time.DateTimeConstants.SUNDAY
+import org.joda.time.DateTimeZone
+import java.time.LocalTime
 import javax.inject.Inject
 
-class DateTimeUtil @Inject constructor(): IDateTimeUtil {
+private const val SECONDS_IN_MINUTE = 60
+private const val MINUTE_IN_HOUR = 60
+private const val SECONDS_IN_HOUR = 60 * 60
 
-    override fun getDateDDMMMMYYYY(millis: Long): String {
-        val dateTime = DateTime(millis)
-
-        return dateTime.toString("dd MMMM YYYY")
-    }
+class DateTimeUtil @Inject constructor() : IDateTimeUtil {
 
     override fun getWeekPeriod(millis: Long): String {
         val dateTime = DateTime(millis)
-        val weekMonday = getDateDDMMMMYYYY(dateTime.withDayOfWeek(MONDAY).millis)
-        val weekSunday =  getDateDDMMMMYYYY(dateTime.withDayOfWeek(SUNDAY).millis)
+        val mondayDateTimeMillis = dateTime.withDayOfWeek(MONDAY).millis
+        val sundayDateTimeMillis = dateTime.withDayOfWeek(SUNDAY).millis
+        val formatMondayDateTime = formatDateTime(mondayDateTimeMillis, PATTERN_DD_MMMM_YYYY)
+        val formatSundayDateTime = formatDateTime(sundayDateTimeMillis, PATTERN_DD_MMMM_YYYY)
 
-        return "$weekMonday - $weekSunday"
-    }
-
-    override fun getDateMMMMYYYY(millis: Long): String {
-        val dateTime = DateTime(millis)
-
-        return MONTH_NAME_LIST[dateTime.monthOfYear - 1] + " " + dateTime.year
-    }
-
-    override fun getTimeHHMM(millis: Long): String {
-        val dateTime = DateTime(millis)
-
-        return dateTime.toString("HH:mm")
-    }
-
-    override fun getDateTimeDDMMHHMM(millis: Long): String {
-        val dateTime = DateTime(millis)
-
-        return dateTime.toString("dd MMMM HH:mm")
+        return "$formatMondayDateTime - $formatSundayDateTime"
     }
 
     override fun getMillisDaysAgo(days: Int): Double {
         return DateTime.now().minusDays(days).millis.toDouble()
     }
 
-    companion object {
-        private val MONTH_NAME_LIST = listOf(
-            "январь",
-            "февраль",
-            "март",
-            "апрель",
-            "май",
-            "июнь",
-            "июль",
-            "август",
-            "сентябрь",
-            "октябрь",
-            "ноябрь",
-            "декабрь",
+    override fun getDaySeconds(time: LocalTime): Int {
+        return time.hour * SECONDS_IN_HOUR + time.minute * SECONDS_IN_MINUTE
+    }
+
+    override fun getLocalTime(daySeconds: Int): LocalTime {
+        return LocalTime.of(
+            daySeconds / SECONDS_IN_HOUR,
+            daySeconds / SECONDS_IN_MINUTE % MINUTE_IN_HOUR
         )
+    }
+
+    override fun formatDateTime(millis: Long, pattern: String, offset: Int?): String {
+        val dateTime = DateTime(millis).let { dateTime ->
+            if (offset == null) {
+                dateTime
+            } else {
+                dateTime.withZone(DateTimeZone.forOffsetHours(offset))
+            }
+        }
+        return dateTime.toString(pattern)
+    }
+
+    override fun getTimeHHMM(daySeconds: Int): String {
+        val hours = daySeconds / SECONDS_IN_HOUR
+        val minutes = (daySeconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE
+
+        return getTimeText(hours, minutes)
+    }
+
+    override fun getTimeHHMM(localTime: LocalTime): String {
+        val hours = localTime.hour
+        val minutes = localTime.minute
+
+        return getTimeText(hours, minutes)
+    }
+
+    private fun getTimeText(hours: Int, minutes: Int): String {
+        val minutesString = if (minutes < 10) {
+            "0$minutes"
+        } else {
+            minutes.toString()
+        }
+
+        return "$hours:$minutesString"
     }
 }

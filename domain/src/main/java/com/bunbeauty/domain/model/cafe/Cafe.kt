@@ -11,6 +11,7 @@ data class Cafe(
     val longitude: Double,
     val fromTime: Int,
     val toTime: Int,
+    val offset: Int,
     val phone: String,
     val visible: Boolean,
     val cityUuid: String

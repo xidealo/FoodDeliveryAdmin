@@ -1,8 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.card
 
-import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -21,45 +22,77 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 @Composable
 fun NavigationTextCard(
     modifier: Modifier = Modifier,
-    @StringRes hintStringId: Int,
-    label: String?,
+    labelText: String,
+    valueText: String? = null,
+    isError: Boolean = false,
+    errorText: String? = null,
     clickable: Boolean = true,
     onClick: () -> Unit
 ) {
-    AdminCard(
-        modifier = modifier,
-        clickable = clickable,
-        onClick = onClick
-    ) {
-        Row(
-            modifier = Modifier.padding(
-                horizontal = AdminTheme.dimensions.mediumSpace,
-                vertical = AdminTheme.dimensions.smallSpace
-            ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = AdminTheme.dimensions.smallSpace)
-            ) {
-                Text(
-                    text = stringResource(hintStringId),
-                    style = AdminTheme.typography.labelSmall.medium,
-                    color = AdminTheme.colors.main.onSurfaceVariant
+    Column {
+        AdminCard(
+            modifier = modifier,
+            clickable = clickable,
+            border = if (isError) {
+                BorderStroke(
+                    width = 2.dp,
+                    color = AdminTheme.colors.main.error
                 )
-                Text(
-                    text = label ?: "",
-                    style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.main.onSurface
+            } else {
+                null
+            },
+            onClick = onClick
+        ) {
+            Row(
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = labelText,
+                        style = if (valueText == null) {
+                            AdminTheme.typography.bodyLarge
+                        } else {
+                            AdminTheme.typography.labelSmall.medium
+                        },
+                        color = if (valueText == null) {
+                            AdminTheme.colors.main.onSurface
+                        } else {
+                            AdminTheme.colors.main.onSurfaceVariant
+                        }
+                    )
+                    valueText?.let { text ->
+                        Text(
+                            text = text,
+                            style = AdminTheme.typography.bodyLarge,
+                            color = AdminTheme.colors.main.onSurface
+                        )
+                    }
+                }
+                Icon(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .padding(start = 4.dp),
+                    painter = painterResource(R.drawable.ic_right_arrow),
+                    tint = AdminTheme.colors.main.onSurfaceVariant,
+                    contentDescription = stringResource(R.string.description_common_navigate)
                 )
             }
-            Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(R.drawable.ic_right_arrow),
-                tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription = stringResource(R.string.description_common_navigate)
-            )
+        }
+        if (isError) {
+            errorText?.let {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 4.dp),
+                    text = errorText,
+                    style = AdminTheme.typography.bodySmall,
+                    color = AdminTheme.colors.main.error
+                )
+            }
         }
     }
 }
@@ -70,8 +103,21 @@ private fun TextNavigationCardPreview() {
     AdminTheme {
         NavigationTextCard(
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
-            hintStringId = R.string.hint_login_login,
-            label = "+7 999 000-00-00",
+            labelText = "Способ оплаты",
+            valueText = "Наличными",
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun TextNavigationCardNoHintPreview() {
+    AdminTheme {
+        NavigationTextCard(
+            modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
+            labelText = "Способ оплаты",
+            valueText = null,
             onClick = {}
         )
     }

@@ -17,13 +17,13 @@ class GetCurrentTimeFlowUseCaseTest {
 
     private val timeService: TimeService = mockk()
     private lateinit var getCurrentTimeFlow: GetCurrentTimeFlowUseCase
-    private val timeZone = "UTC+3"
+    private val timeZone = 3
     private val currentTime = Time(10, 30, 59)
 
     @BeforeTest
     fun setup() {
         getCurrentTimeFlow = GetCurrentTimeFlowUseCase(
-            timeService = timeService,
+            timeService = timeService
         )
     }
 
@@ -52,6 +52,4 @@ class GetCurrentTimeFlowUseCaseTest {
         coVerify(exactly = count) { timeService.getCurrentTime(timeZone) }
         assertEquals(count, results.size)
     }
-
-
 }

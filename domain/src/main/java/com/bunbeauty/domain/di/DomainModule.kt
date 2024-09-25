@@ -21,5 +21,4 @@ abstract class DomainModule {
     @Singleton
     @Binds
     abstract fun bindDateTimeUtil(dateTimeUtil: DateTimeUtil): IDateTimeUtil
-
 }

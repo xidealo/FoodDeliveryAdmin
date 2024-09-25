@@ -1,3 +1,5 @@
+
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
@@ -12,6 +14,7 @@ buildscript {
         classpath(ClassPath.googleServices)
         classpath(ClassPath.hiltServices)
         classpath(ClassPath.crashlytics)
+
     }
 }
 

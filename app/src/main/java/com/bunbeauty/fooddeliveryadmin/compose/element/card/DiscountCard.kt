@@ -12,7 +12,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 @Composable
 fun DiscountCard(discount: String) {
     AdminCard(
-        colors = AdminCardDefaults.cardStatusColors,
+        colors = AdminCardDefaults.cardPositiveColors,
         shape = RoundedCornerShape(4.dp),
         elevated = false,
         clickable = false

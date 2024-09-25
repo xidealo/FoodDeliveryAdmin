@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class UnsubscribeFromCafeNotificationUseCase @Inject constructor(
     private val dataStoreRepo: DataStoreRepo,
-    private val notificationService: NotificationService,
+    private val notificationService: NotificationService
 ) {
 
     suspend operator fun invoke() {

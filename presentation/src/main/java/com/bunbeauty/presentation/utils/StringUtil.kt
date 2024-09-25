@@ -22,6 +22,7 @@ import com.bunbeauty.domain.enums.ProductCode.POTATO
 import com.bunbeauty.domain.enums.ProductCode.SPICE
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
+import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
 import javax.inject.Inject
 
@@ -35,9 +36,8 @@ class StringUtil @Inject constructor(
         return if (deferred == null) {
             ""
         } else {
-            resourcesProvider.getString(R.string.msg_order_deferred_date_time) + dateTimeUtil.getTimeHHMM(
-                deferred
-            )
+            resourcesProvider.getString(R.string.msg_order_deferred_date_time) +
+                dateTimeUtil.formatDateTime(deferred, PATTERN_HH_MM)
         }
     }
 
@@ -63,10 +63,6 @@ class StringUtil @Inject constructor(
 
     override fun getProductCountString(count: Int): String {
         return resourcesProvider.getString(R.string.msg_pieces) + count
-    }
-
-    override fun getOrderCountString(count: Int): String {
-        return resourcesProvider.getString(R.string.msg_statistic_orders) + count
     }
 
     override fun getOrderStatusString(orderStatus: OrderStatus): String {
@@ -185,5 +181,4 @@ class StringUtil @Inject constructor(
             part
         }
     }
-
 }

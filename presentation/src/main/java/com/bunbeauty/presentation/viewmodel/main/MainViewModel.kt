@@ -1,53 +1,72 @@
 package com.bunbeauty.presentation.viewmodel.main
 
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
+import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : BaseViewModel() {
+class MainViewModel @Inject constructor(
+    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase
+) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
+    initState = Main.ViewDataState(
+        connectionLost = false,
+        nonWorkingDay = false,
+        navigationBarOptions = Main.NavigationBarOptions.Hidden
+    )
+) {
 
-    private val mutableMainUiState = MutableStateFlow(MainUiState())
-    val mainUiState = mutableMainUiState.asStateFlow()
+    init {
+        getIsNonWorkingDayFlow().onEach { isNonWorkingDay ->
+            setState {
+                copy(nonWorkingDay = isNonWorkingDay)
+            }
+        }.launchIn(viewModelScope)
+    }
 
-    fun onNavDestinationUpdated(
-        navigationBarItem: AdminNavigationBarItem?,
+    override fun reduce(action: Main.Action, dataState: Main.ViewDataState) {
+        when (action) {
+            is Main.Action.UpdateNavDestination -> {
+                updateNavDestination(
+                    navigationBarItem = action.navigationBarItem,
+                    navController = action.navController
+                )
+            }
+
+            is Main.Action.ShowInfoMessage -> {
+                showMessage(action.text, Main.Message.Type.INFO)
+            }
+
+            is Main.Action.ShowErrorMessage -> {
+                showMessage(action.text, Main.Message.Type.ERROR)
+            }
+        }
+    }
+
+    private fun updateNavDestination(
+        navigationBarItem: Main.NavigationBarItem?,
         navController: NavController
     ) {
         val navigationBarOptions = navigationBarItem?.let {
-            NavigationBarOptions.Visible(
+            Main.NavigationBarOptions.Visible(
                 selectedItem = navigationBarItem,
                 navController = navController
             )
-        } ?: NavigationBarOptions.Hidden
+        } ?: Main.NavigationBarOptions.Hidden
 
-        mutableMainUiState.update { state ->
-            state.copy(navigationBarOptions = navigationBarOptions)
+        setState {
+            copy(navigationBarOptions = navigationBarOptions)
         }
     }
 
-    fun showInfoMessage(text: String) {
-        showMessage(text, AdminMessageType.INFO)
-    }
-
-    fun showErrorMessage(text: String) {
-        showMessage(text, AdminMessageType.ERROR)
-    }
-
-    fun consumeEventList(eventList: List<MainUiState.Event>) {
-        mutableMainUiState.update { state ->
-            state - eventList
-        }
-    }
-
-    private fun showMessage(text: String, type: AdminMessageType) {
-        mutableMainUiState.update { state ->
-            state + MainUiState.Event.ShowMessageEvent(
-                message = AdminMessage(
+    private fun showMessage(text: String, type: Main.Message.Type) {
+        sendEvent {
+            Main.Event.ShowMessageEvent(
+                message = Main.Message(
                     type = type,
                     text = text
                 )

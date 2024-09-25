@@ -1,8 +1,8 @@
 package com.bunbeauty.data.mapper
 
 import com.bunbeauty.data.model.entity.CategoryEntity
-import com.bunbeauty.data.model.server.CategoryServer
-import com.bunbeauty.domain.model.Category
+import com.bunbeauty.data.model.server.category.CategoryServer
+import com.bunbeauty.domain.feature.menu.common.model.Category
 import javax.inject.Inject
 
 class CategoryMapper @Inject constructor() {
@@ -11,7 +11,7 @@ class CategoryMapper @Inject constructor() {
         return Category(
             uuid = categoryEntity.uuid,
             name = categoryEntity.name,
-            priority = categoryEntity.priority,
+            priority = categoryEntity.priority
         )
     }
 
@@ -19,7 +19,7 @@ class CategoryMapper @Inject constructor() {
         return Category(
             uuid = categoryServer.uuid,
             name = categoryServer.name,
-            priority = categoryServer.priority,
+            priority = categoryServer.priority
         )
     }
 
@@ -27,7 +27,7 @@ class CategoryMapper @Inject constructor() {
         return CategoryEntity(
             uuid = categoryServer.uuid,
             name = categoryServer.name,
-            priority = categoryServer.priority,
+            priority = categoryServer.priority
         )
     }
 }

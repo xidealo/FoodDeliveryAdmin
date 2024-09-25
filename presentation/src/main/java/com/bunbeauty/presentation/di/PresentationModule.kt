@@ -21,5 +21,4 @@ abstract class PresentationModule {
     @Singleton
     @Binds
     abstract fun bindResourcesProvider(resourcesProvider: ResourcesProvider): IResourcesProvider
-
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.viewmodel.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
-    private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
+    private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase
 ) : BaseViewModel() {
 
     private val mutableIsUnlimitedNotifications = MutableStateFlow<Boolean?>(null)
@@ -46,5 +46,4 @@ class SettingsViewModel @Inject constructor(
             }
         )
     }
-
 }

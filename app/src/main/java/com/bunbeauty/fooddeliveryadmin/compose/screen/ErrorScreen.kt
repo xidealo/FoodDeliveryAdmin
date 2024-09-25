@@ -19,13 +19,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
 @Composable
 fun ErrorScreen(
     @StringRes mainTextId: Int,
+    isLoading: Boolean = false,
     @StringRes extraTextId: Int? = null,
     onClick: () -> Unit
 ) {
@@ -69,12 +70,13 @@ fun ErrorScreen(
         }
         Spacer(modifier = Modifier.weight(1f))
 
-        MainButton(
+        LoadingButton(
             modifier = Modifier
                 .padding(bottom = AdminTheme.dimensions.mediumSpace)
                 .padding(horizontal = AdminTheme.dimensions.mediumSpace),
             onClick = onClick,
-            textStringId = R.string.action_retry
+            textStringId = R.string.action_retry,
+            isLoading = isLoading
         )
     }
 }

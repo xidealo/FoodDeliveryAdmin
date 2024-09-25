@@ -1,29 +1,34 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 interface MenuProductRepo {
+
+    suspend fun saveMenuProduct(token: String, menuProductPost: MenuProductPost): MenuProduct?
+
     /*GET*/
     suspend fun getMenuProductList(
         companyUuid: String,
         takeRemote: Boolean = true
-    ): List<MenuProduct>
+    ): List<MenuProduct>?
 
-    suspend fun getMenuProduct(menuProductUuid: String): MenuProduct?
+    suspend fun getMenuProduct(
+        menuProductUuid: String,
+        companyUuid: String
+    ): MenuProduct?
 
     /*UPDATE*/
     suspend fun updateMenuProduct(
         menuProductUuid: String,
         updateMenuProduct: UpdateMenuProduct,
         token: String
-    )
+    ): MenuProduct?
 
     /*DELETE*/
-    suspend fun deleteMenuProduct(uuid: String)
     suspend fun clearCache()
 
     /*OTHER*/
-    suspend fun deleteMenuProductPhoto(photoLink: String)
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String
 }

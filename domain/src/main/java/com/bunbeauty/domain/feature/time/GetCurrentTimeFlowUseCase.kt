@@ -9,9 +9,9 @@ class GetCurrentTimeFlowUseCase @Inject constructor(
     private val timeService: TimeService
 ) {
 
-    operator fun invoke(timeZone: String, interval: Int): Flow<Time> = flow {
+    operator fun invoke(timeZoneOffset: Int, interval: Int): Flow<Time> = flow {
         while (true) {
-            val currentTime = timeService.getCurrentTime(timeZone)
+            val currentTime = timeService.getCurrentTime(timeZoneOffset)
             emit(currentTime)
             delay((interval - currentTime.second) * 1_000L)
         }

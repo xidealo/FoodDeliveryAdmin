@@ -1,13 +1,13 @@
 package com.bunbeauty.domain.feature.cafelist
 
-import com.bunbeauty.domain.exception.DataNotFoundException
-import com.bunbeauty.domain.feature.orderlist.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.time.GetCurrentTimeFlowUseCase
+import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.CafeStatus
 import com.bunbeauty.domain.model.cafe.CafeWithWorkingHours
-import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.util.datetime.IDateTimeUtil
+import com.bunbeauty.domain.util.flattenFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -16,41 +16,34 @@ private const val SECONDS_IN_HOUR = 60 * 60
 private const val SECONDS_IN_DAY = 24 * 60 * 60
 
 class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
-    private val dataStoreRepo: DataStoreRepo,
-    private val getTimeZoneByCityUuid: GetTimeZoneByCityUuidUseCase,
     private val getCafeList: GetCafeListUseCase,
     private val getCurrentTimeFlow: GetCurrentTimeFlowUseCase,
+    private val dateTimeUtil: IDateTimeUtil
 ) {
 
     suspend operator fun invoke(): Flow<List<CafeWithWorkingHours>> {
-        val cityUuid = dataStoreRepo.managerCity.firstOrNull() ?: throw DataNotFoundException()
-        val timeZone = getTimeZoneByCityUuid(cityUuid)
-        val cafeList = getCafeList()
-
-        return getCurrentTimeFlow(timeZone = timeZone, interval = SECONDS_IN_MINUTE).map { currentTime ->
-            val currentDaySeconds = currentTime.minute * SECONDS_IN_MINUTE + currentTime.hour * SECONDS_IN_HOUR
-            cafeList.map { cafe ->
+        return getCafeList().map { cafe ->
+            getCurrentTimeFlow(
+                timeZoneOffset = cafe.offset,
+                interval = SECONDS_IN_MINUTE
+            ).map { time ->
+                val currentDaySeconds = time.minute * SECONDS_IN_MINUTE + time.hour * SECONDS_IN_HOUR
                 CafeWithWorkingHours(
                     uuid = cafe.uuid,
                     address = cafe.address,
-                    workingHours = "${getCafeTime(cafe.fromTime)} - ${getCafeTime(cafe.toTime)}",
+                    workingHours = getWorkingHours(cafe),
                     status = getStatus(cafe.fromTime, cafe.toTime, currentDaySeconds),
-                    cityUuid = cafe.cityUuid,
+                    cityUuid = cafe.cityUuid
                 )
             }
-        }
+        }.flattenFlow()
     }
 
-    private fun getCafeTime(daySeconds: Int): String {
-        val hours = daySeconds / SECONDS_IN_HOUR
-        val minutes = (daySeconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE
-        val minutesString = if (minutes < 10) {
-            "0$minutes"
-        } else {
-            minutes.toString()
-        }
+    private fun getWorkingHours(cafe: Cafe): String {
+        val fromTimeText = dateTimeUtil.getTimeHHMM(cafe.fromTime)
+        val toTimeText = dateTimeUtil.getTimeHHMM(cafe.toTime)
 
-        return "$hours:$minutesString"
+        return "$fromTimeText - $toTimeText"
     }
 
     private fun getStatus(fromDaySeconds: Int, toDaySeconds: Int, currentDaySeconds: Int): CafeStatus {
@@ -82,5 +75,4 @@ class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
             }
         }
     }
-
 }

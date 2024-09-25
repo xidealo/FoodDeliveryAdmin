@@ -70,6 +70,7 @@ android {
         buildFeatures {
             viewBinding = true
             compose = true
+            buildConfig = true
         }
 
         compileOptions {
@@ -131,7 +132,11 @@ dependencies {
     implementation(Compose.material)
     implementation(Compose.uiToolingPreview)
     implementation(Compose.uiViewbinding)
+    implementation(Compose.activity)
     implementation(Compose.lifecycle)
+
+    // Date time picker
+    implementation(MaterialDialogs.datetime)
 
     // Dagger Hilt
     implementation(Dagger.hilt)
@@ -140,6 +145,14 @@ dependencies {
     // Coil
     implementation(Coil.coil)
     implementation(Coil.coilCompose)
+
+    implementation(KotlinxCollectionsImmutable.collectionsImmutable)
+
+    // Coroutines
+    implementation(Coroutines.core)
+
+    // Image cropper
+    implementation(ImageCropper.imageCpropper)
 
     // Time
     implementation(KotlinxDatetime.datetime)

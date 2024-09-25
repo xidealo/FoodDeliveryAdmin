@@ -3,6 +3,7 @@ plugins {
     id(Plugin.androidLibrary)
     id(Plugin.kapt)
     id(Plugin.kotlinSerialization)
+    id(Plugin.ktLint) version Versions.ktLint
 }
 
 android {
@@ -34,6 +35,13 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
+
+    // Firebase
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.storage)
+
+    // Coroutine
+    implementation(Coroutines.playServices)
 
     // Database
     implementation(RoomDatabase.roomDatabaseRuntime)

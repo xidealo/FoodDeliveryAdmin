@@ -104,7 +104,7 @@ class OptionListBottomSheet : BottomSheetDialogFragment() {
             title: String,
             options: List<Option>,
             isCenter: Boolean = false
-        ) = suspendCoroutine<OptionListResult?> { continuation ->
+        ) = suspendCoroutine { continuation ->
             OptionListBottomSheet().apply {
                 this.title = title
                 this.options = options

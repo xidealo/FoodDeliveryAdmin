@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
@@ -26,8 +27,8 @@ fun TextWithHintCard(
     ) {
         Column(
             modifier = Modifier.padding(
-                horizontal = AdminTheme.dimensions.mediumSpace,
-                vertical = AdminTheme.dimensions.smallSpace
+                horizontal = 16.dp,
+                vertical = 8.dp
             ).fillMaxWidth()
         ) {
             val hintText = hintStringId?.let { id ->

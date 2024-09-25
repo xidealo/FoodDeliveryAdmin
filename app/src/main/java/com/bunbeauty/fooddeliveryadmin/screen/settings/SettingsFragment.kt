@@ -55,7 +55,7 @@ class SettingsFragment : BaseFragment<LayoutComposeBinding>() {
             if (isUnlimitedNotifications != null) {
                 SwitcherCard(
                     modifier = Modifier.padding(16.dp),
-                    labelStringId = R.string.msg_settings_unlimited_notifications,
+                    text = stringResource(R.string.msg_settings_unlimited_notifications),
                     checked = isUnlimitedNotifications,
                     onCheckChanged = onUnlimitedNotificationsCheckChanged
                 )

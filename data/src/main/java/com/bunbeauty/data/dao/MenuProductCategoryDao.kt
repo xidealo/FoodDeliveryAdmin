@@ -6,7 +6,7 @@ import androidx.room.Transaction
 import com.bunbeauty.data.model.entity.menuproduct.MenuProductCategoryEntity
 
 @Dao
-interface MenuProductCategoryDao : BaseDao<MenuProductCategoryEntity>{
+interface MenuProductCategoryDao : BaseDao<MenuProductCategoryEntity> {
     @Transaction
     @Query("DELETE FROM MenuProductCategoryEntity")
     suspend fun deleteAll()
