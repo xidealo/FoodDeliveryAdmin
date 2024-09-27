@@ -163,7 +163,7 @@ class EditAdditionFragment :
             priority = state.priority.toString(),
             fullName = state.fullName.orEmpty(),
             priceField = TextFieldUi(
-                value = state.price?.toString().orEmpty(),
+                value = state.price.orEmpty(),
                 errorResId = R.string.error_add_addition_empty_new_price,
                 isError = state.hasEditPriceError
             ),

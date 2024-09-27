@@ -2,7 +2,6 @@ package com.bunbeauty.domain.feature.additionlist.editaddition
 
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriceException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -105,24 +104,6 @@ class UpdateAdditionUseCaseTest {
 
         // When & Then
         assertFailsWith<AdditionPriorityException> {
-            updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
-        }
-    }
-
-    @Test
-    fun `invoke should throw AdditionPriceException when price is zero`() = runTest {
-        // Given
-        val token = "valid_token"
-        val additionUuidMock = "uuid"
-        val updateAddition = updateAdditionMock.copy(
-            name = "Бекон",
-            priority = 1,
-            price = 0
-        )
-        coEvery { dataStoreRepo.getToken() } returns token
-
-        // When & Then
-        assertFailsWith<AdditionPriceException> {
             updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
         }
     }
