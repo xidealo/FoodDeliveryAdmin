@@ -66,5 +66,6 @@ interface CreateMenuProduct {
         data class ShowMenuProductCreated(val menuProductName: String) : Event
         data object ShowSomethingWentWrong : Event
         data object ShowImageUploadingFailed : Event
+        data object ShowEmptyPhoto : Event
     }
 }

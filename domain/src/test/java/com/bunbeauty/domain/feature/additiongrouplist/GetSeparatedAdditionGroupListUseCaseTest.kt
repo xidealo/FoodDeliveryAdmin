@@ -5,13 +5,11 @@ import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetSeparatedAdditionGroupListUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()
@@ -39,12 +37,12 @@ class GetSeparatedAdditionGroupListUseCaseTest {
         coEvery {
             additionGroupRepo.getAdditionGroupList(
                 token = token,
-                takeRemote = isRefreshing
+                refreshing = isRefreshing
             )
         } returns emptyList()
 
         // When
-        val separatedAdditionGroupList = useCase()
+        val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
         // Then
         assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
     }
@@ -80,7 +78,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    takeRemote = isRefreshing
+                    refreshing = isRefreshing
                 )
             } returns listOf(
                 additionGroupMock.copy(
@@ -101,7 +99,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionGroupList = useCase()
+            val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
             assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
         }
@@ -139,7 +137,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    takeRemote = isRefreshing
+                    refreshing = isRefreshing
                 )
             } returns listOf(
                 additionGroupMock.copy(
@@ -160,7 +158,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionGroupList = useCase()
+            val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
             assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
         }
@@ -203,7 +201,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    takeRemote = isRefreshing
+                    refreshing = isRefreshing
                 )
             } returns listOf(
                 additionGroupMock.copy(
@@ -228,7 +226,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionGroupList = useCase()
+            val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
             assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
         }
@@ -266,7 +264,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    takeRemote = isRefreshing
+                    refreshing = isRefreshing
                 )
             } returns listOf(
                 additionGroupMock.copy(
@@ -287,7 +285,7 @@ class GetSeparatedAdditionGroupListUseCaseTest {
                 )
             )
             // When
-            val separatedAdditionGroupList = useCase()
+            val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
             assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
         }

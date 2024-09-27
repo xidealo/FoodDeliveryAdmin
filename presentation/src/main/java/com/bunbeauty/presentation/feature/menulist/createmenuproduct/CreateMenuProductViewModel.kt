@@ -85,7 +85,8 @@ class CreateMenuProductViewModel @Inject constructor(
             is CreateMenuProduct.Action.ChangeNutritionText -> setState {
                 copy(
                     nutritionField = nutritionField.copy(
-                        value = action.nutrition
+                        value = action.nutrition,
+                        isError = false
                     )
                 )
             }
@@ -193,13 +194,13 @@ class CreateMenuProductViewModel @Inject constructor(
                 createMenuProductUseCase(
                     params = state.value.run {
                         CreateMenuProductUseCase.Params(
-                            name = nameField.value,
-                            newPrice = newPriceField.value,
-                            oldPrice = oldPriceField.value,
-                            units = units,
-                            nutrition = nutritionField.value,
-                            description = descriptionField.value,
-                            comboDescription = comboDescription,
+                            name = nameField.value.trim(),
+                            newPrice = newPriceField.value.trim(),
+                            oldPrice = oldPriceField.value.trim(),
+                            units = units.trim(),
+                            nutrition = nutritionField.value.trim(),
+                            description = descriptionField.value.trim(),
+                            comboDescription = comboDescription.trim(),
                             selectedCategories = selectedCategoryList,
                             isVisible = isVisibleInMenu,
                             isRecommended = isVisibleInRecommendations,
@@ -289,6 +290,9 @@ class CreateMenuProductViewModel @Inject constructor(
                             isError = true
                         )
                     )
+                }
+                sendEvent {
+                    CreateMenuProduct.Event.ShowEmptyPhoto
                 }
             }
 

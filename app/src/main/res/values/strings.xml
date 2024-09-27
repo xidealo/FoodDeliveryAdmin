@@ -130,6 +130,7 @@
     <string name="action_common_menu_product_show_in_menu">Показывать в меню</string>
     <string name="error_common_menu_product_empty_name">Название не может быть пустым</string>
     <string name="error_common_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
+    <string name="error_common_menu_product_empty_photo">Добавьте фотографию</string>
     <string name="error_common_menu_product_low_old_price">Цена до скидки не может быть меньше актуальной</string>
     <string name="error_common_menu_product_nutrition_without_units">Укажите единицы измерения</string>
     <string name="error_common_menu_product_empty_description">Описание не может быть пустым</string>
@@ -168,6 +169,12 @@
     <string name="action_profile_statistic">Статистика</string>
     <string name="msg_accept_orders">Принимаем заказы</string>
     <string name="msg_accept_orders_description">Когда выключено, пользователи не могут делать заказы</string>
+    <string name="title_profile_enable_orders">Включить заказы?</string>
+    <string name="msg_profile_enable_orders">Пользователи смогут делать заказы</string>
+    <string name="title_profile_disable_orders">Отключить заказы?</string>
+    <string name="msg_profile_disable_orders">Пользователи не смогут делать заказы</string>
+    <string name="action_profile_enable">Включить</string>
+    <string name="action_profile_disable">Отключить</string>
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>

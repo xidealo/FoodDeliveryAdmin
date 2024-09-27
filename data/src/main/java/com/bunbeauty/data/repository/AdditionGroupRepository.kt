@@ -13,9 +13,21 @@ class AdditionGroupRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi
 ) : AdditionGroupRepo {
 
+    private var additionGroupListCache: List<AdditionGroup>? = null
+
     override suspend fun getAdditionGroupList(
         token: String,
-        takeRemote: Boolean
+        refreshing: Boolean
+    ): List<AdditionGroup> {
+        return if (refreshing) {
+            fetchAdditionGroupList(token = token)
+        } else {
+            additionGroupListCache ?: fetchAdditionGroupList(token = token)
+        }
+    }
+
+    private suspend fun fetchAdditionGroupList(
+        token: String
     ): List<AdditionGroup> {
         return when (val result = networkConnector.getAdditionGroupList(token = token)) {
             is ApiResult.Error -> {
@@ -24,6 +36,9 @@ class AdditionGroupRepository @Inject constructor(
 
             is ApiResult.Success -> {
                 result.data.results.map(mapAdditionGroupServerToAdditionGroup)
+                    .also { additionGroups ->
+                        additionGroupListCache = additionGroups
+                    }
             }
         }
     }
