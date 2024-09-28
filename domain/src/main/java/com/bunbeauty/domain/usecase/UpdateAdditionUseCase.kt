@@ -23,6 +23,10 @@ class UpdateAdditionUseCase @Inject constructor(
             updateAddition.priority == null -> throw AdditionPriorityException()
         }
 
-        additionRepo.updateAddition(additionUuid = additionUuid, token = token, updateAddition = updateAddition)
+        additionRepo.updateAddition(
+            additionUuid = additionUuid,
+            token = token,
+            updateAddition = updateAddition
+        )
     }
 }
