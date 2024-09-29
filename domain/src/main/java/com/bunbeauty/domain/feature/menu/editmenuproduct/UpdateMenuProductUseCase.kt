@@ -70,7 +70,7 @@ class UpdateMenuProductUseCase @Inject constructor(
         if (params.newImageUri != null) {
             newPhotoLink = uploadPhotoUseCase(imageUri = params.newImageUri).url
         }
-        if (params.photoLink != null) {
+        if (params.photoLink != null && params.newImageUri != null) {
             runCatching {
                 deletePhotoUseCase(photoLink = params.photoLink)
             }.onFailure {

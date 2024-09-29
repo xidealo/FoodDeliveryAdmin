@@ -16,6 +16,7 @@ import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -180,6 +181,9 @@ class UpdateMenuProductUseCaseTest {
             )
         )
 
+        coVerify(exactly = 0) {
+            deletePhotoUseCase(photoLink = photoLinkInitial)
+        }
         assertEquals(Unit, result)
     }
 
@@ -219,10 +223,14 @@ class UpdateMenuProductUseCaseTest {
                 isVisible = true,
                 isRecommended = false,
                 newImageUri = imageUri,
-                photoLink = null
+                photoLink = photoLinkInitial
             )
         )
 
+        coVerify(exactly = 1) {
+            deletePhotoUseCase(photoLink = photoLinkInitial)
+        }
         assertEquals(Unit, result)
     }
+
 }
