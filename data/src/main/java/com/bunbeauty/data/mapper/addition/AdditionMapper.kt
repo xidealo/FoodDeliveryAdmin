@@ -4,12 +4,10 @@ import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.addition.createaddition.CreateAdditionPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
-import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.addition.CreateAddition
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
-import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 
 val mapAdditionServerToAddition: AdditionServer.() -> Addition = {
     Addition(
