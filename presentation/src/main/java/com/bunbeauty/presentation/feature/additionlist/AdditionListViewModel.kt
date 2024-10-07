@@ -33,6 +33,10 @@ class AdditionListViewModel @Inject constructor(
                 )
             }
 
+             AdditionList.Action.OnCreateAddition -> sendEvent {
+                AdditionList.Event.OnCreateAddition
+            }
+
             is AdditionList.Action.OnVisibleClick -> updateVisible(
                 uuid = action.uuid,
                 isVisible = action.isVisible

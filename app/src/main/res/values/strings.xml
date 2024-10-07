@@ -210,6 +210,9 @@
 
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
+    <string name="title_addition_position_visible">Видимые позиции</string>
+    <string name="title_addition_position_hidden">Скрытые позиции</string>
+    <string name="action_addition_list_add">Добавить</string>
 
     <!-- EDIT ADDITION  -->
     <string name="title_edit_addition">Редактировать добавку</string>

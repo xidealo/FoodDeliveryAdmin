@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.additionlist.createaddition
 
 import android.os.Bundle
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +19,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
@@ -54,12 +57,23 @@ class CreateAdditionFragment :
             title = stringResource(R.string.title_create_addition),
             backActionClick = { onAction(CreateAddition.Action.OnBackClick) },
             actionButton = {
-                LoadingButton(
+                Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_edit_addition_save,
-                    onClick = { onAction(CreateAddition.Action.OnSaveCreateAdditionClick) },
-                    isLoading = state.isLoading
-                )
+                    verticalArrangement = spacedBy(8.dp)
+                ) {
+                    AddPhotoButton(
+                        isError = false,
+                        onClick = {
+
+                        }
+                    )
+                    LoadingButton(
+                        //modifier = Modifier.padding(horizontal = 16.dp),
+                        textStringId = R.string.action_edit_addition_save,
+                        onClick = { onAction(CreateAddition.Action.OnSaveCreateAdditionClick) },
+                        isLoading = state.isLoading
+                    )
+                }
             }
         ) {
             Column(
@@ -148,6 +162,27 @@ class CreateAdditionFragment :
     }
 
     @Composable
+    private fun AddPhotoButton(
+        isError: Boolean,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier
+    ) {
+        SecondaryButton(
+            modifier = modifier,
+            textStringId = R.string.title_add_menu_product_add_photo,
+            onClick = onClick,
+            isError = isError,
+            borderColor = if (isError) {
+                AdminTheme.colors.main.error
+            } else {
+                AdminTheme.colors.main.primary
+            },
+            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
+        )
+    }
+
+
+    @Composable
     override fun mapState(state: CreateAddition.DataState): CreateAdditionViewState {
         return CreateAdditionViewState(
             name = state.name,
@@ -176,9 +211,10 @@ class CreateAdditionFragment :
             }
 
             is CreateAddition.Event.ShowSaveAdditionSuccess -> {
-                    resources.getString(R.string.msg_edit_addition_updated, event.additionName)
+                resources.getString(R.string.msg_edit_addition_updated, event.additionName)
                 findNavController().popBackStack()
             }
+
         }
     }
 
@@ -188,10 +224,10 @@ class CreateAdditionFragment :
         AdminTheme {
             CreateAdditionScreen(
                 state = CreateAdditionViewState(
-                    name = "1",
+                    name = "Гриб",
                     priority = "1",
-                    fullName = "2",
-                    price = "3",
+                    fullName = "Гриб белый",
+                    price = "30",
                     isVisible = false,
                     isLoading = false,
                     createNameError = null,

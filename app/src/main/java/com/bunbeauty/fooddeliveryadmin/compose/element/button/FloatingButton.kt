@@ -26,7 +26,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FloatingButton(
+fun
+        FloatingButton(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
     @StringRes textStringId: Int? = null,

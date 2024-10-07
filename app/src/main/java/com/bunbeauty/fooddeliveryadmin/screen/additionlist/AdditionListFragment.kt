@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -29,11 +30,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.additionlist.AdditionList
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +72,17 @@ class AdditionListFragment :
             },
             backActionClick = {
                 onAction(AdditionList.Action.OnBackClick)
-            }
+            },
+            actionButton = {
+                FloatingButton(
+                    iconId = R.drawable.ic_plus,
+                    textStringId = R.string.action_addition_list_add,
+                    onClick = {
+                        onAction(AdditionList.Action.OnCreateAddition)
+                    }
+                )
+            },
+            actionButtonPosition = FabPosition.End
         ) {
             when {
                 state.hasError -> {
@@ -91,7 +104,7 @@ class AdditionListFragment :
                                 key = TITLE_POSITION_VISIBLE_KEY
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.title_position_visible),
+                                    text = stringResource(id = R.string.title_addition_position_visible),
                                     style = AdminTheme.typography.titleMedium.bold
                                 )
                             }
@@ -112,7 +125,7 @@ class AdditionListFragment :
                                 key = TITLE_POSITION_HIDDEN_KEY
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.title_position_hidden),
+                                    text = stringResource(id = R.string.title_addition_position_hidden),
                                     style = AdminTheme.typography.titleMedium.bold,
                                     modifier = Modifier.padding(top = 8.dp)
                                 )
@@ -212,6 +225,10 @@ class AdditionListFragment :
         when (event) {
             is AdditionList.Event.Back -> {
                 findNavController().popBackStack()
+            }
+
+            is AdditionList.Event.OnCreateAddition ->{
+                findNavController().navigateSafe(AdditionListFragmentDirections.toCreateAdditionFragment())
             }
 
             is AdditionList.Event.OnAdditionClick -> {

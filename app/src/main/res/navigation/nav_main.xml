@@ -199,6 +199,9 @@
         <action
             android:id="@+id/to_EditAdditionFragment"
             app:destination="@id/editAdditionFragment" />
+        <action
+            android:id="@+id/to_CreateAdditionFragment"
+            app:destination="@+id/createAdditionFragment" />
     </fragment>
 
     <fragment
@@ -208,6 +211,12 @@
         <argument
             android:name="additionUuid"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAdditionFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additionlist.createaddition.CreateAdditionFragment"
+        android:label="CreateAdditionFragment">
     </fragment>
 
     <fragment

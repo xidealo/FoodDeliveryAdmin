@@ -1,31 +1,33 @@
 package com.bunbeauty.presentation.feature.additionlist.createaddition
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
+import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.additionlist.createaddition.CreateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition.*
+import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProduct
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-private const val ADDITION_UUID = "additionUuid"
-
-
 @HiltViewModel
-class CreateAdditionViewModel @Inject constructor() :
+class CreateAdditionViewModel @Inject constructor(
+    private val createAdditionUseCase: CreateAdditionUseCase
+) :
     BaseStateViewModel<CreateAddition.DataState, CreateAddition.Action, CreateAddition.Event>(
-    initState = DataState(
-        uuid = "",
-        name = "",
-        priority = 0,
-        price = null,
-        isLoading = true,
-        isVisible = false,
-        fullName = "",
-        hasCreateNameError = false,
-        hasCreatePriceError = false
-    )
-) {
+        initState = DataState(
+            uuid = "",
+            name = "",
+            priority = 0,
+            price = null,
+            isLoading = true,
+            isVisible = false,
+            fullName = "",
+            hasCreateNameError = false,
+            hasCreatePriceError = false
+        )
+    ) {
 
     override fun reduce(action: CreateAddition.Action, dataState: CreateAddition.DataState) {
         when (action) {
@@ -68,6 +70,7 @@ class CreateAdditionViewModel @Inject constructor() :
 
     }
 
+
     private fun saveCreateAddition() {
         setState {
             copy(
@@ -76,6 +79,46 @@ class CreateAdditionViewModel @Inject constructor() :
                 hasCreatePriceError = false
             )
         }
+        viewModelScope.launchSafe(
+            block = {
+                createAdditionUseCase(
+                    params = state.value.run {
+                        CreateAdditionUseCase.Params(
+                            name = name,
+                            priority = priority,
+                            fullName = fullName,
+                            price = price,
+                            isVisible = isVisible
+                        )
+                    }
+                )
+                sendEvent {
+                    CreateAddition.Event.ShowSaveAdditionSuccess()
+                }
+            },
+            onError = { throwable ->
+                setState { copy(sendingToServer = false) }
+                when (throwable) {
+                    is MenuProductNameException -> {
+                        setState {
+                            copy(hasNameError = true)
+                        }
+                    }
+
+                    is MenuProductNewPriceException -> {
+                        setState {
+                            copy(hasCreatePriceError = true)
+                        }
+                    }
+
+                    else -> {
+                        sendEvent {
+                            CreateMenuProduct.Event.ShowSomethingWentWrong
+                        }
+                    }
+                }
+            }
+        )
     }
 
 
