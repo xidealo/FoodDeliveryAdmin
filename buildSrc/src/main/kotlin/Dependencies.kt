@@ -27,16 +27,17 @@ object Versions {
     const val kotlinxDatetime = "0.4.0"
     const val materialDialogsDatetime = "0.9.0"
     const val kotlinxCollectionsImmutable = "0.3.7"
+    const val turbine = "1.1.0"
 }
 
 object Application {
     const val versionMajor = 1
-    const val versionMinor = 5
-    const val versionPatch = 0
+    const val versionMinor = 6
+    const val versionPatch = 1
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 150
+    const val versionCode = 161
 }
 
 object Namespace {
@@ -186,6 +187,10 @@ object ImageCropper {
 
 object Test {
     const val test = "test"
+}
+
+object Turbine {
+    const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
 }
 
 object KotlinxCollectionsImmutable {

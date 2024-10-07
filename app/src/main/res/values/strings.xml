@@ -18,6 +18,7 @@
     <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
     <string name="msg_common_non_working_day">Сегодня запланирован нерабочий день</string>
     <string name="msg_common_cafe">Ресторан</string>
+    <string name="msg_common_period">Период</string>
     <string name="description_product">Фото блюда</string>
     <string name="description_ic_checked">Иконка выбрано</string>
     <string name="description_common_navigate">Перейти</string>
@@ -27,6 +28,8 @@
     <string name="action_common_ok">Ок</string>
     <string name="action_common_logout">Выйти</string>
     <string name="action_common_delete">Удалить</string>
+    <string name="action_common_add_photo">Добавить фото</string>
+    <string name="action_common_replace_photo">Заменить фото</string>
     <string name="error_common_no_internet">Нет подключения к интернету</string>
     <string name="error_common_update_failed">При обновлении данных произошла ошибка</string>
     <string name="error_common_loading_failed">При загрузке данных произошла ошибка</string>
@@ -104,56 +107,48 @@
     <string name="msg_product_statistic_cost">Стоимость</string>
 
     <!-- MENU -->
-    <string name="action_menu_create">Создать</string>
+    <string name="title_menu">Меню</string>
+    <string name="action_menu_positions">Позиции</string>
+    <string name="action_menu_addition_groups">Группы добавок</string>
+    <string name="action_menu_additions">Добавки</string>
+
+    <!--MENU LIST FRAGMENT-->
+    <string name="title_menu_list_position_visible">Видимые позиции</string>
+    <string name="title_menu_list_position_hidden">Скрытые позиции</string>
+    <string name="action_menu_list_create">Создать</string>
+
+    <!-- MENU PRODUCT COMMON -->
+    <string name="hint_common_menu_product_name">Название*</string>
+    <string name="hint_common_menu_product_new_price">Актуальная цена*</string>
+    <string name="hint_common_menu_product_old_price">Цена до скидки</string>
+    <string name="hint_common_menu_product_nutrition">Вес/Объем</string>
+    <string name="hint_common_menu_product_units">Единицы</string>
+    <string name="hint_common_menu_product_description">Описание*</string>
+    <string name="hint_common_menu_product_combo_description">Описание комбо</string>
+    <string name="hint_common_menu_product_categories">Категории*</string>
+    <string name="action_common_menu_product_recommend">Рекомендовать</string>
+    <string name="action_common_menu_product_show_in_menu">Показывать в меню</string>
+    <string name="error_common_menu_product_empty_name">Название не может быть пустым</string>
+    <string name="error_common_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
+    <string name="error_common_menu_product_empty_photo">Добавьте фотографию</string>
+    <string name="error_common_menu_product_low_old_price">Цена до скидки не может быть меньше актуальной</string>
+    <string name="error_common_menu_product_nutrition_without_units">Укажите единицы измерения</string>
+    <string name="error_common_menu_product_empty_description">Описание не может быть пустым</string>
+    <string name="error_common_menu_product_categories">Выберите категории</string>
+    <string name="error_common_menu_product_image_uploading">Не удалось загрузить изображение</string>
 
     <!-- CREATE MENU PRODUCT -->
     <string name="title_create_menu_product_new_product">Новая позиция</string>
-    <string name="hint_create_menu_product_name">Название</string>
-    <string name="msg_create_menu_product_select_category">Выберите категорию</string>
-    <string name="hint_create_menu_product_cost">Цена, ₽</string>
-    <string name="hint_create_menu_product_discount_cost">Цена со скидкой, ₽</string>
-    <string name="hint_create_menu_product_weight">Вес, г</string>
-    <string name="hint_create_menu_product_description">Описание</string>
-    <string name="hint_create_menu_product_combo_description">Описание комбо</string>
     <string name="action_create_menu_product_create">Создать</string>
-    <string name="error_common_image_uploading_failed">Не удалось загрузить изображение</string>
+    <string name="msg_create_menu_product_add_menu_added">%s добавлен</string>
 
     <!-- EDIT MENU PRODUCT -->
-    <string name="title_edit_menu_product_editing">Редактирование</string>
-    <string name="hint_edit_menu_product_name">Название</string>
-    <string name="hint_edit_menu_product_full_name">Полное название</string>
-    <string name="hint_edit_menu_product_new_price">Актуальная цена</string>
-    <string name="hint_edit_menu_product_priority">Приоритет</string>
-    <string name="hint_edit_menu_product_old_price">Цена до скидки</string>
-    <string name="hint_edit_menu_product_cost">Цена, ₽</string>
-    <string name="hint_edit_menu_product_discount_cost">Цена без скидки, ₽</string>
-    <string name="hint_edit_menu_product_nutrition">Вес</string>
-    <string name="hint_edit_menu_product_description">Описание</string>
-    <string name="hint_edit_menu_product_combo_description">Описание комбо</string>
-    <string name="action_edit_menu_product_save">Сохранить</string>
-    <string name="action_edit_menu_product_delete">Удалить</string>
-    <string name="title_edit_menu_product_alert">Удаление</string>
-    <string name="msg_edit_menu_product_alert">Удалить позицию?</string>
-    <string name="action_edit_menu_product_alert_yes">Да</string>
-    <string name="action_edit_menu_product_alert_cancel">Отмена</string>
-    <string name="error_edit_menu_product_empty_name">Название не может быть пустым</string>
-    <string name="error_edit_menu_product_empty_description">Описание не может быть пустым</string>
-    <string name="error_edit_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
-    <string name="error_edit_menu_product_cost_incorrect">Некорректное значение</string>
-    <string name="error_edit_menu_product_discount_cost_incorrect">Должна быть больше цены</string>
-    <string name="error_edit_menu_product_combo_description_incorrect">Описание комбо не может быть пустым</string>
-    <string name="title_edit_menu_product_select_category">Выберите категорию</string>
-    <string name="title_edit_menu_product_is_visible">Показывать в меню</string>
-    <string name="msg_product_updated">%s обновлён</string>
-    <string name="error_product_updated">Что-то пошло не так</string>
-    <string name="hint_edit_menu_product_utils">Ед</string>
+    <string name="msg_edit_menu_product_updated">%s обновлён</string>
 
-    <!--MENU LIST FRAGMENT-->
-    <string name="title_position_visible">Видимые позиции</string>
-    <string name="title_position_hidden">Скрытые позиции</string>
-    <string name="action_menu_list_add">Добавить</string>
+    <!-- CROP IMAGE -->
+    <string name="title_crop_image">Обработка фото</string>
 
-    <string-array name="utilsList">
+    <string-array name="array_common_menu_product_units">
         <item>г</item>
         <item>кг</item>
         <item>мл</item>
@@ -165,12 +160,6 @@
     <string name="title_notification">Считывание заказов c приложения PapaKarloAdmin</string>
     <string name="msg_notification_info">Ожидание заказов</string>
 
-    <!-- MENU -->
-    <string name="title_menu">Меню</string>
-    <string name="action_menu_positions">Позиции</string>
-    <string name="action_menu_addition_groups">Группы добавок</string>
-    <string name="action_menu_additions">Добавки</string>
-
     <!-- PROFILE -->
     <string name="title_profile">Профиль</string>
     <string name="hint_profile_manager">Менеджер</string>
@@ -180,6 +169,12 @@
     <string name="action_profile_statistic">Статистика</string>
     <string name="msg_accept_orders">Принимаем заказы</string>
     <string name="msg_accept_orders_description">Когда выключено, пользователи не могут делать заказы</string>
+    <string name="title_profile_enable_orders">Включить заказы?</string>
+    <string name="msg_profile_enable_orders">Пользователи смогут делать заказы</string>
+    <string name="title_profile_disable_orders">Отключить заказы?</string>
+    <string name="msg_profile_disable_orders">Пользователи не смогут делать заказы</string>
+    <string name="action_profile_enable">Включить</string>
+    <string name="action_profile_disable">Отключить</string>
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>
@@ -220,7 +215,7 @@
     <string name="hint_edit_addition_name">Название</string>
     <string name="hint_edit_addition_priority">Приоритет</string>
     <string name="hint_edit_addition_full_name">Полное название</string>
-    <string name="hint_edit_addition_new_price">Актуальная цена</string>
+    <string name="hint_edit_addition_price">Цена</string>
     <string name="title_edit_addition_is_visible">Показывать в меню</string>
     <string name="msg_edit_addition_updated">%s обновлён</string>
     <string name="error_edit_addition_empty_name">Название не может быть пустым</string>
@@ -233,24 +228,10 @@
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
 
-
-    <!-- ADD MENU PRODUCT -->
-    <string name="title_add_menu_product">Добавление продукта</string>
-    <string name="hint_add_menu_product_categories">Категории</string>
-    <string name="title_add_menu_product_categories">Выбрать категории</string>
-    <string name="title_add_menu_product_is_visible_in_menu">Показывать в меню</string>
-    <string name="title_add_menu_product_is_recommendation">Рекомендовать</string>
-    <string name="title_add_menu_product_add_photo">Добавить фото</string>
-    <string name="error_add_menu_product_empty_name">Название не может быть пустым</string>
-    <string name="error_add_menu_product_empty_description">Описание не может быть пустым</string>
-    <string name="error_add_menu_product_empty_new_price">Актульная цена не может быть пустой</string>
-    <string name="error_add_menu_product_old_price_incorrect">Должна быть больше цены</string>
-    <string name="msg_add_menu_added">%s добавлен</string>
-
     <!--CATEGORY LIST-->
     <string name="title_category_list">Категории</string>
     <string name="action_category_list_save">Сохранить</string>
-    <string name="msg_category_list_selected">Категории добавлены</string>
+    <string name="msg_category_list_selected">Выбранные категории обновлены</string>
 
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>

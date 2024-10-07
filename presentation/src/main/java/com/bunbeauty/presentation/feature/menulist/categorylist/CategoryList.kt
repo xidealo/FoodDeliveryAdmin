@@ -1,6 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.categorylist
 
-import com.bunbeauty.domain.model.category.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent

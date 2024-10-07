@@ -2,6 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -49,6 +51,9 @@ import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val VISIBLE_TITLE_KEY = "visible title"
+private const val HIDDEN_TITLE_KEY = "hidden title"
+
 @AndroidEntryPoint
 class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
 
@@ -92,7 +97,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                 if (menuListViewState.state is MenuListViewState.State.Success) {
                     FloatingButton(
                         iconId = R.drawable.ic_plus,
-                        textStringId = R.string.action_menu_list_add,
+                        textStringId = R.string.action_menu_list_create,
                         onClick = {
                             findNavController().navigateSafe(MenuListFragmentDirections.toCreateMenuProductFragment())
                         }
@@ -121,6 +126,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun MenuListSuccessScreen(
         state: MenuListViewState.State.Success
@@ -135,35 +141,65 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (state.visibleMenuProductItems.isNotEmpty()) {
-                item {
+                item(key = VISIBLE_TITLE_KEY) {
                     Text(
-                        text = stringResource(id = R.string.title_position_visible),
+                        modifier = Modifier.animateItemPlacement(
+                            animationSpec = tween(500)
+                        ),
+                        text = stringResource(id = R.string.title_menu_list_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
                     )
                 }
-                items(state.visibleMenuProductItems) { visibleMenuProduct ->
-                    MenuListProductCard(visibleMenuProduct)
+                items(
+                    items = state.visibleMenuProductItems,
+                    key = { visibleMenuProduct ->
+                        visibleMenuProduct.uuid
+                    }
+                ) { visibleMenuProduct ->
+                    MenuListProductCard(
+                        modifier = Modifier.animateItemPlacement(
+                            animationSpec = tween(500)
+                        ),
+                        menuProduct = visibleMenuProduct
+                    )
                 }
             }
             if (state.hiddenMenuProductItems.isNotEmpty()) {
-                item {
+                item(key = HIDDEN_TITLE_KEY) {
                     Text(
-                        text = stringResource(id = R.string.title_position_hidden),
-                        style = AdminTheme.typography.titleMedium.bold,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .animateItemPlacement(
+                                animationSpec = tween(500)
+                            ),
+                        text = stringResource(id = R.string.title_menu_list_position_hidden),
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
-                items(state.hiddenMenuProductItems) { hiddenMenuProduct ->
-                    MenuListProductCard(hiddenMenuProduct)
+                items(
+                    items = state.hiddenMenuProductItems,
+                    key = { visibleMenuProduct ->
+                        visibleMenuProduct.uuid
+                    }
+                ) { hiddenMenuProduct ->
+                    MenuListProductCard(
+                        modifier = Modifier.animateItemPlacement(
+                            animationSpec = tween(500)
+                        ),
+                        menuProduct = hiddenMenuProduct
+                    )
                 }
             }
         }
     }
 
     @Composable
-    private fun MenuListProductCard(menuProduct: MenuProductItem) {
+    private fun MenuListProductCard(
+        menuProduct: MenuProductItem,
+        modifier: Modifier = Modifier
+    ) {
         AdminCard(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             onClick = {
                 viewModel.goToEditMenuProduct(menuProduct.uuid)
             }

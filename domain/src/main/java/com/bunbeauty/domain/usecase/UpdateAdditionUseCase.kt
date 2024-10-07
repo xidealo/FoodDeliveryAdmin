@@ -2,7 +2,6 @@ package com.bunbeauty.domain.usecase
 
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriceException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -22,9 +21,12 @@ class UpdateAdditionUseCase @Inject constructor(
         when {
             updateAddition.name.isNullOrBlank() -> throw AdditionNameException()
             updateAddition.priority == null -> throw AdditionPriorityException()
-            updateAddition.price == null -> throw AdditionPriceException()
         }
 
-        additionRepo.updateAddition(additionUuid = additionUuid, token = token, updateAddition = updateAddition)
+        additionRepo.updateAddition(
+            additionUuid = additionUuid,
+            token = token,
+            updateAddition = updateAddition
+        )
     }
 }

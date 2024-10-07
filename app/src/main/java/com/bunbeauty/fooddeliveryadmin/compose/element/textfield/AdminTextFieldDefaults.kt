@@ -1,9 +1,18 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.textfield
 
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 object AdminTextFieldDefaults {
@@ -63,4 +72,36 @@ object AdminTextFieldDefaults {
             handleColor = AdminTheme.colors.main.primary,
             backgroundColor = AdminTheme.colors.main.primary.copy(alpha = 0.4f)
         )
+
+    fun keyboardOptions(
+        capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
+        autoCorrect: Boolean = false,
+        keyboardType: KeyboardType = KeyboardType.Text,
+        imeAction: ImeAction = ImeAction.Next
+    ): KeyboardOptions {
+        return KeyboardOptions(
+            capitalization = capitalization,
+            autoCorrect = autoCorrect,
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        )
+    }
+
+    fun keyboardActions(
+        onDone: (KeyboardActionScope.() -> Unit)? = null
+    ): KeyboardActions {
+        return KeyboardActions(
+            onDone = onDone
+        )
+    }
+
+    @Composable
+    fun RubleSymbol(modifier: Modifier = Modifier) {
+        Text(
+            modifier = modifier,
+            text = RUBLE_CURRENCY,
+            style = AdminTheme.typography.bodyLarge,
+            color = AdminTheme.colors.main.onSurface
+        )
+    }
 }

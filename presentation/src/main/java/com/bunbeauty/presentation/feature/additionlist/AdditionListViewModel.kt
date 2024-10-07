@@ -17,7 +17,7 @@ class AdditionListViewModel @Inject constructor(
     initState = AdditionList.DataState(
         visibleAdditions = listOf(),
         hiddenAdditions = listOf(),
-        isLoading = false,
+        isLoading = true,
         isRefreshing = false,
         hasError = false
     )

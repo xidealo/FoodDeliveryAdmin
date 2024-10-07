@@ -67,7 +67,7 @@ class EditAdditionViewModel @Inject constructor(
 
             is EditAddition.Action.EditPriceAddition -> setState {
                 copy(
-                    price = action.price.toIntOrNull()
+                    price = action.price
                 )
             }
         }
@@ -86,10 +86,10 @@ class EditAdditionViewModel @Inject constructor(
                 updateAdditionUseCase(
                     updateAddition = state.value.run {
                         UpdateAddition(
-                            name = name,
+                            name = name.trim(),
                             priority = priority,
-                            fullName = fullName?.takeIf { fullName.isNotBlank() },
-                            price = price,
+                            fullName = fullName?.takeIf { fullName.isNotBlank() }?.trim(),
+                            price = price?.toIntOrNull() ?: 0,
                             isVisible = isVisible
                         )
                     },
@@ -133,7 +133,7 @@ class EditAdditionViewModel @Inject constructor(
                         name = addition.name,
                         priority = addition.priority,
                         fullName = addition.fullName,
-                        price = addition.price,
+                        price = addition.price?.toString(),
                         isVisible = addition.isVisible,
                         isLoading = false
                     )

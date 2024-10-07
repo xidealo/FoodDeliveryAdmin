@@ -33,6 +33,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -94,55 +95,63 @@ class AdditionListFragment :
                     }
                 }
 
-                else -> {
-                    LazyColumn(
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        if (state.visibleAdditionItems.isNotEmpty()) {
-                            item(
-                                key = TITLE_POSITION_VISIBLE_KEY
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.title_addition_position_visible),
-                                    style = AdminTheme.typography.titleMedium.bold
-                                )
-                            }
-                            items(
-                                items = state.visibleAdditionItems,
-                                key = { additionItem ->
-                                    additionItem.uuid
-                                }
-                            ) { visibleAddition ->
-                                AdditionCard(
-                                    additionItem = visibleAddition,
-                                    onAction = onAction
-                                )
-                            }
-                        }
-                        if (state.hiddenAdditionItems.isNotEmpty()) {
-                            item(
-                                key = TITLE_POSITION_HIDDEN_KEY
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.title_addition_position_hidden),
-                                    style = AdminTheme.typography.titleMedium.bold,
-                                    modifier = Modifier.padding(top = 8.dp)
-                                )
-                            }
-                            items(
-                                items = state.hiddenAdditionItems,
-                                key = { additionGroupItem ->
-                                    additionGroupItem.uuid
-                                }
-                            ) { hiddenAddition ->
-                                AdditionCard(
-                                    additionItem = hiddenAddition,
-                                    onAction = onAction
-                                )
-                            }
-                        }
+                state.isLoading -> LoadingScreen()
+
+                else -> AdditionListSuccessScreen(state = state, onAction = onAction)
+            }
+        }
+    }
+
+    @Composable
+    private fun AdditionListSuccessScreen(
+        state: AdditionListViewState,
+        onAction: (AdditionList.Action) -> Unit
+    ) {
+        LazyColumn(
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if (state.visibleAdditionItems.isNotEmpty()) {
+                item(
+                    key = TITLE_POSITION_VISIBLE_KEY
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.title_menu_list_position_visible),
+                        style = AdminTheme.typography.titleMedium.bold
+                    )
+                }
+                items(
+                    items = state.visibleAdditionItems,
+                    key = { additionItem ->
+                        additionItem.uuid
                     }
+                ) { visibleAddition ->
+                    AdditionCard(
+                        additionItem = visibleAddition,
+                        onAction = onAction
+                    )
+                }
+            }
+            if (state.hiddenAdditionItems.isNotEmpty()) {
+                item(
+                    key = TITLE_POSITION_HIDDEN_KEY
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.title_menu_list_position_hidden),
+                        style = AdminTheme.typography.titleMedium.bold,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+                items(
+                    items = state.hiddenAdditionItems,
+                    key = { additionGroupItem ->
+                        additionGroupItem.uuid
+                    }
+                ) { hiddenAddition ->
+                    AdditionCard(
+                        additionItem = hiddenAddition,
+                        onAction = onAction
+                    )
                 }
             }
         }
