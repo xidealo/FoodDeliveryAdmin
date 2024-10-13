@@ -95,7 +95,7 @@ jobs:
         run: ./gradlew --continue lintDebug
       - name: "KtLint ${{ matrix.flavor }}"
         if: ${{ matrix.linter == 'ktLint' }}
-        run: ./gradlew --continue ktLintDebugCheck
+        run: ./gradlew --continue ktLintCheck
 
   test:
     name: "Unit tests"
