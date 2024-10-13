@@ -60,7 +60,7 @@ class OrderDetailsStateMapper @Inject constructor(
                             },
                             finalCost = "${orderDetails.newTotalCost} $RUBLE_CURRENCY",
                             statusColor = getOrderColor(orderDetails.status),
-                            saving = dataState.saving,
+                            saving = dataState.saving
                         )
                     } ?: OrderDetailsUiState.State.Error
                 }

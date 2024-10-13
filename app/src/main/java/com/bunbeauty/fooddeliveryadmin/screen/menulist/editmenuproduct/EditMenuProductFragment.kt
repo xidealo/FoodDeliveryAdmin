@@ -228,7 +228,7 @@ class EditMenuProductFragment :
                     isLoading = state.sendingToServer,
                     onClick = {
                         onAction(EditMenuProduct.Action.SaveMenuProductClick)
-                    },
+                    }
                 )
             }
         }
