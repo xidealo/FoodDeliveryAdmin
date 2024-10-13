@@ -209,15 +209,15 @@
     <!-- EDIT ADDITION  -->
     <string name="title_edit_addition">Редактировать добавку</string>
     <string name="action_edit_addition_save">Сохранить</string>
-    <string name="hint_edit_addition_name">Название</string>
-    <string name="hint_edit_addition_priority">Приоритет</string>
+    <string name="hint_edit_addition_name">Название*</string>
+    <string name="hint_edit_addition_priority">Приоритет*</string>
     <string name="hint_edit_addition_full_name">Полное название</string>
     <string name="hint_edit_addition_price">Цена</string>
     <string name="title_edit_addition_is_visible">Показывать в меню</string>
     <string name="msg_edit_addition_updated">%s обновлён</string>
     <string name="error_edit_addition_empty_name">Название не может быть пустым</string>
     <string name="error_edit_addition_empty_full_name">Полное название не может быть пустым</string>
-    <string name="error_add_addition_empty_new_price">Актульная цена не может быть пустой</string>
+    <string name="error_add_addition_empty_priority">Приоритет не может быть пустым</string>
 
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>

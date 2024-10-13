@@ -232,5 +232,4 @@ class UpdateMenuProductUseCaseTest {
         }
         assertEquals(Unit, result)
     }
-
 }
