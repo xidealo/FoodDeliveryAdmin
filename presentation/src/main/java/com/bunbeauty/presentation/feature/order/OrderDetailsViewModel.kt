@@ -28,7 +28,7 @@ class OrderDetailsViewModel @Inject constructor(
     private val resources: Resources
 ) : BaseViewModel() {
 
-    private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
+    private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitial())
     val dataState: StateFlow<OrderDetailsDataState> = mutableDataState.asStateFlow()
 
     fun setupOrder(orderUuid: String, orderCode: String) {
@@ -125,6 +125,9 @@ class OrderDetailsViewModel @Inject constructor(
     private fun updateStatus(orderUuid: String, status: OrderStatus) {
         viewModelScope.launchSafe(
             block = {
+                mutableDataState.update { dataState ->
+                    dataState.copy(saving = true)
+                }
                 updateOrderStatus(
                     orderUuid = orderUuid,
                     status = status
@@ -136,7 +139,7 @@ class OrderDetailsViewModel @Inject constructor(
             onError = {
                 val errorMessage = resources.getString(R.string.error_order_details_can_not_save)
                 mutableDataState.update { dataState ->
-                    dataState + OrderDetailsEvent.ShowErrorMessage(errorMessage)
+                    dataState.copy(saving = false) + OrderDetailsEvent.ShowErrorMessage(errorMessage)
                 }
             }
         )

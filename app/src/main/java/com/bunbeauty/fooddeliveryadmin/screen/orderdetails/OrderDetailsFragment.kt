@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,13 +33,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.DiscountCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.StatusNavigationTextCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.surface.AdminSurface
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
@@ -272,15 +272,17 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
         stateSuccess: OrderDetailsUiState.State.Success,
         onSaveClicked: () -> Unit
     ) {
-        AdminSurface(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(AdminTheme.colors.main.surface)
+                .padding(16.dp)
+        ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(AdminTheme.colors.main.surface)
-                    .padding(AdminTheme.dimensions.mediumSpace)
+                verticalArrangement = spacedBy(8.dp)
             ) {
                 stateSuccess.percentDiscount?.let { discount ->
-                    Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                    Row {
                         Text(
                             text = stringResource(R.string.msg_order_details_discount_cost),
                             style = AdminTheme.typography.bodyMedium,
@@ -292,7 +294,7 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 }
                 stateSuccess.deliveryCost?.let { deliveryCost ->
-                    Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                    Row {
                         Text(
                             text = stringResource(R.string.msg_order_details_delivery_cost),
                             style = AdminTheme.typography.bodyMedium,
@@ -321,19 +323,21 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         color = AdminTheme.colors.main.onSurface
                     )
                 }
-                MainButton(
-                    modifier = Modifier.padding(top = 16.dp),
-                    textStringId = R.string.action_order_details_save,
-                    onClick = onSaveClicked
-                )
-                SecondaryButton(
-                    modifier = Modifier.padding(top = 8.dp),
-                    textStringId = R.string.action_order_details_do_not_save,
-                    onClick = {
-                        findNavController().popBackStack()
-                    }
-                )
             }
+
+            LoadingButton(
+                modifier = Modifier.padding(top = 16.dp),
+                text = stringResource(R.string.action_order_details_save),
+                isLoading = stateSuccess.saving,
+                onClick = onSaveClicked
+            )
+            SecondaryButton(
+                modifier = Modifier.padding(top = 8.dp),
+                textStringId = R.string.action_order_details_do_not_save,
+                onClick = {
+                    findNavController().popBackStack()
+                }
+            )
         }
     }
 
@@ -424,7 +428,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         deliveryCost = "100 ₽",
                         percentDiscount = "10%",
                         finalCost = "480 ₽",
-                        statusColor = AdminTheme.colors.order.notAccepted
+                        statusColor = AdminTheme.colors.order.notAccepted,
+                        saving = false
                     ),
                     eventList = emptyList()
                 ),

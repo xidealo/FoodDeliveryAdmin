@@ -58,9 +58,11 @@ class EditAdditionFragment :
             actionButton = {
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_edit_addition_save,
-                    onClick = { onAction(EditAddition.Action.OnSaveEditAdditionClick) },
-                    isLoading = state.isLoading
+                    text = stringResource(R.string.action_edit_addition_save),
+                    isLoading = state.isLoading,
+                    onClick = {
+                        onAction(EditAddition.Action.OnSaveEditAdditionClick)
+                    }
                 )
             }
         ) {
