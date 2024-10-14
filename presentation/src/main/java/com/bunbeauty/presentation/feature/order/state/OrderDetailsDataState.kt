@@ -5,8 +5,8 @@ import com.bunbeauty.domain.model.order.details.OrderDetails
 data class OrderDetailsDataState(
     val state: State,
     val code: String,
-
     val orderDetails: OrderDetails?,
+    val saving: Boolean,
 
     val eventList: List<OrderDetailsEvent>
 ) {
@@ -23,11 +23,14 @@ data class OrderDetailsDataState(
 
     companion object {
 
-        fun crateInitialOrderDetailsDataState() = OrderDetailsDataState(
-            state = State.LOADING,
-            code = "",
-            orderDetails = null,
-            eventList = emptyList()
-        )
+        fun crateInitial(): OrderDetailsDataState {
+            return OrderDetailsDataState(
+                state = State.LOADING,
+                code = "",
+                orderDetails = null,
+                saving = false,
+                eventList = emptyList()
+            )
+        }
     }
 }

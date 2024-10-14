@@ -120,7 +120,7 @@ class CropImageFragment :
                     }
 
                     LoadingButton(
-                        textStringId = R.string.action_order_details_save,
+                        text = stringResource(R.string.action_order_details_save),
                         isLoading = state.isLoading,
                         onClick = {
                             onAction(CropImage.Action.SaveClick)

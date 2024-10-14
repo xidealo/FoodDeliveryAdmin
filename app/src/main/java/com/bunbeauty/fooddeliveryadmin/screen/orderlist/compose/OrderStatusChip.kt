@@ -28,11 +28,18 @@ fun OrderStatusChip(
     Box(
         modifier = modifier
             .clip(orderStatusShape)
-            .background(getOrderColor(orderStatus))
+            .background(
+                color = getOrderColor(
+                    orderStatus = orderStatus
+                )
+            )
     ) {
         Text(
             text = statusName,
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+            modifier = Modifier.padding(
+                vertical = 4.dp,
+                horizontal = 8.dp
+            ),
             style = AdminTheme.typography.labelSmall.medium,
             color = AdminTheme.colors.order.onOrder,
             textAlign = TextAlign.Center
