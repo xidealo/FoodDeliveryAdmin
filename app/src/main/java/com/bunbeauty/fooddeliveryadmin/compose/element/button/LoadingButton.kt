@@ -61,7 +61,8 @@ fun LoadingButton(
 @Preview
 @Composable
 private fun LoadingButtonPreview(
-    @PreviewParameter(BooleanPreviewParameterProvider::class) isLoading: Boolean
+    @PreviewParameter(BooleanPreviewParameterProvider::class)
+    isLoading: Boolean
 ) {
     AdminTheme {
         LoadingButton(
