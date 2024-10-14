@@ -1,3 +1,5 @@
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+import com.github.triplet.gradle.play.PlayPublisherExtension
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -10,6 +12,7 @@ plugins {
     id(Plugin.googleServices)
     id(Plugin.crashlytics)
     id(Plugin.kotlinParcelize)
+    id(Plugin.tripletPlay)
     id(Plugin.ktLint) version Versions.ktLint
 }
 
@@ -82,6 +85,11 @@ android {
         }
         composeOptions {
             kotlinCompilerExtensionVersion = Versions.composeCompiler
+        }
+        playConfigs {
+            register("release") {
+                commonPlayConfig(this, this@Build_gradle)
+            }
         }
     }
 }
@@ -156,4 +164,17 @@ dependencies {
 
     // Time
     implementation(KotlinxDatetime.datetime)
+}
+
+fun commonPlayConfig(
+    playPublisherExtension: PlayPublisherExtension,
+    buildGradle: Build_gradle
+) {
+    with(playPublisherExtension) {
+        track.set("production")
+        defaultToAppBundles.set(true)
+        userFraction.set(1.0)
+        serviceAccountCredentials.set(buildGradle.file("google-play-api-key.json"))
+        releaseStatus.set(ReleaseStatus.DRAFT)
+    }
 }

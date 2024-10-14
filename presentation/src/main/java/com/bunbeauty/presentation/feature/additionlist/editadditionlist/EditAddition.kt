@@ -9,9 +9,9 @@ interface EditAddition {
         val uuid: String,
         val name: String,
         val hasEditNameError: Boolean,
-        val priority: Int,
+        val priority: String?,
+        val hasEditPriorityError: Boolean,
         val price: String?,
-        val hasEditPriceError: Boolean,
         val fullName: String?,
         val isLoading: Boolean,
         val isVisible: Boolean

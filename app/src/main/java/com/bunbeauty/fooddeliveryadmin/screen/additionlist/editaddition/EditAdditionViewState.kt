@@ -5,9 +5,9 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 data class EditAdditionViewState(
     val nameField: TextFieldUi,
-    val priority: String,
+    val priorityField: TextFieldUi,
     val fullName: String,
-    val priceField: TextFieldUi,
+    val price: String,
     val isVisible: Boolean,
     val isLoading: Boolean
 ) : BaseViewState
