@@ -24,7 +24,7 @@ Get it on [Google Play](https://play.google.com/store/apps/details?id=com.bunbea
 
 ![Admin logo large](https://github.com/xidealo/FoodDeliveryAdmin/assets/36783631/5d4792ac-5753-4c83-b6e8-d5533ce787b3)
 
-# Tests
+# Checks
 To run Android Lint, use:
 ```sh
 ./gradlew :app:lint
@@ -37,7 +37,7 @@ To fix codestyle ktlint lint, use:
 ```sh
 ./gradlew ktlintFormat
 ```
-To unit test:
+To run unit test:
 ```sh
 ./gradlew test
 ```

@@ -161,7 +161,7 @@ class EditAdditionFragment :
                 isError = state.hasEditNameError
             ),
             priorityField = TextFieldUi(
-                state.priority.toString(),
+                value = state.priority.toString(),
                 isError = state.hasEditPriorityError,
                 errorResId = R.string.error_add_addition_empty_priority
             ),
