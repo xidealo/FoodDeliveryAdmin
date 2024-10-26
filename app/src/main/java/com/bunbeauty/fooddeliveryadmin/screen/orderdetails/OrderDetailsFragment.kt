@@ -356,7 +356,17 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     (activity as? MessageHost)?.showErrorMessage(event.message)
                 }
 
-                OrderDetailsEvent.GoBackEvent -> {
+                is OrderDetailsEvent.GoBackEvent -> {
+                    findNavController().navigateUp()
+                }
+
+                is OrderDetailsEvent.SavedEvent -> {
+                    (activity as? MessageHost)?.showInfoMessage(
+                        getString(
+                            R.string.msg_order_details_saved,
+                            event.orderCode
+                        )
+                    )
                     findNavController().navigateUp()
                 }
             }

@@ -85,18 +85,20 @@ class OrderDetailsViewModel @Inject constructor(
         } else {
             updateStatus(
                 orderUuid = orderDetails.uuid,
-                status = orderDetails.status
+                status = orderDetails.status,
+                orderCode = orderDetails.code
             )
         }
     }
 
     fun onCancellationConfirmed() {
-        mutableDataState.value.orderDetails?.uuid?.let { orderUuid ->
-            updateStatus(
-                orderUuid = orderUuid,
-                status = OrderStatus.CANCELED
-            )
-        }
+        val orderDetails = mutableDataState.value.orderDetails ?: return
+
+        updateStatus(
+            orderUuid = orderDetails.uuid,
+            status = OrderStatus.CANCELED,
+            orderCode = orderDetails.code
+        )
     }
 
     fun consumeEvents(events: List<OrderDetailsEvent>) {
@@ -122,7 +124,7 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun updateStatus(orderUuid: String, status: OrderStatus) {
+    private fun updateStatus(orderUuid: String, status: OrderStatus, orderCode: String) {
         viewModelScope.launchSafe(
             block = {
                 mutableDataState.update { dataState ->
@@ -133,7 +135,7 @@ class OrderDetailsViewModel @Inject constructor(
                     status = status
                 )
                 mutableDataState.update { dataState ->
-                    dataState + OrderDetailsEvent.GoBackEvent
+                    dataState + OrderDetailsEvent.SavedEvent(orderCode = orderCode)
                 }
             },
             onError = {
