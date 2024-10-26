@@ -14,7 +14,7 @@ buildscript {
         classpath(ClassPath.googleServices)
         classpath(ClassPath.hiltServices)
         classpath(ClassPath.crashlytics)
-
+        classpath(ClassPath.publisher)
     }
 }
 
