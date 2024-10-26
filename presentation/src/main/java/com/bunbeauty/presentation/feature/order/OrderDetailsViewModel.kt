@@ -28,7 +28,7 @@ class OrderDetailsViewModel @Inject constructor(
     private val resources: Resources
 ) : BaseViewModel() {
 
-    private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitialOrderDetailsDataState())
+    private val mutableDataState = MutableStateFlow(OrderDetailsDataState.crateInitial())
     val dataState: StateFlow<OrderDetailsDataState> = mutableDataState.asStateFlow()
 
     fun setupOrder(orderUuid: String, orderCode: String) {
@@ -76,6 +76,12 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
+    fun onBackClicked() {
+        mutableDataState.update { dataState ->
+            dataState + OrderDetailsEvent.GoBackEvent
+        }
+    }
+
     fun onSaveClicked() {
         val orderDetails = mutableDataState.value.orderDetails ?: return
         if (orderDetails.status == OrderStatus.CANCELED) {
@@ -85,18 +91,20 @@ class OrderDetailsViewModel @Inject constructor(
         } else {
             updateStatus(
                 orderUuid = orderDetails.uuid,
-                status = orderDetails.status
+                status = orderDetails.status,
+                orderCode = orderDetails.code
             )
         }
     }
 
     fun onCancellationConfirmed() {
-        mutableDataState.value.orderDetails?.uuid?.let { orderUuid ->
-            updateStatus(
-                orderUuid = orderUuid,
-                status = OrderStatus.CANCELED
-            )
-        }
+        val orderDetails = mutableDataState.value.orderDetails ?: return
+
+        updateStatus(
+            orderUuid = orderDetails.uuid,
+            status = OrderStatus.CANCELED,
+            orderCode = orderDetails.code
+        )
     }
 
     fun consumeEvents(events: List<OrderDetailsEvent>) {
@@ -122,21 +130,24 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun updateStatus(orderUuid: String, status: OrderStatus) {
+    private fun updateStatus(orderUuid: String, status: OrderStatus, orderCode: String) {
         viewModelScope.launchSafe(
             block = {
+                mutableDataState.update { dataState ->
+                    dataState.copy(saving = true)
+                }
                 updateOrderStatus(
                     orderUuid = orderUuid,
                     status = status
                 )
                 mutableDataState.update { dataState ->
-                    dataState + OrderDetailsEvent.GoBackEvent
+                    dataState + OrderDetailsEvent.SavedEvent(orderCode = orderCode)
                 }
             },
             onError = {
                 val errorMessage = resources.getString(R.string.error_order_details_can_not_save)
                 mutableDataState.update { dataState ->
-                    dataState + OrderDetailsEvent.ShowErrorMessage(errorMessage)
+                    dataState.copy(saving = false) + OrderDetailsEvent.ShowErrorMessage(errorMessage)
                 }
             }
         )

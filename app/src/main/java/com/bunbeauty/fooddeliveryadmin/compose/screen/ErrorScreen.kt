@@ -74,9 +74,9 @@ fun ErrorScreen(
             modifier = Modifier
                 .padding(bottom = AdminTheme.dimensions.mediumSpace)
                 .padding(horizontal = AdminTheme.dimensions.mediumSpace),
-            onClick = onClick,
-            textStringId = R.string.action_retry,
-            isLoading = isLoading
+            text = stringResource(R.string.action_retry),
+            isLoading = isLoading,
+            onClick = onClick
         )
     }
 }

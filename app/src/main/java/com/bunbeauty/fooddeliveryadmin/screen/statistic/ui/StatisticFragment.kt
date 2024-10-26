@@ -152,11 +152,11 @@ class StatisticFragment :
             actionButton = {
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_product_statistic_load,
+                    text = stringResource(R.string.action_product_statistic_load),
+                    isLoading = statisticViewState.isLoading,
                     onClick = {
                         onAction(Statistic.Action.LoadStatisticClick)
-                    },
-                    isLoading = statisticViewState.isLoading
+                    }
                 )
             }
         ) {

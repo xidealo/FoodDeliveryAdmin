@@ -25,7 +25,8 @@ data class OrderDetailsUiState(
             val productList: List<Product>,
             val percentDiscount: String?,
             val deliveryCost: String?,
-            val finalCost: String
+            val finalCost: String,
+            val saving: Boolean
         ) : State
     }
 
