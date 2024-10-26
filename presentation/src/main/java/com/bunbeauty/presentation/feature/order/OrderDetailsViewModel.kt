@@ -76,6 +76,12 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
+    fun onBackClicked() {
+        mutableDataState.update { dataState ->
+            dataState + OrderDetailsEvent.GoBackEvent
+        }
+    }
+
     fun onSaveClicked() {
         val orderDetails = mutableDataState.value.orderDetails ?: return
         if (orderDetails.status == OrderStatus.CANCELED) {

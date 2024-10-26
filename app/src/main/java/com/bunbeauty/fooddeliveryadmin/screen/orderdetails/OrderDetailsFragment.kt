@@ -86,7 +86,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
             OrderDetailsScreen(
                 uiState = orderDetailsStateMapper.map(dataState),
                 onStatusClicked = viewModel::onStatusClicked,
-                onSaveClicked = viewModel::onSaveClicked
+                onSaveClicked = viewModel::onSaveClicked,
+                onBackClicked = viewModel::onBackClicked
             )
 
             LaunchedEffect(dataState.eventList) {
@@ -99,11 +100,12 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     private fun OrderDetailsScreen(
         uiState: OrderDetailsUiState,
         onStatusClicked: () -> Unit,
-        onSaveClicked: () -> Unit
+        onSaveClicked: () -> Unit,
+        onBackClicked: () -> Unit
     ) {
         AdminScaffold(
             title = uiState.title,
-            backActionClick = { findNavController().popBackStack() }
+            backActionClick = onBackClicked
         ) {
             when (uiState.state) {
                 OrderDetailsUiState.State.Loading -> {
@@ -444,7 +446,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     eventList = emptyList()
                 ),
                 onStatusClicked = {},
-                onSaveClicked = {}
+                onSaveClicked = {},
+                onBackClicked = {}
             )
         }
     }
