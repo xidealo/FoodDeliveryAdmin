@@ -28,16 +28,17 @@ object Versions {
     const val materialDialogsDatetime = "0.9.0"
     const val kotlinxCollectionsImmutable = "0.3.7"
     const val turbine = "1.1.0"
+    const val publisher = "3.11.0"
 }
 
 object Application {
     const val versionMajor = 1
     const val versionMinor = 6
-    const val versionPatch = 1
+    const val versionPatch = 2
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 161
+    const val versionCode = 162
 }
 
 object Namespace {
@@ -69,6 +70,7 @@ object ClassPath {
         "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
     const val crashlytics =
         "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
+    const val publisher = "com.github.triplet.gradle:play-publisher:${Versions.publisher}"
 }
 
 object Plugin {
@@ -83,6 +85,7 @@ object Plugin {
     const val googleServices = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"
     const val ktLint = "org.jlleitschuh.gradle.ktlint"
+    const val tripletPlay = "com.github.triplet.play"
 }
 
 object Dagger {
@@ -177,7 +180,8 @@ object Mockk {
 
 object Coroutines {
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-    const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines}"
+    const val playServices =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines}"
     const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 }
 

@@ -58,9 +58,11 @@ class EditAdditionFragment :
             actionButton = {
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    textStringId = R.string.action_edit_addition_save,
-                    onClick = { onAction(EditAddition.Action.OnSaveEditAdditionClick) },
-                    isLoading = state.isLoading
+                    text = stringResource(R.string.action_edit_addition_save),
+                    isLoading = state.isLoading,
+                    onClick = {
+                        onAction(EditAddition.Action.OnSaveEditAdditionClick)
+                    }
                 )
             }
         ) {
@@ -93,12 +95,14 @@ class EditAdditionFragment :
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
                             labelText = stringResource(R.string.hint_edit_addition_priority),
-                            value = state.priority,
+                            value = state.priorityField.value,
                             onValueChange = { priority ->
                                 onAction(
                                     EditAddition.Action.EditPriorityAddition(priority)
                                 )
                             },
+                            errorText = stringResource(state.priorityField.errorResId),
+                            isError = state.priorityField.isError,
                             enabled = !state.isLoading,
                             keyboardOptions = keyboardOptions(
                                 keyboardType = KeyboardType.Number
@@ -121,12 +125,10 @@ class EditAdditionFragment :
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
                             labelText = stringResource(R.string.hint_edit_addition_price),
-                            value = state.priceField.value,
+                            value = state.price,
                             onValueChange = { price ->
                                 onAction(EditAddition.Action.EditPriceAddition(price))
                             },
-                            errorText = stringResource(state.priceField.errorResId),
-                            isError = state.priceField.isError,
                             enabled = !state.isLoading,
                             keyboardOptions = keyboardOptions(
                                 keyboardType = KeyboardType.Number
@@ -160,13 +162,13 @@ class EditAdditionFragment :
                 errorResId = R.string.error_edit_addition_empty_name,
                 isError = state.hasEditNameError
             ),
-            priority = state.priority.toString(),
-            fullName = state.fullName.orEmpty(),
-            priceField = TextFieldUi(
-                value = state.price.orEmpty(),
-                errorResId = R.string.error_add_addition_empty_new_price,
-                isError = state.hasEditPriceError
+            priorityField = TextFieldUi(
+                value = state.priority.toString(),
+                isError = state.hasEditPriorityError,
+                errorResId = R.string.error_add_addition_empty_priority
             ),
+            fullName = state.fullName.orEmpty(),
+            price = state.price.orEmpty(),
             isVisible = state.isVisible,
             isLoading = state.isLoading
         )
@@ -198,13 +200,13 @@ class EditAdditionFragment :
                         errorResId = 0,
                         isError = false
                     ),
-                    priority = "",
-                    fullName = "",
-                    priceField = TextFieldUi(
+                    priorityField = TextFieldUi(
                         value = "",
-                        errorResId = 0,
+                        errorResId = R.string.error_edit_addition_empty_name,
                         isError = false
                     ),
+                    fullName = "",
+                    price = "2",
                     isVisible = false,
                     isLoading = false
                 ),

@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
+import com.bunbeauty.fooddeliveryadmin.compose.element.rememberMultipleEventsCutter
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 
@@ -39,9 +40,12 @@ fun SecondaryButton(
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentEnforcement provides false
     ) {
+        val multipleEventsCutter = rememberMultipleEventsCutter()
         OutlinedButton(
             modifier = modifier.fillMaxWidth(),
-            onClick = onClick,
+            onClick = {
+                multipleEventsCutter.processEvent(onClick)
+            },
             colors = if (isError) {
                 AdminButtonDefaults.errorSecondaryButtonColors
             } else {
