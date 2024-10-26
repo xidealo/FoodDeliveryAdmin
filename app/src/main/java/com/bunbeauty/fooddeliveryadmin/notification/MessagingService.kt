@@ -67,6 +67,7 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
                         POST_NOTIFICATIONS
                     ) == PackageManager.PERMISSION_GRANTED
                     )
+
         if (isNotificationPermissionGranted) {
             val code = remoteMessage.data[ORDER_CODE_KEY] ?: return
 
