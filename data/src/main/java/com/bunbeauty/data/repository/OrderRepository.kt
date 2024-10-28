@@ -142,6 +142,11 @@ class OrderRepository @Inject constructor(
         }
     }
 
+    override fun clearCache() {
+        cachedOrderList = emptyList()
+        cachedOrderAvailability = null
+    }
+
     private fun updateOrderList(orderList: List<Order>, newOrder: Order): List<Order> {
         val isExisted = orderList.any { order ->
             order.uuid == newOrder.uuid

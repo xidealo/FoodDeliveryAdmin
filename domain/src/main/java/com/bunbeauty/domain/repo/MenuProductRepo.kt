@@ -27,7 +27,7 @@ interface MenuProductRepo {
     ): MenuProduct?
 
     /*DELETE*/
-    suspend fun clearCache()
+    fun clearCache()
 
     /*OTHER*/
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String
