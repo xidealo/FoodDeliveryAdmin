@@ -68,7 +68,7 @@ class PhotoRepository @Inject constructor(
         storageRef.delete().await()
     }
 
-    override suspend fun clearCache() {
+    override fun clearCache() {
         photoListCache = null
     }
 

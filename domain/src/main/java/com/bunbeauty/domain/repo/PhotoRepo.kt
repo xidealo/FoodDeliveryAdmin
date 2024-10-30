@@ -7,5 +7,5 @@ interface PhotoRepo {
     suspend fun fetchPhotoList(username: String): List<Photo>
     suspend fun uploadPhoto(uri: String, username: String): Photo?
     suspend fun deletePhoto(photoLink: String)
-    suspend fun clearCache()
+    fun clearCache()
 }

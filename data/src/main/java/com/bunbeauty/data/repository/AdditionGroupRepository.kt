@@ -59,7 +59,7 @@ class AdditionGroupRepository @Inject constructor(
         )
     }
 
-    override suspend fun clearCache() {
+    override fun clearCache() {
         // TODO("Not yet implemented")
     }
 }
