@@ -100,6 +100,6 @@ class MenuProductRepository @Inject constructor(
     }
 
     override fun clearCache() {
-        menuProductCache = emptyList()
+        menuProductCache = null
     }
 }

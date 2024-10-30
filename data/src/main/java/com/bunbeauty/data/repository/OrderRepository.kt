@@ -30,7 +30,7 @@ class OrderRepository @Inject constructor(
     private val serverOrderMapper: IServerOrderMapper
 ) : OrderRepo {
 
-    private var cachedOrderList: List<Order> = emptyList()
+    private var cachedOrderList: List<Order>? = null
     private var cachedOrderAvailability: OrderAvailability? = null
 
     override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
@@ -47,7 +47,10 @@ class OrderRepository @Inject constructor(
             .filterIsInstance<ApiResult.Success<OrderServer>>()
             .map { successApiResult ->
                 val order = serverOrderMapper.mapOrder(successApiResult.data)
-                val updatedOrderList = updateOrderList(cachedOrderList, order)
+                val updatedOrderList = updateOrderList(
+                    orderList = cachedOrderList.orEmpty(),
+                    newOrder = order
+                )
                 cachedOrderList = updatedOrderList
                 updatedOrderList
             }.onCompletion {
@@ -143,7 +146,7 @@ class OrderRepository @Inject constructor(
     }
 
     override fun clearCache() {
-        cachedOrderList = emptyList()
+        cachedOrderList = null
         cachedOrderAvailability = null
     }
 
