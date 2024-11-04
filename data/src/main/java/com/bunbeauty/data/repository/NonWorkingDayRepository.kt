@@ -63,7 +63,7 @@ class NonWorkingDayRepository @Inject constructor(
         }
     }
 
-    override suspend fun clearCache() {
+    override fun clearCache() {
         nonWorkingDayMapCache.clear()
     }
 
