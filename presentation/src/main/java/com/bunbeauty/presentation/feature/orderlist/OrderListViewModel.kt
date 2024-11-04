@@ -245,5 +245,4 @@ class OrderListViewModel @Inject constructor(
         orderListJob = null
         orderErrorJob = null
     }
-
 }
