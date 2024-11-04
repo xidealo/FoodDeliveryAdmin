@@ -5,7 +5,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
-import com.bunbeauty.domain.feature.orderlist.CheckIsLastOrderUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
@@ -24,7 +23,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +32,6 @@ class OrderListViewModel @Inject constructor(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val getCafeList: GetCafeListUseCase,
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
-    private val getIsLastOrder: CheckIsLastOrderUseCase,
     private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
     private val unsubscribeFromCafeNotification: UnsubscribeFromCafeNotificationUseCase,
     private val subscribeToCafeNotification: SubscribeToCafeNotificationUseCase,
@@ -142,10 +139,9 @@ class OrderListViewModel @Inject constructor(
             state + OrderListEvent.OpenOrderDetailsEvent(
                 orderUuid = orderItem.uuid,
                 orderCode = orderItem.code
+            ) + OrderListEvent.CancelNotification(
+                notificationId = orderItem.code.hashCode()
             )
-        }
-        viewModelScope.launch {
-            checkToCancelNotification(orderItem.code)
         }
     }
 
@@ -250,11 +246,4 @@ class OrderListViewModel @Inject constructor(
         orderErrorJob = null
     }
 
-    private suspend fun checkToCancelNotification(orderCode: String) {
-        if (getIsLastOrder(orderCode = orderCode)) {
-            mutableDataState.update { dataState ->
-                dataState + OrderListEvent.CancelNotification
-            }
-        }
-    }
 }

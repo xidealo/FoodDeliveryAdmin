@@ -23,10 +23,8 @@ interface DataStoreRepo {
     val previousCafeUuid: Flow<String?>
     suspend fun savePreviousCafeUuid(cafeUuid: String)
 
-    val lastOrderCode: Flow<String>
-    suspend fun saveLastOrderCode(orderCode: String)
-
     val isUnlimitedNotification: Flow<Boolean>
+    suspend fun getIsUnlimitedNotification(): Boolean
     suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean)
 
     suspend fun clearCache()
