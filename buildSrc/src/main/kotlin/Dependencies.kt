@@ -16,7 +16,7 @@ object Versions {
     const val room = "2.6.0-alpha02"
     const val joda = "2.12.5"
     const val crashlytics = "2.9.2"
-    const val firebase = "32.2.0"
+    const val firebase = "33.5.1"
     const val composeCompiler = "1.5.0"
     const val composeBom = "2024.05.00"
     const val lifecycleRuntimeCompose = "2.6.1"
@@ -34,11 +34,11 @@ object Versions {
 object Application {
     const val versionMajor = 1
     const val versionMinor = 6
-    const val versionPatch = 2
+    const val versionPatch = 4
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 162
+    const val versionCode = 164
 }
 
 object Namespace {

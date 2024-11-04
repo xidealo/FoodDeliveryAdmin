@@ -20,5 +20,5 @@ interface AdditionRepo {
     )
 
     /*DELETE*/
-    suspend fun clearCache()
+    fun clearCache()
 }

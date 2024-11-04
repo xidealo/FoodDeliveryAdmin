@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.usecase
 
 import com.bunbeauty.domain.NotificationService
+import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class LogoutUseCase @Inject constructor(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val notificationService: NotificationService,
+    private val orderRepo: OrderRepo,
     private val dataStoreRepo: DataStoreRepo,
     private val cafeRepo: CafeRepo,
     private val cityRepo: CityRepo,
@@ -29,6 +31,7 @@ class LogoutUseCase @Inject constructor(
         getSelectedCafe()?.let { selectedCafe ->
             notificationService.unsubscribeFromNotifications(selectedCafe.uuid)
         }
+        orderRepo.clearCache()
         dataStoreRepo.clearCache()
         cafeRepo.clearCache()
         cityRepo.clearCache()

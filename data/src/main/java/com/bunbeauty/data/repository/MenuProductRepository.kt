@@ -2,7 +2,6 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.dao.MenuProductDao
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.toMenuProductPostServer
@@ -14,8 +13,7 @@ import javax.inject.Inject
 
 class MenuProductRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val menuProductMapper: MenuProductMapper,
-    private val menuProductDao: MenuProductDao
+    private val menuProductMapper: MenuProductMapper
 ) : MenuProductRepo {
 
     private var menuProductCache: List<MenuProduct>? = null
@@ -101,7 +99,7 @@ class MenuProductRepository @Inject constructor(
         }
     }
 
-    override suspend fun clearCache() {
-        menuProductDao.deleteAll()
+    override fun clearCache() {
+        menuProductCache = null
     }
 }
