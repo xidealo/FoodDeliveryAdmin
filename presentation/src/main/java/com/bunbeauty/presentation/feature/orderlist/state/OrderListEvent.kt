@@ -8,5 +8,5 @@ sealed interface OrderListEvent {
     class OpenOrderDetailsEvent(val orderUuid: String, val orderCode: String) : OrderListEvent
     data object OpenLoginEvent : OrderListEvent
     data object ShowError : OrderListEvent
-    data object CancelNotification : OrderListEvent
+    data class CancelNotification(val notificationId: Int) : OrderListEvent
 }

@@ -40,7 +40,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.fooddeliveryadmin.notification.LAST_ORDER_NOTIFICATION_ID
 import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
@@ -219,8 +218,8 @@ class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 }
 
-                OrderListEvent.CancelNotification -> {
-                    notificationManagerCompat.cancel(LAST_ORDER_NOTIFICATION_ID)
+                is OrderListEvent.CancelNotification -> {
+                    notificationManagerCompat.cancel(event.notificationId)
                 }
             }
         }
