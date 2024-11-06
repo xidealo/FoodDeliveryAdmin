@@ -4,7 +4,7 @@ object Versions {
     const val ktor = "2.3.2"
     const val coil = "2.4.0"
     const val datastorePreferences = "1.0.0"
-    const val googleServices = "4.3.15"
+    const val googleServices = "4.4.2"
     const val navigation = "2.7.0"
     const val activity = "1.7.2"
     const val fragment = "1.5.7"
@@ -34,11 +34,11 @@ object Versions {
 object Application {
     const val versionMajor = 1
     const val versionMinor = 6
-    const val versionPatch = 4
+    const val versionPatch = 5
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 164
+    const val versionCode = 165
 }
 
 object Namespace {
