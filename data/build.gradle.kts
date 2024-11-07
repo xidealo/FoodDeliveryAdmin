@@ -55,6 +55,9 @@ dependencies {
     // DataStore
     implementation(DataStore.dataStorePreferences)
 
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.messaging)
+
     Ktor.run {
         implementation(clientLogging)
         implementation(clientWebsockets)

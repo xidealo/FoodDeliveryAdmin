@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -27,7 +28,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 @AndroidEntryPoint
 class MessagingService : FirebaseMessagingService(), LifecycleOwner {
 
@@ -40,11 +40,20 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
     lateinit var dataStoreRepo: DataStoreRepo
 
     @Inject
+    lateinit var userAuthorizationRepo: UserAuthorizationRepo
+
+    @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat
 
     override fun onCreate() {
         serviceDispatcher.onServicePreSuperOnCreate()
         super.onCreate()
+    }
+
+    override fun onNewToken(token: String) {
+        lifecycleScope.launch {
+            userAuthorizationRepo.updateNotificationToken(newNotificationToken = token)
+        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

@@ -9,8 +9,6 @@ import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.SaveSelectedCafeUuidUseCase
-import com.bunbeauty.domain.feature.orderlist.SubscribeToCafeNotificationUseCase
-import com.bunbeauty.domain.feature.orderlist.UnsubscribeFromCafeNotificationUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.feature.orderlist.mapper.OrderMapper
@@ -33,8 +31,6 @@ class OrderListViewModel @Inject constructor(
     private val getCafeList: GetCafeListUseCase,
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
     private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
-    private val unsubscribeFromCafeNotification: UnsubscribeFromCafeNotificationUseCase,
-    private val subscribeToCafeNotification: SubscribeToCafeNotificationUseCase,
     private val orderMapper: OrderMapper
 ) : BaseViewModel(), DefaultLifecycleObserver {
 
@@ -172,8 +168,6 @@ class OrderListViewModel @Inject constructor(
                     if (selectedCafe == null) {
                         state.copy(cafeState = OrderListDataState.State.ERROR)
                     } else {
-                        unsubscribeFromCafeNotification()
-                        subscribeToCafeNotification(selectedCafe.uuid)
                         state.copy(
                             cafeState = OrderListDataState.State.SUCCESS,
                             selectedCafe = selectedCafe

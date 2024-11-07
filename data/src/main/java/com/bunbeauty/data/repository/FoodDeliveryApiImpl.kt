@@ -25,6 +25,7 @@ import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
+import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -42,6 +43,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders.Authorization
@@ -84,6 +86,17 @@ class FoodDeliveryApiImpl @Inject constructor(
         return post(
             path = "user/login",
             body = userAuthorizationRequest
+        )
+    }
+
+    override suspend fun putNotificationToken(
+        updateNotificationTokenRequest: UpdateNotificationTokenRequest,
+        token: String
+    ): ApiResult<Unit> {
+        return put(
+            path = "user/notification_token",
+            body = updateNotificationTokenRequest,
+            token = token
         )
     }
 
@@ -393,6 +406,24 @@ class FoodDeliveryApiImpl @Inject constructor(
     ): ApiResult<T> {
         return safeCall {
             client.post {
+                buildRequest(
+                    path = path,
+                    body = body,
+                    parameters = parameters,
+                    token = token
+                )
+            }
+        }
+    }
+
+    private suspend inline fun <reified T> put(
+        path: String,
+        body: Any,
+        parameters: Map<String, String> = mapOf(),
+        token: String? = null
+    ): ApiResult<T> {
+        return safeCall {
+            client.put {
                 buildRequest(
                     path = path,
                     body = body,

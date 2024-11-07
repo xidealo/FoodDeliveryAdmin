@@ -21,6 +21,7 @@ import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
+import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
@@ -33,6 +34,11 @@ interface FoodDeliveryApi {
     suspend fun login(
         userAuthorizationRequest: UserAuthorizationRequest
     ): ApiResult<UserAuthorizationResponse>
+
+    suspend fun putNotificationToken(
+        updateNotificationTokenRequest: UpdateNotificationTokenRequest,
+        token: String
+    ): ApiResult<Unit>
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>

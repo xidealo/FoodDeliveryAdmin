@@ -51,15 +51,10 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launchSafe(
             block = {
-                loginUseCase(username = processedUsername, password = processedPassword)
-                    .let { (token, managerCityUuid, companyUuid) ->
-                        with(dataStoreRepo) {
-                            saveToken(token)
-                            saveManagerCity(managerCityUuid)
-                            saveCompanyUuid(companyUuid)
-                            saveUsername(processedUsername)
-                        }
-                    }
+                loginUseCase(
+                    username = processedUsername,
+                    password = processedPassword
+                )
                 mutableLoginViewState.update { oldState ->
                     oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
                 }
