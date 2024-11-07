@@ -100,6 +100,13 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
+    override suspend fun deleteNotificationToken(token: String): ApiResult<Unit> {
+        return delete(
+            path = "user/notification_token",
+            token = token
+        )
+    }
+
     override suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>> {
         return get(
             path = "cafe",

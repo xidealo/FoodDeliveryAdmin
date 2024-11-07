@@ -52,7 +52,7 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
 
     override fun onNewToken(token: String) {
         lifecycleScope.launch {
-            userAuthorizationRepo.updateNotificationToken(newNotificationToken = token)
+            userAuthorizationRepo.updateNotificationToken(notificationToken = token)
         }
     }
 

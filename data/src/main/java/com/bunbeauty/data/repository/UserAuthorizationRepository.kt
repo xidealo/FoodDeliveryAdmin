@@ -40,10 +40,14 @@ class UserAuthorizationRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateNotificationToken(newNotificationToken: String?) {
-        val notificationToken = newNotificationToken ?: FirebaseMessaging.getInstance()
+    override suspend fun updateNotificationToken() {
+        val notificationToken = FirebaseMessaging.getInstance()
             .token
             .await()
+        updateNotificationToken(notificationToken = notificationToken)
+    }
+
+    override suspend fun updateNotificationToken(notificationToken: String) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         networkConnector.putNotificationToken(
             updateNotificationTokenRequest = UpdateNotificationTokenRequest(
@@ -52,4 +56,10 @@ class UserAuthorizationRepository @Inject constructor(
             token = token
         )
     }
+
+    override suspend fun clearNotificationToken() {
+        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
+        networkConnector.deleteNotificationToken(token = token)
+    }
+
 }

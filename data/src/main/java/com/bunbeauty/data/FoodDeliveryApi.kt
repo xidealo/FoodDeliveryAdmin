@@ -40,6 +40,8 @@ interface FoodDeliveryApi {
         token: String
     ): ApiResult<Unit>
 
+    suspend fun deleteNotificationToken(token: String): ApiResult<Unit>
+
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
     suspend fun patchCafe(
