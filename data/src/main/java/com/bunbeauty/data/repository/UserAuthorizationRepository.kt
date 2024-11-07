@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class UserAuthorizationRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) : UserAuthorizationRepo {
 
     override suspend fun login(
@@ -61,5 +61,4 @@ class UserAuthorizationRepository @Inject constructor(
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         networkConnector.deleteNotificationToken(token = token)
     }
-
 }

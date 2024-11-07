@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
     private val userAuthorizationRepo: UserAuthorizationRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
 
     suspend operator fun invoke(
@@ -26,5 +26,4 @@ class LoginUseCase @Inject constructor(
         }
         userAuthorizationRepo.updateNotificationToken()
     }
-
 }
