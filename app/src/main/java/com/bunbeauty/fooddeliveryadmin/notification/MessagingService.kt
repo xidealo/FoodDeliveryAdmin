@@ -97,7 +97,7 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
             .setSmallIcon(R.drawable.ic_new_order)
             .setContentTitle(orderCode)
             .setContentText(resources.getString(R.string.msg_messaging_new_order))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(pendingIntent)
             .setAutoCancel(false)
             .setColor(ContextCompat.getColor(this, R.color.lightIconColor))
