@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -27,7 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@SuppressLint("MissingFirebaseInstanceTokenRefresh")
+private const val ORDER_CODE_KEY = "orderCode"
+
 @AndroidEntryPoint
 class MessagingService : FirebaseMessagingService(), LifecycleOwner {
 
@@ -40,11 +42,20 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
     lateinit var dataStoreRepo: DataStoreRepo
 
     @Inject
+    lateinit var userAuthorizationRepo: UserAuthorizationRepo
+
+    @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat
 
     override fun onCreate() {
         serviceDispatcher.onServicePreSuperOnCreate()
         super.onCreate()
+    }
+
+    override fun onNewToken(token: String) {
+        lifecycleScope.launch {
+            userAuthorizationRepo.updateNotificationToken(notificationToken = token)
+        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -54,10 +65,10 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
                 ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
         if (isNotificationPermissionGranted) {
-            val notification = remoteMessage.notification ?: return
+            val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: return
             lifecycleScope.launch {
                 showNotification(
-                    remoteNotification = notification,
+                    orderCode = orderCode,
                     isUnlimited = dataStoreRepo.getIsUnlimitedNotification()
                 )
             }
@@ -71,7 +82,7 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
 
     @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
     private fun showNotification(
-        remoteNotification: RemoteMessage.Notification,
+        orderCode: String,
         isUnlimited: Boolean
     ) {
         val intent = Intent(this, MainActivity::class.java).apply {
@@ -84,8 +95,8 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
         }
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_new_order)
-            .setContentTitle(remoteNotification.title)
-            .setContentText(remoteNotification.body)
+            .setContentTitle(orderCode)
+            .setContentText(resources.getString(R.string.msg_messaging_new_order))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(false)
@@ -95,7 +106,7 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
                 flags = flags or Notification.FLAG_INSISTENT
             }
         }
-        val id = remoteNotification.title.hashCode()
+        val id = orderCode.hashCode()
         notificationManagerCompat.notify(id, notification)
     }
 }
