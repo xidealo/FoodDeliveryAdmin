@@ -30,7 +30,7 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope {
     }
 
     private fun createNotificationChannel() {
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel(CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance).apply {
             enableLights(true)
             enableVibration(true)

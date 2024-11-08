@@ -15,7 +15,7 @@ class UpdateOrderAvailabilityUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(isAvailable: Boolean): Boolean {
-        val token = dataStoreRepo.token.firstOrNull() ?: throw NoTokenException()
+        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         return orderRepo.updateOrderAvailability(
             token = token,
