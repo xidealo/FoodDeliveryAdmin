@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.usecase
+package com.bunbeauty.domain.feature.login
 
 import com.bunbeauty.domain.exception.LoginException
 import com.bunbeauty.domain.repo.DataStoreRepo

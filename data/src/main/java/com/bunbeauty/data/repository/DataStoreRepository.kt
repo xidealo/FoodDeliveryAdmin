@@ -22,7 +22,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     private val Context.isUnlimitedNotification: DataStore<Preferences> by preferencesDataStore(name = IS_UNLIMITED_NOTIFICATION_DATA_STORE)
 
     override val token = context.userDataStore.data.map {
-        it[TOKEN_KEY] ?: ""
+        it[TOKEN_KEY]
     }
 
     override suspend fun getToken(): String? {

@@ -1,32 +1,27 @@
 package com.bunbeauty.fooddeliveryadmin.screen.login
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.usecase.LoginUseCase
+import com.bunbeauty.domain.feature.login.CheckAuthorizationUseCase
+import com.bunbeauty.domain.feature.login.LoginUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val dataStoreRepo: DataStoreRepo,
-    private val loginUseCase: LoginUseCase
+    private val checkAuthorizationUseCase: CheckAuthorizationUseCase,
+    private val loginUseCase: LoginUseCase,
 ) : BaseViewModel() {
 
-    private val mutableLoginViewState: MutableStateFlow<LoginViewState> = MutableStateFlow(
-        LoginViewState()
-    )
-
-    val loginViewState: StateFlow<LoginViewState> = mutableLoginViewState.asStateFlow()
+    private val mutableLoginViewState = MutableStateFlow(LoginViewState())
+    val loginViewState = mutableLoginViewState.asStateFlow()
 
     init {
-        checkToken()
+        checkAuthorization()
     }
 
     fun login(username: String, password: String) {
@@ -67,17 +62,16 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun checkToken() {
+    private fun checkAuthorization() {
         viewModelScope.launchSafe(
             block = {
-                val token = dataStoreRepo.token.firstOrNull()
-                if (token.isNullOrEmpty()) {
+                if (checkAuthorizationUseCase()) {
                     mutableLoginViewState.update { oldState ->
-                        oldState.copy(isLoading = false)
+                        oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
                     }
                 } else {
                     mutableLoginViewState.update { oldState ->
-                        oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+                        oldState.copy(isLoading = false)
                     }
                 }
             },

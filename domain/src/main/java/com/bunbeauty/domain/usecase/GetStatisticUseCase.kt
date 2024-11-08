@@ -1,9 +1,9 @@
 package com.bunbeauty.domain.usecase
 
+import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class GetStatisticUseCase @Inject constructor(
@@ -14,8 +14,9 @@ class GetStatisticUseCase @Inject constructor(
         cafeUuid: String?,
         period: String
     ): List<Statistic> {
+        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         return statisticRepo.getStatistic(
-            token = dataStoreRepo.token.first(),
+            token = token,
             cafeUuid = cafeUuid,
             period = period
         )
