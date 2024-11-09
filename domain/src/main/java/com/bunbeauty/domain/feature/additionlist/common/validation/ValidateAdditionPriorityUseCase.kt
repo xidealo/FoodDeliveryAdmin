@@ -12,3 +12,4 @@ class ValidateAdditionPriorityUseCase @Inject constructor() {
             } ?: throw AdditionPriorityException()
     }
 }
+
