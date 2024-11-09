@@ -1,9 +1,9 @@
 package com.bunbeauty.domain.feature.additionlist.createaddition
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.feature.additionlist.common.validation.ValidateAdditionNameUseCase
-import com.bunbeauty.domain.feature.additionlist.common.validation.ValidateAdditionNewPriceUseCase
-import com.bunbeauty.domain.feature.additionlist.common.validation.ValidateAdditionPriorityUseCase
+import com.bunbeauty.domain.feature.additionlist.validation.ValidateAdditionNameUseCase
+import com.bunbeauty.domain.feature.additionlist.validation.ValidateAdditionNewPriceUseCase
+import com.bunbeauty.domain.feature.additionlist.validation.ValidateAdditionPriorityUseCase
 import com.bunbeauty.domain.feature.additionlist.createaddition.exception.AdditionNotCreatedException
 import com.bunbeauty.domain.model.addition.CreateAddition
 import com.bunbeauty.domain.repo.AdditionRepo

@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.additionlist.common.validation
+package com.bunbeauty.domain.feature.additionlist.validation
 
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import javax.inject.Inject
