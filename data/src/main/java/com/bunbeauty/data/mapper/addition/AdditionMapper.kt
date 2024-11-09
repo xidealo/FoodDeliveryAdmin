@@ -53,7 +53,7 @@ val mapCreateAdditionToCreateAdditionPostServer: CreateAddition.() -> CreateAddi
         isVisible = isVisible
     )
 }
-val mapCreateAdditionToAddition: CreateAdditionServer.()-> Addition = {
+val mapCreateAdditionToAddition: CreateAdditionServer.() -> Addition = {
     Addition(
         name = name,
         fullName = fullName,
@@ -64,4 +64,3 @@ val mapCreateAdditionToAddition: CreateAdditionServer.()-> Addition = {
         isVisible = isVisible
     )
 }
-

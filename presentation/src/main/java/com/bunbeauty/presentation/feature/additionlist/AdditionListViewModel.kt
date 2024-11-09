@@ -33,7 +33,7 @@ class AdditionListViewModel @Inject constructor(
                 )
             }
 
-             AdditionList.Action.OnCreateAddition -> sendEvent {
+            AdditionList.Action.OnCreateAddition -> sendEvent {
                 AdditionList.Event.OnCreateAddition
             }
 

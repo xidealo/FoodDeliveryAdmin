@@ -236,7 +236,7 @@ class AdditionListFragment :
                 findNavController().popBackStack()
             }
 
-            is AdditionList.Event.OnCreateAddition ->{
+            is AdditionList.Event.OnCreateAddition -> {
                 findNavController().navigateSafe(AdditionListFragmentDirections.toCreateAdditionFragment())
             }
 

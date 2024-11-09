@@ -6,7 +6,6 @@ import com.bunbeauty.domain.exception.updateaddition.AdditionPriceException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.feature.additionlist.createaddition.CreateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition.*
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +15,8 @@ import javax.inject.Inject
 class CreateAdditionViewModel @Inject constructor(
     private val createAdditionUseCase: CreateAdditionUseCase
 ) :
-    BaseStateViewModel<DataState, Action, Event>(
-        initState = DataState(
+    BaseStateViewModel<CreateAddition.DataState, CreateAddition.Action, CreateAddition.Event>(
+        initState = CreateAddition.DataState(
             name = TextFieldData.empty,
             priority = TextFieldData.empty,
             price = TextFieldData.empty,
@@ -30,27 +29,27 @@ class CreateAdditionViewModel @Inject constructor(
         )
     ) {
 
-    override fun reduce(action: Action, dataState: DataState) {
+    override fun reduce(action: CreateAddition.Action, dataState: CreateAddition.DataState) {
         when (action) {
-            is Action.OnBackClick -> sendEvent { Event.Back }
+            is CreateAddition.Action.OnBackClick -> sendEvent { CreateAddition.Event.Back }
 
-            Action.OnSaveCreateAdditionClick -> saveCreateAddition()
+            CreateAddition.Action.OnSaveCreateAdditionClick -> saveCreateAddition()
 
-            Action.CreateAddition -> loadData()
+            CreateAddition.Action.CreateAddition -> loadData()
 
-            is Action.OnVisibleClick -> setState {
+            is CreateAddition.Action.OnVisibleClick -> setState {
                 copy(
                     isVisible = !isVisible
                 )
             }
 
-            is Action.CreateFullNameAddition -> setState {
+            is CreateAddition.Action.CreateFullNameAddition -> setState {
                 copy(
                     fullName = action.fullName
                 )
             }
 
-            is Action.CreateNameAddition -> setState {
+            is CreateAddition.Action.CreateNameAddition -> setState {
                 copy(
                     name = name.copy(
                         value = action.name,
@@ -59,7 +58,7 @@ class CreateAdditionViewModel @Inject constructor(
                 )
             }
 
-            is Action.CreatePriorityAddition -> setState {
+            is CreateAddition.Action.CreatePriorityAddition -> setState {
                 copy(
                     priority = priority.copy(
                         value = action.priority,
@@ -68,7 +67,7 @@ class CreateAdditionViewModel @Inject constructor(
                 )
             }
 
-            is Action.CreatePriceAddition -> setState {
+            is CreateAddition.Action.CreatePriceAddition -> setState {
                 copy(
                     price = price.copy(
                         value = action.price,
@@ -102,7 +101,7 @@ class CreateAdditionViewModel @Inject constructor(
                     }
                 )
                 sendEvent { state ->
-                    Event.ShowSaveAdditionSuccess(
+                    CreateAddition.Event.ShowSaveAdditionSuccess(
                         additionName = state.name.value
                     )
                 }
@@ -157,7 +156,7 @@ class CreateAdditionViewModel @Inject constructor(
 
             else -> {
                 sendEvent {
-                    Event.ShowSomethingWentWrong
+                    CreateAddition.Event.ShowSomethingWentWrong
                 }
             }
         }
