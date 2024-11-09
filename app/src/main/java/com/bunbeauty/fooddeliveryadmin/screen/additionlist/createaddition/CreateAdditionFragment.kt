@@ -25,12 +25,15 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.toTextFieldUi
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAdditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class CreateAdditionFragment :
@@ -63,13 +66,11 @@ class CreateAdditionFragment :
                 ) {
                     AddPhotoButton(
                         isError = false,
-                        onClick = {
-
-                        }
+                        onClick = {}
                     )
                     LoadingButton(
-                        //modifier = Modifier.padding(horizontal = 16.dp),
-                        textStringId = R.string.action_edit_addition_save,
+                        // modifier = Modifier.padding(horizontal = 16.dp),
+                        textStringId = R.string.action_create_addition_save,
                         onClick = { onAction(CreateAddition.Action.OnSaveCreateAdditionClick) },
                         isLoading = state.isLoading
                     )
@@ -90,35 +91,42 @@ class CreateAdditionFragment :
                     ) {
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = state.name,
-                            labelStringId = R.string.hint_edit_addition_name,
+                            value = state.name.value,
+                            labelText = stringResource(R.string.hint_create_addition_name),
                             onValueChange = { name ->
                                 onAction(
                                     CreateAddition.Action.CreateNameAddition(name)
                                 )
                             },
-                            errorMessageId = state.createNameError,
+                            isError = state.name.isError,
+                            errorText = stringResource(state.name.errorResId),
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Text
+                            keyboardOptions = keyboardOptions(
+                                keyboardType = KeyboardType.Text
+                            )
                         )
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = state.priority,
-                            labelStringId = R.string.hint_edit_addition_priority,
+                            labelText = stringResource(R.string.hint_create_addition_priority),
+                            value = state.priority.value,
                             onValueChange = { priority ->
                                 onAction(
                                     CreateAddition.Action.CreatePriorityAddition(priority)
                                 )
                             },
+                            isError = state.priority.isError,
+                            errorText = stringResource(state.priority.errorResId),
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Number
+                            keyboardOptions = keyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            )
                         )
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = state.fullName,
-                            labelStringId = R.string.hint_edit_addition_full_name,
+                            value = state.fullName.toString(),
+                            labelText = stringResource(R.string.hint_create_addition_full_name),
                             onValueChange = { fullName ->
                                 onAction(
                                     CreateAddition.Action.CreateFullNameAddition(fullName)
@@ -126,19 +134,24 @@ class CreateAdditionFragment :
                             },
                             maxLines = 20,
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Text
+                            keyboardOptions = keyboardOptions(
+                                keyboardType = KeyboardType.Text
+                            )
                         )
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = state.price,
-                            labelStringId = R.string.hint_edit_addition_new_price,
-                            errorMessageId = state.createPriceError,
+                            value = state.price.value,
+                            labelText = stringResource(R.string.hint_create_addition_price),
+                            isError = state.price.isError,
+                            errorText = stringResource(state.price.errorResId),
                             onValueChange = { price ->
                                 onAction(CreateAddition.Action.CreatePriceAddition(price))
                             },
                             enabled = !state.isLoading,
-                            keyboardType = KeyboardType.Number
+                            keyboardOptions = keyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            )
                         )
                     }
                 }
@@ -152,7 +165,7 @@ class CreateAdditionFragment :
                             )
                         )
                     },
-                    //text = getString(R.string.title_edit_addition_is_visible),
+                    // text = getString(R.string.title_create_addition_is_visible),
                     text = "Показывать в меню",
                     enabled = !state.isLoading
                 )
@@ -169,7 +182,7 @@ class CreateAdditionFragment :
     ) {
         SecondaryButton(
             modifier = modifier,
-            textStringId = R.string.title_add_menu_product_add_photo,
+            textStringId = R.string.title_create_addition_add_photo,
             onClick = onClick,
             isError = isError,
             borderColor = if (isError) {
@@ -181,26 +194,16 @@ class CreateAdditionFragment :
         )
     }
 
-
     @Composable
     override fun mapState(state: CreateAddition.DataState): CreateAdditionViewState {
         return CreateAdditionViewState(
-            name = state.name,
-            createNameError = if (state.hasCreateNameError) {
-                R.string.error_edit_addition_empty_name
-            } else {
-                null
-            },
-            priority = state.priority.toString(),
-            fullName = state.fullName ?: "",
-            price = state.price.toString(),
-            createPriceError = if (state.hasCreatePriceError) {
-                R.string.error_add_addition_empty_new_price
-            } else {
-                null
-            },
+            name = state.name.toTextFieldUi(errorResId = R.string.error_create_addition_empty_name),
+            priority = state.priority.toTextFieldUi(errorResId = R.string.error_create_addition_empty_price),
+            fullName = state.fullName,
+            price = state.price.toTextFieldUi(errorResId = R.string.error_create_addition_empty_price),
             isVisible = state.isVisible,
             isLoading = state.isLoading
+
         )
     }
 
@@ -215,6 +218,11 @@ class CreateAdditionFragment :
                 findNavController().popBackStack()
             }
 
+            is CreateAddition.Event.ShowSomethingWentWrong -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(R.string.error_common_something_went_wrong)
+                )
+            }
         }
     }
 
@@ -224,14 +232,13 @@ class CreateAdditionFragment :
         AdminTheme {
             CreateAdditionScreen(
                 state = CreateAdditionViewState(
-                    name = "Гриб",
-                    priority = "1",
-                    fullName = "Гриб белый",
-                    price = "30",
+                    name = TextFieldUi.empty,
+                    priority = TextFieldUi.empty,
+                    fullName = "30",
+                    price = TextFieldUi.empty,
                     isVisible = false,
-                    isLoading = false,
-                    createNameError = null,
-                    createPriceError = null
+                    isLoading = false
+
                 ),
 
                 onAction = {}

@@ -1,17 +1,15 @@
 package com.bunbeauty.fooddeliveryadmin.screen.additionlist.createaddition
 
-import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
+@Immutable
 data class CreateAdditionViewState(
-    val name: String,
-    @StringRes
-    val createNameError: Int?,
-    val priority: String,
-    val fullName: String,
-    val price: String,
-    @StringRes
-    val createPriceError: Int?,
+    val name: TextFieldUi,
+    val priority: TextFieldUi,
+    val fullName: String?,
+    val price: TextFieldUi,
     val isVisible: Boolean,
     val isLoading: Boolean
 ) : BaseViewState

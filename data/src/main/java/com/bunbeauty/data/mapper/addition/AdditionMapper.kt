@@ -3,6 +3,7 @@ package com.bunbeauty.data.mapper.addition
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.addition.createaddition.CreateAdditionPostServer
+import com.bunbeauty.data.model.server.addition.createaddition.CreateAdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.addition.CreateAddition
@@ -48,6 +49,17 @@ val mapCreateAdditionToCreateAdditionPostServer: CreateAddition.() -> CreateAddi
         priority = priority,
         fullName = fullName,
         price = price,
+        photoLink = photoLink,
+        isVisible = isVisible
+    )
+}
+val mapCreateAdditionToAddition: CreateAdditionServer.()-> Addition = {
+    Addition(
+        name = name,
+        fullName = fullName,
+        uuid = uuid,
+        price = price,
+        priority = priority,
         photoLink = photoLink,
         isVisible = isVisible
     )

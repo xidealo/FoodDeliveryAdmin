@@ -375,7 +375,7 @@ class FoodDeliveryApiImpl @Inject constructor(
         createAdditionPostServer: CreateAdditionPostServer
     ): ApiResult<CreateAdditionServer> {
         return post<CreateAdditionServer>(
-            path = "create_addition",
+            path = "addition",
             body = createAdditionPostServer,
             token = token
         )

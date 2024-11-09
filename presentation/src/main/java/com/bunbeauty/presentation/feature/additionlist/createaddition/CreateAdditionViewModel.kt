@@ -1,12 +1,13 @@
 package com.bunbeauty.presentation.feature.additionlist.createaddition
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNameException
-import com.bunbeauty.domain.exception.updateproduct.MenuProductNewPriceException
+import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
+import com.bunbeauty.domain.exception.updateaddition.AdditionPriceException
+import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.feature.additionlist.createaddition.CreateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition.*
-import com.bunbeauty.presentation.feature.menulist.addmenuproduct.CreateMenuProduct
+import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,68 +16,75 @@ import javax.inject.Inject
 class CreateAdditionViewModel @Inject constructor(
     private val createAdditionUseCase: CreateAdditionUseCase
 ) :
-    BaseStateViewModel<CreateAddition.DataState, CreateAddition.Action, CreateAddition.Event>(
+    BaseStateViewModel<DataState, Action, Event>(
         initState = DataState(
-            uuid = "",
-            name = "",
-            priority = 0,
-            price = null,
-            isLoading = true,
-            isVisible = false,
+            name = TextFieldData.empty,
+            priority = TextFieldData.empty,
+            price = TextFieldData.empty,
+            isLoading = false,
+            isVisible = true,
             fullName = "",
             hasCreateNameError = false,
-            hasCreatePriceError = false
+            hasCreatePriceError = false,
+            photoLink = ""
         )
     ) {
 
-    override fun reduce(action: CreateAddition.Action, dataState: CreateAddition.DataState) {
+    override fun reduce(action: Action, dataState: DataState) {
         when (action) {
-            is CreateAddition.Action.OnBackClick -> sendEvent { CreateAddition.Event.Back }
+            is Action.OnBackClick -> sendEvent { Event.Back }
 
-            CreateAddition.Action.OnSaveCreateAdditionClick -> saveCreateAddition()
+            Action.OnSaveCreateAdditionClick -> saveCreateAddition()
 
-            CreateAddition.Action.CreateAddition -> loadData()
+            Action.CreateAddition -> loadData()
 
-            is CreateAddition.Action.OnVisibleClick -> setState {
+            is Action.OnVisibleClick -> setState {
                 copy(
-                    isVisible = action.isVisible
+                    isVisible = !isVisible
                 )
             }
 
-            is CreateAddition.Action.CreateFullNameAddition -> setState {
+            is Action.CreateFullNameAddition -> setState {
                 copy(
                     fullName = action.fullName
                 )
             }
 
-            is CreateAddition.Action.CreateNameAddition -> setState {
+            is Action.CreateNameAddition -> setState {
                 copy(
-                    name = action.name
+                    name = name.copy(
+                        value = action.name,
+                        isError = false
+                    )
                 )
             }
 
-            is CreateAddition.Action.CreatePriorityAddition -> setState {
+            is Action.CreatePriorityAddition -> setState {
                 copy(
-                    priority = action.priority.toIntOrNull() ?: 0
+                    priority = priority.copy(
+                        value = action.priority,
+                        isError = false
+                    )
                 )
             }
 
-            is CreateAddition.Action.CreatePriceAddition -> setState {
+            is Action.CreatePriceAddition -> setState {
                 copy(
-                    price = action.price.toIntOrNull()
+                    price = price.copy(
+                        value = action.price,
+                        isError = false
+                    )
                 )
             }
         }
-
     }
-
 
     private fun saveCreateAddition() {
         setState {
             copy(
-                isLoading = true,
-                hasCreateNameError = false,
-                hasCreatePriceError = false
+                name = name.copy(isError = false),
+                priority = priority.copy(isError = false),
+                price = price.copy(isError = false)
             )
         }
         viewModelScope.launchSafe(
@@ -84,52 +92,74 @@ class CreateAdditionViewModel @Inject constructor(
                 createAdditionUseCase(
                     params = state.value.run {
                         CreateAdditionUseCase.Params(
-                            name = name,
-                            priority = priority,
-                            fullName = fullName,
-                            price = price,
-                            isVisible = isVisible
+                            name = name.value.trim(),
+                            priority = priority.value.trim(),
+                            fullName = fullName.trim(),
+                            price = price.value.trim(),
+                            isVisible = isVisible,
+                            photoLink = photoLink
                         )
                     }
                 )
-                sendEvent {
-                    CreateAddition.Event.ShowSaveAdditionSuccess()
+                sendEvent { state ->
+                    Event.ShowSaveAdditionSuccess(
+                        additionName = state.name.value
+                    )
                 }
             },
             onError = { throwable ->
-                setState { copy(sendingToServer = false) }
-                when (throwable) {
-                    is MenuProductNameException -> {
-                        setState {
-                            copy(hasNameError = true)
-                        }
-                    }
-
-                    is MenuProductNewPriceException -> {
-                        setState {
-                            copy(hasCreatePriceError = true)
-                        }
-                    }
-
-                    else -> {
-                        sendEvent {
-                            CreateMenuProduct.Event.ShowSomethingWentWrong
-                        }
-                    }
-                }
+                handleCreateMenuProductError(throwable = throwable)
             }
         )
     }
 
-
     private fun loadData() {
         viewModelScope.launchSafe(
             block = {
-
             },
             onError = {
                 // No errors
             }
         )
+    }
+
+    private fun handleCreateMenuProductError(throwable: Throwable) {
+        when (throwable) {
+            is AdditionNameException -> {
+                setState {
+                    copy(
+                        name = name.copy(
+                            isError = true
+                        )
+                    )
+                }
+            }
+
+            is AdditionPriceException -> {
+                setState {
+                    copy(
+                        price = price.copy(
+                            isError = true
+                        )
+                    )
+                }
+            }
+
+            is AdditionPriorityException -> {
+                setState {
+                    copy(
+                        priority = priority.copy(
+                            isError = true
+                        )
+                    )
+                }
+            }
+
+            else -> {
+                sendEvent {
+                    Event.ShowSomethingWentWrong
+                }
+            }
+        }
     }
 }

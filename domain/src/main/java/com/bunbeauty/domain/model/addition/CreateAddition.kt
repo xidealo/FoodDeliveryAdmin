@@ -2,7 +2,7 @@ package com.bunbeauty.domain.model.addition
 
 data class CreateAddition(
     val name: String,
-    val priority: Int,
+    val priority: String,
     val fullName: String?,
     val price: Int?,
     val photoLink: String?,

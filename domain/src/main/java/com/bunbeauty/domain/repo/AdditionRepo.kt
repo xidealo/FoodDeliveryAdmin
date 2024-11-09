@@ -6,7 +6,7 @@ import com.bunbeauty.domain.model.addition.UpdateAddition
 
 interface AdditionRepo {
     /* POST */
-    suspend fun post(token: String, createAddition: CreateAddition)
+    suspend fun post(token: String, createAddition: CreateAddition): Addition?
 
     /*GET*/
     suspend fun getAdditionList(
