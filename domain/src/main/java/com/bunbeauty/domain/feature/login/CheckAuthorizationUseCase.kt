@@ -8,7 +8,7 @@ import javax.inject.Inject
 class CheckAuthorizationUseCase @Inject constructor(
     private val userAuthorizationRepo: UserAuthorizationRepo,
     private val dataStoreRepo: DataStoreRepo,
-    private val settingsRepo: SettingsRepo,
+    private val settingsRepo: SettingsRepo
 ) {
 
     suspend operator fun invoke(): Boolean {

@@ -26,5 +26,4 @@ class SettingsRepository @Inject constructor(
         dataStoreRepo.saveIsUnlimitedNotification(isUnlimitedNotification = isEnabled)
         isUnlimitedNotificationCache = isEnabled
     }
-
 }

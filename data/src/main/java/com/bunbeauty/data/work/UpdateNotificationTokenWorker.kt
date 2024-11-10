@@ -19,7 +19,7 @@ class UpdateNotificationTokenWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val dataStoreRepo: DataStoreRepo,
-    private val foodDeliveryApi: FoodDeliveryApi,
+    private val foodDeliveryApi: FoodDeliveryApi
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -55,5 +55,4 @@ class UpdateNotificationTokenWorker @AssistedInject constructor(
     companion object {
         const val NOTIFICATION_TOKEN_KEY = "notification token"
     }
-
 }

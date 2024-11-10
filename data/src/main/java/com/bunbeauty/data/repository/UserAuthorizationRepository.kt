@@ -17,7 +17,7 @@ import javax.inject.Inject
 class UserAuthorizationRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
     private val dataStoreRepo: DataStoreRepo,
-    @ApplicationContext private val context: Context,
+    @ApplicationContext private val context: Context
 ) : UserAuthorizationRepo {
 
     override suspend fun login(

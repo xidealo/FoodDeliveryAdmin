@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
 private const val NOTIFICATION_CHANNEL_NAME = "Main channel"
 
 @HiltAndroidApp
-class FoodDeliveryAdminApplication : Application(), CoroutineScope, Configuration.Provider{
+class FoodDeliveryAdminApplication : Application(), CoroutineScope, Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
