@@ -69,7 +69,7 @@ class CreateAdditionFragment :
                         onClick = {}
                     )
                     LoadingButton(
-                        text = stringResource( R.string.action_create_addition_save),
+                        text = stringResource(R.string.action_create_addition_save),
                         onClick = { onAction(CreateAddition.Action.OnSaveCreateAdditionClick) },
                         isLoading = state.isLoading
                     )
