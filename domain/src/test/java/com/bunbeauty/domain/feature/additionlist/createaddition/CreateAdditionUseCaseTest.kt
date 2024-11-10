@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.feature.additionlist.createaddition
 
-import com.bunbeauty.domain.feature.additionlist.createaddition.exception.AdditionNotCreatedException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionNotCreatedException
 import com.bunbeauty.domain.feature.additionlist.validation.ValidateAdditionNameUseCase
 import com.bunbeauty.domain.feature.additionlist.validation.ValidateAdditionNewPriceUseCase
 import com.bunbeauty.domain.feature.additionlist.validation.ValidateAdditionPriorityUseCase

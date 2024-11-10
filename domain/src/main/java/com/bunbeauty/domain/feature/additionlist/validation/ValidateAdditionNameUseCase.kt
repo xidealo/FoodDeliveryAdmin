@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.feature.additionlist.validation
 
-import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionNameException
 import javax.inject.Inject
 
 class ValidateAdditionNameUseCase @Inject constructor() {

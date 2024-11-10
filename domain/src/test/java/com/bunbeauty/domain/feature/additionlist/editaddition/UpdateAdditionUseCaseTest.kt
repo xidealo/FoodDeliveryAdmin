@@ -1,8 +1,8 @@
 package com.bunbeauty.domain.feature.additionlist.editaddition
 
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionNameException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionPriorityException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo

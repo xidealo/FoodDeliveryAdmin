@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.feature.additionlist.validation
 
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionPriorityException
 import javax.inject.Inject
 
 class ValidateAdditionPriorityUseCase @Inject constructor() {
@@ -12,4 +12,3 @@ class ValidateAdditionPriorityUseCase @Inject constructor() {
             } ?: throw AdditionPriorityException()
     }
 }
-

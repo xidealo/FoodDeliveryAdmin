@@ -1,10 +1,10 @@
 package com.bunbeauty.presentation.feature.additionlist.createaddition
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriceException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.feature.additionlist.createaddition.CreateAdditionUseCase
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionNameException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionPriceException
+import com.bunbeauty.domain.feature.additionlist.exception.AdditionPriorityException
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
