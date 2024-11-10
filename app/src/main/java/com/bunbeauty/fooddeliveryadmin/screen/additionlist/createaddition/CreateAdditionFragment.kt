@@ -69,8 +69,7 @@ class CreateAdditionFragment :
                         onClick = {}
                     )
                     LoadingButton(
-                        // modifier = Modifier.padding(horizontal = 16.dp),
-                        textStringId = R.string.action_create_addition_save,
+                        text = stringResource( R.string.action_create_addition_save),
                         onClick = { onAction(CreateAddition.Action.OnSaveCreateAdditionClick) },
                         isLoading = state.isLoading
                     )
