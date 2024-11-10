@@ -5,6 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.media.AudioAttributes
 import android.media.RingtoneManager
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -12,12 +14,16 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 private const val NOTIFICATION_CHANNEL_NAME = "Main channel"
 
 @HiltAndroidApp
-class FoodDeliveryAdminApplication : Application(), CoroutineScope {
+class FoodDeliveryAdminApplication : Application(), CoroutineScope, Configuration.Provider{
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
     override val coroutineContext: CoroutineContext = Job() + Dispatchers.Default
 
@@ -28,6 +34,13 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope {
 
         createNotificationChannel()
     }
+
+    override val workManagerConfiguration: Configuration
+        get() {
+            return Configuration.Builder()
+                .setWorkerFactory(workerFactory)
+                .build()
+        }
 
     private fun createNotificationChannel() {
         val importance = NotificationManager.IMPORTANCE_HIGH

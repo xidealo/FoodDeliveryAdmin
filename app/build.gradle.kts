@@ -121,6 +121,9 @@ dependencies {
     implementation(Firebase.messaging)
     implementation(Firebase.crashlytics)
 
+    // Work manager
+    implementation(WorkManager.runtime)
+
     // Lifecycle
     implementation(Lifecycle.service)
 
@@ -149,6 +152,8 @@ dependencies {
     // Dagger Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
+    implementation(Dagger.androidxHiltWork)
+    kapt(Dagger.androidxHiltCompiler)
 
     // Coil
     implementation(Coil.coil)

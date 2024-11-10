@@ -21,17 +21,12 @@ import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val ORDER_CODE_KEY = "orderCode"
 
 @AndroidEntryPoint
 class MessagingService : FirebaseMessagingService() {
-
-    private val scope = CoroutineScope(Job())
 
     @Inject
     lateinit var dataStoreRepo: DataStoreRepo
@@ -43,9 +38,8 @@ class MessagingService : FirebaseMessagingService() {
     lateinit var notificationManagerCompat: NotificationManagerCompat
 
     override fun onNewToken(token: String) {
-        scope.launch {
-            userAuthorizationRepo.updateNotificationToken(notificationToken = token)
-        }
+        Log.d(NOTIFICATION_TAG, "onNewToken $token")
+        userAuthorizationRepo.updateNotificationToken(notificationToken = token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -54,14 +48,16 @@ class MessagingService : FirebaseMessagingService() {
         val isNotificationPermissionGranted =
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
                 ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        Log.d(NOTIFICATION_TAG, "isNotificationPermissionGranted $isNotificationPermissionGranted")
         if (isNotificationPermissionGranted) {
-            val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: return
-            scope.launch {
-                showNotification(
-                    orderCode = orderCode,
-                    isUnlimited = dataStoreRepo.getIsUnlimitedNotification()
-                )
+            val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: run {
+                Log.d(NOTIFICATION_TAG, "No $ORDER_CODE_KEY")
+                return
             }
+            showNotification(
+                orderCode = orderCode,
+                isUnlimited = true
+            )
         }
     }
 

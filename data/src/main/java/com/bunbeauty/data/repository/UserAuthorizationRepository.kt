@@ -1,19 +1,23 @@
 package com.bunbeauty.data.repository
 
+import android.content.Context
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
+import com.bunbeauty.data.work.UpdateNotificationTokenWorker
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.tasks.await
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class UserAuthorizationRepository @Inject constructor(
     private val networkConnector: FoodDeliveryApi,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
+    @ApplicationContext private val context: Context,
 ) : UserAuthorizationRepo {
 
     override suspend fun login(
@@ -40,21 +44,22 @@ class UserAuthorizationRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateNotificationToken() {
-        val notificationToken = FirebaseMessaging.getInstance()
-            .token
-            .await()
-        updateNotificationToken(notificationToken = notificationToken)
+    override fun updateNotificationToken() {
+        val workRequest = OneTimeWorkRequestBuilder<UpdateNotificationTokenWorker>()
+            .build()
+        WorkManager.getInstance(context)
+            .enqueue(workRequest)
     }
 
-    override suspend fun updateNotificationToken(notificationToken: String) {
-        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        networkConnector.putNotificationToken(
-            updateNotificationTokenRequest = UpdateNotificationTokenRequest(
-                token = notificationToken
-            ),
-            token = token
-        )
+    override fun updateNotificationToken(notificationToken: String) {
+        val data = Data.Builder()
+            .putString(UpdateNotificationTokenWorker.NOTIFICATION_TOKEN_KEY, notificationToken)
+            .build()
+        val workRequest = OneTimeWorkRequestBuilder<UpdateNotificationTokenWorker>()
+            .setInputData(inputData = data)
+            .build()
+        WorkManager.getInstance(context)
+            .enqueue(workRequest)
     }
 
     override suspend fun clearNotificationToken() {
