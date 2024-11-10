@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
-import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
@@ -29,7 +29,7 @@ private const val ORDER_CODE_KEY = "orderCode"
 class MessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var dataStoreRepo: DataStoreRepo
+    lateinit var getIsUnlimitedNotificationUseCase: GetIsUnlimitedNotificationUseCase
 
     @Inject
     lateinit var userAuthorizationRepo: UserAuthorizationRepo
@@ -56,7 +56,7 @@ class MessagingService : FirebaseMessagingService() {
             }
             showNotification(
                 orderCode = orderCode,
-                isUnlimited = true
+                isUnlimited = getIsUnlimitedNotificationUseCase()
             )
         }
     }

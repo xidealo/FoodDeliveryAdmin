@@ -1,13 +1,13 @@
 package com.bunbeauty.domain.feature.profile
 
-import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.SettingsRepo
 import javax.inject.Inject
 
 class UpdateIsUnlimitedNotificationUseCase @Inject constructor(
-    private val dataStoreRepo: DataStoreRepo
+    private val settingsRepo: SettingsRepo
 ) {
 
-    suspend operator fun invoke(isUnlimitedNotification: Boolean) {
-        dataStoreRepo.saveIsUnlimitedNotification(isUnlimitedNotification)
+    suspend operator fun invoke(isEnabled: Boolean) {
+        settingsRepo.updateUnlimitedNotification(isEnabled = isEnabled)
     }
 }

@@ -24,7 +24,6 @@ interface DataStoreRepo {
     suspend fun savePreviousCafeUuid(cafeUuid: String)
 
     val isUnlimitedNotification: Flow<Boolean>
-    suspend fun getIsUnlimitedNotification(): Boolean
     suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean)
 
     suspend fun clearCache()
