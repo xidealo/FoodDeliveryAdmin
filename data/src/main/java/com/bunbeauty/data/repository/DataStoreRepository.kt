@@ -19,11 +19,10 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
 
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATA_STORE)
     private val Context.cafeUuidDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_UUID_DATA_STORE)
-    private val Context.lastOrderCodeDataStore: DataStore<Preferences> by preferencesDataStore(name = LAST_ORDER_CODE_STORE)
     private val Context.isUnlimitedNotification: DataStore<Preferences> by preferencesDataStore(name = IS_UNLIMITED_NOTIFICATION_DATA_STORE)
 
     override val token = context.userDataStore.data.map {
-        it[TOKEN_KEY] ?: ""
+        it[TOKEN_KEY]
     }
 
     override suspend fun getToken(): String? {
@@ -86,18 +85,12 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
-    override val lastOrderCode: Flow<String> = context.lastOrderCodeDataStore.data.map {
-        it[LAST_ORDER_CODE_KEY] ?: ""
-    }
-
-    override suspend fun saveLastOrderCode(orderCode: String) {
-        context.lastOrderCodeDataStore.edit {
-            it[LAST_ORDER_CODE_KEY] = orderCode
-        }
-    }
-
     override val isUnlimitedNotification: Flow<Boolean> = context.isUnlimitedNotification.data.map {
         it[IS_UNLIMITED_NOTIFICATION_KEY] ?: true
+    }
+
+    override suspend fun getIsUnlimitedNotification(): Boolean {
+        return isUnlimitedNotification.firstOrNull() ?: true
     }
 
     override suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean) {
@@ -120,7 +113,6 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         // NAMES
         private const val USER_DATA_STORE = "user dataStore"
         private const val CAFE_UUID_DATA_STORE = "cafe uuid dataStore"
-        private const val LAST_ORDER_CODE_STORE = "last order code dataStore"
         private const val IS_UNLIMITED_NOTIFICATION_DATA_STORE =
             "is unlimited notification dataStore"
 
@@ -130,7 +122,6 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         private const val COMPANY_UUID = "company uuid"
         private const val CAFE_UUID = "cafe uuid"
         private const val PREVIOUS_CAFE_UUID = "previous cafe uuid"
-        private const val LAST_ORDER_CODE = "company uuid"
         private const val IS_UNLIMITED_NOTIFICATION = "company uuid"
 
         // KEYS
@@ -140,7 +131,6 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         private val COMPANY_UUID_KEY = stringPreferencesKey(COMPANY_UUID)
         private val CAFE_UUID_KEY = stringPreferencesKey(CAFE_UUID)
         private val PREVIOUS_CAFE_UUID_KEY = stringPreferencesKey(PREVIOUS_CAFE_UUID)
-        private val LAST_ORDER_CODE_KEY = stringPreferencesKey(LAST_ORDER_CODE)
         private val IS_UNLIMITED_NOTIFICATION_KEY = booleanPreferencesKey(IS_UNLIMITED_NOTIFICATION)
     }
 }

@@ -1,76 +1,74 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.button
 
-import androidx.annotation.StringRes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.bunbeauty.fooddeliveryadmin.R
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults.getButtonElevation
+import com.bunbeauty.fooddeliveryadmin.compose.element.rememberMultipleEventsCutter
+import com.bunbeauty.fooddeliveryadmin.compose.provider.BooleanPreviewParameterProvider
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadingButton(
-    modifier: Modifier = Modifier,
-    @StringRes textStringId: Int,
-    hasShadow: Boolean = true,
+    text: String,
     isLoading: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    hasShadow: Boolean = true
 ) {
-    Button(
-        modifier = modifier.fillMaxWidth(),
-        onClick = onClick,
-        colors = AdminButtonDefaults.mainButtonColors,
-        shape = AdminButtonDefaults.buttonShape,
-        elevation = getButtonElevation(hasShadow),
-        enabled = !isLoading
+    CompositionLocalProvider(
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(AdminTheme.dimensions.smallProgressBarSize),
-                color = AdminTheme.colors.main.onDisabled
-            )
-        } else {
-            Text(
-                text = stringResource(textStringId),
-                style = AdminTheme.typography.labelLarge.medium,
-                color = AdminTheme.colors.main.onPrimary
-            )
+        val multipleEventsCutter = rememberMultipleEventsCutter()
+        Button(
+            modifier = modifier.fillMaxWidth(),
+            onClick = {
+                multipleEventsCutter.processEvent(onClick)
+            },
+            colors = AdminButtonDefaults.mainButtonColors,
+            shape = AdminButtonDefaults.buttonShape,
+            elevation = getButtonElevation(hasShadow),
+            enabled = !isLoading
+        ) {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(AdminTheme.dimensions.smallProgressBarSize),
+                    color = AdminTheme.colors.main.onDisabled
+                )
+            } else {
+                Text(
+                    text = text,
+                    style = AdminTheme.typography.labelLarge.medium,
+                    color = AdminTheme.colors.main.onPrimary
+                )
+            }
         }
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
-private fun LoadingButtonPreview() {
+private fun LoadingButtonPreview(
+    @PreviewParameter(BooleanPreviewParameterProvider::class)
+    isLoading: Boolean
+) {
     AdminTheme {
-        Box(modifier = Modifier.background(AdminTheme.colors.main.background)) {
-            LoadingButton(
-                textStringId = R.string.action_order_details_do_not_save,
-                isLoading = false
-            ) {}
-        }
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun LoadingButtonLoadingPreview() {
-    AdminTheme {
-        Box(modifier = Modifier.background(AdminTheme.colors.main.background)) {
-            LoadingButton(
-                textStringId = R.string.action_login_enter,
-                isLoading = true
-            ) {}
-        }
+        LoadingButton(
+            text = "Кнопка",
+            isLoading = isLoading,
+            onClick = {}
+        )
     }
 }

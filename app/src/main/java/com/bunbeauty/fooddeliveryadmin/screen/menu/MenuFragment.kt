@@ -28,11 +28,11 @@ class MenuFragment :
 
     @Composable
     override fun Screen(state: MenuViewState, onAction: (Menu.Action) -> Unit) {
-        MenuScreen(state = state, onAction = onAction)
+        MenuScreen(onAction = onAction)
     }
 
     @Composable
-    private fun MenuScreen(state: MenuViewState, onAction: (Menu.Action) -> Unit) {
+    private fun MenuScreen(onAction: (Menu.Action) -> Unit) {
         AdminScaffold(
             title = stringResource(R.string.title_bottom_navigation_menu)
         ) {
@@ -90,7 +90,7 @@ class MenuFragment :
     @Composable
     private fun MenuScreenPreview() {
         AdminTheme {
-            MenuScreen(state = MenuViewState, onAction = {})
+            MenuScreen(onAction = {})
         }
     }
 }

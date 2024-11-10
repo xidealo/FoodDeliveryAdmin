@@ -91,19 +91,6 @@ class DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideMenuProductDao(localDatabase: LocalDatabase) = localDatabase.menuProductDao()
-
-    @Singleton
-    @Provides
-    fun provideCategoryDao(localDatabase: LocalDatabase) = localDatabase.categoryDao()
-
-    @Singleton
-    @Provides
-    fun provideMenuProductCategoryDao(localDatabase: LocalDatabase) =
-        localDatabase.menuProductCategoryDao()
-
-    @Singleton
-    @Provides
     fun provideCityDao(localDatabase: LocalDatabase) = localDatabase.cityDao()
 
     @Singleton

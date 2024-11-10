@@ -187,11 +187,11 @@ class CreateMenuProductFragment :
                 buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
             )
             LoadingButton(
-                textStringId = R.string.action_order_details_save,
+                text = stringResource(R.string.action_order_details_save),
+                isLoading = state.sendingToServer,
                 onClick = {
                     onAction(CreateMenuProduct.Action.CreateMenuProductClick)
-                },
-                isLoading = state.sendingToServer
+                }
             )
         }
     }

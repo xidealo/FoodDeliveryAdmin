@@ -224,11 +224,11 @@ class EditMenuProductFragment :
                     buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
                 )
                 LoadingButton(
-                    textStringId = R.string.action_order_details_save,
+                    text = stringResource(R.string.action_order_details_save),
+                    isLoading = state.sendingToServer,
                     onClick = {
                         onAction(EditMenuProduct.Action.SaveMenuProductClick)
-                    },
-                    isLoading = state.sendingToServer
+                    }
                 )
             }
         }

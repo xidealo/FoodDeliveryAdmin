@@ -92,6 +92,10 @@ class AdditionRepository @Inject constructor(
         }
     }
 
+    override fun clearCache() {
+        additionListCache = null
+    }
+
     private fun updateLocalCache(
         uuid: String,
         additionServer: AdditionServer
@@ -103,9 +107,5 @@ class AdditionRepository @Inject constructor(
                 addition
             }
         }
-    }
-
-    override suspend fun clearCache() {
-        additionListCache = null
     }
 }

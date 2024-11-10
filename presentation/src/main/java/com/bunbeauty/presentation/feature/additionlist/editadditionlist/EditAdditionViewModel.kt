@@ -23,13 +23,13 @@ class EditAdditionViewModel @Inject constructor(
     initState = EditAddition.DataState(
         uuid = "",
         name = "",
-        priority = 0,
+        priority = "",
         price = null,
         isLoading = true,
         isVisible = false,
         fullName = "",
         hasEditNameError = false,
-        hasEditPriceError = false
+        hasEditPriorityError = false
     )
 ) {
 
@@ -61,7 +61,7 @@ class EditAdditionViewModel @Inject constructor(
 
             is EditAddition.Action.EditPriorityAddition -> setState {
                 copy(
-                    priority = action.priority.toIntOrNull() ?: 0
+                    priority = action.priority
                 )
             }
 
@@ -78,7 +78,7 @@ class EditAdditionViewModel @Inject constructor(
             copy(
                 isLoading = true,
                 hasEditNameError = false,
-                hasEditPriceError = false
+                hasEditPriorityError = false
             )
         }
         viewModelScope.launchSafe(
@@ -87,7 +87,7 @@ class EditAdditionViewModel @Inject constructor(
                     updateAddition = state.value.run {
                         UpdateAddition(
                             name = name.trim(),
-                            priority = priority,
+                            priority = priority?.toIntOrNull(),
                             fullName = fullName?.takeIf { fullName.isNotBlank() }?.trim(),
                             price = price?.toIntOrNull() ?: 0,
                             isVisible = isVisible
@@ -111,8 +111,8 @@ class EditAdditionViewModel @Inject constructor(
                             copy(hasEditNameError = true, isLoading = false)
                         }
 
-                        is AdditionPriceException -> {
-                            copy(hasEditPriceError = true, isLoading = false)
+                        is AdditionPriorityException -> {
+                            copy(hasEditPriorityError = true, isLoading = false)
                         }
 
                         else -> copy(isLoading = false)
@@ -131,7 +131,7 @@ class EditAdditionViewModel @Inject constructor(
                     copy(
                         uuid = addition.uuid,
                         name = addition.name,
-                        priority = addition.priority,
+                        priority = addition.priority.toString(),
                         fullName = addition.fullName,
                         price = addition.price?.toString(),
                         isVisible = addition.isVisible,

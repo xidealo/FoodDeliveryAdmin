@@ -24,13 +24,13 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
 
         createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel(CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance).apply {
             enableLights(true)
             enableVibration(true)

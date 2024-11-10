@@ -9,7 +9,6 @@ import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -36,7 +35,7 @@ class GetAdditionUseCaseTest {
         val token = "valid_token"
         val addition = additionMock.copy(name = "Бекон", priority = 1, price = 1)
 
-        coEvery { dataStoreRepo.token } returns flowOf(token)
+        coEvery { dataStoreRepo.getToken() } returns token
         coEvery { additionRepo.getAddition(additionUuid, token) } returns addition
 
         // When
@@ -51,7 +50,7 @@ class GetAdditionUseCaseTest {
     fun `invoke should throw NoTokenException when token is null`() = runTest {
         // Given
         val additionUuid = "uuid"
-        coEvery { dataStoreRepo.token } returns flowOf()
+        coEvery { dataStoreRepo.getToken() } returns null
 
         // When / Then
         assertFailsWith<NoTokenException> {
@@ -64,7 +63,7 @@ class GetAdditionUseCaseTest {
         // Given
         val additionUuid = "uuid"
         val token = "valid_token"
-        coEvery { dataStoreRepo.token } returns flowOf(token)
+        coEvery { dataStoreRepo.getToken() } returns token
         coEvery { additionRepo.getAddition(additionUuid, token) } returns null
 
         // When / Then
