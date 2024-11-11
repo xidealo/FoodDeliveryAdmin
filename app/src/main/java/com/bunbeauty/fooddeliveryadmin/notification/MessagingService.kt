@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 private const val ORDER_CODE_KEY = "orderCode"
+private const val REQUEST_CODE = 0
 
 @AndroidEntryPoint
 class MessagingService : FirebaseMessagingService() {
@@ -69,7 +70,12 @@ class MessagingService : FirebaseMessagingService() {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_MUTABLE
+        )
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_new_order)
             .setContentTitle(orderCode)
