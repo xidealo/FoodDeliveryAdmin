@@ -63,6 +63,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.net.SocketException
 import javax.inject.Inject
@@ -495,10 +496,12 @@ class FoodDeliveryApiImpl @Inject constructor(
     }
 
     private suspend inline fun <reified R> safeCall(
-        networkCall: () -> HttpResponse
+        crossinline networkCall: suspend () -> HttpResponse
     ): ApiResult<R> {
         return try {
-            ApiResult.Success(networkCall().body())
+            withContext(IO) {
+                ApiResult.Success(networkCall().body())
+            }
         } catch (exception: ResponseException) {
             ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: ""))
         } catch (exception: Throwable) {

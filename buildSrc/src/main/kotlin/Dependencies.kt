@@ -12,11 +12,13 @@ object Versions {
     const val lifecycle = "2.6.1"
     const val material = "1.9.0"
     const val viewBindingDelegate = "1.5.3"
-    const val hilt = "2.47"
+    const val daggerHilt = "2.52"
+    const val androidHilt = "1.2.0"
     const val room = "2.6.0-alpha02"
     const val joda = "2.12.5"
     const val crashlytics = "2.9.2"
     const val firebase = "33.5.1"
+    const val work = "2.9.1"
     const val composeCompiler = "1.5.0"
     const val composeBom = "2024.05.00"
     const val lifecycleRuntimeCompose = "2.6.1"
@@ -67,7 +69,7 @@ object ClassPath {
     const val navigationServices =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val hiltServices =
-        "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
+        "com.google.dagger:hilt-android-gradle-plugin:${Versions.daggerHilt}"
     const val crashlytics =
         "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
     const val publisher = "com.github.triplet.gradle:play-publisher:${Versions.publisher}"
@@ -89,8 +91,10 @@ object Plugin {
 }
 
 object Dagger {
-    const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
-    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    const val hilt = "com.google.dagger:hilt-android:${Versions.daggerHilt}"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.daggerHilt}"
+    const val androidxHiltWork = "androidx.hilt:hilt-work:${Versions.androidHilt}"
+    const val androidxHiltCompiler = "androidx.hilt:hilt-compiler:${Versions.androidHilt}"
 }
 
 object KotlinxDatetime {
@@ -171,6 +175,10 @@ object Firebase {
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
     const val storage = "com.google.firebase:firebase-storage"
+}
+
+object WorkManager {
+    const val runtime = "androidx.work:work-runtime-ktx:${Versions.work}"
 }
 
 object Mockk {

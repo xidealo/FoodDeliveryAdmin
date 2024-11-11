@@ -89,10 +89,6 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         it[IS_UNLIMITED_NOTIFICATION_KEY] ?: true
     }
 
-    override suspend fun getIsUnlimitedNotification(): Boolean {
-        return isUnlimitedNotification.firstOrNull() ?: true
-    }
-
     override suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean) {
         context.isUnlimitedNotification.edit {
             it[IS_UNLIMITED_NOTIFICATION_KEY] = isUnlimitedNotification

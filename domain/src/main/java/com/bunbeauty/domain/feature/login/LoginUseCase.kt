@@ -2,12 +2,14 @@ package com.bunbeauty.domain.feature.login
 
 import com.bunbeauty.domain.exception.LoginException
 import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.repo.SettingsRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
     private val userAuthorizationRepo: UserAuthorizationRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
+    private val settingsRepo: SettingsRepo
 ) {
 
     suspend operator fun invoke(
@@ -25,5 +27,6 @@ class LoginUseCase @Inject constructor(
             saveUsername(username)
         }
         userAuthorizationRepo.updateNotificationToken()
+        settingsRepo.init()
     }
 }
