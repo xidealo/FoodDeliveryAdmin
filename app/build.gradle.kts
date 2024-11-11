@@ -11,7 +11,6 @@ plugins {
     id(Plugin.navigation)
     id(Plugin.googleServices)
     id(Plugin.crashlytics)
-    id(Plugin.kotlinParcelize)
     id(Plugin.tripletPlay)
     id(Plugin.ktLint) version Versions.ktLint
 }

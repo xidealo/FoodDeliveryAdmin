@@ -79,7 +79,6 @@ object Plugin {
     const val application = "com.android.application"
     const val android = "android"
     const val androidLibrary = "com.android.library"
-    const val kotlinParcelize = "kotlin-parcelize"
     const val kotlinSerialization = "kotlinx-serialization"
     const val kapt = "kotlin-kapt"
     const val navigation = "androidx.navigation.safeargs.kotlin"
