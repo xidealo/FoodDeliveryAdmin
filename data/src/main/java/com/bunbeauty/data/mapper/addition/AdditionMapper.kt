@@ -27,7 +27,7 @@ val mapAdditionGroupServerToAddition: AdditionGroupServer.() -> AdditionGroup = 
         name = name,
         priority = priority,
         singleChoice = singleChoice,
-        isVisible = isVisible,
+        isVisible = isVisible
     )
 }
 
