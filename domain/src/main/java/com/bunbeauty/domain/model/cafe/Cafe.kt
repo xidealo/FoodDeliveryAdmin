@@ -1,9 +1,5 @@
 package com.bunbeauty.domain.model.cafe
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class Cafe(
     val uuid: String,
     val address: String,
@@ -15,4 +11,4 @@ data class Cafe(
     val phone: String,
     val visible: Boolean,
     val cityUuid: String
-) : Parcelable
+)

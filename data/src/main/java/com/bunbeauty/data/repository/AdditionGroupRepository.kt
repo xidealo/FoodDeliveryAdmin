@@ -1,9 +1,12 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.mapper.addition.mapAdditionGroupServerToAddition
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionGroupServerToPatchAdditionGroup
 import com.bunbeauty.data.mapper.additiongroup.mapAdditionGroupServerToAdditionGroup
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
@@ -26,9 +29,7 @@ class AdditionGroupRepository @Inject constructor(
         }
     }
 
-    private suspend fun fetchAdditionGroupList(
-        token: String
-    ): List<AdditionGroup> {
+    private suspend fun fetchAdditionGroupList(token: String): List<AdditionGroup> {
         return when (val result = networkConnector.getAdditionGroupList(token = token)) {
             is ApiResult.Error -> {
                 throw result.apiError
@@ -56,10 +57,28 @@ class AdditionGroupRepository @Inject constructor(
             additionGroupUuid = additionGroupUuid,
             additionGroupPatchServer = updateAdditionGroup.mapUpdateAdditionGroupServerToPatchAdditionGroup(),
             token = token
-        )
+        ).onSuccess { additionGroupServer ->
+            updateLocalCache(
+                uuid = additionGroupUuid,
+                additionGroupServer = additionGroupServer
+            )
+        }
     }
 
     override fun clearCache() {
-        // TODO("Not yet implemented")
+        additionGroupListCache = null
+    }
+
+    private fun updateLocalCache(
+        uuid: String,
+        additionGroupServer: AdditionGroupServer
+    ) {
+        additionGroupListCache = additionGroupListCache?.map { additionGroup ->
+            if (uuid == additionGroup.uuid) {
+                additionGroupServer.mapAdditionGroupServerToAddition()
+            } else {
+                additionGroup
+            }
+        }
     }
 }
