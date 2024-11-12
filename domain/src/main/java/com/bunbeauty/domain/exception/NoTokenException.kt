@@ -1,3 +1,3 @@
 package com.bunbeauty.domain.exception
 
-class NoTokenException : Exception()
+class NoTokenException : Exception("No token")

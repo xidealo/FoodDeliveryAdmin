@@ -40,6 +40,9 @@ dependencies {
     implementation(platform(Firebase.bom))
     implementation(Firebase.storage)
 
+    // Work manager
+    implementation(WorkManager.runtime)
+
     // Coroutine
     implementation(Coroutines.playServices)
 
@@ -51,6 +54,8 @@ dependencies {
     // Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
+    implementation(Dagger.androidxHiltWork)
+    kapt(Dagger.androidxHiltCompiler)
 
     // DataStore
     implementation(DataStore.dataStorePreferences)

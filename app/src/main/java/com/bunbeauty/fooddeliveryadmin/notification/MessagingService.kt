@@ -12,34 +12,25 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ServiceLifecycleDispatcher
-import androidx.lifecycle.lifecycleScope
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
-import com.bunbeauty.domain.repo.DataStoreRepo
+import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val ORDER_CODE_KEY = "orderCode"
+private const val REQUEST_CODE = 0
 
 @AndroidEntryPoint
-class MessagingService : FirebaseMessagingService(), LifecycleOwner {
-
-    private val serviceDispatcher = ServiceLifecycleDispatcher(this)
-
-    override val lifecycle: Lifecycle
-        get() = serviceDispatcher.lifecycle
+class MessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var dataStoreRepo: DataStoreRepo
+    lateinit var getIsUnlimitedNotificationUseCase: GetIsUnlimitedNotificationUseCase
 
     @Inject
     lateinit var userAuthorizationRepo: UserAuthorizationRepo
@@ -47,15 +38,9 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
     @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat
 
-    override fun onCreate() {
-        serviceDispatcher.onServicePreSuperOnCreate()
-        super.onCreate()
-    }
-
     override fun onNewToken(token: String) {
-        lifecycleScope.launch {
-            userAuthorizationRepo.updateNotificationToken(notificationToken = token)
-        }
+        Log.d(NOTIFICATION_TAG, "onNewToken $token")
+        userAuthorizationRepo.updateNotificationToken(notificationToken = token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -64,23 +49,20 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
         val isNotificationPermissionGranted =
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
                 ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        Log.d(NOTIFICATION_TAG, "isNotificationPermissionGranted $isNotificationPermissionGranted")
         if (isNotificationPermissionGranted) {
-            val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: return
-            lifecycleScope.launch {
-                showNotification(
-                    orderCode = orderCode,
-                    isUnlimited = dataStoreRepo.getIsUnlimitedNotification()
-                )
+            val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: run {
+                Log.d(NOTIFICATION_TAG, "No $ORDER_CODE_KEY")
+                return
             }
+            showNotification(
+                orderCode = orderCode,
+                isUnlimited = getIsUnlimitedNotificationUseCase()
+            )
         }
     }
 
-    override fun onDestroy() {
-        serviceDispatcher.onServicePreSuperOnDestroy()
-        super.onDestroy()
-    }
-
-    @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
+    @SuppressLint("MissingPermission")
     private fun showNotification(
         orderCode: String,
         isUnlimited: Boolean
@@ -88,11 +70,12 @@ class MessagingService : FirebaseMessagingService(), LifecycleOwner {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent: PendingIntent? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
-        } else {
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        }
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_MUTABLE
+        )
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_new_order)
             .setContentTitle(orderCode)

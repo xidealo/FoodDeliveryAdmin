@@ -1,15 +1,13 @@
 package com.bunbeauty.domain.feature.profile
 
-import com.bunbeauty.domain.exception.DataNotFoundException
-import com.bunbeauty.domain.repo.DataStoreRepo
-import kotlinx.coroutines.flow.firstOrNull
+import com.bunbeauty.domain.repo.SettingsRepo
 import javax.inject.Inject
 
 class GetIsUnlimitedNotificationUseCase @Inject constructor(
-    private val dataStoreRepo: DataStoreRepo
+    private val settingsRepo: SettingsRepo
 ) {
 
-    suspend operator fun invoke(): Boolean {
-        return dataStoreRepo.isUnlimitedNotification.firstOrNull() ?: throw DataNotFoundException()
+    operator fun invoke(): Boolean {
+        return settingsRepo.isUnlimitedNotification()
     }
 }

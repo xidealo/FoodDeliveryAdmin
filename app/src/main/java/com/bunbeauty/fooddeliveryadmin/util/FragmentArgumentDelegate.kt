@@ -72,7 +72,6 @@ private fun Bundle.put(vararg pairs: Pair<String, Any?>) {
 }
 
 private fun <T> Bundle.put(key: String, value: T) {
-    @Suppress("UNCHECKED_CAST")
     when (value) {
         is Boolean -> putBoolean(key, value)
         is String -> putString(key, value)
@@ -88,7 +87,6 @@ private fun <T> Bundle.put(key: String, value: T) {
         is Bundle -> putBundle(key, value)
         is Parcelable -> putParcelable(key, value)
         is java.io.Serializable -> putSerializable(key, value)
-        is ArrayList<*> -> putParcelableArrayList(key, value as ArrayList<out Parcelable>)
         else -> throw IllegalStateException("Type of property $key is not supported")
     }
 }

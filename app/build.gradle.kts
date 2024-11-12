@@ -11,7 +11,6 @@ plugins {
     id(Plugin.navigation)
     id(Plugin.googleServices)
     id(Plugin.crashlytics)
-    id(Plugin.kotlinParcelize)
     id(Plugin.tripletPlay)
     id(Plugin.ktLint) version Versions.ktLint
 }
@@ -121,6 +120,9 @@ dependencies {
     implementation(Firebase.messaging)
     implementation(Firebase.crashlytics)
 
+    // Work manager
+    implementation(WorkManager.runtime)
+
     // Lifecycle
     implementation(Lifecycle.service)
 
@@ -149,6 +151,8 @@ dependencies {
     // Dagger Hilt
     implementation(Dagger.hilt)
     kapt(Dagger.hiltCompiler)
+    implementation(Dagger.androidxHiltWork)
+    kapt(Dagger.androidxHiltCompiler)
 
     // Coil
     implementation(Coil.coil)
