@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 private const val ORDER_CODE_KEY = "orderCode"
+private const val UNLIMITED_KEY = "unlimited"
 private const val REQUEST_CODE = 0
 
 @AndroidEntryPoint
@@ -52,12 +53,16 @@ class MessagingService : FirebaseMessagingService() {
         Log.d(NOTIFICATION_TAG, "isNotificationPermissionGranted $isNotificationPermissionGranted")
         if (isNotificationPermissionGranted) {
             val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: run {
-                Log.d(NOTIFICATION_TAG, "No $ORDER_CODE_KEY")
+                Log.e(NOTIFICATION_TAG, "No $ORDER_CODE_KEY")
+                return
+            }
+            val isUnlimited = remoteMessage.data[UNLIMITED_KEY]?.toBoolean() ?: run {
+                Log.e(NOTIFICATION_TAG, "No $UNLIMITED_KEY")
                 return
             }
             showNotification(
                 orderCode = orderCode,
-                isUnlimited = getIsUnlimitedNotificationUseCase()
+                isUnlimited = isUnlimited
             )
         }
     }

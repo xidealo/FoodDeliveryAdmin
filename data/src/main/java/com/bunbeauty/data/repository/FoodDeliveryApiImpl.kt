@@ -26,8 +26,10 @@ import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
+import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
+import com.bunbeauty.data.model.server.response.UserResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
 import io.ktor.client.HttpClient
@@ -90,6 +92,13 @@ class FoodDeliveryApiImpl @Inject constructor(
         )
     }
 
+    override suspend fun getUser(token: String): ApiResult<UserResponse> {
+        return get(
+            path = "user",
+            token = token
+        )
+    }
+
     override suspend fun putNotificationToken(
         updateNotificationTokenRequest: UpdateNotificationTokenRequest,
         token: String
@@ -104,6 +113,17 @@ class FoodDeliveryApiImpl @Inject constructor(
     override suspend fun deleteNotificationToken(token: String): ApiResult<Unit> {
         return delete(
             path = "user/notification_token",
+            token = token
+        )
+    }
+
+    override suspend fun putUnlimitedNotification(
+        updateUnlimitedNotificationRequest: UpdateUnlimitedNotificationRequest,
+        token: String
+    ): ApiResult<Unit> {
+        return put(
+            path = "user/unlimited_notification",
+            body = updateUnlimitedNotificationRequest,
             token = token
         )
     }
