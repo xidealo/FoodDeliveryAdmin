@@ -74,4 +74,10 @@ dependencies {
         implementation(clientAuth)
         implementation(clientOkhttp)
     }
+
+    // Testing
+    testImplementation(kotlin(Test.test))
+    testImplementation(Coroutines.test)
+    testImplementation(Mockk.main)
+    testImplementation(Mockk.common)
 }
