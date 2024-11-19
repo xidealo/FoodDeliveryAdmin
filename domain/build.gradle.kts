@@ -40,13 +40,9 @@ dependencies {
     kapt(Dagger.hiltCompiler)
     implementation(Time.jodaTime)
 
-    // Mocks for testing
-    implementation(Mockk.main)
-    implementation(Mockk.common)
-
-    // Coroutine
-    implementation(Coroutines.test)
-
-    // Test
+    // Testing
     testImplementation(kotlin(Test.test))
+    testImplementation(Coroutines.test)
+    testImplementation(Mockk.main)
+    testImplementation(Mockk.common)
 }

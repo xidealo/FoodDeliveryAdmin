@@ -7,7 +7,7 @@ class GetIsUnlimitedNotificationUseCase @Inject constructor(
     private val settingsRepo: SettingsRepo
 ) {
 
-    operator fun invoke(): Boolean {
+    suspend operator fun invoke(): Boolean {
         return settingsRepo.isUnlimitedNotification()
     }
 }
