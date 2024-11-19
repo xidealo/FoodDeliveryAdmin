@@ -8,16 +8,16 @@ import kotlinx.serialization.Serializable
 data class UserResponse(
 
     @SerialName("uuid")
-    val uuid: String = "",
+    val uuid: String,
 
     @SerialName("username")
-    val username: String = "",
+    val username: String,
 
     @SerialName("role")
-    val role: String = "",
+    val role: String,
 
     @SerialName("unlimitedNotification")
-    val unlimitedNotification: Boolean = true,
+    val unlimitedNotification: Boolean,
 
     @SerialName("city")
     val city: CityServer
