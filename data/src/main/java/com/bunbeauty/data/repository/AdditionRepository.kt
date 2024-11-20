@@ -4,9 +4,12 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.addition.mapAdditionServerToAddition
+import com.bunbeauty.data.mapper.addition.mapCreateAdditionToAddition
+import com.bunbeauty.data.mapper.addition.mapCreateAdditionToCreateAdditionPostServer
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionServerToPatchAddition
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.domain.model.addition.Addition
+import com.bunbeauty.domain.model.addition.CreateAddition
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 import javax.inject.Inject
@@ -48,6 +51,26 @@ class AdditionRepository @Inject constructor(
                 val additionList = result.data.results.map(mapAdditionServerToAddition)
                 additionListCache = additionList
                 additionList
+            }
+        }
+    }
+
+    override suspend fun post(
+        token: String,
+        createAddition: CreateAddition
+    ): Addition {
+        return when (
+            val result = networkConnector.postCreateAddition(
+                token = token,
+                createAdditionPostServer = createAddition.mapCreateAdditionToCreateAdditionPostServer()
+            )
+        ) {
+            is ApiResult.Success -> {
+                mapCreateAdditionToAddition(result.data)
+            }
+
+            is ApiResult.Error -> {
+                throw result.apiError
             }
         }
     }

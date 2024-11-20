@@ -19,6 +19,7 @@ interface AdditionList {
         data object Init : Action
         data object RefreshData : Action
         data class OnAdditionClick(val additionUuid: String) : Action
+        data object OnCreateAddition : Action
         data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action
     }
@@ -26,5 +27,6 @@ interface AdditionList {
     sealed interface Event : BaseEvent {
         data class OnAdditionClick(val additionUuid: String) : Event
         data object Back : Event
+        data object OnCreateAddition : Event
     }
 }

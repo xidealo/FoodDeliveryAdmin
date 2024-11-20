@@ -1,9 +1,13 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.addition.Addition
+import com.bunbeauty.domain.model.addition.CreateAddition
 import com.bunbeauty.domain.model.addition.UpdateAddition
 
 interface AdditionRepo {
+    /* POST */
+    suspend fun post(token: String, createAddition: CreateAddition): Addition?
+
     /*GET*/
     suspend fun getAdditionList(
         token: String,
