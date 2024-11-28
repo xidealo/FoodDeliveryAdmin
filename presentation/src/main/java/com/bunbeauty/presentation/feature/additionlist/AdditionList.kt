@@ -18,7 +18,6 @@ interface AdditionList {
             data class Title(val title: String?, val key: String) : AdditionFeedItem
             data class AdditionItem(val addition: Addition) : AdditionFeedItem
         }
-
     }
 
     sealed interface Action : BaseAction {

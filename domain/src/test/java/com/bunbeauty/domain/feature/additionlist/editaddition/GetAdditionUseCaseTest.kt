@@ -79,6 +79,7 @@ class GetAdditionUseCaseTest {
         fullName = "",
         price = 0,
         photoLink = "",
-        isVisible = false
+        isVisible = false,
+        tag = null
     )
 }

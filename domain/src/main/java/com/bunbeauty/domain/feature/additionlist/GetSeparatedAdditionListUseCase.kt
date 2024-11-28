@@ -4,7 +4,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import java.util.UUID
+import com.bunbeauty.domain.util.GetNewUuidUseCase
 import javax.inject.Inject
 
 data class SeparatedAdditionList(
@@ -20,7 +20,8 @@ data class GroupedAdditionList(
 
 class GetSeparatedAdditionListUseCase @Inject constructor(
     private val additionRepo: AdditionRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
+    private val getNewUuidUseCase: GetNewUuidUseCase
 ) {
     suspend operator fun invoke(refreshing: Boolean): SeparatedAdditionList {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -36,13 +37,13 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
                     addition.tag
                 }.map { mapOfTagAndAdditionList ->
                     GroupedAdditionList(
-                        uuid = UUID.randomUUID().toString(),
+                        uuid = getNewUuidUseCase(),
                         title = mapOfTagAndAdditionList.key,
                         additionList = getSortedAdditionList(
                             additionList = mapOfTagAndAdditionList.value
                         )
                     )
-                } //set elements with title == null to the end of list
+                } // set elements with title == null to the end of list
                 .sortedWith(
                     compareBy<GroupedAdditionList> { groupedAdditionList ->
                         groupedAdditionList.title == null
@@ -58,13 +59,13 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
                     addition.tag
                 }.map { mapOfTagAndAdditionList ->
                     GroupedAdditionList(
-                        uuid = UUID.randomUUID().toString(),
+                        uuid = getNewUuidUseCase(),
                         title = mapOfTagAndAdditionList.key,
                         additionList = getSortedAdditionList(
                             additionList = mapOfTagAndAdditionList.value
                         )
                     )
-                } //set elements with title == null to the end of list
+                } // set elements with title == null to the end of list
                 .sortedWith(
                     compareBy<GroupedAdditionList> { groupedAdditionList ->
                         groupedAdditionList.title == null

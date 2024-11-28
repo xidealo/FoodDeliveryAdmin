@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.feature.additionlist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
-import com.bunbeauty.domain.feature.additionlist.GroupedAdditionList
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel

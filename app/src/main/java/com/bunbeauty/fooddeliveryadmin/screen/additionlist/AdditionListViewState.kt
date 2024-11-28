@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.key
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.fooddeliveryadmin.R
@@ -29,7 +28,7 @@ data class AdditionListViewState(
         @Immutable
         data class Title(
             override val key: String,
-            val title: String,
+            val title: String
         ) : AdditionFeedViewItem
 
         @Immutable
@@ -52,19 +51,21 @@ data class AdditionListViewState(
 @Composable
 fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.AdditionFeedViewItem {
     return when (this) {
-        is AdditionList.DataState.AdditionFeedItem.AdditionItem -> AdditionListViewState
-            .AdditionFeedViewItem
-            .AdditionItem(
-                key = addition.uuid,
-                addition = addition.toItem()
-            )
+        is AdditionList.DataState.AdditionFeedItem.AdditionItem ->
+            AdditionListViewState
+                .AdditionFeedViewItem
+                .AdditionItem(
+                    key = addition.uuid,
+                    addition = addition.toItem()
+                )
 
-        is AdditionList.DataState.AdditionFeedItem.Title -> AdditionListViewState
-            .AdditionFeedViewItem
-            .Title(
-                key = key,
-                title = title ?: stringResource(R.string.title_addition_other_additions)
-            )
+        is AdditionList.DataState.AdditionFeedItem.Title ->
+            AdditionListViewState
+                .AdditionFeedViewItem
+                .Title(
+                    key = key,
+                    title = title ?: stringResource(R.string.title_addition_other_additions)
+                )
     }
 }
 

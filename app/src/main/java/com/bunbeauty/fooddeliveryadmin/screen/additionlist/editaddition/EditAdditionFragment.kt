@@ -142,7 +142,7 @@ class EditAdditionFragment :
                             onValueChange = { tag ->
                                 onAction(EditAddition.Action.EditTagAddition(tag = tag))
                             },
-                            enabled = !state.isLoading,
+                            enabled = !state.isLoading
                         )
                     }
                 }

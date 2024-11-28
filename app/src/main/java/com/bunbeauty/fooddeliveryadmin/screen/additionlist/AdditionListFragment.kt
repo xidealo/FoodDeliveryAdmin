@@ -135,7 +135,7 @@ class AdditionListFragment :
                                 animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                             text = visibleAddition.title,
-                            style = AdminTheme.typography.titleSmall.bold,
+                            style = AdminTheme.typography.titleSmall.bold
                         )
                     }
                 }
@@ -151,7 +151,7 @@ class AdditionListFragment :
                                 animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
-                        style = AdminTheme.typography.titleMedium.bold,
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
                 items(
@@ -174,7 +174,7 @@ class AdditionListFragment :
                                 animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                             text = hiddenAddition.title,
-                            style = AdminTheme.typography.titleSmall.bold,
+                            style = AdminTheme.typography.titleSmall.bold
                         )
                     }
                 }
