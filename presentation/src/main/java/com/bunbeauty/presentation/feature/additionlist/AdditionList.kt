@@ -7,12 +7,19 @@ import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 
 interface AdditionList {
     data class DataState(
-        val visibleAdditions: List<Addition>,
-        val hiddenAdditions: List<Addition>,
+        val visibleAdditions: List<AdditionFeedItem>,
+        val hiddenAdditions: List<AdditionFeedItem>,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
         val hasError: Boolean
-    ) : BaseDataState
+    ) : BaseDataState {
+
+        sealed interface AdditionFeedItem {
+            data class Title(val title: String?, val key: String) : AdditionFeedItem
+            data class AdditionItem(val addition: Addition) : AdditionFeedItem
+        }
+
+    }
 
     sealed interface Action : BaseAction {
 

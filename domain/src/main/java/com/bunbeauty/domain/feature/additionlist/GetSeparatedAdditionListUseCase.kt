@@ -4,11 +4,18 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import java.util.UUID
 import javax.inject.Inject
 
 data class SeparatedAdditionList(
-    val visibleList: List<Addition>,
-    val hiddenList: List<Addition>
+    val visibleList: List<GroupedAdditionList>,
+    val hiddenList: List<GroupedAdditionList>
+)
+
+data class GroupedAdditionList(
+    val uuid: String,
+    val title: String?,
+    val additionList: List<Addition>
 )
 
 class GetSeparatedAdditionListUseCase @Inject constructor(
@@ -25,16 +32,52 @@ class GetSeparatedAdditionListUseCase @Inject constructor(
                 .filter { addition ->
                     addition.isVisible
                 }
-                .sortedBy { addition ->
-                    addition.name
-                },
+                .groupBy { addition ->
+                    addition.tag
+                }.map { mapOfTagAndAdditionList ->
+                    GroupedAdditionList(
+                        uuid = UUID.randomUUID().toString(),
+                        title = mapOfTagAndAdditionList.key,
+                        additionList = getSortedAdditionList(
+                            additionList = mapOfTagAndAdditionList.value
+                        )
+                    )
+                } //set elements with title == null to the end of list
+                .sortedWith(
+                    compareBy<GroupedAdditionList> { groupedAdditionList ->
+                        groupedAdditionList.title == null
+                    }.thenBy { groupedAdditionList ->
+                        groupedAdditionList.title
+                    }
+                ),
             hiddenList = additionList
                 .filterNot { addition ->
                     addition.isVisible
                 }
-                .sortedBy { addition ->
-                    addition.name
-                }
+                .groupBy { addition ->
+                    addition.tag
+                }.map { mapOfTagAndAdditionList ->
+                    GroupedAdditionList(
+                        uuid = UUID.randomUUID().toString(),
+                        title = mapOfTagAndAdditionList.key,
+                        additionList = getSortedAdditionList(
+                            additionList = mapOfTagAndAdditionList.value
+                        )
+                    )
+                } //set elements with title == null to the end of list
+                .sortedWith(
+                    compareBy<GroupedAdditionList> { groupedAdditionList ->
+                        groupedAdditionList.title == null
+                    }.thenBy { groupedAdditionList ->
+                        groupedAdditionList.title
+                    }
+                )
         )
+    }
+
+    private fun getSortedAdditionList(additionList: List<Addition>): List<Addition> {
+        return additionList.sortedBy { addition ->
+            addition.name
+        }
     }
 }

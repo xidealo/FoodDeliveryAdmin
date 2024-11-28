@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.additionlist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
+import com.bunbeauty.domain.feature.additionlist.GroupedAdditionList
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -65,11 +66,16 @@ class AdditionListViewModel @Inject constructor(
                 }
 
                 val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = true)
-
                 setState {
                     copy(
-                        visibleAdditions = separatedAdditionList.visibleList,
-                        hiddenAdditions = separatedAdditionList.hiddenList,
+                        visibleAdditions = separatedAdditionList.visibleList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
+                        hiddenAdditions = separatedAdditionList.hiddenList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
                         isLoading = false,
                         isRefreshing = false,
                         hasError = false
@@ -79,7 +85,8 @@ class AdditionListViewModel @Inject constructor(
             onError = {
                 setState {
                     copy(
-                        hasError = true
+                        hasError = true,
+                        isLoading = false
                     )
                 }
             }
@@ -92,8 +99,14 @@ class AdditionListViewModel @Inject constructor(
                 val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = false)
                 setState {
                     copy(
-                        visibleAdditions = separatedAdditionList.visibleList,
-                        hiddenAdditions = separatedAdditionList.hiddenList,
+                        visibleAdditions = separatedAdditionList.visibleList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
+                        hiddenAdditions = separatedAdditionList.hiddenList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
                         isLoading = false,
                         isRefreshing = false,
                         hasError = false
@@ -103,7 +116,8 @@ class AdditionListViewModel @Inject constructor(
             onError = {
                 setState {
                     copy(
-                        hasError = true
+                        hasError = true,
+                        isLoading = false
                     )
                 }
             }
