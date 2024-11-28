@@ -1,9 +1,9 @@
 plugins {
-    kotlin(Plugin.android)
-    id(Plugin.androidLibrary)
-    id(Plugin.kapt)
-    id(Plugin.kotlinSerialization)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -12,7 +12,7 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
+        lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -37,35 +37,27 @@ dependencies {
     implementation(project(":common"))
 
     // Firebase
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.storage)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.storage)
 
     // Coroutine
-    implementation(Coroutines.playServices)
+    implementation(libs.kotlinx.coroutines.services)
 
     // Database
-    implementation(RoomDatabase.roomDatabaseRuntime)
-    implementation(RoomDatabase.roomDatabaseKtx)
-    kapt(RoomDatabase.roomDatabaseKapt)
+    implementation(libs.bundles.room)
+    kapt(libs.room.database.kapt)
 
     // Hilt
-    implementation(Dagger.hilt)
-    kapt(Dagger.hiltCompiler)
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.hilt.compiler)
 
     // DataStore
-    implementation(DataStore.dataStorePreferences)
+    implementation(libs.datastore.preferences)
 
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.messaging)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
 
-    Ktor.run {
-        implementation(clientLogging)
-        implementation(clientWebsockets)
-        implementation(clientContentNegotiation)
-        implementation(clientSerialization)
-        implementation(serializationJson)
-        implementation(clientJson)
-        implementation(clientAuth)
-        implementation(clientOkhttp)
-    }
+
+    implementation(libs.bundles.ktor)
+
 }

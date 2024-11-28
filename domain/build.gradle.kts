@@ -1,10 +1,10 @@
 plugins {
-    kotlin(Plugin.android)
-    id(Plugin.androidLibrary)
-    id(Plugin.kapt)
-    id(Plugin.kotlinParcelize)
-    id(Plugin.hiltPlugin)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -13,7 +13,7 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
+        lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -36,17 +36,16 @@ android {
 dependencies {
     implementation(project(":common"))
 
-    implementation(Dagger.hilt)
-    kapt(Dagger.hiltCompiler)
-    implementation(Time.jodaTime)
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.joda.time)
 
     // Mocks for testing
-    implementation(Mockk.main)
-    implementation(Mockk.common)
+    implementation(libs.bundles.mockk)
 
     // Coroutine
-    implementation(Coroutines.test)
+    implementation(libs.kotlinx.coroutines.test)
 
     // Test
-    testImplementation(kotlin(Test.test))
+    testImplementation(libs.kotlin.test)
 }

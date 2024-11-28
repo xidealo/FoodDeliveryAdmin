@@ -1,7 +1,7 @@
 plugins {
-    kotlin(Plugin.android)
-    id(Plugin.androidLibrary)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -10,7 +10,7 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
+        lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

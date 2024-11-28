@@ -1,9 +1,9 @@
 plugins {
-    kotlin(Plugin.android)
-    id(Plugin.androidLibrary)
-    id(Plugin.kapt)
-    id(Plugin.hiltPlugin)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -12,7 +12,7 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
+        lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -37,25 +37,24 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    implementation(Lifecycle.viewModel)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
     // TODO remove
     // Navigation
-    implementation(Navigation.runtime)
+    implementation(libs.navigation.runtime.ktx)
 
     // Hilt
-    implementation(Dagger.hilt)
-    kapt(Dagger.hiltCompiler)
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.javax.inject)
 
     // Mocks for testing
-    implementation(Mockk.main)
-    implementation(Mockk.common)
+    implementation(libs.bundles.mockk)
 
     // Coroutine
-    implementation(Coroutines.test)
+    implementation(libs.kotlinx.coroutines.test)
 
     // Test
-    testImplementation(kotlin(Test.test))
-    testImplementation(Turbine.turbine)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.turbine)
 }
