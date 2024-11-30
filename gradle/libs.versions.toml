@@ -28,7 +28,6 @@ imageCpropper = "4.6.0"
 turbine = "1.1.0"
 collectionsImmutable = "0.3.7"
 work = "2.9.1"
-javaxInject = "1.0.0"
 
 [libraries]
 # Navigation
@@ -61,7 +60,6 @@ dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "androidHilt" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidHilt" }
-javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 
 # Date & Time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }

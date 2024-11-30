@@ -47,7 +47,7 @@ dependencies {
     // Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
-    implementation(libs.javax.inject)
+    implementation("javax.inject:javax.inject:1")
 
     // Mocks for testing
     implementation(libs.bundles.mockk)
