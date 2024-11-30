@@ -1,7 +1,6 @@
 package com.bunbeauty.domain.feature.cafelist
 
 import com.bunbeauty.domain.exception.NoCityUuidException
-import com.bunbeauty.domain.feature.statistic.GetCafeListByCityUuidUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo

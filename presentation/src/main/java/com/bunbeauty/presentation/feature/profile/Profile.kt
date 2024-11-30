@@ -11,7 +11,8 @@ interface Profile {
         val state: State,
         val user: User?,
         val acceptOrders: Boolean,
-        val showAcceptOrdersConfirmation: Boolean
+        val showAcceptOrdersConfirmation: Boolean,
+        val logoutLoading: Boolean
     ) : BaseDataState {
 
         data class User(

@@ -13,7 +13,8 @@ data class ProfileViewState(
             val role: String,
             val userName: String,
             val acceptOrders: Boolean,
-            val acceptOrdersConfirmation: AcceptOrdersConfirmation
+            val acceptOrdersConfirmation: AcceptOrdersConfirmation,
+            val logoutLoading: Boolean
         ) : State
     }
 

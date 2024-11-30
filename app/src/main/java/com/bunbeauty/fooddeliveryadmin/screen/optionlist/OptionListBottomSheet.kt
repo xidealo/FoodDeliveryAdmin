@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+@Deprecated("Use AdminModalBottomSheet.kt")
 @AndroidEntryPoint
 class OptionListBottomSheet : BottomSheetDialogFragment() {
 
