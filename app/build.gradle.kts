@@ -15,7 +15,6 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.triplet.play)
     alias(libs.plugins.ktLint)
-
 }
 
 android {

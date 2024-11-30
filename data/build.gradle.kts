@@ -57,7 +57,5 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging.ktx)
 
-
     implementation(libs.bundles.ktor)
-
 }
