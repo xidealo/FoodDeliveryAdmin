@@ -122,7 +122,7 @@ dependencies {
     implementation(libs.firebase.crashlytics.ktx)
 
     // Work manager
-    implementation(WorkManager.runtime)
+    implementation(libs.work.runtime.ktx)
 
     // Lifecycle
     implementation(libs.lifecycle.service)
@@ -143,8 +143,8 @@ dependencies {
     // Dagger Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
-    implementation(Dagger.androidxHiltWork)
-    kapt(Dagger.androidxHiltCompiler)
+    implementation(libs.androidx.hilt.work)
+    kapt(libs.androidx.hilt.compiler)
 
     // Coil
     implementation(libs.bundles.coil)

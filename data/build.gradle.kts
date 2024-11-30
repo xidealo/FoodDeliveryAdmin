@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.firebase.storage)
 
     // Work manager
-    implementation(WorkManager.runtime)
+    implementation(libs.work.runtime.ktx)
 
     // Coroutine
     implementation(libs.kotlinx.coroutines.services)
@@ -54,8 +54,8 @@ dependencies {
     // Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
-    implementation(Dagger.androidxHiltWork)
-    kapt(Dagger.androidxHiltCompiler)
+    implementation(libs.androidx.hilt.work)
+    kapt(libs.androidx.hilt.compiler)
 
     // DataStore
     implementation(libs.datastore.preferences)
@@ -66,8 +66,7 @@ dependencies {
     implementation(libs.bundles.ktor)
 
     // Testing
-    testImplementation(kotlin(Test.test))
-    testImplementation(Coroutines.test)
-    testImplementation(Mockk.main)
-    testImplementation(Mockk.common)
+    testImplementation(libs.kotlin.test)
+    implementation(libs.kotlinx.coroutines.test)
+    implementation(libs.bundles.mockk)
 }
