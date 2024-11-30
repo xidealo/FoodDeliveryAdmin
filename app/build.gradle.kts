@@ -78,11 +78,12 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
         }
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+            jvmTarget = JavaVersion.VERSION_11.toString()
+            freeCompilerArgs = listOf("-Xstring-concat=inline")
         }
         composeOptions {
             kotlinCompilerExtensionVersion = "1.5.0"
@@ -120,6 +121,9 @@ dependencies {
     implementation(libs.firebase.messaging.ktx)
     implementation(libs.firebase.crashlytics.ktx)
 
+    // Work manager
+    implementation(WorkManager.runtime)
+
     // Lifecycle
     implementation(libs.lifecycle.service)
 
@@ -139,6 +143,8 @@ dependencies {
     // Dagger Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
+    implementation(Dagger.androidxHiltWork)
+    kapt(Dagger.androidxHiltCompiler)
 
     // Coil
     implementation(libs.bundles.coil)

@@ -15,11 +15,12 @@ android {
         lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
+        freeCompilerArgs = listOf("-Xstring-concat=inline")
     }
     buildTypes {
         getByName("debug") {
@@ -40,6 +41,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.storage)
 
+    // Work manager
+    implementation(WorkManager.runtime)
+
     // Coroutine
     implementation(libs.kotlinx.coroutines.services)
 
@@ -50,6 +54,8 @@ dependencies {
     // Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
+    implementation(Dagger.androidxHiltWork)
+    kapt(Dagger.androidxHiltCompiler)
 
     // DataStore
     implementation(libs.datastore.preferences)
@@ -58,4 +64,10 @@ dependencies {
     implementation(libs.firebase.messaging.ktx)
 
     implementation(libs.bundles.ktor)
+
+    // Testing
+    testImplementation(kotlin(Test.test))
+    testImplementation(Coroutines.test)
+    testImplementation(Mockk.main)
+    testImplementation(Mockk.common)
 }

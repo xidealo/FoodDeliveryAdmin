@@ -39,7 +39,7 @@ class SettingsViewModel @Inject constructor(
                 // No errors
             },
             block = {
-                updateIsUnlimitedNotification(isChecked)
+                updateIsUnlimitedNotification(isEnabled = isChecked)
                 mutableIsUnlimitedNotifications.update {
                     isChecked
                 }
