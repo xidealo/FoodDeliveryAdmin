@@ -10,43 +10,40 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.selectable.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet
-import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.feature.statistic.Statistic
 import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StatisticFragment :
     BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
 
     override val viewModel: StatisticViewModel by viewModels()
-
-    private var cafeListBottomSheetJob: Job? = null
-    private var timeIntervalListBottomSheetJob: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,79 +62,14 @@ class StatisticFragment :
 
     @Composable
     override fun mapState(state: Statistic.DataState): StatisticViewState {
-        return StatisticViewState(
-            statisticList = state.statisticList.map { statisticItemModel ->
-                StatisticViewState.StatisticItemModel(
-                    startMillis = statisticItemModel.startMillis,
-                    period = statisticItemModel.period,
-                    count = resources.getString(
-                        R.string.msg_statistic_orders,
-                        statisticItemModel.count
-                    ),
-                    proceeds = statisticItemModel.proceeds,
-                    date = statisticItemModel.date
-                )
-            }.toPersistentList(),
-            selectedCafe = state.selectedCafe?.address
-                ?: resources.getString(R.string.msg_statistic_all_cafes),
-            period = getTimeIntervalName(
-                state.selectedTimeInterval
-            ),
-            isLoading = state.isLoading,
-            hasError = state.hasError
-        )
-    }
-
-    private fun getTimeIntervalName(timeInterval: Statistic.TimeIntervalCode): String {
-        return when (timeInterval) {
-            Statistic.TimeIntervalCode.DAY -> resources.getString(R.string.msg_statistic_day_interval)
-            Statistic.TimeIntervalCode.WEEK -> resources.getString(R.string.msg_statistic_week_interval)
-            Statistic.TimeIntervalCode.MONTH -> resources.getString(R.string.msg_statistic_month_interval)
-        }
+        return state.toViewState()
     }
 
     override fun handleEvent(event: Statistic.Event) {
         when (event) {
-            is Statistic.Event.OpenCafeListEvent -> {
-                openCafeListBottom(buildOptionList(event))
-            }
-
-            is Statistic.Event.OpenTimeIntervalListEvent -> {
-                openTimeIntervals(buildOptionList(event))
-            }
-
             is Statistic.Event.GoBack -> {
                 findNavController().navigateUp()
             }
-        }
-    }
-
-    private fun buildOptionList(event: Statistic.Event.OpenCafeListEvent): List<Option> {
-        val optionsList = buildList {
-            add(
-                Option(
-                    id = null,
-                    title = resources.getString(R.string.msg_statistic_all_cafes)
-                )
-            )
-            event.cafeList.map { cafe ->
-                Option(
-                    id = cafe.uuid,
-                    title = cafe.address
-                )
-            }.let { cafeAddressList ->
-                addAll(cafeAddressList)
-            }
-        }
-        return optionsList
-    }
-
-    private fun buildOptionList(event: Statistic.Event.OpenTimeIntervalListEvent): List<Option> {
-        return event.timeIntervalList.map { timeInterval ->
-            Option(
-                id = timeInterval.name,
-                title = getTimeIntervalName(timeInterval)
-            )
         }
     }
 
@@ -194,7 +126,7 @@ class StatisticFragment :
                     }
 
                     else -> {
-                        StatisticSuccessScreen(statisticViewState)
+                        StatisticSuccessScreen(state = statisticViewState, onAction = onAction)
                     }
                 }
             }
@@ -202,7 +134,12 @@ class StatisticFragment :
     }
 
     @Composable
-    private fun StatisticSuccessScreen(statisticViewState: StatisticViewState) {
+    private fun StatisticSuccessScreen(
+        state: StatisticViewState,
+        onAction: (Statistic.Action) -> Unit
+    ) {
+        val listState = rememberLazyListState()
+
         LazyColumn(
             contentPadding = PaddingValues(
                 top = 8.dp,
@@ -210,15 +147,89 @@ class StatisticFragment :
                 end = 16.dp,
                 bottom = AdminTheme.dimensions.scrollScreenBottomSpace
             ),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            state = listState
         ) {
             items(
-                items = statisticViewState.statisticList,
+                items = state.statisticList,
                 key = { statisticItemModel ->
                     statisticItemModel.startMillis
                 }
             ) { statisticItemModel ->
                 StatisticItem(statisticItemModel)
+            }
+        }
+
+        LaunchedEffect(state.statisticList) {
+            listState.animateScrollToItem(0)
+        }
+
+        CafeListBottomSheet(state = state, onAction = onAction)
+        TimeIntervalListBottomSheet(state = state, onAction = onAction)
+    }
+
+    @Composable
+    private fun TimeIntervalListBottomSheet(
+        state: StatisticViewState,
+        onAction: (Statistic.Action) -> Unit
+    ) {
+        AdminModalBottomSheet(
+            title = stringResource(R.string.title_statistic_select_time_interval),
+            isShown = state.timeIntervalListUI.isShown,
+            onDismissRequest = {
+                onAction(Statistic.Action.CloseTimeIntervalListBottomSheet)
+            }
+        ) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                state.timeIntervalListUI.timeIntervalList.forEach { timeInterval ->
+                    SelectableItem(
+                        title = timeInterval.timeInterval,
+                        clickable = true,
+                        elevated = false,
+                        onClick = {
+                            onAction(
+                                Statistic.Action.SelectedTimeInterval(
+                                    timeInterval = timeInterval.timeIntervalType
+                                )
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun CafeListBottomSheet(
+        state: StatisticViewState,
+        onAction: (Statistic.Action) -> Unit
+    ) {
+        AdminModalBottomSheet(
+            title = stringResource(R.string.title_statistic_select_time_interval),
+            isShown = state.cafeListUI.isShown,
+            onDismissRequest = {
+                onAction(Statistic.Action.CloseCafeListBottomSheet)
+            }
+        ) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                state.cafeListUI.cafeList.forEach { cafe ->
+                    SelectableItem(
+                        title = cafe.name,
+                        clickable = true,
+                        elevated = false,
+                        onClick = {
+                            onAction(
+                                Statistic.Action.SelectedCafe(
+                                    cafeUuid = cafe.uuid
+                                )
+                            )
+                        }
+                    )
+                }
             }
         }
     }
@@ -295,44 +306,15 @@ class StatisticFragment :
                     selectedCafe = "Все кафе",
                     period = "По годам",
                     isLoading = false,
-                    hasError = false
+                    hasError = false,
+                    cafeListUI = CafeListUI(isShown = false, cafeList = persistentListOf()),
+                    timeIntervalListUI = TimeIntervalListUI(
+                        isShown = false,
+                        timeIntervalList = persistentListOf()
+                    )
                 ),
                 onAction = {}
             )
-        }
-    }
-
-    private fun openCafeListBottom(cafeList: List<Option>) {
-        val isPossibleToOpen = cafeListBottomSheetJob?.let { job ->
-            !job.isActive
-        } ?: true
-        if (isPossibleToOpen) {
-            cafeListBottomSheetJob = lifecycleScope.launch {
-                OptionListBottomSheet.show(
-                    parentFragmentManager,
-                    resources.getString(R.string.title_statistic_select_cafe),
-                    cafeList
-                )?.let { result ->
-                    viewModel.onCafeSelected(result.value)
-                }
-            }
-        }
-    }
-
-    private fun openTimeIntervals(timeIntervalList: List<Option>) {
-        val isPossibleToOpen = timeIntervalListBottomSheetJob?.let { job ->
-            !job.isActive
-        } ?: true
-        if (isPossibleToOpen) {
-            timeIntervalListBottomSheetJob = lifecycleScope.launch {
-                OptionListBottomSheet.show(
-                    parentFragmentManager,
-                    resources.getString(R.string.title_statistic_select_time_interval),
-                    timeIntervalList
-                )?.value?.let { resultValue ->
-                    viewModel.onTimeIntervalSelected(resultValue)
-                }
-            }
         }
     }
 }

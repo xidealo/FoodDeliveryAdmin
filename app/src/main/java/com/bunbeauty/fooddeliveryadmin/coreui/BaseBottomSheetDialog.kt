@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.reflect.ParameterizedType
 
+@Deprecated("use compose BS")
 abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragment() {
 
     private var mutableBinding: B? = null

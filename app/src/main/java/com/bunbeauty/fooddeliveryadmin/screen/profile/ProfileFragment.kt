@@ -21,6 +21,7 @@ import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
@@ -95,12 +96,13 @@ class ProfileFragment :
             title = stringResource(R.string.title_profile),
             actionButton = {
                 if (state.state is ProfileViewState.State.Success) {
-                    MainButton(
+                    LoadingButton(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        textStringId = R.string.action_common_logout,
+                        text = stringResource(R.string.action_common_logout),
                         onClick = {
                             onAction(Profile.Action.LogoutClick)
-                        }
+                        },
+                        isLoading = state.state.logoutLoading
                     )
                 }
             }
@@ -232,7 +234,8 @@ class ProfileFragment :
                             titleResId = 0,
                             descriptionResId = 0,
                             buttonResId = 0
-                        )
+                        ),
+                        logoutLoading = false
                     )
                 ),
                 onAction = {}

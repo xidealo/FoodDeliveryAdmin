@@ -3,7 +3,6 @@ package com.bunbeauty.presentation.feature.statistic
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
-import com.bunbeauty.domain.feature.statistic.GetCafeListByCityUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
@@ -16,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StatisticViewModel @Inject constructor(
     private val getCafeListUseCase: GetCafeListUseCase,
-    private val getCafeListByCityUuidUseCase: GetCafeListByCityUuidUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase
@@ -32,7 +30,7 @@ class StatisticViewModel @Inject constructor(
                 setState {
                     copy(
                         selectedCafe = null,
-                        selectedTimeInterval = Statistic.TimeIntervalCode.MONTH
+                        selectedTimeInterval = TimeIntervalCode.MONTH
                     )
                 }
                 updateData()
@@ -56,15 +54,24 @@ class StatisticViewModel @Inject constructor(
             Statistic.Action.SelectGoBackClick -> {
                 onGoBackClicked()
             }
+
+            Statistic.Action.CloseTimeIntervalListBottomSheet -> closeTimeIntervalListBottomSheet()
+
+            is Statistic.Action.SelectedTimeInterval -> onTimeIntervalSelected(
+                timeInterval = action.timeInterval
+            )
+
+            is Statistic.Action.SelectedCafe -> onCafeSelected(cafeUuid = action.cafeUuid)
+            Statistic.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
         }
     }
 
     private fun onCafeClicked() {
         viewModelScope.launchSafe(
             block = {
-                sendEvent {
-                    Statistic.Event.OpenCafeListEvent(
-                        getCafeListByCityUuidUseCase()
+                setState {
+                    copy(
+                        isCafeListShown = true
                     )
                 }
             },
@@ -78,7 +85,7 @@ class StatisticViewModel @Inject constructor(
         )
     }
 
-    fun onCafeSelected(cafeUuid: String?) {
+    private fun onCafeSelected(cafeUuid: String?) {
         viewModelScope.launchSafe(
             block = {
                 setState {
@@ -97,7 +104,8 @@ class StatisticViewModel @Inject constructor(
                 setState {
                     copy(
                         selectedCafe = selectedCafe,
-                        isLoading = false
+                        isLoading = false,
+                        isCafeListShown = false
                     )
                 }
             },
@@ -118,23 +126,41 @@ class StatisticViewModel @Inject constructor(
     }
 
     private fun onTimeIntervalClicked() {
-        sendEvent {
-            Statistic.Event.OpenTimeIntervalListEvent(Statistic.TimeIntervalCode.entries)
+        setState {
+            copy(
+                isTimeIntervalListShown = true
+            )
         }
     }
 
-    fun onTimeIntervalSelected(timeInterval: String) {
-        val timeIntervalCode = Statistic.TimeIntervalCode.valueOf(timeInterval)
+    private fun closeTimeIntervalListBottomSheet() {
         setState {
             copy(
-                selectedTimeInterval = timeIntervalCode
+                isTimeIntervalListShown = false
+            )
+        }
+    }
+
+    private fun closeCafeListBottomSheet() {
+        setState {
+            copy(
+                isCafeListShown = false
+            )
+        }
+    }
+
+    private fun onTimeIntervalSelected(timeInterval: TimeIntervalCode) {
+        setState {
+            copy(
+                selectedTimeInterval = timeInterval,
+                isTimeIntervalListShown = false
             )
         }
     }
 
     private fun loadStatistic(
         cafeUuid: String?,
-        period: Statistic.TimeIntervalCode
+        period: TimeIntervalCode
     ) {
         viewModelScope.launchSafe(
             block = {
@@ -151,17 +177,17 @@ class StatisticViewModel @Inject constructor(
                         count = statistic.orderCount,
                         proceeds = "${statistic.proceeds} ${statistic.currency}",
                         date = when (period) {
-                            Statistic.TimeIntervalCode.DAY -> dateTimeUtil.formatDateTime(
+                            TimeIntervalCode.DAY -> dateTimeUtil.formatDateTime(
                                 statistic.startPeriodTime,
                                 PATTERN_DD_MMMM_YYYY
                             )
 
-                            Statistic.TimeIntervalCode.MONTH -> dateTimeUtil.formatDateTime(
+                            TimeIntervalCode.MONTH -> dateTimeUtil.formatDateTime(
                                 statistic.startPeriodTime,
                                 PATTERN_MMMM
                             )
 
-                            Statistic.TimeIntervalCode.WEEK -> dateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
+                            TimeIntervalCode.WEEK -> dateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
                         }
 
                     )
@@ -189,12 +215,18 @@ class StatisticViewModel @Inject constructor(
     private fun updateData() {
         viewModelScope.launchSafe(
             block = {
-                getCafeListUseCase()
+                setState {
+                    copy(
+                        cafeList = getCafeListUseCase(),
+                        isLoading = false
+                    )
+                }
             },
             onError = {
                 setState {
                     copy(
-                        hasError = true
+                        hasError = true,
+                        isLoading = false
                     )
                 }
             }

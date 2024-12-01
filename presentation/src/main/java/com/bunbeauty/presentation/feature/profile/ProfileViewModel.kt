@@ -22,7 +22,8 @@ class ProfileViewModel @Inject constructor(
         state = Profile.DataState.State.LOADING,
         user = null,
         acceptOrders = true,
-        showAcceptOrdersConfirmation = false
+        showAcceptOrdersConfirmation = false,
+        logoutLoading = false
     )
 ) {
 
@@ -131,13 +132,22 @@ class ProfileViewModel @Inject constructor(
         if (confirmed) {
             viewModelScope.launchSafe(
                 block = {
+                    setState {
+                        copy(
+                            logoutLoading = true
+                        )
+                    }
                     logoutUseCase()
                     sendEvent {
                         Profile.Event.OpenLogin
                     }
                 },
                 onError = {
-                    // Not handled
+                    setState {
+                        copy(
+                            logoutLoading = false
+                        )
+                    }
                 }
             )
         }

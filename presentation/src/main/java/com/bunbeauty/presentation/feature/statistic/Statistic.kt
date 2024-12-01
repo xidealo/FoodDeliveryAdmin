@@ -11,8 +11,11 @@ interface Statistic {
         val selectedCafe: SelectedCafe? = null,
         val selectedTimeInterval: TimeIntervalCode = TimeIntervalCode.MONTH,
         val statisticList: List<StatisticItemModel> = emptyList(),
-        val isLoading: Boolean = false,
-        val hasError: Boolean = false
+        val isLoading: Boolean = true,
+        val hasError: Boolean = false,
+        val isTimeIntervalListShown: Boolean = false,
+        val isCafeListShown: Boolean = false,
+        val cafeList: List<Cafe> = emptyList()
     ) : BaseDataState {
 
         data class StatisticItemModel(
@@ -32,23 +35,24 @@ interface Statistic {
         data object SelectCafeClick : Action
         data object SelectTimeIntervalClick : Action
         data object SelectGoBackClick : Action
+        data object CloseTimeIntervalListBottomSheet : Action
+        data object CloseCafeListBottomSheet : Action
+        data class SelectedTimeInterval(val timeInterval: TimeIntervalCode) : Action
+        data class SelectedCafe(val cafeUuid: String?) : Action
     }
 
     sealed interface Event : BaseEvent {
-
         data object GoBack : Event
-        class OpenCafeListEvent(val cafeList: List<Cafe>) : Event
-        class OpenTimeIntervalListEvent(val timeIntervalList: List<TimeIntervalCode>) : Event
     }
 
     data class SelectedCafe(
         val uuid: String?,
         val address: String?
     )
+}
 
-    enum class TimeIntervalCode {
-        DAY,
-        WEEK,
-        MONTH
-    }
+enum class TimeIntervalCode {
+    DAY,
+    WEEK,
+    MONTH
 }

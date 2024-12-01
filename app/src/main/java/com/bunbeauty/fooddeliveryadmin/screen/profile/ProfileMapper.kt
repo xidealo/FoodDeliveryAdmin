@@ -34,7 +34,8 @@ internal fun Profile.DataState.toViewState(): ProfileViewState {
                                 descriptionResId = R.string.msg_profile_disable_orders,
                                 buttonResId = R.string.action_profile_disable
                             )
-                        }
+                        },
+                        logoutLoading = logoutLoading
                     )
                 } ?: ProfileViewState.State.Error
             }
