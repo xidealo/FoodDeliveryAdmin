@@ -315,6 +315,78 @@ class GetSeparatedAdditionListUseCaseTest {
             assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
         }
 
+    @Test
+    fun `return sorted by title where null must be in the end when additionRepo has not empty list`() =
+        runTest {
+            // Given
+            val token = "token"
+            val uuid = "uuid"
+            coEvery { getNewUuidUseCase() } returns uuid
+
+            val expectedSeparatedAdditionList = SeparatedAdditionList(
+                visibleList = listOf(
+                    groupedAdditionList.copy(
+                        uuid = uuid,
+                        additionList = listOf(
+                            additionMock.copy(
+                                uuid = "uuid3",
+                                name = "B",
+                                tag = "sss"
+                            )
+                        ),
+                        title = "sss"
+                    ),
+                    groupedAdditionList.copy(
+                        uuid = uuid,
+                        additionList = listOf(
+                            additionMock.copy(
+                                uuid = "uuid2",
+                                name = "A"
+                            ),
+
+                            additionMock.copy(
+                                uuid = "uuid4",
+                                name = "C"
+                            ),
+                            additionMock.copy(
+                                uuid = "uuid5",
+                                name = "Z"
+                            )
+                        )
+                    )
+                ),
+                hiddenList = emptyList()
+            )
+            coEvery { dataStoreRepo.getToken() } returns token
+            coEvery {
+                additionRepo.getAdditionList(
+                    token = token
+                )
+            } returns listOf(
+                additionMock.copy(
+                    uuid = "uuid5",
+                    name = "Z"
+                ),
+                additionMock.copy(
+                    uuid = "uuid2",
+                    name = "A"
+                ),
+                additionMock.copy(
+                    uuid = "uuid4",
+                    name = "C"
+                ),
+                additionMock.copy(
+                    uuid = "uuid3",
+                    name = "B",
+                    tag = "sss"
+                )
+            )
+            // When
+            val separatedAdditionList = useCase(refreshing = false)
+            // Then
+            assertEquals(expectedSeparatedAdditionList, separatedAdditionList)
+        }
+
     private val groupedAdditionList = GroupedAdditionList(
         uuid = "",
         title = null,
