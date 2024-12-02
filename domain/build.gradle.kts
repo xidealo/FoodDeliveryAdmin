@@ -13,7 +13,6 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

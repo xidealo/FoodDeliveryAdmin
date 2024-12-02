@@ -12,7 +12,6 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        lint.targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -67,6 +66,6 @@ dependencies {
 
     // Testing
     testImplementation(libs.kotlin.test)
-    implementation(libs.kotlinx.coroutines.test)
-    implementation(libs.bundles.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.bundles.mockk)
 }
