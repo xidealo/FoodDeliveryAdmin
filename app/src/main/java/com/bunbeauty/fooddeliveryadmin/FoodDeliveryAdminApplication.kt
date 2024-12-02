@@ -30,7 +30,7 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope, Configuratio
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
-        FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
 
         createNotificationChannel()
     }

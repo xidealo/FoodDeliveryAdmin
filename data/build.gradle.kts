@@ -1,9 +1,9 @@
 plugins {
-    kotlin(Plugin.android)
-    id(Plugin.androidLibrary)
-    id(Plugin.kapt)
-    id(Plugin.kotlinSerialization)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -12,7 +12,6 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -38,46 +37,35 @@ dependencies {
     implementation(project(":common"))
 
     // Firebase
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.storage)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.storage)
 
     // Work manager
-    implementation(WorkManager.runtime)
+    implementation(libs.work.runtime.ktx)
 
     // Coroutine
-    implementation(Coroutines.playServices)
+    implementation(libs.kotlinx.coroutines.services)
 
     // Database
-    implementation(RoomDatabase.roomDatabaseRuntime)
-    implementation(RoomDatabase.roomDatabaseKtx)
-    kapt(RoomDatabase.roomDatabaseKapt)
+    implementation(libs.bundles.room)
+    kapt(libs.room.database.kapt)
 
     // Hilt
-    implementation(Dagger.hilt)
-    kapt(Dagger.hiltCompiler)
-    implementation(Dagger.androidxHiltWork)
-    kapt(Dagger.androidxHiltCompiler)
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.androidx.hilt.work)
+    kapt(libs.androidx.hilt.compiler)
 
     // DataStore
-    implementation(DataStore.dataStorePreferences)
+    implementation(libs.datastore.preferences)
 
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.messaging)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
 
-    Ktor.run {
-        implementation(clientLogging)
-        implementation(clientWebsockets)
-        implementation(clientContentNegotiation)
-        implementation(clientSerialization)
-        implementation(serializationJson)
-        implementation(clientJson)
-        implementation(clientAuth)
-        implementation(clientOkhttp)
-    }
+    implementation(libs.bundles.ktor)
 
     // Testing
-    testImplementation(kotlin(Test.test))
-    testImplementation(Coroutines.test)
-    testImplementation(Mockk.main)
-    testImplementation(Mockk.common)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.bundles.mockk)
 }
