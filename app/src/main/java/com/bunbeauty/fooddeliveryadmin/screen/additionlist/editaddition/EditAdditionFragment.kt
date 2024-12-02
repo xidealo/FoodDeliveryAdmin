@@ -134,6 +134,16 @@ class EditAdditionFragment :
                                 keyboardType = KeyboardType.Number
                             )
                         )
+
+                        AdminTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            labelText = stringResource(R.string.hint_edit_addition_tag),
+                            value = state.tag,
+                            onValueChange = { tag ->
+                                onAction(EditAddition.Action.EditTagAddition(tag = tag))
+                            },
+                            enabled = !state.isLoading
+                        )
                     }
                 }
                 SwitcherCard(
@@ -163,14 +173,15 @@ class EditAdditionFragment :
                 isError = state.hasEditNameError
             ),
             priorityField = TextFieldUi(
-                value = state.priority.toString(),
+                value = state.priority,
                 isError = state.hasEditPriorityError,
                 errorResId = R.string.error_add_addition_empty_priority
             ),
-            fullName = state.fullName.orEmpty(),
-            price = state.price.orEmpty(),
+            fullName = state.fullName,
+            price = state.price,
             isVisible = state.isVisible,
-            isLoading = state.isLoading
+            isLoading = state.isLoading,
+            tag = state.tag
         )
     }
 
@@ -208,7 +219,8 @@ class EditAdditionFragment :
                     fullName = "",
                     price = "2",
                     isVisible = false,
-                    isLoading = false
+                    isLoading = false,
+                    tag = "tag"
                 ),
                 onAction = {}
             )

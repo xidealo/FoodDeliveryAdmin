@@ -24,12 +24,13 @@ class EditAdditionViewModel @Inject constructor(
         uuid = "",
         name = "",
         priority = "",
-        price = null,
+        price = "",
         isLoading = true,
         isVisible = false,
         fullName = "",
         hasEditNameError = false,
-        hasEditPriorityError = false
+        hasEditPriorityError = false,
+        tag = ""
     )
 ) {
 
@@ -70,6 +71,12 @@ class EditAdditionViewModel @Inject constructor(
                     price = action.price
                 )
             }
+
+            is EditAddition.Action.EditTagAddition -> setState {
+                copy(
+                    tag = action.tag
+                )
+            }
         }
     }
 
@@ -87,10 +94,11 @@ class EditAdditionViewModel @Inject constructor(
                     updateAddition = state.value.run {
                         UpdateAddition(
                             name = name.trim(),
-                            priority = priority?.toIntOrNull(),
-                            fullName = fullName?.takeIf { fullName.isNotBlank() }?.trim(),
-                            price = price?.toIntOrNull() ?: 0,
-                            isVisible = isVisible
+                            priority = priority.toIntOrNull(),
+                            fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
+                            price = price.toIntOrNull(),
+                            isVisible = isVisible,
+                            tag = tag
                         )
                     },
                     additionUuid = state.value.uuid
@@ -126,15 +134,16 @@ class EditAdditionViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    val additionUuidNavigation = savedStateHandle.get<String>(ADDITION_UUID) ?: ""
+                    val additionUuidNavigation = savedStateHandle.get<String>(ADDITION_UUID).orEmpty()
                     val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                     copy(
                         uuid = addition.uuid,
                         name = addition.name,
                         priority = addition.priority.toString(),
-                        fullName = addition.fullName,
-                        price = addition.price?.toString(),
+                        fullName = addition.fullName.orEmpty(),
+                        price = addition.price?.toString().orEmpty(),
                         isVisible = addition.isVisible,
+                        tag = addition.tag.orEmpty(),
                         isLoading = false
                     )
                 }

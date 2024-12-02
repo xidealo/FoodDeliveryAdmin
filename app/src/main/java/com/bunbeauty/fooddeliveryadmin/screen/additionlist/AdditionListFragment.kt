@@ -2,6 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.additionlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -43,6 +45,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
 private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+private const val LIST_ANIMATION_DURATION = 500
 
 @AndroidEntryPoint
 class AdditionListFragment :
@@ -89,6 +92,7 @@ class AdditionListFragment :
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun AdditionListSuccessScreen(
         state: AdditionListViewState,
@@ -103,6 +107,10 @@ class AdditionListFragment :
                     key = TITLE_POSITION_VISIBLE_KEY
                 ) {
                     Text(
+                        modifier = Modifier
+                            .animateItemPlacement(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         text = stringResource(id = R.string.title_menu_list_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
                     )
@@ -110,13 +118,26 @@ class AdditionListFragment :
                 items(
                     items = state.visibleAdditionItems,
                     key = { additionItem ->
-                        additionItem.uuid
+                        additionItem.key
                     }
                 ) { visibleAddition ->
-                    AdditionCard(
-                        additionItem = visibleAddition,
-                        onAction = onAction
-                    )
+                    when (visibleAddition) {
+                        is AdditionListViewState.AdditionFeedViewItem.AdditionItem -> AdditionCard(
+                            modifier = Modifier.animateItemPlacement(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
+                            additionItem = visibleAddition.addition,
+                            onAction = onAction
+                        )
+
+                        is AdditionListViewState.AdditionFeedViewItem.Title -> Text(
+                            modifier = Modifier.animateItemPlacement(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
+                            text = visibleAddition.title,
+                            style = AdminTheme.typography.titleSmall.bold
+                        )
+                    }
                 }
             }
             if (state.hiddenAdditionItems.isNotEmpty()) {
@@ -124,21 +145,38 @@ class AdditionListFragment :
                     key = TITLE_POSITION_HIDDEN_KEY
                 ) {
                     Text(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .animateItemPlacement(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
-                        style = AdminTheme.typography.titleMedium.bold,
-                        modifier = Modifier.padding(top = 8.dp)
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
                 items(
                     items = state.hiddenAdditionItems,
                     key = { additionGroupItem ->
-                        additionGroupItem.uuid
+                        additionGroupItem.key
                     }
                 ) { hiddenAddition ->
-                    AdditionCard(
-                        additionItem = hiddenAddition,
-                        onAction = onAction
-                    )
+                    when (hiddenAddition) {
+                        is AdditionListViewState.AdditionFeedViewItem.AdditionItem -> AdditionCard(
+                            modifier = Modifier.animateItemPlacement(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
+                            additionItem = hiddenAddition.addition,
+                            onAction = onAction
+                        )
+
+                        is AdditionListViewState.AdditionFeedViewItem.Title -> Text(
+                            modifier = Modifier.animateItemPlacement(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
+                            text = hiddenAddition.title,
+                            style = AdminTheme.typography.titleSmall.bold
+                        )
+                    }
                 }
             }
         }
@@ -146,11 +184,12 @@ class AdditionListFragment :
 
     @Composable
     private fun AdditionCard(
-        additionItem: AdditionListViewState.AdditionItem,
+        modifier: Modifier,
+        additionItem: AdditionListViewState.AdditionViewItem,
         onAction: (AdditionList.Action) -> Unit
     ) {
         AdminCard(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             onClick = {
                 onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
             }
@@ -205,11 +244,11 @@ class AdditionListFragment :
     @Composable
     override fun mapState(state: AdditionList.DataState): AdditionListViewState {
         return AdditionListViewState(
-            visibleAdditionItems = state.visibleAdditions.map { addition ->
-                addition.toItem()
+            visibleAdditionItems = state.visibleAdditions.map { additionFeedItem ->
+                additionFeedItem.toItem()
             }.toPersistentList(),
-            hiddenAdditionItems = state.hiddenAdditions.map { addition ->
-                addition.toItem()
+            hiddenAdditionItems = state.hiddenAdditions.map { additionFeedItem ->
+                additionFeedItem.toItem()
             }.toPersistentList(),
             isRefreshing = state.isRefreshing,
             isLoading = state.isLoading,
@@ -240,22 +279,41 @@ class AdditionListFragment :
             AdditionListScreen(
                 state = AdditionListViewState(
                     visibleAdditionItems = persistentListOf(
-                        AdditionListViewState.AdditionItem(
-                            uuid = "1",
-                            name = "additio1",
-                            photoLink = "",
-                            iconColor = AdminTheme.colors.main.primary,
-                            isVisible = true
-                        )
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .Title(key = "1", "Заголовок"),
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .AdditionItem(
+                                key = "2",
+                                AdditionListViewState.AdditionViewItem(
+                                    uuid = "1",
+                                    name = "additio1",
+                                    photoLink = "",
+                                    iconColor = AdminTheme.colors.main.primary,
+                                    isVisible = true
+                                )
+                            )
                     ),
                     hiddenAdditionItems = persistentListOf(
-                        AdditionListViewState.AdditionItem(
-                            uuid = "2",
-                            name = "additio2",
-                            photoLink = "",
-                            iconColor = AdminTheme.colors.main.primary,
-                            isVisible = false
-                        )
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .Title(
+                                key = "3",
+                                title = "Заголовок"
+                            ),
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .AdditionItem(
+                                key = "4",
+                                AdditionListViewState.AdditionViewItem(
+                                    uuid = "2",
+                                    name = "additio2",
+                                    photoLink = "",
+                                    iconColor = AdminTheme.colors.main.primary,
+                                    isVisible = false
+                                )
+                            )
                     ),
                     isRefreshing = false,
                     isLoading = false,

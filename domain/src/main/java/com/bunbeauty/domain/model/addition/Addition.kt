@@ -7,5 +7,6 @@ data class Addition(
     val fullName: String?,
     val price: Int?,
     val photoLink: String,
-    val isVisible: Boolean
+    val isVisible: Boolean,
+    val tag: String?
 )
