@@ -37,6 +37,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
@@ -45,10 +46,11 @@ import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirecti
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
 import com.bunbeauty.fooddeliveryadmin.screen.selectcafe.SelectCafeBottomSheet
+import com.bunbeauty.fooddeliveryadmin.screen.statistic.ui.StatisticViewState
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
+import com.bunbeauty.presentation.feature.statistic.Statistic
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -56,7 +58,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
+class OrderListFragment :
+    BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
 
     @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat

@@ -1,7 +1,5 @@
 package com.bunbeauty.presentation.feature.orderlist
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
@@ -9,17 +7,16 @@ import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.SaveSelectedCafeUuidUseCase
+import com.bunbeauty.domain.model.cafe.SelectedCafe
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.extension.mapToStateFlow
 import com.bunbeauty.presentation.feature.orderlist.mapper.OrderMapper
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListDataState
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
+import com.bunbeauty.presentation.feature.orderlist.state.OrderList
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
-import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -32,32 +29,39 @@ class OrderListViewModel @Inject constructor(
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
     private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
     private val orderMapper: OrderMapper
-) : BaseViewModel(), DefaultLifecycleObserver {
-
-    private val mutableDataState = MutableStateFlow(
-        OrderListDataState(
-            refreshing = false,
-            selectedCafe = null,
-            cafeState = OrderListDataState.State.LOADING,
-            orderList = null,
-            orderListState = OrderListDataState.State.LOADING,
-            eventList = emptyList()
-        )
+) : BaseStateViewModel<OrderList.DataState, OrderList.Action, OrderList.Event>(
+    initState = OrderList.DataState(
+        refreshing = false,
+        selectedCafe = null,
+        cafeState = OrderList.DataState.State.LOADING,
+        orderList = null,
+        orderListState = OrderList.DataState.State.LOADING,
     )
+) {
+
+    override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
+        when (action) {
+            OrderList.Action.StartObserveOrders -> observeOrderList(
+                selectedCafe = dataState.selectedCafe ?: return
+            )
+
+            OrderList.Action.StopObserveOrders -> stopObservingOrderList()
+            OrderList.Action.RetryClick -> onRetryClicked()
+        }
+    }
 
     val orderListUiState = mutableDataState.mapToStateFlow(viewModelScope) { dataState ->
         OrderListUiState(
             state = when (dataState.cafeState) {
-                OrderListDataState.State.LOADING -> OrderListUiState.State.Loading
-                OrderListDataState.State.ERROR -> OrderListUiState.State.Error
-                OrderListDataState.State.SUCCESS -> OrderListUiState.State.Success(
+                OrderList.DataState.State.LOADING -> OrderListUiState.State.Loading
+                OrderList.DataState.State.ERROR -> OrderListUiState.State.Error
+                OrderList.DataState.State.SUCCESS -> OrderListUiState.State.Success(
                     cafeAddress = dataState.selectedCafe?.address ?: "",
                     orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList()
                 )
             },
-            connectionError = dataState.orderListState == OrderListDataState.State.ERROR,
+            connectionError = dataState.orderListState == OrderList.DataState.State.ERROR,
             refreshing = dataState.refreshing,
-            eventList = dataState.eventList
         )
     }
 
@@ -68,21 +72,9 @@ class OrderListViewModel @Inject constructor(
         setUpCafe()
     }
 
-    override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
-
-        observeOrderList()
-    }
-
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-
-        stopObservingOrderList()
-    }
-
     fun onRefresh() {
-        mutableDataState.update { state ->
-            state.copy(refreshing = true)
+        setState {
+            copy(refreshing = true)
         }
         stopObservingOrderList()
         setUpCafe()
@@ -106,8 +98,8 @@ class OrderListViewModel @Inject constructor(
                         isSelected = cafe.uuid == mutableDataState.value.selectedCafe?.uuid
                     )
                 }
-                mutableDataState.update { state ->
-                    state + OrderListEvent.OpenCafeListEvent(cafeList)
+                sendEvent {
+                    OrderList.Event.OpenCafeListEvent(cafeList)
                 }
             }
         )
@@ -131,89 +123,88 @@ class OrderListViewModel @Inject constructor(
     }
 
     fun onOrderClicked(orderItem: OrderListUiState.OrderItem) {
-        mutableDataState.update { state ->
-            state + OrderListEvent.OpenOrderDetailsEvent(
+        sendEvent {
+            OrderList.Event.OpenOrderDetailsEvent(
                 orderUuid = orderItem.uuid,
                 orderCode = orderItem.code
-            ) + OrderListEvent.CancelNotification(
+            )
+        }
+        sendEvent {
+            OrderList.Event.CancelNotification(
                 notificationId = orderItem.code.hashCode()
             )
         }
     }
 
-    fun onRetryClicked() {
+    fun onRetryClicked(selectedCafe: SelectedCafe) {
         stopObservingOrderList()
-        setUpCafe()
-    }
-
-    fun consumeEvents(events: List<OrderListEvent>) {
-        mutableDataState.update { state ->
-            state - events
-        }
+        setUpCafe(selectedCafe = selectedCafe)
     }
 
     private fun setUpCafe() {
         viewModelScope.launchSafe(
             onError = {
-                mutableDataState.update { state ->
-                    state.copy(cafeState = OrderListDataState.State.ERROR)
+                setState {
+                    copy(cafeState = OrderList.DataState.State.ERROR)
                 }
             },
             block = {
-                mutableDataState.update { state ->
-                    state.copy(cafeState = OrderListDataState.State.LOADING)
+
+                setState {
+                    copy(cafeState = OrderList.DataState.State.LOADING)
                 }
                 val selectedCafe = getSelectedCafe()
-                mutableDataState.update { state ->
+
+                setState {
                     if (selectedCafe == null) {
-                        state.copy(cafeState = OrderListDataState.State.ERROR)
+                        copy(cafeState = OrderList.DataState.State.ERROR)
                     } else {
-                        state.copy(
-                            cafeState = OrderListDataState.State.SUCCESS,
+                        copy(
+                            cafeState = OrderList.DataState.State.SUCCESS,
                             selectedCafe = selectedCafe
                         )
                     }
                 }
 
-                observeOrderList()
+                observeOrderList(selectedCafe = selectedCafe)
             }
         )
     }
 
-    private fun observeOrderList() {
-        val selectedCafe = mutableDataState.value.selectedCafe ?: return
+    private fun observeOrderList(selectedCafe: SelectedCafe) {
 
-        mutableDataState.update { state ->
-            state.copy(orderListState = OrderListDataState.State.SUCCESS)
+        setState {
+            copy(orderListState = OrderList.DataState.State.SUCCESS)
         }
 
         if (orderListJob != null) return
 
         orderListJob = viewModelScope.launchSafe(
             onError = {
-                mutableDataState.update { state ->
-                    state.copy(
+                setState {
+                    copy(
                         refreshing = false,
-                        orderListState = OrderListDataState.State.ERROR
+                        orderListState = OrderList.DataState.State.ERROR
                     )
                 }
             },
             block = {
                 getOrderListFlow(selectedCafe.uuid).collect { orderList ->
-                    mutableDataState.update { state ->
-                        state.copy(
+                    setState {
+                        copy(
                             orderList = orderList,
                             refreshing = false
-                        ).let { newState ->
-                            if (!state.orderList.isNullOrEmpty() &&
-                                (state.orderList.size < orderList.size)
-                            ) {
-                                newState + OrderListEvent.ScrollToTop
-                            } else {
-                                newState
-                            }
-                        }
+                        )
                     }
+
+//                    if (!state.orderList.isNullOrEmpty() &&
+//                        (state.orderList.size < orderList.size)
+//                    ) {
+//                        newState + OrderList.Event.ScrollToTop
+//                    } else {
+//                        newState
+//                    }
+
                 }
             }
         )
@@ -224,8 +215,8 @@ class OrderListViewModel @Inject constructor(
             },
             block = {
                 getOrderErrorFlow().collect {
-                    mutableDataState.update { state ->
-                        state.copy(orderListState = OrderListDataState.State.ERROR)
+                    setState {
+                        copy(orderListState = OrderList.DataState.State.ERROR)
                     }
                 }
             }
