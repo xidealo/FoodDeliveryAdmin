@@ -15,19 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
@@ -35,23 +30,16 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
-import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeListFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.fooddeliveryadmin.screen.error.ErrorDialog
-import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
-import com.bunbeauty.fooddeliveryadmin.screen.selectcafe.SelectCafeBottomSheet
-import com.bunbeauty.fooddeliveryadmin.screen.statistic.ui.StatisticViewState
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
+import com.bunbeauty.presentation.feature.orderlist.state.OrderList
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
-import com.bunbeauty.presentation.feature.statistic.Statistic
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,83 +47,107 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class OrderListFragment :
-    BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
+    BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
 
     @Inject
     lateinit var notificationManagerCompat: NotificationManagerCompat
+
+    @Inject
+    lateinit var orderMapper: OrderMapper
 
     override val viewModel: OrderListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.onAction(OrderList.Action.StartObserveOrders)
+    }
 
-        lifecycle.addObserver(viewModel)
-
-        binding.root.setContentWithTheme {
-            val uiState by viewModel.orderListUiState.collectAsStateWithLifecycle()
-            val lazyListState = rememberLazyListState()
-            OrderListScreen(
-                uiState = uiState,
-                lazyListState = lazyListState,
-                onRefresh = viewModel::onRefresh,
-                onCafeClicked = viewModel::onCafeClicked,
-                onOrderClicked = viewModel::onOrderClicked
-            )
-
-            val scope = rememberCoroutineScope()
-            LaunchedEffect(uiState.eventList) {
-                handleEventList(
-                    lazyListState = lazyListState,
-                    scope = scope,
-                    eventList = uiState.eventList
-                )
+    @Composable
+    override fun Screen(
+        state: OrderListViewState,
+        lazyListState: LazyListState,
+        onAction: (OrderList.Action) -> Unit
+    ) {
+        AdminScaffold(
+            title = stringResource(R.string.title_orders),
+            pullRefreshEnabled = state.state is OrderListViewState.State.Success,
+            refreshing = if (state.state is OrderListViewState.State.Success) {
+                state.state.refreshing
+            } else {
+                false
+            },
+            onRefresh = {
+                onAction(OrderList.Action.RefreshSwipe)
             }
+        ) {
+            when (state.state) {
+                OrderListViewState.State.Loading -> {
+                    LoadingScreen()
+                }
+
+                OrderListViewState.State.Error -> {
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = {
+                            //retry click
+                        }
+                    )
+                }
+
+                is OrderListViewState.State.Success -> {
+                    SuccessOrderListScreen(
+                        state = state.state,
+                        lazyListState = lazyListState,
+                        onAction = onAction,
+                    )
+                }
+            }
+
         }
     }
 
     @Composable
-    private fun OrderListScreen(
-        uiState: OrderListUiState,
+    override fun mapState(state: OrderList.DataState): OrderListViewState {
+        return OrderListViewState(
+            state = when (state.cafeState) {
+                OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
+                OrderList.DataState.State.ERROR -> OrderListViewState.State.Error
+                OrderList.DataState.State.SUCCESS -> OrderListViewState.State.Success(
+                    cafeAddress = state.selectedCafe?.address.orEmpty(),
+                    orderList = state.orderList.map(orderMapper::map).toPersistentList(),
+                    connectionError = state.orderListState == OrderList.DataState.State.ERROR,
+                    refreshing = state.refreshing,
+                )
+            },
+        )
+    }
+
+    override fun handleEvent(
+        event: OrderList.Event,
         lazyListState: LazyListState,
-        onRefresh: () -> Unit,
-        onCafeClicked: () -> Unit,
-        onOrderClicked: (OrderListUiState.OrderItem) -> Unit
+        coroutineScope: CoroutineScope
     ) {
-        AdminScaffold(
-            title = stringResource(R.string.title_orders),
-            pullRefreshEnabled = uiState.state is OrderListUiState.State.Success,
-            refreshing = uiState.refreshing,
-            onRefresh = onRefresh
-        ) {
-            Column {
-                if (uiState.connectionError) {
-                    ConnectionError()
-                }
-                when (val state = uiState.state) {
-                    OrderListUiState.State.Loading -> {
-                        LoadingScreen()
-                    }
+        when (event) {
+            is OrderList.Event.CancelNotification -> {
+                notificationManagerCompat.cancel(event.notificationId)
+            }
 
-                    OrderListUiState.State.Error -> {
-                        ErrorScreen(
-                            mainTextId = R.string.title_common_can_not_load_data,
-                            extraTextId = R.string.msg_common_check_connection_and_retry,
-                            onClick = viewModel::retrySetUp
-                        )
-                    }
+            is OrderList.Event.OpenOrderDetailsEvent -> openOrderDetails(
+                event.orderUuid,
+                event.orderCode
+            )
 
-                    is OrderListUiState.State.Success -> {
-                        SuccessOrderListScreen(
-                            uiStateSuccess = state,
-                            lazyListState = lazyListState,
-                            onCafeClicked = onCafeClicked,
-                            onOrderClicked = onOrderClicked
-                        )
-                    }
+            OrderList.Event.ScrollToTop -> {
+                coroutineScope.launch {
+                    delay(100)
+                    lazyListState.animateScrollToItem(0)
                 }
             }
+
         }
     }
+
 
     @Composable
     private fun ConnectionError() {
@@ -159,83 +171,57 @@ class OrderListFragment :
 
     @Composable
     private fun SuccessOrderListScreen(
-        uiStateSuccess: OrderListUiState.State.Success,
+        state: OrderListViewState.State.Success,
         lazyListState: LazyListState,
-        onCafeClicked: () -> Unit,
-        onOrderClicked: (OrderListUiState.OrderItem) -> Unit
+        onAction: (OrderList.Action) -> Unit
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item(key = "cafeAddress") {
-                NavigationTextCard(
-                    labelText = stringResource(R.string.msg_common_cafe),
-                    valueText = uiStateSuccess.cafeAddress,
-                    onClick = onCafeClicked
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+        Column {
+            if (state.connectionError) {
+                ConnectionError()
             }
-            items(
-                items = uiStateSuccess.orderList,
-                key = { orderItem -> orderItem.uuid }
-            ) { orderItem ->
-                OrderItem(orderItem = orderItem, onClick = onOrderClicked)
-            }
-        }
-    }
-
-    private fun handleEventList(
-        eventList: List<OrderListEvent>,
-        scope: CoroutineScope,
-        lazyListState: LazyListState
-    ) {
-        eventList.forEach { event ->
-            when (event) {
-                is OrderListEvent.ScrollToTop -> {
-                    scope.launch {
-                        delay(100)
-                        lazyListState.animateScrollToItem(0)
-                    }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = lazyListState,
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item(key = "cafeAddress") {
+                    NavigationTextCard(
+                        labelText = stringResource(R.string.msg_common_cafe),
+                        valueText = state.cafeAddress,
+                        onClick = { onAction(OrderList.Action.CafeClick) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
 
-                is OrderListEvent.OpenCafeListEvent -> {
-                    openCafeList(event.cafeList)
-                }
-
-                is OrderListEvent.OpenOrderDetailsEvent -> {
-                    openOrderDetails(event.orderUuid, event.orderCode)
-                }
-
-                OrderListEvent.OpenLoginEvent -> {
-                    findNavController().navigateSafe(toLoginFragment())
-                }
-
-                OrderListEvent.ShowError -> {
-                    scope.launch {
-                        ErrorDialog.show(childFragmentManager).let {
-                            viewModel.onRetryClicked()
+                items(
+                    items = state.orderList,
+                    key = { orderItem -> orderItem.uuid }
+                ) { orderItem ->
+                    OrderItem(
+                        orderItem = orderItem,
+                        onClick = {
+                            onAction(
+                                OrderList.Action.OrderClick(
+                                    orderCode = orderItem.code,
+                                    orderUuid = orderItem.uuid
+                                )
+                            )
                         }
-                    }
-                }
-
-                is OrderListEvent.CancelNotification -> {
-                    notificationManagerCompat.cancel(event.notificationId)
+                    )
                 }
             }
         }
-        viewModel.consumeEvents(eventList)
+
     }
 
     private fun openCafeList(cafeList: List<SelectableCafeItem>) {
         lifecycleScope.launch {
-            val selectedCafe = SelectCafeBottomSheet.show(
-                parentFragmentManager,
-                cafeList
-            )
-            viewModel.onCafeSelected(selectedCafe?.uuid)
+//            val selectedCafe = SelectCafeBottomSheet.show(
+//                parentFragmentManager,
+//                cafeList
+//            )
+//            viewModel.onCafeSelected(selectedCafe?.uuid)
         }
     }
 

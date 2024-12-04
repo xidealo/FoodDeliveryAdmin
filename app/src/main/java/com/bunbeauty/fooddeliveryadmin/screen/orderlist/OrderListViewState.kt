@@ -1,19 +1,24 @@
-package com.bunbeauty.presentation.feature.orderlist.state
+package com.bunbeauty.fooddeliveryadmin.screen.orderlist
 
+import androidx.compose.runtime.Immutable
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import kotlinx.collections.immutable.ImmutableList
 
-data class OrderListUiState(
+@Immutable
+data class OrderListViewState(
     val state: State,
-    val connectionError: Boolean,
-    val refreshing: Boolean,
-) {
+) : BaseViewState {
 
+    @Immutable
     sealed interface State {
         data object Loading : State
         data object Error : State
         data class Success(
             val cafeAddress: String,
-            val orderList: List<OrderItem>
+            val orderList: ImmutableList<OrderItem>,
+            val connectionError: Boolean,
+            val refreshing: Boolean,
         ) : State
     }
 
