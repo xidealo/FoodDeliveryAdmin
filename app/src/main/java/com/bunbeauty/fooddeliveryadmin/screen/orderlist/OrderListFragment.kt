@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,11 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.selectable.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -37,7 +40,6 @@ import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirecti
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
-import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
@@ -118,6 +120,20 @@ class OrderListFragment :
                     orderList = state.orderList.map(orderMapper::map).toPersistentList(),
                     connectionError = state.orderListState == OrderList.DataState.State.ERROR,
                     refreshing = state.refreshing,
+                    cafeListUI = OrderListViewState.State.Success.CafeListUI(
+                        isShown = state.showCafeList,
+                        cafeList = state.cafeList.map { cafe ->
+                            OrderListViewState
+                                .State
+                                .Success
+                                .CafeListUI
+                                .CafeItem(
+                                    uuid = cafe.uuid,
+                                    name = cafe.address,
+                                    isSelected = cafe.isSelected
+                                )
+                        }.toPersistentList()
+                    )
                 )
             },
         )
@@ -211,17 +227,43 @@ class OrderListFragment :
                     )
                 }
             }
+            CafeListBottomSheet(state = state, onAction = onAction)
+
         }
 
     }
 
-    private fun openCafeList(cafeList: List<SelectableCafeItem>) {
-        lifecycleScope.launch {
-//            val selectedCafe = SelectCafeBottomSheet.show(
-//                parentFragmentManager,
-//                cafeList
-//            )
-//            viewModel.onCafeSelected(selectedCafe?.uuid)
+    @Composable
+    private fun CafeListBottomSheet(
+        state: OrderListViewState.State.Success,
+        onAction: (OrderList.Action) -> Unit
+    ) {
+        AdminModalBottomSheet(
+            title = stringResource(R.string.title_order_list_select_cafe),
+            isShown = state.cafeListUI.isShown,
+            onDismissRequest = {
+                onAction(OrderList.Action.CloseCafeListBottomSheet)
+            }
+        ) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                state.cafeListUI.cafeList.forEach { cafe ->
+                    SelectableItem(
+                        title = cafe.name,
+                        clickable = true,
+                        elevated = false,
+                        isSelected = cafe.isSelected,
+                        onClick = {
+                            onAction(
+                                OrderList.Action.SelectedCafe(
+                                    cafeUuid = cafe.uuid
+                                )
+                            )
+                        }
+                    )
+                }
+            }
         }
     }
 

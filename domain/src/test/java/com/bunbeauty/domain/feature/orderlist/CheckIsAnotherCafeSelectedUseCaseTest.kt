@@ -10,7 +10,6 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class CheckIsAnotherCafeSelectedUseCaseTest {
 
     private val getSelectedCafe: GetSelectedCafeUseCase = mockk()

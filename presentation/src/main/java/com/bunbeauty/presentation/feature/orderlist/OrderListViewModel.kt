@@ -31,9 +31,10 @@ class OrderListViewModel @Inject constructor(
         cafeState = OrderList.DataState.State.LOADING,
         orderList = emptyList(),
         orderListState = OrderList.DataState.State.LOADING,
+        cafeList = emptyList(),
+        showCafeList = false,
     )
 ) {
-
     override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
         when (action) {
             OrderList.Action.StartObserveOrders -> {
@@ -51,6 +52,8 @@ class OrderListViewModel @Inject constructor(
             )
 
             OrderList.Action.CafeClick -> onCafeClicked()
+            OrderList.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
+            is OrderList.Action.SelectedCafe -> onCafeSelected(action.cafeUuid)
         }
     }
 
@@ -65,36 +68,34 @@ class OrderListViewModel @Inject constructor(
         observeOrderList(currentOrderList = currentOrderList)
     }
 
-    private fun onCafeClicked() {
-        viewModelScope.launchSafe(
-            block = {
-                val cafeList = getCafeList().map { cafe ->
-                    SelectableCafeItem(
-                        uuid = cafe.uuid,
-                        address = cafe.address,
-                        isSelected = cafe.uuid == mutableDataState.value.selectedCafe?.uuid
-                    )
-                }
-
-                //TODO set state for BS
-            },
-            onError = {
-                // No idea how to handle this
-            },
-        )
+    private fun closeCafeListBottomSheet() {
+        setState {
+            copy(
+                showCafeList = false
+            )
+        }
     }
 
-    fun onCafeSelected(cafeUuid: String) {
+    private fun onCafeClicked() {
+        setState {
+            copy(
+                showCafeList = true
+            )
+        }
+    }
+
+    private fun onCafeSelected(cafeUuid: String) {
         viewModelScope.launchSafe(
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
                     saveSelectedCafeUuid(cafeUuid)
                     setUpCafe()
+                    closeCafeListBottomSheet()
                 }
             },
             onError = {
-                // No idea how to handle this
+
             },
         )
     }
@@ -132,7 +133,14 @@ class OrderListViewModel @Inject constructor(
                     } else {
                         copy(
                             cafeState = OrderList.DataState.State.SUCCESS,
-                            selectedCafe = selectedCafe
+                            selectedCafe = selectedCafe,
+                            cafeList = getCafeList().map { cafe ->
+                                SelectableCafeItem(
+                                    uuid = cafe.uuid,
+                                    address = cafe.address,
+                                    isSelected = cafe.uuid == selectedCafe.uuid
+                                )
+                            }
                         )
                     }
                 }

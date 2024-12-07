@@ -207,14 +207,17 @@ class StatisticFragment :
         onAction: (Statistic.Action) -> Unit
     ) {
         AdminModalBottomSheet(
-            title = stringResource(R.string.title_statistic_select_time_interval),
+            title = stringResource(R.string.title_statistic_select_cafe),
             isShown = state.cafeListUI.isShown,
             onDismissRequest = {
                 onAction(Statistic.Action.CloseCafeListBottomSheet)
             }
         ) {
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier
+                    .verticalScroll(
+                        rememberScrollState()
+                    )
             ) {
                 state.cafeListUI.cafeList.forEach { cafe ->
                     SelectableItem(

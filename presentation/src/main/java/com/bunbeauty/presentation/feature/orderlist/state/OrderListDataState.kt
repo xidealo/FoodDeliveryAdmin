@@ -14,6 +14,8 @@ interface OrderList {
         val cafeState: State,
         val orderList: List<Order>,
         val orderListState: State,
+        val cafeList: List<SelectableCafeItem>,
+        val showCafeList: Boolean,
     ) : BaseDataState {
         enum class State {
             LOADING,
@@ -25,9 +27,11 @@ interface OrderList {
     sealed interface Action : BaseAction {
         data object StartObserveOrders : Action
         data object StopObserveOrders : Action
+        data object CloseCafeListBottomSheet : Action
         data object RefreshSwipe : Action
         data object RetryClick : Action
         data object CafeClick : Action
+        data class SelectedCafe(val cafeUuid: String) : Action
         data class OrderClick(val orderUuid: String, val orderCode: String) : Action
     }
 
