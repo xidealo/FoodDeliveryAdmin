@@ -94,7 +94,6 @@ class OrderListFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // retry click
                             onAction(OrderList.Action.RetryClick)
                         }
                     )
