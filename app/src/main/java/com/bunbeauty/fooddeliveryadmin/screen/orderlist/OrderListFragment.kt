@@ -47,6 +47,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val CAFE_ADDRESS_KEY = "cafeAddress"
+
 @AndroidEntryPoint
 class OrderListFragment :
     BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
@@ -93,6 +95,7 @@ class OrderListFragment :
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             // retry click
+                            onAction(OrderList.Action.RetryClick)
                         }
                     )
                 }
@@ -198,7 +201,7 @@ class OrderListFragment :
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item(key = "cafeAddress") {
+                item(key = CAFE_ADDRESS_KEY) {
                     NavigationTextCard(
                         labelText = stringResource(R.string.msg_common_cafe),
                         valueText = state.cafeAddress,

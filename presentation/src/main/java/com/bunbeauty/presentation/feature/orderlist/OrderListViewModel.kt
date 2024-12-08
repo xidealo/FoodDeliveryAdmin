@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.orderlist
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
@@ -16,6 +17,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import javax.inject.Inject
 
+private const val TAG = "OrderListViewModel"
+
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
     private val getOrderListFlow: GetOrderListFlowUseCase,
@@ -28,7 +31,7 @@ class OrderListViewModel @Inject constructor(
     initState = OrderList.DataState(
         refreshing = false,
         selectedCafe = null,
-        hasConnectionError = true,
+        hasConnectionError = false,
         orderList = emptyList(),
         orderListState = OrderList.DataState.State.LOADING,
         cafeList = emptyList(),
@@ -198,8 +201,8 @@ class OrderListViewModel @Inject constructor(
                     }
                 }
             },
-            onError = {
-                // No idea how to handle this
+            onError = { error ->
+                Log.d(TAG, "getOrderErrorFlow: ${error.stackTrace}")
             }
         )
     }

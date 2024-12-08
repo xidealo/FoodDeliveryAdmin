@@ -31,6 +31,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.selectable.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
@@ -85,48 +86,55 @@ class StatisticFragment :
                 LoadingButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = stringResource(R.string.action_product_statistic_load),
-                    isLoading = statisticViewState.isLoading,
+                    isLoading = if (statisticViewState.state is StatisticViewState.State.Success) {
+                        statisticViewState.state.loadingStatistic
+                    } else {
+                        true
+                    },
                     onClick = {
                         onAction(Statistic.Action.LoadStatisticClick)
                     }
                 )
             }
         ) {
-            Column {
-                NavigationTextCard(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .padding(horizontal = 16.dp),
-                    labelText = stringResource(R.string.msg_common_cafe),
-                    valueText = statisticViewState.selectedCafe,
-                    onClick = {
-                        onAction(Statistic.Action.SelectCafeClick)
-                    }
-                )
+            when (statisticViewState.state) {
+                StatisticViewState.State.Error -> ErrorScreen(
+                    mainTextId = R.string.error_common_loading_failed
+                ) {
+                    onAction(Statistic.Action.LoadStatisticClick)
+                }
 
-                NavigationTextCard(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .padding(horizontal = 16.dp),
-                    labelText = stringResource(R.string.msg_common_period),
-                    valueText = statisticViewState.period,
-                    onClick = {
-                        onAction(Statistic.Action.SelectTimeIntervalClick)
-                    }
-                )
+                StatisticViewState.State.Loading -> LoadingScreen()
+                is StatisticViewState.State.Success -> {
+                    Column {
+                        NavigationTextCard(
+                            modifier = Modifier
+                                .padding(top = 16.dp)
+                                .padding(horizontal = 16.dp),
+                            labelText = stringResource(R.string.msg_common_cafe),
+                            valueText = statisticViewState.state.selectedCafe,
+                            onClick = {
+                                onAction(Statistic.Action.SelectCafeClick)
+                            }
+                        )
 
-                when {
-                    statisticViewState.hasError -> {
-                        ErrorScreen(
-                            mainTextId = R.string.error_common_loading_failed,
-                            isLoading = statisticViewState.isLoading
-                        ) {
-                            onAction(Statistic.Action.LoadStatisticClick)
+                        NavigationTextCard(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .padding(horizontal = 16.dp),
+                            labelText = stringResource(R.string.msg_common_period),
+                            valueText = statisticViewState.state.period,
+                            onClick = {
+                                onAction(Statistic.Action.SelectTimeIntervalClick)
+                            }
+                        )
+
+                        if (!statisticViewState.state.loadingStatistic) {
+                            StatisticSuccessScreen(
+                                state = statisticViewState.state,
+                                onAction = onAction
+                            )
                         }
-                    }
-
-                    else -> {
-                        StatisticSuccessScreen(state = statisticViewState, onAction = onAction)
                     }
                 }
             }
@@ -135,7 +143,7 @@ class StatisticFragment :
 
     @Composable
     private fun StatisticSuccessScreen(
-        state: StatisticViewState,
+        state: StatisticViewState.State.Success,
         onAction: (Statistic.Action) -> Unit
     ) {
         val listState = rememberLazyListState()
@@ -170,7 +178,7 @@ class StatisticFragment :
 
     @Composable
     private fun TimeIntervalListBottomSheet(
-        state: StatisticViewState,
+        state: StatisticViewState.State.Success,
         onAction: (Statistic.Action) -> Unit
     ) {
         AdminModalBottomSheet(
@@ -203,7 +211,7 @@ class StatisticFragment :
 
     @Composable
     private fun CafeListBottomSheet(
-        state: StatisticViewState,
+        state: StatisticViewState.State.Success,
         onAction: (Statistic.Action) -> Unit
     ) {
         AdminModalBottomSheet(
@@ -238,7 +246,7 @@ class StatisticFragment :
     }
 
     @Composable
-    private fun StatisticItem(statisticItemModel: StatisticViewState.StatisticItemModel) {
+    private fun StatisticItem(statisticItemModel: StatisticViewState.State.Success.StatisticItemModel) {
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             clickable = false
@@ -290,30 +298,34 @@ class StatisticFragment :
         AdminTheme {
             StatisticScreen(
                 statisticViewState = StatisticViewState(
-                    statisticList = persistentListOf(
-                        StatisticViewState.StatisticItemModel(
-                            startMillis = 3064,
-                            period = "апрель",
-                            count = "Заказов: 20",
-                            proceeds = "2000 $",
-                            date = "ssss"
+                    state = StatisticViewState.State.Success(
+                        statisticList = persistentListOf(
+                            StatisticViewState.State.Success.StatisticItemModel(
+                                startMillis = 3064,
+                                period = "апрель",
+                                count = "Заказов: 20",
+                                proceeds = "2000 $",
+                                date = "ssss"
+                            ),
+                            StatisticViewState.State.Success.StatisticItemModel(
+                                startMillis = 3064,
+                                period = "май",
+                                count = "Заказов: 387",
+                                proceeds = "128234 $",
+                                date = "ssss"
+                            )
                         ),
-                        StatisticViewState.StatisticItemModel(
-                            startMillis = 3064,
-                            period = "май",
-                            count = "Заказов: 387",
-                            proceeds = "128234 $",
-                            date = "ssss"
-                        )
-                    ),
-                    selectedCafe = "Все кафе",
-                    period = "По годам",
-                    isLoading = false,
-                    hasError = false,
-                    cafeListUI = CafeListUI(isShown = false, cafeList = persistentListOf()),
-                    timeIntervalListUI = TimeIntervalListUI(
-                        isShown = false,
-                        timeIntervalList = persistentListOf()
+                        selectedCafe = "Все кафе",
+                        period = "По годам",
+                        cafeListUI = StatisticViewState.CafeListUI(
+                            isShown = false,
+                            cafeList = persistentListOf()
+                        ),
+                        timeIntervalListUI = StatisticViewState.TimeIntervalListUI(
+                            isShown = false,
+                            timeIntervalList = persistentListOf()
+                        ),
+                        loadingStatistic = false
                     )
                 ),
                 onAction = {}
