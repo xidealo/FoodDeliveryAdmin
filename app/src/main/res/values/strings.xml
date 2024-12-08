@@ -50,6 +50,7 @@
 
     <!-- ORDER LIST -->
     <string name="title_orders">Заказы</string>
+    <string name="title_order_list_select_cafe">Выберите кафе</string>
     <string name="error_order_list_connection">Ошибка. Проверьте подключение\nк интернету и обновите страницу</string>
 
     <!-- ORDER DETAILS -->

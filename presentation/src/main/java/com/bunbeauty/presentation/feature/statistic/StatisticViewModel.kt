@@ -20,7 +20,8 @@ class StatisticViewModel @Inject constructor(
     private val getStatisticUseCase: GetStatisticUseCase
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
     initState = Statistic.DataState(
-        cafeUuid = null
+        cafeUuid = null,
+        loadingStatistic = false
     )
 ) {
 
@@ -165,7 +166,7 @@ class StatisticViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    copy(isLoading = true)
+                    copy(loadingStatistic = true)
                 }
                 getStatisticUseCase(
                     cafeUuid = cafeUuid,
@@ -195,7 +196,7 @@ class StatisticViewModel @Inject constructor(
                     setState {
                         copy(
                             statisticList = statisticItemList,
-                            isLoading = false,
+                            loadingStatistic = false,
                             hasError = false
                         )
                     }
@@ -205,7 +206,7 @@ class StatisticViewModel @Inject constructor(
                 setState {
                     copy(
                         hasError = true,
-                        isLoading = false
+                        loadingStatistic = false
                     )
                 }
             }

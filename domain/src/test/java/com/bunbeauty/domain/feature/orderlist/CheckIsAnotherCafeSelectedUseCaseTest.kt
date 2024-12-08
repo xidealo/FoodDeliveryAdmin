@@ -3,14 +3,12 @@ package com.bunbeauty.domain.feature.orderlist
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class CheckIsAnotherCafeSelectedUseCaseTest {
 
     private val getSelectedCafe: GetSelectedCafeUseCase = mockk()
