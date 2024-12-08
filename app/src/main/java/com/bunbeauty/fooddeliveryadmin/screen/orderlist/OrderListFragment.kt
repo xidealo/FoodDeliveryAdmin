@@ -22,10 +22,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
@@ -37,10 +39,12 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeListFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
+import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListViewState.State.Success.CafeListUI.CafeItem
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -48,6 +52,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
+const val LOADING_ORDER_LIST_KEY = "loadingOrderList"
 
 @AndroidEntryPoint
 class OrderListFragment :
@@ -75,11 +80,6 @@ class OrderListFragment :
         AdminScaffold(
             title = stringResource(R.string.title_orders),
             pullRefreshEnabled = state.state is OrderListViewState.State.Success,
-            refreshing = if (state.state is OrderListViewState.State.Success) {
-                state.state.refreshing
-            } else {
-                false
-            },
             onRefresh = {
                 onAction(OrderList.Action.RefreshSwipe)
             }
@@ -100,7 +100,7 @@ class OrderListFragment :
                 }
 
                 is OrderListViewState.State.Success -> {
-                    SuccessOrderListScreen(
+                    OrderListSuccessScreen(
                         state = state.state,
                         lazyListState = lazyListState,
                         onAction = onAction
@@ -134,7 +134,8 @@ class OrderListFragment :
                                     isSelected = cafe.isSelected
                                 )
                         }.toPersistentList()
-                    )
+                    ),
+                    loadingOrderList = state.loadingOrderList
                 )
             }
         )
@@ -185,7 +186,7 @@ class OrderListFragment :
     }
 
     @Composable
-    private fun SuccessOrderListScreen(
+    private fun OrderListSuccessScreen(
         state: OrderListViewState.State.Success,
         lazyListState: LazyListState,
         onAction: (OrderList.Action) -> Unit
@@ -193,6 +194,13 @@ class OrderListFragment :
         Column {
             if (state.connectionError) {
                 ConnectionError()
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -209,21 +217,27 @@ class OrderListFragment :
                     Spacer(modifier = Modifier.height(8.dp))
                 }
 
-                items(
-                    items = state.orderList,
-                    key = { orderItem -> orderItem.uuid }
-                ) { orderItem ->
-                    OrderItem(
-                        orderItem = orderItem,
-                        onClick = {
-                            onAction(
-                                OrderList.Action.OrderClick(
-                                    orderCode = orderItem.code,
-                                    orderUuid = orderItem.uuid
+                if (state.loadingOrderList) {
+                    item(key = LOADING_ORDER_LIST_KEY) {
+                        LoadingScreen(modifier = Modifier.padding(top = 32.dp))
+                    }
+                } else {
+                    items(
+                        items = state.orderList,
+                        key = { orderItem -> orderItem.uuid }
+                    ) { orderItem ->
+                        OrderItem(
+                            orderItem = orderItem,
+                            onClick = {
+                                onAction(
+                                    OrderList.Action.OrderClick(
+                                        orderCode = orderItem.code,
+                                        orderUuid = orderItem.uuid
+                                    )
                                 )
-                            )
-                        }
-                    )
+                            }
+                        )
+                    }
                 }
             }
             CafeListBottomSheet(state = state, onAction = onAction)
@@ -266,5 +280,42 @@ class OrderListFragment :
 
     private fun openOrderDetails(orderUuid: String, orderCode: String) {
         findNavController().navigateSafe(toOrdersDetailsFragment(orderUuid, orderCode))
+    }
+
+    @Preview(showSystemUi = true)
+    @Composable
+    private fun OrderListSuccessScreenPreview() {
+        AdminTheme {
+            OrderListSuccessScreen(
+                state = OrderListViewState.State.Success(
+                    cafeAddress = "Кафе сатаны",
+                    orderList = persistentListOf(
+                        OrderListViewState.OrderItem(
+                            uuid = "1",
+                            status = OrderStatus.ACCEPTED,
+                            statusString = "Принят",
+                            code = "22",
+                            deferredTime = "",
+                            dateTime = "12/9/2024"
+                        )
+                    ),
+                    connectionError = false,
+                    refreshing = false,
+                    cafeListUI = OrderListViewState.State.Success.CafeListUI(
+                        isShown = false,
+                        cafeList = persistentListOf(
+                            CafeItem(
+                                uuid = "1",
+                                name = "Кафе сатаны",
+                                isSelected = false
+                            )
+                        )
+                    ),
+                    loadingOrderList = false
+                ),
+                lazyListState = LazyListState(),
+                onAction = {}
+            )
+        }
     }
 }

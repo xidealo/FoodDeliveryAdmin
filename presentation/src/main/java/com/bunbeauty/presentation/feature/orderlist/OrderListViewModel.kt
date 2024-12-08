@@ -35,7 +35,8 @@ class OrderListViewModel @Inject constructor(
         orderList = emptyList(),
         orderListState = OrderList.DataState.State.LOADING,
         cafeList = emptyList(),
-        showCafeList = false
+        showCafeList = false,
+        loadingOrderList = false
     )
 ) {
     override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
@@ -135,6 +136,7 @@ class OrderListViewModel @Inject constructor(
                     } else {
                         copy(
                             hasConnectionError = false,
+                            orderListState = OrderList.DataState.State.SUCCESS,
                             selectedCafe = selectedCafe,
                             cafeList = getCafeList().map { cafe ->
                                 SelectableCafeItem(
@@ -157,7 +159,10 @@ class OrderListViewModel @Inject constructor(
 
     private fun observeOrderList(currentOrderList: List<Order>) {
         setState {
-            copy(orderListState = OrderList.DataState.State.SUCCESS)
+            copy(
+                hasConnectionError = false,
+                loadingOrderList = true
+            )
         }
 
         if (orderListJob != null) return
@@ -167,7 +172,8 @@ class OrderListViewModel @Inject constructor(
                 setState {
                     copy(
                         refreshing = false,
-                        orderListState = OrderList.DataState.State.ERROR
+                        hasConnectionError = true,
+                        loadingOrderList = false
                     )
                 }
             },
@@ -178,7 +184,8 @@ class OrderListViewModel @Inject constructor(
                     setState {
                         copy(
                             orderList = orderList,
-                            refreshing = false
+                            refreshing = false,
+                            loadingOrderList = false
                         )
                     }
 
@@ -197,7 +204,7 @@ class OrderListViewModel @Inject constructor(
             block = {
                 getOrderErrorFlow().collect {
                     setState {
-                        copy(orderListState = OrderList.DataState.State.ERROR)
+                        copy(hasConnectionError = true)
                     }
                 }
             },

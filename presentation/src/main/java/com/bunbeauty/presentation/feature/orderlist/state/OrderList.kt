@@ -15,7 +15,8 @@ interface OrderList {
         val orderList: List<Order>,
         val hasConnectionError: Boolean,
         val cafeList: List<SelectableCafeItem>,
-        val showCafeList: Boolean
+        val showCafeList: Boolean,
+        val loadingOrderList: Boolean
     ) : BaseDataState {
         enum class State {
             LOADING,

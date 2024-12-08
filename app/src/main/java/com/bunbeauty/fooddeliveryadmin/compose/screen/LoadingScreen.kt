@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @Composable
-internal fun LoadingScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
+internal fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center),
             color = AdminTheme.colors.main.primary
