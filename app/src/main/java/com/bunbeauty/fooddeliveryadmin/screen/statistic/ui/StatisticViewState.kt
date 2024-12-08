@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.feature.statistic.TimeIntervalCode
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 
-//TODO( make model with sealed interface STATE like in OrderListViewState)
+// TODO( make model with sealed interface STATE like in OrderListViewState)
 @Immutable
 data class StatisticViewState(
     val statisticList: ImmutableList<StatisticItemModel>,

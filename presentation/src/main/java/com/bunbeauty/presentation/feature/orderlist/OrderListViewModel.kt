@@ -23,16 +23,16 @@ class OrderListViewModel @Inject constructor(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val getCafeList: GetCafeListUseCase,
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
-    private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
+    private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase
 ) : BaseStateViewModel<OrderList.DataState, OrderList.Action, OrderList.Event>(
     initState = OrderList.DataState(
         refreshing = false,
         selectedCafe = null,
-        cafeState = OrderList.DataState.State.LOADING,
+        hasConnectionError = true,
         orderList = emptyList(),
         orderListState = OrderList.DataState.State.LOADING,
         cafeList = emptyList(),
-        showCafeList = false,
+        showCafeList = false
     )
 ) {
     override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
@@ -95,8 +95,7 @@ class OrderListViewModel @Inject constructor(
                 }
             },
             onError = {
-
-            },
+            }
         )
     }
 
@@ -123,16 +122,16 @@ class OrderListViewModel @Inject constructor(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    copy(cafeState = OrderList.DataState.State.LOADING)
+                    copy(hasConnectionError = false)
                 }
                 val selectedCafe = getSelectedCafe()
 
                 setState {
                     if (selectedCafe == null) {
-                        copy(cafeState = OrderList.DataState.State.ERROR)
+                        copy(hasConnectionError = true)
                     } else {
                         copy(
-                            cafeState = OrderList.DataState.State.SUCCESS,
+                            hasConnectionError = false,
                             selectedCafe = selectedCafe,
                             cafeList = getCafeList().map { cafe ->
                                 SelectableCafeItem(
@@ -147,14 +146,13 @@ class OrderListViewModel @Inject constructor(
             },
             onError = {
                 setState {
-                    copy(cafeState = OrderList.DataState.State.ERROR)
+                    copy(hasConnectionError = true)
                 }
-            },
+            }
         )
     }
 
     private fun observeOrderList(currentOrderList: List<Order>) {
-
         setState {
             copy(orderListState = OrderList.DataState.State.SUCCESS)
         }
@@ -171,7 +169,6 @@ class OrderListViewModel @Inject constructor(
                 }
             },
             block = {
-                //TODO (add message that cafe is not selected)
                 val selectedCafe = getSelectedCafe() ?: return@launchSafe
 
                 getOrderListFlow(selectedCafe.uuid).collect { orderList ->
@@ -203,7 +200,7 @@ class OrderListViewModel @Inject constructor(
             },
             onError = {
                 // No idea how to handle this
-            },
+            }
         )
     }
 

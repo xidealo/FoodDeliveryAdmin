@@ -31,7 +31,7 @@ class OrderMapper @Inject constructor(
             ""
         } else {
             resources.getString(R.string.msg_order_deferred_date_time) +
-                    dateTimeUtil.formatDateTime(deferredTime, PATTERN_HH_MM)
+                dateTimeUtil.formatDateTime(deferredTime, PATTERN_HH_MM)
         }
     }
 }

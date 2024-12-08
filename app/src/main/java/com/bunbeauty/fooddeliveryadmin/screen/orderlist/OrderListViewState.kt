@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class OrderListViewState(
-    val state: State,
+    val state: State
 ) : BaseViewState {
 
     @Immutable
@@ -46,5 +46,3 @@ data class OrderListViewState(
         val dateTime: String
     )
 }
-
-

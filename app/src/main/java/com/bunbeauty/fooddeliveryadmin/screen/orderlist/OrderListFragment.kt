@@ -92,7 +92,7 @@ class OrderListFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            //retry click
+                            // retry click
                         }
                     )
                 }
@@ -101,24 +101,23 @@ class OrderListFragment :
                     SuccessOrderListScreen(
                         state = state.state,
                         lazyListState = lazyListState,
-                        onAction = onAction,
+                        onAction = onAction
                     )
                 }
             }
-
         }
     }
 
     @Composable
     override fun mapState(state: OrderList.DataState): OrderListViewState {
         return OrderListViewState(
-            state = when (state.cafeState) {
+            state = when (state.orderListState) {
                 OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
                 OrderList.DataState.State.ERROR -> OrderListViewState.State.Error
                 OrderList.DataState.State.SUCCESS -> OrderListViewState.State.Success(
                     cafeAddress = state.selectedCafe?.address.orEmpty(),
                     orderList = state.orderList.map(orderMapper::map).toPersistentList(),
-                    connectionError = state.orderListState == OrderList.DataState.State.ERROR,
+                    connectionError = state.hasConnectionError,
                     refreshing = state.refreshing,
                     cafeListUI = OrderListViewState.State.Success.CafeListUI(
                         isShown = state.showCafeList,
@@ -135,7 +134,7 @@ class OrderListFragment :
                         }.toPersistentList()
                     )
                 )
-            },
+            }
         )
     }
 
@@ -160,10 +159,8 @@ class OrderListFragment :
                     lazyListState.animateScrollToItem(0)
                 }
             }
-
         }
     }
-
 
     @Composable
     private fun ConnectionError() {
@@ -228,9 +225,7 @@ class OrderListFragment :
                 }
             }
             CafeListBottomSheet(state = state, onAction = onAction)
-
         }
-
     }
 
     @Composable

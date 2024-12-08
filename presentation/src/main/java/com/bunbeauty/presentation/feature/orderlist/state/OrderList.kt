@@ -11,11 +11,11 @@ interface OrderList {
     data class DataState(
         val refreshing: Boolean,
         val selectedCafe: SelectedCafe?,
-        val cafeState: State,
-        val orderList: List<Order>,
         val orderListState: State,
+        val orderList: List<Order>,
+        val hasConnectionError: Boolean,
         val cafeList: List<SelectableCafeItem>,
-        val showCafeList: Boolean,
+        val showCafeList: Boolean
     ) : BaseDataState {
         enum class State {
             LOADING,
@@ -40,5 +40,4 @@ interface OrderList {
         data class OpenOrderDetailsEvent(val orderUuid: String, val orderCode: String) : Event
         data class CancelNotification(val notificationId: Int) : Event
     }
-
 }
