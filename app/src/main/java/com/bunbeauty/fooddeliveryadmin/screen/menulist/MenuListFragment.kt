@@ -237,13 +237,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 ) {
                     Icon(
-                        painter = if (menuProduct.visible) {
-                            R.drawable.ic_invisible
-                        } else {
-                            R.drawable.ic_visible
-                        }.let { iconId ->
-                            painterResource(iconId)
-                        },
+                        painter = painterResource(R.drawable.ic_visible),
                         contentDescription = null,
                         tint = if (menuProduct.visible) {
                             AdminTheme.colors.main.primary
