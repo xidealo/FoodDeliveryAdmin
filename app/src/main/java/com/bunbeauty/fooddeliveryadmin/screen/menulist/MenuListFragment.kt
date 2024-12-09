@@ -53,6 +53,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 private const val VISIBLE_TITLE_KEY = "visible title"
 private const val HIDDEN_TITLE_KEY = "hidden title"
+private const val LIST_ANIMATION_DURATION = 500
 
 @AndroidEntryPoint
 class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
@@ -144,7 +145,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                 item(key = VISIBLE_TITLE_KEY) {
                     Text(
                         modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(500)
+                            animationSpec = tween(LIST_ANIMATION_DURATION)
                         ),
                         text = stringResource(id = R.string.title_menu_list_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
@@ -158,7 +159,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                 ) { visibleMenuProduct ->
                     MenuListProductCard(
                         modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(500)
+                            animationSpec = tween(LIST_ANIMATION_DURATION)
                         ),
                         menuProduct = visibleMenuProduct
                     )
@@ -170,7 +171,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                         modifier = Modifier
                             .padding(top = 8.dp)
                             .animateItemPlacement(
-                                animationSpec = tween(500)
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
                         style = AdminTheme.typography.titleMedium.bold
@@ -184,7 +185,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                 ) { hiddenMenuProduct ->
                     MenuListProductCard(
                         modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(500)
+                            animationSpec = tween(LIST_ANIMATION_DURATION)
                         ),
                         menuProduct = hiddenMenuProduct
                     )
