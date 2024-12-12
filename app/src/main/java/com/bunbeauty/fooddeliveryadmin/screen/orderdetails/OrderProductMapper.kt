@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class OrderProductMapper @Inject constructor() {
 
-    fun map(orderProduct: OrderProduct): OrderDetailsUiState.Product {
-        return OrderDetailsUiState.Product(
+    fun map(orderProduct: OrderProduct): OrderDetailsViewState.Product {
+        return OrderDetailsViewState.Product(
             title = orderProduct.name,
             price = if (orderProduct.additionsPrice == null) {
                 "${orderProduct.newPrice} $RUBLE_CURRENCY"

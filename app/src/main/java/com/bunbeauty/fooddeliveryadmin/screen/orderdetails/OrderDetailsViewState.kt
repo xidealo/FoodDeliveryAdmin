@@ -1,14 +1,17 @@
 package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
+import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import kotlinx.collections.immutable.ImmutableList
 
-data class OrderDetailsUiState(
+@Immutable
+data class OrderDetailsViewState(
     val title: String,
-    val state: State,
-    val eventList: List<OrderDetailsEvent>
-) {
-
+    val state: State
+) : BaseViewState {
+    @Immutable
     sealed interface State {
         data object Loading : State
         data object Error : State
@@ -22,19 +25,34 @@ data class OrderDetailsUiState(
             val status: String,
             val statusColor: Color,
             val phoneNumber: String,
-            val productList: List<Product>,
+            val productList: ImmutableList<Product>,
             val percentDiscount: String?,
             val deliveryCost: String?,
             val finalCost: String,
-            val saving: Boolean
-        ) : State
+            val saving: Boolean,
+            val statusListUI: StatusListUI
+        ) : State {
+            @Immutable
+            data class StatusListUI(
+                val isShown: Boolean,
+                val statusList: ImmutableList<StatusItem>
+            ) {
+                @Immutable
+                data class StatusItem(
+                    val orderStatus: OrderStatus,
+                    val status: String
+                )
+            }
+        }
     }
 
+    @Immutable
     data class HintWithValue(
         val hint: String,
         val value: String
     )
 
+    @Immutable
     data class Product(
         val title: String,
         val price: String,
