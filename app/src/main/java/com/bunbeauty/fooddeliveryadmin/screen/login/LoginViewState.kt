@@ -5,9 +5,9 @@ data class LoginViewState(
     val eventList: List<Event> = emptyList()
 ) {
     sealed interface Event {
-        object OpenOrderListEvent : Event
-        object ShowWrongCredentialError : Event
-        object ShowConnectionError : Event
+        data object OpenOrderListEvent : Event
+        data object ShowWrongCredentialError : Event
+        data object ShowConnectionError : Event
     }
 
     operator fun plus(event: Event) = copy(eventList = eventList + event)

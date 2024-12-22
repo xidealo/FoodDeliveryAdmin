@@ -15,7 +15,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
 @Composable
 fun OrderProductItem(
-    product: OrderDetailsUiState.Product,
+    product: OrderDetailsViewState.Product,
     modifier: Modifier = Modifier
 ) {
     AdminCard(
@@ -70,7 +70,7 @@ fun OrderProductItem(
 @Composable
 private fun OrderProductItemPreview() {
     OrderProductItem(
-        product = OrderDetailsUiState.Product(
+        product = OrderDetailsViewState.Product(
             title = "Хот-дог французский с куриной колбаской",
             price = "99 ₽",
             count = "× 2",
