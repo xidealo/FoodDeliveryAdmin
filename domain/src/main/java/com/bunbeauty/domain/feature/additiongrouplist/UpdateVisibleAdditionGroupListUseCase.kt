@@ -4,9 +4,9 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
-class UpdateVisibleAdditionGroupListUseCase @Inject constructor(
+
+class UpdateVisibleAdditionGroupListUseCase (
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

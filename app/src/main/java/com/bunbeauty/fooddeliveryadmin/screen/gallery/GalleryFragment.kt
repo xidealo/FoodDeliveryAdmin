@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -24,15 +24,13 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.gallery.Gallery
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
-@AndroidEntryPoint
 class GalleryFragment :
     BaseComposeFragment<Gallery.DataState, GalleryViewState, Gallery.Action, Gallery.Event>() {
 
-    override val viewModel: GalleryViewModel by viewModels()
+    override val viewModel: GalleryViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

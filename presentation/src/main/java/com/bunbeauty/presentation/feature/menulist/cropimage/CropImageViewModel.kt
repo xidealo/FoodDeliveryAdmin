@@ -1,11 +1,9 @@
 package com.bunbeauty.presentation.feature.menulist.cropimage
 
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class CropImageViewModel @Inject constructor() :
+
+class CropImageViewModel :
     BaseStateViewModel<CropImage.DataState, CropImage.Action, CropImage.Event>(
         initState = CropImage.DataState(
             isLoading = false,
@@ -20,6 +18,7 @@ class CropImageViewModel @Inject constructor() :
                     CropImage.Event.GoBack
                 }
             }
+
             is CropImage.Action.SetImageUrl -> setState {
                 copy(uri = action.uri)
             }

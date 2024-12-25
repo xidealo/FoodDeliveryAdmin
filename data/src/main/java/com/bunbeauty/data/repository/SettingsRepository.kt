@@ -6,11 +6,10 @@ import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationReques
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.SettingsRepo
-import javax.inject.Inject
 
 private const val IS_UNLIMITED_NOTIFICATION_DEFAULT = true
 
-class SettingsRepository @Inject constructor(
+class SettingsRepository (
     private val dataStoreRepo: DataStoreRepo,
     private val foodDeliveryApi: FoodDeliveryApi
 ) : SettingsRepo {

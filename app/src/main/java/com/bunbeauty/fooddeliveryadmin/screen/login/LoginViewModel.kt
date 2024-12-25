@@ -5,14 +5,13 @@ import com.bunbeauty.domain.feature.login.CheckAuthorizationUseCase
 import com.bunbeauty.domain.feature.login.LoginUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
+
+
+class LoginViewModel (
     private val checkAuthorizationUseCase: CheckAuthorizationUseCase,
     private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {

@@ -5,14 +5,14 @@ import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
+
 
 data class SeparatedMenuProductList(
     val visibleList: List<MenuProduct>,
     val hiddenList: List<MenuProduct>
 )
 
-class GetSeparatedMenuProductListUseCase @Inject constructor(
+class GetSeparatedMenuProductListUseCase(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

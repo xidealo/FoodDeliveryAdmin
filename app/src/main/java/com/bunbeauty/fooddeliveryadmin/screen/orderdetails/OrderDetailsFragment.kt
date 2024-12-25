@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -53,22 +53,19 @@ import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.feature.order.OrderDetailsViewModel
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 private const val PHONE_LINK = "tel:"
 
-@AndroidEntryPoint
 class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 
-    override val viewModel: OrderDetailsViewModel by viewModels()
+    override val viewModel: OrderDetailsViewModel by viewModel()
 
-    @Inject
-    lateinit var orderDetailsStateMapper: OrderDetailsStateMapper
+    private val orderDetailsStateMapper: OrderDetailsStateMapper by inject()
 
     private var statusListJob: Job? = null
 

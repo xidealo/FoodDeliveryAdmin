@@ -4,9 +4,8 @@ import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
 
-class GetCafeListUseCase @Inject constructor(
+class GetCafeListUseCase (
     private val dataStoreRepo: DataStoreRepo,
     private val cafeRepository: CafeRepo
 ) {

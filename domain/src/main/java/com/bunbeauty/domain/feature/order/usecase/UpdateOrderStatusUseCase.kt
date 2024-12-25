@@ -4,9 +4,8 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
-class UpdateOrderStatusUseCase @Inject constructor(
+class UpdateOrderStatusUseCase (
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

@@ -9,13 +9,13 @@ import com.bunbeauty.domain.util.datetime.IDateTimeUtil
 import com.bunbeauty.domain.util.flattenFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+
 
 private const val SECONDS_IN_MINUTE = 60
 private const val SECONDS_IN_HOUR = 60 * 60
 private const val SECONDS_IN_DAY = 24 * 60 * 60
 
-class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
+class GetCafeWithWorkingHoursListFlowUseCase(
     private val getCafeList: GetCafeListUseCase,
     private val getCurrentTimeFlow: GetCurrentTimeFlowUseCase,
     private val dateTimeUtil: IDateTimeUtil
@@ -27,7 +27,8 @@ class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
                 timeZoneOffset = cafe.offset,
                 interval = SECONDS_IN_MINUTE
             ).map { time ->
-                val currentDaySeconds = time.minute * SECONDS_IN_MINUTE + time.hour * SECONDS_IN_HOUR
+                val currentDaySeconds =
+                    time.minute * SECONDS_IN_MINUTE + time.hour * SECONDS_IN_HOUR
                 CafeWithWorkingHours(
                     uuid = cafe.uuid,
                     address = cafe.address,
@@ -46,7 +47,11 @@ class GetCafeWithWorkingHoursListFlowUseCase @Inject constructor(
         return "$fromTimeText - $toTimeText"
     }
 
-    private fun getStatus(fromDaySeconds: Int, toDaySeconds: Int, currentDaySeconds: Int): CafeStatus {
+    private fun getStatus(
+        fromDaySeconds: Int,
+        toDaySeconds: Int,
+        currentDaySeconds: Int
+    ): CafeStatus {
         return if (fromDaySeconds < toDaySeconds) {
             if (currentDaySeconds in fromDaySeconds until toDaySeconds) {
                 val closeIn = toDaySeconds - currentDaySeconds

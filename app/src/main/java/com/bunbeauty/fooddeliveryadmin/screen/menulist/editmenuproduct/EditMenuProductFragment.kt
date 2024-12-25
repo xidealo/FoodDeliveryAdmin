@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.domain.model.Suggestion
@@ -61,13 +61,11 @@ import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
 import com.canhub.cropper.parcelable
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class EditMenuProductFragment :
     BaseComposeFragment<EditMenuProduct.DataState, EditMenuProductViewState, EditMenuProduct.Action, EditMenuProduct.Event>() {
 
-    override val viewModel: EditMenuProductViewModel by viewModels()
+    override val viewModel: EditMenuProductViewModel by viewModel()
 
     private val editMenuProductFragmentArgs: EditMenuProductFragmentArgs by navArgs()
 

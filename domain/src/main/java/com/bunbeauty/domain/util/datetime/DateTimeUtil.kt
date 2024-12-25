@@ -5,13 +5,12 @@ import org.joda.time.DateTimeConstants.MONDAY
 import org.joda.time.DateTimeConstants.SUNDAY
 import org.joda.time.DateTimeZone
 import java.time.LocalTime
-import javax.inject.Inject
 
 private const val SECONDS_IN_MINUTE = 60
 private const val MINUTE_IN_HOUR = 60
 private const val SECONDS_IN_HOUR = 60 * 60
 
-class DateTimeUtil @Inject constructor() : IDateTimeUtil {
+class DateTimeUtil : IDateTimeUtil {
 
     override fun getWeekPeriod(millis: Long): String {
         val dateTime = DateTime(millis)

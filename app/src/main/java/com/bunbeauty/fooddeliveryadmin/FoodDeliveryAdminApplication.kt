@@ -5,25 +5,26 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.media.AudioAttributes
 import android.media.RingtoneManager
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
 import com.bunbeauty.common.Constants.CHANNEL_ID
+import com.bunbeauty.fooddeliveryadmin.di.appModule
+import com.bunbeauty.fooddeliveryadmin.di.initKoin
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import javax.inject.Inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.component.KoinComponent
+import org.koin.core.logger.Level
+import org.koin.test.check.checkModules
 import kotlin.coroutines.CoroutineContext
 
 private const val NOTIFICATION_CHANNEL_NAME = "Main channel"
 
-@HiltAndroidApp
-class FoodDeliveryAdminApplication : Application(), CoroutineScope, Configuration.Provider {
 
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+class FoodDeliveryAdminApplication : Application(), CoroutineScope, KoinComponent {
+
 
     override val coroutineContext: CoroutineContext = Job() + Dispatchers.Default
 
@@ -31,16 +32,13 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope, Configuratio
         super.onCreate()
         FirebaseApp.initializeApp(this)
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
-
         createNotificationChannel()
+        initKoin {
+            androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
+            androidContext(this@FoodDeliveryAdminApplication)
+        }
     }
 
-    override val workManagerConfiguration: Configuration
-        get() {
-            return Configuration.Builder()
-                .setWorkerFactory(workerFactory)
-                .build()
-        }
 
     private fun createNotificationChannel() {
         val importance = NotificationManager.IMPORTANCE_HIGH

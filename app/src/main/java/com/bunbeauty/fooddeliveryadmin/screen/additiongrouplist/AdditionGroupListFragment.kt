@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -30,18 +30,17 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupList
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
 private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
 
-@AndroidEntryPoint
+
 class AdditionGroupListFragment :
     BaseComposeFragment<AdditionGroupList.DataState, AdditionGroupListViewState, AdditionGroupList.Action, AdditionGroupList.Event>() {
 
-    override val viewModel: AdditionGroupListViewModel by viewModels()
+    override val viewModel: AdditionGroupListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

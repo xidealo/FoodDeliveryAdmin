@@ -14,13 +14,11 @@ import com.bunbeauty.domain.model.cafe.CafeWorkingHours
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalTime
-import javax.inject.Inject
 
-@HiltViewModel
-class EditCafeViewModel @Inject constructor(
+
+class EditCafeViewModel (
     private val getCafeWorkingHoursByUuid: GetCafeWorkingHoursByUuidUseCase,
     private val getNonWorkingDayListByCafeUuid: GetNonWorkingDayListByCafeUuidUseCase,
     private val updateCafeFromTime: UpdateCafeFromTimeUseCase,

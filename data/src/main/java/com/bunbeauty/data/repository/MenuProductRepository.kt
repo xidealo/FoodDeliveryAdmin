@@ -9,9 +9,8 @@ import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
-import javax.inject.Inject
 
-class MenuProductRepository @Inject constructor(
+class MenuProductRepository (
     private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper
 ) : MenuProductRepo {

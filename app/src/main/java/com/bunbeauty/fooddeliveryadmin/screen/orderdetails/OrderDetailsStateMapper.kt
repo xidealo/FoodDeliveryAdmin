@@ -15,9 +15,8 @@ import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.getOrderColor
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
-import javax.inject.Inject
 
-class OrderDetailsStateMapper @Inject constructor(
+class OrderDetailsStateMapper (
     private val resources: Resources,
     private val dateTimeUtil: DateTimeUtil,
     private val orderStatusMapper: OrderStatusMapper,

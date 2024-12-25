@@ -4,9 +4,8 @@ import com.bunbeauty.domain.exception.DataDeletingFailedException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
-import javax.inject.Inject
 
-class DeleteCafeNonWorkingDayUseCase @Inject constructor(
+class DeleteCafeNonWorkingDayUseCase (
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

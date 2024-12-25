@@ -5,9 +5,9 @@ import com.bunbeauty.domain.exception.updateaddition.NotFoundAdditionException
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
-class GetAdditionUseCase @Inject constructor(
+
+class GetAdditionUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

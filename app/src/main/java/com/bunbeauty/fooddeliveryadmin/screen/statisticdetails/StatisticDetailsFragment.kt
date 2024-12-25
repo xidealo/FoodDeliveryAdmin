@@ -2,16 +2,15 @@ package com.bunbeauty.fooddeliveryadmin.screen.statisticdetails
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticDetailsBinding
 import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>() {
 
-    override val viewModel: StatisticDetailsViewModel by viewModels()
+    override val viewModel: StatisticDetailsViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

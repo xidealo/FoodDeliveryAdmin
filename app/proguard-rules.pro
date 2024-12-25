@@ -26,3 +26,4 @@
 -dontwarn org.junit.jupiter.api.extension.ParameterResolver
 -dontwarn org.junit.jupiter.api.extension.TestInstancePostProcessor
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+-dontwarn io.sentry.compose.viewhierarchy.ComposeViewHierarchyExporter

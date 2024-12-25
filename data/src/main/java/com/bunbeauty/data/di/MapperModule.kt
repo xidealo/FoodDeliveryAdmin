@@ -1,18 +1,46 @@
 package com.bunbeauty.data.di
 
+import com.bunbeauty.data.mapper.CategoryMapper
+import com.bunbeauty.data.mapper.MenuProductMapper
+import com.bunbeauty.data.mapper.OderProductMapper
+import com.bunbeauty.data.mapper.cafe.CafeMapper
+import com.bunbeauty.data.mapper.city.CityMapper
+import com.bunbeauty.data.mapper.nonworkingday.NonWorkingDayMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.ServerOrderMapper
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.bunbeauty.data.mapper.statistic.StatisticMapper
+import com.bunbeauty.data.repository.AdditionRepository
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class MapperModule {
 
-    @Singleton
-    @Binds
-    abstract fun bindServerOrderMapper(serverOrderMapper: ServerOrderMapper): IServerOrderMapper
+fun mapperModule() = module {
+    single<IServerOrderMapper> {
+        ServerOrderMapper(
+            oderProductMapper = get()
+        )
+    }
+
+    single { CafeMapper() }
+
+    single { NonWorkingDayMapper() }
+
+    single { CategoryMapper() }
+
+    single { MenuProductMapper() }
+
+    single { OderProductMapper() }
+
+    single { CityMapper() }
+
+    single {
+        StatisticMapper(
+            dateTimeUtil = get()
+        )
+    }
+
+    single {
+        AdditionRepository(
+            networkConnector = get()
+        )
+    }
 }

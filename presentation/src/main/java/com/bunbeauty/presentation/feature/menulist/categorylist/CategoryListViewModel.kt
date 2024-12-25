@@ -5,13 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
 
-@HiltViewModel
-class CategoryListViewModel @Inject constructor(
+
+class CategoryListViewModel (
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(

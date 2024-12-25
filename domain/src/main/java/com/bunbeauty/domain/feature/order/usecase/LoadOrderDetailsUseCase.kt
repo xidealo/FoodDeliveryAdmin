@@ -4,9 +4,8 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
-class LoadOrderDetailsUseCase @Inject constructor(
+class LoadOrderDetailsUseCase (
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

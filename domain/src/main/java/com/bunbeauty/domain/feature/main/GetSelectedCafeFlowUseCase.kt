@@ -7,9 +7,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetSelectedCafeFlowUseCase @Inject constructor(
+class GetSelectedCafeFlowUseCase (
     private val dataStoreRepo: DataStoreRepo,
     private val cafeRepo: CafeRepo
 ) {

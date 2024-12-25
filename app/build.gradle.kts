@@ -8,11 +8,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt.android)
+//    alias(libs.plugins.hilt.android)
     alias(libs.plugins.navigation)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.firebase)
-    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.triplet.play)
     alias(libs.plugins.ktLint)
 }
@@ -140,11 +139,18 @@ dependencies {
     // Date time picker
     implementation(libs.material.dialogs.datetime)
 
+    //koin
+    implementation(libs.bundles.di)
+    implementation(libs.koin.android.workmanager)
+    implementation(libs.koin.test)
+    implementation(libs.koin.test.junit)
+
+
     // Dagger Hilt
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
-    implementation(libs.androidx.hilt.work)
-    kapt(libs.androidx.hilt.compiler)
+//    implementation(libs.dagger.hilt)
+//    kapt(libs.dagger.hilt.compiler)
+//    implementation(libs.androidx.hilt.work)
+//    kapt(libs.androidx.hilt.compiler)
 
     // Coil
     implementation(libs.bundles.coil)

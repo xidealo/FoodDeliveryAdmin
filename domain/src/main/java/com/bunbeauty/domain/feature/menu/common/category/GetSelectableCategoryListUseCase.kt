@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.menu.common.category
 
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
-import javax.inject.Inject
 
-class GetSelectableCategoryListUseCase @Inject constructor(
+class GetSelectableCategoryListUseCase (
     private val getCategoryListUseCase: GetCategoryListUseCase
 ) {
     suspend operator fun invoke(selectedCategoryUuidList: List<String> = emptyList()): List<SelectableCategory> {

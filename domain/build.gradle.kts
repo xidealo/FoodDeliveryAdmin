@@ -2,8 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.hilt.android)
+    //alias(libs.plugins.hilt.android)
     alias(libs.plugins.ktLint)
 }
 
@@ -36,15 +35,18 @@ android {
 dependencies {
     implementation(project(":common"))
 
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
+//    implementation(libs.dagger.hilt)
+//    kapt(libs.dagger.hilt.compiler)
     implementation(libs.joda.time)
 
+    //koin
+    implementation(libs.bundles.di)
+
     // Mocks for testing
-    implementation(libs.bundles.mockk)
+    testImplementation(libs.bundles.mockk)
 
     // Coroutine
-    implementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // Test
     testImplementation(libs.kotlin.test)

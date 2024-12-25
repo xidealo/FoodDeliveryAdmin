@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.fooddeliveryadmin.R
@@ -58,13 +58,11 @@ import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProductViewModel
 import com.canhub.cropper.parcelable
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class CreateMenuProductFragment :
     BaseComposeFragment<CreateMenuProduct.DataState, CreateMenuProductViewState, CreateMenuProduct.Action, CreateMenuProduct.Event>() {
 
-    override val viewModel: CreateMenuProductViewModel by viewModels()
+    override val viewModel: CreateMenuProductViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

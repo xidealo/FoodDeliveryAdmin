@@ -14,30 +14,26 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
-import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.android.ext.android.inject
+
 import javax.inject.Inject
 
 private const val ORDER_CODE_KEY = "orderCode"
 private const val UNLIMITED_KEY = "unlimited"
 private const val REQUEST_CODE = 0
 
-@AndroidEntryPoint
+
 class MessagingService : FirebaseMessagingService() {
 
-    @Inject
-    lateinit var getIsUnlimitedNotificationUseCase: GetIsUnlimitedNotificationUseCase
 
-    @Inject
-    lateinit var userAuthorizationRepo: UserAuthorizationRepo
+    private val userAuthorizationRepo: UserAuthorizationRepo by inject()
 
-    @Inject
-    lateinit var notificationManagerCompat: NotificationManagerCompat
+    private val  notificationManagerCompat: NotificationManagerCompat by inject()
 
     override fun onNewToken(token: String) {
         Log.d(NOTIFICATION_TAG, "onNewToken $token")

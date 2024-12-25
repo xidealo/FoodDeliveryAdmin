@@ -2,7 +2,6 @@ package com.bunbeauty.data.work
 
 import android.content.Context
 import android.util.Log
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
@@ -10,14 +9,13 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.google.firebase.messaging.FirebaseMessaging
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+
 import kotlinx.coroutines.tasks.await
 
-@HiltWorker
-class UpdateNotificationTokenWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+
+class UpdateNotificationTokenWorker (
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val dataStoreRepo: DataStoreRepo,
     private val foodDeliveryApi: FoodDeliveryApi
 ) : CoroutineWorker(appContext, workerParams) {

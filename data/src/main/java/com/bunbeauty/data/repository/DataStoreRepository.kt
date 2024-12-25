@@ -8,13 +8,12 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.bunbeauty.domain.repo.DataStoreRepo
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class DataStoreRepository @Inject constructor(@ApplicationContext private val context: Context) :
+
+class DataStoreRepository (private val context: Context) :
     DataStoreRepo {
 
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATA_STORE)

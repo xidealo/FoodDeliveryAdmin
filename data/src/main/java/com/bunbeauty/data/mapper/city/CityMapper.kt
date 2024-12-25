@@ -3,9 +3,9 @@ package com.bunbeauty.data.mapper.city
 import com.bunbeauty.data.model.entity.CityEntity
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.domain.model.city.City
-import javax.inject.Inject
 
-class CityMapper @Inject constructor() {
+
+class CityMapper  {
 
     fun map(city: City): CityEntity {
         return CityEntity(

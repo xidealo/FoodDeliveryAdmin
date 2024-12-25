@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -27,11 +27,9 @@ import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryList
 import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryListViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
-@AndroidEntryPoint
 class CategoryListFragment :
     BaseComposeFragment<CategoryList.DataState, CategoryListViewState, CategoryList.Action, CategoryList.Event>() {
 
@@ -40,7 +38,7 @@ class CategoryListFragment :
         const val CATEGORY_LIST_KEY = "CATEGORY_LIST_KEY"
     }
 
-    override val viewModel: CategoryListViewModel by viewModels()
+    override val viewModel: CategoryListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

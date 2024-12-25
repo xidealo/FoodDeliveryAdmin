@@ -67,13 +67,13 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import org.koin.core.component.KoinComponent
 import java.net.SocketException
-import javax.inject.Inject
 
-class FoodDeliveryApiImpl @Inject constructor(
+class FoodDeliveryApiImpl(
     private val client: HttpClient,
     private val json: Json
-) : FoodDeliveryApi {
+) : KoinComponent, FoodDeliveryApi {
 
     private var webSocketSession: DefaultClientWebSocketSession? = null
 

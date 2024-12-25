@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+
 
 private const val ONE_MINUTE_INTERVAL = 60 * 1_000
 private const val MILLIS_IN_ONE_DAY = 24 * 60 * 60 * 1_000
 
-class GetIsNonWorkingDayFlowUseCase @Inject constructor(
+class GetIsNonWorkingDayFlowUseCase (
     private val getSelectedCafeFlow: GetSelectedCafeFlowUseCase,
     private val getCurrentTimeMillisFlow: GetCurrentTimeMillisFlowUseCase,
     private val nonWorkingDayRepo: NonWorkingDayRepo

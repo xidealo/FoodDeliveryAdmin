@@ -3,9 +3,8 @@ package com.bunbeauty.domain.feature.time
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class GetCurrentTimeFlowUseCase @Inject constructor(
+class GetCurrentTimeFlowUseCase (
     private val timeService: TimeService
 ) {
 

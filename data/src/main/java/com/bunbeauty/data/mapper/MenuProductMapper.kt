@@ -6,9 +6,8 @@ import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
-import javax.inject.Inject
 
-class MenuProductMapper @Inject constructor() {
+class MenuProductMapper {
 
     fun toModel(menuProductServer: MenuProductServer): MenuProduct {
         return menuProductServer.run {

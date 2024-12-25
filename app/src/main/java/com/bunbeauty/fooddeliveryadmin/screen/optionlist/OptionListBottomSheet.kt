@@ -15,12 +15,10 @@ import com.bunbeauty.fooddeliveryadmin.util.argument
 import com.bunbeauty.fooddeliveryadmin.util.setLinearLayoutMargins
 import com.bunbeauty.presentation.Option
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @Deprecated("Use AdminModalBottomSheet.kt")
-@AndroidEntryPoint
 class OptionListBottomSheet : BottomSheetDialogFragment() {
 
     private var title by argument<String>()

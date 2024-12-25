@@ -5,9 +5,8 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
-import javax.inject.Inject
 
-class StatisticMapper @Inject constructor(
+class StatisticMapper (
     private val dateTimeUtil: DateTimeUtil
 ) {
 

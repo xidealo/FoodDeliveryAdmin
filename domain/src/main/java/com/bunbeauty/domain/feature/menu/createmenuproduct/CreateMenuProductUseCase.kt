@@ -14,9 +14,9 @@ import com.bunbeauty.domain.feature.menu.createmenuproduct.exception.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import javax.inject.Inject
 
-class CreateMenuProductUseCase @Inject constructor(
+
+class CreateMenuProductUseCase (
     private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
     private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase,
     private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase,

@@ -4,13 +4,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel (
     getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase
 ) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
     initState = Main.ViewDataState(

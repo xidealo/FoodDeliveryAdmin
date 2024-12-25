@@ -3,9 +3,9 @@ package com.bunbeauty.domain.feature.login
 import com.bunbeauty.domain.exception.LoginException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import javax.inject.Inject
 
-class LoginUseCase @Inject constructor(
+
+class LoginUseCase (
     private val userAuthorizationRepo: UserAuthorizationRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

@@ -24,9 +24,9 @@ import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
-import javax.inject.Inject
 
-class StringUtil @Inject constructor(
+
+class StringUtil (
     private val resourcesProvider: ResourcesProvider,
     private val resources: Resources,
     private val dateTimeUtil: DateTimeUtil

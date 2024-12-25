@@ -10,9 +10,8 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
-import javax.inject.Inject
 
-class AdditionGroupRepository @Inject constructor(
+class AdditionGroupRepository (
     private val networkConnector: FoodDeliveryApi
 ) : AdditionGroupRepo {
 

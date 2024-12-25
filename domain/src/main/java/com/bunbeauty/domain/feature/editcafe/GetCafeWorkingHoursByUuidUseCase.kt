@@ -4,9 +4,8 @@ import com.bunbeauty.domain.exception.DataNotFoundException
 import com.bunbeauty.domain.model.cafe.CafeWorkingHours
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.util.datetime.IDateTimeUtil
-import javax.inject.Inject
 
-class GetCafeWorkingHoursByUuidUseCase @Inject constructor(
+class GetCafeWorkingHoursByUuidUseCase (
     private val cafeRepo: CafeRepo,
     private val dateTimeUtil: IDateTimeUtil
 ) {

@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.util.product
 
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
-import javax.inject.Inject
 
-class ProductUtil @Inject constructor() : IProductUtil {
+class ProductUtil : IProductUtil {
 
     override fun getNewTotalCost(orderProductList: List<OrderProduct>): Int {
         return orderProductList.map { cartProduct ->

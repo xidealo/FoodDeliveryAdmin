@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.profile
 
 import com.bunbeauty.domain.repo.SettingsRepo
-import javax.inject.Inject
 
-class GetIsUnlimitedNotificationUseCase @Inject constructor(
+class GetIsUnlimitedNotificationUseCase (
     private val settingsRepo: SettingsRepo
 ) {
 

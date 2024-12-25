@@ -6,9 +6,9 @@ import com.bunbeauty.data.dao.CityDao
 import com.bunbeauty.data.mapper.city.CityMapper
 import com.bunbeauty.domain.model.city.City
 import com.bunbeauty.domain.repo.CityRepo
-import javax.inject.Inject
 
-class CityRepository @Inject constructor(
+
+class CityRepository (
     private val foodDeliveryApi: FoodDeliveryApi,
     private val cityDao: CityDao,
     private val cityMapper: CityMapper

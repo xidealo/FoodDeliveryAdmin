@@ -9,11 +9,9 @@ import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
 import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class StatisticViewModel @Inject constructor(
+
+class StatisticViewModel (
     private val getCafeListUseCase: GetCafeListUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,

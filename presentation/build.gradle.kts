@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt.android)
+    //alias(libs.plugins.hilt.android)
     alias(libs.plugins.ktLint)
 }
 
@@ -44,9 +44,12 @@ dependencies {
     implementation(libs.navigation.runtime.ktx)
 
     // Hilt
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
+//    implementation(libs.dagger.hilt)
+//    kapt(libs.dagger.hilt.compiler)
     implementation("javax.inject:javax.inject:1")
+
+    //Koin
+    implementation(libs.bundles.di)
 
     // Mocks for testing
     testImplementation(libs.bundles.mockk)
