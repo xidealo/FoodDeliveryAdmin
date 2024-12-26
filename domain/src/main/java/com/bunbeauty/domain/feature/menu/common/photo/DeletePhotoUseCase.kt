@@ -2,7 +2,7 @@ package com.bunbeauty.domain.feature.menu.common.photo
 
 import com.bunbeauty.domain.repo.PhotoRepo
 
-class DeletePhotoUseCase (
+class DeletePhotoUseCase(
     private val photoRepo: PhotoRepo
 ) {
 

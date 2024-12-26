@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
-import com.bunbeauty.domain.feature.editcafe.GetMinNonWorkingDayDateUseCase
 import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
@@ -102,7 +101,7 @@ fun useCaseModule() = module {
             validateMenuProductOldPriceUseCase = get(),
             dataStoreRepo = get(),
             menuProductRepo = get(),
-            uploadPhotoUseCase = get(),
+            uploadPhotoUseCase = get()
         )
     }
 
@@ -187,7 +186,7 @@ fun useCaseModule() = module {
     factory {
         UpdateAdditionUseCase(
             dataStoreRepo = get(),
-            additionRepo = get(),
+            additionRepo = get()
         )
     }
 

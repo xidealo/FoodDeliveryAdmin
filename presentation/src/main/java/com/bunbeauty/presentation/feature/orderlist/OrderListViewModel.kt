@@ -21,8 +21,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-
-
 class OrderListViewModel(
     private val getOrderListFlow: GetOrderListFlowUseCase,
     private val getOrderErrorFlow: GetOrderErrorFlowUseCase,

@@ -29,7 +29,7 @@ fun profileModule() = module {
 
     factory {
         UpdateIsUnlimitedNotificationUseCase(
-            settingsRepo = get(),
+            settingsRepo = get()
         )
     }
 

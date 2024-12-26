@@ -5,7 +5,7 @@ import com.bunbeauty.domain.model.cafe.CafeWorkingHours
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.util.datetime.IDateTimeUtil
 
-class GetCafeWorkingHoursByUuidUseCase (
+class GetCafeWorkingHoursByUuidUseCase(
     private val cafeRepo: CafeRepo,
     private val dateTimeUtil: IDateTimeUtil
 ) {

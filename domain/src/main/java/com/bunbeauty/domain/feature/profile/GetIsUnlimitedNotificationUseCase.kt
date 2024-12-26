@@ -2,7 +2,7 @@ package com.bunbeauty.domain.feature.profile
 
 import com.bunbeauty.domain.repo.SettingsRepo
 
-class GetIsUnlimitedNotificationUseCase (
+class GetIsUnlimitedNotificationUseCase(
     private val settingsRepo: SettingsRepo
 ) {
 

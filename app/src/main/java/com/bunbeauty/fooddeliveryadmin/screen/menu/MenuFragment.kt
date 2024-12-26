@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -18,6 +17,7 @@ import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.menu.Menu
 import com.bunbeauty.presentation.feature.menu.MenuViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuFragment :
     BaseComposeFragment<Menu.DataState, MenuViewState, Menu.Action, Menu.Event>() {

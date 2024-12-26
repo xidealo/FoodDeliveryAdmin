@@ -12,8 +12,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 
-
-class UserAuthorizationRepository (
+class UserAuthorizationRepository(
     private val networkConnector: FoodDeliveryApi,
     private val dataStoreRepo: DataStoreRepo,
     private val context: Context

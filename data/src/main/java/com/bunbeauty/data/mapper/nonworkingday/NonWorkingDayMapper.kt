@@ -6,7 +6,6 @@ import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
 import com.bunbeauty.domain.model.nonworkingday.NonWorkingDay
 
-
 class NonWorkingDayMapper {
 
     fun toNonWorkingDay(nonWorkingDayServer: NonWorkingDayServer): NonWorkingDay {

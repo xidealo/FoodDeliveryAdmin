@@ -6,8 +6,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroup
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-
-class AdditionGroupListViewModel (
+class AdditionGroupListViewModel(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
     private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupListUseCase
 ) : BaseStateViewModel<AdditionGroupList.DataState, AdditionGroupList.Action, AdditionGroupList.Event>(

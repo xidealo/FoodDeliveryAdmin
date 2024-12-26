@@ -5,7 +5,7 @@ import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.common.Constants.X_SYMBOL
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
-class OrderProductMapper{
+class OrderProductMapper {
 
     fun map(orderProduct: OrderProduct): OrderDetailsUiState.Product {
         return OrderDetailsUiState.Product(

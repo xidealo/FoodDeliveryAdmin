@@ -21,19 +21,15 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.koin.android.ext.android.inject
 
-import javax.inject.Inject
-
 private const val ORDER_CODE_KEY = "orderCode"
 private const val UNLIMITED_KEY = "unlimited"
 private const val REQUEST_CODE = 0
 
-
 class MessagingService : FirebaseMessagingService() {
-
 
     private val userAuthorizationRepo: UserAuthorizationRepo by inject()
 
-    private val  notificationManagerCompat: NotificationManagerCompat by inject()
+    private val notificationManagerCompat: NotificationManagerCompat by inject()
 
     override fun onNewToken(token: String) {
         Log.d(NOTIFICATION_TAG, "onNewToken $token")

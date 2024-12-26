@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class OrderAvailabilityNotUpdated : Exception()
 
-class UpdateOrderAvailabilityUseCase (
+class UpdateOrderAvailabilityUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

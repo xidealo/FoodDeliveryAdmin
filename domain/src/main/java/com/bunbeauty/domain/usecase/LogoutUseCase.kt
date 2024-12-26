@@ -11,7 +11,7 @@ import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 
-class LogoutUseCase (
+class LogoutUseCase(
     private val userAuthorizationRepo: UserAuthorizationRepo,
     private val orderRepo: OrderRepo,
     private val dataStoreRepo: DataStoreRepo,

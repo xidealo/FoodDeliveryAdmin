@@ -8,8 +8,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
 
-
-class CategoryListViewModel (
+class CategoryListViewModel(
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(

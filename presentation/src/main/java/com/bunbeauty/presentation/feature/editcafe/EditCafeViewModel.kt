@@ -17,8 +17,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
-
-class EditCafeViewModel (
+class EditCafeViewModel(
     private val getCafeWorkingHoursByUuid: GetCafeWorkingHoursByUuidUseCase,
     private val getNonWorkingDayListByCafeUuid: GetNonWorkingDayListByCafeUuidUseCase,
     private val updateCafeFromTime: UpdateCafeFromTimeUseCase,

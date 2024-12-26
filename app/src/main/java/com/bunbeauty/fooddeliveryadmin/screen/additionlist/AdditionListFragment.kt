@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -41,11 +40,11 @@ import com.bunbeauty.presentation.feature.additionlist.AdditionList
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
 private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
 private const val LIST_ANIMATION_DURATION = 500
-
 
 class AdditionListFragment :
     BaseComposeFragment<AdditionList.DataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {

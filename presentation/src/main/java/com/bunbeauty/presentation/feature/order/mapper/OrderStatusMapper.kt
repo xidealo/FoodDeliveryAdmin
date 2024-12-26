@@ -4,8 +4,7 @@ import android.content.res.Resources
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.presentation.R
 
-
-class OrderStatusMapper (
+class OrderStatusMapper(
     private val resources: Resources
 ) {
     fun map(orderStatus: OrderStatus): String {

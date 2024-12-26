@@ -5,7 +5,7 @@ import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-class LoadOrderDetailsUseCase (
+class LoadOrderDetailsUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

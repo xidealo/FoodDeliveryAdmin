@@ -9,7 +9,7 @@ import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 
-class OrderMapper (
+class OrderMapper(
     private val orderStatusMapper: OrderStatusMapper,
     private val dateTimeUtil: DateTimeUtil,
     private val resources: Resources

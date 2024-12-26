@@ -7,9 +7,7 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.launch
 
-
-
-class AdditionListViewModel (
+class AdditionListViewModel(
     private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
     private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase
 ) : BaseStateViewModel<AdditionList.DataState, AdditionList.Action, AdditionList.Event>(

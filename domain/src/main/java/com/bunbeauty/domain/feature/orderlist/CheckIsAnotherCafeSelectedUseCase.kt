@@ -1,7 +1,5 @@
 package com.bunbeauty.domain.feature.orderlist
 
-
-
 class CheckIsAnotherCafeSelectedUseCase(
     private val getSelectedCafe: GetSelectedCafeUseCase
 ) {

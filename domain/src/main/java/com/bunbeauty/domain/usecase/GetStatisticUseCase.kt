@@ -5,7 +5,6 @@ import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 
-
 class GetStatisticUseCase(
     private val statisticRepo: StatisticRepo,
     private val dataStoreRepo: DataStoreRepo

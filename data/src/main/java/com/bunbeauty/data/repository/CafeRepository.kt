@@ -9,8 +9,7 @@ import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
 
-
-class CafeRepository (
+class CafeRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val cafeMapper: CafeMapper,
     private val cafeDao: CafeDao

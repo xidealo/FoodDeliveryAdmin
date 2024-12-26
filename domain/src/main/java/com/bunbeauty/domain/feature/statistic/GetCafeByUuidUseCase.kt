@@ -3,7 +3,6 @@ package com.bunbeauty.domain.feature.statistic
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.repo.CafeRepo
 
-
 class GetCafeByUuidUseCase(
     private val cafeRepo: CafeRepo
 ) {

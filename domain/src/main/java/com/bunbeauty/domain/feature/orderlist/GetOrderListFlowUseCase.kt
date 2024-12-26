@@ -8,8 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 
-
-class GetOrderListFlowUseCase (
+class GetOrderListFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

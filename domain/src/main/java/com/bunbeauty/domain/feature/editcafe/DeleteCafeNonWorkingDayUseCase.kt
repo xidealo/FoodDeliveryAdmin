@@ -5,7 +5,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 
-class DeleteCafeNonWorkingDayUseCase (
+class DeleteCafeNonWorkingDayUseCase(
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

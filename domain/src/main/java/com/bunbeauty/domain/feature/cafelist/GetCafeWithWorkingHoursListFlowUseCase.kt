@@ -10,7 +10,6 @@ import com.bunbeauty.domain.util.flattenFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-
 private const val SECONDS_IN_MINUTE = 60
 private const val SECONDS_IN_HOUR = 60 * 60
 private const val SECONDS_IN_DAY = 24 * 60 * 60

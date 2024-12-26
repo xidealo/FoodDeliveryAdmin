@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
-
-class DataStoreRepository (private val context: Context) :
+class DataStoreRepository(private val context: Context) :
     DataStoreRepo {
 
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATA_STORE)

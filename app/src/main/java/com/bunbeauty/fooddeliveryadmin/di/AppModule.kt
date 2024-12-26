@@ -5,7 +5,6 @@ import androidx.core.app.NotificationManagerCompat
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-
 fun appModule() = module {
     single<Resources> {
         androidContext().resources

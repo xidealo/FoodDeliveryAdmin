@@ -107,7 +107,7 @@ fun getProperty(key: String): String {
 }
 
 dependencies {
-    implementation(project(":data")) // TODO remove
+    implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":common"))
     implementation(project(":presentation"))
@@ -139,12 +139,11 @@ dependencies {
     // Date time picker
     implementation(libs.material.dialogs.datetime)
 
-    //koin
+    // koin
     implementation(libs.bundles.di)
     implementation(libs.koin.android.workmanager)
     implementation(libs.koin.test)
     implementation(libs.koin.test.junit)
-
 
     // Dagger Hilt
 //    implementation(libs.dagger.hilt)

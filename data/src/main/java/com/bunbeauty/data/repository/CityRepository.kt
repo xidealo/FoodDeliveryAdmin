@@ -7,8 +7,7 @@ import com.bunbeauty.data.mapper.city.CityMapper
 import com.bunbeauty.domain.model.city.City
 import com.bunbeauty.domain.repo.CityRepo
 
-
-class CityRepository (
+class CityRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val cityDao: CityDao,
     private val cityMapper: CityMapper

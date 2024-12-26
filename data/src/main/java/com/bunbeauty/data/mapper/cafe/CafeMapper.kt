@@ -5,7 +5,6 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
 
-
 class CafeMapper {
 
     fun toCafe(cafeServer: CafeServer): Cafe {

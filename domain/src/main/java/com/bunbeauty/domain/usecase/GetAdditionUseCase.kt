@@ -6,7 +6,6 @@ import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-
 class GetAdditionUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo

@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 
-class ResourcesProvider ( private val context: Context) :
+class ResourcesProvider(private val context: Context) :
     IResourcesProvider {
 
     override fun getString(stringId: Int): String {

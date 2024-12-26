@@ -6,8 +6,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-
-class GetOrderErrorFlowUseCase (
+class GetOrderErrorFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val orderRepository: OrderRepo

@@ -7,7 +7,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class MainViewModel (
+class MainViewModel(
     getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase
 ) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
     initState = Main.ViewDataState(

@@ -10,7 +10,6 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 
-
 class KotlinXDateTimeService : TimeService {
 
     override fun getCurrentTime(timeZoneOffset: Int): Time {

@@ -4,8 +4,7 @@ import com.bunbeauty.domain.exception.LoginException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 
-
-class LoginUseCase (
+class LoginUseCase(
     private val userAuthorizationRepo: UserAuthorizationRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

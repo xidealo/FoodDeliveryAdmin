@@ -2,11 +2,10 @@ package com.bunbeauty.fooddeliveryadmin.screen.statisticdetails
 
 import android.os.Bundle
 import android.view.View
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticDetailsBinding
 import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>() {
 

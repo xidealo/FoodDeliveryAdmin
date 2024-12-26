@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.setFragmentResultListener
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.domain.model.Suggestion
@@ -61,6 +60,7 @@ import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
 import com.canhub.cropper.parcelable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditMenuProductFragment :
     BaseComposeFragment<EditMenuProduct.DataState, EditMenuProductViewState, EditMenuProduct.Action, EditMenuProduct.Event>() {

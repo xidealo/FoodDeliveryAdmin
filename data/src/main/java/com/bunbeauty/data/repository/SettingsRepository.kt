@@ -9,7 +9,7 @@ import com.bunbeauty.domain.repo.SettingsRepo
 
 private const val IS_UNLIMITED_NOTIFICATION_DEFAULT = true
 
-class SettingsRepository (
+class SettingsRepository(
     private val dataStoreRepo: DataStoreRepo,
     private val foodDeliveryApi: FoodDeliveryApi
 ) : SettingsRepo {

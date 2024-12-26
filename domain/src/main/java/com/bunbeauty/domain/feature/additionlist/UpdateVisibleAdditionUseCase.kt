@@ -5,7 +5,7 @@ import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-class UpdateVisibleAdditionUseCase (
+class UpdateVisibleAdditionUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

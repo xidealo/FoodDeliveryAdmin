@@ -15,8 +15,7 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 
-
-class CreateMenuProductUseCase (
+class CreateMenuProductUseCase(
     private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
     private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase,
     private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase,

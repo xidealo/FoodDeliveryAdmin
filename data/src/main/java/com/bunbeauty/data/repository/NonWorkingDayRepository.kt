@@ -10,7 +10,7 @@ import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
 import com.bunbeauty.domain.model.nonworkingday.NonWorkingDay
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 
-class NonWorkingDayRepository (
+class NonWorkingDayRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val nonWorkingDayDao: NonWorkingDayDao,
     private val nonWorkingDayMapper: NonWorkingDayMapper

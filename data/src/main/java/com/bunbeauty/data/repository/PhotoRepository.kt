@@ -22,7 +22,7 @@ private const val DEFAULT_WIDTH = 1000
 private const val DEFAULT_HEIGHT = 667
 private const val DEFAULT_BYTE_SIZE = 100 * 1024
 
-class PhotoRepository (
+class PhotoRepository(
     private val context: Context
 ) : PhotoRepo {
 

@@ -9,7 +9,7 @@ import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-class ProfileViewModel (
+class ProfileViewModel(
     private val getUsernameUseCase: GetUsernameUseCase,
     private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
     private val updateOrderAvailabilityUseCase: UpdateOrderAvailabilityUseCase,

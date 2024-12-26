@@ -22,8 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 
-
-class OrderRepository (
+class OrderRepository(
     private val networkConnector: FoodDeliveryApi,
     private val serverOrderMapper: IServerOrderMapper
 ) : OrderRepo {

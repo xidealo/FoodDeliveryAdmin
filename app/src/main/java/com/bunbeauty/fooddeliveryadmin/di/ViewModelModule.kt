@@ -21,11 +21,9 @@ import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
-
 import org.koin.dsl.module
 
 fun viewModelModule() = module {
-
     viewModel {
         AdditionGroupListViewModel(
             getSeparatedAdditionGroupListUseCase = get(),
@@ -180,5 +178,4 @@ fun viewModelModule() = module {
             loginUseCase = get()
         )
     }
-
 }

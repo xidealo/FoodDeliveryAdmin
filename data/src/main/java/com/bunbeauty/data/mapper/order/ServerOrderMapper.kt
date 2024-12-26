@@ -10,7 +10,7 @@ import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.model.order.details.PaymentMethod
 
-class ServerOrderMapper (
+class ServerOrderMapper(
     private val oderProductMapper: OderProductMapper
 ) : IServerOrderMapper {
 

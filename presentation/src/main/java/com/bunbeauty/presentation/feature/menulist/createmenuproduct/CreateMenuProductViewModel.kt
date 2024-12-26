@@ -16,7 +16,6 @@ import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-
 class CreateMenuProductViewModel(
     private val createMenuProductUseCase: CreateMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase

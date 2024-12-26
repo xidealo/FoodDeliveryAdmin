@@ -25,8 +25,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     workManagerFactory()
     modules(
         appModule(),
-        repositoryModule(),
-        mapperModule(),
         uiMapperModule(),
         domainModule(),
         useCaseModule(),
@@ -40,11 +38,13 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
         profileModule(),
         timeUseCaseModule(),
         viewModelModule(),
-        dataSourceModule(),
         workManagerModule(),
         timeModule(),
         presentationModule(),
         presentationMapperModule(),
-        presentationViewModelModule()
+        presentationViewModelModule(),
+        repositoryModule(),
+        mapperModule(),
+        dataSourceModule()
     )
 }

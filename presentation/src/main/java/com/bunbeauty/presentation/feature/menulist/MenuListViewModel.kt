@@ -15,8 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
-class MenuListViewModel (
+class MenuListViewModel(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
     private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase
 ) : BaseViewModel() {

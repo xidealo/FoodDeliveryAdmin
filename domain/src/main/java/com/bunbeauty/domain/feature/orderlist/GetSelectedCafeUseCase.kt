@@ -4,7 +4,7 @@ import com.bunbeauty.domain.feature.main.GetSelectedCafeFlowUseCase
 import com.bunbeauty.domain.model.cafe.SelectedCafe
 import kotlinx.coroutines.flow.firstOrNull
 
-class GetSelectedCafeUseCase (
+class GetSelectedCafeUseCase(
     private val getSelectedCafeFlow: GetSelectedCafeFlowUseCase
 ) {
 

@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -29,6 +28,7 @@ import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryList
 import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryListViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoryListFragment :
     BaseComposeFragment<CategoryList.DataState, CategoryListViewState, CategoryList.Action, CategoryList.Event>() {

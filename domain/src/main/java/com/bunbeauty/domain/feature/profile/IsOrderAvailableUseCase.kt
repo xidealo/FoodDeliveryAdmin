@@ -5,7 +5,7 @@ import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-class IsOrderAvailableUseCase (
+class IsOrderAvailableUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

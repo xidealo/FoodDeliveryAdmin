@@ -10,7 +10,7 @@ data class SeparatedAdditionGroupList(
     val hiddenList: List<AdditionGroup>
 )
 
-class GetSeparatedAdditionGroupListUseCase (
+class GetSeparatedAdditionGroupListUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

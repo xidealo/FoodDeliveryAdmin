@@ -10,7 +10,7 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.MenuProductRepo
 
-class MenuProductRepository (
+class MenuProductRepository(
     private val networkConnector: FoodDeliveryApi,
     private val menuProductMapper: MenuProductMapper
 ) : MenuProductRepo {

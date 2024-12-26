@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.model.cafe.CafeStatus
@@ -29,6 +28,7 @@ import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeItem
 import com.bunbeauty.fooddeliveryadmin.screen.cafelist.item.CafeUiItem
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
 

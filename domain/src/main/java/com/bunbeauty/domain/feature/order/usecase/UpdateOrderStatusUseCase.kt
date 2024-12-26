@@ -5,7 +5,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-class UpdateOrderStatusUseCase (
+class UpdateOrderStatusUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {

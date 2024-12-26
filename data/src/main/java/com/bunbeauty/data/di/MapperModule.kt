@@ -12,7 +12,6 @@ import com.bunbeauty.data.mapper.statistic.StatisticMapper
 import com.bunbeauty.data.repository.AdditionRepository
 import org.koin.dsl.module
 
-
 fun mapperModule() = module {
     single<IServerOrderMapper> {
         ServerOrderMapper(

@@ -10,8 +10,7 @@ import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-
-class StatisticViewModel (
+class StatisticViewModel(
     private val getCafeListUseCase: GetCafeListUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,

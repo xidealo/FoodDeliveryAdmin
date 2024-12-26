@@ -6,7 +6,6 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-
 data class SeparatedMenuProductList(
     val visibleList: List<MenuProduct>,
     val hiddenList: List<MenuProduct>

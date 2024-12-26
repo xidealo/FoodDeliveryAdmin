@@ -16,7 +16,7 @@ import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsDataState
 
-class OrderDetailsStateMapper (
+class OrderDetailsStateMapper(
     private val resources: Resources,
     private val dateTimeUtil: DateTimeUtil,
     private val orderStatusMapper: OrderStatusMapper,

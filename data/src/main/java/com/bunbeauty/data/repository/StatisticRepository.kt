@@ -5,7 +5,7 @@ import com.bunbeauty.data.mapper.statistic.StatisticMapper
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.StatisticRepo
 
-class StatisticRepository (
+class StatisticRepository(
     private val networkConnector: FoodDeliveryApi,
     private val statisticMapper: StatisticMapper
 ) : StatisticRepo {

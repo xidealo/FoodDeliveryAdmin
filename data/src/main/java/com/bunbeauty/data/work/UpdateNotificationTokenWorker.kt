@@ -9,11 +9,9 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.google.firebase.messaging.FirebaseMessaging
-
 import kotlinx.coroutines.tasks.await
 
-
-class UpdateNotificationTokenWorker (
+class UpdateNotificationTokenWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val dataStoreRepo: DataStoreRepo,

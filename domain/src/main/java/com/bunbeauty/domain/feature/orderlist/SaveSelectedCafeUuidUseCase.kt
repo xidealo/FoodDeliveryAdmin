@@ -2,7 +2,7 @@ package com.bunbeauty.domain.feature.orderlist
 
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-class SaveSelectedCafeUuidUseCase (
+class SaveSelectedCafeUuidUseCase(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val dataStoreRepo: DataStoreRepo
 ) {

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-class GetSelectedCafeFlowUseCase (
+class GetSelectedCafeFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val cafeRepo: CafeRepo
 ) {

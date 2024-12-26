@@ -22,9 +22,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import io.ktor.client.plugins.logging.Logger as KtorLogger
 
-
 fun dataSourceModule() = module {
-
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -39,7 +37,6 @@ fun dataSourceModule() = module {
             ignoreUnknownKeys = true
         }
     }
-
 
     single {
         HttpClient(OkHttp.create()) {
@@ -77,16 +74,15 @@ fun dataSourceModule() = module {
         }
     }
 
-        // DAO
+    // DAO
 
-        single {
-            get<LocalDatabase>().cafeDao()
-        }
-        single {
-            get<LocalDatabase>().cityDao()
-        }
-        single {
-            get<LocalDatabase>().nonWorkingDayDao()
-        }
+    single {
+        get<LocalDatabase>().cafeDao()
     }
-
+    single {
+        get<LocalDatabase>().cityDao()
+    }
+    single {
+        get<LocalDatabase>().nonWorkingDayDao()
+    }
+}

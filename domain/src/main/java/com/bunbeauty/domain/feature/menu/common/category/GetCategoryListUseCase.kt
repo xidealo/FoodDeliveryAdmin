@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-class GetCategoryListUseCase (
+class GetCategoryListUseCase(
     private val categoryRepo: CategoryRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

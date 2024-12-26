@@ -4,8 +4,7 @@ import com.bunbeauty.data.model.server.OrderProductServer
 import com.bunbeauty.domain.model.addition.OrderAddition
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
-
-class OderProductMapper  {
+class OderProductMapper {
     fun toModel(orderProductServer: OrderProductServer): OrderProduct {
         return OrderProduct(
             uuid = orderProductServer.uuid,

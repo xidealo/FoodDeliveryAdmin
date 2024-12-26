@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.feature.menulist.cropimage
 
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-
 class CropImageViewModel :
     BaseStateViewModel<CropImage.DataState, CropImage.Action, CropImage.Event>(
         initState = CropImage.DataState(

@@ -5,8 +5,7 @@ import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-
-class UpdateVisibleAdditionGroupListUseCase (
+class UpdateVisibleAdditionGroupListUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

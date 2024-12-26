@@ -12,8 +12,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_UUID = "additionUuid"
 
-
-class EditAdditionViewModel (
+class EditAdditionViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase

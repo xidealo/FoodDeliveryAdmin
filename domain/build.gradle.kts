@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.kapt)
-    //alias(libs.plugins.hilt.android)
     alias(libs.plugins.ktLint)
 }
 
@@ -21,15 +20,6 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
         freeCompilerArgs = listOf("-Xstring-concat=inline")
     }
-    buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
-        }
-
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
 }
 
 dependencies {
@@ -39,7 +29,7 @@ dependencies {
 //    kapt(libs.dagger.hilt.compiler)
     implementation(libs.joda.time)
 
-    //koin
+    // koin
     implementation(libs.bundles.di)
 
     // Mocks for testing

@@ -26,7 +26,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
@@ -38,6 +37,7 @@ import com.bunbeauty.presentation.feature.menulist.cropimage.CropImage
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageViewModel
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.CropImageView.OnCropImageCompleteListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 const val CROP_IMAGE_REQUEST_KEY = "crop image"
 const val CROPPED_IMAGE_URI_KEY = "cropped image uri"
 const val ORIGINAL_QUALITY = 100

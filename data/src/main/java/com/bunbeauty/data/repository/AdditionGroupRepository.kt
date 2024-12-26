@@ -11,7 +11,7 @@ import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 
-class AdditionGroupRepository (
+class AdditionGroupRepository(
     private val networkConnector: FoodDeliveryApi
 ) : AdditionGroupRepo {
 

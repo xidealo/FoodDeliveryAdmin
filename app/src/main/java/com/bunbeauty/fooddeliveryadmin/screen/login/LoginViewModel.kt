@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-
-
-class LoginViewModel (
+class LoginViewModel(
     private val checkAuthorizationUseCase: CheckAuthorizationUseCase,
     private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {

@@ -6,7 +6,7 @@ import com.bunbeauty.data.mapper.CategoryMapper
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.repo.CategoryRepo
 
-class CategoryRepository (
+class CategoryRepository(
     private val networkConnector: FoodDeliveryApi,
     private val categoryMapper: CategoryMapper
 ) : CategoryRepo {

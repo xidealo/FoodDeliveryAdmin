@@ -8,7 +8,7 @@ import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import com.bunbeauty.domain.util.datetime.IDateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM
 
-class GetNonWorkingDayListByCafeUuidUseCase (
+class GetNonWorkingDayListByCafeUuidUseCase(
     private val cafeRepo: CafeRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val dateTimeUtil: IDateTimeUtil,

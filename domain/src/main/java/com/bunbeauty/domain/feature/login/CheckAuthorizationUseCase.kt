@@ -3,7 +3,7 @@ package com.bunbeauty.domain.feature.login
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 
-class CheckAuthorizationUseCase (
+class CheckAuthorizationUseCase(
     private val userAuthorizationRepo: UserAuthorizationRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

@@ -5,7 +5,7 @@ import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-class GetCafeListUseCase (
+class GetCafeListUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val cafeRepository: CafeRepo
 ) {

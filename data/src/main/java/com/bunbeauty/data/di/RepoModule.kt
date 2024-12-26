@@ -80,7 +80,7 @@ fun repositoryModule() = module {
             foodDeliveryApi = get()
         )
     }
-        single<CityRepo> {
+    single<CityRepo> {
         CityRepository(
             cityDao = get(),
             cityMapper = get(),
