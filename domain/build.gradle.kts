@@ -25,11 +25,9 @@ android {
 dependencies {
     implementation(project(":common"))
 
-//    implementation(libs.dagger.hilt)
-//    kapt(libs.dagger.hilt.compiler)
     implementation(libs.joda.time)
 
-    // koin
+    // Koin
     implementation(libs.bundles.di)
 
     // Mocks for testing
