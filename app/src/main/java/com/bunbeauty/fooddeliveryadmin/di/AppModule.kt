@@ -10,7 +10,7 @@ fun appModule() = module {
         androidContext().resources
     }
 
-    factory {
+    single {
         NotificationManagerCompat.from(androidContext())
     }
 }

@@ -2,6 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeStateMapper
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderDetailsStateMapper
+import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderProductMapper
+import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.PaymentMethodMapper
 import org.koin.dsl.module
 
 fun uiMapperModule() = module {
@@ -18,4 +20,8 @@ fun uiMapperModule() = module {
             paymentMethodMapper = get()
         )
     }
+
+    single { OrderProductMapper() }
+
+    single { PaymentMethodMapper(resources = get()) }
 }
