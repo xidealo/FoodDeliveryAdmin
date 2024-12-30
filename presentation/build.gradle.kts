@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.kapt)
-    // alias(libs.plugins.hilt.android)
     alias(libs.plugins.ktLint)
 }
 
@@ -33,9 +32,6 @@ dependencies {
     // Navigation
     implementation(libs.navigation.runtime.ktx)
 
-    // Hilt
-//    implementation(libs.dagger.hilt)
-//    kapt(libs.dagger.hilt.compiler)
     // Koin
     implementation(libs.bundles.di)
 

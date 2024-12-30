@@ -20,12 +20,13 @@ import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
 
 private const val ORDER_CODE_KEY = "orderCode"
 private const val UNLIMITED_KEY = "unlimited"
 private const val REQUEST_CODE = 0
 
-class MessagingService : FirebaseMessagingService() {
+class MessagingService : FirebaseMessagingService(), KoinComponent {
 
     private val userAuthorizationRepo: UserAuthorizationRepo by inject()
 
@@ -41,7 +42,10 @@ class MessagingService : FirebaseMessagingService() {
 
         val isNotificationPermissionGranted =
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
-                ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                    ActivityCompat.checkSelfPermission(
+                        this,
+                        POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
         Log.d(NOTIFICATION_TAG, "isNotificationPermissionGranted $isNotificationPermissionGranted")
         if (isNotificationPermissionGranted) {
             val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: run {

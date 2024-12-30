@@ -41,14 +41,8 @@ dependencies {
     implementation(libs.bundles.room)
     kapt(libs.room.database.kapt)
 
-    // koin
+    // Koin
     implementation(libs.bundles.di)
-
-//    // Hilt
-//    implementation(libs.dagger.hilt)
-//    kapt(libs.dagger.hilt.compiler)
-//    implementation(libs.androidx.hilt.work)
-//    kapt(libs.androidx.hilt.compiler)
 
     // DataStore
     implementation(libs.datastore.preferences)
