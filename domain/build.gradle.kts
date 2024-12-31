@@ -1,9 +1,8 @@
 plugins {
-    kotlin(Plugin.android)
-    id(Plugin.androidLibrary)
-    id(Plugin.kapt)
-    id(Plugin.hiltPlugin)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -12,7 +11,6 @@ android {
     compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -22,27 +20,22 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
         freeCompilerArgs = listOf("-Xstring-concat=inline")
     }
-    buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
-        }
-
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
 }
 
 dependencies {
     implementation(project(":common"))
 
-    implementation(Dagger.hilt)
-    kapt(Dagger.hiltCompiler)
-    implementation(Time.jodaTime)
+    implementation(libs.joda.time)
 
-    // Testing
-    testImplementation(kotlin(Test.test))
-    testImplementation(Coroutines.test)
-    testImplementation(Mockk.main)
-    testImplementation(Mockk.common)
+    // Koin
+    implementation(libs.bundles.di)
+
+    // Mocks for testing
+    testImplementation(libs.bundles.mockk)
+
+    // Coroutine
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    // Test
+    testImplementation(libs.kotlin.test)
 }

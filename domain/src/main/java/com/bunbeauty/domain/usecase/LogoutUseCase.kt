@@ -10,9 +10,8 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import javax.inject.Inject
 
-class LogoutUseCase @Inject constructor(
+class LogoutUseCase(
     private val userAuthorizationRepo: UserAuthorizationRepo,
     private val orderRepo: OrderRepo,
     private val dataStoreRepo: DataStoreRepo,

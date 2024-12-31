@@ -9,11 +9,8 @@ import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class OrderDetailsViewModel @Inject constructor(
+class OrderDetailsViewModel(
     private val loadOrderDetails: LoadOrderDetailsUseCase,
     private val updateOrderStatus: UpdateOrderStatusUseCase
 ) : BaseStateViewModel<OrderDetailsState.DataState, OrderDetailsState.Action, OrderDetailsState.Event>(

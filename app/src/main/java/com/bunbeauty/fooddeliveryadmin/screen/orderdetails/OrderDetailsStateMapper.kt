@@ -16,9 +16,8 @@ import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import javax.inject.Inject
 
-class OrderDetailsStateMapper @Inject constructor(
+class OrderDetailsStateMapper(
     private val dateTimeUtil: DateTimeUtil,
     private val orderStatusMapper: OrderStatusMapper,
     private val orderProductMapper: OrderProductMapper,

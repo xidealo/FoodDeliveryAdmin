@@ -68,9 +68,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.net.SocketException
-import javax.inject.Inject
 
-class FoodDeliveryApiImpl @Inject constructor(
+class FoodDeliveryApiImpl(
     private val client: HttpClient,
     private val json: Json
 ) : FoodDeliveryApi {

@@ -1,8 +1,6 @@
 package com.bunbeauty.domain.feature.orderlist
 
-import javax.inject.Inject
-
-class CheckIsAnotherCafeSelectedUseCase @Inject constructor(
+class CheckIsAnotherCafeSelectedUseCase(
     private val getSelectedCafe: GetSelectedCafeUseCase
 ) {
 

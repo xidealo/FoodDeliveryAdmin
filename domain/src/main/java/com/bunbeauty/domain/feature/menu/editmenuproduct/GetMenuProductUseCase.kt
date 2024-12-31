@@ -6,9 +6,8 @@ import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
 
-class GetMenuProductUseCase @Inject constructor(
+class GetMenuProductUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val menuProductRepo: MenuProductRepo
 ) {

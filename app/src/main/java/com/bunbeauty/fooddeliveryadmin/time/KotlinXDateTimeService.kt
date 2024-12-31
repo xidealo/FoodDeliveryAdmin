@@ -9,9 +9,8 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
-import javax.inject.Inject
 
-class KotlinXDateTimeService @Inject constructor() : TimeService {
+class KotlinXDateTimeService : TimeService {
 
     override fun getCurrentTime(timeZoneOffset: Int): Time {
         val instant = Clock.System.now()

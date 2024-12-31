@@ -7,11 +7,8 @@ import com.bunbeauty.presentation.extension.navArg
 import com.bunbeauty.presentation.model.ProductStatisticItemModel
 import com.bunbeauty.presentation.utils.IStringUtil
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class StatisticDetailsViewModel @Inject constructor(
+class StatisticDetailsViewModel(
     private val stringUtil: IStringUtil,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {

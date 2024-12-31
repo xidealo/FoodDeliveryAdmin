@@ -16,11 +16,8 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class EditMenuProductViewModel @Inject constructor(
+class EditMenuProductViewModel(
     private val getMenuProductUseCase: GetMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
     private val updateMenuProductUseCase: UpdateMenuProductUseCase

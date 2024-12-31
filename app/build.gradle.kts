@@ -4,15 +4,15 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    id(Plugin.application)
-    kotlin(Plugin.android)
-    id(Plugin.kapt)
-    id(Plugin.hiltPlugin)
-    id(Plugin.navigation)
-    id(Plugin.googleServices)
-    id(Plugin.crashlytics)
-    id(Plugin.tripletPlay)
-    id(Plugin.ktLint) version Versions.ktLint
+    alias(libs.plugins.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation)
+    alias(libs.plugins.google.service)
+    alias(libs.plugins.crashlytics.firebase)
+    alias(libs.plugins.triplet.play)
+    alias(libs.plugins.ktLint)
 }
 
 android {
@@ -84,7 +84,7 @@ android {
             freeCompilerArgs = listOf("-Xstring-concat=inline")
         }
         composeOptions {
-            kotlinCompilerExtensionVersion = Versions.composeCompiler
+            kotlinCompilerExtensionVersion = "1.5.0"
         }
         playConfigs {
             register("release") {
@@ -106,69 +106,57 @@ fun getProperty(key: String): String {
 }
 
 dependencies {
-    implementation(project(":data")) // TODO remove
+    implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":common"))
     implementation(project(":presentation"))
 
     // Navigation
-    implementation(Navigation.fragment)
-    implementation(Navigation.ui)
-    implementation(Navigation.runtime)
+    implementation(libs.bundles.navigation)
 
     // Firebase
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.messaging)
-    implementation(Firebase.crashlytics)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
 
     // Work manager
-    implementation(WorkManager.runtime)
+    implementation(libs.work.runtime.ktx)
 
     // Lifecycle
-    implementation(Lifecycle.service)
+    implementation(libs.lifecycle.service)
 
     // Material
-    implementation(Material.material)
+    implementation(libs.material)
 
     // ViewBinding
-    implementation(ViewBinding.propertyDelegate)
+    implementation(libs.viewbindingpropertydelegate)
 
     // Compose
-    implementation(platform(Compose.bom))
-    implementation(Compose.foundation)
-    implementation(Compose.ui)
-    implementation(Compose.uiTooling)
-    implementation(Compose.material3)
-    implementation(Compose.material3WindowSizeClass)
-    implementation(Compose.material)
-    implementation(Compose.uiToolingPreview)
-    implementation(Compose.uiViewbinding)
-    implementation(Compose.activity)
-    implementation(Compose.lifecycle)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
 
     // Date time picker
-    implementation(MaterialDialogs.datetime)
+    implementation(libs.material.dialogs.datetime)
 
-    // Dagger Hilt
-    implementation(Dagger.hilt)
-    kapt(Dagger.hiltCompiler)
-    implementation(Dagger.androidxHiltWork)
-    kapt(Dagger.androidxHiltCompiler)
+    // Koin
+    implementation(libs.bundles.di)
+    implementation(libs.koin.android.workmanager)
+    implementation(libs.koin.test)
+    implementation(libs.koin.test.junit)
 
     // Coil
-    implementation(Coil.coil)
-    implementation(Coil.coilCompose)
+    implementation(libs.bundles.coil)
 
-    implementation(KotlinxCollectionsImmutable.collectionsImmutable)
+    implementation(libs.kotlinx.collections.immutable)
 
     // Coroutines
-    implementation(Coroutines.core)
+    implementation(libs.kotlinx.coroutines.core)
 
     // Image cropper
-    implementation(ImageCropper.imageCpropper)
+    implementation(libs.android.image.cropper)
 
     // Time
-    implementation(KotlinxDatetime.datetime)
+    implementation(libs.kotlinx.datetime)
 }
 
 fun commonPlayConfig(

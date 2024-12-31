@@ -11,13 +11,11 @@ import com.bunbeauty.data.work.UpdateNotificationTokenWorker
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class UserAuthorizationRepository @Inject constructor(
+class UserAuthorizationRepository(
     private val networkConnector: FoodDeliveryApi,
     private val dataStoreRepo: DataStoreRepo,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) : UserAuthorizationRepo {
 
     override suspend fun login(

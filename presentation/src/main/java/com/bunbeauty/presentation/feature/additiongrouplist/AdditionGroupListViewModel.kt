@@ -5,11 +5,8 @@ import com.bunbeauty.domain.feature.additiongrouplist.GetSeparatedAdditionGroupL
 import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroupListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class AdditionGroupListViewModel @Inject constructor(
+class AdditionGroupListViewModel(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
     private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupListUseCase
 ) : BaseStateViewModel<AdditionGroupList.DataState, AdditionGroupList.Action, AdditionGroupList.Event>(

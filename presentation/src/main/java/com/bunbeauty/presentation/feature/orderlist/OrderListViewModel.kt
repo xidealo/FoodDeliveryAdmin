@@ -13,14 +13,11 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import javax.inject.Inject
 
 private const val TAG = "OrderListViewModel"
 
-@HiltViewModel
-class OrderListViewModel @Inject constructor(
+class OrderListViewModel(
     private val getOrderListFlow: GetOrderListFlowUseCase,
     private val getOrderErrorFlow: GetOrderErrorFlowUseCase,
     private val getSelectedCafe: GetSelectedCafeUseCase,

@@ -5,9 +5,8 @@ import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
 import com.bunbeauty.domain.model.nonworkingday.NonWorkingDay
-import javax.inject.Inject
 
-class NonWorkingDayMapper @Inject constructor() {
+class NonWorkingDayMapper {
 
     fun toNonWorkingDay(nonWorkingDayServer: NonWorkingDayServer): NonWorkingDay {
         return nonWorkingDayServer.run {

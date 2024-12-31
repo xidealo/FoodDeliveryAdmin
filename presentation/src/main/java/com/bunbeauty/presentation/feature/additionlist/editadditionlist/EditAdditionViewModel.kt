@@ -9,13 +9,10 @@ import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 private const val ADDITION_UUID = "additionUuid"
 
-@HiltViewModel
-class EditAdditionViewModel @Inject constructor(
+class EditAdditionViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase

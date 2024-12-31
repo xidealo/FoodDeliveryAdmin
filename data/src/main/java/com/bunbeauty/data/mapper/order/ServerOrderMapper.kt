@@ -9,9 +9,8 @@ import com.bunbeauty.domain.model.order.details.ClientUser
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.model.order.details.PaymentMethod
-import javax.inject.Inject
 
-class ServerOrderMapper @Inject constructor(
+class ServerOrderMapper(
     private val oderProductMapper: OderProductMapper
 ) : IServerOrderMapper {
 

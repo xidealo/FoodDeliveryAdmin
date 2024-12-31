@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.R
@@ -42,28 +41,25 @@ import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListViewState.State
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
 const val LOADING_ORDER_LIST_KEY = "loadingOrderList"
 
-@AndroidEntryPoint
 class OrderListFragment :
     BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
 
-    @Inject
-    lateinit var notificationManagerCompat: NotificationManagerCompat
+    private val notificationManagerCompat: NotificationManagerCompat by inject()
 
-    @Inject
-    lateinit var orderMapper: OrderMapper
+    override val viewModel: OrderListViewModel by viewModel()
 
-    override val viewModel: OrderListViewModel by viewModels()
+    private val orderMapper: OrderMapper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,15 +119,11 @@ class OrderListFragment :
                     cafeListUI = OrderListViewState.State.Success.CafeListUI(
                         isShown = state.showCafeList,
                         cafeList = state.cafeList.map { cafe ->
-                            OrderListViewState
-                                .State
-                                .Success
-                                .CafeListUI
-                                .CafeItem(
-                                    uuid = cafe.uuid,
-                                    name = cafe.address,
-                                    isSelected = cafe.isSelected
-                                )
+                            CafeItem(
+                                uuid = cafe.uuid,
+                                name = cafe.address,
+                                isSelected = cafe.isSelected
+                            )
                         }.toPersistentList()
                     ),
                     loadingOrderList = state.loadingOrderList

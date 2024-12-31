@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -43,13 +42,12 @@ import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.presentation.viewmodel.main.Main
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
 
-    val viewModel: MainViewModel by viewModels()
+    val viewModel: MainViewModel by viewModel()
 
     private val viewBinding: LayoutComposeBinding by viewBinding(LayoutComposeBinding::bind)
 

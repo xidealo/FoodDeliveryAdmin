@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
@@ -49,22 +48,20 @@ import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.order.OrderDetailsViewModel
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val PHONE_LINK = "tel:"
 
-@AndroidEntryPoint
 class OrderDetailsFragment :
     BaseComposeFragment<OrderDetailsState.DataState, OrderDetailsViewState, OrderDetailsState.Action, OrderDetailsState.Event>() {
 
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 
-    override val viewModel: OrderDetailsViewModel by viewModels()
+    override val viewModel: OrderDetailsViewModel by viewModel()
 
-    @Inject
-    lateinit var orderDetailsStateMapper: OrderDetailsStateMapper
+    private val orderDetailsStateMapper: OrderDetailsStateMapper by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

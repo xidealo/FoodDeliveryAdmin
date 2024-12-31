@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.menu.common.validation
 
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
-import javax.inject.Inject
 
-class ValidateMenuProductOldPriceUseCase @Inject constructor() {
+class ValidateMenuProductOldPriceUseCase {
 
     operator fun invoke(oldPrice: String, newPrice: Int): Int? {
         val oldPriceInt = oldPrice.trim().toIntOrNull()

@@ -3,11 +3,10 @@ package com.bunbeauty.domain.feature.cafelist
 import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
 
 private const val DEFAULT_TIME_ZONE = "UTC+3"
 
-class GetTimeZoneByCityUuidUseCase @Inject constructor(
+class GetTimeZoneByCityUuidUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val cityRepo: CityRepo
 ) {

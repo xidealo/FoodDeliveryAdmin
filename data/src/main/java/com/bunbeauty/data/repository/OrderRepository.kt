@@ -21,11 +21,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class OrderRepository @Inject constructor(
+class OrderRepository(
     private val networkConnector: FoodDeliveryApi,
     private val serverOrderMapper: IServerOrderMapper
 ) : OrderRepo {

@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.menu.common.validation
 
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
-import javax.inject.Inject
 
-class ValidateMenuProductNewPriceUseCase @Inject constructor() {
+class ValidateMenuProductNewPriceUseCase {
 
     operator fun invoke(newPrice: String): Int {
         return newPrice.trim()
