@@ -42,10 +42,10 @@ class MessagingService : FirebaseMessagingService(), KoinComponent {
 
         val isNotificationPermissionGranted =
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
-                    ActivityCompat.checkSelfPermission(
-                        this,
-                        POST_NOTIFICATIONS
-                    ) == PackageManager.PERMISSION_GRANTED
+                ActivityCompat.checkSelfPermission(
+                this,
+                POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
         Log.d(NOTIFICATION_TAG, "isNotificationPermissionGranted $isNotificationPermissionGranted")
         if (isNotificationPermissionGranted) {
             val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: run {
