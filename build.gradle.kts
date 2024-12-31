@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
-    alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.triplet.play) apply false
 
 }
@@ -26,7 +25,6 @@ buildscript {
         classpath(libs.navigation.services)
         classpath(libs.kotlin.serialization)
         classpath(libs.google.services)
-        classpath(libs.hilt.services)
         classpath(libs.firebase.crashlytics.gradle)
         classpath(libs.play.publisher)
     }

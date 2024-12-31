@@ -5,9 +5,8 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNo
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import javax.inject.Inject
 
-class UpdateVisibleMenuProductUseCase @Inject constructor(
+class UpdateVisibleMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

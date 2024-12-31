@@ -21,15 +21,6 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
         freeCompilerArgs = listOf("-Xstring-concat=inline")
     }
-    buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
-        }
-
-        getByName("release") {
-            isMinifyEnabled = true
-        }
-    }
 }
 
 dependencies {
@@ -50,11 +41,8 @@ dependencies {
     implementation(libs.bundles.room)
     kapt(libs.room.database.kapt)
 
-    // Hilt
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
-    implementation(libs.androidx.hilt.work)
-    kapt(libs.androidx.hilt.compiler)
+    // Koin
+    implementation(libs.bundles.di)
 
     // DataStore
     implementation(libs.datastore.preferences)

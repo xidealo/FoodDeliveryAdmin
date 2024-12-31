@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.menu.common.validation
 
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNutritionException
-import javax.inject.Inject
 
-class ValidateMenuProductNutritionUseCase @Inject constructor() {
+class ValidateMenuProductNutritionUseCase {
 
     operator fun invoke(nutrition: String, units: String): Int? {
         val nutritionInt = nutrition.trim().toIntOrNull()

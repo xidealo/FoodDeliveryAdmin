@@ -3,9 +3,8 @@ package com.bunbeauty.presentation.feature.order.mapper
 import android.content.res.Resources
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.presentation.R
-import javax.inject.Inject
 
-class OrderStatusMapper @Inject constructor(
+class OrderStatusMapper(
     private val resources: Resources
 ) {
     fun map(orderStatus: OrderStatus): String {

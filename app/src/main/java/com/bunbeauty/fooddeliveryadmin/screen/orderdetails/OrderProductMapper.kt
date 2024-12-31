@@ -4,9 +4,8 @@ import com.bunbeauty.common.Constants.BULLET_SYMBOL
 import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.common.Constants.X_SYMBOL
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
-import javax.inject.Inject
 
-class OrderProductMapper @Inject constructor() {
+class OrderProductMapper {
 
     fun map(orderProduct: OrderProduct): OrderDetailsUiState.Product {
         return OrderDetailsUiState.Product(

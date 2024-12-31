@@ -8,11 +8,8 @@ import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfileViewModel(
     private val getUsernameUseCase: GetUsernameUseCase,
     private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
     private val updateOrderAvailabilityUseCase: UpdateOrderAvailabilityUseCase,

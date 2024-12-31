@@ -14,30 +14,23 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bunbeauty.common.Constants.CHANNEL_ID
 import com.bunbeauty.common.Constants.NOTIFICATION_TAG
-import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
 
 private const val ORDER_CODE_KEY = "orderCode"
 private const val UNLIMITED_KEY = "unlimited"
 private const val REQUEST_CODE = 0
 
-@AndroidEntryPoint
-class MessagingService : FirebaseMessagingService() {
+class MessagingService : FirebaseMessagingService(), KoinComponent {
 
-    @Inject
-    lateinit var getIsUnlimitedNotificationUseCase: GetIsUnlimitedNotificationUseCase
+    private val userAuthorizationRepo: UserAuthorizationRepo by inject()
 
-    @Inject
-    lateinit var userAuthorizationRepo: UserAuthorizationRepo
-
-    @Inject
-    lateinit var notificationManagerCompat: NotificationManagerCompat
+    private val notificationManagerCompat: NotificationManagerCompat by inject()
 
     override fun onNewToken(token: String) {
         Log.d(NOTIFICATION_TAG, "onNewToken $token")
@@ -49,7 +42,10 @@ class MessagingService : FirebaseMessagingService() {
 
         val isNotificationPermissionGranted =
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) ||
-                ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                    ActivityCompat.checkSelfPermission(
+                        this,
+                        POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
         Log.d(NOTIFICATION_TAG, "isNotificationPermissionGranted $isNotificationPermissionGranted")
         if (isNotificationPermissionGranted) {
             val orderCode = remoteMessage.data[ORDER_CODE_KEY] ?: run {

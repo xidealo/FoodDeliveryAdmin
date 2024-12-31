@@ -5,7 +5,6 @@ import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.GetNewUuidUseCase
-import javax.inject.Inject
 
 data class SeparatedAdditionList(
     val visibleList: List<GroupedAdditionList>,
@@ -18,7 +17,7 @@ data class GroupedAdditionList(
     val additionList: List<Addition>
 )
 
-class GetSeparatedAdditionListUseCase @Inject constructor(
+class GetSeparatedAdditionListUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo,
     private val getNewUuidUseCase: GetNewUuidUseCase

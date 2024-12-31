@@ -31,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -59,15 +58,14 @@ import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
-@AndroidEntryPoint
 class EditCafeFragment : SingleStateComposeFragment<EditCafe.ViewDataState, EditCafe.Action, EditCafe.Event>() {
 
-    override val viewModel: EditCafeViewModel by viewModels()
+    override val viewModel: EditCafeViewModel by viewModel()
 
     private val editCafeFragmentArgs: EditCafeFragmentArgs by navArgs()
 

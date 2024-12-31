@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.compose.AsyncImage
@@ -49,15 +48,14 @@ import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import com.bunbeauty.presentation.model.MenuListEvent
 import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val VISIBLE_TITLE_KEY = "visible title"
 private const val HIDDEN_TITLE_KEY = "hidden title"
 
-@AndroidEntryPoint
 class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
 
-    override val viewModel: MenuListViewModel by viewModels()
+    override val viewModel: MenuListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

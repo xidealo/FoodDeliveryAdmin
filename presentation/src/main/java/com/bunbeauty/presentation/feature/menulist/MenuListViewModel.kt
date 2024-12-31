@@ -10,15 +10,12 @@ import com.bunbeauty.presentation.model.MenuListEvent
 import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
 import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MenuListViewModel @Inject constructor(
+class MenuListViewModel(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
     private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase
 ) : BaseViewModel() {

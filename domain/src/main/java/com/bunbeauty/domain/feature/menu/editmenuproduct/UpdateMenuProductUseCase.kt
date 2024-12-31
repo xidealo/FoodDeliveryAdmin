@@ -16,11 +16,10 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNo
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import javax.inject.Inject
 
 private const val UPDATE_MENU_PRODUCT_TAG = "UpdateMenuProduct"
 
-class UpdateMenuProductUseCase @Inject constructor(
+class UpdateMenuProductUseCase(
     private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
     private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase,
     private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase,
@@ -61,7 +60,8 @@ class UpdateMenuProductUseCase @Inject constructor(
             units = params.units
         ) ?: 0
         val description = validateMenuProductDescriptionUseCase(description = params.description)
-        val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
+        val selectableCategories =
+            validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
 
         if (params.photoLink == null && params.newImageUri == null) {
             throw MenuProductImageException()

@@ -8,11 +8,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt.android)
     alias(libs.plugins.navigation)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.firebase)
-    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.triplet.play)
     alias(libs.plugins.ktLint)
 }
@@ -108,7 +106,7 @@ fun getProperty(key: String): String {
 }
 
 dependencies {
-    implementation(project(":data")) // TODO remove
+    implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":common"))
     implementation(project(":presentation"))
@@ -140,11 +138,11 @@ dependencies {
     // Date time picker
     implementation(libs.material.dialogs.datetime)
 
-    // Dagger Hilt
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
-    implementation(libs.androidx.hilt.work)
-    kapt(libs.androidx.hilt.compiler)
+    // Koin
+    implementation(libs.bundles.di)
+    implementation(libs.koin.android.workmanager)
+    implementation(libs.koin.test)
+    implementation(libs.koin.test.junit)
 
     // Coil
     implementation(libs.bundles.coil)

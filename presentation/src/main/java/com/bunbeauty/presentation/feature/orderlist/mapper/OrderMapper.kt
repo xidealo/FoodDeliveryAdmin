@@ -8,9 +8,8 @@ import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
-import javax.inject.Inject
 
-class OrderMapper @Inject constructor(
+class OrderMapper(
     private val orderStatusMapper: OrderStatusMapper,
     private val dateTimeUtil: DateTimeUtil,
     private val resources: Resources

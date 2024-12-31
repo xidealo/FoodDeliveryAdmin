@@ -4,9 +4,8 @@ import com.bunbeauty.data.model.entity.CafeEntity
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
-import javax.inject.Inject
 
-class CafeMapper @Inject constructor() {
+class CafeMapper {
 
     fun toCafe(cafeServer: CafeServer): Cafe {
         return cafeServer.run {

@@ -9,9 +9,8 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import java.time.LocalDate
 import java.time.ZoneOffset
-import javax.inject.Inject
 
-class CreateCafeNonWorkingDayUseCase @Inject constructor(
+class CreateCafeNonWorkingDayUseCase(
     private val cafeRepo: CafeRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val dataStoreRepo: DataStoreRepo

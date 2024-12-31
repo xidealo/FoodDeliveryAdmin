@@ -5,9 +5,8 @@ import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import javax.inject.Inject
 
-class GetOrderErrorFlowUseCase @Inject constructor(
+class GetOrderErrorFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val orderRepository: OrderRepo

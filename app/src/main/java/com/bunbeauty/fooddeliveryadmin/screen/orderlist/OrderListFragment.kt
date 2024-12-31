@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -49,19 +48,17 @@ import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class OrderListFragment : BaseFragment<LayoutComposeBinding>() {
 
-    @Inject
-    lateinit var notificationManagerCompat: NotificationManagerCompat
+    private val notificationManagerCompat: NotificationManagerCompat by inject()
 
-    override val viewModel: OrderListViewModel by viewModels()
+    override val viewModel: OrderListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
