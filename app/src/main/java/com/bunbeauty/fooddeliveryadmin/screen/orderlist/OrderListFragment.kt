@@ -119,15 +119,11 @@ class OrderListFragment :
                     cafeListUI = OrderListViewState.State.Success.CafeListUI(
                         isShown = state.showCafeList,
                         cafeList = state.cafeList.map { cafe ->
-                            OrderListViewState
-                                .State
-                                .Success
-                                .CafeListUI
-                                .CafeItem(
-                                    uuid = cafe.uuid,
-                                    name = cafe.address,
-                                    isSelected = cafe.isSelected
-                                )
+                            CafeItem(
+                                uuid = cafe.uuid,
+                                name = cafe.address,
+                                isSelected = cafe.isSelected
+                            )
                         }.toPersistentList()
                     ),
                     loadingOrderList = state.loadingOrderList
