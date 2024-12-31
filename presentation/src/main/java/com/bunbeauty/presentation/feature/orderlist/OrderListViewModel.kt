@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.feature.orderlist
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
@@ -9,17 +8,14 @@ import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.SaveSelectedCafeUuidUseCase
+import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.extension.mapToStateFlow
-import com.bunbeauty.presentation.feature.orderlist.mapper.OrderMapper
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListDataState
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListEvent
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
+import com.bunbeauty.presentation.feature.orderlist.state.OrderList
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
-import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+
+private const val TAG = "OrderListViewModel"
 
 class OrderListViewModel(
     private val getOrderListFlow: GetOrderListFlowUseCase,
@@ -27,188 +23,174 @@ class OrderListViewModel(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val getCafeList: GetCafeListUseCase,
     private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
-    private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase,
-    private val orderMapper: OrderMapper
-) : BaseViewModel(), DefaultLifecycleObserver {
-
-    private val mutableDataState = MutableStateFlow(
-        OrderListDataState(
-            refreshing = false,
-            selectedCafe = null,
-            cafeState = OrderListDataState.State.LOADING,
-            orderList = null,
-            orderListState = OrderListDataState.State.LOADING,
-            eventList = emptyList()
-        )
+    private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase
+) : BaseStateViewModel<OrderList.DataState, OrderList.Action, OrderList.Event>(
+    initState = OrderList.DataState(
+        refreshing = false,
+        selectedCafe = null,
+        hasConnectionError = false,
+        orderList = emptyList(),
+        orderListState = OrderList.DataState.State.LOADING,
+        cafeList = emptyList(),
+        showCafeList = false,
+        loadingOrderList = false
     )
+) {
+    override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
+        when (action) {
+            OrderList.Action.StartObserveOrders -> {
+                setUpCafe()
+                stopObservingOrderList()
+                observeOrderList(currentOrderList = dataState.orderList)
+            }
 
-    val orderListUiState = mutableDataState.mapToStateFlow(viewModelScope) { dataState ->
-        OrderListUiState(
-            state = when (dataState.cafeState) {
-                OrderListDataState.State.LOADING -> OrderListUiState.State.Loading
-                OrderListDataState.State.ERROR -> OrderListUiState.State.Error
-                OrderListDataState.State.SUCCESS -> OrderListUiState.State.Success(
-                    cafeAddress = dataState.selectedCafe?.address ?: "",
-                    orderList = dataState.orderList?.map(orderMapper::map) ?: emptyList()
-                )
-            },
-            connectionError = dataState.orderListState == OrderListDataState.State.ERROR,
-            refreshing = dataState.refreshing,
-            eventList = dataState.eventList
-        )
+            OrderList.Action.StopObserveOrders -> stopObservingOrderList()
+            OrderList.Action.RetryClick -> onRetryClicked(currentOrderList = dataState.orderList)
+            OrderList.Action.RefreshSwipe -> onRefresh(currentOrderList = dataState.orderList)
+            is OrderList.Action.OrderClick -> onOrderClicked(
+                orderUuid = action.orderUuid,
+                orderCode = action.orderCode
+            )
+
+            OrderList.Action.CafeClick -> onCafeClicked()
+            OrderList.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
+            is OrderList.Action.SelectedCafe -> onCafeSelected(action.cafeUuid)
+        }
     }
 
     private var orderListJob: Job? = null
     private var orderErrorJob: Job? = null
 
-    init {
-        setUpCafe()
-    }
-
-    override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
-
-        observeOrderList()
-    }
-
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-
-        stopObservingOrderList()
-    }
-
-    fun onRefresh() {
-        mutableDataState.update { state ->
-            state.copy(refreshing = true)
+    private fun onRefresh(currentOrderList: List<Order>) {
+        setState {
+            copy(refreshing = true)
         }
         stopObservingOrderList()
-        setUpCafe()
+        observeOrderList(currentOrderList = currentOrderList)
     }
 
-    fun retrySetUp() {
-        stopObservingOrderList()
-        setUpCafe()
+    private fun closeCafeListBottomSheet() {
+        setState {
+            copy(
+                showCafeList = false
+            )
+        }
     }
 
-    fun onCafeClicked() {
+    private fun onCafeClicked() {
+        setState {
+            copy(
+                showCafeList = true
+            )
+        }
+    }
+
+    private fun onCafeSelected(cafeUuid: String) {
         viewModelScope.launchSafe(
-            onError = {
-                // No idea how to handle this
-            },
-            block = {
-                val cafeList = getCafeList().map { cafe ->
-                    SelectableCafeItem(
-                        uuid = cafe.uuid,
-                        address = cafe.address,
-                        isSelected = cafe.uuid == mutableDataState.value.selectedCafe?.uuid
-                    )
-                }
-                mutableDataState.update { state ->
-                    state + OrderListEvent.OpenCafeListEvent(cafeList)
-                }
-            }
-        )
-    }
-
-    fun onCafeSelected(cafeUuid: String?) {
-        cafeUuid ?: return
-
-        viewModelScope.launchSafe(
-            onError = {
-                // No idea how to handle this
-            },
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
                     saveSelectedCafeUuid(cafeUuid)
                     setUpCafe()
+                    closeCafeListBottomSheet()
                 }
+            },
+            onError = {
             }
         )
     }
 
-    fun onOrderClicked(orderItem: OrderListUiState.OrderItem) {
-        mutableDataState.update { state ->
-            state + OrderListEvent.OpenOrderDetailsEvent(
-                orderUuid = orderItem.uuid,
-                orderCode = orderItem.code
-            ) + OrderListEvent.CancelNotification(
-                notificationId = orderItem.code.hashCode()
+    private fun onOrderClicked(orderUuid: String, orderCode: String) {
+        sendEvent {
+            OrderList.Event.OpenOrderDetailsEvent(
+                orderUuid = orderUuid,
+                orderCode = orderCode
+            )
+        }
+        sendEvent {
+            OrderList.Event.CancelNotification(
+                notificationId = orderCode.hashCode()
             )
         }
     }
 
-    fun onRetryClicked() {
+    private fun onRetryClicked(currentOrderList: List<Order>) {
         stopObservingOrderList()
-        setUpCafe()
-    }
-
-    fun consumeEvents(events: List<OrderListEvent>) {
-        mutableDataState.update { state ->
-            state - events
-        }
+        observeOrderList(currentOrderList = currentOrderList)
     }
 
     private fun setUpCafe() {
         viewModelScope.launchSafe(
-            onError = {
-                mutableDataState.update { state ->
-                    state.copy(cafeState = OrderListDataState.State.ERROR)
-                }
-            },
             block = {
-                mutableDataState.update { state ->
-                    state.copy(cafeState = OrderListDataState.State.LOADING)
+                setState {
+                    copy(hasConnectionError = false)
                 }
                 val selectedCafe = getSelectedCafe()
-                mutableDataState.update { state ->
+
+                setState {
                     if (selectedCafe == null) {
-                        state.copy(cafeState = OrderListDataState.State.ERROR)
+                        copy(hasConnectionError = true)
                     } else {
-                        state.copy(
-                            cafeState = OrderListDataState.State.SUCCESS,
-                            selectedCafe = selectedCafe
+                        copy(
+                            hasConnectionError = false,
+                            orderListState = OrderList.DataState.State.SUCCESS,
+                            selectedCafe = selectedCafe,
+                            cafeList = getCafeList().map { cafe ->
+                                SelectableCafeItem(
+                                    uuid = cafe.uuid,
+                                    address = cafe.address,
+                                    isSelected = cafe.uuid == selectedCafe.uuid
+                                )
+                            }
                         )
                     }
                 }
-
-                observeOrderList()
+            },
+            onError = {
+                setState {
+                    copy(hasConnectionError = true)
+                }
             }
         )
     }
 
-    private fun observeOrderList() {
-        val selectedCafe = mutableDataState.value.selectedCafe ?: return
-
-        mutableDataState.update { state ->
-            state.copy(orderListState = OrderListDataState.State.SUCCESS)
+    private fun observeOrderList(currentOrderList: List<Order>) {
+        setState {
+            copy(
+                hasConnectionError = false,
+                loadingOrderList = true
+            )
         }
 
         if (orderListJob != null) return
 
         orderListJob = viewModelScope.launchSafe(
             onError = {
-                mutableDataState.update { state ->
-                    state.copy(
+                setState {
+                    copy(
                         refreshing = false,
-                        orderListState = OrderListDataState.State.ERROR
+                        hasConnectionError = true,
+                        loadingOrderList = false
                     )
                 }
             },
             block = {
+                val selectedCafe = getSelectedCafe() ?: return@launchSafe
+
                 getOrderListFlow(selectedCafe.uuid).collect { orderList ->
-                    mutableDataState.update { state ->
-                        state.copy(
+                    setState {
+                        copy(
                             orderList = orderList,
-                            refreshing = false
-                        ).let { newState ->
-                            if (!state.orderList.isNullOrEmpty() &&
-                                (state.orderList.size < orderList.size)
-                            ) {
-                                newState + OrderListEvent.ScrollToTop
-                            } else {
-                                newState
-                            }
+                            refreshing = false,
+                            loadingOrderList = false
+                        )
+                    }
+
+                    val hasNewOrder = currentOrderList.size < orderList.size
+
+                    if (currentOrderList.isNotEmpty() && hasNewOrder) {
+                        sendEvent {
+                            OrderList.Event.ScrollToTop
                         }
                     }
                 }
@@ -216,15 +198,15 @@ class OrderListViewModel(
         )
 
         orderErrorJob = viewModelScope.launchSafe(
-            onError = {
-                // No idea how to handle this
-            },
             block = {
                 getOrderErrorFlow().collect {
-                    mutableDataState.update { state ->
-                        state.copy(orderListState = OrderListDataState.State.ERROR)
+                    setState {
+                        copy(hasConnectionError = true)
                     }
                 }
+            },
+            onError = { error ->
+                Log.d(TAG, "getOrderErrorFlow: ${error.stackTrace}")
             }
         )
     }

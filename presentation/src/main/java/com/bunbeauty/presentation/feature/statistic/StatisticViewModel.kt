@@ -17,7 +17,8 @@ class StatisticViewModel(
     private val getStatisticUseCase: GetStatisticUseCase
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
     initState = Statistic.DataState(
-        cafeUuid = null
+        cafeUuid = null,
+        loadingStatistic = false
     )
 ) {
 
@@ -162,7 +163,7 @@ class StatisticViewModel(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    copy(isLoading = true)
+                    copy(loadingStatistic = true)
                 }
                 getStatisticUseCase(
                     cafeUuid = cafeUuid,
@@ -192,7 +193,7 @@ class StatisticViewModel(
                     setState {
                         copy(
                             statisticList = statisticItemList,
-                            isLoading = false,
+                            loadingStatistic = false,
                             hasError = false
                         )
                     }
@@ -202,7 +203,7 @@ class StatisticViewModel(
                 setState {
                     copy(
                         hasError = true,
-                        isLoading = false
+                        loadingStatistic = false
                     )
                 }
             }

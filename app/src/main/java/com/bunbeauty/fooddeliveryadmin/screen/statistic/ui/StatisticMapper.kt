@@ -10,50 +10,56 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun Statistic.DataState.toViewState(): StatisticViewState {
     return StatisticViewState(
-        statisticList = statisticList.map { statistic ->
-            statistic.toStatisticItemModelView()
-        }.toPersistentList(),
-        selectedCafe = selectedCafe?.address
-            ?: stringResource(R.string.msg_statistic_all_cafes),
-        period = getTimeIntervalName(
-            timeInterval = selectedTimeInterval
-        ).timeInterval,
-        isLoading = isLoading,
-        hasError = hasError,
-        timeIntervalListUI = TimeIntervalListUI(
-            isShown = isTimeIntervalListShown,
-            timeIntervalList = TimeIntervalCode.entries.map { timeIntervalCode ->
-                getTimeIntervalName(
-                    timeInterval = timeIntervalCode
-                )
-            }.toPersistentList()
-        ),
-        cafeListUI = CafeListUI(
-            isShown = isCafeListShown,
-            cafeList = buildList {
-                add(
-                    CafeListUI.CafeItem(
-                        uuid = null,
-                        name = stringResource(R.string.msg_statistic_all_cafes)
+        state = when {
+            isLoading -> StatisticViewState.State.Loading
+            hasError -> StatisticViewState.State.Error
+            else -> {
+                StatisticViewState.State.Success(
+                    statisticList = statisticList.map { statistic ->
+                        statistic.toStatisticItemModelView()
+                    }.toPersistentList(),
+                    selectedCafe = selectedCafe?.address
+                        ?: stringResource(R.string.msg_statistic_all_cafes),
+                    period = getTimeIntervalName(
+                        timeInterval = selectedTimeInterval
+                    ).timeInterval,
+                    loadingStatistic = loadingStatistic,
+                    timeIntervalListUI = StatisticViewState.TimeIntervalListUI(
+                        isShown = isTimeIntervalListShown,
+                        timeIntervalList = TimeIntervalCode.entries.map { timeIntervalCode ->
+                            getTimeIntervalName(
+                                timeInterval = timeIntervalCode
+                            )
+                        }.toPersistentList()
+                    ),
+                    cafeListUI = StatisticViewState.CafeListUI(
+                        isShown = isCafeListShown,
+                        cafeList = buildList {
+                            add(
+                                StatisticViewState.CafeListUI.CafeItem(
+                                    uuid = null,
+                                    name = stringResource(R.string.msg_statistic_all_cafes)
+                                )
+                            )
+                            cafeList.map { cafe ->
+                                StatisticViewState.CafeListUI.CafeItem(
+                                    uuid = cafe.uuid,
+                                    name = cafe.address
+                                )
+                            }.let { cafeAddressList ->
+                                addAll(cafeAddressList)
+                            }
+                        }.toPersistentList()
                     )
                 )
-                cafeList.map { cafe ->
-                    CafeListUI.CafeItem(
-                        uuid = cafe.uuid,
-                        name = cafe.address
-                    )
-                }.let { cafeAddressList ->
-                    addAll(cafeAddressList)
-                }
-            }.toPersistentList()
-
-        )
+            }
+        }
     )
 }
 
 @Composable
-fun Statistic.DataState.StatisticItemModel.toStatisticItemModelView(): StatisticViewState.StatisticItemModel {
-    return StatisticViewState.StatisticItemModel(
+fun Statistic.DataState.StatisticItemModel.toStatisticItemModelView(): StatisticViewState.State.Success.StatisticItemModel {
+    return StatisticViewState.State.Success.StatisticItemModel(
         startMillis = startMillis,
         period = period,
         count = stringResource(
@@ -66,20 +72,20 @@ fun Statistic.DataState.StatisticItemModel.toStatisticItemModelView(): Statistic
 }
 
 @Composable
-internal fun getTimeIntervalName(timeInterval: TimeIntervalCode): TimeIntervalListUI.TimeIntervalItem {
+internal fun getTimeIntervalName(timeInterval: TimeIntervalCode): StatisticViewState.TimeIntervalListUI.TimeIntervalItem {
     return when (timeInterval) {
-        TimeIntervalCode.DAY -> TimeIntervalListUI.TimeIntervalItem(
+        TimeIntervalCode.DAY -> StatisticViewState.TimeIntervalListUI.TimeIntervalItem(
             stringResource(R.string.msg_statistic_day_interval),
             timeIntervalType = TimeIntervalCode.DAY
         )
 
         TimeIntervalCode.WEEK ->
-            TimeIntervalListUI.TimeIntervalItem(
+            StatisticViewState.TimeIntervalListUI.TimeIntervalItem(
                 stringResource(R.string.msg_statistic_week_interval),
                 timeIntervalType = TimeIntervalCode.WEEK
             )
 
-        TimeIntervalCode.MONTH -> TimeIntervalListUI.TimeIntervalItem(
+        TimeIntervalCode.MONTH -> StatisticViewState.TimeIntervalListUI.TimeIntervalItem(
             stringResource(R.string.msg_statistic_month_interval),
             timeIntervalType = TimeIntervalCode.MONTH
         )

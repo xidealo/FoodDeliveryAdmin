@@ -17,10 +17,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,38 +28,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.DiscountCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.StatusNavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.selectable.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
-import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
-import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
+import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.optionlist.OptionListBottomSheet
-import com.bunbeauty.presentation.Option
 import com.bunbeauty.presentation.feature.order.OrderDetailsViewModel
-import com.bunbeauty.presentation.feature.order.state.OrderDetailsEvent
+import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val PHONE_LINK = "tel:"
 
-class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
+class OrderDetailsFragment :
+    BaseComposeFragment<OrderDetailsState.DataState, OrderDetailsViewState, OrderDetailsState.Action, OrderDetailsState.Event>() {
 
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 
@@ -67,49 +66,78 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
     private val orderDetailsStateMapper: OrderDetailsStateMapper by inject()
 
-    private var statusListJob: Job? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setupOrder(
-            orderUuid = orderDetailsFragmentArgs.orderUuid,
-            orderCode = orderDetailsFragmentArgs.orderCode
-        )
-
-        binding.root.setContentWithTheme {
-            val dataState by viewModel.dataState.collectAsStateWithLifecycle()
-
-            OrderDetailsScreen(
-                uiState = orderDetailsStateMapper.map(dataState),
-                onStatusClicked = viewModel::onStatusClicked,
-                onSaveClicked = viewModel::onSaveClicked,
-                onBackClicked = viewModel::onBackClicked
+        viewModel.onAction(
+            OrderDetailsState.Action.Init(
+                orderUuid = orderDetailsFragmentArgs.orderUuid,
+                orderCode = orderDetailsFragmentArgs.orderCode
             )
+        )
+    }
 
-            LaunchedEffect(dataState.eventList) {
-                handleEventList(dataState.eventList)
+    @Composable
+    override fun Screen(
+        state: OrderDetailsViewState,
+        onAction: (OrderDetailsState.Action) -> Unit
+    ) {
+        OrderDetailsScreen(
+            state = state,
+            onAction = onAction
+        )
+    }
+
+    @Composable
+    override fun mapState(state: OrderDetailsState.DataState): OrderDetailsViewState {
+        return orderDetailsStateMapper.map(state)
+    }
+
+    override fun handleEvent(event: OrderDetailsState.Event) {
+        when (event) {
+            OrderDetailsState.Event.OpenWarningDialogEvent -> {
+                showCancellationWarning()
+            }
+
+            is OrderDetailsState.Event.ShowErrorMessage -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(event.messageId)
+                )
+            }
+
+            is OrderDetailsState.Event.GoBackEvent -> {
+                findNavController().navigateUp()
+            }
+
+            is OrderDetailsState.Event.SavedEvent -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    getString(
+                        R.string.msg_order_details_saved,
+                        event.orderCode
+                    )
+                )
+                findNavController().navigateUp()
             }
         }
     }
 
     @Composable
     private fun OrderDetailsScreen(
-        uiState: OrderDetailsUiState,
-        onStatusClicked: () -> Unit,
-        onSaveClicked: () -> Unit,
-        onBackClicked: () -> Unit
+        state: OrderDetailsViewState,
+        onAction: (OrderDetailsState.Action) -> Unit
     ) {
         AdminScaffold(
-            title = uiState.title,
-            backActionClick = onBackClicked
+            title = state.title,
+            backActionClick = {
+                onAction(OrderDetailsState.Action.OnBackClicked)
+            }
         ) {
-            when (uiState.state) {
-                OrderDetailsUiState.State.Loading -> {
+            when (state.state) {
+                OrderDetailsViewState.State.Loading -> {
                     LoadingScreen()
                 }
 
-                OrderDetailsUiState.State.Error -> {
+                OrderDetailsViewState.State.Error -> {
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
@@ -117,11 +145,10 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     )
                 }
 
-                is OrderDetailsUiState.State.Success -> {
+                is OrderDetailsViewState.State.Success -> {
                     SuccessOrderDetailsScreen(
-                        stateSuccess = uiState.state,
-                        onStatusClicked = onStatusClicked,
-                        onSaveClicked = onSaveClicked
+                        state = state.state,
+                        onAction = onAction
                     )
                 }
             }
@@ -130,9 +157,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Composable
     private fun SuccessOrderDetailsScreen(
-        stateSuccess: OrderDetailsUiState.State.Success,
-        onStatusClicked: () -> Unit,
-        onSaveClicked: () -> Unit
+        state: OrderDetailsViewState.State.Success,
+        onAction: (OrderDetailsState.Action) -> Unit
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -148,44 +174,80 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                     contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace)
                 ) {
                     item {
-                        OrderInfoCard(stateSuccess = stateSuccess)
+                        OrderInfoCard(stateSuccess = state)
                     }
                     item {
                         StatusNavigationTextCard(
                             hintStringId = R.string.hint_order_details_order_status,
-                            label = stateSuccess.status,
-                            onClick = onStatusClicked,
-                            statusColor = stateSuccess.statusColor
+                            label = state.status,
+                            onClick = {
+                                onAction(OrderDetailsState.Action.OnStatusClicked)
+                            },
+                            statusColor = state.statusColor
                         )
                     }
                     item {
                         NavigationIconCard(
                             iconId = R.drawable.ic_call,
-                            label = stateSuccess.phoneNumber,
+                            label = state.phoneNumber,
                             onClick = {
-                                val uri = Uri.parse(PHONE_LINK + stateSuccess.phoneNumber)
+                                val uri = Uri.parse(PHONE_LINK + state.phoneNumber)
                                 val intent = Intent(Intent.ACTION_DIAL, uri)
                                 startActivity(intent)
                             }
                         )
                     }
 
-                    items(stateSuccess.productList) { product ->
+                    items(state.productList) { product ->
                         OrderProductItem(product = product)
                     }
                 }
             }
             BottomAmountBar(
-                stateSuccess = stateSuccess,
-                onSaveClicked = onSaveClicked
+                stateSuccess = state,
+                onAction = onAction
             )
+            CafeListBottomSheet(state = state, onAction = onAction)
+        }
+    }
+
+    @Composable
+    private fun CafeListBottomSheet(
+        state: OrderDetailsViewState.State.Success,
+        onAction: (OrderDetailsState.Action) -> Unit
+    ) {
+        AdminModalBottomSheet(
+            title = stringResource(R.string.title_order_list_select_cafe),
+            isShown = state.statusListUI.isShown,
+            onDismissRequest = {
+                onAction(OrderDetailsState.Action.OnCloseStatusClicked)
+            }
+        ) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                state.statusListUI.statusList.forEach { status ->
+                    SelectableItem(
+                        title = status.status,
+                        clickable = true,
+                        elevated = false,
+                        onClick = {
+                            onAction(
+                                OrderDetailsState.Action.OnSelectStatusClicked(
+                                    status = status.orderStatus
+                                )
+                            )
+                        }
+                    )
+                }
+            }
         }
     }
 
     @Composable
     private fun OrderInfoCard(
         modifier: Modifier = Modifier,
-        stateSuccess: OrderDetailsUiState.State.Success
+        stateSuccess: OrderDetailsViewState.State.Success
     ) {
         AdminCard(
             modifier = modifier,
@@ -268,8 +330,8 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
 
     @Composable
     private fun BottomAmountBar(
-        stateSuccess: OrderDetailsUiState.State.Success,
-        onSaveClicked: () -> Unit
+        stateSuccess: OrderDetailsViewState.State.Success,
+        onAction: (OrderDetailsState.Action) -> Unit
     ) {
         Column(
             modifier = Modifier
@@ -328,63 +390,17 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(R.string.action_order_details_save),
                 isLoading = stateSuccess.saving,
-                onClick = onSaveClicked
+                onClick = {
+                    onAction(OrderDetailsState.Action.OnSaveClicked)
+                }
             )
             SecondaryButton(
                 modifier = Modifier.padding(top = 8.dp),
                 textStringId = R.string.action_order_details_do_not_save,
                 onClick = {
-                    findNavController().popBackStack()
+                    onAction(OrderDetailsState.Action.OnBackClicked)
                 }
             )
-        }
-    }
-
-    private fun handleEventList(eventList: List<OrderDetailsEvent>) {
-        eventList.forEach { event ->
-            when (event) {
-                is OrderDetailsEvent.OpenStatusListEvent -> {
-                    openStatusList(event.statusList)
-                }
-
-                OrderDetailsEvent.OpenWarningDialogEvent -> {
-                    showCancellationWarning()
-                }
-
-                is OrderDetailsEvent.ShowErrorMessage -> {
-                    (activity as? MessageHost)?.showErrorMessage(event.message)
-                }
-
-                is OrderDetailsEvent.GoBackEvent -> {
-                    findNavController().navigateUp()
-                }
-
-                is OrderDetailsEvent.SavedEvent -> {
-                    (activity as? MessageHost)?.showInfoMessage(
-                        getString(
-                            R.string.msg_order_details_saved,
-                            event.orderCode
-                        )
-                    )
-                    findNavController().navigateUp()
-                }
-            }
-        }
-        viewModel.consumeEvents(eventList)
-    }
-
-    private fun openStatusList(statusList: List<Option>) {
-        if (statusListJob?.isActive == true) {
-            return
-        }
-        statusListJob = lifecycleScope.launch {
-            OptionListBottomSheet.show(
-                parentFragmentManager,
-                resources.getString(R.string.title_order_status),
-                statusList
-            )?.value?.let { resultValue ->
-                viewModel.onStatusSelected(resultValue)
-            }
         }
     }
 
@@ -404,11 +420,11 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
     private fun OrderDetailsScreenPreview() {
         AdminTheme {
             OrderDetailsScreen(
-                uiState = OrderDetailsUiState(
+                state = OrderDetailsViewState(
                     title = "Заказ «А-10»",
-                    state = OrderDetailsUiState.State.Success(
+                    state = OrderDetailsViewState.State.Success(
                         dateTime = "21 января 19:20",
-                        deferredTime = OrderDetailsUiState.HintWithValue(
+                        deferredTime = OrderDetailsViewState.HintWithValue(
                             hint = "Время доставки",
                             value = "18:30"
                         ),
@@ -418,15 +434,15 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         comment = "Не забудте привезти еду",
                         status = "Обрабатывается",
                         phoneNumber = "+ 7 (900) 900-90-90",
-                        productList = listOf(
-                            OrderDetailsUiState.Product(
+                        productList = persistentListOf(
+                            OrderDetailsViewState.Product(
                                 title = "Хот-дог французский с куриной колбаской с супер пупер длинной строкой в названии",
                                 price = "99 ₽",
                                 count = "× 2",
                                 cost = "198 ₽",
                                 description = "Необычный лаваш • Добавка 1 • Добавка 2"
                             ),
-                            OrderDetailsUiState.Product(
+                            OrderDetailsViewState.Product(
                                 title = "Хот-дог французский с куриной колбаской",
                                 price = "99 ₽",
                                 count = "× 2 + 200 ₽",
@@ -438,13 +454,15 @@ class OrderDetailsFragment : BaseFragment<LayoutComposeBinding>() {
                         percentDiscount = "10%",
                         finalCost = "480 ₽",
                         statusColor = AdminTheme.colors.order.notAccepted,
-                        saving = false
-                    ),
-                    eventList = emptyList()
+                        saving = false,
+                        statusListUI = OrderDetailsViewState.State.Success.StatusListUI(
+                            isShown = false,
+                            statusList = persistentListOf()
+                        )
+                    )
                 ),
-                onStatusClicked = {},
-                onSaveClicked = {},
-                onBackClicked = {}
+                onAction = {
+                }
             )
         }
     }

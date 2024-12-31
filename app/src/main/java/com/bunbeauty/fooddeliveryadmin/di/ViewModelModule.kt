@@ -20,7 +20,7 @@ import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 fun viewModelModule() = module {
@@ -115,9 +115,7 @@ fun viewModelModule() = module {
 
     viewModel {
         OrderDetailsViewModel(
-            orderStatusMapper = get(),
             loadOrderDetails = get(),
-            resources = get(),
             updateOrderStatus = get()
         )
     }
@@ -129,7 +127,6 @@ fun viewModelModule() = module {
             getCafeList = get(),
             getOrderListFlow = get(),
             getOrderErrorFlow = get(),
-            orderMapper = get(),
             saveSelectedCafeUuid = get()
         )
     }

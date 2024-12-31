@@ -15,6 +15,7 @@ interface Statistic {
         val hasError: Boolean = false,
         val isTimeIntervalListShown: Boolean = false,
         val isCafeListShown: Boolean = false,
+        val loadingStatistic: Boolean,
         val cafeList: List<Cafe> = emptyList()
     ) : BaseDataState {
 

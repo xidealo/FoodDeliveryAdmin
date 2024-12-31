@@ -4,6 +4,7 @@ import com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeStateMapper
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderDetailsStateMapper
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderProductMapper
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.PaymentMethodMapper
+import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderMapper
 import org.koin.dsl.module
 
 fun uiMapperModule() = module {
@@ -13,7 +14,6 @@ fun uiMapperModule() = module {
 
     factory {
         OrderDetailsStateMapper(
-            resources = get(),
             dateTimeUtil = get(),
             orderStatusMapper = get(),
             orderProductMapper = get(),
@@ -21,7 +21,15 @@ fun uiMapperModule() = module {
         )
     }
 
-    single { OrderProductMapper() }
+    factory {
+        OrderMapper(
+            orderStatusMapper = get(),
+            dateTimeUtil = get(),
+            resources = get()
+        )
+    }
 
-    single { PaymentMethodMapper(resources = get()) }
+    factory { OrderProductMapper() }
+
+    factory { PaymentMethodMapper(resources = get()) }
 }

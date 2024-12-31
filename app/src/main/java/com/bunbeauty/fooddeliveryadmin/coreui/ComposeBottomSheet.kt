@@ -12,7 +12,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class ComposeBottomSheet<T : Any> : BottomSheetDialogFragment(R.layout.bottom_sheet_compose) {
+@Deprecated("Use compose on screen BS like on Statisitc screen")
+abstract class ComposeBottomSheet<T : Any> :
+    BottomSheetDialogFragment(R.layout.bottom_sheet_compose) {
 
     protected var callback: Callback<T>? = null
 

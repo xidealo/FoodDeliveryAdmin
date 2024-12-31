@@ -1,4 +1,4 @@
-package com.bunbeauty.presentation.feature.orderlist.mapper
+package com.bunbeauty.fooddeliveryadmin.screen.orderlist
 
 import android.content.res.Resources
 import com.bunbeauty.domain.model.order.Order
@@ -7,7 +7,6 @@ import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
 
 class OrderMapper(
     private val orderStatusMapper: OrderStatusMapper,
@@ -15,8 +14,8 @@ class OrderMapper(
     private val resources: Resources
 ) {
 
-    fun map(order: Order): OrderListUiState.OrderItem {
-        return OrderListUiState.OrderItem(
+    fun map(order: Order): OrderListViewState.OrderItem {
+        return OrderListViewState.OrderItem(
             uuid = order.uuid,
             status = order.orderStatus,
             statusString = orderStatusMapper.map(order.orderStatus),
