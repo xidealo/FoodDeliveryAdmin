@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
@@ -19,12 +21,8 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationIconCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -166,13 +164,14 @@ class ProfileFragment :
                     onAction(Profile.Action.StatisticClick)
                 }
             )
-            SwitcherCard(
-                text = stringResource(R.string.msg_accept_orders),
-                hint = stringResource(R.string.msg_accept_orders_description),
-                checked = state.acceptOrders,
-                onCheckChanged = {
-                    onAction(Profile.Action.AcceptOrdersClick)
-                }
+            Text(
+                text = resources.getString(R.string.msg_profile_close_cafe_settings),
+                style = AdminTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+
             )
         }
         Column(
@@ -187,34 +186,6 @@ class ProfileFragment :
                     .padding(bottom = 72.dp)
             )
         }
-
-        AdminModalBottomSheet(
-            title = stringResource(state.acceptOrdersConfirmation.titleResId),
-            isShown = state.acceptOrdersConfirmation.isShown,
-            onDismissRequest = {
-                onAction(Profile.Action.CancelAcceptOrders)
-            }
-        ) {
-            Text(
-                text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
-                style = AdminTheme.typography.bodyMedium,
-                color = AdminTheme.colors.main.onSurface
-            )
-            MainButton(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(state.acceptOrdersConfirmation.buttonResId),
-                onClick = {
-                    onAction(Profile.Action.ConfirmAcceptOrders)
-                }
-            )
-            SecondaryButton(
-                modifier = Modifier.padding(top = 8.dp),
-                textStringId = R.string.action_common_cancel,
-                onClick = {
-                    onAction(Profile.Action.CancelAcceptOrders)
-                }
-            )
-        }
     }
 
     @Preview
@@ -226,13 +197,6 @@ class ProfileFragment :
                     state = ProfileViewState.State.Success(
                         role = "Менеджер",
                         userName = "UserName",
-                        acceptOrders = true,
-                        acceptOrdersConfirmation = ProfileViewState.AcceptOrdersConfirmation(
-                            isShown = false,
-                            titleResId = 0,
-                            descriptionResId = 0,
-                            buttonResId = 0
-                        ),
                         logoutLoading = false
                     )
                 ),

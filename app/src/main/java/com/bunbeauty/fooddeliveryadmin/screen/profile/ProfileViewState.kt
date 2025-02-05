@@ -12,16 +12,7 @@ data class ProfileViewState(
         data class Success(
             val role: String,
             val userName: String,
-            val acceptOrders: Boolean,
-            val acceptOrdersConfirmation: AcceptOrdersConfirmation,
             val logoutLoading: Boolean
         ) : State
     }
-
-    data class AcceptOrdersConfirmation(
-        val isShown: Boolean,
-        val titleResId: Int,
-        val descriptionResId: Int,
-        val buttonResId: Int
-    )
 }
