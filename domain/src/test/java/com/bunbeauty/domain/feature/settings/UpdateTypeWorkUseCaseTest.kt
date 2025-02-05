@@ -10,6 +10,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -77,15 +78,14 @@ class UpdateTypeWorkUseCaseTest {
     }
 
     @Test
-    fun `invoke() should throw NoCompanyUuidException when companyUuid is null`() = runTest {
+    fun `invoke should throw NoCompanyUuidException when companyUuid is null`() = runTest {
         // Given
         val workType = WorkInfo.WorkType.DELIVERY_AND_PICKUP
         val workInfoData = WorkInfo(workType)
         val token = "Test token"
 
         coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { dataStoreRepo.companyUuid } returns flowOf<String?>(null) as Flow<String>
-
+        coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
         // When & Then
         val exception = assertThrows(NoCompanyUuidException::class.java) {
             runBlocking { updateTypeWorkUseCase(workInfoData) }
