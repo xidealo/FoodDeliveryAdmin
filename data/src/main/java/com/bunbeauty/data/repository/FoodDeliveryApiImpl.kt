@@ -326,7 +326,7 @@ class FoodDeliveryApiImpl(
         token: String,
         companyPatch: CompanyPatchServer,
         companyUuid: String
-    ): ApiResult<WorkInfoData> {
+    ): ApiResult<Unit> {
         return patch(
             path = "company",
             body = companyPatch,

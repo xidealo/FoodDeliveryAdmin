@@ -5,7 +5,6 @@ import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import kotlinx.coroutines.launch
 
 class AdditionListViewModel(
     private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
@@ -52,7 +51,7 @@ class AdditionListViewModel(
             },
             onError = {
                 showErrorState()
-            },
+            }
         )
     }
 

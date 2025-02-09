@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.settings
 
 import android.os.Bundle
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +28,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.RadioButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
@@ -90,7 +91,9 @@ class SettingsFragment :
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = { SettingsState.Action.Init }
+                        onClick = {
+                            onAction(SettingsState.Action.Init)
+                        }
                     )
                 }
 
@@ -115,7 +118,9 @@ class SettingsFragment :
             modifier = modifier.fillMaxSize()
         ) {
             SwitcherCard(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(vertical = 16.dp),
+                elevated = false,
+
                 text = stringResource(R.string.msg_settings_unlimited_notifications),
                 checked = state.isNotifications,
                 onCheckChanged = { isUnlimitedNotifications ->
@@ -250,34 +255,41 @@ class SettingsFragment :
         onClick: () -> Unit,
         modifier: Modifier = Modifier
     ) {
-        Row(
+        AdminCard(
             modifier = modifier
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 8.dp)
-                .fillMaxWidth()
-                .clickable(onClick = onClick),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth(),
+            onClick = onClick,
+            elevated = false,
+            shape = noCornerCardShape
         ) {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .size(24.dp),
-                painter = painterResource(iconRes),
-                tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription = null
-            )
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 16.dp),
-                text = stringResource(textRes),
-                style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.main.onSurface
-            )
-            RadioButton(
-                selected = isSelected,
-                onClick = onClick
-            )
+            Row(
+                modifier = modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(24.dp),
+                    painter = painterResource(iconRes),
+                    tint = AdminTheme.colors.main.onSurfaceVariant,
+                    contentDescription = null
+                )
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 16.dp),
+                    text = stringResource(textRes),
+                    style = AdminTheme.typography.bodyLarge,
+                    color = AdminTheme.colors.main.onSurface
+                )
+                RadioButton(
+                    selected = isSelected,
+                    onClick = onClick
+                )
+            }
         }
     }
 

@@ -113,7 +113,7 @@ interface FoodDeliveryApi {
         token: String,
         companyPatch: CompanyPatchServer,
         companyUuid: String
-    ): ApiResult<WorkInfoData>
+    ): ApiResult<Unit>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(

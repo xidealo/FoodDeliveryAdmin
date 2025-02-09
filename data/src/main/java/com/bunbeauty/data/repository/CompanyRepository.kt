@@ -21,6 +21,7 @@ class CompanyRepository(
                 cachedTypeWork = workInfo
                 workInfo
             }
+
             is ApiResult.Error -> {
                 null
             }
@@ -33,7 +34,7 @@ class CompanyRepository(
         token: String
     ) {
         return when (
-            networkConnector.patchCompany(
+            val result = networkConnector.patchCompany(
                 token = token,
                 companyPatch = mapWorkInfoToCompanyPatchServer(workInfoData),
                 companyUuid = companyUuid
@@ -42,7 +43,10 @@ class CompanyRepository(
             is ApiResult.Success -> {
                 cachedTypeWork = workInfoData
             }
-            is ApiResult.Error -> {}
+
+            is ApiResult.Error -> {
+                throw result.apiError
+            }
         }
     }
 }

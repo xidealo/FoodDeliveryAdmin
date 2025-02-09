@@ -6,11 +6,9 @@ import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.model.GetTypeWorkUseCase
 import com.bunbeauty.domain.feature.profile.model.UpdateTypeWorkUseCase
 import com.bunbeauty.domain.model.settings.WorkInfo
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
@@ -44,7 +42,6 @@ class SettingsViewModel(
             SettingsState.Action.CancelAcceptOrders -> closeAcceptionDialog()
 
             SettingsState.Action.ConfirmNotAcceptOrders -> handleConfirmNotAcceptOrders(dataState)
-
         }
     }
 
@@ -92,14 +89,25 @@ class SettingsViewModel(
     }
 
     private fun loadData() {
+        setState {
+            copy(
+                state = SettingsState.DataState.State.LOADING
+            )
+        }
         viewModelScope.launchSafe(
             block = {
-                loadTypeWork()
-                loadNotifications()
+                setState {
+                    copy(
+                        workType = getTypeWorkUseCase().workType.toSettingsWorkType(),
+                        isUnlimitedNotifications = getIsUnlimitedNotification(),
+                        state = SettingsState.DataState.State.SUCCESS,
+                        isLoading = false
+                    )
+                }
             },
             onError = {
                 showErrorState()
-            },
+            }
         )
     }
 
@@ -115,7 +123,9 @@ class SettingsViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
-                setState { copy(isLoading = true) }
+                setState {
+                    copy(isLoading = true)
+                }
                 updateTypeWorkUseCase(
                     workInfoData = mapWorkTypeToWorkInfoData(workType = workType)
                 )
@@ -127,55 +137,9 @@ class SettingsViewModel(
                 }
             },
             onError = {
-                SettingsState.Event.ShowErrorMessage(messageId = R.string.error_settings_not_save)
-            }
-        )
-    }
-
-    private fun loadNotifications() {
-        viewModelScope.launchSafe(
-            block = {
-                val stateNotification = getIsUnlimitedNotification()
-                setState {
-                    copy(isUnlimitedNotifications = stateNotification)
-                }
-            },
-            onError = {
-                showErrorState()
-            },
-        )
-    }
-
-    private fun loadTypeWork() {
-        viewModelScope.launchSafe(
-            block = {
-                val typeWork = getTypeWorkUseCase()
-                updateLoadTypeWork(typeWork)
-                setState {
-                    copy(
-                        state = SettingsState.DataState.State.SUCCESS,
-                        workType = typeWork.workType.toSettingsWorkType()
-                    )
-                }
-            },
-            onError = {
                 showErrorState()
             }
         )
-    }
-
-    private fun updateLoadTypeWork(workInfoData: WorkInfo?) {
-        if (workInfoData == null) {
-            showErrorState()
-            return
-        }
-
-        setState {
-            copy(
-                state = SettingsState.DataState.State.SUCCESS,
-                workType = workType
-            )
-        }
     }
 
     private fun showErrorState() {
@@ -204,7 +168,12 @@ class SettingsViewModel(
 
     private fun mapWorkTypeToWorkInfoData(workType: SettingsState.DataState.WorkType): WorkInfo {
         return WorkInfo(
-            workType = WorkInfo.WorkType.valueOf(workType.toString())
+            workType = when (workType) {
+                SettingsState.DataState.WorkType.DELIVERY -> WorkInfo.WorkType.DELIVERY
+                SettingsState.DataState.WorkType.PICKUP -> WorkInfo.WorkType.PICKUP
+                SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP -> WorkInfo.WorkType.DELIVERY_AND_PICKUP
+                SettingsState.DataState.WorkType.CLOSED -> WorkInfo.WorkType.CLOSED
+            }
         )
     }
 }
