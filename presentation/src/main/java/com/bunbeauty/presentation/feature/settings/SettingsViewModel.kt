@@ -39,7 +39,7 @@ class SettingsViewModel(
 
             is SettingsState.Action.OnSelectStatusClicked -> selectWorkType(workType = action.workType)
 
-            SettingsState.Action.CancelAcceptOrders -> closeAcceptionDialog()
+            SettingsState.Action.CancelAcceptOrders -> closeAcceptDialog()
 
             SettingsState.Action.ConfirmNotAcceptOrders -> handleConfirmNotAcceptOrders(dataState)
         }
@@ -55,7 +55,7 @@ class SettingsViewModel(
 
     private fun handleSaveSettingsClick(dataState: SettingsState.DataState) {
         if (dataState.workType == SettingsState.DataState.WorkType.CLOSED) {
-            showAcceptionDialog()
+            showAcceptDialog()
         } else {
             updateSettings(
                 workType = dataState.workType,
@@ -70,13 +70,13 @@ class SettingsViewModel(
         }
     }
 
-    private fun showAcceptionDialog() {
+    private fun showAcceptDialog() {
         setState {
             copy(showAcceptOrdersConfirmation = true)
         }
     }
 
-    private fun closeAcceptionDialog() {
+    private fun closeAcceptDialog() {
         setState {
             copy(showAcceptOrdersConfirmation = false)
         }
