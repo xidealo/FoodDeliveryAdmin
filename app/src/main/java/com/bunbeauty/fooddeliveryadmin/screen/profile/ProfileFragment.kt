@@ -165,7 +165,7 @@ class ProfileFragment :
                 }
             )
             Text(
-                text = resources.getString(R.string.msg_profile_close_cafe_settings),
+                text = stringResource(R.string.msg_profile_close_cafe_settings),
                 style = AdminTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.settings
 
 import android.os.Bundle
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,13 +14,11 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
@@ -76,9 +75,6 @@ class SettingsFragment :
         state: SettingsViewState,
         onAction: (SettingsState.Action) -> Unit
     ) {
-        LaunchedEffect(Unit) {
-            onAction(SettingsState.Action.Init)
-        }
         AdminScaffold(
             title = stringResource(R.string.title_settings),
             backActionClick = {
@@ -94,7 +90,7 @@ class SettingsFragment :
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = {}
+                        onClick = { SettingsState.Action.Init }
                     )
                 }
 
@@ -132,11 +128,10 @@ class SettingsFragment :
             )
             Text(
                 modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp),
+                    .padding(horizontal = 16.dp),
                 text = stringResource(R.string.msg_settings_type_work),
                 maxLines = 1,
-                style = AdminTheme.typography.titleMedium.bold,
-                overflow = TextOverflow.Ellipsis
+                style = AdminTheme.typography.titleMedium.bold
             )
             Card(
                 modifier = Modifier.padding(top = 8.dp),
@@ -260,7 +255,8 @@ class SettingsFragment :
             modifier = modifier
                 .padding(horizontal = 16.dp)
                 .padding(vertical = 8.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
