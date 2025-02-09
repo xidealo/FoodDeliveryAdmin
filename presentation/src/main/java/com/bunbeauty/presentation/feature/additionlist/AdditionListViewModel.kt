@@ -42,13 +42,18 @@ class AdditionListViewModel(
     }
 
     private fun updateVisible(uuid: String, isVisible: Boolean) {
-        viewModelScope.launch {
-            updateVisibleAdditionUseCase(
-                additionUuid = uuid,
-                isVisible = !isVisible
-            )
-            loadData()
-        }
+        viewModelScope.launchSafe(
+            block = {
+                updateVisibleAdditionUseCase(
+                    additionUuid = uuid,
+                    isVisible = !isVisible
+                )
+                loadData()
+            },
+            onError = {
+                showErrorState()
+            },
+        )
     }
 
     private fun refreshData() {
@@ -79,12 +84,7 @@ class AdditionListViewModel(
                 }
             },
             onError = {
-                setState {
-                    copy(
-                        hasError = true,
-                        isLoading = false
-                    )
-                }
+                showErrorState()
             }
         )
     }
@@ -110,13 +110,18 @@ class AdditionListViewModel(
                 }
             },
             onError = {
-                setState {
-                    copy(
-                        hasError = true,
-                        isLoading = false
-                    )
-                }
+                showErrorState()
             }
         )
+    }
+
+    private fun showErrorState() {
+        setState {
+            copy(
+                hasError = true,
+                isRefreshing = false,
+                isLoading = false
+            )
+        }
     }
 }

@@ -130,7 +130,6 @@ class SettingsFragment :
                 modifier = Modifier
                     .padding(horizontal = 16.dp),
                 text = stringResource(R.string.msg_settings_type_work),
-                maxLines = 1,
                 style = AdminTheme.typography.titleMedium.bold
             )
             Card(

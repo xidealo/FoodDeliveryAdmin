@@ -23,7 +23,6 @@ class SettingsViewModel(
         isLoading = false,
         isUnlimitedNotifications = true,
         workType = SettingsState.DataState.WorkType.DELIVERY,
-        isSelectWorkType = false,
         showAcceptOrdersConfirmation = false
     )
 ) {
@@ -34,40 +33,55 @@ class SettingsViewModel(
         when (action) {
             is SettingsState.Action.Init -> loadData()
             SettingsState.Action.OnBackClicked -> onBackClicked()
-            is SettingsState.Action.OnNotificationsClicked -> {
-                setState {
-                    copy(isUnlimitedNotifications = action.isUnlimitedNotifications)
-                }
-            }
+            is SettingsState.Action.OnNotificationsClicked -> setNotificationStatus(action = action)
 
-            is SettingsState.Action.OnSaveSettingsClick -> {
-                if (dataState.workType == SettingsState.DataState.WorkType.CLOSED) {
-                    setState {
-                        copy(showAcceptOrdersConfirmation = true)
-                    }
-                } else {
-                    updateSettings(
-                        workType = dataState.workType,
-                        isUnlimitedNotifications = dataState.isUnlimitedNotifications
-                    )
-                }
-            }
+            is SettingsState.Action.OnSaveSettingsClick -> handleSaveSettingsClick(
+                dataState = dataState
+            )
 
             is SettingsState.Action.OnSelectStatusClicked -> selectWorkType(workType = action.workType)
 
-            SettingsState.Action.CancelAcceptOrders -> {
-                setState {
-                    copy(showAcceptOrdersConfirmation = false)
-                }
-            }
+            SettingsState.Action.CancelAcceptOrders -> closeAcceptionDialog()
 
-            SettingsState.Action.ConfirmNotAcceptOrders -> {
-                handleConfirmNotAcceptOrders()
-                updateSettings(
-                    workType = SettingsState.DataState.WorkType.CLOSED,
-                    isUnlimitedNotifications = dataState.isUnlimitedNotifications
-                )
-            }
+            SettingsState.Action.ConfirmNotAcceptOrders -> handleConfirmNotAcceptOrders(dataState)
+
+        }
+    }
+
+    private fun handleConfirmNotAcceptOrders(dataState: SettingsState.DataState) {
+        handleConfirmNotAcceptOrders()
+        updateSettings(
+            workType = SettingsState.DataState.WorkType.CLOSED,
+            isUnlimitedNotifications = dataState.isUnlimitedNotifications
+        )
+    }
+
+    private fun handleSaveSettingsClick(dataState: SettingsState.DataState) {
+        if (dataState.workType == SettingsState.DataState.WorkType.CLOSED) {
+            showAcceptionDialog()
+        } else {
+            updateSettings(
+                workType = dataState.workType,
+                isUnlimitedNotifications = dataState.isUnlimitedNotifications
+            )
+        }
+    }
+
+    private fun setNotificationStatus(action: SettingsState.Action.OnNotificationsClicked) {
+        setState {
+            copy(isUnlimitedNotifications = action.isUnlimitedNotifications)
+        }
+    }
+
+    private fun showAcceptionDialog() {
+        setState {
+            copy(showAcceptOrdersConfirmation = true)
+        }
+    }
+
+    private fun closeAcceptionDialog() {
+        setState {
+            copy(showAcceptOrdersConfirmation = false)
         }
     }
 
@@ -78,15 +92,20 @@ class SettingsViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            loadTypeWork()
-            loadNotifications()
-        }
+        viewModelScope.launchSafe(
+            block = {
+                loadTypeWork()
+                loadNotifications()
+            },
+            onError = {
+                showErrorState()
+            },
+        )
     }
 
     private fun selectWorkType(workType: SettingsState.DataState.WorkType) {
         setState {
-            copy(workType = workType, isSelectWorkType = true)
+            copy(workType = workType)
         }
     }
 
@@ -114,12 +133,17 @@ class SettingsViewModel(
     }
 
     private fun loadNotifications() {
-        viewModelScope.launch {
-            val stateNotification = getIsUnlimitedNotification()
-            setState {
-                copy(isUnlimitedNotifications = stateNotification)
-            }
-        }
+        viewModelScope.launchSafe(
+            block = {
+                val stateNotification = getIsUnlimitedNotification()
+                setState {
+                    copy(isUnlimitedNotifications = stateNotification)
+                }
+            },
+            onError = {
+                showErrorState()
+            },
+        )
     }
 
     private fun loadTypeWork() {
@@ -135,18 +159,14 @@ class SettingsViewModel(
                 }
             },
             onError = {
-                setState {
-                    copy(state = SettingsState.DataState.State.ERROR)
-                }
+                showErrorState()
             }
         )
     }
 
     private fun updateLoadTypeWork(workInfoData: WorkInfo?) {
         if (workInfoData == null) {
-            setState {
-                copy(state = SettingsState.DataState.State.ERROR)
-            }
+            showErrorState()
             return
         }
 
@@ -155,6 +175,12 @@ class SettingsViewModel(
                 state = SettingsState.DataState.State.SUCCESS,
                 workType = workType
             )
+        }
+    }
+
+    private fun showErrorState() {
+        setState {
+            copy(state = SettingsState.DataState.State.ERROR)
         }
     }
 

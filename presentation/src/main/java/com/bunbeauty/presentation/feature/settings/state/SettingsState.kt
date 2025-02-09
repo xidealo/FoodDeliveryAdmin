@@ -13,7 +13,6 @@ interface SettingsState {
         val isUnlimitedNotifications: Boolean,
         val workType: WorkType,
         val isLoading: Boolean,
-        val isSelectWorkType: Boolean,
         val showAcceptOrdersConfirmation: Boolean
     ) : BaseDataState {
 

@@ -6,7 +6,6 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 @Immutable
 data class SettingsViewState(
     val state: State
-
 ) : BaseViewState {
     @Immutable
     sealed interface State {
