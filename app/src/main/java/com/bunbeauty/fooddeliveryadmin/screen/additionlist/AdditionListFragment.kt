@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.additionlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -107,7 +108,8 @@ class AdditionListFragment :
                 ) {
                     Text(
                         modifier = Modifier
-                            .animateItemPlacement(
+                            .animateItem()
+                            .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_visible),
@@ -122,17 +124,21 @@ class AdditionListFragment :
                 ) { visibleAddition ->
                     when (visibleAddition) {
                         is AdditionListViewState.AdditionFeedViewItem.AdditionItem -> AdditionCard(
-                            modifier = Modifier.animateItemPlacement(
-                                animationSpec = tween(LIST_ANIMATION_DURATION)
-                            ),
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
                             additionItem = visibleAddition.addition,
                             onAction = onAction
                         )
 
                         is AdditionListViewState.AdditionFeedViewItem.Title -> Text(
-                            modifier = Modifier.animateItemPlacement(
-                                animationSpec = tween(LIST_ANIMATION_DURATION)
-                            ),
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
                             text = visibleAddition.title,
                             style = AdminTheme.typography.titleSmall.bold
                         )
@@ -146,7 +152,8 @@ class AdditionListFragment :
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp)
-                            .animateItemPlacement(
+                            .animateItem()
+                            .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
@@ -161,17 +168,21 @@ class AdditionListFragment :
                 ) { hiddenAddition ->
                     when (hiddenAddition) {
                         is AdditionListViewState.AdditionFeedViewItem.AdditionItem -> AdditionCard(
-                            modifier = Modifier.animateItemPlacement(
-                                animationSpec = tween(LIST_ANIMATION_DURATION)
-                            ),
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
                             additionItem = hiddenAddition.addition,
                             onAction = onAction
                         )
 
                         is AdditionListViewState.AdditionFeedViewItem.Title -> Text(
-                            modifier = Modifier.animateItemPlacement(
-                                animationSpec = tween(LIST_ANIMATION_DURATION)
-                            ),
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
                             text = hiddenAddition.title,
                             style = AdminTheme.typography.titleSmall.bold
                         )
