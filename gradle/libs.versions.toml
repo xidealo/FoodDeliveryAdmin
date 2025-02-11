@@ -4,7 +4,7 @@ kotlin = "2.0.20"
 googleServices = "4.4.2"
 navigation = "2.7.0"
 ktor = "2.3.2"
-coil = "2.4.0"
+coil = "3.1.0"
 datastorePreferences = "1.0.0"
 koin = "4.0.0"
 kotlinxDatetime = "0.4.0"
@@ -48,8 +48,8 @@ ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 
 # Image Loading Libraries
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
 # Data Storage
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
@@ -167,8 +167,8 @@ ktor = [
 ]
 
 coil = [
-    "coil",
-    "coil-compose"
+    "coil-compose",
+    "coil-network-okhttp"
 ]
 
 room = [
