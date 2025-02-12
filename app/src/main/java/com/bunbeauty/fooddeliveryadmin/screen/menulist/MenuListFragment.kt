@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -30,8 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
@@ -142,9 +144,11 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             if (state.visibleMenuProductItems.isNotEmpty()) {
                 item(key = VISIBLE_TITLE_KEY) {
                     Text(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(LIST_ANIMATION_DURATION)
-                        ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         text = stringResource(id = R.string.title_menu_list_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
                     )
@@ -156,9 +160,11 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 ) { visibleMenuProduct ->
                     MenuListProductCard(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(LIST_ANIMATION_DURATION)
-                        ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         menuProduct = visibleMenuProduct
                     )
                 }
@@ -168,7 +174,8 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp)
-                            .animateItemPlacement(
+                            .animateItem()
+                            .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
@@ -182,9 +189,11 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 ) { hiddenMenuProduct ->
                     MenuListProductCard(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(LIST_ANIMATION_DURATION)
-                        ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         menuProduct = hiddenMenuProduct
                     )
                 }
