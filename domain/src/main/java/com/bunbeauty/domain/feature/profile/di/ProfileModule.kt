@@ -4,13 +4,21 @@ import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.feature.profile.IsOrderAvailableUseCase
 import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
-import com.bunbeauty.domain.feature.profile.UpdateOrderAvailabilityUseCase
+import com.bunbeauty.domain.feature.profile.model.GetTypeWorkUseCase
+import com.bunbeauty.domain.feature.profile.model.UpdateTypeWorkUseCase
 import org.koin.dsl.module
 
 fun profileModule() = module {
     factory {
         GetIsUnlimitedNotificationUseCase(
             settingsRepo = get()
+        )
+    }
+
+    factory {
+        UpdateTypeWorkUseCase(
+            workInfoRepository = get(),
+            dataStoreRepo = get()
         )
     }
 
@@ -34,9 +42,9 @@ fun profileModule() = module {
     }
 
     factory {
-        UpdateOrderAvailabilityUseCase(
-            dataStoreRepo = get(),
-            orderRepo = get()
+        GetTypeWorkUseCase(
+            workInfoRepository = get(),
+            dataStoreRepo = get()
         )
     }
 }

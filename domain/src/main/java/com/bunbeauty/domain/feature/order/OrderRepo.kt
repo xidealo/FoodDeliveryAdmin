@@ -14,10 +14,5 @@ interface OrderRepo {
     suspend fun getOrderErrorFlow(token: String, cafeUuid: String): Flow<OrderError>
     suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails?
     suspend fun getOrderAvailability(companyUuid: String): OrderAvailability?
-    suspend fun updateOrderAvailability(
-        token: String,
-        isAvailable: Boolean,
-        companyUuid: String
-    ): Boolean?
     fun clearCache()
 }

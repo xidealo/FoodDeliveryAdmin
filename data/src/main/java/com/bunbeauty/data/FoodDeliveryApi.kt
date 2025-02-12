@@ -11,7 +11,7 @@ import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
-import com.bunbeauty.data.model.server.company.CompanyServer
+import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -106,12 +106,14 @@ interface FoodDeliveryApi {
         status: OrderStatus
     ): ApiResult<OrderDetailsServer>
 
+    suspend fun getWorkInfo(companyUuid: String): ApiResult<WorkInfoData>
+
     // COMPANY
     suspend fun patchCompany(
         token: String,
         companyPatch: CompanyPatchServer,
         companyUuid: String
-    ): ApiResult<CompanyServer>
+    ): ApiResult<Unit>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(

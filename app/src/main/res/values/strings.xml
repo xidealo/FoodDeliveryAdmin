@@ -169,18 +169,21 @@
     <string name="action_profile_cafes">Рестораны</string>
     <string name="action_profile_settings">Настройки</string>
     <string name="action_profile_statistic">Статистика</string>
-    <string name="msg_accept_orders">Принимаем заказы</string>
-    <string name="msg_accept_orders_description">Когда выключено, пользователи не могут делать заказы</string>
-    <string name="title_profile_enable_orders">Включить заказы?</string>
-    <string name="msg_profile_enable_orders">Пользователи смогут делать заказы</string>
-    <string name="title_profile_disable_orders">Отключить заказы?</string>
-    <string name="msg_profile_disable_orders">Пользователи не смогут делать заказы</string>
-    <string name="action_profile_enable">Включить</string>
-    <string name="action_profile_disable">Отключить</string>
+    <string name="msg_profile_close_cafe_settings">Теперь закрыть кафе можно\nв разделе \"Настройки\"</string>
+
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>
     <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
+    <string name="msg_settings_type_work">Тип работы</string>
+    <string name="msg_settings_status_delivery">Доставка</string>
+    <string name="msg_settings_status_pickup">Самовывоз</string>
+    <string name="msg_settings_status_pickup_delivery">Самовывоз и доставка</string>
+    <string name="action_settings_save">Настройки сохранены</string>
+    <string name="msg_settings_status_accept_orders">Не принимать заказы</string>
+    <string name="title_settings_disable_orders">Отключить заказы?</string>
+    <string name="msg_settings_disable_orders">Пользователи не смогут делать заказы</string>
+    <string name="action_settings_disable">Отключить</string>
 
     <!-- CAFE LIST -->
     <string name="title_cafe_list">Рестораны</string>

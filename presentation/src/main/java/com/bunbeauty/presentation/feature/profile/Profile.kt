@@ -32,9 +32,6 @@ interface Profile {
         data object CafeClick : Action
         data object SettingsClick : Action
         data object StatisticClick : Action
-        data object AcceptOrdersClick : Action
-        data object ConfirmAcceptOrders : Action
-        data object CancelAcceptOrders : Action
         data object LogoutClick : Action
         data class LogoutConfirm(val confirmed: Boolean) : Action
     }

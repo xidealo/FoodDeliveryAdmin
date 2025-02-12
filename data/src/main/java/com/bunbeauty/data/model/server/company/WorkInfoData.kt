@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class CompanyPatchServer(
+class WorkInfoData(
     @SerialName("workType")
     val workType: String
 )

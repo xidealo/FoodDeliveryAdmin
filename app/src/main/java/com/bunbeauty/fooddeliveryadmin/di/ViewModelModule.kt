@@ -135,15 +135,16 @@ fun viewModelModule() = module {
         ProfileViewModel(
             getUsernameUseCase = get(),
             isOrderAvailableUseCase = get(),
-            logoutUseCase = get(),
-            updateOrderAvailabilityUseCase = get()
+            logoutUseCase = get()
         )
     }
 
     viewModel {
         SettingsViewModel(
             getIsUnlimitedNotification = get(),
-            updateIsUnlimitedNotification = get()
+            updateIsUnlimitedNotification = get(),
+            getTypeWorkUseCase = get(),
+            updateTypeWorkUseCase = get()
         )
     }
 
