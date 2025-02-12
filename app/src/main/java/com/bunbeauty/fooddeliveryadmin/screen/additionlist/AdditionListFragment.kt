@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -92,7 +91,6 @@ class AdditionListFragment :
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun AdditionListSuccessScreen(
         state: AdditionListViewState,
@@ -202,7 +200,8 @@ class AdditionListFragment :
             modifier = modifier.fillMaxWidth(),
             onClick = {
                 onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
-            }
+            },
+            elevated = false
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()

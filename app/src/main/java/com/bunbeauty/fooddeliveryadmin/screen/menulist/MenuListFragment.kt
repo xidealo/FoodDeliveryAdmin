@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -127,7 +126,6 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun MenuListSuccessScreen(
         state: MenuListViewState.State.Success
@@ -210,7 +208,8 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             modifier = modifier.fillMaxWidth(),
             onClick = {
                 viewModel.goToEditMenuProduct(menuProduct.uuid)
-            }
+            },
+            elevated = false
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
