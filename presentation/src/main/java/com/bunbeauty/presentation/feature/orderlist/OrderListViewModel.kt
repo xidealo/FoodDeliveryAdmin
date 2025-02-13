@@ -54,7 +54,10 @@ class OrderListViewModel(
 
             OrderList.Action.CafeClick -> onCafeClicked()
             OrderList.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
-            is OrderList.Action.SelectedCafe -> onCafeSelected(action.cafeUuid)
+            is OrderList.Action.SelectedCafe -> onCafeSelected(
+                cafeUuid = action.cafeUuid,
+                currentOrderList = dataState.orderList
+            )
         }
     }
 
@@ -85,13 +88,14 @@ class OrderListViewModel(
         }
     }
 
-    private fun onCafeSelected(cafeUuid: String) {
+    private fun onCafeSelected(cafeUuid: String, currentOrderList: List<Order>) {
         viewModelScope.launchSafe(
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
                     saveSelectedCafeUuid(cafeUuid)
                     setUpCafe()
+                    observeOrderList(currentOrderList = currentOrderList)
                     closeCafeListBottomSheet()
                 }
             },
