@@ -8,7 +8,6 @@ import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.SaveSelectedCafeUuidUseCase
-import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
 import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
@@ -41,12 +40,12 @@ class OrderListViewModel(
             OrderList.Action.StartObserveOrders -> {
                 setUpCafe()
                 stopObservingOrderList()
-                observeOrderList(currentOrderList = dataState.orderList)
+                observeOrderList()
             }
 
             OrderList.Action.StopObserveOrders -> stopObservingOrderList()
-            OrderList.Action.RetryClick -> onRetryClicked(currentOrderList = dataState.orderList)
-            OrderList.Action.RefreshSwipe -> onRefresh(currentOrderList = dataState.orderList)
+            OrderList.Action.RetryClick -> onRetryClicked()
+            OrderList.Action.RefreshSwipe -> onRefresh()
             is OrderList.Action.OrderClick -> onOrderClicked(
                 orderUuid = action.orderUuid,
                 orderCode = action.orderCode
@@ -55,8 +54,7 @@ class OrderListViewModel(
             OrderList.Action.CafeClick -> onCafeClicked()
             OrderList.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
             is OrderList.Action.SelectedCafe -> onCafeSelected(
-                cafeUuid = action.cafeUuid,
-                currentOrderList = dataState.orderList
+                cafeUuid = action.cafeUuid
             )
         }
     }
@@ -64,12 +62,12 @@ class OrderListViewModel(
     private var orderListJob: Job? = null
     private var orderErrorJob: Job? = null
 
-    private fun onRefresh(currentOrderList: List<Order>) {
+    private fun onRefresh() {
         setState {
             copy(refreshing = true)
         }
         stopObservingOrderList()
-        observeOrderList(currentOrderList = currentOrderList)
+        observeOrderList()
     }
 
     private fun closeCafeListBottomSheet() {
@@ -88,14 +86,14 @@ class OrderListViewModel(
         }
     }
 
-    private fun onCafeSelected(cafeUuid: String, currentOrderList: List<Order>) {
+    private fun onCafeSelected(cafeUuid: String) {
         viewModelScope.launchSafe(
             block = {
                 if (checkIsAnotherCafeSelected(cafeUuid)) {
                     stopObservingOrderList()
                     saveSelectedCafeUuid(cafeUuid)
                     setUpCafe()
-                    observeOrderList(currentOrderList = currentOrderList)
+                    observeOrderList()
                     closeCafeListBottomSheet()
                 }
             },
@@ -118,9 +116,9 @@ class OrderListViewModel(
         }
     }
 
-    private fun onRetryClicked(currentOrderList: List<Order>) {
+    private fun onRetryClicked() {
         stopObservingOrderList()
-        observeOrderList(currentOrderList = currentOrderList)
+        observeOrderList()
     }
 
     private fun setUpCafe() {
@@ -158,7 +156,7 @@ class OrderListViewModel(
         )
     }
 
-    private fun observeOrderList(currentOrderList: List<Order>) {
+    private fun observeOrderList() {
         setState {
             copy(
                 hasConnectionError = false,
@@ -182,6 +180,10 @@ class OrderListViewModel(
                 val selectedCafe = getSelectedCafe() ?: return@launchSafe
 
                 getOrderListFlow(selectedCafe.uuid).collect { orderList ->
+                    val oldOrderList = mutableDataState.value.orderList
+
+                    val hasNewOrder = oldOrderList.size < orderList.size
+
                     setState {
                         copy(
                             orderList = orderList,
@@ -190,9 +192,7 @@ class OrderListViewModel(
                         )
                     }
 
-                    val hasNewOrder = currentOrderList.size < orderList.size
-
-                    if (currentOrderList.isNotEmpty() && hasNewOrder) {
+                    if (oldOrderList.isNotEmpty() && hasNewOrder) {
                         sendEvent {
                             OrderList.Event.ScrollToTop
                         }
