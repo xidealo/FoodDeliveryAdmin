@@ -26,7 +26,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
@@ -38,14 +37,12 @@ import com.bunbeauty.presentation.feature.menulist.cropimage.CropImage
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageViewModel
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.CropImageView.OnCropImageCompleteListener
-import dagger.hilt.android.AndroidEntryPoint
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 const val CROP_IMAGE_REQUEST_KEY = "crop image"
 const val CROPPED_IMAGE_URI_KEY = "cropped image uri"
 const val ORIGINAL_QUALITY = 100
 const val DEFAULT_ANGEL = 90
 
-@AndroidEntryPoint
 class CropImageFragment :
     BaseComposeFragment<CropImage.DataState, CropImageViewState, CropImage.Action, CropImage.Event>() {
 
@@ -61,7 +58,7 @@ class CropImageFragment :
         findNavController().popBackStack()
     }
 
-    override val viewModel: CropImageViewModel by viewModels()
+    override val viewModel: CropImageViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

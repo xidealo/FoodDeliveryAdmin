@@ -4,9 +4,8 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
-import javax.inject.Inject
 
-class GetStatisticUseCase @Inject constructor(
+class GetStatisticUseCase(
     private val statisticRepo: StatisticRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

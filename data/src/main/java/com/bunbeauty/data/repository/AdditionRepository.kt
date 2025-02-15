@@ -9,9 +9,8 @@ import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
-import javax.inject.Inject
 
-class AdditionRepository @Inject constructor(
+class AdditionRepository(
     private val networkConnector: FoodDeliveryApi
 ) : AdditionRepo {
 

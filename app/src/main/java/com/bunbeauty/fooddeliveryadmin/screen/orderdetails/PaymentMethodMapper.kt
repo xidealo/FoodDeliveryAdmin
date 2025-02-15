@@ -3,9 +3,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 import android.content.res.Resources
 import com.bunbeauty.domain.model.order.details.PaymentMethod
 import com.bunbeauty.fooddeliveryadmin.R
-import javax.inject.Inject
 
-class PaymentMethodMapper @Inject constructor(private val resources: Resources) {
+class PaymentMethodMapper(private val resources: Resources) {
 
     fun map(paymentMethod: PaymentMethod): String {
         return when (paymentMethod) {

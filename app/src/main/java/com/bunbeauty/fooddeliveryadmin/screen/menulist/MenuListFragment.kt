@@ -2,8 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,11 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
@@ -49,15 +49,15 @@ import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import com.bunbeauty.presentation.model.MenuListEvent
 import com.bunbeauty.presentation.model.MenuListViewState
 import com.bunbeauty.presentation.model.MenuProductItem
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val VISIBLE_TITLE_KEY = "visible title"
 private const val HIDDEN_TITLE_KEY = "hidden title"
+private const val LIST_ANIMATION_DURATION = 500
 
-@AndroidEntryPoint
 class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
 
-    override val viewModel: MenuListViewModel by viewModels()
+    override val viewModel: MenuListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -126,7 +126,6 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun MenuListSuccessScreen(
         state: MenuListViewState.State.Success
@@ -143,9 +142,11 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             if (state.visibleMenuProductItems.isNotEmpty()) {
                 item(key = VISIBLE_TITLE_KEY) {
                     Text(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(500)
-                        ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         text = stringResource(id = R.string.title_menu_list_position_visible),
                         style = AdminTheme.typography.titleMedium.bold
                     )
@@ -157,9 +158,11 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 ) { visibleMenuProduct ->
                     MenuListProductCard(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(500)
-                        ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         menuProduct = visibleMenuProduct
                     )
                 }
@@ -169,8 +172,9 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp)
-                            .animateItemPlacement(
-                                animationSpec = tween(500)
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
                             ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
                         style = AdminTheme.typography.titleMedium.bold
@@ -183,9 +187,11 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 ) { hiddenMenuProduct ->
                     MenuListProductCard(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(500)
-                        ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         menuProduct = hiddenMenuProduct
                     )
                 }
@@ -202,7 +208,8 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
             modifier = modifier.fillMaxWidth(),
             onClick = {
                 viewModel.goToEditMenuProduct(menuProduct.uuid)
-            }
+            },
+            elevated = false
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
@@ -237,13 +244,7 @@ class MenuListFragment : BaseFragment<LayoutComposeBinding>() {
                     }
                 ) {
                     Icon(
-                        painter = if (menuProduct.visible) {
-                            R.drawable.ic_invisible
-                        } else {
-                            R.drawable.ic_visible
-                        }.let { iconId ->
-                            painterResource(iconId)
-                        },
+                        painter = painterResource(R.drawable.ic_visible),
                         contentDescription = null,
                         tint = if (menuProduct.visible) {
                             AdminTheme.colors.main.primary

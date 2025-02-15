@@ -17,17 +17,17 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
-import com.bunbeauty.presentation.feature.orderlist.state.OrderListUiState
+import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListViewState
 
 @Composable
 fun OrderItem(
     modifier: Modifier = Modifier,
-    orderItem: OrderListUiState.OrderItem,
-    onClick: (OrderListUiState.OrderItem) -> Unit
+    orderItem: OrderListViewState.OrderItem,
+    onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
-        onClick = { onClick(orderItem) }
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier
@@ -69,7 +69,7 @@ fun OrderItem(
 private fun OrderItemPreview() {
     AdminTheme {
         OrderItem(
-            orderItem = OrderListUiState.OrderItem(
+            orderItem = OrderListViewState.OrderItem(
                 uuid = "",
                 status = OrderStatus.NOT_ACCEPTED,
                 statusString = "Обрабатывается",
@@ -87,7 +87,7 @@ private fun OrderItemPreview() {
 private fun OrderItemLageFontPreview() {
     AdminTheme {
         OrderItem(
-            orderItem = OrderListUiState.OrderItem(
+            orderItem = OrderListViewState.OrderItem(
                 uuid = "",
                 status = OrderStatus.NOT_ACCEPTED,
                 statusString = "Обрабатывается",

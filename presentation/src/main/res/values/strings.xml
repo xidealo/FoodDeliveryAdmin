@@ -45,6 +45,9 @@
     <!-- ORDERS -->
     <string name="title_orders_select_cafe">Выберите кафе</string>
 
+    <!-- SETTINGS -->
+    <string name="error_settings_not_save">Не удалось сохранить настройки</string>
+
     <!-- STATISTIC -->
     <string name="title_statistic">Статистика</string>
     <string name="msg_statistic_orders">Заказов:&#160;</string>

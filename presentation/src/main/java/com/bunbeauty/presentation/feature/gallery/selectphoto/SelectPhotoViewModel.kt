@@ -2,13 +2,10 @@ package com.bunbeauty.presentation.feature.gallery.selectphoto
 
 import androidx.lifecycle.SavedStateHandle
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 private const val SELECTED_PHOTO_URL = "selectedPhotoUrl"
 
-@HiltViewModel
-class SelectPhotoViewModel @Inject constructor(
+class SelectPhotoViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<SelectPhoto.DataState, SelectPhoto.Action, SelectPhoto.Event>(
     initState = SelectPhoto.DataState(

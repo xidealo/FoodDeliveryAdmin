@@ -29,6 +29,9 @@ object AdminCardDefaults {
     val cardShape: RoundedCornerShape
         @Composable get() = RoundedCornerShape(AdminTheme.dimensions.cardRadius)
 
+    val noCornerCardShape: RoundedCornerShape
+        @Composable get() = RoundedCornerShape(0.dp)
+
     @Composable
     fun getCardElevation(elevated: Boolean): CardElevation = if (elevated) {
         CardDefaults.cardElevation(

@@ -5,11 +5,8 @@ import com.bunbeauty.domain.feature.gallery.FetchPhotoListUseCase
 import com.bunbeauty.domain.feature.gallery.GetPhotoListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class GalleryViewModel @Inject constructor(
+class GalleryViewModel(
     private val getPhotoListUseCase: GetPhotoListUseCase,
     private val fetchPhotoListUseCase: FetchPhotoListUseCase
 ) : BaseStateViewModel<Gallery.DataState, Gallery.Action, Gallery.Event>(

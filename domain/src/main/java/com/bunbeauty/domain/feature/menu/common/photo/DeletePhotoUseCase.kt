@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.menu.common.photo
 
 import com.bunbeauty.domain.repo.PhotoRepo
-import javax.inject.Inject
 
-class DeletePhotoUseCase @Inject constructor(
+class DeletePhotoUseCase(
     private val photoRepo: PhotoRepo
 ) {
 

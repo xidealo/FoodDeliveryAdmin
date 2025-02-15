@@ -4,14 +4,13 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
 data class SeparatedAdditionGroupList(
     val visibleList: List<AdditionGroup>,
     val hiddenList: List<AdditionGroup>
 )
 
-class GetSeparatedAdditionGroupListUseCase @Inject constructor(
+class GetSeparatedAdditionGroupListUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

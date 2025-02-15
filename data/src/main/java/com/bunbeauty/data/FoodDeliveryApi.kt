@@ -11,7 +11,7 @@ import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
-import com.bunbeauty.data.model.server.company.CompanyServer
+import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -22,8 +22,10 @@ import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
+import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
+import com.bunbeauty.data.model.server.response.UserResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.domain.enums.OrderStatus
 import kotlinx.coroutines.flow.Flow
@@ -35,12 +37,19 @@ interface FoodDeliveryApi {
         userAuthorizationRequest: UserAuthorizationRequest
     ): ApiResult<UserAuthorizationResponse>
 
+    suspend fun getUser(token: String): ApiResult<UserResponse>
+
     suspend fun putNotificationToken(
         updateNotificationTokenRequest: UpdateNotificationTokenRequest,
         token: String
     ): ApiResult<Unit>
 
     suspend fun deleteNotificationToken(token: String): ApiResult<Unit>
+
+    suspend fun putUnlimitedNotification(
+        updateUnlimitedNotificationRequest: UpdateUnlimitedNotificationRequest,
+        token: String
+    ): ApiResult<Unit>
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
@@ -97,12 +106,14 @@ interface FoodDeliveryApi {
         status: OrderStatus
     ): ApiResult<OrderDetailsServer>
 
+    suspend fun getWorkInfo(companyUuid: String): ApiResult<WorkInfoData>
+
     // COMPANY
     suspend fun patchCompany(
         token: String,
         companyPatch: CompanyPatchServer,
         companyUuid: String
-    ): ApiResult<CompanyServer>
+    ): ApiResult<Unit>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(

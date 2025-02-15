@@ -6,5 +6,6 @@ data class UpdateAddition(
     val fullName: String? = null,
     val price: Int? = null,
     val photoLink: String? = null,
-    val isVisible: Boolean? = null
+    val isVisible: Boolean? = null,
+    val tag: String? = null
 )

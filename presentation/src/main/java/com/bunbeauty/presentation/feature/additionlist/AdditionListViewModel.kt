@@ -5,12 +5,8 @@ import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AdditionListViewModel @Inject constructor(
+class AdditionListViewModel(
     private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
     private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase
 ) : BaseStateViewModel<AdditionList.DataState, AdditionList.Action, AdditionList.Event>(
@@ -45,13 +41,18 @@ class AdditionListViewModel @Inject constructor(
     }
 
     private fun updateVisible(uuid: String, isVisible: Boolean) {
-        viewModelScope.launch {
-            updateVisibleAdditionUseCase(
-                additionUuid = uuid,
-                isVisible = !isVisible
-            )
-            loadData()
-        }
+        viewModelScope.launchSafe(
+            block = {
+                updateVisibleAdditionUseCase(
+                    additionUuid = uuid,
+                    isVisible = !isVisible
+                )
+                loadData()
+            },
+            onError = {
+                showErrorState()
+            }
+        )
     }
 
     private fun refreshData() {
@@ -65,11 +66,16 @@ class AdditionListViewModel @Inject constructor(
                 }
 
                 val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = true)
-
                 setState {
                     copy(
-                        visibleAdditions = separatedAdditionList.visibleList,
-                        hiddenAdditions = separatedAdditionList.hiddenList,
+                        visibleAdditions = separatedAdditionList.visibleList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
+                        hiddenAdditions = separatedAdditionList.hiddenList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
                         isLoading = false,
                         isRefreshing = false,
                         hasError = false
@@ -77,11 +83,7 @@ class AdditionListViewModel @Inject constructor(
                 }
             },
             onError = {
-                setState {
-                    copy(
-                        hasError = true
-                    )
-                }
+                showErrorState()
             }
         )
     }
@@ -92,8 +94,14 @@ class AdditionListViewModel @Inject constructor(
                 val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = false)
                 setState {
                     copy(
-                        visibleAdditions = separatedAdditionList.visibleList,
-                        hiddenAdditions = separatedAdditionList.hiddenList,
+                        visibleAdditions = separatedAdditionList.visibleList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
+                        hiddenAdditions = separatedAdditionList.hiddenList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
                         isLoading = false,
                         isRefreshing = false,
                         hasError = false
@@ -101,12 +109,18 @@ class AdditionListViewModel @Inject constructor(
                 }
             },
             onError = {
-                setState {
-                    copy(
-                        hasError = true
-                    )
-                }
+                showErrorState()
             }
         )
+    }
+
+    private fun showErrorState() {
+        setState {
+            copy(
+                hasError = true,
+                isRefreshing = false,
+                isLoading = false
+            )
+        }
     }
 }

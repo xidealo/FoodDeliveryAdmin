@@ -6,7 +6,6 @@ import com.bunbeauty.common.Constants.ORDER_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.toOrderAvailability
-import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.exception.ServerConnectionException
@@ -21,11 +20,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class OrderRepository @Inject constructor(
+class OrderRepository(
     private val networkConnector: FoodDeliveryApi,
     private val serverOrderMapper: IServerOrderMapper
 ) : OrderRepo {
@@ -96,7 +92,10 @@ class OrderRepository @Inject constructor(
             }
 
             is ApiResult.Error -> {
-                Log.e(ORDER_TAG, "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}")
+                Log.e(
+                    ORDER_TAG,
+                    "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}"
+                )
                 null
             }
         }
@@ -107,7 +106,10 @@ class OrderRepository @Inject constructor(
             return cachedOrderAvailability
         }
 
-        return when (val result = networkConnector.getOrderAvailability(companyUuid = companyUuid)) {
+        return when (
+            val result =
+                networkConnector.getOrderAvailability(companyUuid = companyUuid)
+        ) {
             is ApiResult.Success -> {
                 val orderAvailability = result.data.toOrderAvailability()
                 cachedOrderAvailability = orderAvailability
@@ -115,31 +117,10 @@ class OrderRepository @Inject constructor(
             }
 
             is ApiResult.Error -> {
-                Log.e(ORDER_TAG, "getOrderAvailability ${result.apiError.message} ${result.apiError.code}")
-                null
-            }
-        }
-    }
-
-    override suspend fun updateOrderAvailability(
-        token: String,
-        isAvailable: Boolean,
-        companyUuid: String
-    ): Boolean? {
-        return when (
-            val result = networkConnector.patchCompany(
-                token = token,
-                companyPatch = CompanyPatchServer(isOpen = isAvailable),
-                companyUuid = companyUuid
-            )
-        ) {
-            is ApiResult.Success -> {
-                cachedOrderAvailability = OrderAvailability(isAvailable = result.data.isOpen)
-                result.data.isOpen
-            }
-
-            is ApiResult.Error -> {
-                Log.e(ORDER_TAG, "patchCompany ${result.apiError.message} ${result.apiError.code}")
+                Log.e(
+                    ORDER_TAG,
+                    "getOrderAvailability ${result.apiError.message} ${result.apiError.code}"
+                )
                 null
             }
         }

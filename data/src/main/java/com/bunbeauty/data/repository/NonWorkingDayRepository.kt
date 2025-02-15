@@ -9,9 +9,8 @@ import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
 import com.bunbeauty.domain.model.nonworkingday.NonWorkingDay
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
-import javax.inject.Inject
 
-class NonWorkingDayRepository @Inject constructor(
+class NonWorkingDayRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val nonWorkingDayDao: NonWorkingDayDao,
     private val nonWorkingDayMapper: NonWorkingDayMapper

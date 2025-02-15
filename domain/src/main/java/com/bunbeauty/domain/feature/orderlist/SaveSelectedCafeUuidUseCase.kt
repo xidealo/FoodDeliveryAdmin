@@ -1,9 +1,8 @@
 package com.bunbeauty.domain.feature.orderlist
 
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
-class SaveSelectedCafeUuidUseCase @Inject constructor(
+class SaveSelectedCafeUuidUseCase(
     private val getSelectedCafe: GetSelectedCafeUseCase,
     private val dataStoreRepo: DataStoreRepo
 ) {

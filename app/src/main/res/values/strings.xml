@@ -50,6 +50,7 @@
 
     <!-- ORDER LIST -->
     <string name="title_orders">Заказы</string>
+    <string name="title_order_list_select_cafe">Выберите кафе</string>
     <string name="error_order_list_connection">Ошибка. Проверьте подключение\nк интернету и обновите страницу</string>
 
     <!-- ORDER DETAILS -->
@@ -168,18 +169,21 @@
     <string name="action_profile_cafes">Рестораны</string>
     <string name="action_profile_settings">Настройки</string>
     <string name="action_profile_statistic">Статистика</string>
-    <string name="msg_accept_orders">Принимаем заказы</string>
-    <string name="msg_accept_orders_description">Когда выключено, пользователи не могут делать заказы</string>
-    <string name="title_profile_enable_orders">Включить заказы?</string>
-    <string name="msg_profile_enable_orders">Пользователи смогут делать заказы</string>
-    <string name="title_profile_disable_orders">Отключить заказы?</string>
-    <string name="msg_profile_disable_orders">Пользователи не смогут делать заказы</string>
-    <string name="action_profile_enable">Включить</string>
-    <string name="action_profile_disable">Отключить</string>
+    <string name="msg_profile_close_cafe_settings">Теперь закрыть кафе можно\nв разделе \"Настройки\"</string>
+
 
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>
     <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
+    <string name="msg_settings_type_work">Тип работы</string>
+    <string name="msg_settings_status_delivery">Доставка</string>
+    <string name="msg_settings_status_pickup">Самовывоз</string>
+    <string name="msg_settings_status_pickup_delivery">Самовывоз и доставка</string>
+    <string name="action_settings_save">Настройки сохранены</string>
+    <string name="msg_settings_status_accept_orders">Не принимать заказы</string>
+    <string name="title_settings_disable_orders">Отключить заказы?</string>
+    <string name="msg_settings_disable_orders">Пользователи не смогут делать заказы</string>
+    <string name="action_settings_disable">Отключить</string>
 
     <!-- CAFE LIST -->
     <string name="title_cafe_list">Рестораны</string>
@@ -206,6 +210,7 @@
 
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
+    <string name="title_addition_other_additions">Прочие</string>
 
     <!-- EDIT ADDITION  -->
     <string name="title_edit_addition">Редактировать добавку</string>
@@ -214,6 +219,7 @@
     <string name="hint_edit_addition_priority">Приоритет*</string>
     <string name="hint_edit_addition_full_name">Полное название</string>
     <string name="hint_edit_addition_price">Цена</string>
+    <string name="hint_edit_addition_tag">Тэг</string>
     <string name="title_edit_addition_is_visible">Показывать в меню</string>
     <string name="msg_edit_addition_updated">%s обновлён</string>
     <string name="error_edit_addition_empty_name">Название не может быть пустым</string>

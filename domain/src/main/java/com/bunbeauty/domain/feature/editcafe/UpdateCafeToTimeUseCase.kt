@@ -6,9 +6,8 @@ import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import java.time.LocalTime
-import javax.inject.Inject
 
-class UpdateCafeToTimeUseCase @Inject constructor(
+class UpdateCafeToTimeUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val dateTimeUtil: DateTimeUtil,
     private val cafeRepo: CafeRepo

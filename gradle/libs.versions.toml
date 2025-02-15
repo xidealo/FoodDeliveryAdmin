@@ -1,0 +1,191 @@
+[versions]
+gradle = "8.6.1"
+kotlin = "2.0.20"
+googleServices = "4.4.2"
+navigation = "2.7.0"
+ktor = "2.3.2"
+coil = "3.1.0"
+datastorePreferences = "1.0.0"
+koin = "4.0.0"
+kotlinxDatetime = "0.4.0"
+crashlytics = "2.9.2"
+publisher = "3.11.0"
+joda = "2.12.5"
+ktLint = "11.5.1"
+tripletPlay = "3.11.0"
+room = "2.6.0-alpha02"
+lifecycle = "2.6.1"
+lifecycleRuntimeCompose = "2.6.1"
+material = "1.9.0"
+viewBindingDelegate = "1.5.3"
+composeBom = "2024.05.00"
+datetime = "0.9.0"
+firebase = "32.2.0"
+mockk = "1.12.5"
+kotlinCoroutines = "1.8.1"
+imageCpropper = "4.6.0"
+turbine = "1.1.0"
+collectionsImmutable = "0.3.7"
+work = "2.10.0"
+
+[libraries]
+# Navigation
+navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigation" }
+navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+
+# Material
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+# Ktor
+ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+
+# Image Loading Libraries
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+
+# Data Storage
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+
+# Dependency Injection
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-android-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin" }
+
+# Koin
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+
+# Date & Time
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+joda-time = { module = "joda-time:joda-time", version.ref = "joda" }
+
+# Room Database
+room-database-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-database-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-database-kapt = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+# Lifecycle
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-service = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycle" }
+
+# ViewBinding
+viewbindingpropertydelegate = { module = "com.github.kirich1409:viewbindingpropertydelegate", version.ref = "viewBindingDelegate" }
+
+# Jetpack Compose
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-material3WindowSizeClass = { module = "androidx.compose.material3:material3-window-size-class" }
+compose-material = { module = "androidx.compose.material:material" }
+ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
+activity-compose = { module = "androidx.activity:activity-compose" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+material-dialogs-datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
+
+work-runtime-ktx = {module ="androidx.work:work-runtime-ktx", version.ref ="work"}
+
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
+firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
+
+# Testing
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockk" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinCoroutines" }
+
+# Image Cropping
+android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "imageCpropper" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collectionsImmutable" }
+
+#classpath
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+navigation-services = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "crashlytics" }
+play-publisher = { module = "com.github.triplet.gradle:play-publisher", version.ref = "publisher" }
+
+[plugins]
+
+application = { id = "com.android.application", version.ref = "gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "gradle" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+navigation = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+google-service = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+crashlytics-firebase = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+ktLint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktLint" }
+triplet-play = { id = "com.github.triplet.play", version.ref = "tripletPlay" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+[bundles]
+mockk = [
+    "mockk",
+    "mockk-common"
+]
+
+navigation = [
+    "navigation-fragmentKtx",
+    "navigation-runtime-ktx",
+    "navigation-ui-ktx",
+]
+
+di = [
+    "koin-core",
+    "koin-android",
+]
+
+ktor = [
+    "ktor-client-websockets",
+    "ktor-client-content-negotiation",
+    "ktor-client-json",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-serialization",
+    "ktor-client-logging",
+    "ktor-client-auth",
+    "ktor-client-okhttp",
+]
+
+coil = [
+    "coil-compose",
+    "coil-network-okhttp"
+]
+
+room = [
+    "room-database-runtime",
+    "room-database-ktx",
+]
+
+compose = [
+    "compose-foundation",
+    "compose-ui",
+    "compose-material3",
+    "compose-material3WindowSizeClass",
+    "compose-material",
+    "activity-compose",
+    "ui-tooling",
+    "ui-tooling-preview",
+    "ui-viewbinding",
+    "lifecycle-runtime-compose"
+]
+

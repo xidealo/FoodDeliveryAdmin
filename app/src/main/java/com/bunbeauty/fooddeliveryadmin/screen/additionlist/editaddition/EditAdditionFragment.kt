@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -29,13 +28,12 @@ import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class EditAdditionFragment :
     BaseComposeFragment<EditAddition.DataState, EditAdditionViewState, EditAddition.Action, EditAddition.Event>() {
 
-    override val viewModel: EditAdditionViewModel by viewModels()
+    override val viewModel: EditAdditionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,6 +132,16 @@ class EditAdditionFragment :
                                 keyboardType = KeyboardType.Number
                             )
                         )
+
+                        AdminTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            labelText = stringResource(R.string.hint_edit_addition_tag),
+                            value = state.tag,
+                            onValueChange = { tag ->
+                                onAction(EditAddition.Action.EditTagAddition(tag = tag))
+                            },
+                            enabled = !state.isLoading
+                        )
                     }
                 }
                 SwitcherCard(
@@ -163,14 +171,15 @@ class EditAdditionFragment :
                 isError = state.hasEditNameError
             ),
             priorityField = TextFieldUi(
-                value = state.priority.toString(),
+                value = state.priority,
                 isError = state.hasEditPriorityError,
                 errorResId = R.string.error_add_addition_empty_priority
             ),
-            fullName = state.fullName.orEmpty(),
-            price = state.price.orEmpty(),
+            fullName = state.fullName,
+            price = state.price,
             isVisible = state.isVisible,
-            isLoading = state.isLoading
+            isLoading = state.isLoading,
+            tag = state.tag
         )
     }
 
@@ -208,7 +217,8 @@ class EditAdditionFragment :
                     fullName = "",
                     price = "2",
                     isVisible = false,
-                    isLoading = false
+                    isLoading = false,
+                    tag = "tag"
                 ),
                 onAction = {}
             )

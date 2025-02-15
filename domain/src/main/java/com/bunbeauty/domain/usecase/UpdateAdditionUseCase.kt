@@ -6,9 +6,8 @@ import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import javax.inject.Inject
 
-class UpdateAdditionUseCase @Inject constructor(
+class UpdateAdditionUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

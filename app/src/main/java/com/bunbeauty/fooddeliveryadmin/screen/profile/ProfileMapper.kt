@@ -19,22 +19,7 @@ internal fun Profile.DataState.toViewState(): ProfileViewState {
                     ProfileViewState.State.Success(
                         role = stringResource(id = userRoleStringId),
                         userName = user.userName,
-                        acceptOrders = acceptOrders,
-                        acceptOrdersConfirmation = if (acceptOrders) {
-                            ProfileViewState.AcceptOrdersConfirmation(
-                                isShown = showAcceptOrdersConfirmation,
-                                titleResId = R.string.title_profile_enable_orders,
-                                descriptionResId = R.string.msg_profile_enable_orders,
-                                buttonResId = R.string.action_profile_enable
-                            )
-                        } else {
-                            ProfileViewState.AcceptOrdersConfirmation(
-                                isShown = showAcceptOrdersConfirmation,
-                                titleResId = R.string.title_profile_disable_orders,
-                                descriptionResId = R.string.msg_profile_disable_orders,
-                                buttonResId = R.string.action_profile_disable
-                            )
-                        }
+                        logoutLoading = logoutLoading
                     )
                 } ?: ProfileViewState.State.Error
             }

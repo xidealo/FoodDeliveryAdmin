@@ -7,9 +7,8 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetOrderListFlowUseCase @Inject constructor(
+class GetOrderListFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val orderRepo: OrderRepo
 ) {
