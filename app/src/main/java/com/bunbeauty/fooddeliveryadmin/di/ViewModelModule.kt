@@ -5,6 +5,7 @@ import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListVie
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
+import com.bunbeauty.presentation.feature.category.CategoriesViewModel
 import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
@@ -146,6 +147,10 @@ fun viewModelModule() = module {
             getTypeWorkUseCase = get(),
             updateTypeWorkUseCase = get()
         )
+    }
+
+    viewModel {
+       CategoriesViewModel()
     }
 
     viewModel {

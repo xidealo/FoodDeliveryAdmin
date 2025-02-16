@@ -39,6 +39,13 @@ class MenuFragment :
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 NavigationIconCard(
+                    iconId = R.drawable.ic_categories,
+                    labelStringId = R.string.action_menu_categories,
+                    onClick = {
+                        onAction(Menu.Action.OnCategoriesListClick)
+                    }
+                )
+                NavigationIconCard(
                     iconId = R.drawable.ic_products,
                     labelStringId = R.string.action_menu_positions,
                     onClick = {
@@ -81,6 +88,10 @@ class MenuFragment :
             Menu.Event.OnAdditionsListClick -> {
                 findNavController().navigateSafe(MenuFragmentDirections.toAdditionListProductFragment())
             }
+            Menu.Event.OnCategoriesListClick -> {
+                TODO()
+            }
+
         }
     }
 
