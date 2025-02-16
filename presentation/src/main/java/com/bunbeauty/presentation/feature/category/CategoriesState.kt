@@ -1,9 +1,5 @@
 package com.bunbeauty.presentation.feature.category
 
-
-
-import com.bunbeauty.presentation.feature.settings.state.SettingsState.Action
-import com.bunbeauty.presentation.feature.settings.state.SettingsState.Event
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
