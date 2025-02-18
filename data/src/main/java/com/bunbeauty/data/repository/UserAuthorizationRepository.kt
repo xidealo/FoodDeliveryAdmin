@@ -9,6 +9,7 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.work.UpdateNotificationTokenWorker
 import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.model.user.LoginUser
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 
@@ -21,7 +22,7 @@ class UserAuthorizationRepository(
     override suspend fun login(
         username: String,
         password: String
-    ): Triple<String, String, String>? {
+    ): LoginUser? {
         return when (
             val result = networkConnector.login(
                 UserAuthorizationRequest(
@@ -31,10 +32,10 @@ class UserAuthorizationRepository(
             )
         ) {
             is ApiResult.Success -> {
-                Triple(
-                    result.data.token,
-                    result.data.cityUuid,
-                    result.data.companyUuid
+                LoginUser(
+                    token = result.data.token,
+                    cafeUuid = result.data.cafeUuid,
+                    companyUuid = result.data.companyUuid
                 )
             }
 

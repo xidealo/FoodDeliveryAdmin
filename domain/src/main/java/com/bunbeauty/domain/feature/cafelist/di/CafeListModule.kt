@@ -1,14 +1,14 @@
 package com.bunbeauty.domain.feature.cafelist.di
 
-import com.bunbeauty.domain.feature.cafelist.GetCafeWithWorkingHoursListFlowUseCase
+import com.bunbeauty.domain.feature.cafelist.GetCafeWithWorkingHoursFlowUseCase
 import com.bunbeauty.domain.feature.cafelist.GetTimeZoneByCityUuidUseCase
 import org.koin.dsl.module
 
 fun cafeListModule() = module {
     factory {
-        GetCafeWithWorkingHoursListFlowUseCase(
+        GetCafeWithWorkingHoursFlowUseCase(
             dateTimeUtil = get(),
-            getCafeList = get(),
+            getCafe = get(),
             getCurrentTimeFlow = get()
         )
     }

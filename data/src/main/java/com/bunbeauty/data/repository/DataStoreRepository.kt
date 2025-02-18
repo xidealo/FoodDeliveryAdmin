@@ -33,16 +33,6 @@ class DataStoreRepository(private val context: Context) :
         }
     }
 
-    override val managerCity: Flow<String> = context.userDataStore.data.map {
-        it[MANAGER_CITY_UUID_KEY] ?: ""
-    }
-
-    override suspend fun saveManagerCity(managerCity: String) {
-        context.userDataStore.edit {
-            it[MANAGER_CITY_UUID_KEY] = managerCity
-        }
-    }
-
     override val companyUuid: Flow<String> = context.userDataStore.data.map {
         it[COMPANY_UUID_KEY] ?: ""
     }
@@ -112,7 +102,6 @@ class DataStoreRepository(private val context: Context) :
 
         private const val TOKEN = "token"
         private const val USERNAME = "username"
-        private const val MANAGER_CITY_UUID = "manager city uuid"
         private const val COMPANY_UUID = "company uuid"
         private const val CAFE_UUID = "cafe uuid"
         private const val PREVIOUS_CAFE_UUID = "previous cafe uuid"
@@ -121,7 +110,6 @@ class DataStoreRepository(private val context: Context) :
         // KEYS
         private val TOKEN_KEY = stringPreferencesKey(TOKEN)
         private val USERNAME_KEY = stringPreferencesKey(USERNAME)
-        private val MANAGER_CITY_UUID_KEY = stringPreferencesKey(MANAGER_CITY_UUID)
         private val COMPANY_UUID_KEY = stringPreferencesKey(COMPANY_UUID)
         private val CAFE_UUID_KEY = stringPreferencesKey(CAFE_UUID)
         private val PREVIOUS_CAFE_UUID_KEY = stringPreferencesKey(PREVIOUS_CAFE_UUID)

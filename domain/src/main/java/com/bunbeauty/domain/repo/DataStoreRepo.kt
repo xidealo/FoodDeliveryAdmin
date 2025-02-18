@@ -8,9 +8,6 @@ interface DataStoreRepo {
     suspend fun getToken(): String?
     suspend fun saveToken(token: String)
 
-    val managerCity: Flow<String>
-    suspend fun saveManagerCity(managerCity: String)
-
     val companyUuid: Flow<String>
     suspend fun saveCompanyUuid(companyUuid: String)
 

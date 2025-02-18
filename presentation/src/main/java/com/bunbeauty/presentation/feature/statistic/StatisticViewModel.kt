@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.feature.statistic
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.common.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
@@ -11,7 +11,7 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class StatisticViewModel(
-    private val getCafeListUseCase: GetCafeListUseCase,
+    private val getCafeUseCase: GetCafeUseCase,
     private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase
@@ -215,7 +215,7 @@ class StatisticViewModel(
             block = {
                 setState {
                     copy(
-                        cafeList = getCafeListUseCase(),
+                        cafeList = listOf(getCafeUseCase()),
                         isLoading = false
                     )
                 }

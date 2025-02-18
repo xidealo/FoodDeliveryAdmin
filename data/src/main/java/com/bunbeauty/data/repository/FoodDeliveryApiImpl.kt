@@ -28,9 +28,9 @@ import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
-import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
-import com.bunbeauty.data.model.server.response.UserResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
+import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.server.response
+package com.bunbeauty.data.model.server.user
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 data class UserAuthorizationResponse(
 
     @SerialName("token")
-    val token: String = "",
+    val token: String,
 
     @SerialName("cityUuid")
-    val cityUuid: String = "",
+    val cafeUuid: String,
 
     @SerialName("companyUuid")
-    val companyUuid: String = ""
+    val companyUuid: String
 )

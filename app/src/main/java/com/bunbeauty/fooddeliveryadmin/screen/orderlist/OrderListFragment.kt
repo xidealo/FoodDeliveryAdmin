@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,16 +26,13 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.selectable.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeListFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragmentDirections.Companion.toOrdersDetailsFragment
-import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListViewState.State.Success.CafeListUI.CafeItem
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.OrderItem
 import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
@@ -112,20 +107,10 @@ class OrderListFragment :
                 OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
                 OrderList.DataState.State.ERROR -> OrderListViewState.State.Error
                 OrderList.DataState.State.SUCCESS -> OrderListViewState.State.Success(
-                    cafeAddress = state.selectedCafe?.address.orEmpty(),
+                    cafeAddress = state.cafe?.address.orEmpty(),
                     orderList = state.orderList.map(orderMapper::map).toPersistentList(),
                     connectionError = state.hasConnectionError,
                     refreshing = state.refreshing,
-                    cafeListUI = OrderListViewState.State.Success.CafeListUI(
-                        isShown = state.showCafeList,
-                        cafeList = state.cafeList.map { cafe ->
-                            CafeItem(
-                                uuid = cafe.uuid,
-                                name = cafe.address,
-                                isSelected = cafe.isSelected
-                            )
-                        }.toPersistentList()
-                    ),
                     loadingOrderList = state.loadingOrderList
                 )
             }
@@ -203,7 +188,9 @@ class OrderListFragment :
                     NavigationTextCard(
                         labelText = stringResource(R.string.msg_common_cafe),
                         valueText = state.cafeAddress,
-                        onClick = { onAction(OrderList.Action.CafeClick) }
+                        onClick = {
+                            // TODO remove NAVIGATION
+                        }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
@@ -229,41 +216,6 @@ class OrderListFragment :
                             }
                         )
                     }
-                }
-            }
-            CafeListBottomSheet(state = state, onAction = onAction)
-        }
-    }
-
-    @Composable
-    private fun CafeListBottomSheet(
-        state: OrderListViewState.State.Success,
-        onAction: (OrderList.Action) -> Unit
-    ) {
-        AdminModalBottomSheet(
-            title = stringResource(R.string.title_order_list_select_cafe),
-            isShown = state.cafeListUI.isShown,
-            onDismissRequest = {
-                onAction(OrderList.Action.CloseCafeListBottomSheet)
-            }
-        ) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                state.cafeListUI.cafeList.forEach { cafe ->
-                    SelectableItem(
-                        title = cafe.name,
-                        clickable = true,
-                        elevated = false,
-                        isSelected = cafe.isSelected,
-                        onClick = {
-                            onAction(
-                                OrderList.Action.SelectedCafe(
-                                    cafeUuid = cafe.uuid
-                                )
-                            )
-                        }
-                    )
                 }
             }
         }
@@ -292,16 +244,6 @@ class OrderListFragment :
                     ),
                     connectionError = false,
                     refreshing = false,
-                    cafeListUI = OrderListViewState.State.Success.CafeListUI(
-                        isShown = false,
-                        cafeList = persistentListOf(
-                            CafeItem(
-                                uuid = "1",
-                                name = "Кафе сатаны",
-                                isSelected = false
-                            )
-                        )
-                    ),
                     loadingOrderList = false
                 ),
                 lazyListState = LazyListState(),

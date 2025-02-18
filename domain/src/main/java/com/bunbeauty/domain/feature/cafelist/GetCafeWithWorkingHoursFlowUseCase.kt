@@ -1,12 +1,11 @@
 package com.bunbeauty.domain.feature.cafelist
 
-import com.bunbeauty.domain.feature.common.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.time.GetCurrentTimeFlowUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.CafeStatus
 import com.bunbeauty.domain.model.cafe.CafeWithWorkingHours
 import com.bunbeauty.domain.util.datetime.IDateTimeUtil
-import com.bunbeauty.domain.util.flattenFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -14,14 +13,14 @@ private const val SECONDS_IN_MINUTE = 60
 private const val SECONDS_IN_HOUR = 60 * 60
 private const val SECONDS_IN_DAY = 24 * 60 * 60
 
-class GetCafeWithWorkingHoursListFlowUseCase(
-    private val getCafeList: GetCafeListUseCase,
+class GetCafeWithWorkingHoursFlowUseCase(
+    private val getCafe: GetCafeUseCase,
     private val getCurrentTimeFlow: GetCurrentTimeFlowUseCase,
     private val dateTimeUtil: IDateTimeUtil
 ) {
 
-    suspend operator fun invoke(): Flow<List<CafeWithWorkingHours>> {
-        return getCafeList().map { cafe ->
+    suspend operator fun invoke(): Flow<CafeWithWorkingHours> {
+        return getCafe().let { cafe ->
             getCurrentTimeFlow(
                 timeZoneOffset = cafe.offset,
                 interval = SECONDS_IN_MINUTE
@@ -36,7 +35,7 @@ class GetCafeWithWorkingHoursListFlowUseCase(
                     cityUuid = cafe.cityUuid
                 )
             }
-        }.flattenFlow()
+        }
     }
 
     private fun getWorkingHours(cafe: Cafe): String {

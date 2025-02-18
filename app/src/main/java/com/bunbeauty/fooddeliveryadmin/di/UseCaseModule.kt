@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
-import com.bunbeauty.domain.feature.common.GetCafeListUseCase
+import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
@@ -31,7 +31,7 @@ import org.koin.dsl.module
 
 fun useCaseModule() = module {
     factory {
-        GetCafeListUseCase(
+        GetCafeUseCase(
             dataStoreRepo = get(),
             cafeRepository = get()
         )
