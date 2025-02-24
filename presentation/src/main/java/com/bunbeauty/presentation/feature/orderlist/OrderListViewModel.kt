@@ -55,18 +55,6 @@ class OrderListViewModel(
         observeOrderList()
     }
 
-    private fun onCafeSelected(cafeUuid: String) {
-        viewModelScope.launchSafe(
-            block = {
-                stopObservingOrderList()
-                setUpCafe()
-                observeOrderList()
-            },
-            onError = {
-            }
-        )
-    }
-
     private fun onOrderClicked(orderUuid: String, orderCode: String) {
         sendEvent {
             OrderList.Event.OpenOrderDetailsEvent(
