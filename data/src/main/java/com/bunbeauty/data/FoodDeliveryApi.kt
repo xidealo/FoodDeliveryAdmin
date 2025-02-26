@@ -53,6 +53,8 @@ interface FoodDeliveryApi {
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
+    suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer>
+
     suspend fun patchCafe(
         cafeUuid: String,
         patchCafe: PatchCafeServer,

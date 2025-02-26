@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.screen.orderlist
 
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -56,9 +55,13 @@ class OrderListFragment :
 
     private val orderMapper: OrderMapper by inject()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         viewModel.onAction(OrderList.Action.StartObserveOrders)
+    }
+    override fun onStop() {
+        viewModel.onAction(OrderList.Action.StopObserveOrders)
+        super.onStop()
     }
 
     @Composable

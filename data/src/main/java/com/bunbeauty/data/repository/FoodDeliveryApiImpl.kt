@@ -134,6 +134,13 @@ class FoodDeliveryApiImpl(
         )
     }
 
+    override suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer> {
+        return get(
+            path = "v2/cafe",
+            parameters = mapOf("cafeUuid" to cafeUuid)
+        )
+    }
+
     override suspend fun patchCafe(
         cafeUuid: String,
         patchCafe: PatchCafeServer,

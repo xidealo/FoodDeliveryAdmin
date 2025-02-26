@@ -29,7 +29,6 @@ class OrderListViewModel(
     override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
         when (action) {
             OrderList.Action.StartObserveOrders -> {
-                setUpCafe()
                 stopObservingOrderList()
                 observeOrderList()
             }
@@ -74,34 +73,12 @@ class OrderListViewModel(
         observeOrderList()
     }
 
-    private fun setUpCafe() {
-        viewModelScope.launchSafe(
-            block = {
-                setState {
-                    copy(hasConnectionError = false)
-                }
-
-                setState {
-                    copy(
-                        hasConnectionError = false,
-                        orderListState = OrderList.DataState.State.SUCCESS,
-                        cafe = getCafeUseCase()
-                    )
-                }
-            },
-            onError = {
-                setState {
-                    copy(hasConnectionError = true)
-                }
-            }
-        )
-    }
-
     private fun observeOrderList() {
         setState {
             copy(
                 hasConnectionError = false,
-                loadingOrderList = true
+                loadingOrderList = true,
+                orderListState = OrderList.DataState.State.LOADING
             )
         }
 
@@ -113,12 +90,21 @@ class OrderListViewModel(
                     copy(
                         refreshing = false,
                         hasConnectionError = true,
-                        loadingOrderList = false
+                        loadingOrderList = false,
+                        orderListState = OrderList.DataState.State.ERROR
                     )
                 }
             },
             block = {
                 val cafe = getCafeUseCase()
+
+                setState {
+                    copy(
+                        hasConnectionError = false,
+                        orderListState = OrderList.DataState.State.SUCCESS,
+                        cafe = cafe
+                    )
+                }
 
                 getOrderListFlow(cafe.uuid).collect { orderList ->
                     val oldOrderList = mutableDataState.value.orderList
@@ -129,7 +115,8 @@ class OrderListViewModel(
                         copy(
                             orderList = orderList,
                             refreshing = false,
-                            loadingOrderList = false
+                            loadingOrderList = false,
+                            orderListState = OrderList.DataState.State.SUCCESS
                         )
                     }
 
@@ -146,7 +133,10 @@ class OrderListViewModel(
             block = {
                 getOrderErrorFlow(cafeUuid = getCafeUseCase().uuid).collect {
                     setState {
-                        copy(hasConnectionError = true)
+                        copy(
+                            hasConnectionError = true,
+                            orderListState = OrderList.DataState.State.ERROR
+                        )
                     }
                 }
             },

@@ -9,7 +9,7 @@ data class UserAuthorizationResponse(
     @SerialName("token")
     val token: String,
 
-    @SerialName("cityUuid")
+    @SerialName("cafeUuid")
     val cafeUuid: String,
 
     @SerialName("companyUuid")

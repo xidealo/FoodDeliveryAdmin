@@ -78,7 +78,6 @@ fun repositoryModule() = module {
     single<CafeRepo> {
         CafeRepository(
             cafeMapper = get(),
-            cafeDao = get(),
             foodDeliveryApi = get()
         )
     }
