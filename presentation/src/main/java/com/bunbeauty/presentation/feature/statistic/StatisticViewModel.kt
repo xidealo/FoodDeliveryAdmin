@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.feature.statistic
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
-import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
@@ -12,12 +11,10 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class StatisticViewModel(
     private val getCafeUseCase: GetCafeUseCase,
-    private val getCafeByUuidUseCase: GetCafeByUuidUseCase,
     private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
     initState = Statistic.DataState(
-        cafeUuid = null,
         loadingStatistic = false
     )
 ) {
@@ -27,7 +24,6 @@ class StatisticViewModel(
             is Statistic.Action.Init -> {
                 setState {
                     copy(
-                        selectedCafe = null,
                         selectedTimeInterval = TimeIntervalCode.MONTH
                     )
                 }
@@ -36,13 +32,9 @@ class StatisticViewModel(
 
             Statistic.Action.LoadStatisticClick -> {
                 loadStatistic(
-                    cafeUuid = dataState.selectedCafe?.uuid,
+                    cafeUuid = dataState.cafeUuid,
                     period = dataState.selectedTimeInterval
                 )
-            }
-
-            Statistic.Action.SelectCafeClick -> {
-                onCafeClicked()
             }
 
             Statistic.Action.SelectTimeIntervalClick -> {
@@ -59,62 +51,7 @@ class StatisticViewModel(
                 timeInterval = action.timeInterval
             )
 
-            is Statistic.Action.SelectedCafe -> onCafeSelected(cafeUuid = action.cafeUuid)
-            Statistic.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
         }
-    }
-
-    private fun onCafeClicked() {
-        viewModelScope.launchSafe(
-            block = {
-                setState {
-                    copy(
-                        isCafeListShown = true
-                    )
-                }
-            },
-            onError = {
-                setState {
-                    copy(
-                        hasError = true
-                    )
-                }
-            }
-        )
-    }
-
-    private fun onCafeSelected(cafeUuid: String?) {
-        viewModelScope.launchSafe(
-            block = {
-                setState {
-                    copy(isLoading = true)
-                }
-
-                val selectedCafe = cafeUuid?.let { cafeUuid ->
-                    getCafeByUuidUseCase(cafeUuid)
-                }?.let { cafe ->
-                    Statistic.SelectedCafe(
-                        uuid = cafe.uuid,
-                        address = cafe.address
-                    )
-                }
-
-                setState {
-                    copy(
-                        selectedCafe = selectedCafe,
-                        isLoading = false,
-                        isCafeListShown = false
-                    )
-                }
-            },
-            onError = {
-                setState {
-                    copy(
-                        hasError = true
-                    )
-                }
-            }
-        )
     }
 
     private fun onGoBackClicked() {
@@ -135,14 +72,6 @@ class StatisticViewModel(
         setState {
             copy(
                 isTimeIntervalListShown = false
-            )
-        }
-    }
-
-    private fun closeCafeListBottomSheet() {
-        setState {
-            copy(
-                isCafeListShown = false
             )
         }
     }
@@ -213,9 +142,11 @@ class StatisticViewModel(
     private fun updateData() {
         viewModelScope.launchSafe(
             block = {
+                val cafe = getCafeUseCase()
                 setState {
                     copy(
-                        cafeList = listOf(getCafeUseCase()),
+                        cafeAddress = cafe.address,
+                        cafeUuid = cafe.uuid,
                         isLoading = false
                     )
                 }

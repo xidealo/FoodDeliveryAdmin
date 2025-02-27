@@ -25,7 +25,7 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -188,12 +188,9 @@ class OrderListFragment :
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item(key = CAFE_ADDRESS_KEY) {
-                    NavigationTextCard(
-                        labelText = stringResource(R.string.msg_common_cafe),
-                        valueText = state.cafeAddress,
-                        onClick = {
-                            // TODO remove NAVIGATION
-                        }
+                    TextWithHintCard(
+                        hint = stringResource(R.string.msg_common_cafe),
+                        label = state.cafeAddress
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }

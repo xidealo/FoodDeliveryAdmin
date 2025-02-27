@@ -17,7 +17,6 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
-import com.bunbeauty.domain.feature.statistic.GetCafeByUuidUseCase
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
@@ -138,12 +137,6 @@ fun useCaseModule() = module {
         UpdateOrderStatusUseCase(
             dataStoreRepo = get(),
             orderRepo = get()
-        )
-    }
-
-    factory {
-        GetCafeByUuidUseCase(
-            cafeRepo = get()
         )
     }
 

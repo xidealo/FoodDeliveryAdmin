@@ -18,8 +18,6 @@ internal fun Statistic.DataState.toViewState(): StatisticViewState {
                     statisticList = statisticList.map { statistic ->
                         statistic.toStatisticItemModelView()
                     }.toPersistentList(),
-                    selectedCafe = selectedCafe?.address
-                        ?: stringResource(R.string.msg_statistic_all_cafes),
                     period = getTimeIntervalName(
                         timeInterval = selectedTimeInterval
                     ).timeInterval,
@@ -32,25 +30,7 @@ internal fun Statistic.DataState.toViewState(): StatisticViewState {
                             )
                         }.toPersistentList()
                     ),
-                    cafeListUI = StatisticViewState.CafeListUI(
-                        isShown = isCafeListShown,
-                        cafeList = buildList {
-                            add(
-                                StatisticViewState.CafeListUI.CafeItem(
-                                    uuid = null,
-                                    name = stringResource(R.string.msg_statistic_all_cafes)
-                                )
-                            )
-                            cafeList.map { cafe ->
-                                StatisticViewState.CafeListUI.CafeItem(
-                                    uuid = cafe.uuid,
-                                    name = cafe.address
-                                )
-                            }.let { cafeAddressList ->
-                                addAll(cafeAddressList)
-                            }
-                        }.toPersistentList()
-                    )
+                    cafeAddress = cafeAddress.orEmpty()
                 )
             }
         }

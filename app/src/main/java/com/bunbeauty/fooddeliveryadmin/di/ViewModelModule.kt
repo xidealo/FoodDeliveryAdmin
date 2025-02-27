@@ -150,7 +150,6 @@ fun viewModelModule() = module {
             dateTimeUtil = get(),
             getStatisticUseCase = get(),
             getCafeUseCase = get(),
-            getCafeByUuidUseCase = get()
         )
     }
 
