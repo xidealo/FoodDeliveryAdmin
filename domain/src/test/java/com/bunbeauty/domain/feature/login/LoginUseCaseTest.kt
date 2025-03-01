@@ -7,6 +7,7 @@ import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
@@ -66,9 +67,7 @@ class LoginUseCaseTest {
 
         // Act & Assert
         assertThrows(LoginException::class.java) {
-            runTest {
-                loginUseCase(username, password)
-            }
+            runBlocking { loginUseCase(username, password) }
         }
     }
 }

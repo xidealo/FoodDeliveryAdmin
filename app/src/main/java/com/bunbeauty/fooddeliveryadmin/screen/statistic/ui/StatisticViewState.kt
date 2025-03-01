@@ -43,5 +43,4 @@ data class StatisticViewState(
             val timeIntervalType: TimeIntervalCode
         )
     }
-
 }

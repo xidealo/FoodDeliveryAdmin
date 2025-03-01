@@ -50,7 +50,6 @@ class StatisticViewModel(
             is Statistic.Action.SelectedTimeInterval -> onTimeIntervalSelected(
                 timeInterval = action.timeInterval
             )
-
         }
     }
 
