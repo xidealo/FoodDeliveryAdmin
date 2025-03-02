@@ -77,9 +77,6 @@ fun dataSourceModule() = module {
     // DAO
 
     single {
-        get<LocalDatabase>().cafeDao()
-    }
-    single {
         get<LocalDatabase>().cityDao()
     }
     single {

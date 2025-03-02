@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.server.response
+package com.bunbeauty.data.model.server.user
 
 import com.bunbeauty.data.model.server.city.CityServer
 import kotlinx.serialization.SerialName

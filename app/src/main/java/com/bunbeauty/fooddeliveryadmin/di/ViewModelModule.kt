@@ -122,12 +122,9 @@ fun viewModelModule() = module {
 
     viewModel {
         OrderListViewModel(
-            checkIsAnotherCafeSelected = get(),
-            getSelectedCafe = get(),
-            getCafeList = get(),
+            getCafeUseCase = get(),
             getOrderListFlow = get(),
-            getOrderErrorFlow = get(),
-            saveSelectedCafeUuid = get()
+            getOrderErrorFlow = get()
         )
     }
 
@@ -152,8 +149,7 @@ fun viewModelModule() = module {
         StatisticViewModel(
             dateTimeUtil = get(),
             getStatisticUseCase = get(),
-            getCafeListUseCase = get(),
-            getCafeByUuidUseCase = get()
+            getCafeUseCase = get()
         )
     }
 
