@@ -204,17 +204,17 @@ class OrderDetailsFragment :
                 stateSuccess = state,
                 onAction = onAction
             )
-            CafeListBottomSheet(state = state, onAction = onAction)
+            StatusListBottomSheet(state = state, onAction = onAction)
         }
     }
 
     @Composable
-    private fun CafeListBottomSheet(
+    private fun StatusListBottomSheet(
         state: OrderDetailsViewState.State.Success,
         onAction: (OrderDetailsState.Action) -> Unit
     ) {
         AdminModalBottomSheet(
-            title = stringResource(R.string.title_order_list_select_cafe),
+            title = stringResource(R.string.title_order_status),
             isShown = state.statusListUI.isShown,
             onDismissRequest = {
                 onAction(OrderDetailsState.Action.OnCloseStatusClicked)
