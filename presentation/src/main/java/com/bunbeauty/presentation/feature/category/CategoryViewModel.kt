@@ -24,7 +24,7 @@ class CategoryViewModel(
 
             CategoryState.Action.OnBackClicked -> onBackClicked()
 
-            CategoryState.Action.OnEditClicked -> onEditClicked()
+            CategoryState.Action.OnPriorityEditClicked -> onEditPriorityClicked()
 
             is CategoryState.Action.OnCategoryClick -> sendEvent {
                 CategoryState.Event.OnCategoryClick(categoryUuid = action.categoryUuid)
@@ -85,7 +85,7 @@ class CategoryViewModel(
         }
     }
 
-    private fun onEditClicked() {
+    private fun onEditPriorityClicked() {
         sendEvent {
             CategoryState.Event.GoEditCategoryEvent
         }

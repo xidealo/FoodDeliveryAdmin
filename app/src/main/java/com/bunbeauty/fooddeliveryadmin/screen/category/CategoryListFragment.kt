@@ -75,7 +75,7 @@ class CategoryListFragment :
                     iconId = R.drawable.ic_edit,
                     color = AdminTheme.colors.main.primary,
                     onClick = {
-                        onAction(CategoryState.Action.OnEditClicked)
+                        onAction(CategoryState.Action.OnPriorityEditClicked)
                     }
                 )
             ),

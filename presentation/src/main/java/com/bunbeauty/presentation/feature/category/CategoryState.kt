@@ -22,7 +22,7 @@ interface CategoryState {
     sealed interface Action : BaseAction {
         data object OnRefreshData : Action
         data object OnBackClicked : Action
-        data object OnEditClicked : Action
+        data object OnPriorityEditClicked : Action
         data object OnCreateClicked : Action
         data object Init : Action
         data class OnCategoryClick(val categoryUuid: String) : Action
