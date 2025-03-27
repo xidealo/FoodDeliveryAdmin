@@ -2,7 +2,10 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.domain.feature.common.GetCafeListUseCase
 import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
+import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
+import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.GetCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
@@ -51,6 +54,27 @@ fun useCaseModule() = module {
     factory {
         GetSelectableCategoryListUseCase(
             getCategoryListUseCase = get()
+        )
+    }
+
+    factory {
+        CreateCategoryUseCase(
+            dataStoreRepo = get(),
+            categoryRepo = get()
+        )
+    }
+
+    factory {
+        GetCategoryUseCase(
+            dataStoreRepo = get(),
+            categoryRepo = get()
+        )
+    }
+
+    factory {
+        EditCategoryUseCase(
+            dataStoreRepo = get(),
+            categoryRepo = get()
         )
     }
 
@@ -179,7 +203,8 @@ fun useCaseModule() = module {
             cityRepo = get(),
             menuProductRepo = get(),
             orderRepo = get(),
-            photoRepo = get()
+            photoRepo = get(),
+            categoryRepo = get()
         )
     }
 

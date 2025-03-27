@@ -230,10 +230,26 @@
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
 
+    <!--CATEGORIES LIST-->
+    <string name="title_categories_list">Категории</string>
+
     <!--CATEGORY LIST-->
     <string name="title_category_list">Категории</string>
     <string name="action_category_list_save">Сохранить</string>
     <string name="msg_category_list_selected">Выбранные категории обновлены</string>
+
+    <!--CREATE CATEGORY-->
+    <string name="title_create_category">Создание категории</string>
+    <string name="action_create_category_save">Сохранить</string>
+    <string name="error_common_create_category_empty_name">Название не может быть пустым</string>
+    <string name="error_common_create_category_duplicate_name">Категория с таким именем уже существует</string>
+    <string name="msg_create_category_updated">%s обновлён</string>
+
+    <!--EDIT CATEGORY-->
+    <string name="title_edit_category">Редактирование категории</string>
+    <string name="action_edit_category_save">Сохранить</string>
+    <string name="error_common_edit_category_empty_name">Название не может быть пустым</string>
+    <string name="msg_edit_category_updated">%s обновлён</string>
 
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>

@@ -11,10 +11,11 @@ class GetCategoryListUseCase(
     private val categoryRepo: CategoryRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(): List<Category> {
+    suspend operator fun invoke(refreshing: Boolean): List<Category> {
         return categoryRepo.getCategoryList(
             token = dataStoreRepo.getToken() ?: throw NoTokenException(),
-            companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
+            companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
+            refreshing = refreshing
         ).filter { category -> !isHits(category = category) }
     }
 

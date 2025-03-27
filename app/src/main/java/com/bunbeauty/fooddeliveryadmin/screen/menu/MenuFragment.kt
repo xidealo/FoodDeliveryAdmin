@@ -89,9 +89,8 @@ class MenuFragment :
                 findNavController().navigateSafe(MenuFragmentDirections.toAdditionListProductFragment())
             }
             Menu.Event.OnCategoriesListClick -> {
-                TODO()
+                findNavController().navigateSafe(MenuFragmentDirections.toCategoryFragment())
             }
-
         }
     }
 

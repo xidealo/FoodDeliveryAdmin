@@ -46,8 +46,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.mapper.toAddMenuProductViewState
@@ -348,7 +348,7 @@ class CreateMenuProductFragment :
 
             is CreateMenuProduct.Event.NavigateToCategoryList -> {
                 findNavController().navigate(
-                    directions = CreateMenuProductFragmentDirections.toCategoryListFragment(
+                    directions = CreateMenuProductFragmentDirections.toSelectCategoryListFragment(
                         selectedCategoryUuidList = event.selectedCategoryList.toTypedArray()
                     )
                 )
