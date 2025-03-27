@@ -87,7 +87,7 @@ class CategoryViewModel(
 
     private fun onEditPriorityClicked() {
         sendEvent {
-            CategoryState.Event.GoEditCategoryEvent
+            CategoryState.Event.OnEditPriorityCategoryEvent
         }
     }
 

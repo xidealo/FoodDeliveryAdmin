@@ -30,7 +30,7 @@ interface CategoryState {
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
-        data object GoEditCategoryEvent : Event
+        data object OnEditPriorityCategoryEvent : Event
         data object CreateCategoryEvent : Event
         data class OnCategoryClick(val categoryUuid: String) : Event
     }

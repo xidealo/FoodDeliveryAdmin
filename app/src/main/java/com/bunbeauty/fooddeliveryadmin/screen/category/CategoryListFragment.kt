@@ -151,7 +151,7 @@ class CategoryListFragment :
                 findNavController().navigateUp()
             }
 
-            CategoryState.Event.GoEditCategoryEvent -> {
+            CategoryState.Event.OnEditPriorityCategoryEvent -> {
                 TODO()
             }
 
