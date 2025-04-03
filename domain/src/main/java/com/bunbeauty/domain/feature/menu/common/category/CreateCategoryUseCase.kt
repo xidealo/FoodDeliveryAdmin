@@ -32,6 +32,6 @@ class CreateCategoryUseCase(
         )
     }
     private fun getHasSameName(categoryList: List<Category>, name: String): Boolean {
-        return categoryList.any {categoryName -> categoryName.name == name }
+        return categoryList.any { categoryName -> categoryName.name == name }
     }
 }

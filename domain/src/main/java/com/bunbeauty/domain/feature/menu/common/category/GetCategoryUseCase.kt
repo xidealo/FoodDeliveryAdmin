@@ -2,7 +2,6 @@ package com.bunbeauty.domain.feature.menu.common.category
 
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.exception.updateaddition.NotFoundAdditionException
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -19,6 +18,6 @@ class GetCategoryUseCase(
             companyUuid = companyUuid,
             categoryUuid = categoryUuid,
             token = token
-        ) ?: throw  NotFoundAdditionException()
+        ) ?: throw NotFoundCategoryException()
     }
 }

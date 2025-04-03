@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -126,7 +125,7 @@ class CategoryListFragment :
             items(
                 items = state.categoryList,
                 key = { category -> category.uuid }
-            ) {  category ->
+            ) { category ->
                 CategoryItemView(
                     category = category,
                     onClick = {
@@ -141,7 +140,6 @@ class CategoryListFragment :
             }
         }
     }
-    
 
     override fun handleEvent(event: CategoryListState.Event) {
         when (event) {

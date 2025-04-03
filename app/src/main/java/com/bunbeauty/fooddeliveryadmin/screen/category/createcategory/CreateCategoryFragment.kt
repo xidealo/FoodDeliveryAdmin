@@ -58,7 +58,6 @@ class CreateCategoryFragment() :
         )
     }
 
-
     override fun handleEvent(event: CreateCategoryState.Event) {
         when (event) {
             CreateCategoryState.Event.GoBackEvent -> findNavController().navigateUp()

@@ -15,7 +15,7 @@ class CategoryMapper {
         )
     }
 
-    fun categoryServer (categoryServer: CategoryServer): Category {
+    fun categoryServer(categoryServer: CategoryServer): Category {
         return Category(
             uuid = categoryServer.uuid,
             name = categoryServer.name,
@@ -30,6 +30,3 @@ class CategoryMapper {
         )
     }
 }
-
-
-

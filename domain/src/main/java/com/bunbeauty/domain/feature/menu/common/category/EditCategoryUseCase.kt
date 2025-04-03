@@ -1,11 +1,9 @@
 package com.bunbeauty.domain.feature.menu.common.category
 
-import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import kotlinx.coroutines.flow.firstOrNull
 
 class EditCategoryUseCase(
     private val categoryRepo: CategoryRepo,
@@ -16,7 +14,6 @@ class EditCategoryUseCase(
         updateCategory: UpdateCategory
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-
 
         when {
             updateCategory.name.isBlank() -> throw CategoryNameException()

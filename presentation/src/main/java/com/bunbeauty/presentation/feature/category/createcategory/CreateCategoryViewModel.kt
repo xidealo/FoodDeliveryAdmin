@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.CategoryNameException
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryNameException
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
-import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel

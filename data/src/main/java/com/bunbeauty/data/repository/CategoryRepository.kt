@@ -97,8 +97,6 @@ class CategoryRepository(
         }
     }
 
-
-
     private fun updateLocalCache(
         uuid: String,
         categoryServer: CategoryServer
@@ -111,8 +109,6 @@ class CategoryRepository(
             }
         }
     }
-
-
 
     override fun clearCache() {
         categoryCache = null

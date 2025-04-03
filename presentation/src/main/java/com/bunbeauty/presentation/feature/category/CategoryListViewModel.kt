@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import kotlin.uuid.Uuid
 
 class CategoryListViewModel(
     private val getCategoryListUseCase: GetCategoryListUseCase
@@ -79,13 +78,15 @@ class CategoryListViewModel(
                         isRefreshing = false
                     )
                 }
-            }, onError = {
+            },
+            onError = {
                 setState {
                     copy(
                         state = CategoryListState.DataState.State.ERROR
                     )
                 }
-            })
+            }
+        )
     }
 
     private fun onBackClicked() {
