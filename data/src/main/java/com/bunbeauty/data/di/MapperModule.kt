@@ -1,6 +1,6 @@
 package com.bunbeauty.data.di
 
-import com.bunbeauty.data.mapper.CategoryMapper
+import com.bunbeauty.data.mapper.category.CategoryMapper
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.OderProductMapper
 import com.bunbeauty.data.mapper.cafe.CafeMapper

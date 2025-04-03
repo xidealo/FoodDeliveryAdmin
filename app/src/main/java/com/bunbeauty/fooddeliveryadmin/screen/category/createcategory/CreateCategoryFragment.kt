@@ -50,20 +50,14 @@ class CreateCategoryFragment() :
                     isLoading = state.isLoading,
                     nameField = TextFieldUi(
                         value = state.nameField.value,
-                        isError = state.hasCreateNameError || state.hasDuplicateNameError,
-                        errorResId = when {
-                            state.hasDuplicateNameError -> {
-                                R.string.error_common_create_category_duplicate_name
-                            }
-                            else -> {
-                                R.string.error_common_create_category_empty_name
-                            }
-                        }
+                        errorResId = R.string.error_common_create_category_duplicate_name,
+                        isError = state.hasCreateNameError
                     )
                 )
             }
         )
     }
+
 
     override fun handleEvent(event: CreateCategoryState.Event) {
         when (event) {
@@ -94,7 +88,9 @@ class CreateCategoryFragment() :
                 CreateCategoryViewState.State.Error -> ErrorScreen(
                     mainTextId = R.string.title_common_can_not_load_data,
                     extraTextId = R.string.msg_common_check_connection_and_retry,
-                    onClick = {}
+                    onClick = {
+                        onAction(CreateCategoryState.Action.OnErrorStateClicked)
+                    }
                 )
 
                 CreateCategoryViewState.State.Loading -> LoadingScreen()

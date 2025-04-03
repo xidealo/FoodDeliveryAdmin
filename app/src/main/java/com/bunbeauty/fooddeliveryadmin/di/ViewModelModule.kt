@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListVie
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
-import com.bunbeauty.presentation.feature.category.CategoryViewModel
+import com.bunbeauty.presentation.feature.category.CategoryListViewModel
 import com.bunbeauty.presentation.feature.category.createcategory.CreateCategoryViewModel
 import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryViewModel
 import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
@@ -166,7 +166,7 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        CategoryViewModel(
+        CategoryListViewModel(
             getCategoryListUseCase = get()
         )
     }

@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.feature.menu.common.model.Category
-import com.bunbeauty.domain.feature.menu.common.model.CategoryPost
+import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 
 interface CategoryRepo {
@@ -13,7 +13,7 @@ interface CategoryRepo {
         refreshing: Boolean = false
     ): List<Category>
 
-    suspend fun postCategory(token: String, categoryPost: CategoryPost): Category
+    suspend fun postCategory(token: String, createCategory: CreateCategory): Category
 
     suspend fun getCategory(companyUuid: String, categoryUuid: String, token: String): Category?
 
@@ -21,7 +21,6 @@ interface CategoryRepo {
         categoryUuid: String,
         updateCategory: UpdateCategory,
         token: String,
-        companyUuid: String
     )
 
     /*DELETE*/

@@ -3,7 +3,6 @@ package com.bunbeauty.domain.feature.menu.common.category
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.menu.common.model.Category
-import com.bunbeauty.domain.feature.menu.common.model.CategoryPost
 import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -98,7 +97,7 @@ class CreateCategoryUseCaseTest {
         coVerify {
             categoryRepo.postCategory(
                 token = token,
-                categoryPost = CategoryPost(
+                createCategory = CreateCategory(
                     name = newCategory.name,
                     priority = categories.size + 1
                 )

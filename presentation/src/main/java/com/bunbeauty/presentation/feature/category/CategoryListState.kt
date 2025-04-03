@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 
-interface CategoryState {
+interface CategoryListState {
     data class DataState(
         val state: State,
         val isLoading: Boolean,

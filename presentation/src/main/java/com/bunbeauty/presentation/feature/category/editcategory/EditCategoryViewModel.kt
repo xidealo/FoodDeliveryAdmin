@@ -27,13 +27,17 @@ class EditCategoryViewModel(
     ) {
     override fun reduce(action: EditCategoryState.Action, dataState: EditCategoryState.DataState) {
         when (action) {
-            is EditCategoryState.Action.EditNameCategory -> setState {
-                copy(name = action.nameEditCategory)
-            }
+            is EditCategoryState.Action.EditNameCategory -> editNameCategory(action.nameEditCategory)
 
             EditCategoryState.Action.Init -> loadData()
             EditCategoryState.Action.OnBackClicked -> onBackClicked()
             EditCategoryState.Action.OnSaveEditCategoryClick -> saveEditCategory()
+        }
+    }
+
+    private fun editNameCategory(nameEditCategory: String) {
+        setState {
+            copy(name = nameEditCategory)
         }
     }
 
@@ -46,10 +50,10 @@ class EditCategoryViewModel(
     private fun loadData() {
         viewModelScope.launchSafe(
             block = {
+                val categoryUuidNavigation =
+                    savedStateHandle.get<String>(CATEGORY_UUID).orEmpty()
+                val category = getCategoryUseCase(categoryUuid = categoryUuidNavigation)
                 setState {
-                    val categoryUuidNavigation =
-                        savedStateHandle.get<String>(CATEGORY_UUID).orEmpty()
-                    val category = getCategoryUseCase(categoryUuid = categoryUuidNavigation)
                     copy(
                         uuid = category.uuid,
                         name = category.name
@@ -70,7 +74,7 @@ class EditCategoryViewModel(
                     updateCategory = state.value.run {
                         UpdateCategory(
                             name = name.trim(),
-                            priority = 0
+                            priority = null
                         )
                     }
                 )

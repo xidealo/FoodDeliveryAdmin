@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Text
@@ -27,26 +28,26 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.presentation.feature.category.CategoryState
-import com.bunbeauty.presentation.feature.category.CategoryViewModel
+import com.bunbeauty.presentation.feature.category.CategoryListState
+import com.bunbeauty.presentation.feature.category.CategoryListViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoryListFragment :
-    BaseComposeFragment<CategoryState.DataState, CategoryViewState, CategoryState.Action, CategoryState.Event>() {
+    BaseComposeFragment<CategoryListState.DataState, CategoryListViewState, CategoryListState.Action, CategoryListState.Event>() {
 
-    override val viewModel: CategoryViewModel by viewModel()
+    override val viewModel: CategoryListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.onAction(CategoryState.Action.Init)
+        viewModel.onAction(CategoryListState.Action.Init)
     }
 
     @Composable
     override fun Screen(
-        state: CategoryViewState,
-        onAction: (CategoryState.Action) -> Unit
+        state: CategoryListViewState,
+        onAction: (CategoryListState.Action) -> Unit
     ) {
         CategoriesScreen(
             state = state,
@@ -56,8 +57,8 @@ class CategoryListFragment :
 
     @Composable
     private fun CategoriesScreen(
-        state: CategoryViewState,
-        onAction: (CategoryState.Action) -> Unit
+        state: CategoryListViewState,
+        onAction: (CategoryListState.Action) -> Unit
     ) {
         AdminScaffold(
             backgroundColor = AdminTheme.colors.main.surface,
@@ -65,27 +66,27 @@ class CategoryListFragment :
             pullRefreshEnabled = true,
             refreshing = state.isRefreshing,
             onRefresh = {
-                onAction(CategoryState.Action.OnRefreshData)
+                onAction(CategoryListState.Action.OnRefreshData)
             },
             backActionClick = {
-                onAction(CategoryState.Action.OnBackClicked)
+                onAction(CategoryListState.Action.OnBackClicked)
             },
             topActions = listOf(
                 AdminTopBarAction(
                     iconId = R.drawable.ic_edit,
                     color = AdminTheme.colors.main.primary,
                     onClick = {
-                        onAction(CategoryState.Action.OnPriorityEditClicked)
+                        onAction(CategoryListState.Action.OnPriorityEditClicked)
                     }
                 )
             ),
             actionButton = {
-                if (state.state is CategoryViewState.State.Success) {
+                if (state.state is CategoryListViewState.State.Success) {
                     FloatingButton(
                         iconId = R.drawable.ic_plus,
                         textStringId = R.string.action_menu_list_create,
                         onClick = {
-                            onAction(CategoryState.Action.OnCreateClicked)
+                            onAction(CategoryListState.Action.OnCreateClicked)
                         }
                     )
                 }
@@ -93,21 +94,21 @@ class CategoryListFragment :
             actionButtonPosition = FabPosition.End
         ) {
             when (state.state) {
-                CategoryViewState.State.Loading -> {
+                CategoryListViewState.State.Loading -> {
                     LoadingScreen()
                 }
 
-                CategoryViewState.State.Error -> {
+                CategoryListViewState.State.Error -> {
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            onAction(CategoryState.Action.Init)
+                            onAction(CategoryListState.Action.Init)
                         }
                     )
                 }
 
-                is CategoryViewState.State.Success -> {
+                is CategoryListViewState.State.Success -> {
                     CategoriesListSuccessScreen(state = state.state, onAction = onAction)
                 }
             }
@@ -116,25 +117,21 @@ class CategoryListFragment :
 
     @Composable
     private fun CategoriesListSuccessScreen(
-        state: CategoryViewState.State.Success,
-        onAction: (CategoryState.Action) -> Unit
+        state: CategoryListViewState.State.Success,
+        onAction: (CategoryListState.Action) -> Unit
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            itemsIndexed(
+            items(
                 items = state.categoryList,
-                key = { _, category -> category.uuid }
-            ) { index, category ->
+                key = { category -> category.uuid }
+            ) {  category ->
                 CategoryItemView(
-                    category = CategoryViewState.CategoriesViewItem(
-                        uuid = category.uuid,
-                        name = category.name,
-                        priority = category.priority
-                    ),
+                    category = category,
                     onClick = {
                         onAction(
-                            CategoryState.Action.OnCategoryClick(
+                            CategoryListState.Action.OnCategoryClick(
                                 categoryUuid = category.uuid
                             )
                         )
@@ -144,22 +141,23 @@ class CategoryListFragment :
             }
         }
     }
+    
 
-    override fun handleEvent(event: CategoryState.Event) {
+    override fun handleEvent(event: CategoryListState.Event) {
         when (event) {
-            CategoryState.Event.GoBackEvent -> {
+            CategoryListState.Event.GoBackEvent -> {
                 findNavController().navigateUp()
             }
 
-            CategoryState.Event.OnEditPriorityCategoryEvent -> {
+            CategoryListState.Event.OnEditPriorityCategoryEvent -> {
                 TODO()
             }
 
-            CategoryState.Event.CreateCategoryEvent -> {
+            CategoryListState.Event.CreateCategoryEvent -> {
                 findNavController().navigateSafe(CategoryListFragmentDirections.toCreateCategoryFragment())
             }
 
-            is CategoryState.Event.OnCategoryClick -> {
+            is CategoryListState.Event.OnCategoryClick -> {
                 findNavController().navigateSafe(
                     CategoryListFragmentDirections.toEditCategoryListFragment(
                         event.categoryUuid
@@ -170,14 +168,14 @@ class CategoryListFragment :
     }
 
     @Composable
-    override fun mapState(state: CategoryState.DataState): CategoryViewState {
-        return CategoryViewState(
+    override fun mapState(state: CategoryListState.DataState): CategoryListViewState {
+        return CategoryListViewState(
             state = when (state.state) {
-                CategoryState.DataState.State.LOADING -> CategoryViewState.State.Loading
-                CategoryState.DataState.State.ERROR -> CategoryViewState.State.Error
-                CategoryState.DataState.State.SUCCESS -> CategoryViewState.State.Success(
+                CategoryListState.DataState.State.LOADING -> CategoryListViewState.State.Loading
+                CategoryListState.DataState.State.ERROR -> CategoryListViewState.State.Error
+                CategoryListState.DataState.State.SUCCESS -> CategoryListViewState.State.Success(
                     categoryList = state.categoryList.map { category ->
-                        CategoryViewState.CategoriesViewItem(
+                        CategoryListViewState.CategoriesViewItem(
                             uuid = category.uuid,
                             name = category.name,
                             priority = category.priority
@@ -193,7 +191,7 @@ class CategoryListFragment :
     @Composable
     private fun CategoryItemView(
         modifier: Modifier = Modifier,
-        category: CategoryViewState.CategoriesViewItem,
+        category: CategoryListViewState.CategoriesViewItem,
         onClick: () -> Unit,
         isClickable: Boolean
     ) {
@@ -227,16 +225,16 @@ class CategoryListFragment :
     private fun SettingsScreenPreview() {
         AdminTheme {
             CategoriesScreen(
-                state = CategoryViewState(
-                    state = CategoryViewState.State.Success(
+                state = CategoryListViewState(
+                    state = CategoryListViewState.State.Success(
                         categoryList = persistentListOf(
-                            CategoryViewState.CategoriesViewItem(
+                            CategoryListViewState.CategoriesViewItem(
                                 uuid = "",
                                 name = "Лаваш",
                                 priority = 0
                             ),
 
-                            CategoryViewState.CategoriesViewItem(
+                            CategoryListViewState.CategoriesViewItem(
                                 uuid = "BBB",
                                 name = "Соус",
                                 priority = 1

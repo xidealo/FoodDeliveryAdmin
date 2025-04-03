@@ -17,7 +17,7 @@ class CreateCategoryViewModel(
             state = CreateCategoryState.DataState.State.SUCCESS,
             isLoading = false,
             nameField = TextFieldData.empty,
-            hasCreateNameError = true
+            hasCreateNameError = false
         )
     ) {
 
@@ -26,18 +26,32 @@ class CreateCategoryViewModel(
         dataState: CreateCategoryState.DataState
     ) {
         when (action) {
-            is CreateCategoryState.Action.CreateNameCategory -> setState {
-                copy(
-                    nameField = nameField.copy(
-                        value = action.nameCategory,
-                        isError = false
-                    )
-                )
-            }
+            is CreateCategoryState.Action.CreateNameCategory -> createNameCategory(action.nameCategory)
 
             CreateCategoryState.Action.OnBackClicked -> onBackClicked()
 
             CreateCategoryState.Action.OnSaveCreateCategoryClick -> saveCreateCategory()
+
+            CreateCategoryState.Action.OnErrorStateClicked -> onErrorState()
+        }
+    }
+
+    private fun createNameCategory(nameCategory: String) {
+        setState {
+            copy(
+                nameField = nameField.copy(
+                    value = nameCategory,
+                    isError = false
+                )
+            )
+        }
+    }
+
+    private fun onErrorState() {
+        setState {
+            copy(
+                state = CreateCategoryState.DataState.State.SUCCESS
+            )
         }
     }
 
@@ -56,13 +70,9 @@ class CreateCategoryViewModel(
         viewModelScope.launchSafe(
             block = {
                 createCategoryUseCase(
-                    createCategory = state.value.run {
-                        CreateCategory(
-                            name = nameField.value
-                        )
-                    }
-
+                    categoryName = state.value.nameField.value
                 )
+
                 setState { copy(isLoading = false) }
                 sendEvent {
                     CreateCategoryState.Event.ShowUpdateCategorySuccess(
@@ -76,14 +86,13 @@ class CreateCategoryViewModel(
                     when (throwable) {
                         is CategoryNameException -> {
                             copy(
-                                hasCreateNameError = true
-
+                                hasCreateNameError = true,
+                                isLoading = false
                             )
                         }
 
                         is CreateCategoryNameException -> {
                             copy(
-                                hasDuplicateNameError = true,
                                 isLoading = false
                             )
                         }

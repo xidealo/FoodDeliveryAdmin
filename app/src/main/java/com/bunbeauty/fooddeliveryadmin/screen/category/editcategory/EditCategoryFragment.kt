@@ -16,6 +16,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
@@ -59,6 +60,7 @@ class EditCategoryFragment :
         ) {
             when (state.state) {
                 EditCategoryViewState.State.Loading -> {
+                    LoadingScreen()
                 }
 
                 EditCategoryViewState.State.Error -> {

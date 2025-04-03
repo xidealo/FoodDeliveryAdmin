@@ -40,9 +40,27 @@ class SelectCategoryListViewModel(
                 )
             }
 
-            is SelectCategoryList.Action.OnCategoryClick -> TODO()
+            is SelectCategoryList.Action.OnCategoryClick -> selectCategory(
+                uuid = action.uuid,
+                selected = action.selected
+            )
         }
     }
+
+    private fun selectCategory(uuid: String, selected: Boolean) {
+        setState {
+            copy(
+                selectableCategoryList = selectableCategoryList.map { selectableCategory ->
+                    if (uuid == selectableCategory.category.uuid) {
+                        selectableCategory.copy(selected = !selected)
+                    } else {
+                        selectableCategory
+                    }
+                }
+            )
+        }
+    }
+
 
     private fun loadData() {
         viewModelScope.launchSafe(

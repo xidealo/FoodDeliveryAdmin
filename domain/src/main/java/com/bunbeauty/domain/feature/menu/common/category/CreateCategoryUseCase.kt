@@ -2,7 +2,7 @@ package com.bunbeauty.domain.feature.menu.common.category
 
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.feature.menu.common.model.CategoryPost
+import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -12,26 +12,26 @@ class CreateCategoryUseCase(
     private val categoryRepo: CategoryRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(createCategory: CreateCategory) {
+    suspend operator fun invoke(categoryName: String) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
 
         val categoryList = categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
-            .sortedBy { it.priority }
 
-        if (categoryList.any { it.name == createCategory.name }) {
-            throw CreateCategoryNameException()
-        }
         when {
-            createCategory.name.isBlank() -> throw CategoryNameException()
+            categoryName.isBlank() -> throw CategoryNameException()
+            getHasSameName(categoryList, categoryName) -> throw CreateCategoryNameException()
         }
 
         categoryRepo.postCategory(
             token = token,
-            categoryPost = CategoryPost(
-                name = createCategory.name,
+            createCategory = CreateCategory(
+                name = categoryName,
                 priority = categoryList.count() + 1
             )
         )
+    }
+    private fun getHasSameName(categoryList: List<Category>, name: String): Boolean {
+        return categoryList.any {categoryName -> categoryName.name == name }
     }
 }

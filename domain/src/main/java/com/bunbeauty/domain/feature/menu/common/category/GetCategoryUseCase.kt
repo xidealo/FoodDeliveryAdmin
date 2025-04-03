@@ -19,6 +19,6 @@ class GetCategoryUseCase(
             companyUuid = companyUuid,
             categoryUuid = categoryUuid,
             token = token
-        ) ?: throw NotFoundAdditionException()
+        ) ?: throw  NotFoundAdditionException()
     }
 }

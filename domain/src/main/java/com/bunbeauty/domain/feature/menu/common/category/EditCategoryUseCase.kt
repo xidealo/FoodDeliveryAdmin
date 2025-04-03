@@ -16,7 +16,7 @@ class EditCategoryUseCase(
         updateCategory: UpdateCategory
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
+
 
         when {
             updateCategory.name.isBlank() -> throw CategoryNameException()
@@ -24,7 +24,6 @@ class EditCategoryUseCase(
 
         categoryRepo.updateCategory(
             categoryUuid = categoryUuid,
-            companyUuid = companyUuid,
             updateCategory = updateCategory,
             token = token
         )

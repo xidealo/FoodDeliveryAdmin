@@ -4,12 +4,11 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
-import com.bunbeauty.data.mapper.CategoryMapper
-import com.bunbeauty.data.model.server.category.CategoryPatchServer
+import com.bunbeauty.data.mapper.category.CategoryMapper
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.domain.feature.menu.common.model.Category
-import com.bunbeauty.domain.feature.menu.common.model.CategoryPost
+import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 import com.bunbeauty.domain.repo.CategoryRepo
 
@@ -42,10 +41,10 @@ class CategoryRepository(
         }
     }
 
-    override suspend fun postCategory(token: String, categoryPost: CategoryPost): Category {
+    override suspend fun postCategory(token: String, createCategory: CreateCategory): Category {
         return networkConnector.postCategory(
             token = token,
-            categoryServerPost = categoryPost.toCategoryPostServer()
+            categoryServerPost = createCategory.toCreateCategoryServer()
         ).dataOrNull()?.let { createCategoryServer ->
             val categoryCreate = categoryMapper.toModel(createCategoryServer)
             categoryCache?.let { cache ->
@@ -56,7 +55,7 @@ class CategoryRepository(
             ?: throw IllegalStateException("Ошибка при создании категории: сервер вернул null") // доработать
     }
 
-    val toCategoryPostServer: CategoryPost.() -> CreateCategoryPostServer = {
+    val toCreateCategoryServer: CreateCategory.() -> CreateCategoryPostServer = {
         CreateCategoryPostServer(
             name = name,
             priority = priority
@@ -83,14 +82,13 @@ class CategoryRepository(
     override suspend fun updateCategory(
         categoryUuid: String,
         updateCategory: UpdateCategory,
-        token: String,
-        companyUuid: String
+        token: String
     ) {
         networkConnector.patchCategory(
             uuid = categoryUuid,
             token = token,
-            companyUuid = companyUuid,
-            patchCategory = updateCategory.mapUpdateCategoryServerToPatchCategory()
+
+            patchCategory = categoryMapper.toPatchServer(updateCategory)
         ).onSuccess { categoryServer ->
             updateLocalCache(
                 uuid = categoryUuid,
@@ -99,12 +97,7 @@ class CategoryRepository(
         }
     }
 
-    val mapUpdateCategoryServerToPatchCategory: UpdateCategory.() -> CategoryPatchServer = {
-        CategoryPatchServer(
-            name = name,
-            priority = priority
-        )
-    }
+
 
     private fun updateLocalCache(
         uuid: String,
@@ -112,21 +105,14 @@ class CategoryRepository(
     ) {
         categoryCache = categoryCache?.map { category ->
             if (uuid == category.uuid) {
-                categoryServer.mapCategoryServerToCategory()
+                categoryMapper.categoryServer(categoryServer)
             } else {
                 category
             }
         }
     }
 
-    val mapCategoryServerToCategory: CategoryServer.() -> Category = {
-        Category(
-            uuid = uuid,
-            name = name,
-            priority = priority
 
-        )
-    }
 
     override fun clearCache() {
         categoryCache = null
