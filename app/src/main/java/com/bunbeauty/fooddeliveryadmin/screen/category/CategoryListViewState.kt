@@ -1,8 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.category
 
 import androidx.compose.runtime.Immutable
-import com.bunbeauty.data.model.server.category.CategoryServer
-import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 
@@ -27,11 +25,5 @@ data class CategoryListViewState(
         val uuid: String,
         val name: String,
         val priority: Int
-    )
-
-    fun Category.toViewItem() = CategoriesViewItem(
-        uuid = uuid,
-        name = name,
-        priority = priority
     )
 }

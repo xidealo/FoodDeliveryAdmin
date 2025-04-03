@@ -20,7 +20,7 @@ interface CategoryRepo {
     suspend fun updateCategory(
         categoryUuid: String,
         updateCategory: UpdateCategory,
-        token: String,
+        token: String
     )
 
     /*DELETE*/

@@ -10,7 +10,7 @@ interface CreateCategoryState {
         val state: State,
         val isLoading: Boolean,
         val nameField: TextFieldData,
-        val hasCreateNameError: Boolean,
+        val hasCreateNameError: Boolean
     ) : BaseDataState {
         enum class State {
             LOADING,

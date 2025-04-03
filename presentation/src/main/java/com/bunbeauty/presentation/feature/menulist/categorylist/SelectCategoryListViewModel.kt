@@ -61,7 +61,6 @@ class SelectCategoryListViewModel(
         }
     }
 
-
     private fun loadData() {
         viewModelScope.launchSafe(
             block = {
