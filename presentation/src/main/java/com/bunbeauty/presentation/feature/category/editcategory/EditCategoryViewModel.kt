@@ -25,6 +25,8 @@ class EditCategoryViewModel(
             hasEditNameError = false
         )
     ) {
+
+    //TODO прокидывать данные из dataState в параметры функций
     override fun reduce(action: EditCategoryState.Action, dataState: EditCategoryState.DataState) {
         when (action) {
             is EditCategoryState.Action.EditNameCategory -> editNameCategory(action.nameEditCategory)

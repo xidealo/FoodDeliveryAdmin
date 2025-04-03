@@ -86,7 +86,6 @@ class CategoryRepository(
         networkConnector.patchCategory(
             uuid = categoryUuid,
             token = token,
-
             patchCategory = categoryMapper.toPatchServer(updateCategory)
         ).onSuccess { categoryServer ->
             updateLocalCache(
