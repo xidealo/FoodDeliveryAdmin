@@ -16,8 +16,10 @@ class GetCategoryListUseCase(
             token = dataStoreRepo.getToken() ?: throw NoTokenException(),
             companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
             refreshing = refreshing
-        ).filter { category -> !isHits(category = category) }
+        ).filter { category ->
+            !isHits(category = category)
+        }
     }
 
-    private fun isHits(category: Category) = category.uuid == ""
+    private fun isHits(category: Category) = category.uuid.isEmpty()
 }

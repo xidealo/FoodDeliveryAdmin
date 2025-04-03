@@ -20,18 +20,24 @@ class CreateCategoryUseCase(
 
         when {
             categoryName.isBlank() -> throw CategoryNameException()
-            getHasSameName(categoryList, categoryName) -> throw CreateCategoryNameException()
+            getHasSameName(
+                categoryList = categoryList,
+                name = categoryName
+            ) -> throw CreateCategoryNameException()
         }
 
         categoryRepo.postCategory(
             token = token,
             createCategory = CreateCategory(
                 name = categoryName,
-                priority = categoryList.count() + 1
+                priority = getCategoryPriority(categoryList = categoryList)
             )
         )
     }
+
     private fun getHasSameName(categoryList: List<Category>, name: String): Boolean {
-        return categoryList.any {categoryName -> categoryName.name == name }
+        return categoryList.any { categoryName -> categoryName.name == name }
     }
+
+    private fun getCategoryPriority(categoryList: List<Category>) = categoryList.count() + 1
 }

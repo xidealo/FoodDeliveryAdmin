@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.CategoryNameException
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryNameException
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
-import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -26,17 +25,21 @@ class CreateCategoryViewModel(
         dataState: CreateCategoryState.DataState
     ) {
         when (action) {
-            is CreateCategoryState.Action.CreateNameCategory -> createNameCategory(action.nameCategory)
+            is CreateCategoryState.Action.CreateNameCategoryChanged -> createNameCategoryChanged(
+                action.nameCategory
+            )
 
             CreateCategoryState.Action.OnBackClicked -> onBackClicked()
 
-            CreateCategoryState.Action.OnSaveCreateCategoryClick -> saveCreateCategory()
+            CreateCategoryState.Action.OnSaveCreateCategoryClick -> saveCreateCategory(
+                categoryName = dataState.nameField.value
+            )
 
             CreateCategoryState.Action.OnErrorStateClicked -> onErrorState()
         }
     }
 
-    private fun createNameCategory(nameCategory: String) {
+    private fun createNameCategoryChanged(nameCategory: String) {
         setState {
             copy(
                 nameField = nameField.copy(
@@ -61,7 +64,7 @@ class CreateCategoryViewModel(
         }
     }
 
-    private fun saveCreateCategory() {
+    private fun saveCreateCategory(categoryName: String) {
         setState {
             copy(
                 nameField = nameField.copy(isError = false)
@@ -70,37 +73,39 @@ class CreateCategoryViewModel(
         viewModelScope.launchSafe(
             block = {
                 createCategoryUseCase(
-                    categoryName = state.value.nameField.value
+                    categoryName = categoryName
                 )
 
                 setState { copy(isLoading = false) }
                 sendEvent {
                     CreateCategoryState.Event.ShowUpdateCategorySuccess(
-                        categoryName = state.value.nameField.value
+                        categoryName = categoryName
                     )
                 }
             },
             onError =
-            { throwable ->
-                setState {
-                    when (throwable) {
-                        is CategoryNameException -> {
-                            copy(
-                                hasCreateNameError = true,
-                                isLoading = false
-                            )
-                        }
+                { throwable ->
+                    setState {
+                        when (throwable) {
+                            is CategoryNameException -> {
+                                copy(
+                                    hasCreateNameError = true,
+                                    isLoading = false
+                                )
+                            }
 
-                        is CreateCategoryNameException -> {
-                            copy(
-                                isLoading = false
-                            )
-                        }
+                            //todo change name to DuplicateCategoryNameException
+                            is CreateCategoryNameException -> {
+                                copy(
 
-                        else -> copy(isLoading = false)
+                                    isLoading = false
+                                )
+                            }
+
+                            else -> copy(isLoading = false)
+                        }
                     }
                 }
-            }
         )
     }
 }

@@ -126,7 +126,7 @@ class CategoryListFragment :
             items(
                 items = state.categoryList,
                 key = { category -> category.uuid }
-            ) {  category ->
+            ) { category ->
                 CategoryItemView(
                     category = category,
                     onClick = {
@@ -141,7 +141,7 @@ class CategoryListFragment :
             }
         }
     }
-    
+
 
     override fun handleEvent(event: CategoryListState.Event) {
         when (event) {
@@ -150,7 +150,7 @@ class CategoryListFragment :
             }
 
             CategoryListState.Event.OnEditPriorityCategoryEvent -> {
-                TODO()
+                //TODO()
             }
 
             CategoryListState.Event.CreateCategoryEvent -> {
@@ -203,8 +203,7 @@ class CategoryListFragment :
         ) {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(vertical = 16.dp)
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {

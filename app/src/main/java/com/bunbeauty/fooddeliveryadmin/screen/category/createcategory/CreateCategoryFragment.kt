@@ -24,7 +24,7 @@ import com.bunbeauty.presentation.feature.category.createcategory.CreateCategory
 import com.bunbeauty.presentation.feature.category.createcategory.CreateCategoryViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreateCategoryFragment() :
+class CreateCategoryFragment :
     BaseComposeFragment<CreateCategoryState.DataState, CreateCategoryViewState, CreateCategoryState.Action, CreateCategoryState.Event>() {
 
     override val viewModel: CreateCategoryViewModel by viewModel()
@@ -94,6 +94,7 @@ class CreateCategoryFragment() :
                 )
 
                 CreateCategoryViewState.State.Loading -> LoadingScreen()
+
                 is CreateCategoryViewState.State.Success -> CreateCategoryScreenSuccess(
                     state = state.state,
                     onAction = onAction
@@ -116,7 +117,7 @@ class CreateCategoryFragment() :
                 value = state.nameField.value,
                 onValueChange = { name ->
                     onAction(
-                        CreateCategoryState.Action.CreateNameCategory(name)
+                        CreateCategoryState.Action.CreateNameCategoryChanged(name)
                     )
                 },
                 errorText = stringResource(state.nameField.errorResId),

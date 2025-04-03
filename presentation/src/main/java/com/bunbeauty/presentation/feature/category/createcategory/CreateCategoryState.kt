@@ -23,7 +23,7 @@ interface CreateCategoryState {
         data object OnBackClicked : Action
         data object OnErrorStateClicked : Action
         data object OnSaveCreateCategoryClick : Action
-        data class CreateNameCategory(val nameCategory: String) : Action
+        data class CreateNameCategoryChanged(val nameCategory: String) : Action
     }
 
     sealed interface Event : BaseEvent {

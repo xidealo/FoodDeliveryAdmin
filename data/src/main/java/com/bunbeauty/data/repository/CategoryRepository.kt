@@ -51,8 +51,7 @@ class CategoryRepository(
                 categoryCache = cache + categoryCreate
             }
             categoryCreate
-        }
-            ?: throw IllegalStateException("Ошибка при создании категории: сервер вернул null") // доработать
+        } ?: throw IllegalStateException("Ошибка при создании категории: сервер вернул null") // доработать
     }
 
     val toCreateCategoryServer: CreateCategory.() -> CreateCategoryPostServer = {
