@@ -71,7 +71,6 @@ class EditCategoryUseCaseTest {
         coVerify {
             categoryRepo.updateCategory(
                 categoryUuid = categoryUuid,
-                companyUuid = companyUuid,
                 updateCategory = updateCategory,
                 token = token
             )

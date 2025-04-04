@@ -26,14 +26,16 @@ class EditCategoryViewModel(
         )
     ) {
 
-    //TODO прокидывать данные из dataState в параметры функций
     override fun reduce(action: EditCategoryState.Action, dataState: EditCategoryState.DataState) {
         when (action) {
             is EditCategoryState.Action.EditNameCategory -> editNameCategory(action.nameEditCategory)
 
             EditCategoryState.Action.Init -> loadData()
             EditCategoryState.Action.OnBackClicked -> onBackClicked()
-            EditCategoryState.Action.OnSaveEditCategoryClick -> saveEditCategory()
+            EditCategoryState.Action.OnSaveEditCategoryClick -> saveEditCategory(
+                dataState.uuid,
+                dataState.name
+            )
         }
     }
 
@@ -68,11 +70,14 @@ class EditCategoryViewModel(
         )
     }
 
-    private fun saveEditCategory() {
+    private fun saveEditCategory(
+        categoryUuid: String,
+        categoryName: String
+    ) {
         viewModelScope.launchSafe(
             block = {
                 saveEditCategoryUseCase(
-                    categoryUuid = state.value.uuid,
+                    categoryUuid = categoryUuid,
                     updateCategory = state.value.run {
                         UpdateCategory(
                             name = name.trim(),
@@ -86,7 +91,7 @@ class EditCategoryViewModel(
 
                 sendEvent {
                     EditCategoryState.Event.ShowUpdateCategorySuccess(
-                        categoryName = state.value.name
+                        categoryName = categoryName
 
                     )
                 }

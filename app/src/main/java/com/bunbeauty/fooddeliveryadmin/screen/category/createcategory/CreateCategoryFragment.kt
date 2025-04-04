@@ -50,8 +50,15 @@ class CreateCategoryFragment :
                     isLoading = state.isLoading,
                     nameField = TextFieldUi(
                         value = state.nameField.value,
-                        errorResId = R.string.error_common_create_category_duplicate_name,
-                        isError = state.hasCreateNameError
+                        isError = state.hasCreateNameError || state.hasDuplicateNameError,
+                        errorResId = when {
+                            state.hasDuplicateNameError -> {
+                                R.string.error_common_create_category_duplicate_name
+                            }
+                            else -> {
+                                R.string.error_common_create_category_empty_name
+                            }
+                        }
                     )
                 )
             }

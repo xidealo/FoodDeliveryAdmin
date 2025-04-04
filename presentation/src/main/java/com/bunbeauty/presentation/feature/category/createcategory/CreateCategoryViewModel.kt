@@ -2,8 +2,8 @@ package com.bunbeauty.presentation.feature.category.createcategory
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.CategoryNameException
-import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryNameException
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
+import com.bunbeauty.domain.feature.menu.common.category.DuplicateCategoryNameException
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -16,7 +16,8 @@ class CreateCategoryViewModel(
             state = CreateCategoryState.DataState.State.SUCCESS,
             isLoading = false,
             nameField = TextFieldData.empty,
-            hasCreateNameError = false
+            hasCreateNameError = false,
+            hasDuplicateNameError = false
         )
     ) {
 
@@ -84,28 +85,27 @@ class CreateCategoryViewModel(
                 }
             },
             onError =
-                { throwable ->
-                    setState {
-                        when (throwable) {
-                            is CategoryNameException -> {
-                                copy(
-                                    hasCreateNameError = true,
-                                    isLoading = false
-                                )
-                            }
-
-                            //todo change name to DuplicateCategoryNameException
-                            is CreateCategoryNameException -> {
-                                copy(
-
-                                    isLoading = false
-                                )
-                            }
-
-                            else -> copy(isLoading = false)
+            { throwable ->
+                setState {
+                    when (throwable) {
+                        is CategoryNameException -> {
+                            copy(
+                                hasCreateNameError = true,
+                                isLoading = false
+                            )
                         }
+
+                        is DuplicateCategoryNameException -> {
+                            copy(
+                                hasDuplicateNameError = true,
+                                isLoading = false
+                            )
+                        }
+
+                        else -> copy(isLoading = false)
                     }
                 }
+            }
         )
     }
 }

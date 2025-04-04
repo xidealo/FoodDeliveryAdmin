@@ -141,7 +141,6 @@ class CategoryListFragment :
         }
     }
 
-
     override fun handleEvent(event: CategoryListState.Event) {
         when (event) {
             CategoryListState.Event.GoBackEvent -> {
@@ -149,7 +148,7 @@ class CategoryListFragment :
             }
 
             CategoryListState.Event.OnEditPriorityCategoryEvent -> {
-                //TODO()
+              //TODO()
             }
 
             CategoryListState.Event.CreateCategoryEvent -> {

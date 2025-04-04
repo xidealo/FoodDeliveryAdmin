@@ -23,7 +23,7 @@ class CreateCategoryUseCase(
             getHasSameName(
                 categoryList = categoryList,
                 name = categoryName
-            ) -> throw CreateCategoryNameException()
+            ) -> throw DuplicateCategoryNameException()
         }
 
         categoryRepo.postCategory(

@@ -30,76 +30,66 @@ class CreateCategoryUseCaseTest {
     @Test
     fun `invoke throws NoTokenException when token is null`() = runTest {
         coEvery { dataStoreRepo.getToken() } returns null
-        coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
+        coEvery { dataStoreRepo.companyUuid } returns flowOf("companyUuid")
 
         assertFailsWith<NoTokenException> {
-            createCategoryUseCase(CreateCategory(name = "New Category"))
+            createCategoryUseCase(categoryName = "New Category")
         }
     }
 
     @Test
     fun `invoke throws NoCompanyUuidException when companyUuid is null`() = runTest {
-        coEvery { dataStoreRepo.getToken() } returns "test_token"
+        coEvery { dataStoreRepo.getToken() } returns "token"
         coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
 
         assertFailsWith<NoCompanyUuidException> {
-            createCategoryUseCase(CreateCategory(name = "New Category"))
-        }
-    }
-
-    @Test
-    fun `invoke throws CreateCategoryNameException when category name already exists`() = runTest {
-        val token = "test_token"
-        val companyUuid = "test_company_uuid"
-        val existingCategory = Category(
-            uuid = "1",
-            name = "Existing",
-            priority = 1
-        )
-
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery {
-            categoryRepo.getCategoryList(
-                token,
-                companyUuid
-            )
-        } returns listOf(existingCategory)
-
-        assertFailsWith<CreateCategoryNameException> {
-            createCategoryUseCase(CreateCategory(name = "Existing"))
+            createCategoryUseCase(categoryName = "New Category")
         }
     }
 
     @Test
     fun `invoke throws CategoryNameException when category name is blank`() = runTest {
-        coEvery { dataStoreRepo.getToken() } returns "test_token"
-        coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
+        coEvery { dataStoreRepo.getToken() } returns "token"
+        coEvery { dataStoreRepo.companyUuid } returns flowOf("companyUuid")
 
         assertFailsWith<CategoryNameException> {
-            createCategoryUseCase(CreateCategory(name = ""))
+            createCategoryUseCase(categoryName = "")
         }
     }
 
     @Test
-    fun `invoke successfully posts new category`() = runTest {
-        val token = "test_token"
-        val companyUuid = "test_company_uuid"
-        val categories = listOf(Category(uuid = "1", name = "Existing", priority = 1))
-        val newCategory = CreateCategory(name = "New Category")
+    fun `invoke throws DuplicateCategoryNameException when name already exists`() = runTest {
+        val token = "token"
+        val companyUuid = "companyUuid"
+        val existingCategory = Category(uuid = "1", name = "Duplicate", priority = 1)
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { categoryRepo.getCategoryList(token, companyUuid) } returns categories
+        coEvery { categoryRepo.getCategoryList(token, companyUuid) } returns listOf(existingCategory)
 
-        createCategoryUseCase(newCategory)
+        assertFailsWith<DuplicateCategoryNameException> {
+            createCategoryUseCase(categoryName = "Duplicate")
+        }
+    }
+
+    @Test
+    fun `invoke posts new category with incremented priority`() = runTest {
+        val token = "token"
+        val companyUuid = "companyUuid"
+        val existingCategories = listOf(Category(uuid = "1", name = "Existing", priority = 1))
+
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery { categoryRepo.getCategoryList(token, companyUuid) } returns existingCategories
+
+        createCategoryUseCase(categoryName = "New Category")
 
         coVerify {
             categoryRepo.postCategory(
                 token = token,
                 createCategory = CreateCategory(
-                    name = newCategory.name,
-                    priority = categories.size + 1
+                    name = "New Category",
+                    priority = existingCategories.size + 1
                 )
             )
         }

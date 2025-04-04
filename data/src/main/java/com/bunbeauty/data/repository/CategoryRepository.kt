@@ -33,7 +33,11 @@ class CategoryRepository(
         }
     }
 
-    override suspend fun getCategoryList(token: String, companyUuid: String, refreshing: Boolean): List<Category> {
+    override suspend fun getCategoryList(
+        token: String,
+        companyUuid: String,
+        refreshing: Boolean
+    ): List<Category> {
         return if (refreshing) {
             fetchCategories(token = token, companyUuid = companyUuid)
         } else {
@@ -51,7 +55,7 @@ class CategoryRepository(
                 categoryCache = cache + categoryCreate
             }
             categoryCreate
-        } ?: throw IllegalStateException("Ошибка при создании категории: сервер вернул null") // доработать
+        } ?: throw Exception("categories create error")
     }
 
     val toCreateCategoryServer: CreateCategory.() -> CreateCategoryPostServer = {
