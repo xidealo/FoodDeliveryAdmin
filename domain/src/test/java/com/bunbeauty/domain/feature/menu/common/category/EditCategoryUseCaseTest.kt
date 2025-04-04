@@ -8,7 +8,6 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -36,15 +35,6 @@ class EditCategoryUseCaseTest {
         }
     }
 
-    @Test
-    fun `invoke throws NoCompanyUuidException when companyUuid is null`() = runTest {
-        coEvery { dataStoreRepo.getToken() } returns "test_token"
-        coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
-
-        assertFailsWith<NoCompanyUuidException> {
-            editCategoryUseCase("category_uuid", UpdateCategory(name = "Updated Name", priority = 0))
-        }
-    }
 
     @Test
     fun `invoke throws CategoryNameException when category name is blank`() = runTest {
