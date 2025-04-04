@@ -148,7 +148,7 @@ class CategoryListFragment :
             }
 
             CategoryListState.Event.OnEditPriorityCategoryEvent -> {
-              //TODO()
+                // TODO()
             }
 
             CategoryListState.Event.CreateCategoryEvent -> {

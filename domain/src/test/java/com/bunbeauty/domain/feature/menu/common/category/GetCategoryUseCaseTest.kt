@@ -2,7 +2,6 @@ package com.bunbeauty.domain.feature.menu.common.category
 
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
-import com.bunbeauty.domain.exception.updateaddition.NotFoundAdditionException
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -48,7 +47,7 @@ class GetCategoryUseCaseTest {
     }
 
     @Test
-    fun `invoke throws NotFoundAdditionException when category is not found`() = runTest {
+    fun `invoke throws NotFoundCategoryException when category is not found`() = runTest {
         val token = "test_token"
         val companyUuid = "test_company_uuid"
 
@@ -56,7 +55,7 @@ class GetCategoryUseCaseTest {
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
         coEvery { categoryRepo.getCategory(companyUuid, "category_uuid", token) } returns null
 
-        assertFailsWith<NotFoundAdditionException> {
+        assertFailsWith<NotFoundCategoryException> {
             getCategoryUseCase("category_uuid")
         }
     }
