@@ -85,8 +85,7 @@ class EditCategoryViewModel(
                             name = name.trim(),
                             priority = null
                         )
-                    },
-                    categoryName = categoryName
+                    }
                 )
                 setState {
                     copy(isLoading = false)

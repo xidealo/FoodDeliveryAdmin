@@ -14,22 +14,21 @@ class EditCategoryUseCase(
 ) {
     suspend operator fun invoke(
         categoryUuid: String,
-        updateCategory: UpdateCategory,
-        categoryName: String
+        updateCategory: UpdateCategory
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         val categoryList = categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
 
         val oldCategory = categoryList.find { category -> category.uuid == categoryUuid }
-            ?: throw Exception("Категория не найдена")
+            ?: throw NotFindCategoryException()
 
         when {
             updateCategory.name.isBlank() -> throw CategoryNameException()
             isNameUnchanged(oldName = oldCategory.name, newName = updateCategory.name) -> return
             getHasSameName(
                 categoryList = categoryList,
-                name = categoryName
+                name = updateCategory.name
             ) -> throw DuplicateCategoryNameException()
         }
 
