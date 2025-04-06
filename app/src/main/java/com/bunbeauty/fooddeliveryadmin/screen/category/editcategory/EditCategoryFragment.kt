@@ -121,12 +121,20 @@ class EditCategoryFragment :
                 EditCategoryState.DataState.State.LOADING -> EditCategoryViewState.State.Loading
                 EditCategoryState.DataState.State.ERROR -> EditCategoryViewState.State.Error
                 EditCategoryState.DataState.State.SUCCESS -> EditCategoryViewState.State.Success(
+                    isLoading = state.isLoading,
                     nameField = TextFieldUi(
                         value = state.name,
-                        isError = state.hasEditNameError,
-                        errorResId = R.string.error_common_edit_category_empty_name
-                    ),
-                    isLoading = state.isLoading
+                        isError = state.hasEditNameError || state.hasDuplicateNameError,
+                        errorResId = when {
+                            state.hasDuplicateNameError -> {
+                                R.string.error_common_edit_category_duplicate_name
+                            }
+
+                            else -> {
+                                R.string.error_common_edit_category_empty_name
+                            }
+                        }
+                    )
                 )
             }
         )

@@ -10,7 +10,8 @@ interface EditCategoryState {
         val name: String,
         val state: State,
         val isLoading: Boolean,
-        val hasEditNameError: Boolean
+        val hasEditNameError: Boolean,
+        val hasDuplicateNameError: Boolean
     ) : BaseDataState {
         enum class State {
             LOADING,

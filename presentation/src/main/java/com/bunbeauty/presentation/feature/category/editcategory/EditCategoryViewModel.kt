@@ -3,6 +3,7 @@ package com.bunbeauty.presentation.feature.category.editcategory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.CategoryNameException
+import com.bunbeauty.domain.feature.menu.common.category.DuplicateCategoryNameException
 import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
@@ -22,7 +23,8 @@ class EditCategoryViewModel(
             name = "",
             isLoading = false,
             state = EditCategoryState.DataState.State.SUCCESS,
-            hasEditNameError = false
+            hasEditNameError = false,
+            hasDuplicateNameError = false
         )
     ) {
 
@@ -83,7 +85,8 @@ class EditCategoryViewModel(
                             name = name.trim(),
                             priority = null
                         )
-                    }
+                    },
+                    categoryName = categoryName
                 )
                 setState {
                     copy(isLoading = false)
@@ -102,6 +105,13 @@ class EditCategoryViewModel(
                         is CategoryNameException -> {
                             copy(
                                 hasEditNameError = true,
+                                isLoading = false
+                            )
+                        }
+
+                        is DuplicateCategoryNameException -> {
+                            copy(
+                                hasDuplicateNameError = true,
                                 isLoading = false
                             )
                         }
