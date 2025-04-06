@@ -4,6 +4,7 @@ import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
@@ -21,7 +22,8 @@ class LogoutUseCase(
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val photoRepo: PhotoRepo,
     private val additionGroupRepo: AdditionGroupRepo,
-    private val additionRepo: AdditionRepo
+    private val additionRepo: AdditionRepo,
+    private val categoryRepo: CategoryRepo
 ) {
 
     suspend operator fun invoke() {
@@ -35,5 +37,6 @@ class LogoutUseCase(
         additionGroupRepo.clearCache()
         photoRepo.clearCache()
         additionRepo.clearCache()
+        categoryRepo.clearCache()
     }
 }

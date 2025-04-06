@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 class GetSelectableCategoryListUseCaseTest {
 
     private val getCategoryListUseCase: GetCategoryListUseCase = mockk {
-        coEvery { this@mockk.invoke() } returns listOf(
+        coEvery { this@mockk.invoke(refreshing = false) } returns listOf(
             getMockCategory(1),
             getMockCategory(2),
             getMockCategory(3)

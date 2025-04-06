@@ -6,7 +6,7 @@ class GetSelectableCategoryListUseCase(
     private val getCategoryListUseCase: GetCategoryListUseCase
 ) {
     suspend operator fun invoke(selectedCategoryUuidList: List<String> = emptyList()): List<SelectableCategory> {
-        return getCategoryListUseCase().map { category ->
+        return getCategoryListUseCase(refreshing = false).map { category ->
             SelectableCategory(
                 category = category,
                 selected = selectedCategoryUuidList.contains(category.uuid)

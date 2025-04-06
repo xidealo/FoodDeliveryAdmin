@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 
-interface CategoryList {
+interface SelectCategoryList {
     data class DataState(
         val selectableCategoryList: List<SelectableCategory>,
         val hasError: Boolean

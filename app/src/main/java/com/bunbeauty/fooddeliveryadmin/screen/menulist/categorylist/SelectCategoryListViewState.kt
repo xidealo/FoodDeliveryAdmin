@@ -5,11 +5,11 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
-data class CategoryListViewState(
-    val selectableCategoryList: ImmutableList<CategoryItem>
+data class SelectCategoryListViewState(
+    val selectableCategoryList: ImmutableList<SelectCategoryItem>
 ) : BaseViewState {
     @Immutable
-    data class CategoryItem(
+    data class SelectCategoryItem(
         val uuid: String,
         val name: String,
         val selected: Boolean

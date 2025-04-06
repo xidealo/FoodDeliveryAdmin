@@ -5,11 +5,14 @@ import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListVie
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
+import com.bunbeauty.presentation.feature.category.CategoryListViewModel
+import com.bunbeauty.presentation.feature.category.createcategory.CreateCategoryViewModel
+import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryViewModel
 import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
 import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
-import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryListViewModel
+import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryListViewModel
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProductViewModel
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageViewModel
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
@@ -88,7 +91,7 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        CategoryListViewModel(
+        SelectCategoryListViewModel(
             getSelectableCategoryListUseCase = get(),
             savedStateHandle = get()
         )
@@ -98,6 +101,20 @@ fun viewModelModule() = module {
         CreateMenuProductViewModel(
             getSelectableCategoryListUseCase = get(),
             createMenuProductUseCase = get()
+        )
+    }
+
+    viewModel {
+        CreateCategoryViewModel(
+            createCategoryUseCase = get()
+        )
+    }
+
+    viewModel {
+        EditCategoryViewModel(
+            savedStateHandle = get(),
+            getCategoryUseCase = get(),
+            saveEditCategoryUseCase = get()
         )
     }
 
@@ -142,6 +159,12 @@ fun viewModelModule() = module {
             updateIsUnlimitedNotification = get(),
             getTypeWorkUseCase = get(),
             updateTypeWorkUseCase = get()
+        )
+    }
+
+    viewModel {
+        CategoryListViewModel(
+            getCategoryListUseCase = get()
         )
     }
 

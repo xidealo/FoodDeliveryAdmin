@@ -24,48 +24,51 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem.Selectable
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryList
-import com.bunbeauty.presentation.feature.menulist.categorylist.CategoryListViewModel
+import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryList
+import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryListViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CategoryListFragment :
-    BaseComposeFragment<CategoryList.DataState, CategoryListViewState, CategoryList.Action, CategoryList.Event>() {
+class SelectCategoryListFragment :
+    BaseComposeFragment<SelectCategoryList.DataState, SelectCategoryListViewState, SelectCategoryList.Action, SelectCategoryList.Event>() {
 
     companion object {
         const val CATEGORY_LIST_REQUEST_KEY = "CATEGORY_LIST_REQUEST_KEY"
         const val CATEGORY_LIST_KEY = "CATEGORY_LIST_KEY"
     }
 
-    override val viewModel: CategoryListViewModel by viewModel()
+    override val viewModel: SelectCategoryListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.onAction(CategoryList.Action.Init)
+        viewModel.onAction(SelectCategoryList.Action.Init)
     }
 
     @Composable
-    override fun Screen(state: CategoryListViewState, onAction: (CategoryList.Action) -> Unit) {
+    override fun Screen(
+        state: SelectCategoryListViewState,
+        onAction: (SelectCategoryList.Action) -> Unit
+    ) {
         CategoryListScreen(state = state, onAction = onAction)
     }
 
     @Composable
     fun CategoryListScreen(
-        state: CategoryListViewState,
-        onAction: (CategoryList.Action) -> Unit
+        state: SelectCategoryListViewState,
+        onAction: (SelectCategoryList.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_category_list),
             backActionClick = {
-                onAction(CategoryList.Action.OnBackClick)
+                onAction(SelectCategoryList.Action.OnBackClick)
             },
             actionButton = {
                 MainButton(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = stringResource(id = R.string.action_category_list_save),
                     onClick = {
-                        onAction(CategoryList.Action.OnSaveClick)
+                        onAction(SelectCategoryList.Action.OnSaveClick)
                     }
                 )
             }
@@ -95,7 +98,7 @@ class CategoryListFragment :
                             ),
                             onClick = {
                                 onAction(
-                                    CategoryList.Action.OnCategoryClick(
+                                    SelectCategoryList.Action.OnCategoryClick(
                                         uuid = selectableCategory.uuid,
                                         selected = selectableCategory.selected
                                     )
@@ -111,10 +114,10 @@ class CategoryListFragment :
     }
 
     @Composable
-    override fun mapState(state: CategoryList.DataState): CategoryListViewState {
-        return CategoryListViewState(
+    override fun mapState(state: SelectCategoryList.DataState): SelectCategoryListViewState {
+        return SelectCategoryListViewState(
             selectableCategoryList = state.selectableCategoryList.map { selectableCategory ->
-                CategoryListViewState.CategoryItem(
+                SelectCategoryListViewState.SelectCategoryItem(
                     uuid = selectableCategory.category.uuid,
                     name = selectableCategory.category.name,
                     selected = selectableCategory.selected
@@ -128,9 +131,9 @@ class CategoryListFragment :
     fun CategoryListScreenPreview() {
         AdminTheme {
             CategoryListScreen(
-                state = CategoryListViewState(
+                state = SelectCategoryListViewState(
                     selectableCategoryList = persistentListOf(
-                        CategoryListViewState.CategoryItem(
+                        SelectCategoryListViewState.SelectCategoryItem(
                             uuid = "movet",
                             name = "Roy Faulkner",
                             selected = false
@@ -142,13 +145,13 @@ class CategoryListFragment :
         }
     }
 
-    override fun handleEvent(event: CategoryList.Event) {
+    override fun handleEvent(event: SelectCategoryList.Event) {
         when (event) {
-            CategoryList.Event.Back -> {
+            SelectCategoryList.Event.Back -> {
                 findNavController().popBackStack()
             }
 
-            is CategoryList.Event.Save -> {
+            is SelectCategoryList.Event.Save -> {
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(R.string.msg_category_list_selected)
                 )

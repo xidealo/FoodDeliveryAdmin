@@ -19,6 +19,9 @@ class MenuViewModel : BaseStateViewModel<Menu.DataState, Menu.Action, Menu.Event
             Menu.Action.OnMenuListClick -> sendEvent {
                 Menu.Event.OnMenuListClick
             }
+            Menu.Action.OnCategoriesListClick -> sendEvent {
+                Menu.Event.OnCategoriesListClick
+            }
         }
     }
 }

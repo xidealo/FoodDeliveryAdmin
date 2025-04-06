@@ -8,11 +8,11 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
 
-class CategoryListViewModel(
+class SelectCategoryListViewModel(
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseStateViewModel<CategoryList.DataState, CategoryList.Action, CategoryList.Event>(
-    initState = CategoryList.DataState(
+) : BaseStateViewModel<SelectCategoryList.DataState, SelectCategoryList.Action, SelectCategoryList.Event>(
+    initState = SelectCategoryList.DataState(
         selectableCategoryList = listOf(),
         hasError = false
     )
@@ -22,22 +22,25 @@ class CategoryListViewModel(
         SELECTED_CATEGORY_UUID_LIST
     )?.toList() ?: emptyList()
 
-    override fun reduce(action: CategoryList.Action, dataState: CategoryList.DataState) {
+    override fun reduce(
+        action: SelectCategoryList.Action,
+        dataState: SelectCategoryList.DataState
+    ) {
         when (action) {
-            CategoryList.Action.Init -> loadData()
-            CategoryList.Action.OnBackClick -> sendEvent {
-                CategoryList.Event.Back
+            SelectCategoryList.Action.Init -> loadData()
+            SelectCategoryList.Action.OnBackClick -> sendEvent {
+                SelectCategoryList.Event.Back
             }
 
-            CategoryList.Action.OnSaveClick -> sendEvent {
-                CategoryList.Event.Save(
+            SelectCategoryList.Action.OnSaveClick -> sendEvent {
+                SelectCategoryList.Event.Save(
                     dataState.selectedCategoryList.map { selectableCategory ->
                         selectableCategory.category.uuid
                     }
                 )
             }
 
-            is CategoryList.Action.OnCategoryClick -> selectCategory(
+            is SelectCategoryList.Action.OnCategoryClick -> selectCategory(
                 uuid = action.uuid,
                 selected = action.selected
             )

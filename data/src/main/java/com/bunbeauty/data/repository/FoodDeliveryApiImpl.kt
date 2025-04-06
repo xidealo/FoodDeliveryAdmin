@@ -12,7 +12,9 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
+import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
@@ -349,6 +351,30 @@ class FoodDeliveryApiImpl(
         return get(
             path = "category",
             parameters = mapOf("companyUuid" to companyUuid),
+            token = token
+        )
+    }
+
+    override suspend fun postCategory(
+        token: String,
+        categoryServerPost: CreateCategoryPostServer
+    ): ApiResult<CategoryServer> {
+        return post(
+            path = "category",
+            body = categoryServerPost,
+            token = token
+        )
+    }
+
+    override suspend fun patchCategory(
+        token: String,
+        uuid: String,
+        patchCategory: CategoryPatchServer
+    ): ApiResult<CategoryServer> {
+        return patch(
+            path = "category",
+            body = patchCategory,
+            parameters = mapOf("uuid" to uuid),
             token = token
         )
     }

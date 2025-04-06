@@ -26,7 +26,6 @@ class CreateMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
-
     data class Params(
         val name: String,
         val newPrice: String,

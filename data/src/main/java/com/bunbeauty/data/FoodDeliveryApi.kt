@@ -8,7 +8,9 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
+import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
@@ -123,6 +125,17 @@ interface FoodDeliveryApi {
         companyUuid: String
     ): ApiResult<ServerList<CategoryServer>>
 
+    suspend fun postCategory(
+        token: String,
+        categoryServerPost: CreateCategoryPostServer
+    ): ApiResult<CategoryServer>
+
+    suspend fun patchCategory(
+        token: String,
+        uuid: String,
+        patchCategory: CategoryPatchServer
+    ): ApiResult<CategoryServer>
+
     // NON WORKING DAYS
     suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>>
     suspend fun postNonWorkingDay(
@@ -138,6 +151,7 @@ interface FoodDeliveryApi {
 
     // ADDITION LIST
     suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>>
+
     suspend fun patchAddition(
         additionUuid: String,
         additionPatchServer: AdditionPatchServer,

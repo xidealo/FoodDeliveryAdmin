@@ -15,41 +15,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-class GetCategoryListUseCaseTest {
+class GetCategoryUseCaseTest {
 
     private val categoryRepo: CategoryRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
-    private lateinit var getCategoryListUseCase: GetCategoryListUseCase
+    private lateinit var getCategoryUseCase: GetCategoryUseCase
 
     @BeforeTest
     fun setup() {
-        getCategoryListUseCase = GetCategoryListUseCase(categoryRepo, dataStoreRepo)
-    }
-
-    @Test
-    fun `invoke filters out categories with empty UUID`() = runTest {
-        // Given
-        mockSuccessfulDataFetch(
-            token = "test_token",
-            companyUuid = "test_company_uuid",
-            categories = listOf(
-                categoryMock.copy(uuid = "1"),
-                categoryMock.copy(uuid = "2"),
-                categoryMock.copy(uuid = "")
-            )
-        )
-
-        // When
-        val result = getCategoryListUseCase(refreshing = false)
-
-        // Then
-        assertEquals(
-            listOf(
-                categoryMock.copy(uuid = "1"),
-                categoryMock.copy(uuid = "2")
-            ),
-            result
-        )
+        getCategoryUseCase = GetCategoryUseCase(categoryRepo, dataStoreRepo)
     }
 
     @Test
@@ -57,7 +31,9 @@ class GetCategoryListUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns null
         coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
 
-        assertFailsWith<NoTokenException> { getCategoryListUseCase(refreshing = false) }
+        assertFailsWith<NoTokenException> {
+            getCategoryUseCase("category_uuid")
+        }
     }
 
     @Test
@@ -65,18 +41,37 @@ class GetCategoryListUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns "test_token"
         coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
 
-        assertFailsWith<NoCompanyUuidException> { getCategoryListUseCase(refreshing = false) }
+        assertFailsWith<NoCompanyUuidException> {
+            getCategoryUseCase("category_uuid")
+        }
     }
 
-    private fun mockSuccessfulDataFetch(
-        token: String,
-        companyUuid: String,
-        categories: List<Category>
-    ) {
+    @Test
+    fun `invoke throws NotFoundCategoryException when category is not found`() = runTest {
+        val token = "test_token"
+        val companyUuid = "test_company_uuid"
+
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { categoryRepo.getCategoryList(token, companyUuid, any()) } returns categories
+        coEvery { categoryRepo.getCategory(companyUuid, "category_uuid", token) } returns null
+
+        assertFailsWith<NotFoundCategoryException> {
+            getCategoryUseCase("category_uuid")
+        }
     }
 
-    private val categoryMock = Category(uuid = "", name = "", priority = 0)
+    @Test
+    fun `invoke returns category when found`() = runTest {
+        val token = "test_token"
+        val companyUuid = "test_company_uuid"
+        val expectedCategory = Category(uuid = "category_uuid", name = "Test Category", priority = 1)
+
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery { categoryRepo.getCategory(companyUuid, "category_uuid", token) } returns expectedCategory
+
+        val result = getCategoryUseCase("category_uuid")
+
+        assertEquals(expectedCategory, result)
+    }
 }
