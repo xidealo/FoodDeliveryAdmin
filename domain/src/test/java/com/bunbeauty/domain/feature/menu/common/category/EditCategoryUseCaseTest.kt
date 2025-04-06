@@ -34,7 +34,6 @@ class EditCategoryUseCaseTest {
             editCategoryUseCase(
                 "category_uuid",
                 UpdateCategory(name = "Updated Name", priority = 0),
-                categoryName = "New Category"
             )
         }
     }
@@ -56,7 +55,6 @@ class EditCategoryUseCaseTest {
             editCategoryUseCase(
                 "2",
                 UpdateCategory(name = "Duplicate", priority = 0),
-                categoryName = "Duplicate"
             )
         }
     }
@@ -73,7 +71,6 @@ class EditCategoryUseCaseTest {
             editCategoryUseCase(
                 "1",
                 UpdateCategory(name = "", priority = 0),
-                categoryName = "New Category"
             )
         }
     }
@@ -93,7 +90,6 @@ class EditCategoryUseCaseTest {
         editCategoryUseCase(
             categoryUuid = category.uuid,
             updateCategory = UpdateCategory(name = "Old Name", priority = 1),
-            categoryName = "Old Name"
         )
 
         coVerify(exactly = 0) {
@@ -115,7 +111,7 @@ class EditCategoryUseCaseTest {
             categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
         } returns listOf(oldCategory)
 
-        editCategoryUseCase(categoryUuid, updateCategory, updateCategory.name)
+        editCategoryUseCase(categoryUuid, updateCategory)
 
         coVerify(exactly = 1) {
             categoryRepo.updateCategory(
