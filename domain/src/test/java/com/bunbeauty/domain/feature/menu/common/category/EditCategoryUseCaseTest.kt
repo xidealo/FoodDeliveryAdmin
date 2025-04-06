@@ -33,7 +33,7 @@ class EditCategoryUseCaseTest {
         assertFailsWith<NoTokenException> {
             editCategoryUseCase(
                 "category_uuid",
-                UpdateCategory(name = "Updated Name", priority = 0),
+                UpdateCategory(name = "Updated Name", priority = 0)
             )
         }
     }
@@ -54,7 +54,7 @@ class EditCategoryUseCaseTest {
         assertFailsWith<DuplicateCategoryNameException> {
             editCategoryUseCase(
                 "2",
-                UpdateCategory(name = "Duplicate", priority = 0),
+                UpdateCategory(name = "Duplicate", priority = 0)
             )
         }
     }
@@ -70,7 +70,7 @@ class EditCategoryUseCaseTest {
         assertFailsWith<CategoryNameException> {
             editCategoryUseCase(
                 "1",
-                UpdateCategory(name = "", priority = 0),
+                UpdateCategory(name = "", priority = 0)
             )
         }
     }
@@ -89,7 +89,7 @@ class EditCategoryUseCaseTest {
 
         editCategoryUseCase(
             categoryUuid = category.uuid,
-            updateCategory = UpdateCategory(name = "Old Name", priority = 1),
+            updateCategory = UpdateCategory(name = "Old Name", priority = 1)
         )
 
         coVerify(exactly = 0) {
