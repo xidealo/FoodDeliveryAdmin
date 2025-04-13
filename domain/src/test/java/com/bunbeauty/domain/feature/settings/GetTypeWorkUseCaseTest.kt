@@ -53,7 +53,6 @@ class GetTypeWorkUseCaseTest {
     fun `invoke() should return CafeData when cafeUuid exists`() = runTest {
         // Given
         val cafeUuidTest = "uuid"
-        val expectedWorkInfo = WorkType.DELIVERY
 
         coEvery { dataStoreRepo.cafeUuid } returns flowOf(cafeUuidTest)
         coEvery { workInfoRepository.getCafeByUuid(cafeUuidTest) } returns testCafe
