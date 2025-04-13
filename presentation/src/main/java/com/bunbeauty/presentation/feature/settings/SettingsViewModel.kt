@@ -16,16 +16,16 @@ class SettingsViewModel(
     private val getIsUnlimitedNotification: GetIsUnlimitedNotificationUseCase,
     private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
     private val getTypeWorkUseCase: GetTypeWorkUseCase,
-    private val updateTypeWorkUseCase: UpdateTypeWorkUseCase, // который обновляет кафе
+    private val updateTypeWorkUseCase: UpdateTypeWorkUseCase,
     private val updateWorkCafeUseCase: UpdateWorkCafeUseCase
 ) : BaseStateViewModel<SettingsState.DataState, SettingsState.Action, SettingsState.Event>(
     initState = SettingsState.DataState(
         state = SettingsState.DataState.State.LOADING,
         isLoading = false,
         isUnlimitedNotifications = true,
-        workType = SettingsState.DataState.WorkType.DELIVERY,
+        workType = WorkType.DELIVERY,
         showAcceptOrdersConfirmation = false,
-        workLoad = SettingsState.DataState.WorkLoad.LOW
+        workLoad = WorkLoad.LOW
     )
 ) {
     override fun reduce(
@@ -53,13 +53,13 @@ class SettingsViewModel(
     private fun handleConfirmNotAcceptOrders(dataState: SettingsState.DataState) {
         handleConfirmNotAcceptOrders()
         updateSettings(
-            workType = SettingsState.DataState.WorkType.CLOSED,
+            workType = WorkType.CLOSED,
             isUnlimitedNotifications = dataState.isUnlimitedNotifications
         )
     }
 
     private fun handleSaveSettingsClick(dataState: SettingsState.DataState) {
-        if (dataState.workType == SettingsState.DataState.WorkType.CLOSED) {
+        if (dataState.workType == WorkType.CLOSED) {
             showAcceptDialog()
         } else {
             updateCafe(
@@ -108,8 +108,8 @@ class SettingsViewModel(
                 val data = getTypeWorkUseCase()
                 setState {
                     copy(
-                        workType = data.workType.toUiWorkType(),
-                        workLoad = data.workload.toUiWorkLoad(),
+                        workType = data.workType,
+                        workLoad = data.workload,
                         isUnlimitedNotifications = getIsUnlimitedNotification(),
                         state = SettingsState.DataState.State.SUCCESS,
                         isLoading = false
@@ -122,20 +122,20 @@ class SettingsViewModel(
         )
     }
 
-    private fun selectWorkType(workType: SettingsState.DataState.WorkType) {
+    private fun selectWorkType(workType: WorkType) {
         setState {
             copy(workType = workType)
         }
     }
 
-    private fun selectWorkLoad(workLoad: SettingsState.DataState.WorkLoad) {
+    private fun selectWorkLoad(workLoad: WorkLoad) {
         setState {
             copy(workLoad = workLoad)
         }
     }
 
     private fun updateSettings(
-        workType: SettingsState.DataState.WorkType,
+        workType: WorkType,
         isUnlimitedNotifications: Boolean
     ) {
         viewModelScope.launchSafe(
@@ -144,7 +144,7 @@ class SettingsViewModel(
                     copy(isLoading = true)
                 }
                 updateTypeWorkUseCase(
-                    workInfoData = workType.toDomainWorkType()
+                    workInfoData = workType
                 )
                 updateIsUnlimitedNotification(
                     isEnabled = isUnlimitedNotifications
@@ -160,8 +160,8 @@ class SettingsViewModel(
     }
 
     private fun updateCafe(
-        workLoad: SettingsState.DataState.WorkLoad,
-        workType: SettingsState.DataState.WorkType
+        workLoad: WorkLoad,
+        workType: WorkType
     ) {
         viewModelScope.launchSafe(
             block = {
@@ -169,8 +169,8 @@ class SettingsViewModel(
                     copy(isLoading = true)
                 }
                 updateWorkCafeUseCase(
-                    workLoad = workLoad.toDomainWorkLoad(),
-                    workInfoData = workType.toDomainWorkType()
+                    workLoad = workLoad,
+                    workInfoData = workType
 
                 )
                 sendEvent {
@@ -193,42 +193,8 @@ class SettingsViewModel(
         setState {
             copy(
                 showAcceptOrdersConfirmation = false,
-                workType = SettingsState.DataState.WorkType.CLOSED
+                workType = WorkType.CLOSED
             )
-        }
-    }
-
-    private fun SettingsState.DataState.WorkType.toDomainWorkType(): WorkType {
-        return when (this) {
-            SettingsState.DataState.WorkType.DELIVERY -> WorkType.DELIVERY
-            SettingsState.DataState.WorkType.PICKUP -> WorkType.PICKUP
-            SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP -> WorkType.DELIVERY_AND_PICKUP
-            SettingsState.DataState.WorkType.CLOSED -> WorkType.CLOSED
-        }
-    }
-
-    private fun SettingsState.DataState.WorkLoad.toDomainWorkLoad(): WorkLoad {
-        return when (this) {
-            SettingsState.DataState.WorkLoad.LOW -> WorkLoad.LOW
-            SettingsState.DataState.WorkLoad.AVERAGE -> WorkLoad.AVERAGE
-            SettingsState.DataState.WorkLoad.HIGH -> WorkLoad.HIGH
-        }
-    }
-
-    private fun WorkType.toUiWorkType(): SettingsState.DataState.WorkType {
-        return when (this) {
-            WorkType.DELIVERY -> SettingsState.DataState.WorkType.DELIVERY
-            WorkType.PICKUP -> SettingsState.DataState.WorkType.PICKUP
-            WorkType.DELIVERY_AND_PICKUP -> SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP
-            WorkType.CLOSED -> SettingsState.DataState.WorkType.CLOSED
-        }
-    }
-
-    private fun WorkLoad.toUiWorkLoad(): SettingsState.DataState.WorkLoad {
-        return when (this) {
-            WorkLoad.LOW -> SettingsState.DataState.WorkLoad.LOW
-            WorkLoad.AVERAGE -> SettingsState.DataState.WorkLoad.AVERAGE
-            WorkLoad.HIGH -> SettingsState.DataState.WorkLoad.HIGH
         }
     }
 }

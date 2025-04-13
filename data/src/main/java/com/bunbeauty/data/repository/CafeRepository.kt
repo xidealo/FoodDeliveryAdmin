@@ -50,7 +50,7 @@ class CafeRepository(
 
         return updateCafe(cafeUuid, patchCafe, token)
     }
-
+    //delete
     override suspend fun updateWorkCafe(
         updateCafe: UpdateCafe,
         cafeUuid: String,

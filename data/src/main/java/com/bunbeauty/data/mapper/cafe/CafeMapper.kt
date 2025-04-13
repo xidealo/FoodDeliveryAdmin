@@ -54,9 +54,8 @@ class CafeMapper {
                 longitude = longitude,
                 address = address,
                 isVisible = visible,
-                workload = workload,
-                workType = workType
-
+                workload = workload?.name,
+                workType = workType?.name
             )
         }
     }

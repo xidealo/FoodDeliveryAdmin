@@ -1,5 +1,8 @@
 package com.bunbeauty.domain.model.cafe
 
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
+
 data class UpdateCafe(
     val uuid: String? = null,
     val address: String? = null,
@@ -11,6 +14,6 @@ data class UpdateCafe(
     val phone: String? = null,
     val visible: Boolean? = null,
     val cityUuid: String? = null,
-    val workload: String? = null,
-    val workType: String? = null
+    val workload: WorkLoad? = null,
+    val workType: WorkType? = null
 )

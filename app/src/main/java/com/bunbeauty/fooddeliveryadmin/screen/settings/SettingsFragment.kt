@@ -40,10 +40,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsViewState.State
-import com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsViewState.WorkType
 import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
 
 class SettingsFragment :
     BaseComposeFragment<SettingsState.DataState, SettingsViewState, SettingsState.Action, SettingsState.Event>() {
@@ -208,11 +209,11 @@ class SettingsFragment :
             SettingsTypeRow(
                 iconRes = R.drawable.ic_delivery,
                 textRes = R.string.msg_settings_status_delivery,
-                isSelected = state.workType == WorkType.DELIVERY,
+                isSelected = state.workType == SettingsViewState.WorkType.DELIVERY,
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            SettingsState.DataState.WorkType.DELIVERY
+                            WorkType.DELIVERY
                         )
                     )
                 }
@@ -222,11 +223,11 @@ class SettingsFragment :
             SettingsTypeRow(
                 iconRes = R.drawable.ic_pickup,
                 textRes = R.string.msg_settings_status_pickup,
-                isSelected = state.workType == WorkType.PICKUP,
+                isSelected = state.workType == SettingsViewState.WorkType.PICKUP,
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            SettingsState.DataState.WorkType.PICKUP
+                            WorkType.PICKUP
                         )
                     )
                 }
@@ -236,11 +237,11 @@ class SettingsFragment :
             SettingsTypeRow(
                 iconRes = R.drawable.ic_delivery_and_pickup,
                 textRes = R.string.msg_settings_status_pickup_delivery,
-                isSelected = state.workType == WorkType.DELIVERY_AND_PICKUP,
+                isSelected = state.workType == SettingsViewState.WorkType.DELIVERY_AND_PICKUP,
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP
+                            WorkType.DELIVERY_AND_PICKUP
                         )
                     )
                 }
@@ -250,11 +251,11 @@ class SettingsFragment :
             SettingsTypeRow(
                 iconRes = R.drawable.ic_close_cafe,
                 textRes = R.string.msg_settings_status_accept_orders,
-                isSelected = state.workType == WorkType.CLOSED,
+                isSelected = state.workType == SettingsViewState.WorkType.CLOSED,
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            SettingsState.DataState.WorkType.CLOSED
+                            WorkType.CLOSED
                         )
                     )
                 }
@@ -289,7 +290,7 @@ class SettingsFragment :
                         onClick = {
                             onAction(
                                 SettingsState.Action.OnSelectWorkLoadClicked(
-                                    SettingsState.DataState.WorkLoad.LOW
+                                    WorkLoad.LOW
                                 )
                             )
                         }
@@ -303,7 +304,7 @@ class SettingsFragment :
                         onClick = {
                             onAction(
                                 SettingsState.Action.OnSelectWorkLoadClicked(
-                                    SettingsState.DataState.WorkLoad.AVERAGE
+                                    WorkLoad.AVERAGE
                                 )
                             )
                         }
@@ -317,7 +318,7 @@ class SettingsFragment :
                         onClick = {
                             onAction(
                                 SettingsState.Action.OnSelectWorkLoadClicked(
-                                    SettingsState.DataState.WorkLoad.HIGH
+                                    WorkLoad.HIGH
                                 )
                             )
                         }
@@ -401,7 +402,7 @@ class SettingsFragment :
                 state = SettingsViewState(
                     state = State.Success(
                         isNotifications = true,
-                        workType = WorkType.DELIVERY_AND_PICKUP,
+                        workType = SettingsViewState.WorkType.DELIVERY_AND_PICKUP,
                         acceptOrdersConfirmation = SettingsViewState.AcceptOrdersConfirmation(
                             isShown = false,
                             titleResId = 0,

@@ -18,8 +18,8 @@ class UpdateWorkCafeUseCase(
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         workLoadRepository.updateWorkCafe(
             updateCafe = UpdateCafe(
-                workload = workLoad.name,
-                workType = workInfoData.name
+                workload = workLoad,
+                workType = workInfoData
             ),
             cafeUuid = cafeUuid,
             token = token

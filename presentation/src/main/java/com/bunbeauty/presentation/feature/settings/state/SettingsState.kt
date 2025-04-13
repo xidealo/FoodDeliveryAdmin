@@ -1,6 +1,8 @@
 package com.bunbeauty.presentation.feature.settings.state
 
 import androidx.annotation.StringRes
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -21,19 +23,6 @@ interface SettingsState {
             SUCCESS,
             ERROR
         }
-
-        enum class WorkType {
-            DELIVERY,
-            PICKUP,
-            DELIVERY_AND_PICKUP,
-            CLOSED
-        }
-
-        enum class WorkLoad {
-            LOW,
-            AVERAGE,
-            HIGH
-        }
     }
 
     sealed interface Action : BaseAction {
@@ -41,8 +30,8 @@ interface SettingsState {
         data object OnBackClicked : Action
         data class OnNotificationsClicked(val isUnlimitedNotifications: Boolean) : Action
         data object OnSaveSettingsClick : Action
-        data class OnSelectStatusClicked(val workType: DataState.WorkType) : Action
-        data class OnSelectWorkLoadClicked(val workload: DataState.WorkLoad) : Action
+        data class OnSelectStatusClicked(val workType: WorkType) : Action
+        data class OnSelectWorkLoadClicked(val workload: WorkLoad) : Action
         data object CancelAcceptOrders : Action
         data object ConfirmNotAcceptOrders : Action
     }
