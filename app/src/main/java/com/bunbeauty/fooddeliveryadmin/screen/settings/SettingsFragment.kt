@@ -132,113 +132,54 @@ class SettingsFragment :
                     )
                 }
             )
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = stringResource(R.string.msg_settings_type_work),
-                style = AdminTheme.typography.titleMedium.bold
+
+            WorkTypeScreen(
+                state = state,
+                onAction = onAction
             )
-            Card(
-                modifier = Modifier.padding(top = 8.dp),
+
+            WorkLoadScreen(
+                state = state,
+                onAction = onAction,
                 colors = colors
-            ) {
-                Column {
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_delivery,
-                        textRes = R.string.msg_settings_status_delivery,
-                        isSelected = state.workType == WorkType.DELIVERY,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectStatusClicked(
-                                    SettingsState.DataState.WorkType.DELIVERY
-                                )
-                            )
-                        }
-                    )
-                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+            )
 
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_pickup,
-                        textRes = R.string.msg_settings_status_pickup,
-                        isSelected = state.workType == WorkType.PICKUP,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectStatusClicked(
-                                    SettingsState.DataState.WorkType.PICKUP
-                                )
-                            )
-                        }
-                    )
-                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_delivery_and_pickup,
-                        textRes = R.string.msg_settings_status_pickup_delivery,
-                        isSelected = state.workType == WorkType.DELIVERY_AND_PICKUP,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectStatusClicked(
-                                    SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP
-                                )
-                            )
-                        }
-                    )
-                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_close_cafe,
-                        textRes = R.string.msg_settings_status_accept_orders,
-                        isSelected = state.workType == WorkType.CLOSED,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectStatusClicked(
-                                    SettingsState.DataState.WorkType.CLOSED
-                                )
-                            )
-                        }
-                    )
+            //вынест и
+            AdminModalBottomSheet(
+                title = stringResource(state.acceptOrdersConfirmation.titleResId),
+                isShown = state.acceptOrdersConfirmation.isShown,
+                onDismissRequest = {
+                    onAction(SettingsState.Action.CancelAcceptOrders)
                 }
-
-                WorkLoadScreen(
-                    state = state,
-                    onAction = onAction,
-                    colors = colors
-                )
-
-                AdminModalBottomSheet(
-                    title = stringResource(state.acceptOrdersConfirmation.titleResId),
-                    isShown = state.acceptOrdersConfirmation.isShown,
-                    onDismissRequest = {
-                        onAction(SettingsState.Action.CancelAcceptOrders)
-                    }
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
-                            style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.main.onSurface,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        MainButton(
-                            modifier = Modifier.padding(top = 16.dp),
-                            text = stringResource(state.acceptOrdersConfirmation.buttonResId),
-                            onClick = {
-                                onAction(SettingsState.Action.ConfirmNotAcceptOrders)
-                            }
-                        )
-                        SecondaryButton(
-                            modifier = Modifier.padding(top = 8.dp),
-                            textStringId = R.string.action_common_cancel,
-                            onClick = {
-                                onAction(SettingsState.Action.CancelAcceptOrders)
-                            }
-                        )
-                    }
+                    Text(
+                        text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
+                        style = AdminTheme.typography.bodyMedium,
+                        color = AdminTheme.colors.main.onSurface,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    MainButton(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = stringResource(state.acceptOrdersConfirmation.buttonResId),
+                        onClick = {
+                            onAction(SettingsState.Action.ConfirmNotAcceptOrders)
+                        }
+                    )
+                    SecondaryButton(
+                        modifier = Modifier.padding(top = 8.dp),
+                        textStringId = R.string.action_common_cancel,
+                        onClick = {
+                            onAction(SettingsState.Action.CancelAcceptOrders)
+                        }
+                    )
                 }
             }
+
             Spacer(modifier = Modifier.weight(1f))
 
             LoadingButton(
@@ -247,6 +188,75 @@ class SettingsFragment :
                 isLoading = state.isLoading,
                 onClick = {
                     onAction(SettingsState.Action.OnSaveSettingsClick)
+                }
+            )
+        }
+    }
+
+    @Composable
+    private fun WorkTypeScreen(
+        state: State.Success,
+        onAction: (SettingsState.Action) -> Unit,
+        modifier: Modifier = Modifier
+    ) {
+        Column(modifier = modifier) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = stringResource(R.string.msg_settings_type_work),
+                style = AdminTheme.typography.titleMedium.bold
+            )
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_delivery,
+                textRes = R.string.msg_settings_status_delivery,
+                isSelected = state.workType == WorkType.DELIVERY,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectStatusClicked(
+                            SettingsState.DataState.WorkType.DELIVERY
+                        )
+                    )
+                }
+            )
+            AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_pickup,
+                textRes = R.string.msg_settings_status_pickup,
+                isSelected = state.workType == WorkType.PICKUP,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectStatusClicked(
+                            SettingsState.DataState.WorkType.PICKUP
+                        )
+                    )
+                }
+            )
+            AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_delivery_and_pickup,
+                textRes = R.string.msg_settings_status_pickup_delivery,
+                isSelected = state.workType == WorkType.DELIVERY_AND_PICKUP,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectStatusClicked(
+                            SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP
+                        )
+                    )
+                }
+            )
+            AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_close_cafe,
+                textRes = R.string.msg_settings_status_accept_orders,
+                isSelected = state.workType == WorkType.CLOSED,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectStatusClicked(
+                            SettingsState.DataState.WorkType.CLOSED
+                        )
+                    )
                 }
             )
         }
