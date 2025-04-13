@@ -185,6 +185,10 @@
     <string name="title_settings_disable_orders">Отключить заказы?</string>
     <string name="msg_settings_disable_orders">Пользователи не смогут делать заказы</string>
     <string name="action_settings_disable">Отключить</string>
+    <string name="action_work_load_cafe_disable">Загруженность кафе</string>
+    <string name="msg_work_load_low">Низкая (до 1 часа)</string>
+    <string name="msg_work_load_average">Средняя (до 1.5 часов)</string>
+    <string name="msg_work_load_high">Высокая (до 2 часов)</string>
 
     <!-- CAFE LIST -->
     <string name="title_cafe_list">Рестораны</string>

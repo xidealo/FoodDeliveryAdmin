@@ -80,7 +80,8 @@ class SettingsFragment :
             title = stringResource(R.string.title_settings),
             backActionClick = {
                 onAction(SettingsState.Action.OnBackClicked)
-            }
+            },
+            backgroundColor = AdminTheme.colors.main.background
         ) {
             when (state.state) {
                 State.Loading -> {
@@ -132,8 +133,7 @@ class SettingsFragment :
                 }
             )
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.msg_settings_type_work),
                 style = AdminTheme.typography.titleMedium.bold
             )
@@ -142,7 +142,7 @@ class SettingsFragment :
                 colors = colors
             ) {
                 Column {
-                    WorkTypeRow(
+                    SettingsTypeRow(
                         iconRes = R.drawable.ic_delivery,
                         textRes = R.string.msg_settings_status_delivery,
                         isSelected = state.workType == WorkType.DELIVERY,
@@ -156,7 +156,7 @@ class SettingsFragment :
                     )
                     AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-                    WorkTypeRow(
+                    SettingsTypeRow(
                         iconRes = R.drawable.ic_pickup,
                         textRes = R.string.msg_settings_status_pickup,
                         isSelected = state.workType == WorkType.PICKUP,
@@ -170,7 +170,7 @@ class SettingsFragment :
                     )
                     AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-                    WorkTypeRow(
+                    SettingsTypeRow(
                         iconRes = R.drawable.ic_delivery_and_pickup,
                         textRes = R.string.msg_settings_status_pickup_delivery,
                         isSelected = state.workType == WorkType.DELIVERY_AND_PICKUP,
@@ -184,7 +184,7 @@ class SettingsFragment :
                     )
                     AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-                    WorkTypeRow(
+                    SettingsTypeRow(
                         iconRes = R.drawable.ic_close_cafe,
                         textRes = R.string.msg_settings_status_accept_orders,
                         isSelected = state.workType == WorkType.CLOSED,
@@ -197,6 +197,12 @@ class SettingsFragment :
                         }
                     )
                 }
+
+                WorkLoadScreen(
+                    state = state,
+                    onAction = onAction,
+                    colors = colors
+                )
 
                 AdminModalBottomSheet(
                     title = stringResource(state.acceptOrdersConfirmation.titleResId),
@@ -224,8 +230,7 @@ class SettingsFragment :
                             }
                         )
                         SecondaryButton(
-                            modifier = Modifier
-                                .padding(top = 8.dp),
+                            modifier = Modifier.padding(top = 8.dp),
                             textStringId = R.string.action_common_cancel,
                             onClick = {
                                 onAction(SettingsState.Action.CancelAcceptOrders)
@@ -248,7 +253,72 @@ class SettingsFragment :
     }
 
     @Composable
-    private fun WorkTypeRow(
+    private fun WorkLoadScreen(
+        state: State.Success,
+        onAction: (SettingsState.Action) -> Unit,
+        colors: CardColors = AdminCardDefaults.cardColors
+    ) {
+        Card(
+            modifier = Modifier.padding(top = 16.dp),
+            colors = colors
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = stringResource(R.string.action_work_load_cafe_disable),
+                style = AdminTheme.typography.titleMedium.bold
+            )
+            Card(
+                modifier = Modifier.padding(top = 8.dp),
+                colors = colors
+            ) {
+                Column {
+                    SettingsTypeRow(
+                        iconRes = R.drawable.ic_cellular_low,
+                        textRes = R.string.msg_work_load_low,
+                        isSelected = state.workLoad == SettingsViewState.WorkLoad.LOW,
+                        onClick = {
+                            onAction(
+                                SettingsState.Action.OnSelectWorkLoadClicked(
+                                    SettingsState.DataState.WorkLoad.LOW
+                                )
+                            )
+                        }
+                    )
+                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+                    SettingsTypeRow(
+                        iconRes = R.drawable.ic_cellular_average,
+                        textRes = R.string.msg_work_load_average,
+                        isSelected = state.workLoad == SettingsViewState.WorkLoad.AVERAGE,
+                        onClick = {
+                            onAction(
+                                SettingsState.Action.OnSelectWorkLoadClicked(
+                                    SettingsState.DataState.WorkLoad.AVERAGE
+                                )
+                            )
+                        }
+                    )
+                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+                    SettingsTypeRow(
+                        iconRes = R.drawable.ic_cellular_high,
+                        textRes = R.string.msg_work_load_high,
+                        isSelected = state.workLoad == SettingsViewState.WorkLoad.HIGH,
+                        onClick = {
+                            onAction(
+                                SettingsState.Action.OnSelectWorkLoadClicked(
+                                    SettingsState.DataState.WorkLoad.HIGH
+                                )
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun SettingsTypeRow(
         iconRes: Int,
         textRes: Int,
         isSelected: Boolean,
@@ -256,8 +326,7 @@ class SettingsFragment :
         modifier: Modifier = Modifier
     ) {
         AdminCard(
-            modifier = modifier
-                .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             onClick = onClick,
             elevated = false,
             shape = noCornerCardShape
@@ -329,7 +398,8 @@ class SettingsFragment :
                             descriptionResId = 0,
                             buttonResId = 0
                         ),
-                        isLoading = false
+                        isLoading = false,
+                        workLoad = SettingsViewState.WorkLoad.LOW
                     )
                 ),
                 onAction = {}

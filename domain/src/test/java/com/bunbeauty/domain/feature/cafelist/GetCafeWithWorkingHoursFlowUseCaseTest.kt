@@ -6,6 +6,8 @@ import com.bunbeauty.domain.feature.time.Time
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.CafeStatus
 import com.bunbeauty.domain.model.cafe.CafeWithWorkingHours
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.domain.util.datetime.IDateTimeUtil
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -38,7 +40,9 @@ class GetCafeWithWorkingHoursFlowUseCaseTest {
         offset = timeZone,
         phone = "phone",
         visible = true,
-        cityUuid = cityUuid
+        cityUuid = cityUuid,
+        workload = WorkLoad.AVERAGE,
+        workType = WorkType.DELIVERY
     )
     private val nightCafe = Cafe(
         uuid = "uuid",
@@ -50,7 +54,9 @@ class GetCafeWithWorkingHoursFlowUseCaseTest {
         offset = timeZone,
         phone = "phone",
         visible = true,
-        cityUuid = cityUuid
+        cityUuid = cityUuid,
+        workload = WorkLoad.AVERAGE,
+        workType = WorkType.DELIVERY
     )
     private val cafeWithWorkingHours = CafeWithWorkingHours(
         uuid = "uuid",

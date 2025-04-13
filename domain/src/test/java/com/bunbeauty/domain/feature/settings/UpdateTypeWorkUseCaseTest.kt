@@ -3,7 +3,7 @@ package com.bunbeauty.domain.feature.settings
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.profile.model.UpdateTypeWorkUseCase
-import com.bunbeauty.domain.model.settings.WorkInfo
+import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.domain.repo.CompanyRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
@@ -38,22 +38,21 @@ class UpdateTypeWorkUseCaseTest {
     @Test
     fun `invoke() should call updateTypeWork with valid data`() = runTest {
         // Given
-        val workType = WorkInfo.WorkType.DELIVERY_AND_PICKUP
-        val workInfoData = WorkInfo(workType)
+        val workType = WorkType.DELIVERY_AND_PICKUP
         val companyUuid = "UUID"
         val token = "Test token"
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
         coEvery {
-            workInfoRepository.updateTypeWork(workInfoData, companyUuid, token)
+            workInfoRepository.updateTypeWork(workType, companyUuid, token)
         } returns Unit
 
         // When
-        updateTypeWorkUseCase(workInfoData)
+        updateTypeWorkUseCase(workType)
 
         // Then
-        coVerify { workInfoRepository.updateTypeWork(workInfoData, companyUuid, token) }
+        coVerify { workInfoRepository.updateTypeWork(workType, companyUuid, token) }
         coVerify { dataStoreRepo.getToken() }
         coVerify { dataStoreRepo.companyUuid }
     }
@@ -61,14 +60,13 @@ class UpdateTypeWorkUseCaseTest {
     @Test
     fun `invoke() should throw NoTokenException when token is null`() = runTest {
         // Given
-        val workType = WorkInfo.WorkType.DELIVERY_AND_PICKUP
-        val workInfoData = WorkInfo(workType)
+        val workType = WorkType.DELIVERY_AND_PICKUP
 
         coEvery { dataStoreRepo.getToken() } returns null
 
         // When & Then
         val exception = assertThrows(NoTokenException::class.java) {
-            runBlocking { updateTypeWorkUseCase(workInfoData) }
+            runBlocking { updateTypeWorkUseCase(workType) }
         }
         assertNotNull(exception)
 
@@ -79,15 +77,14 @@ class UpdateTypeWorkUseCaseTest {
     @Test
     fun `invoke should throw NoCompanyUuidException when companyUuid is null`() = runTest {
         // Given
-        val workType = WorkInfo.WorkType.DELIVERY_AND_PICKUP
-        val workInfoData = WorkInfo(workType)
+        val workType = WorkType.DELIVERY_AND_PICKUP
         val token = "Test token"
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
         // When & Then
         val exception = assertThrows(NoCompanyUuidException::class.java) {
-            runBlocking { updateTypeWorkUseCase(workInfoData) }
+            runBlocking { updateTypeWorkUseCase(workType) }
         }
         assertNotNull(exception)
 

@@ -15,7 +15,8 @@ data class SettingsViewState(
             val isNotifications: Boolean,
             val workType: WorkType,
             val acceptOrdersConfirmation: AcceptOrdersConfirmation,
-            val isLoading: Boolean
+            val isLoading: Boolean,
+            val workLoad: WorkLoad
         ) : State
     }
     enum class WorkType {
@@ -23,6 +24,12 @@ data class SettingsViewState(
         PICKUP,
         DELIVERY_AND_PICKUP,
         CLOSED
+    }
+
+    enum class WorkLoad {
+        LOW,
+        AVERAGE,
+        HIGH
     }
 
     data class AcceptOrdersConfirmation(

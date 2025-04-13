@@ -2,8 +2,10 @@ package com.bunbeauty.domain.feature.settings
 
 import com.bunbeauty.domain.exception.NotFoundWorkInfoException
 import com.bunbeauty.domain.feature.profile.model.GetTypeWorkUseCase
-import com.bunbeauty.domain.model.settings.WorkInfo
-import com.bunbeauty.domain.repo.CompanyRepo
+import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
+import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -19,10 +21,25 @@ import kotlin.test.Test
 
 class GetTypeWorkUseCaseTest {
 
-    private val workInfoRepository: CompanyRepo = mockk()
+    private val workInfoRepository: CafeRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
 
     private lateinit var getTypeWorkUseCase: GetTypeWorkUseCase
+
+    private val testCafe = Cafe(
+        uuid = "uuid",
+        address = "123",
+        latitude = 0.0,
+        longitude = 0.0,
+        fromTime = 0,
+        toTime = 0,
+        offset = 1,
+        phone = "123",
+        visible = true,
+        cityUuid = "cityUuid",
+        workload = WorkLoad.AVERAGE,
+        workType = WorkType.DELIVERY
+    )
 
     @Before
     fun setUp() {
@@ -33,32 +50,34 @@ class GetTypeWorkUseCaseTest {
     }
 
     @Test
-    fun `invoke() should return WorkInfoData when companyUuid exists`() = runTest {
+    fun `invoke() should return CafeData when cafeUuid exists`() = runTest {
         // Given
-        val companyUuidTest = "UID"
-        val expectedWorkInfo = WorkInfo(WorkInfo.WorkType.DELIVERY)
+        val cafeUuidTest = "uuid"
+        val expectedWorkInfo = WorkType.DELIVERY
 
-        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuidTest)
-        coEvery { workInfoRepository.getTypeWork(companyUuidTest) } returns expectedWorkInfo
+        coEvery { dataStoreRepo.cafeUuid } returns flowOf(cafeUuidTest)
+        coEvery { workInfoRepository.getCafeByUuid(cafeUuidTest) } returns testCafe
 
         // When
         val result = getTypeWorkUseCase()
 
         // Then
-        assertEquals(expectedWorkInfo, result)
+        assertEquals(testCafe, result)
+        assertEquals(WorkType.DELIVERY, result.workType)
+        assertEquals(WorkLoad.AVERAGE, result.workload)
 
-        coVerify { dataStoreRepo.companyUuid }
-        coVerify { workInfoRepository.getTypeWork(companyUuidTest) }
+        coVerify { dataStoreRepo.cafeUuid }
+        coVerify { workInfoRepository.getCafeByUuid(cafeUuidTest) }
     }
 
     @Test
     fun `invoke() should throw NotFoundWorkInfoException when getTypeWork returns null`() =
         runTest {
             // Given
-            val companyUuidTest = "123-UUID"
+            val cafeUuidTest = "cafe-uuid"
 
-            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuidTest)
-            coEvery { workInfoRepository.getTypeWork(companyUuidTest) } returns null
+            coEvery { dataStoreRepo.cafeUuid } returns flowOf(cafeUuidTest)
+            coEvery { workInfoRepository.getCafeByUuid(cafeUuidTest) } returns null
 
             // When & Then
             val exception = assertThrows(NotFoundWorkInfoException::class.java) {
@@ -66,7 +85,7 @@ class GetTypeWorkUseCaseTest {
             }
             assertNotNull(exception)
 
-            coVerify { dataStoreRepo.companyUuid }
-            coVerify { workInfoRepository.getTypeWork(companyUuidTest) }
+            coVerify { dataStoreRepo.cafeUuid }
+            coVerify { workInfoRepository.getCafeByUuid(cafeUuidTest) }
         }
 }

@@ -14,6 +14,7 @@ internal fun SettingsState.DataState.toViewState(): SettingsViewState {
                 SettingsViewState.State.Success(
                     isNotifications = isUnlimitedNotifications,
                     workType = workType.toViewStateWorkType(),
+                    workLoad = workLoad.toViewStateWorkLoad(),
                     acceptOrdersConfirmation = SettingsViewState.AcceptOrdersConfirmation(
                         isShown = showAcceptOrdersConfirmation,
                         titleResId = R.string.title_settings_disable_orders,
@@ -33,5 +34,13 @@ fun SettingsState.DataState.WorkType.toViewStateWorkType(): SettingsViewState.Wo
         SettingsState.DataState.WorkType.PICKUP -> SettingsViewState.WorkType.PICKUP
         SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP -> SettingsViewState.WorkType.DELIVERY_AND_PICKUP
         SettingsState.DataState.WorkType.CLOSED -> SettingsViewState.WorkType.CLOSED
+    }
+}
+
+fun SettingsState.DataState.WorkLoad.toViewStateWorkLoad(): SettingsViewState.WorkLoad {
+    return when (this) {
+        SettingsState.DataState.WorkLoad.LOW -> SettingsViewState.WorkLoad.LOW
+        SettingsState.DataState.WorkLoad.AVERAGE -> SettingsViewState.WorkLoad.AVERAGE
+        SettingsState.DataState.WorkLoad.HIGH -> SettingsViewState.WorkLoad.HIGH
     }
 }
