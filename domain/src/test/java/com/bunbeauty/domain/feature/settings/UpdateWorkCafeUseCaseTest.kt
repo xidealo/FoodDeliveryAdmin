@@ -48,10 +48,10 @@ class UpdateWorkCafeUseCaseTest {
 
         // Then
         coVerify {
-            cafeRepo.updateWorkCafe(
+            cafeRepo.patchCafe(
                 updateCafe = UpdateCafe(
-                    workload = testWorkLoad.name,
-                    workType = testWorkType.name
+                    workload = testWorkLoad,
+                    workType = testWorkType
                 ),
                 cafeUuid = testCafeUuid,
                 token = testToken
@@ -67,7 +67,7 @@ class UpdateWorkCafeUseCaseTest {
             updateWorkCafeUseCase(WorkLoad.LOW, WorkType.CLOSED)
         }
 
-        coVerify(exactly = 0) { cafeRepo.updateWorkCafe(any(), any(), any()) }
+        coVerify(exactly = 0) { cafeRepo.patchCafe(any(), any(), any()) }
     }
 
     @Test
@@ -80,6 +80,6 @@ class UpdateWorkCafeUseCaseTest {
             updateWorkCafeUseCase(WorkLoad.AVERAGE, WorkType.PICKUP)
         }
 
-        coVerify(exactly = 0) { cafeRepo.updateWorkCafe(any(), any(), any()) }
+        coVerify(exactly = 0) { cafeRepo.patchCafe(any(), any(), any()) }
     }
 }

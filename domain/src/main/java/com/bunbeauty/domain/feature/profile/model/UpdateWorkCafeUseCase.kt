@@ -16,7 +16,7 @@ class UpdateWorkCafeUseCase(
     suspend operator fun invoke(workLoad: WorkLoad, workInfoData: WorkType) {
         val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull() ?: throw NoCafeException()
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        workLoadRepository.updateWorkCafe(
+        workLoadRepository.patchCafe(
             updateCafe = UpdateCafe(
                 workload = workLoad,
                 workType = workInfoData

@@ -50,28 +50,6 @@ class CafeRepository(
 
         return updateCafe(cafeUuid, patchCafe, token)
     }
-    //delete
-    override suspend fun updateWorkCafe(
-        updateCafe: UpdateCafe,
-        cafeUuid: String,
-        token: String
-    ) {
-        return when (
-            val result = foodDeliveryApi.patchCafe(
-                cafeUuid = cafeUuid,
-                patchCafe = cafeMapper.toPatchCafe(updateCafe = updateCafe),
-                token = token
-            )
-        ) {
-            is ApiResult.Success -> {
-                cafeCache = cafeMapper.toCafe(result.data)
-            }
-
-            is ApiResult.Error -> {
-                throw result.apiError
-            }
-        }
-    }
 
     override suspend fun patchCafe(
         cafeUuid: String,

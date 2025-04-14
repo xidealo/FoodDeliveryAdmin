@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
@@ -29,7 +29,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.RadioButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
@@ -43,8 +42,6 @@ import com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsViewState.State
 import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.bunbeauty.domain.model.settings.WorkLoad
-import com.bunbeauty.domain.model.settings.WorkType
 
 class SettingsFragment :
     BaseComposeFragment<SettingsState.DataState, SettingsViewState, SettingsState.Action, SettingsState.Event>() {
@@ -82,7 +79,7 @@ class SettingsFragment :
             backActionClick = {
                 onAction(SettingsState.Action.OnBackClicked)
             },
-            backgroundColor = AdminTheme.colors.main.background
+            backgroundColor = AdminTheme.colors.main.surface
         ) {
             when (state.state) {
                 State.Loading -> {
@@ -113,14 +110,13 @@ class SettingsFragment :
     private fun SuccessSettingsScreen(
         state: State.Success,
         onAction: (SettingsState.Action) -> Unit,
-        modifier: Modifier = Modifier,
-        colors: CardColors = AdminCardDefaults.cardColors
+        modifier: Modifier = Modifier
     ) {
         Column(
             modifier = modifier.fillMaxSize()
         ) {
             SwitcherCard(
-                modifier = Modifier.padding(vertical = 16.dp),
+                modifier = Modifier.padding(vertical = 8.dp),
                 elevated = false,
 
                 text = stringResource(R.string.msg_settings_unlimited_notifications),
@@ -137,49 +133,18 @@ class SettingsFragment :
             WorkTypeScreen(
                 state = state,
                 onAction = onAction
+
             )
 
             WorkLoadScreen(
                 state = state,
-                onAction = onAction,
-                colors = colors
+                onAction = onAction
             )
 
-            //вынест и
-            AdminModalBottomSheet(
-                title = stringResource(state.acceptOrdersConfirmation.titleResId),
-                isShown = state.acceptOrdersConfirmation.isShown,
-                onDismissRequest = {
-                    onAction(SettingsState.Action.CancelAcceptOrders)
-                }
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
-                        style = AdminTheme.typography.bodyMedium,
-                        color = AdminTheme.colors.main.onSurface,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    MainButton(
-                        modifier = Modifier.padding(top = 16.dp),
-                        text = stringResource(state.acceptOrdersConfirmation.buttonResId),
-                        onClick = {
-                            onAction(SettingsState.Action.ConfirmNotAcceptOrders)
-                        }
-                    )
-                    SecondaryButton(
-                        modifier = Modifier.padding(top = 8.dp),
-                        textStringId = R.string.action_common_cancel,
-                        onClick = {
-                            onAction(SettingsState.Action.CancelAcceptOrders)
-                        }
-                    )
-                }
-            }
+            BottomSheetScreen(
+                state = state,
+                onAction = onAction
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -195,12 +160,53 @@ class SettingsFragment :
     }
 
     @Composable
+    private fun BottomSheetScreen(
+        state: State.Success,
+        onAction: (SettingsState.Action) -> Unit
+    ) {
+        AdminModalBottomSheet(
+            title = stringResource(state.acceptOrdersConfirmation.titleResId),
+            isShown = state.acceptOrdersConfirmation.isShown,
+            onDismissRequest = {
+                onAction(SettingsState.Action.CancelAcceptOrders)
+            }
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
+                    style = AdminTheme.typography.bodyMedium,
+                    color = AdminTheme.colors.main.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                MainButton(
+                    modifier = Modifier.padding(top = 16.dp),
+                    text = stringResource(state.acceptOrdersConfirmation.buttonResId),
+                    onClick = {
+                        onAction(SettingsState.Action.ConfirmNotAcceptOrders)
+                    }
+                )
+                SecondaryButton(
+                    modifier = Modifier.padding(top = 8.dp),
+                    textStringId = R.string.action_common_cancel,
+                    onClick = {
+                        onAction(SettingsState.Action.CancelAcceptOrders)
+                    }
+                )
+            }
+        }
+    }
+
+    @Composable
     private fun WorkTypeScreen(
         state: State.Success,
         onAction: (SettingsState.Action) -> Unit,
         modifier: Modifier = Modifier
     ) {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.padding(bottom = 16.dp)) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.msg_settings_type_work),
@@ -266,65 +272,54 @@ class SettingsFragment :
     @Composable
     private fun WorkLoadScreen(
         state: State.Success,
-        onAction: (SettingsState.Action) -> Unit,
-        colors: CardColors = AdminCardDefaults.cardColors
+        onAction: (SettingsState.Action) -> Unit
     ) {
-        Card(
-            modifier = Modifier.padding(top = 16.dp),
-            colors = colors
-        ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = stringResource(R.string.action_work_load_cafe_disable),
-                style = AdminTheme.typography.titleMedium.bold
-            )
-            Card(
-                modifier = Modifier.padding(top = 8.dp),
-                colors = colors
-            ) {
-                Column {
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_cellular_low,
-                        textRes = R.string.msg_work_load_low,
-                        isSelected = state.workLoad == SettingsViewState.WorkLoad.LOW,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectWorkLoadClicked(
-                                    WorkLoad.LOW
-                                )
-                            )
-                        }
-                    )
-                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_cellular_average,
-                        textRes = R.string.msg_work_load_average,
-                        isSelected = state.workLoad == SettingsViewState.WorkLoad.AVERAGE,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectWorkLoadClicked(
-                                    WorkLoad.AVERAGE
-                                )
-                            )
-                        }
-                    )
-                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-
-                    SettingsTypeRow(
-                        iconRes = R.drawable.ic_cellular_high,
-                        textRes = R.string.msg_work_load_high,
-                        isSelected = state.workLoad == SettingsViewState.WorkLoad.HIGH,
-                        onClick = {
-                            onAction(
-                                SettingsState.Action.OnSelectWorkLoadClicked(
-                                    WorkLoad.HIGH
-                                )
-                            )
-                        }
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            text = stringResource(R.string.action_work_load_cafe_disable),
+            style = AdminTheme.typography.titleMedium.bold
+        )
+        Column(modifier = Modifier.padding(top = 8.dp)) {
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_cellular_low,
+                textRes = R.string.msg_work_load_low,
+                isSelected = state.workLoad == SettingsViewState.WorkLoad.LOW,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectWorkLoadClicked(
+                            WorkLoad.LOW
+                        )
                     )
                 }
-            }
+            )
+            AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_cellular_average,
+                textRes = R.string.msg_work_load_average,
+                isSelected = state.workLoad == SettingsViewState.WorkLoad.AVERAGE,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectWorkLoadClicked(
+                            WorkLoad.AVERAGE
+                        )
+                    )
+                }
+            )
+            AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            SettingsTypeRow(
+                iconRes = R.drawable.ic_cellular_high,
+                textRes = R.string.msg_work_load_high,
+                isSelected = state.workLoad == SettingsViewState.WorkLoad.HIGH,
+                onClick = {
+                    onAction(
+                        SettingsState.Action.OnSelectWorkLoadClicked(
+                            WorkLoad.HIGH
+                        )
+                    )
+                }
+            )
         }
     }
 
