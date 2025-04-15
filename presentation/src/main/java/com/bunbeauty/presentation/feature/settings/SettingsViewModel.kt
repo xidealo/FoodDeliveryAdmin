@@ -54,7 +54,8 @@ class SettingsViewModel(
         handleConfirmNotAcceptOrders()
         updateSettings(
             workType = WorkType.CLOSED,
-            isUnlimitedNotifications = dataState.isUnlimitedNotifications
+            isUnlimitedNotifications = dataState.isUnlimitedNotifications,
+            workLoad = dataState.workLoad
         )
     }
 
@@ -62,13 +63,10 @@ class SettingsViewModel(
         if (dataState.workType == WorkType.CLOSED) {
             showAcceptDialog()
         } else {
-            updateCafe(
-                workLoad = dataState.workLoad,
-                workType = dataState.workType
-            )
             updateSettings(
                 workType = dataState.workType,
-                isUnlimitedNotifications = dataState.isUnlimitedNotifications
+                isUnlimitedNotifications = dataState.isUnlimitedNotifications,
+                workLoad = dataState.workLoad
             )
         }
     }
@@ -136,6 +134,7 @@ class SettingsViewModel(
 
     private fun updateSettings(
         workType: WorkType,
+        workLoad: WorkLoad,
         isUnlimitedNotifications: Boolean
     ) {
         viewModelScope.launchSafe(
@@ -149,29 +148,9 @@ class SettingsViewModel(
                 updateIsUnlimitedNotification(
                     isEnabled = isUnlimitedNotifications
                 )
-                sendEvent {
-                    SettingsState.Event.ShowSaveSettingEvent
-                }
-            },
-            onError = {
-                showErrorState()
-            }
-        )
-    }
-
-    private fun updateCafe(
-        workLoad: WorkLoad,
-        workType: WorkType
-    ) {
-        viewModelScope.launchSafe(
-            block = {
-                setState {
-                    copy(isLoading = true)
-                }
                 updateWorkCafeUseCase(
                     workLoad = workLoad,
                     workInfoData = workType
-
                 )
                 sendEvent {
                     SettingsState.Event.ShowSaveSettingEvent
