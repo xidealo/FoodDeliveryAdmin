@@ -73,7 +73,7 @@ class CreateCategoryFragment :
 
             is CreateCategoryState.Event.ShowUpdateCategorySuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_create_category_updated, event.categoryName)
+                    resources.getString(R.string.msg_create_category_created, event.categoryName)
                 )
                 findNavController().popBackStack()
             }
