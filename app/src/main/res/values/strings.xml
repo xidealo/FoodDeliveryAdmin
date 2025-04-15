@@ -247,7 +247,7 @@
     <string name="action_create_category_save">Сохранить</string>
     <string name="error_common_create_category_empty_name">Название не может быть пустым</string>
     <string name="error_common_create_category_duplicate_name">Категория с таким именем уже существует</string>
-    <string name="msg_create_category_updated">%s обновлён</string>
+    <string name="msg_create_category_created">%s создан</string>
 
     <!--EDIT CATEGORY-->
     <string name="title_edit_category">Редактирование категории</string>

@@ -16,8 +16,7 @@ class CreateCategoryViewModel(
             state = CreateCategoryState.DataState.State.SUCCESS,
             isLoading = false,
             nameField = TextFieldData.empty,
-            hasCreateNameError = false,
-            hasDuplicateNameError = false
+            CreateCategoryState.DataState.NameStateError.NO_ERROR
         )
     ) {
 
@@ -90,19 +89,31 @@ class CreateCategoryViewModel(
                     when (throwable) {
                         is CategoryNameException -> {
                             copy(
-                                hasCreateNameError = true,
+                                nameStateError = CreateCategoryState
+                                    .DataState.NameStateError.EMPTY_NAME,
+                                nameField = nameField.copy(
+                                    isError = true
+                                ),
                                 isLoading = false
                             )
                         }
 
                         is DuplicateCategoryNameException -> {
                             copy(
-                                hasDuplicateNameError = true,
+                                nameStateError = CreateCategoryState
+                                    .DataState.NameStateError.DUPLICATE_NAME,
+                                nameField = nameField.copy(
+                                    isError = true
+                                ),
                                 isLoading = false
                             )
                         }
 
-                        else -> copy(isLoading = false)
+                        else -> copy(
+                            isLoading = false,
+                            nameStateError = CreateCategoryState
+                                .DataState.NameStateError.NO_ERROR
+                        )
                     }
                 }
             }

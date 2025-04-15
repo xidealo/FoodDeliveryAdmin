@@ -10,9 +10,15 @@ interface CreateCategoryState {
         val state: State,
         val isLoading: Boolean,
         val nameField: TextFieldData,
-        val hasCreateNameError: Boolean,
-        val hasDuplicateNameError: Boolean
+        val nameStateError: NameStateError
     ) : BaseDataState {
+
+        enum class NameStateError {
+            EMPTY_NAME,
+            DUPLICATE_NAME,
+            NO_ERROR
+        }
+
         enum class State {
             LOADING,
             SUCCESS,
