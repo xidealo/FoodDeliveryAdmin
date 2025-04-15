@@ -3,6 +3,9 @@ package com.bunbeauty.data.mapper.cafe
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.UpdateCafe
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
 
 class CafeMapper {
 
@@ -18,7 +21,9 @@ class CafeMapper {
                 offset = offset,
                 phone = phone,
                 visible = isVisible,
-                cityUuid = cityUuid
+                cityUuid = cityUuid,
+                workload = WorkLoad.valueOf(workload),
+                workType = WorkType.valueOf(workType)
             )
         }
     }
@@ -32,7 +37,25 @@ class CafeMapper {
                 fromTime = fromTime,
                 toTime = toTime,
                 phone = phone,
-                isVisible = visible
+                isVisible = visible,
+                workload = workload.name,
+                workType = workType.name
+            )
+        }
+    }
+
+    fun toPatchCafe(updateCafe: UpdateCafe): PatchCafeServer {
+        return with(updateCafe) {
+            PatchCafeServer(
+                fromTime = fromTime,
+                toTime = toTime,
+                phone = phone,
+                latitude = latitude,
+                longitude = longitude,
+                address = address,
+                isVisible = visible,
+                workload = workload?.name,
+                workType = workType?.name
             )
         }
     }

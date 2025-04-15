@@ -17,7 +17,7 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.test.assertFalse
 
-class SettingsWorkInfoDataRepositoryTest {
+class SettingsWorkTypeDataRepositoryTest {
 
     private val fakeToken = "token"
     private val dataStoreRepo: DataStoreRepo = mockk {

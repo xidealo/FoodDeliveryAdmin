@@ -1,11 +1,13 @@
 package com.bunbeauty.data.repository
 
+import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.getNullableResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.UpdateCafe
 import com.bunbeauty.domain.repo.CafeRepo
 
 class CafeRepository(
@@ -47,6 +49,28 @@ class CafeRepository(
         )
 
         return updateCafe(cafeUuid, patchCafe, token)
+    }
+
+    override suspend fun patchCafe(
+        cafeUuid: String,
+        updateCafe: UpdateCafe,
+        token: String
+    ) {
+        return when (
+            val result = foodDeliveryApi.patchCafe(
+                cafeUuid = cafeUuid,
+                patchCafe = cafeMapper.toPatchCafe(updateCafe = updateCafe),
+                token = token
+            )
+        ) {
+            is ApiResult.Success -> {
+                cafeCache = cafeMapper.toCafe(result.data)
+            }
+
+            is ApiResult.Error -> {
+                throw result.apiError
+            }
+        }
     }
 
     override fun clearCache() {

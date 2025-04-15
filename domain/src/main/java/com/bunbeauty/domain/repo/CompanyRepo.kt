@@ -1,12 +1,11 @@
 package com.bunbeauty.domain.repo
 
-import com.bunbeauty.domain.model.settings.WorkInfo
+import com.bunbeauty.domain.model.settings.WorkType
 
 interface CompanyRepo {
 
-    suspend fun getTypeWork(companyUuid: String): WorkInfo?
     suspend fun updateTypeWork(
-        workInfoData: WorkInfo,
+        workInfoData: WorkType,
         companyUuid: String,
         token: String
     )

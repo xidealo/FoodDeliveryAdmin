@@ -2,34 +2,18 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.mapper.company.mapWorkInfoServerToWorkInfo
 import com.bunbeauty.data.mapper.company.mapWorkInfoToCompanyPatchServer
-import com.bunbeauty.domain.model.settings.WorkInfo
+import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.domain.repo.CompanyRepo
 
 class CompanyRepository(
     private val networkConnector: FoodDeliveryApi
 ) : CompanyRepo {
 
-    private var cachedTypeWork: WorkInfo? = null
-
-    override suspend fun getTypeWork(companyUuid: String): WorkInfo? {
-        return when (val result = networkConnector.getWorkInfo(companyUuid = companyUuid)) {
-            is ApiResult.Success -> {
-                val workInfo =
-                    result.data.mapWorkInfoServerToWorkInfo()
-                cachedTypeWork = workInfo
-                workInfo
-            }
-
-            is ApiResult.Error -> {
-                null
-            }
-        }
-    }
+    private var cachedTypeWork: WorkType? = null
 
     override suspend fun updateTypeWork(
-        workInfoData: WorkInfo,
+        workInfoData: WorkType,
         companyUuid: String,
         token: String
     ) {

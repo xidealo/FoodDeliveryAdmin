@@ -6,6 +6,7 @@ import com.bunbeauty.domain.feature.profile.IsOrderAvailableUseCase
 import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.model.GetTypeWorkUseCase
 import com.bunbeauty.domain.feature.profile.model.UpdateTypeWorkUseCase
+import com.bunbeauty.domain.feature.profile.model.UpdateWorkCafeUseCase
 import org.koin.dsl.module
 
 fun profileModule() = module {
@@ -19,6 +20,13 @@ fun profileModule() = module {
         UpdateTypeWorkUseCase(
             workInfoRepository = get(),
             dataStoreRepo = get()
+        )
+    }
+
+    factory {
+        UpdateWorkCafeUseCase(
+            dataStoreRepo = get(),
+            workLoadRepository = get()
         )
     }
 

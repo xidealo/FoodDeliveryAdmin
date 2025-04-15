@@ -1,6 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.settings
 
 import androidx.compose.runtime.Composable
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.feature.settings.state.SettingsState
 
@@ -14,6 +16,7 @@ internal fun SettingsState.DataState.toViewState(): SettingsViewState {
                 SettingsViewState.State.Success(
                     isNotifications = isUnlimitedNotifications,
                     workType = workType.toViewStateWorkType(),
+                    workLoad = workLoad.toViewStateWorkLoad(),
                     acceptOrdersConfirmation = SettingsViewState.AcceptOrdersConfirmation(
                         isShown = showAcceptOrdersConfirmation,
                         titleResId = R.string.title_settings_disable_orders,
@@ -27,11 +30,19 @@ internal fun SettingsState.DataState.toViewState(): SettingsViewState {
     )
 }
 
-fun SettingsState.DataState.WorkType.toViewStateWorkType(): SettingsViewState.WorkType {
+fun WorkType.toViewStateWorkType(): SettingsViewState.WorkType {
     return when (this) {
-        SettingsState.DataState.WorkType.DELIVERY -> SettingsViewState.WorkType.DELIVERY
-        SettingsState.DataState.WorkType.PICKUP -> SettingsViewState.WorkType.PICKUP
-        SettingsState.DataState.WorkType.DELIVERY_AND_PICKUP -> SettingsViewState.WorkType.DELIVERY_AND_PICKUP
-        SettingsState.DataState.WorkType.CLOSED -> SettingsViewState.WorkType.CLOSED
+        WorkType.DELIVERY -> SettingsViewState.WorkType.DELIVERY
+        WorkType.PICKUP -> SettingsViewState.WorkType.PICKUP
+        WorkType.DELIVERY_AND_PICKUP -> SettingsViewState.WorkType.DELIVERY_AND_PICKUP
+        WorkType.CLOSED -> SettingsViewState.WorkType.CLOSED
+    }
+}
+
+fun WorkLoad.toViewStateWorkLoad(): SettingsViewState.WorkLoad {
+    return when (this) {
+        WorkLoad.LOW -> SettingsViewState.WorkLoad.LOW
+        WorkLoad.AVERAGE -> SettingsViewState.WorkLoad.AVERAGE
+        WorkLoad.HIGH -> SettingsViewState.WorkLoad.HIGH
     }
 }

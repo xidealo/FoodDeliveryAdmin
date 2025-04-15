@@ -158,7 +158,8 @@ fun viewModelModule() = module {
             getIsUnlimitedNotification = get(),
             updateIsUnlimitedNotification = get(),
             getTypeWorkUseCase = get(),
-            updateTypeWorkUseCase = get()
+            updateTypeWorkUseCase = get(),
+            updateWorkCafeUseCase = get()
         )
     }
 
