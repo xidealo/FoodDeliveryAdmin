@@ -49,8 +49,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_KEY
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.CategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
@@ -161,7 +161,7 @@ class EditMenuProductFragment :
 
             is EditMenuProduct.Event.NavigateToCategoryList -> {
                 findNavController().navigate(
-                    directions = EditMenuProductFragmentDirections.toCategoryListFragment(
+                    directions = EditMenuProductFragmentDirections.toSelectCategoryListFragment(
                         selectedCategoryUuidList = event.selectedCategoryList.toTypedArray()
                     )
                 )

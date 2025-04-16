@@ -13,7 +13,6 @@ interface EditMenuProduct {
         val state: State,
         val productUuid: String?,
         val productName: String,
-
         val nameField: TextFieldData,
         val newPriceField: TextFieldData,
         val oldPriceField: TextFieldData,

@@ -13,16 +13,18 @@ class LoginUseCase(
         username: String,
         password: String
     ) {
-        val (token, cityUuid, companyUuid) = userAuthorizationRepo.login(
+        val (token, cafeUuid, companyUuid) = userAuthorizationRepo.login(
             username = username,
             password = password
         ) ?: throw LoginException()
-        dataStoreRepo.apply {
+
+        with(dataStoreRepo) {
             saveToken(token)
-            saveManagerCity(cityUuid)
+            saveCafeUuid(cafeUuid)
             saveCompanyUuid(companyUuid)
             saveUsername(username)
         }
+
         userAuthorizationRepo.updateNotificationToken()
     }
 }

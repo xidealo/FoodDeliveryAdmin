@@ -1,9 +1,9 @@
 package com.bunbeauty.data.di
 
-import com.bunbeauty.data.mapper.CategoryMapper
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.OderProductMapper
 import com.bunbeauty.data.mapper.cafe.CafeMapper
+import com.bunbeauty.data.mapper.category.CategoryMapper
 import com.bunbeauty.data.mapper.city.CityMapper
 import com.bunbeauty.data.mapper.nonworkingday.NonWorkingDayMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper

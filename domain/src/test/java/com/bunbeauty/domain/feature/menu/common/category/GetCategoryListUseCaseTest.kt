@@ -23,72 +23,60 @@ class GetCategoryListUseCaseTest {
 
     @BeforeTest
     fun setup() {
-        getCategoryListUseCase = GetCategoryListUseCase(
-            categoryRepo = categoryRepo,
-            dataStoreRepo = dataStoreRepo
-        )
+        getCategoryListUseCase = GetCategoryListUseCase(categoryRepo, dataStoreRepo)
     }
 
     @Test
-    fun `invoke returns filtered category list`() = runTest {
+    fun `invoke filters out categories with empty UUID`() = runTest {
         // Given
-        val token = "test_token"
-        val companyUuid = "test_company_uuid"
-        val categories = listOf(
-            categoryMock.copy(uuid = "1"),
-            categoryMock.copy(uuid = "2"),
-            categoryMock.copy(uuid = "")
+        mockSuccessfulDataFetch(
+            token = "test_token",
+            companyUuid = "test_company_uuid",
+            categories = listOf(
+                categoryMock.copy(uuid = "1"),
+                categoryMock.copy(uuid = "2"),
+                categoryMock.copy(uuid = "")
+            )
         )
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { categoryRepo.getCategoryList(token, companyUuid) } returns categories
 
         // When
-        val result = getCategoryListUseCase()
+        val result = getCategoryListUseCase(refreshing = false)
 
         // Then
-        assertEquals(listOf(categoryMock.copy(uuid = "1"), categoryMock.copy(uuid = "2")), result)
+        assertEquals(
+            listOf(
+                categoryMock.copy(uuid = "1"),
+                categoryMock.copy(uuid = "2")
+            ),
+            result
+        )
     }
 
     @Test
     fun `invoke throws NoTokenException when token is null`() = runTest {
-        // Given
         coEvery { dataStoreRepo.getToken() } returns null
         coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
 
-        // When & Then
-        assertFailsWith<NoTokenException> {
-            getCategoryListUseCase()
-        }
+        assertFailsWith<NoTokenException> { getCategoryListUseCase(refreshing = false) }
     }
 
     @Test
     fun `invoke throws NoCompanyUuidException when companyUuid is null`() = runTest {
-        // Given
         coEvery { dataStoreRepo.getToken() } returns "test_token"
         coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
 
-        // When & Then
-        assertFailsWith<NoCompanyUuidException> {
-            getCategoryListUseCase()
-        }
+        assertFailsWith<NoCompanyUuidException> { getCategoryListUseCase(refreshing = false) }
     }
 
-    @Test
-    fun `invoke throws NoCompanyUuidException when companyUuid flow is empty`() = runTest {
-        // Given
-        coEvery { dataStoreRepo.getToken() } returns "test_token"
-        coEvery { dataStoreRepo.companyUuid } returns flowOf()
-
-        // When & Then
-        assertFailsWith<NoCompanyUuidException> {
-            getCategoryListUseCase()
-        }
+    private fun mockSuccessfulDataFetch(
+        token: String,
+        companyUuid: String,
+        categories: List<Category>
+    ) {
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery { categoryRepo.getCategoryList(token, companyUuid, any()) } returns categories
     }
 
-    private val categoryMock = Category(
-        uuid = "",
-        name = "",
-        priority = 0
-    )
+    private val categoryMock = Category(uuid = "", name = "", priority = 0)
 }

@@ -1,5 +1,8 @@
 package com.bunbeauty.domain.model.cafe
 
+import com.bunbeauty.domain.model.settings.WorkLoad
+import com.bunbeauty.domain.model.settings.WorkType
+
 data class Cafe(
     val uuid: String,
     val address: String,
@@ -10,5 +13,7 @@ data class Cafe(
     val offset: Int,
     val phone: String,
     val visible: Boolean,
-    val cityUuid: String
+    val cityUuid: String,
+    val workload: WorkLoad,
+    val workType: WorkType
 )

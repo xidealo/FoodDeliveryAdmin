@@ -16,10 +16,9 @@ data class StatisticViewState(
         data object Error : State
         data class Success(
             val statisticList: ImmutableList<StatisticItemModel>,
-            val selectedCafe: String,
             val period: String,
             val timeIntervalListUI: TimeIntervalListUI,
-            val cafeListUI: CafeListUI,
+            val cafeAddress: String,
             val loadingStatistic: Boolean
         ) : State {
             @Immutable
@@ -42,18 +41,6 @@ data class StatisticViewState(
         data class TimeIntervalItem(
             val timeInterval: String,
             val timeIntervalType: TimeIntervalCode
-        )
-    }
-
-    @Immutable
-    data class CafeListUI(
-        val isShown: Boolean,
-        val cafeList: ImmutableList<CafeItem>
-    ) {
-        @Immutable
-        data class CafeItem(
-            val uuid: String?,
-            val name: String
         )
     }
 }

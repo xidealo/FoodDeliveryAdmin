@@ -7,14 +7,12 @@ import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
 import com.bunbeauty.domain.usecase.SeparatedMenuProductList
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetSeparatedMenuProductListUseCaseTest {
 
     private val dataStoreRepo: DataStoreRepo = mockk()

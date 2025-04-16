@@ -8,14 +8,11 @@ import kotlinx.coroutines.flow.emptyFlow
 
 class GetOrderErrorFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
-    private val getSelectedCafe: GetSelectedCafeUseCase,
     private val orderRepository: OrderRepo
 ) {
 
-    suspend operator fun invoke(): Flow<OrderError> {
+    suspend operator fun invoke(cafeUuid: String): Flow<OrderError> {
         val token = dataStoreRepo.getToken() ?: return emptyFlow()
-        val cafeUuid = getSelectedCafe()?.uuid ?: return emptyFlow()
-
         return orderRepository.getOrderErrorFlow(
             token = token,
             cafeUuid = cafeUuid

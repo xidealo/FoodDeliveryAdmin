@@ -19,22 +19,8 @@ data class OrderListViewState(
             val orderList: ImmutableList<OrderItem>,
             val connectionError: Boolean,
             val refreshing: Boolean,
-            val cafeListUI: CafeListUI,
             val loadingOrderList: Boolean
-        ) : State {
-            @Immutable
-            data class CafeListUI(
-                val isShown: Boolean,
-                val cafeList: ImmutableList<CafeItem>
-            ) {
-                @Immutable
-                data class CafeItem(
-                    val uuid: String,
-                    val name: String,
-                    val isSelected: Boolean
-                )
-            }
-        }
+        ) : State
     }
 
     @Immutable

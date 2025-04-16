@@ -12,7 +12,9 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
+import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
@@ -28,9 +30,9 @@ import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
-import com.bunbeauty.data.model.server.response.UserAuthorizationResponse
-import com.bunbeauty.data.model.server.response.UserResponse
 import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
+import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -131,6 +133,13 @@ class FoodDeliveryApiImpl(
         return get(
             path = "cafe",
             parameters = mapOf("cityUuid" to cityUuid)
+        )
+    }
+
+    override suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer> {
+        return get(
+            path = "v2/cafe",
+            parameters = mapOf("cafeUuid" to cafeUuid)
         )
     }
 
@@ -342,6 +351,30 @@ class FoodDeliveryApiImpl(
         return get(
             path = "category",
             parameters = mapOf("companyUuid" to companyUuid),
+            token = token
+        )
+    }
+
+    override suspend fun postCategory(
+        token: String,
+        categoryServerPost: CreateCategoryPostServer
+    ): ApiResult<CategoryServer> {
+        return post(
+            path = "category",
+            body = categoryServerPost,
+            token = token
+        )
+    }
+
+    override suspend fun patchCategory(
+        token: String,
+        uuid: String,
+        patchCategory: CategoryPatchServer
+    ): ApiResult<CategoryServer> {
+        return patch(
+            path = "category",
+            body = patchCategory,
+            parameters = mapOf("uuid" to uuid),
             token = token
         )
     }

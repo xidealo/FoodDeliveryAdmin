@@ -28,6 +28,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBot
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.selectable.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -51,6 +52,7 @@ class StatisticFragment :
         )
     }
 
+    @Suppress("NonSkippableComposable")
     @Composable
     override fun Screen(state: StatisticViewState, onAction: (Statistic.Action) -> Unit) {
         StatisticScreen(
@@ -72,6 +74,7 @@ class StatisticFragment :
         }
     }
 
+    @Suppress("NonSkippableComposable")
     @Composable
     private fun StatisticScreen(
         statisticViewState: StatisticViewState,
@@ -105,15 +108,12 @@ class StatisticFragment :
                 StatisticViewState.State.Loading -> LoadingScreen()
                 is StatisticViewState.State.Success -> {
                     Column {
-                        NavigationTextCard(
+                        TextWithHintCard(
                             modifier = Modifier
                                 .padding(top = 16.dp)
                                 .padding(horizontal = 16.dp),
-                            labelText = stringResource(R.string.msg_common_cafe),
-                            valueText = statisticViewState.state.selectedCafe,
-                            onClick = {
-                                onAction(Statistic.Action.SelectCafeClick)
-                            }
+                            hint = stringResource(R.string.msg_common_cafe),
+                            label = statisticViewState.state.cafeAddress
                         )
 
                         NavigationTextCard(
@@ -139,6 +139,7 @@ class StatisticFragment :
         }
     }
 
+    @Suppress("NonSkippableComposable")
     @Composable
     private fun StatisticSuccessScreen(
         state: StatisticViewState.State.Success,
@@ -170,10 +171,10 @@ class StatisticFragment :
             listState.animateScrollToItem(0)
         }
 
-        CafeListBottomSheet(state = state, onAction = onAction)
         TimeIntervalListBottomSheet(state = state, onAction = onAction)
     }
 
+    @Suppress("NonSkippableComposable")
     @Composable
     private fun TimeIntervalListBottomSheet(
         state: StatisticViewState.State.Success,
@@ -207,42 +208,7 @@ class StatisticFragment :
         }
     }
 
-    @Composable
-    private fun CafeListBottomSheet(
-        state: StatisticViewState.State.Success,
-        onAction: (Statistic.Action) -> Unit
-    ) {
-        AdminModalBottomSheet(
-            title = stringResource(R.string.title_statistic_select_cafe),
-            isShown = state.cafeListUI.isShown,
-            onDismissRequest = {
-                onAction(Statistic.Action.CloseCafeListBottomSheet)
-            }
-        ) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(
-                        rememberScrollState()
-                    )
-            ) {
-                state.cafeListUI.cafeList.forEach { cafe ->
-                    SelectableItem(
-                        title = cafe.name,
-                        clickable = true,
-                        elevated = false,
-                        onClick = {
-                            onAction(
-                                Statistic.Action.SelectedCafe(
-                                    cafeUuid = cafe.uuid
-                                )
-                            )
-                        }
-                    )
-                }
-            }
-        }
-    }
-
+    @Suppress("NonSkippableComposable")
     @Composable
     private fun StatisticItem(statisticItemModel: StatisticViewState.State.Success.StatisticItemModel) {
         AdminCard(
@@ -290,6 +256,7 @@ class StatisticFragment :
         }
     }
 
+    @Suppress("NonSkippableComposable")
     @Preview(showSystemUi = true)
     @Composable
     private fun StatisticScreenPreview() {
@@ -313,17 +280,13 @@ class StatisticFragment :
                                 date = "ssss"
                             )
                         ),
-                        selectedCafe = "Все кафе",
                         period = "По годам",
-                        cafeListUI = StatisticViewState.CafeListUI(
-                            isShown = false,
-                            cafeList = persistentListOf()
-                        ),
                         timeIntervalListUI = StatisticViewState.TimeIntervalListUI(
                             isShown = false,
                             timeIntervalList = persistentListOf()
                         ),
-                        loadingStatistic = false
+                        loadingStatistic = false,
+                        cafeAddress = "Кимры чупки 22 в"
                     )
                 ),
                 onAction = {}

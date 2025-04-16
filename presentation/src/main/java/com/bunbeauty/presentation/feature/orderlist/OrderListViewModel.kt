@@ -2,15 +2,11 @@ package com.bunbeauty.presentation.feature.orderlist
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.common.GetCafeListUseCase
-import com.bunbeauty.domain.feature.orderlist.CheckIsAnotherCafeSelectedUseCase
+import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
 import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
-import com.bunbeauty.domain.feature.orderlist.GetSelectedCafeUseCase
-import com.bunbeauty.domain.feature.orderlist.SaveSelectedCafeUuidUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.orderlist.state.OrderList
-import com.bunbeauty.presentation.feature.selectcafe.SelectableCafeItem
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.Job
 
@@ -19,26 +15,20 @@ private const val TAG = "OrderListViewModel"
 class OrderListViewModel(
     private val getOrderListFlow: GetOrderListFlowUseCase,
     private val getOrderErrorFlow: GetOrderErrorFlowUseCase,
-    private val getSelectedCafe: GetSelectedCafeUseCase,
-    private val getCafeList: GetCafeListUseCase,
-    private val saveSelectedCafeUuid: SaveSelectedCafeUuidUseCase,
-    private val checkIsAnotherCafeSelected: CheckIsAnotherCafeSelectedUseCase
+    private val getCafeUseCase: GetCafeUseCase
 ) : BaseStateViewModel<OrderList.DataState, OrderList.Action, OrderList.Event>(
     initState = OrderList.DataState(
         refreshing = false,
-        selectedCafe = null,
         hasConnectionError = false,
         orderList = emptyList(),
         orderListState = OrderList.DataState.State.LOADING,
-        cafeList = emptyList(),
-        showCafeList = false,
+        cafe = null,
         loadingOrderList = false
     )
 ) {
     override fun reduce(action: OrderList.Action, dataState: OrderList.DataState) {
         when (action) {
             OrderList.Action.StartObserveOrders -> {
-                setUpCafe()
                 stopObservingOrderList()
                 observeOrderList()
             }
@@ -49,12 +39,6 @@ class OrderListViewModel(
             is OrderList.Action.OrderClick -> onOrderClicked(
                 orderUuid = action.orderUuid,
                 orderCode = action.orderCode
-            )
-
-            OrderList.Action.CafeClick -> onCafeClicked()
-            OrderList.Action.CloseCafeListBottomSheet -> closeCafeListBottomSheet()
-            is OrderList.Action.SelectedCafe -> onCafeSelected(
-                cafeUuid = action.cafeUuid
             )
         }
     }
@@ -68,38 +52,6 @@ class OrderListViewModel(
         }
         stopObservingOrderList()
         observeOrderList()
-    }
-
-    private fun closeCafeListBottomSheet() {
-        setState {
-            copy(
-                showCafeList = false
-            )
-        }
-    }
-
-    private fun onCafeClicked() {
-        setState {
-            copy(
-                showCafeList = true
-            )
-        }
-    }
-
-    private fun onCafeSelected(cafeUuid: String) {
-        viewModelScope.launchSafe(
-            block = {
-                if (checkIsAnotherCafeSelected(cafeUuid)) {
-                    stopObservingOrderList()
-                    saveSelectedCafeUuid(cafeUuid)
-                    setUpCafe()
-                    observeOrderList()
-                    closeCafeListBottomSheet()
-                }
-            },
-            onError = {
-            }
-        )
     }
 
     private fun onOrderClicked(orderUuid: String, orderCode: String) {
@@ -121,46 +73,12 @@ class OrderListViewModel(
         observeOrderList()
     }
 
-    private fun setUpCafe() {
-        viewModelScope.launchSafe(
-            block = {
-                setState {
-                    copy(hasConnectionError = false)
-                }
-                val selectedCafe = getSelectedCafe()
-
-                setState {
-                    if (selectedCafe == null) {
-                        copy(hasConnectionError = true)
-                    } else {
-                        copy(
-                            hasConnectionError = false,
-                            orderListState = OrderList.DataState.State.SUCCESS,
-                            selectedCafe = selectedCafe,
-                            cafeList = getCafeList().map { cafe ->
-                                SelectableCafeItem(
-                                    uuid = cafe.uuid,
-                                    address = cafe.address,
-                                    isSelected = cafe.uuid == selectedCafe.uuid
-                                )
-                            }
-                        )
-                    }
-                }
-            },
-            onError = {
-                setState {
-                    copy(hasConnectionError = true)
-                }
-            }
-        )
-    }
-
     private fun observeOrderList() {
         setState {
             copy(
                 hasConnectionError = false,
-                loadingOrderList = true
+                loadingOrderList = true,
+                orderListState = OrderList.DataState.State.LOADING
             )
         }
 
@@ -172,14 +90,23 @@ class OrderListViewModel(
                     copy(
                         refreshing = false,
                         hasConnectionError = true,
-                        loadingOrderList = false
+                        loadingOrderList = false,
+                        orderListState = OrderList.DataState.State.ERROR
                     )
                 }
             },
             block = {
-                val selectedCafe = getSelectedCafe() ?: return@launchSafe
+                val cafe = getCafeUseCase()
 
-                getOrderListFlow(selectedCafe.uuid).collect { orderList ->
+                setState {
+                    copy(
+                        hasConnectionError = false,
+                        orderListState = OrderList.DataState.State.SUCCESS,
+                        cafe = cafe
+                    )
+                }
+
+                getOrderListFlow(cafe.uuid).collect { orderList ->
                     val oldOrderList = mutableDataState.value.orderList
 
                     val hasNewOrder = oldOrderList.size < orderList.size
@@ -188,7 +115,8 @@ class OrderListViewModel(
                         copy(
                             orderList = orderList,
                             refreshing = false,
-                            loadingOrderList = false
+                            loadingOrderList = false,
+                            orderListState = OrderList.DataState.State.SUCCESS
                         )
                     }
 
@@ -203,9 +131,12 @@ class OrderListViewModel(
 
         orderErrorJob = viewModelScope.launchSafe(
             block = {
-                getOrderErrorFlow().collect {
+                getOrderErrorFlow(cafeUuid = getCafeUseCase().uuid).collect {
                     setState {
-                        copy(hasConnectionError = true)
+                        copy(
+                            hasConnectionError = true,
+                            orderListState = OrderList.DataState.State.ERROR
+                        )
                     }
                 }
             },
