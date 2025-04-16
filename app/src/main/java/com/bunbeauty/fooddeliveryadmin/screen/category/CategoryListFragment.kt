@@ -21,7 +21,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
-import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -70,15 +69,16 @@ class CategoryListFragment :
             backActionClick = {
                 onAction(CategoryListState.Action.OnBackClicked)
             },
-            topActions = listOf(
-                AdminTopBarAction(
-                    iconId = R.drawable.ic_edit,
-                    color = AdminTheme.colors.main.primary,
-                    onClick = {
-                        onAction(CategoryListState.Action.OnPriorityEditClicked)
-                    }
-                )
-            ),
+            // TODO(Ваня доделает в обновлении 1.9.0)
+//            topActions = listOf(
+//                AdminTopBarAction(
+//                    iconId = R.drawable.ic_edit,
+//                    color = AdminTheme.colors.main.primary,
+//                    onClick = {
+//                        onAction(CategoryListState.Action.OnPriorityEditClicked)
+//                    }
+//                )
+//            ),
             actionButton = {
                 if (state.state is CategoryListViewState.State.Success) {
                     FloatingButton(
