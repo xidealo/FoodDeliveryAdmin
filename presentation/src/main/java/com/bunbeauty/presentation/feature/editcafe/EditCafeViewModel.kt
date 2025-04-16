@@ -28,8 +28,8 @@ class EditCafeViewModel(
     getInitialNonWorkingDayDate: GetInitialNonWorkingDayDateUseCase,
     getNonWorkingDayYearRange: GetNonWorkingDayYearRangeUseCase,
     getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase
-) : BaseStateViewModel<EditCafe.ViewDataState, EditCafe.Action, EditCafe.Event> (
-    initState = EditCafe.ViewDataState(
+) : BaseStateViewModel<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event> (
+    initState = EditCafeState.ViewDataState(
         cafeUuid = null,
         cafeAddress = "",
         cafeWorkingHours = CafeWorkingHours(
@@ -38,16 +38,16 @@ class EditCafeViewModel(
             toTimeText = "",
             toTime = LocalTime.MAX
         ),
-        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Loading,
+        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Loading,
         initialNonWorkingDayDate = getInitialNonWorkingDayDate(),
         yearRange = getNonWorkingDayYearRange(),
         minNonWorkingDayDate = getMinNonWorkingDayDate()
     )
 ) {
 
-    override fun reduce(action: EditCafe.Action, dataState: EditCafe.ViewDataState) {
+    override fun reduce(action: EditCafeState.Action, dataState: EditCafeState.ViewDataState) {
         when (action) {
-            is EditCafe.Action.Init -> {
+            is EditCafeState.Action.Init -> {
                 setState {
                     copy(
                         cafeUuid = action.cafeUuid,
@@ -57,29 +57,29 @@ class EditCafeViewModel(
                 fetchCafeData(action.cafeUuid)
             }
 
-            is EditCafe.Action.UpdateFromTime -> {
+            is EditCafeState.Action.UpdateFromTime -> {
                 updateFromTime(action.time)
             }
 
-            is EditCafe.Action.UpdateToTime -> {
+            is EditCafeState.Action.UpdateToTime -> {
                 updateToTime(action.time)
             }
 
-            is EditCafe.Action.AddNonWorkingDay -> {
+            is EditCafeState.Action.AddNonWorkingDay -> {
                 addNonWorkingDay(action.date)
             }
 
-            is EditCafe.Action.DeleteNonWorkingDay -> {
+            is EditCafeState.Action.DeleteNonWorkingDay -> {
                 requestConfirmDelete(action.uuid)
             }
 
-            is EditCafe.Action.ConfirmDeleteNonWorkingDay -> {
+            is EditCafeState.Action.ConfirmDeleteNonWorkingDay -> {
                 deleteNonWorkingDay(action.uuid)
             }
 
-            EditCafe.Action.BackClick -> {
+            EditCafeState.Action.BackClick -> {
                 sendEvent {
-                    EditCafe.Event.GoBack
+                    EditCafeState.Event.GoBack
                 }
             }
         }
@@ -94,9 +94,9 @@ class EditCafeViewModel(
                     copy(
                         cafeWorkingHours = cafeWorkingHours,
                         nonWorkingDays = if (nonWorkingDayList.isEmpty()) {
-                            EditCafe.ViewDataState.NonWorkingDays.Empty
+                            EditCafeState.ViewDataState.NonWorkingDays.Empty
                         } else {
-                            EditCafe.ViewDataState.NonWorkingDays.Success(
+                            EditCafeState.ViewDataState.NonWorkingDays.Success(
                                 days = nonWorkingDayList
                             )
                         }
@@ -106,11 +106,11 @@ class EditCafeViewModel(
             onError = {
                 setState {
                     copy(
-                        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Empty
+                        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Empty
                     )
                 }
                 sendEvent {
-                    EditCafe.Event.ShowFetchDataError
+                    EditCafeState.Event.ShowFetchDataError
                 }
             }
         )
@@ -132,7 +132,7 @@ class EditCafeViewModel(
             },
             onError = {
                 sendEvent {
-                    EditCafe.Event.ShowUpdateDataError
+                    EditCafeState.Event.ShowUpdateDataError
                 }
             }
         )
@@ -154,7 +154,7 @@ class EditCafeViewModel(
             },
             onError = {
                 sendEvent {
-                    EditCafe.Event.ShowUpdateDataError
+                    EditCafeState.Event.ShowUpdateDataError
                 }
             }
         )
@@ -172,7 +172,7 @@ class EditCafeViewModel(
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
                 setState {
                     copy(
-                        nonWorkingDays = EditCafe.ViewDataState.NonWorkingDays.Success(
+                        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Success(
                             days = nonWorkingDayList
                         )
                     )
@@ -180,7 +180,7 @@ class EditCafeViewModel(
             },
             onError = {
                 sendEvent {
-                    EditCafe.Event.ShowSaveDataError
+                    EditCafeState.Event.ShowSaveDataError
                 }
             }
         )
@@ -188,7 +188,7 @@ class EditCafeViewModel(
 
     private fun requestConfirmDelete(uuid: String) {
         sendEvent {
-            EditCafe.Event.ShowConfirmDeletion(uuid = uuid)
+            EditCafeState.Event.ShowConfirmDeletion(uuid = uuid)
         }
     }
 
@@ -201,9 +201,9 @@ class EditCafeViewModel(
                 setState {
                     copy(
                         nonWorkingDays = if (nonWorkingDayList.isEmpty()) {
-                            EditCafe.ViewDataState.NonWorkingDays.Empty
+                            EditCafeState.ViewDataState.NonWorkingDays.Empty
                         } else {
-                            EditCafe.ViewDataState.NonWorkingDays.Success(
+                            EditCafeState.ViewDataState.NonWorkingDays.Success(
                                 days = nonWorkingDayList
                             )
                         }
@@ -212,7 +212,7 @@ class EditCafeViewModel(
             },
             onError = {
                 sendEvent {
-                    EditCafe.Event.ShowDeleteDataError
+                    EditCafeState.Event.ShowDeleteDataError
                 }
             }
         )
