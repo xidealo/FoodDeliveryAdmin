@@ -8,6 +8,7 @@ import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 import com.bunbeauty.presentation.extension.launchSafe
+import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val CATEGORY_UUID = "categoryUuid"
@@ -20,11 +21,10 @@ class EditCategoryViewModel(
     BaseStateViewModel<EditCategoryState.DataState, EditCategoryState.Action, EditCategoryState.Event>(
         initState = EditCategoryState.DataState(
             uuid = "",
-            name = "",
+            name = TextFieldData.empty,
             isLoading = false,
             state = EditCategoryState.DataState.State.SUCCESS,
-            hasEditNameError = false,
-            hasDuplicateNameError = false
+            nameStateError = EditCategoryState.DataState.NameStateError.NO_ERROR
         )
     ) {
 
@@ -36,14 +36,19 @@ class EditCategoryViewModel(
             EditCategoryState.Action.OnBackClicked -> onBackClicked()
             EditCategoryState.Action.OnSaveEditCategoryClick -> saveEditCategory(
                 dataState.uuid,
-                dataState.name
+                dataState.name.value
             )
         }
     }
 
     private fun editNameCategory(nameEditCategory: String) {
         setState {
-            copy(name = nameEditCategory)
+            copy(
+                name = name.copy(
+                    value = nameEditCategory,
+                    isError = false
+                )
+            )
         }
     }
 
@@ -62,7 +67,10 @@ class EditCategoryViewModel(
                 setState {
                     copy(
                         uuid = category.uuid,
-                        name = category.name
+                        name = name.copy(
+                            value = category.name,
+                            isError = false
+                        )
                     )
                 }
             },
@@ -82,7 +90,7 @@ class EditCategoryViewModel(
                     categoryUuid = categoryUuid,
                     updateCategory = state.value.run {
                         UpdateCategory(
-                            name = name.trim(),
+                            name = categoryName.trim(),
                             priority = null
                         )
                     }
@@ -103,19 +111,31 @@ class EditCategoryViewModel(
                     when (throwable) {
                         is CategoryNameException -> {
                             copy(
-                                hasEditNameError = true,
+                                nameStateError = EditCategoryState
+                                    .DataState.NameStateError.EMPTY_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
                                 isLoading = false
                             )
                         }
 
                         is DuplicateCategoryNameException -> {
                             copy(
-                                hasDuplicateNameError = true,
+                                nameStateError = EditCategoryState
+                                    .DataState.NameStateError.DUPLICATE_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
                                 isLoading = false
                             )
                         }
 
-                        else -> copy(isLoading = false)
+                        else -> copy(
+                            isLoading = false,
+                            nameStateError = EditCategoryState
+                                .DataState.NameStateError.NO_ERROR
+                        )
                     }
                 }
             }

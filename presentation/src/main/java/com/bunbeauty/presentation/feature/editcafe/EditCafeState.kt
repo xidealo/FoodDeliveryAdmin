@@ -8,7 +8,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 import java.time.LocalDate
 import java.time.LocalTime
 
-interface EditCafe {
+interface EditCafeState {
 
     data class ViewDataState(
         val cafeUuid: String?,
