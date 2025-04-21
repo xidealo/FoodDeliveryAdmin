@@ -12,7 +12,8 @@ class CategoryListViewModel(
         state = CategoryListState.DataState.State.LOADING,
         categoryList = listOf(),
         isLoading = true,
-        isRefreshing = false
+        isRefreshing = false,
+        isEditPriority = false
     )
 ) {
     override fun reduce(
