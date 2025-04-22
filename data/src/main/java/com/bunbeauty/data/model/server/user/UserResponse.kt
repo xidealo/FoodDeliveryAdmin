@@ -1,6 +1,5 @@
 package com.bunbeauty.data.model.server.user
 
-import com.bunbeauty.data.model.server.city.CityServer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,8 +16,5 @@ data class UserResponse(
     val role: String,
 
     @SerialName("unlimitedNotification")
-    val unlimitedNotification: Boolean,
-
-    @SerialName("city")
-    val city: CityServer
+    val unlimitedNotification: Boolean
 )
