@@ -236,6 +236,7 @@
 
     <!--CATEGORIES LIST-->
     <string name="title_categories_list">Категории</string>
+    <string name="title_edit_priority">"Изменение порядка</string>
 
     <!--CATEGORY LIST-->
     <string name="title_category_list">Категории</string>

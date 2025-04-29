@@ -25,6 +25,8 @@ class CategoryListViewModel(
 
             CategoryListState.Action.OnBackClicked -> onBackClicked()
 
+            CategoryListState.Action.OnCancelClicked -> cancelEditPriority()
+
             CategoryListState.Action.OnPriorityEditClicked -> onEditPriorityClicked()
 
             CategoryListState.Action.OnCreateClicked -> onCreateClicked()
@@ -32,6 +34,8 @@ class CategoryListViewModel(
             CategoryListState.Action.OnRefreshData -> refreshCategory()
 
             is CategoryListState.Action.OnCategoryClick -> categoryClick(action.categoryUuid)
+
+            CategoryListState.Action.OnSaveEditPriorityCategoryClick -> TODO()
         }
     }
 
@@ -90,6 +94,14 @@ class CategoryListViewModel(
         )
     }
 
+    private fun cancelEditPriority() {
+        setState {
+            copy(
+                isEditPriority = false
+            )
+        }
+    }
+
     private fun onBackClicked() {
         sendEvent {
             CategoryListState.Event.GoBackEvent
@@ -97,8 +109,10 @@ class CategoryListViewModel(
     }
 
     private fun onEditPriorityClicked() {
-        sendEvent {
-            CategoryListState.Event.OnEditPriorityCategoryEvent
+        setState {
+            copy(
+                isEditPriority = true
+            )
         }
     }
 
