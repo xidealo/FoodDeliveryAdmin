@@ -4,7 +4,6 @@ import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.FieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
-import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct.DataState.DescriptionStateError
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
