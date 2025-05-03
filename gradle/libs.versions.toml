@@ -27,7 +27,7 @@ imageCpropper = "4.6.0"
 turbine = "1.1.0"
 collectionsImmutable = "0.3.7"
 work = "2.10.0"
-reorderable = "0.9.6"
+
 
 [libraries]
 # Navigation
@@ -93,7 +93,6 @@ ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 activity-compose = { module = "androidx.activity:activity-compose" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 material-dialogs-datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
-compose-reorderable = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "reorderable" }
 
 work-runtime-ktx = {module ="androidx.work:work-runtime-ktx", version.ref ="work"}
 
@@ -189,6 +188,5 @@ compose = [
     "ui-tooling-preview",
     "ui-viewbinding",
     "lifecycle-runtime-compose",
-    "compose-reorderable"
 ]
 

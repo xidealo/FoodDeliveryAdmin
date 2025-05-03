@@ -2,33 +2,17 @@ package com.bunbeauty.fooddeliveryadmin.screen.category
 
 import android.os.Bundle
 import android.view.View
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.draganddrop.dragAndDropSource
-import androidx.compose.foundation.draganddrop.dragAndDropTarget
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draganddrop.DragAndDropTarget
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,10 +21,8 @@ import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
-import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -49,11 +31,6 @@ import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.category.CategoryListState
 import com.bunbeauty.presentation.feature.category.CategoryListViewModel
 import kotlinx.collections.immutable.toPersistentList
-import org.burnoutcrew.reorderable.ReorderableItem
-import org.burnoutcrew.reorderable.detectReorder
-import org.burnoutcrew.reorderable.detectReorderAfterLongPress
-import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import org.burnoutcrew.reorderable.reorderable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoryListFragment :
@@ -84,12 +61,7 @@ class CategoryListFragment :
     ) {
         AdminScaffold(
             backgroundColor = AdminTheme.colors.main.surface,
-//            title = stringResource(R.string.title_categories_list),
-            title = if (state.isEditPriority) {
-                stringResource(R.string.title_edit_priority)
-            } else {
-                stringResource(R.string.title_categories_list)
-            },
+            title = stringResource(R.string.title_categories_list),
             pullRefreshEnabled = true,
             refreshing = state.isRefreshing,
             onRefresh = {
@@ -98,25 +70,16 @@ class CategoryListFragment :
             backActionClick = {
                 onAction(CategoryListState.Action.OnBackClicked)
             },
-            topActions = listOf(
-                if (state.isEditPriority) {
-                    AdminTopBarAction(
-                        iconId = R.drawable.ic_clear,
-                        color = AdminTheme.colors.main.primary,
-                        onClick = {
-                            onAction(CategoryListState.Action.OnCancelClicked)
-                        }
-                    )
-                } else {
-                    AdminTopBarAction(
-                        iconId = R.drawable.ic_edit,
-                        color = AdminTheme.colors.main.primary,
-                        onClick = {
-                            onAction(CategoryListState.Action.OnPriorityEditClicked)
-                        }
-                    )
-                }
-            ),
+            // TODO(Ваня доделает в обновлении 1.9.0)
+//            topActions = listOf(
+//                AdminTopBarAction(
+//                    iconId = R.drawable.ic_edit,
+//                    color = AdminTheme.colors.main.primary,
+//                    onClick = {
+//                        onAction(CategoryListState.Action.OnPriorityEditClicked)
+//                    }
+//                )
+//            ),
             actionButton = {
                 if (state.state is CategoryListViewState.State.Success) {
                     FloatingButton(
@@ -149,23 +112,7 @@ class CategoryListFragment :
                     CategoriesListSuccessScreen(state = state.state, onAction = onAction)
                 }
 
-                is CategoryListViewState.State.SuccessDragDrop -> {
-                    TODO()
-//                    Column {
-//                        CategoriesListDragSuccessScreen(state = state.state, onAction = onAction)
-//
-//                        Spacer(modifier = Modifier.weight(1f))
-//
-//                        LoadingButton(
-//                            modifier = Modifier.padding(16.dp),
-//                            text = stringResource(R.string.action_create_category_save),
-//                            isLoading = state.isLoading,
-//                            onClick = {
-//                                onAction(CategoryListState.Action.OnSaveEditPriorityCategoryClick)
-//                            }
-//                        )
-//                    }
-                }
+                is CategoryListViewState.State.SuccessDragDrop -> TODO()
             }
         }
     }
@@ -203,9 +150,9 @@ class CategoryListFragment :
                 findNavController().navigateUp()
             }
 
-//            CategoryListState.Event.OnEditPriorityCategoryEvent -> {
-//                // TODO()
-//            }
+            CategoryListState.Event.OnEditPriorityCategoryEvent -> {
+                // TODO()
+            }
 
             CategoryListState.Event.CreateCategoryEvent -> {
                 findNavController().navigateSafe(CategoryListFragmentDirections.toCreateCategoryFragment())
@@ -218,31 +165,24 @@ class CategoryListFragment :
                     )
                 )
             }
-
         }
     }
 
     @Composable
     override fun mapState(state: CategoryListState.DataState): CategoryListViewState {
-        val categoryItems = state.categoryList.map { category ->
-            CategoryListViewState.CategoriesViewItem(
-                uuid = category.uuid,
-                name = category.name,
-                priority = category.priority
-            )
-        }.toPersistentList()
-
         return CategoryListViewState(
             state = when (state.state) {
                 CategoryListState.DataState.State.LOADING -> CategoryListViewState.State.Loading
                 CategoryListState.DataState.State.ERROR -> CategoryListViewState.State.Error
-                CategoryListState.DataState.State.SUCCESS -> {
-                    if (state.isEditPriority) {
-                        CategoryListViewState.State.SuccessDragDrop(categoryItems)
-                    } else {
-                        CategoryListViewState.State.Success(categoryItems)
-                    }
-                }
+                CategoryListState.DataState.State.SUCCESS -> CategoryListViewState.State.Success(
+                    categoryList = state.categoryList.map { category ->
+                        CategoryListViewState.CategoriesViewItem(
+                            uuid = category.uuid,
+                            name = category.name,
+                            priority = category.priority
+                        )
+                    }.toPersistentList()
+                )
             },
             isLoading = state.isLoading,
             isRefreshing = state.isRefreshing,
@@ -250,86 +190,18 @@ class CategoryListFragment :
         )
     }
 
-//    @Composable
-//    private fun CategoriesListDragSuccessScreen(
-//        state: CategoryListViewState.State.SuccessDragDrop,
-//        onAction: (CategoryListState.Action) -> Unit
-//    ) {
-//        LazyColumn(
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            items(
-//                items = state.categoryList,
-//                key = { category -> category.uuid }
-//            ) { category ->
-//                CategoryDraggableItem(
-//                    category = category,
-//                    onClick = {
-//                        onAction(
-//                            CategoryListState.Action.OnCategoryClick(
-//                                categoryUuid = category.uuid
-//                            )
-//                        )
-//                    }
-//                )
-//            }
-//        }
-//    }
-//
-//    @OptIn(ExperimentalFoundationApi::class)
-//    @Composable
-//    private fun MyDraggableComponent(
-//        modifier: Modifier = Modifier,
-//        category: CategoryListViewState.CategoriesViewItem,
-//    ) {
-//        Box(
-//            modifier = modifier
-//                .size(100.dp)
-//                .dragAndDropSource(
-//                    drawDragDecoration = {
-//                        AdminCard(
-//                            modifier = modifier.fillMaxWidth(),
-//                        ) {
-//                            Row(
-//                                modifier = Modifier
-//                                    .padding(horizontal = 16.dp, vertical = 16.dp)
-//                                    .fillMaxWidth(),
-//                                verticalAlignment = Alignment.CenterVertically
-//                            ) {
-//                                Text(
-//                                    modifier = Modifier
-//                                        .weight(1f)
-//                                        .padding(start = 16.dp),
-//                                    text = category.name,
-//                                    style = AdminTheme.typography.bodyLarge,
-//                                    color = AdminTheme.colors.main.onSurface
-//                                )
-//                                Icon(
-//                                    painter = painterResource(id = R.drawable.ic_drad_handle),
-//                                    contentDescription = null,
-//                                    modifier = Modifier
-//                                        .padding(start = 8.dp)
-//                                )
-//                            }
-//                        }
-//                    }
-//                ) {
-//
-//                    startTransfer(
-//                        transferData = TODO()
-//                    )
-//                }
-//        ) { }
-//    }
-
 
     @Composable
     private fun CategoryItemDraggable(
         modifier: Modifier = Modifier,
         category: CategoryListViewState.CategoriesViewItem,
+        onClick: () -> Unit,
+        isClickable: Boolean
     ) {
         AdminCard(
             modifier = modifier.fillMaxWidth(),
+            onClick = onClick,
+            clickable = isClickable,
             shape = noCornerCardShape
         ) {
             Row(
@@ -355,7 +227,6 @@ class CategoryListFragment :
             }
         }
     }
-
 
     @Composable
     private fun CategoryItemView(
@@ -428,7 +299,7 @@ class CategoryListFragment :
         )
 
         AdminTheme {
-            CategoryItemView(
+            CategoryItemDraggable(
                 category = sampleCategory,
                 onClick = {},
                 isClickable = true

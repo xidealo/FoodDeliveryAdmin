@@ -34,7 +34,7 @@ interface CategoryListState {
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
-        //data object OnEditPriorityCategoryEvent : Event
+        data object OnEditPriorityCategoryEvent : Event
         data object CreateCategoryEvent : Event
         data class OnCategoryClick(val categoryUuid: String) : Event
     }
