@@ -4,6 +4,7 @@ import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.FieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct.DataState.DescriptionStateError
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -16,6 +17,7 @@ interface CreateMenuProduct {
         val nutritionField: TextFieldData,
         val units: String,
         val descriptionField: TextFieldData,
+        val descriptionStateError: DescriptionStateError,
         val comboDescription: String,
         val categoriesField: CategoriesFieldData,
         val isVisibleInMenu: Boolean,
@@ -31,6 +33,12 @@ interface CreateMenuProduct {
                     category.selected
                 }
             }
+
+        enum class DescriptionStateError {
+            EMPTY_DESCRIPTION_ERROR,
+            LONG_DESCRIPTION_ERROR,
+            NO_ERROR
+        }
     }
 
     data class ImageFieldData(

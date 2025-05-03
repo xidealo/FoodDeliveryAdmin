@@ -33,8 +33,8 @@ class GetCategoryListUseCaseTest {
             token = "test_token",
             companyUuid = "test_company_uuid",
             categories = listOf(
-                categoryMock.copy(uuid = "1"),
-                categoryMock.copy(uuid = "2"),
+                categoryMock.copy(uuid = "1", priority = 5),
+                categoryMock.copy(uuid = "2", priority = 2),
                 categoryMock.copy(uuid = "")
             )
         )
@@ -43,10 +43,11 @@ class GetCategoryListUseCaseTest {
         val result = getCategoryListUseCase(refreshing = false)
 
         // Then
+
         assertEquals(
             listOf(
-                categoryMock.copy(uuid = "1"),
-                categoryMock.copy(uuid = "2")
+                categoryMock.copy(uuid = "2", priority = 2),
+                categoryMock.copy(uuid = "1", priority = 5)
             ),
             result
         )
