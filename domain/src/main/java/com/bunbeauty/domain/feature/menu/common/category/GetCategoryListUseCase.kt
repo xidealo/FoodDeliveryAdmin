@@ -19,8 +19,8 @@ class GetCategoryListUseCase(
         ).filter { category ->
             !isHits(category = category)
         }.sortedBy { category ->
-                category.priority
-            }
+            category.priority
+        }
     }
 
     private fun isHits(category: Category) = category.uuid.isEmpty()

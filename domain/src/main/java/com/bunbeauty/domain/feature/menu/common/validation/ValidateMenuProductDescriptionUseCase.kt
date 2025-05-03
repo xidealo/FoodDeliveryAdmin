@@ -7,12 +7,10 @@ class ValidateMenuProductDescriptionUseCase {
     operator fun invoke(description: String): String {
         val cleanedDescription = description.trim()
 
-        return cleanedDescription.run {
-            when {
-                isEmpty() -> throw MenuProductDescriptionException()
-                length > 512 -> throw MenuProductDescriptionLongException()
-                else -> this
-            }
+        return when {
+            cleanedDescription.isEmpty() -> throw MenuProductDescriptionException()
+            cleanedDescription.length > 512 -> throw MenuProductDescriptionLongException()
+            else -> cleanedDescription
         }
     }
 }
