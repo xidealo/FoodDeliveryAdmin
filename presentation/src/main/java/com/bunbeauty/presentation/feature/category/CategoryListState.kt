@@ -30,6 +30,8 @@ interface CategoryListState {
         data object Init : Action
         data object OnSaveEditPriorityCategoryClick : Action
         data class OnCategoryClick(val categoryUuid: String) : Action
+        data class OnCategoryDropped(val fromUuid: String, val toUuid: String) : Action
+
     }
 
     sealed interface Event : BaseEvent {

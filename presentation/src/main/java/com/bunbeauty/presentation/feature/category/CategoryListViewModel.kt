@@ -36,8 +36,13 @@ class CategoryListViewModel(
             is CategoryListState.Action.OnCategoryClick -> categoryClick(action.categoryUuid)
 
             CategoryListState.Action.OnSaveEditPriorityCategoryClick -> TODO()
+
+            is CategoryListState.Action.OnCategoryDropped -> {
+                moveCategory(fromUuid = action.fromUuid, toUuid = action.toUuid)
+            }
         }
     }
+
 
     private fun categoryClick(categoryUuid: String) {
         sendEvent {
@@ -120,5 +125,19 @@ class CategoryListViewModel(
         sendEvent {
             CategoryListState.Event.CreateCategoryEvent
         }
+    }
+
+    private fun moveCategory(fromUuid: String, toUuid: String) {
+        val currentList = state.value.categoryList.toMutableList()
+        val fromIndex = currentList.indexOfFirst { it.uuid == fromUuid }
+        val toIndex = currentList.indexOfFirst { it.uuid == toUuid }
+
+        if (fromIndex == -1 || toIndex == -1 || fromIndex == toIndex) return
+
+        val item = currentList.removeAt(fromIndex)
+        currentList.add(toIndex, item)
+
+        setState { copy(categoryList = currentList) }
+
     }
 }
