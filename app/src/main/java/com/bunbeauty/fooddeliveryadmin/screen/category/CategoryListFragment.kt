@@ -1,25 +1,39 @@
 package com.bunbeauty.fooddeliveryadmin.screen.category
 
+import android.R.attr.category
+import android.R.attr.translationZ
+import android.annotation.SuppressLint
 import android.content.ClipData
+import android.content.ClipDescription
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.draganddrop.dragAndDropSource
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,13 +43,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.draganddrop.DragAndDropTransferData
+import androidx.compose.ui.draganddrop.mimeTypes
 import androidx.compose.ui.draganddrop.toAndroidDragEvent
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
@@ -195,58 +212,218 @@ class CategoryListFragment :
         }
     }
 
+//    @OptIn(ExperimentalFoundationApi::class)
+//    @SuppressLint("RememberReturnType")
+//    @Composable
+//    private fun CategoriesListSuccessDragScreen(
+//        state: CategoryListViewState.State.SuccessDragDrop,
+//        onAction: (CategoryListState.Action) -> Unit
+//    ) {
+//
+//        LazyColumn(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .dragAndDropTarget(
+//                    shouldStartDragAndDrop = { event ->
+//                        event.mimeTypes()
+//                            .contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
+//                    },
+//                    target = remember {
+//                        object : DragAndDropTarget {
+//                            override fun onDrop(event: DragAndDropEvent): Boolean {
+//                                TODO("Not yet implemented")
+//                            }
+//                        }
+//                    }
+//                ),
+//        ) {
+//            AnimatedVisibility(
+//                visible = TODO("УКАЗЫВАЕМ ИНДЕКС ПЕРЕТАСКИВАЕМОГО ПОЛЯ"),
+//                enter = scaleIn() + fadeIn(),
+//                exit = scaleOut() + fadeOut()
+//            ) {
+//                Card(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .dragAndDropSource( // Источник перетаскивания
+//                            shouldStartDragAndDrop = { true },
+//                            onDragStarted = {
+//                                draggingUuid = category.uuid
+//                                DragAndDropTransferData(
+//                                    clipData = ClipData.newPlainText("uuid", category.uuid)
+//                                )
+//                            },
+//                            onDragEnded = {
+//                                draggingUuid = null
+//                            }
+//                        )
+//                ) {
+//                    // Элемент списка
+//                    CategoryItemDraggable(
+//                        category = category,
+//                        isDragging = false
+//                    )
+//                }
+//
+//            }
+//        }
+//    }
+
     @Composable
     private fun CategoriesListSuccessDragScreen(
         state: CategoryListViewState.State.SuccessDragDrop,
         onAction: (CategoryListState.Action) -> Unit
     ) {
+        // Список категорий с возможностью мутации (перетаскивание)
         val categoryList = remember { mutableStateListOf(*state.categoryList.toTypedArray()) }
-        var draggingIndex = state
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
+        val hoveredIndex = remember { mutableStateOf<Int?>(null) }
+
+        // UUID текущего перетаскиваемого элемента
+        var draggingUuid by remember { mutableStateOf<String?>(null) }
+
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(categoryList, key = { it.uuid }) { category ->
-                val isDragging = draggingIndex != null && draggingIndex == categoryList.indexOf(category)
+                val isDragging = draggingUuid == category.uuid
 
+                // Обёртка над карточкой с логикой перемещения
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .pointerInput(Unit) {
-                            detectDragGestures(
-                                onDragStart = { _ ->
-                                    val startIndex = categoryList.indexOf(category)
-                                    draggingIndex = startIndex
+                        .pointerInput(categoryList) {
+                            detectDragGesturesAfterLongPress(
+                                onDragStart = {
+                                    draggingUuid = category.uuid
                                 },
                                 onDragEnd = {
-                                    draggingIndex = null
+                                    draggingUuid = null
+                                    // Здесь можно отправить обновлённый список в ViewModel
+                                },
+                                onDragCancel = {
+                                    draggingUuid = null
                                 },
                                 onDrag = { change, dragAmount ->
                                     change.consume()
 
-                                    val fromIndex = categoryList.indexOf(category)
+
+                                    val fromIndex = categoryList.indexOfFirst { it.uuid == category.uuid }
                                     val toIndex = when {
-                                        dragAmount.y > 40 -> fromIndex + 1
-                                        dragAmount.y < -40 -> fromIndex - 1
+                                        dragAmount.y > 50 -> fromIndex + 1
+                                        dragAmount.y < -50 -> fromIndex - 1
                                         else -> fromIndex
                                     }
 
-                                    if (toIndex in categoryList.indices && toIndex != fromIndex) {
-                                        categoryList.removeAt(fromIndex)
-                                        categoryList.add(toIndex, category)
+                                    hoveredIndex.value = toIndex
+
+                                    if (toIndex in categoryList.indices && fromIndex != toIndex) {
+                                        val updatedList = categoryList.toMutableList()
+                                        val movedItem = updatedList.removeAt(fromIndex)
+                                        updatedList.add(toIndex, movedItem)
+
+                                        val finalList = updatedList.mapIndexed { index, item ->
+                                            item.copy(priority = index)
+                                        }
+
+                                        categoryList.clear()
+                                        categoryList.addAll(finalList)
+
+                                        draggingUuid = movedItem.uuid
                                     }
                                 }
                             )
                         }
                 ) {
+                    // Отображение самой карточки с иконкой для начала drag
                     CategoryItemDraggable(
                         category = category,
-                        isDragging = isDragging
+                        isDragging = isDragging,
+                        isTarget = hoveredIndex.value == categoryList.indexOf(category),
+                        onStartDrag = {
+                            draggingUuid = category.uuid
+                        }
                     )
                 }
             }
         }
     }
+
+
+//    @Composable
+//    private fun CategoriesListSuccessDragScreen(
+//        state: CategoryListViewState.State.SuccessDragDrop,
+//        onAction: (CategoryListState.Action) -> Unit
+//    ) {
+//        // Список категорий с mutableState
+//        val categoryList = remember { mutableStateListOf(*state.categoryList.toTypedArray()) }
+//
+//        // UUID текущего перетаскиваемого элемента
+//        var draggingUuid by remember { mutableStateOf<String?>(null) }
+//
+//        LazyColumn(modifier = Modifier.fillMaxSize()) {
+//            items(categoryList, key = { it.uuid }) { category ->
+//                val isDragging = draggingUuid == category.uuid
+//
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .graphicsLayer {
+//                            // Визуальный эффект для перетаскиваемого элемента
+//                            alpha = if (isDragging) 0.5f else 1f
+//                            translationZ
+//                        }
+//                        .pointerInput(Unit) {
+//                            detectDragGestures(
+//                                onDragStart = {
+//                                    draggingUuid = category.uuid
+//                                },
+//                                onDragEnd = {
+//                                    draggingUuid = null
+//                                },
+//                                onDragCancel = {
+//                                    draggingUuid = null
+//                                },
+//                                onDrag = { change, dragAmount ->
+//                                    change.consume()
+//
+//                                    val fromIndex =
+//                                        categoryList.indexOfFirst { it.uuid == category.uuid }
+//                                    val toIndex = when {
+//                                        dragAmount.y > 20 -> fromIndex + 1
+//                                        dragAmount.y < -20 -> fromIndex - 1
+//                                        else -> fromIndex
+//                                    }
+//
+//                                    if (toIndex in categoryList.indices && fromIndex != toIndex) {
+//                                        val newList = categoryList.toMutableList()
+//
+//                                        // Перемещаем элемент
+//                                        val movedItem = newList.removeAt(fromIndex)
+//                                        newList.add(toIndex, movedItem)
+//
+//                                        // Пересчитываем приоритеты
+//                                        val updatedList = newList.mapIndexed { index, item ->
+//                                            item.copy(priority = index)
+//                                        }
+//
+//                                        // Обновляем UI
+//                                        categoryList.clear()
+//                                        categoryList.addAll(updatedList)
+//
+//                                        // Обновляем UUID перетаскиваемого
+//                                        draggingUuid = movedItem.uuid
+//                                    }
+//                                }
+//                            )
+//                        }
+//                ) {
+//                    CategoryItemDraggable(
+//                        category = category,
+//                        isDragging = isDragging
+//                    )
+//                }
+//            }
+//        }
+//    }
 
 
     override fun handleEvent(event: CategoryListState.Event) {
@@ -302,7 +479,6 @@ class CategoryListFragment :
     }
 
 
-
     @Composable
     private fun CategoryItemView(
         modifier: Modifier = Modifier,
@@ -337,16 +513,23 @@ class CategoryListFragment :
     @Composable
     fun CategoryItemDraggable(
         category: CategoryListViewState.CategoriesViewItem,
-        isDragging: Boolean = false
+        isDragging: Boolean = false,
+        isTarget: Boolean = false,
+        onStartDrag: (() -> Unit)? = null
     ) {
-        val modifier = if (isDragging) {
-            Modifier
-                .fillMaxWidth()
-                .alpha(0.5f)
-                .scale(1.1f)
-        } else {
-            Modifier.fillMaxWidth()
-        }
+        val modifier = Modifier
+            .fillMaxWidth()
+            .then(
+                if (isDragging) Modifier
+                    .alpha(0.5f)
+                    .scale(1.05f)
+                else Modifier
+            )
+            .then(
+                if (isTarget) Modifier
+                    .zIndex(1f)       // Поверх других
+                else Modifier
+            )
 
         AdminCard(
             modifier = modifier
@@ -370,7 +553,15 @@ class CategoryListFragment :
                 Icon(
                     painter = painterResource(id = R.drawable.ic_drad_handle),
                     contentDescription = null,
-                    modifier = Modifier.padding(start = 8.dp)
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    onStartDrag?.invoke()
+                                }
+                            )
+                        }
                 )
             }
         }
