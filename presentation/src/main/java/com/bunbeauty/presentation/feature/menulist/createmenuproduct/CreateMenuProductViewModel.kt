@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionLongException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
@@ -38,7 +39,8 @@ class CreateMenuProductViewModel(
             value = null,
             isError = false
         ),
-        sendingToServer = false
+        sendingToServer = false,
+        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.NO_ERROR
     )
 ) {
 
@@ -263,6 +265,18 @@ class CreateMenuProductViewModel(
             is MenuProductDescriptionException -> {
                 setState {
                     copy(
+                        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.EMPTY_DESCRIPTION_ERROR,
+                        descriptionField = descriptionField.copy(
+                            isError = true
+                        )
+                    )
+                }
+            }
+
+            is MenuProductDescriptionLongException -> {
+                setState {
+                    copy(
+                        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.LONG_DESCRIPTION_ERROR,
                         descriptionField = descriptionField.copy(
                             isError = true
                         )

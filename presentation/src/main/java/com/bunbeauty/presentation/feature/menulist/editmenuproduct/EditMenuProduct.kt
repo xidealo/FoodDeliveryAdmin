@@ -19,6 +19,7 @@ interface EditMenuProduct {
         val nutritionField: TextFieldData,
         val units: String,
         val descriptionField: TextFieldData,
+        val descriptionStateError: DescriptionStateError,
         val comboDescription: String,
         val categoriesField: CategoriesFieldData,
         val isVisibleInMenu: Boolean,
@@ -32,6 +33,12 @@ interface EditMenuProduct {
             LOADING,
             SUCCESS,
             ERROR
+        }
+
+        enum class DescriptionStateError {
+            EMPTY_DESCRIPTION_ERROR,
+            LONG_DESCRIPTION_ERROR,
+            NO_ERROR
         }
     }
 

@@ -98,7 +98,8 @@ class EditMenuProductViewModelTest {
                 ),
                 isError = false
             ),
-            sendingToServer = false
+            sendingToServer = false,
+            descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR
         )
 
         viewModel.state.test {

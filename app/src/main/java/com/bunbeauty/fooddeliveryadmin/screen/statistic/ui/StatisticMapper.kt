@@ -10,10 +10,10 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun Statistic.DataState.toViewState(): StatisticViewState {
     return StatisticViewState(
-        state = when {
-            isLoading -> StatisticViewState.State.Loading
-            hasError -> StatisticViewState.State.Error
-            else -> {
+        state = when (state) {
+            Statistic.DataState.State.LOADING -> StatisticViewState.State.Loading
+            Statistic.DataState.State.ERROR -> StatisticViewState.State.Error
+            Statistic.DataState.State.SUCCESS -> {
                 StatisticViewState.State.Success(
                     statisticList = statisticList.map { statistic ->
                         statistic.toStatisticItemModelView()

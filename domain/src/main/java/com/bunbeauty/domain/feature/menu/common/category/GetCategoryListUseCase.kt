@@ -18,6 +18,8 @@ class GetCategoryListUseCase(
             refreshing = refreshing
         ).filter { category ->
             !isHits(category = category)
+        }.sortedBy { category ->
+            category.priority
         }
     }
 
