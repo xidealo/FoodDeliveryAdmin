@@ -44,11 +44,6 @@ interface Statistic {
     sealed interface Event : BaseEvent {
         data object GoBack : Event
     }
-
-    data class SelectedCafe(
-        val uuid: String?,
-        val address: String?
-    )
 }
 
 enum class TimeIntervalCode {
