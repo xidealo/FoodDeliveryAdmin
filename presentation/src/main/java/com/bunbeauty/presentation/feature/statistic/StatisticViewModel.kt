@@ -15,7 +15,8 @@ class StatisticViewModel(
     private val getStatisticUseCase: GetStatisticUseCase
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
     initState = Statistic.DataState(
-        loadingStatistic = false
+        loadingStatistic = false,
+        state = Statistic.DataState.State.LOADING
     )
 ) {
 
@@ -91,7 +92,10 @@ class StatisticViewModel(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    copy(loadingStatistic = true)
+                    copy(
+                        loadingStatistic = true,
+                        state = Statistic.DataState.State.SUCCESS
+                    )
                 }
                 getStatisticUseCase(
                     cafeUuid = cafeUuid,
@@ -122,7 +126,7 @@ class StatisticViewModel(
                         copy(
                             statisticList = statisticItemList,
                             loadingStatistic = false,
-                            hasError = false
+                            state = Statistic.DataState.State.ERROR
                         )
                     }
                 }
@@ -130,7 +134,7 @@ class StatisticViewModel(
             onError = {
                 setState {
                     copy(
-                        hasError = true,
+                        state = Statistic.DataState.State.ERROR,
                         loadingStatistic = false
                     )
                 }
@@ -141,20 +145,24 @@ class StatisticViewModel(
     private fun updateData() {
         viewModelScope.launchSafe(
             block = {
+                setState {
+                    copy(
+                        state = Statistic.DataState.State.LOADING
+                    )
+                }
                 val cafe = getCafeUseCase()
                 setState {
                     copy(
                         cafeAddress = cafe.address,
                         cafeUuid = cafe.uuid,
-                        isLoading = false
+                        state = Statistic.DataState.State.SUCCESS
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        hasError = true,
-                        isLoading = false
+                        state = Statistic.DataState.State.ERROR
                     )
                 }
             }

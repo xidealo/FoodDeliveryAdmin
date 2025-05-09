@@ -84,25 +84,27 @@ class StatisticFragment :
             title = stringResource(R.string.title_statistic),
             backActionClick = { onAction(Statistic.Action.SelectGoBackClick) },
             actionButton = {
-                LoadingButton(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(R.string.action_product_statistic_load),
-                    isLoading = if (statisticViewState.state is StatisticViewState.State.Success) {
-                        statisticViewState.state.loadingStatistic
-                    } else {
-                        true
-                    },
-                    onClick = {
-                        onAction(Statistic.Action.LoadStatisticClick)
-                    }
-                )
+                if (statisticViewState.state is StatisticViewState.State.Success) {
+                    LoadingButton(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = stringResource(R.string.action_product_statistic_load),
+                        isLoading = statisticViewState.state.loadingStatistic,
+                        onClick = {
+                            onAction(Statistic.Action.LoadStatisticClick)
+                        }
+                    )
+                }
             }
         ) {
             when (statisticViewState.state) {
-                StatisticViewState.State.Error -> ErrorScreen(
-                    mainTextId = R.string.error_common_loading_failed
-                ) {
-                    onAction(Statistic.Action.LoadStatisticClick)
+                StatisticViewState.State.Error -> {
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = {
+                            onAction(Statistic.Action.Init)
+                        }
+                    )
                 }
 
                 StatisticViewState.State.Loading -> LoadingScreen()
