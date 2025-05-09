@@ -93,8 +93,7 @@ class StatisticViewModel(
             block = {
                 setState {
                     copy(
-                        loadingStatistic = true,
-                        state = Statistic.DataState.State.SUCCESS
+                        loadingStatistic = true
                     )
                 }
                 getStatisticUseCase(
@@ -125,8 +124,7 @@ class StatisticViewModel(
                     setState {
                         copy(
                             statisticList = statisticItemList,
-                            loadingStatistic = false,
-                            state = Statistic.DataState.State.ERROR
+                            loadingStatistic = false
                         )
                     }
                 }
