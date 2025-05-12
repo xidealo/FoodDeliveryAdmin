@@ -143,13 +143,14 @@ class ProfileFragment :
                 hint = state.role,
                 label = state.userName
             )
-            NavigationIconCard(
-                iconId = R.drawable.ic_cafe,
-                labelStringId = R.string.action_profile_cafes,
-                onClick = {
-                    onAction(Profile.Action.CafeClick)
-                }
-            )
+            // TODO("Обновить логику и сделать привязку к одному кафе")
+//            NavigationIconCard(
+//                iconId = R.drawable.ic_cafe,
+//                labelStringId = R.string.action_profile_cafes,
+//                onClick = {
+//                    onAction(Profile.Action.CafeClick)
+//                }
+//            )
             NavigationIconCard(
                 iconId = R.drawable.ic_settings,
                 labelStringId = R.string.action_profile_settings,
