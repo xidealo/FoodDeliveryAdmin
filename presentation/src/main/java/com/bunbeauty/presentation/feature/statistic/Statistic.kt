@@ -8,13 +8,18 @@ interface Statistic {
     data class DataState(
         val selectedTimeInterval: TimeIntervalCode = TimeIntervalCode.MONTH,
         val statisticList: List<StatisticItemModel> = emptyList(),
-        val isLoading: Boolean = true,
-        val hasError: Boolean = false,
+        val state: State,
         val isTimeIntervalListShown: Boolean = false,
         val loadingStatistic: Boolean,
         val cafeAddress: String? = null,
         val cafeUuid: String? = null
     ) : BaseDataState {
+
+        enum class State {
+            LOADING,
+            SUCCESS,
+            ERROR
+        }
 
         data class StatisticItemModel(
             val startMillis: Long,
