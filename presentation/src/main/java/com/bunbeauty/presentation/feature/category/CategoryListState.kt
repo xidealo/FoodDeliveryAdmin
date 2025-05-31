@@ -28,9 +28,8 @@ interface CategoryListState {
         data object OnPriorityEditClicked : Action
         data object OnCreateClicked : Action
         data object Init : Action
-        data object OnSaveEditPriorityCategoryClick : Action
+        data class OnSaveEditPriorityCategoryClick( val updatedList: List<Category>) : Action
         data class OnCategoryClick(val categoryUuid: String) : Action
-        data class OnCategoryDropped(val fromUuid: String, val toUuid: String) : Action
 
     }
 

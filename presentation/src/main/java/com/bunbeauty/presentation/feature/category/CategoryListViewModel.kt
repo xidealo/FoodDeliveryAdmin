@@ -2,11 +2,14 @@ package com.bunbeauty.presentation.feature.category
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class CategoryListViewModel(
-    private val getCategoryListUseCase: GetCategoryListUseCase
+    private val getCategoryListUseCase: GetCategoryListUseCase,
+    private val saveCategoryListUseCase:  SaveCategoryListUseCase
 ) : BaseStateViewModel<CategoryListState.DataState, CategoryListState.Action, CategoryListState.Event>(
     initState = CategoryListState.DataState(
         state = CategoryListState.DataState.State.LOADING,
@@ -35,10 +38,9 @@ class CategoryListViewModel(
 
             is CategoryListState.Action.OnCategoryClick -> categoryClick(action.categoryUuid)
 
-            CategoryListState.Action.OnSaveEditPriorityCategoryClick -> TODO()
-
-            is CategoryListState.Action.OnCategoryDropped -> {
-                moveCategory(fromUuid = action.fromUuid, toUuid = action.toUuid)
+            is CategoryListState.Action.OnSaveEditPriorityCategoryClick -> {
+                val updatedList = action.updatedList.withUpdatedPriorities()
+                saveCategoryDrop(updatedList)
             }
         }
     }
@@ -66,6 +68,23 @@ class CategoryListViewModel(
                         isRefreshing = false
                     )
                 }
+            },
+            onError = {
+                setState {
+                    copy(
+                        state = CategoryListState.DataState.State.ERROR
+                    )
+                }
+            }
+        )
+    }
+
+    private fun saveCategoryDrop(category: List<Category>){
+        viewModelScope.launchSafe(
+            block = {
+                saveCategoryListUseCase(
+                    categoryList = category
+                )
             },
             onError = {
                 setState {
@@ -127,17 +146,10 @@ class CategoryListViewModel(
         }
     }
 
-    private fun moveCategory(fromUuid: String, toUuid: String) {
-        val currentList = state.value.categoryList.toMutableList()
-        val fromIndex = currentList.indexOfFirst { it.uuid == fromUuid }
-        val toIndex = currentList.indexOfFirst { it.uuid == toUuid }
-
-        if (fromIndex == -1 || toIndex == -1 || fromIndex == toIndex) return
-
-        val item = currentList.removeAt(fromIndex)
-        currentList.add(toIndex, item)
-
-        setState { copy(categoryList = currentList) }
-
+    private fun List<Category>.withUpdatedPriorities(): List<Category> {
+        return mapIndexed { index, category ->
+            category.copy(priority = index + 1)
+        }
     }
+
 }

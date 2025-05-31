@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.category
 
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 
@@ -20,7 +21,7 @@ data class CategoryListViewState(
             val categoryList: ImmutableList<CategoriesViewItem>
         ) : State
         data class SuccessDragDrop(
-            val categoryList: ImmutableList<CategoriesViewItem>
+            val categoryList: List<Category>
         ) : State
     }
 

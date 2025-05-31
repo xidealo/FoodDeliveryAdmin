@@ -1,5 +1,6 @@
 package com.bunbeauty.data.mapper.category
 
+import com.bunbeauty.data.model.server.category.CategoryPatchPriorityServer
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.domain.feature.menu.common.model.Category
@@ -27,6 +28,25 @@ class CategoryMapper {
         return CategoryPatchServer(
             name = updateCategory.name,
             priority = updateCategory.priority
+        )
+    }
+
+
+    fun toPatchCategoryList(categoryList: List<Category>): List<CategoryPatchPriorityServer> {
+        return categoryList.map {category ->
+            CategoryPatchPriorityServer(
+                uuid = category.uuid,
+                name = category.name,
+                priority = category.priority
+            )
+        }
+    }
+
+    fun categoryMapper(category: Category): CategoryServer {
+        return CategoryServer(
+            uuid = category.uuid,
+            name = category.name,
+            priority = category.priority
         )
     }
 }
