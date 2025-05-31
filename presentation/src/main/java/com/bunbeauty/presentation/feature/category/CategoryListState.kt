@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.feature.category
 
 import com.bunbeauty.domain.feature.menu.common.model.Category
-import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryState.Action
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent

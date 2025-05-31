@@ -5,7 +5,6 @@ import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.category.CategoryMapper
-import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.domain.feature.menu.common.model.Category
