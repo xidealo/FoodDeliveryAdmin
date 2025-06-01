@@ -9,7 +9,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class CategoryListViewModel(
     private val getCategoryListUseCase: GetCategoryListUseCase,
-    private val saveCategoryListUseCase:  SaveCategoryListUseCase
+    private val saveCategoryListUseCase: SaveCategoryListUseCase
 ) : BaseStateViewModel<CategoryListState.DataState, CategoryListState.Action, CategoryListState.Event>(
     initState = CategoryListState.DataState(
         state = CategoryListState.DataState.State.LOADING,
@@ -45,7 +45,6 @@ class CategoryListViewModel(
         }
     }
 
-
     private fun categoryClick(categoryUuid: String) {
         sendEvent {
             CategoryListState.Event.OnCategoryClick(categoryUuid = categoryUuid)
@@ -79,12 +78,21 @@ class CategoryListViewModel(
         )
     }
 
-    private fun saveCategoryDrop(category: List<Category>){
+    private fun saveCategoryDrop(category: List<Category>) {
         viewModelScope.launchSafe(
             block = {
                 saveCategoryListUseCase(
                     categoryList = category
                 )
+                setState {
+                    copy(
+                        isLoading = false,
+                        isEditPriority = false,
+                        state = CategoryListState.DataState.State.SUCCESS
+                    )
+                }
+                sendEvent { CategoryListState.Event.ShowUpdateCategoryListSuccess }
+                loadData()
             },
             onError = {
                 setState {
@@ -151,5 +159,4 @@ class CategoryListViewModel(
             category.copy(priority = index + 1)
         }
     }
-
 }

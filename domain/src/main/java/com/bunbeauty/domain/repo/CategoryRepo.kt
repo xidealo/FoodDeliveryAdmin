@@ -23,8 +23,7 @@ interface CategoryRepo {
         token: String
     )
 
-    suspend fun saveCategoryPriority(token: String,category: List<Category>)
-
+    suspend fun saveCategoryPriority(token: String, category: List<Category>)
 
     /*DELETE*/
     fun clearCache()

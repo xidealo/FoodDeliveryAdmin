@@ -9,10 +9,3 @@ data class CategoryServer(
     val priority: Int = 0
 )
 
-
-@Serializable
-data class CategoryPriorityServer(
-    val uuid: String,
-    val name: String,
-    val priority: Int
-)

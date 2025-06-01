@@ -27,15 +27,14 @@ interface CategoryListState {
         data object OnPriorityEditClicked : Action
         data object OnCreateClicked : Action
         data object Init : Action
-        data class OnSaveEditPriorityCategoryClick( val updatedList: List<Category>) : Action
+        data class OnSaveEditPriorityCategoryClick(val updatedList: List<Category>) : Action
         data class OnCategoryClick(val categoryUuid: String) : Action
-
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
-        data object OnEditPriorityCategoryEvent : Event
         data object CreateCategoryEvent : Event
+        data object ShowUpdateCategoryListSuccess : Event
         data class OnCategoryClick(val categoryUuid: String) : Event
     }
 }

@@ -33,6 +33,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
@@ -48,9 +49,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.category.CategoryListState
 import com.bunbeauty.presentation.feature.category.CategoryListViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
@@ -83,7 +86,6 @@ class CategoryListFragment :
     ) {
         AdminScaffold(
             backgroundColor = AdminTheme.colors.main.surface,
-//            title = stringResource(R.string.title_categories_list),
             title = if (state.isEditPriority) {
                 stringResource(R.string.title_edit_priority)
             } else {
@@ -149,7 +151,6 @@ class CategoryListFragment :
                 }
 
                 is CategoryListViewState.State.SuccessDragDrop -> {
-
                     Column {
                         CategoriesListSuccessDragScreen(
                             state = state.state,
@@ -188,6 +189,7 @@ class CategoryListFragment :
             }
         }
     }
+
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun CategoriesListSuccessDragScreen(
@@ -211,7 +213,9 @@ class CategoryListFragment :
 
                     val offsetModifier = if (isDragging) {
                         Modifier.offset { IntOffset(0, dragOffset.y.roundToInt()) }
-                    } else Modifier
+                    } else {
+                        Modifier
+                    }
 
                     Box(
                         modifier = Modifier
@@ -258,9 +262,9 @@ class CategoryListFragment :
                 onClick = {
                     onAction(
                         CategoryListState.Action.OnSaveEditPriorityCategoryClick(
-                            updatedList = itemList)
+                            updatedList = itemList
                         )
-                    println("ЗАЛУПА$itemList")
+                    )
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -268,7 +272,6 @@ class CategoryListFragment :
             )
         }
     }
-
 
     fun <T> MutableList<T>.swap(fromIndex: Int, toIndex: Int) {
         val tmp = this[fromIndex]
@@ -328,15 +331,10 @@ class CategoryListFragment :
         }
     }
 
-
     override fun handleEvent(event: CategoryListState.Event) {
         when (event) {
             CategoryListState.Event.GoBackEvent -> {
                 findNavController().navigateUp()
-            }
-
-            CategoryListState.Event.OnEditPriorityCategoryEvent -> {
-                // TODO()
             }
 
             CategoryListState.Event.CreateCategoryEvent -> {
@@ -348,6 +346,12 @@ class CategoryListFragment :
                     CategoryListFragmentDirections.toEditCategoryListFragment(
                         event.categoryUuid
                     )
+                )
+            }
+
+            CategoryListState.Event.ShowUpdateCategoryListSuccess -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_update_category_priority_list)
                 )
             }
         }
@@ -363,7 +367,7 @@ class CategoryListFragment :
             )
         }.toPersistentList()
         val category = state.categoryList.map { category ->
-           Category(
+            Category(
                 uuid = category.uuid,
                 name = category.name,
                 priority = category.priority
@@ -387,7 +391,6 @@ class CategoryListFragment :
             isEditPriority = state.isEditPriority
         )
     }
-
 
     @Composable
     private fun CategoryItemView(
@@ -419,136 +422,35 @@ class CategoryListFragment :
             }
         }
     }
-    //    @OptIn(ExperimentalFoundationApi::class)
-//    @Composable
-//    private fun CategoriesListSuccessDragScreen(
-//        state: CategoryListViewState.State.SuccessDragDrop,
-//        stateLoading: CategoryListViewState,
-//        onAction: (CategoryListState.Action) -> Unit
-//    ) {
-//        val itemList = remember { state.categoryList.toMutableStateList() }
-//        var draggingIndex by remember { mutableStateOf<Int?>(null) }
-//        var dragOffset by remember { mutableStateOf(Offset.Zero) }
-//        var itemHeight by remember { mutableStateOf(0f) }
-//
-//        Column(modifier = Modifier.fillMaxSize()) {
-//            LazyColumn(
-//                modifier = Modifier
-//                    .weight(1f)
-//                    .fillMaxWidth()
-//            ) {
-//                itemsIndexed(itemList, key = { _, item -> item.uuid }) { index, item ->
-//                    val isDragging = draggingIndex == index
-//
-//                    val offsetModifier = if (isDragging) {
-//                        Modifier.offset { IntOffset(0, dragOffset.y.roundToInt()) }
-//                    } else Modifier
-//
-//                    Box(
-//                        modifier = Modifier
-//                            .then(offsetModifier)
-//                            .fillMaxWidth()
-//                            .animateItemPlacement()
-//                    ) {
-//                        CategoryItemDraggable(
-//                            category = item,
-//                            onDragStart = {
-//                                draggingIndex = itemList.indexOf(item)
-//                                dragOffset = Offset.Zero
-//                            },
-//                            onDrag = { change, dragAmount ->
-//                                change.consume()
-//                                dragOffset += dragAmount
-//
-//                                val fromIndex = draggingIndex ?: return@CategoryItemDraggable
-//                                val toIndex = when {
-//                                    dragOffset.y > itemHeight / 2 -> fromIndex + 1
-//                                    dragOffset.y < -itemHeight / 2 -> fromIndex - 1
-//                                    else -> fromIndex
-//                                }
-//
-//                                if (toIndex in state.categoryList.indices && fromIndex != toIndex) {
-//                                    itemList.swap(fromIndex, toIndex)
-//                                    draggingIndex = toIndex
-//                                    dragOffset = Offset.Zero
-//                                }
-//                            },
-//                            onDragEnd = { dragOffset = Offset.Zero },
-//                            onDragCancel = { dragOffset = Offset.Zero },
-//                            onHeightMeasured = { height -> itemHeight = height }
-//                        )
-//                    }
-//                }
-//            }
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            LoadingButton(
-//                text = stringResource(R.string.action_create_category_save),
-//                isLoading = stateLoading.isLoading,
-//                onClick = {
-//                    val updatedList = itemList.mapIndexed { index, item ->
-//                        item.toDomain(priority = index + 1)
-//                    }
-//                    onAction(
-//                        CategoryListState.Action.OnSaveEditPriorityCategoryClick(
-//                            updatedList = updatedList
-//                        )
-//                    )
-//                    println(updatedList)
-//                },
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(16.dp)
-//            )
-//        }
-//    }
 
-//    @Composable
-//    fun CategoryItemDraggable(
-//        category: CategoryListViewState.CategoriesViewItem,
-//        onDragStart: () -> Unit,
-//        onDrag: (change: PointerInputChange, dragAmount: Offset) -> Unit,
-//        onDragEnd: () -> Unit,
-//        onDragCancel: () -> Unit
-//    ) {
-//        val modifier = Modifier.fillMaxWidth()
-//
-//        AdminCard(
-//            modifier = modifier.padding(vertical = 4.dp),
-//            shape = noCornerCardShape
-//        ) {
-//            Row(
-//                modifier = Modifier
-//                    .padding(horizontal = 16.dp, vertical = 16.dp)
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Text(
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .padding(start = 16.dp),
-//                    text = category.name,
-//                    style = AdminTheme.typography.bodyLarge,
-//                    color = AdminTheme.colors.main.onSurface
-//                )
-//
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_drad_handle),
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .padding(start = 8.dp)
-//                        .pointerInput(Unit) {
-//                            detectDragGestures(
-//                                onDragStart = { onDragStart() },
-//                                onDragEnd = onDragEnd,
-//                                onDragCancel = onDragCancel,
-//                                onDrag = onDrag
-//                            )
-//                        }
-//                )
-//            }
-//        }
-//    }
+    @Preview(showSystemUi = true)
+    @Composable
+    private fun SettingsScreenPreview() {
+        AdminTheme {
+            CategoriesScreen(
+                state = CategoryListViewState(
+                    state = CategoryListViewState.State.Success(
+                        categoryList = persistentListOf(
+                            CategoryListViewState.CategoriesViewItem(
+                                uuid = "",
+                                name = "Лаваш",
+                                priority = 0
+                            ),
+
+                            CategoryListViewState.CategoriesViewItem(
+                                uuid = "BBB",
+                                name = "Соус",
+                                priority = 1
+                            )
+                        )
+                    ),
+                    isLoading = false,
+                    isRefreshing = false,
+                    isEditPriority = false
+                ),
+                onAction = {}
+            )
+        }
+    }
 }
 

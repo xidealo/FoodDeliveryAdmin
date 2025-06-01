@@ -66,7 +66,7 @@ private fun AdminAction(action: AdminTopBarAction) {
         onClick = action.onClick
     ) {
         Icon(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(16.dp),
             painter = painterResource(id = action.iconId),
             tint = AdminTheme.colors.main.onSurfaceVariant,
             contentDescription = null

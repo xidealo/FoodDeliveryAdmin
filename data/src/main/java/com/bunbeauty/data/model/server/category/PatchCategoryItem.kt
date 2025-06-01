@@ -4,7 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CategoryPatchPriorityServer(
+data class PatchCategoryList(
+    @SerialName("patchCategoryItemList")
+    val patchCategoryItemList: List<PatchCategoryItem>
+)
+
+@Serializable
+data class PatchCategoryItem(
     @SerialName("name")
     val name: String,
     @SerialName("uuid")
