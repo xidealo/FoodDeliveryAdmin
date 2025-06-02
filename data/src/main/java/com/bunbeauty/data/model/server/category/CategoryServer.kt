@@ -8,4 +8,3 @@ data class CategoryServer(
     val name: String = "",
     val priority: Int = 0
 )
-

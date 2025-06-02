@@ -2,7 +2,6 @@ package com.bunbeauty.data.mapper.category
 
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
-import com.bunbeauty.data.model.server.category.PatchCategoryItem
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 
