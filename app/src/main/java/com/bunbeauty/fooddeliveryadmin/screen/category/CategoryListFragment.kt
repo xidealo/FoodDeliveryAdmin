@@ -221,7 +221,7 @@ class CategoryListFragment :
                         modifier = Modifier
                             .then(offsetModifier)
                             .fillMaxWidth()
-                            .animateItemPlacement()
+                            .animateItem()
                     ) {
                         CategoryItemDraggable(
                             category = item,

@@ -31,14 +31,6 @@ class CategoryMapper {
         )
     }
 
-    fun toPatchCategory(category: Category): PatchCategoryItem {
-        return PatchCategoryItem(
-            uuid = category.uuid,
-            name = category.name,
-            priority = category.priority
-        )
-    }
-
     fun categoryMapper(category: Category): CategoryServer {
         return CategoryServer(
             uuid = category.uuid,
