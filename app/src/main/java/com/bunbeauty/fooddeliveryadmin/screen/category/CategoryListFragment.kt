@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -100,23 +99,17 @@ class CategoryListFragment :
                 onAction(CategoryListState.Action.OnBackClicked)
             },
             topActions = listOf(
-                if (state.isEditPriority) {
-                    AdminTopBarAction(
-                        iconId = R.drawable.ic_clear,
-                        color = AdminTheme.colors.main.primary,
-                        onClick = {
+                AdminTopBarAction(
+                    iconId = if (state.isEditPriority) R.drawable.ic_clear else R.drawable.ic_edit,
+                    color = AdminTheme.colors.main.primary,
+                    onClick = {
+                        if (state.isEditPriority) {
                             onAction(CategoryListState.Action.OnCancelClicked)
-                        }
-                    )
-                } else {
-                    AdminTopBarAction(
-                        iconId = R.drawable.ic_edit,
-                        color = AdminTheme.colors.main.primary,
-                        onClick = {
+                        } else {
                             onAction(CategoryListState.Action.OnPriorityEditClicked)
                         }
-                    )
-                }
+                    }
+                )
             ),
             actionButton = {
                 if (state.state is CategoryListViewState.State.Success) {
@@ -151,11 +144,24 @@ class CategoryListFragment :
                 }
 
                 is CategoryListViewState.State.SuccessDragDrop -> {
+                    CategoriesListSuccessDragScreen(
+                        state = state.state,
+                    )
                     Column {
-                        CategoriesListSuccessDragScreen(
-                            state = state.state,
-                            stateLoading = state,
-                            onAction = onAction
+                        Spacer(modifier = Modifier.weight(1f))
+                        LoadingButton(
+                            text = stringResource(R.string.action_create_category_save),
+                            isLoading = state.isLoading,
+                            onClick = {
+                                onAction(
+                                    CategoryListState.Action.OnSaveEditPriorityCategoryClick(
+                                        updatedList = state.state.categoryList.toMutableStateList()
+                                    )
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
                         )
                     }
                 }
@@ -194,82 +200,60 @@ class CategoryListFragment :
     @Composable
     private fun CategoriesListSuccessDragScreen(
         state: CategoryListViewState.State.SuccessDragDrop,
-        stateLoading: CategoryListViewState,
-        onAction: (CategoryListState.Action) -> Unit
     ) {
         val itemList = remember { state.categoryList.toMutableStateList() }
         var draggingIndex by remember { mutableStateOf<Int?>(null) }
         var dragOffset by remember { mutableStateOf(Offset.Zero) }
         var itemHeight by remember { mutableStateOf(0f) }
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                itemsIndexed(itemList, key = { _, item -> item.uuid }) { index, item ->
-                    val isDragging = draggingIndex == index
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            itemsIndexed( itemList, key = { _, item -> item.uuid }) { index, item ->
+                val isDragging = draggingIndex == index
 
-                    val offsetModifier = if (isDragging) {
-                        Modifier.offset { IntOffset(0, dragOffset.y.roundToInt()) }
-                    } else {
-                        Modifier
-                    }
+                val offsetModifier = if (isDragging) {
+                    Modifier.offset { IntOffset(0, dragOffset.y.roundToInt()) }
+                } else {
+                    Modifier
+                }
 
-                    Box(
-                        modifier = Modifier
-                            .then(offsetModifier)
-                            .fillMaxWidth()
-                            .animateItem()
-                    ) {
-                        CategoryItemDraggable(
-                            category = item,
-                            onDragStart = {
-                                draggingIndex = itemList.indexOf(item)
+                Box(
+                    modifier = Modifier
+                        .then(offsetModifier)
+                        .fillMaxWidth()
+                        .animateItem()
+                ) {
+                    CategoryItemDraggable(
+                        category = item,
+                        onDragStart = {
+                            draggingIndex =  itemList.indexOf(item)
+                            dragOffset = Offset.Zero
+                        },
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            dragOffset += dragAmount
+
+                            val fromIndex = draggingIndex ?: return@CategoryItemDraggable
+                            val toIndex = when {
+                                dragOffset.y > itemHeight / 2 -> fromIndex + 1
+                                dragOffset.y < -itemHeight / 2 -> fromIndex - 1
+                                else -> fromIndex
+                            }
+
+                            if (toIndex in  itemList.indices && fromIndex != toIndex) {
+                                itemList.swap(fromIndex, toIndex)
+                                draggingIndex = toIndex
                                 dragOffset = Offset.Zero
-                            },
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                dragOffset += dragAmount
-
-                                val fromIndex = draggingIndex ?: return@CategoryItemDraggable
-                                val toIndex = when {
-                                    dragOffset.y > itemHeight / 2 -> fromIndex + 1
-                                    dragOffset.y < -itemHeight / 2 -> fromIndex - 1
-                                    else -> fromIndex
-                                }
-
-                                if (toIndex in itemList.indices && fromIndex != toIndex) {
-                                    itemList.swap(fromIndex, toIndex)
-                                    draggingIndex = toIndex
-                                    dragOffset = Offset.Zero
-                                }
-                            },
-                            onDragEnd = { dragOffset = Offset.Zero },
-                            onDragCancel = { dragOffset = Offset.Zero },
-                            onHeightMeasured = { height -> itemHeight = height }
-                        )
-                    }
+                            }
+                        },
+                        onDragEnd = { dragOffset = Offset.Zero },
+                        onDragCancel = { dragOffset = Offset.Zero },
+                        onHeightMeasured = { height -> itemHeight = height }
+                    )
                 }
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            LoadingButton(
-                text = stringResource(R.string.action_create_category_save),
-                isLoading = stateLoading.isLoading,
-                onClick = {
-                    onAction(
-                        CategoryListState.Action.OnSaveEditPriorityCategoryClick(
-                            updatedList = itemList
-                        )
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
         }
     }
 
