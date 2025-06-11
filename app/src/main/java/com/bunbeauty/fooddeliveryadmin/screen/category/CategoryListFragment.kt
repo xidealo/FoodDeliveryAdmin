@@ -1,6 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.category
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -20,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -100,7 +102,11 @@ class CategoryListFragment :
             },
             topActions = listOf(
                 AdminTopBarAction(
-                    iconId = if (state.isEditPriority) R.drawable.ic_clear else R.drawable.ic_edit,
+                    iconId = if (state.isEditPriority) {
+                        R.drawable.ic_clear
+                    } else {
+                        R.drawable.ic_edit
+                    },
                     color = AdminTheme.colors.main.primary,
                     onClick = {
                         if (state.isEditPriority) {
@@ -112,17 +118,41 @@ class CategoryListFragment :
                 )
             ),
             actionButton = {
-                if (state.state is CategoryListViewState.State.Success) {
-                    FloatingButton(
-                        iconId = R.drawable.ic_plus,
-                        textStringId = R.string.action_menu_list_create,
-                        onClick = {
-                            onAction(CategoryListState.Action.OnCreateClicked)
-                        }
-                    )
+                when (state.state) {
+                    is CategoryListViewState.State.Success -> {
+                        FloatingButton(
+                            iconId = R.drawable.ic_plus,
+                            textStringId = R.string.action_menu_list_create,
+                            onClick = {
+                                onAction(CategoryListState.Action.OnCreateClicked)
+                            }
+                        )
+                    }
+
+                    is CategoryListViewState.State.SuccessDragDrop -> {
+                        LoadingButton(
+                            text = stringResource(R.string.action_create_category_save),
+                            isLoading = state.isLoading,
+                            onClick = {
+                                onAction(
+                                    CategoryListState.Action.OnSaveEditPriorityCategoryClick(
+                                        updatedList = state.state.categoryList.toMutableStateList()
+                                    )
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                    }
+
+                    else -> Unit
                 }
             },
-            actionButtonPosition = FabPosition.End
+            actionButtonPosition = when (state.state) {
+                is CategoryListViewState.State.Success -> FabPosition.End
+                else -> FabPosition.Center
+            }
         ) {
             when (state.state) {
                 CategoryListViewState.State.Loading -> {
@@ -146,24 +176,8 @@ class CategoryListFragment :
                 is CategoryListViewState.State.SuccessDragDrop -> {
                     CategoriesListSuccessDragScreen(
                         state = state.state,
+                        onAction = onAction
                     )
-                    Column {
-                        Spacer(modifier = Modifier.weight(1f))
-                        LoadingButton(
-                            text = stringResource(R.string.action_create_category_save),
-                            isLoading = state.isLoading,
-                            onClick = {
-                                onAction(
-                                    CategoryListState.Action.OnSaveEditPriorityCategoryClick(
-                                        updatedList = state.state.categoryList.toMutableStateList()
-                                    )
-                                )
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        )
-                    }
                 }
             }
         }
@@ -196,13 +210,14 @@ class CategoryListFragment :
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun CategoriesListSuccessDragScreen(
         state: CategoryListViewState.State.SuccessDragDrop,
+        onAction: (CategoryListState.Action) -> Unit
     ) {
-        val itemList = remember { state.categoryList.toMutableStateList() }
         var draggingIndex by remember { mutableStateOf<Int?>(null) }
+        var fromIndex by remember { mutableIntStateOf(0) }
+        var toIndex by remember { mutableIntStateOf(0) }
         var dragOffset by remember { mutableStateOf(Offset.Zero) }
         var itemHeight by remember { mutableStateOf(0f) }
 
@@ -210,7 +225,7 @@ class CategoryListFragment :
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            itemsIndexed( itemList, key = { _, item -> item.uuid }) { index, item ->
+            itemsIndexed(state.categoryList, key = { _, item -> item.uuid }) { index, item ->
                 val isDragging = draggingIndex == index
 
                 val offsetModifier = if (isDragging) {
@@ -228,39 +243,56 @@ class CategoryListFragment :
                     CategoryItemDraggable(
                         category = item,
                         onDragStart = {
-                            draggingIndex =  itemList.indexOf(item)
+                            draggingIndex = state.categoryList.indexOf(item)
                             dragOffset = Offset.Zero
+
                         },
                         onDrag = { change, dragAmount ->
                             change.consume()
                             dragOffset += dragAmount
+                            fromIndex = draggingIndex ?: return@CategoryItemDraggable
 
-                            val fromIndex = draggingIndex ?: return@CategoryItemDraggable
-                            val toIndex = when {
+                            toIndex = when {
                                 dragOffset.y > itemHeight / 2 -> fromIndex + 1
                                 dragOffset.y < -itemHeight / 2 -> fromIndex - 1
                                 else -> fromIndex
                             }
 
-                            if (toIndex in  itemList.indices && fromIndex != toIndex) {
-                                itemList.swap(fromIndex, toIndex)
+                            Log.d(
+                                "MYYRTT",
+                                "onDrag fromIndex ${fromIndex} toIndex ${toIndex}"
+                            )
+                        },
+                        onDragEnd = {
+
+                            Log.d(
+                                "MYYRTT",
+                                "onDragEnd fromIndex ${fromIndex} toIndex ${toIndex}"
+                            )
+
+                            if (toIndex in state.categoryList.indices && fromIndex != toIndex) {
+                                onAction(
+                                    CategoryListState.Action.SwapItem(
+                                        fromIndex = fromIndex,
+                                        toIndex = toIndex
+                                    )
+                                )
                                 draggingIndex = toIndex
                                 dragOffset = Offset.Zero
                             }
                         },
-                        onDragEnd = { dragOffset = Offset.Zero },
-                        onDragCancel = { dragOffset = Offset.Zero },
+                        onDragCancel = {
+                            dragOffset = Offset.Zero
+                            Log.d(
+                                "MYYRTT",
+                                "onDragCancel"
+                            )
+                        },
                         onHeightMeasured = { height -> itemHeight = height }
                     )
                 }
             }
         }
-    }
-
-    fun <T> MutableList<T>.swap(fromIndex: Int, toIndex: Int) {
-        val tmp = this[fromIndex]
-        this[fromIndex] = this[toIndex]
-        this[toIndex] = tmp
     }
 
     @Composable

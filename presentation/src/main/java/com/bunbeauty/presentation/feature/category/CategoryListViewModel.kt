@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.category
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
@@ -42,6 +43,23 @@ class CategoryListViewModel(
                 val updatedList = action.updatedList.withUpdatedPriorities()
                 saveCategoryDrop(updatedList)
             }
+
+            is CategoryListState.Action.SwapItem -> {
+
+                Log.d(
+                    "MYYRTT",
+                    "reduce: swap fromIndex ${action.fromIndex} toIndex ${action.toIndex}"
+                )
+
+                setState {
+                    copy(
+                        categoryList = dataState.categoryList.toMutableList()
+                            .apply {
+                                swap(action.fromIndex, action.toIndex)
+                            }
+                    )
+                }
+            }
         }
     }
 
@@ -49,6 +67,12 @@ class CategoryListViewModel(
         sendEvent {
             CategoryListState.Event.OnCategoryClick(categoryUuid = categoryUuid)
         }
+    }
+
+    private fun <T> MutableList<T>.swap(fromIndex: Int, toIndex: Int) {
+        val tmp = this[fromIndex]
+        this[fromIndex] = this[toIndex]
+        this[toIndex] = tmp
     }
 
     private fun refreshCategory() {
