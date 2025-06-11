@@ -21,7 +21,7 @@ data class CategoryListViewState(
             val categoryList: ImmutableList<CategoriesViewItem>
         ) : State
         data class SuccessDragDrop(
-            val categoryList: List<Category>
+            val categoryList: ImmutableList<Category>
         ) : State
     }
 

@@ -3,14 +3,10 @@ package com.bunbeauty.fooddeliveryadmin.screen.category
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.fooddeliveryadmin.R
@@ -219,17 +217,19 @@ class CategoryListFragment :
         var fromIndex by remember { mutableIntStateOf(0) }
         var toIndex by remember { mutableIntStateOf(0) }
         var dragOffset by remember { mutableStateOf(Offset.Zero) }
-        var itemHeight by remember { mutableStateOf(0f) }
+        var itemHeight by remember { mutableFloatStateOf(0f) }
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            itemsIndexed(state.categoryList, key = { _, item -> item.uuid }) { index, item ->
+            itemsIndexed(items = state.categoryList) { index, item ->
                 val isDragging = draggingIndex == index
 
                 val offsetModifier = if (isDragging) {
-                    Modifier.offset { IntOffset(0, dragOffset.y.roundToInt()) }
+                    Modifier
+                        .offset { IntOffset(0, dragOffset.y.roundToInt()) }
+                        .zIndex(1f)
                 } else {
                     Modifier
                 }
@@ -238,6 +238,7 @@ class CategoryListFragment :
                     modifier = Modifier
                         .then(offsetModifier)
                         .fillMaxWidth()
+                        .zIndex(0.9f)
                         .animateItem()
                 ) {
                     CategoryItemDraggable(
@@ -245,7 +246,6 @@ class CategoryListFragment :
                         onDragStart = {
                             draggingIndex = state.categoryList.indexOf(item)
                             dragOffset = Offset.Zero
-
                         },
                         onDrag = { change, dragAmount ->
                             change.consume()
@@ -253,23 +253,18 @@ class CategoryListFragment :
                             fromIndex = draggingIndex ?: return@CategoryItemDraggable
 
                             toIndex = when {
-                                dragOffset.y > itemHeight / 2 -> fromIndex + 1
-                                dragOffset.y < -itemHeight / 2 -> fromIndex - 1
+                                dragOffset.y > itemHeight / 2 -> {
+                                    fromIndex + (dragOffset.y / itemHeight).roundToInt()
+                                }
+
+                                dragOffset.y < -itemHeight / 2 -> {
+                                    fromIndex + (dragOffset.y / itemHeight).roundToInt()
+                                }
+
                                 else -> fromIndex
                             }
-
-                            Log.d(
-                                "MYYRTT",
-                                "onDrag fromIndex ${fromIndex} toIndex ${toIndex}"
-                            )
                         },
                         onDragEnd = {
-
-                            Log.d(
-                                "MYYRTT",
-                                "onDragEnd fromIndex ${fromIndex} toIndex ${toIndex}"
-                            )
-
                             if (toIndex in state.categoryList.indices && fromIndex != toIndex) {
                                 onAction(
                                     CategoryListState.Action.SwapItem(
@@ -283,10 +278,6 @@ class CategoryListFragment :
                         },
                         onDragCancel = {
                             dragOffset = Offset.Zero
-                            Log.d(
-                                "MYYRTT",
-                                "onDragCancel"
-                            )
                         },
                         onHeightMeasured = { height -> itemHeight = height }
                     )
@@ -298,7 +289,7 @@ class CategoryListFragment :
     @Composable
     fun CategoryItemDraggable(
         category: Category,
-        onDragStart: () -> Unit,
+        onDragStart: (Offset) -> Unit,
         onDrag: (PointerInputChange, Offset) -> Unit,
         onDragEnd: () -> Unit,
         onDragCancel: () -> Unit,
@@ -336,9 +327,9 @@ class CategoryListFragment :
                         .padding(start = 8.dp)
                         .pointerInput(Unit) {
                             detectDragGestures(
-                                onDragStart = { onDragStart() },
-                                onDragEnd = { onDragEnd() },
-                                onDragCancel = { onDragCancel() },
+                                onDragStart = onDragStart,
+                                onDragEnd = onDragEnd,
+                                onDragCancel = onDragCancel,
                                 onDrag = onDrag
                             )
                         }

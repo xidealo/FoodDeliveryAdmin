@@ -45,12 +45,6 @@ class CategoryListViewModel(
             }
 
             is CategoryListState.Action.SwapItem -> {
-
-                Log.d(
-                    "MYYRTT",
-                    "reduce: swap fromIndex ${action.fromIndex} toIndex ${action.toIndex}"
-                )
-
                 setState {
                     copy(
                         categoryList = dataState.categoryList.toMutableList()
