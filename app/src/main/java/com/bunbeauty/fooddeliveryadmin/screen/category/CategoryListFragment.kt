@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -267,9 +266,9 @@ class CategoryListFragment :
                         onDragEnd = {
                             if (toIndex in state.categoryList.indices && fromIndex != toIndex) {
                                 onAction(
-                                    CategoryListState.Action.SwapItem(
-                                        fromIndex = fromIndex,
-                                        toIndex = toIndex
+                                    CategoryListState.Action.PutInItem(
+                                        toIndex = toIndex,
+                                        fromIndex = fromIndex
                                     )
                                 )
                                 draggingIndex = toIndex

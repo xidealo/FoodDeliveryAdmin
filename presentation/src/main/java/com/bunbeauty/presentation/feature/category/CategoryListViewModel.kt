@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.category
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
@@ -44,14 +43,10 @@ class CategoryListViewModel(
                 saveCategoryDrop(updatedList)
             }
 
-            is CategoryListState.Action.SwapItem -> {
+            is CategoryListState.Action.PutInItem -> {
                 setState {
-                    copy(
-                        categoryList = dataState.categoryList.toMutableList()
-                            .apply {
-                                swap(action.fromIndex, action.toIndex)
-                            }
-                    )
+                    val updatedList = dataState.categoryList.moveItem(fromIndex = action.fromIndex, toIndex = action.toIndex)
+                    copy(categoryList = updatedList)
                 }
             }
         }
@@ -63,10 +58,12 @@ class CategoryListViewModel(
         }
     }
 
-    private fun <T> MutableList<T>.swap(fromIndex: Int, toIndex: Int) {
-        val tmp = this[fromIndex]
-        this[fromIndex] = this[toIndex]
-        this[toIndex] = tmp
+    fun <T> List<T>.moveItem(fromIndex: Int, toIndex: Int): List<T> {
+        if (fromIndex == toIndex) return this
+        val mutableList = this.toMutableList()
+        val item = mutableList.removeAt(fromIndex)
+        mutableList.add(toIndex, item)
+        return mutableList
     }
 
     private fun refreshCategory() {
