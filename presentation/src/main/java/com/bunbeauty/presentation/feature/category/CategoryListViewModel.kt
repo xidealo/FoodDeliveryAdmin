@@ -40,8 +40,7 @@ class CategoryListViewModel(
             is CategoryListState.Action.OnCategoryClick -> categoryClick(action.categoryUuid)
 
             is CategoryListState.Action.OnSaveEditPriorityCategoryClick -> {
-                val updatedList = action.updatedList.withUpdatedPriorities()
-                saveCategoryDrop(updatedList)
+                saveCategoryDrop(action.updatedList)
             }
 
             is CategoryListState.Action.PutInItem -> {
@@ -107,8 +106,9 @@ class CategoryListViewModel(
     private fun saveCategoryDrop(category: List<Category>) {
         viewModelScope.launchSafe(
             block = {
+                val updatedList = updatedPriorities(category)
                 saveCategoryListUseCase(
-                    categoryList = category
+                    categoryList = updatedList
                 )
                 setState {
                     copy(
@@ -180,8 +180,8 @@ class CategoryListViewModel(
         }
     }
 
-    private fun List<Category>.withUpdatedPriorities(): List<Category> {
-        return mapIndexed { index, category ->
+    private fun updatedPriorities(category: List<Category>): List<Category> {
+        return category.mapIndexed { index, category ->
             category.copy(priority = index + 1)
         }
     }
