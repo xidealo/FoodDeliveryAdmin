@@ -6,6 +6,7 @@ import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import kotlin.collections.toMutableList
 
 class CategoryListViewModel(
     private val getCategoryListUseCase: GetCategoryListUseCase,
@@ -44,10 +45,11 @@ class CategoryListViewModel(
             }
 
             is CategoryListState.Action.PutInItem -> {
-                setState {
-                    val updatedList = dataState.categoryList.moveItem(fromIndex = action.fromIndex, toIndex = action.toIndex)
-                    copy(categoryList = updatedList)
-                }
+                putInItem(
+                    dataState.categoryList,
+                    fromIndex = action.fromIndex,
+                    toIndex = action.toIndex
+                )
             }
         }
     }
@@ -58,12 +60,21 @@ class CategoryListViewModel(
         }
     }
 
-    fun <T> List<T>.moveItem(fromIndex: Int, toIndex: Int): List<T> {
-        if (fromIndex == toIndex) return this
-        val mutableList = this.toMutableList()
-        val item = mutableList.removeAt(fromIndex)
-        mutableList.add(toIndex, item)
-        return mutableList
+    private fun putInItem(
+        categoryList: List<Category>,
+        fromIndex: Int,
+        toIndex: Int
+    ) {
+        if (fromIndex == toIndex) return
+
+        val updatedList = categoryList.toMutableList().apply {
+            val item = removeAt(fromIndex)
+            add(toIndex, item)
+        }
+
+        setState {
+            copy(categoryList = updatedList)
+        }
     }
 
     private fun refreshCategory() {
