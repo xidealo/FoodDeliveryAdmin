@@ -46,7 +46,7 @@ class CategoryListViewModel(
 
             is CategoryListState.Action.PutInItem -> {
                 putInItem(
-                    dataState.categoryList,
+                    categoryList = dataState.categoryList,
                     fromIndex = action.fromIndex,
                     toIndex = action.toIndex
                 )
