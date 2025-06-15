@@ -106,7 +106,7 @@ class CategoryListViewModel(
     private fun saveCategoryDrop(category: List<Category>) {
         viewModelScope.launchSafe(
             block = {
-                val updatedList = updatedPriorities(category)
+                val updatedList = updatedPrioritiesItem(category)
                 saveCategoryListUseCase(
                     categoryList = updatedList
                 )
@@ -180,7 +180,7 @@ class CategoryListViewModel(
         }
     }
 
-    private fun updatedPriorities(category: List<Category>): List<Category> {
+    private fun updatedPrioritiesItem (category: List<Category>): List<Category> {
         return category.mapIndexed { index, category ->
             category.copy(priority = index + 1)
         }
