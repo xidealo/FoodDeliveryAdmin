@@ -180,7 +180,7 @@ class CategoryListViewModel(
         }
     }
 
-    private fun updatedPrioritiesItem (category: List<Category>): List<Category> {
+    private fun updatedPrioritiesItem(category: List<Category>): List<Category> {
         return category.mapIndexed { index, category ->
             category.copy(priority = index + 1)
         }

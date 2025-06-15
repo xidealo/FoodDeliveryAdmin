@@ -89,7 +89,7 @@ class CategoryListFragment :
             } else {
                 stringResource(R.string.title_categories_list)
             },
-            pullRefreshEnabled = true,
+            pullRefreshEnabled = !state.isEditPriority,
             refreshing = state.isRefreshing,
             onRefresh = {
                 onAction(CategoryListState.Action.OnRefreshData)
