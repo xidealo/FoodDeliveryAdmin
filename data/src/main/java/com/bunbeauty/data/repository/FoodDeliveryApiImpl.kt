@@ -15,6 +15,7 @@ import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
+import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
@@ -375,6 +376,17 @@ class FoodDeliveryApiImpl(
             path = "category",
             body = patchCategory,
             parameters = mapOf("uuid" to uuid),
+            token = token
+        )
+    }
+
+    override suspend fun patchCategoryPriority(
+        token: String,
+        patchCategoryItem: PatchCategoryList
+    ): ApiResult<Unit> {
+        return patch(
+            path = "category/list",
+            body = patchCategoryItem,
             token = token
         )
     }

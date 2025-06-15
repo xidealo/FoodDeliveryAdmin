@@ -28,6 +28,7 @@ turbine = "1.1.0"
 collectionsImmutable = "0.3.7"
 work = "2.10.0"
 
+
 [libraries]
 # Navigation
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
@@ -186,6 +187,6 @@ compose = [
     "ui-tooling",
     "ui-tooling-preview",
     "ui-viewbinding",
-    "lifecycle-runtime-compose"
+    "lifecycle-runtime-compose",
 ]
 

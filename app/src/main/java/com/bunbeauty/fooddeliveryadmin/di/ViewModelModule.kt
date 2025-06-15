@@ -165,7 +165,8 @@ fun viewModelModule() = module {
 
     viewModel {
         CategoryListViewModel(
-            getCategoryListUseCase = get()
+            getCategoryListUseCase = get(),
+            saveCategoryListUseCase = get()
         )
     }
 
