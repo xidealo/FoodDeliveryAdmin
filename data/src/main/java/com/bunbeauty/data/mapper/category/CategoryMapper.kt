@@ -29,4 +29,12 @@ class CategoryMapper {
             priority = updateCategory.priority
         )
     }
+
+    fun categoryMapper(category: Category): CategoryServer {
+        return CategoryServer(
+            uuid = category.uuid,
+            name = category.name,
+            priority = category.priority
+        )
+    }
 }

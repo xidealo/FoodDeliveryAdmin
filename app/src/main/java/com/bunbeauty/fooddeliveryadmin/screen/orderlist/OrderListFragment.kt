@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
-const val LOADING_ORDER_LIST_KEY = "loadingOrderList"
 
 class OrderListFragment :
     BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
@@ -59,6 +59,7 @@ class OrderListFragment :
         super.onStart()
         viewModel.onAction(OrderList.Action.StartObserveOrders)
     }
+
     override fun onStop() {
         viewModel.onAction(OrderList.Action.StopObserveOrders)
         super.onStop()
@@ -175,12 +176,13 @@ class OrderListFragment :
                 ConnectionError()
             }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
+            if (state.loadingOrderList) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = AdminTheme.colors.main.primary
+                )
             }
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = lazyListState,
@@ -195,27 +197,21 @@ class OrderListFragment :
                     Spacer(modifier = Modifier.height(8.dp))
                 }
 
-                if (state.loadingOrderList) {
-                    item(key = LOADING_ORDER_LIST_KEY) {
-                        LoadingScreen(modifier = Modifier.padding(top = 32.dp))
-                    }
-                } else {
-                    items(
-                        items = state.orderList,
-                        key = { orderItem -> orderItem.uuid }
-                    ) { orderItem ->
-                        OrderItem(
-                            orderItem = orderItem,
-                            onClick = {
-                                onAction(
-                                    OrderList.Action.OrderClick(
-                                        orderCode = orderItem.code,
-                                        orderUuid = orderItem.uuid
-                                    )
+                items(
+                    items = state.orderList,
+                    key = { orderItem -> orderItem.uuid }
+                ) { orderItem ->
+                    OrderItem(
+                        orderItem = orderItem,
+                        onClick = {
+                            onAction(
+                                OrderList.Action.OrderClick(
+                                    orderCode = orderItem.code,
+                                    orderUuid = orderItem.uuid
                                 )
-                            }
-                        )
-                    }
+                            )
+                        }
+                    )
                 }
             }
         }

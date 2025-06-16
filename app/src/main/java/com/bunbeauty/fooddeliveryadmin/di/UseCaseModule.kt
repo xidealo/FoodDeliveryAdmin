@@ -7,6 +7,7 @@ import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
@@ -45,6 +46,13 @@ fun useCaseModule() = module {
 
     factory {
         GetCategoryListUseCase(
+            dataStoreRepo = get(),
+            categoryRepo = get()
+        )
+    }
+
+    factory {
+        SaveCategoryListUseCase(
             dataStoreRepo = get(),
             categoryRepo = get()
         )

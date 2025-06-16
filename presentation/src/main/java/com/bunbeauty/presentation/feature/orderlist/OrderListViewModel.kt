@@ -77,8 +77,7 @@ class OrderListViewModel(
         setState {
             copy(
                 hasConnectionError = false,
-                loadingOrderList = true,
-                orderListState = OrderList.DataState.State.LOADING
+                loadingOrderList = true
             )
         }
 
