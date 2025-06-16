@@ -45,7 +45,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
-const val LOADING_ORDER_LIST_KEY = "loadingOrderList"
 
 class OrderListFragment :
     BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
