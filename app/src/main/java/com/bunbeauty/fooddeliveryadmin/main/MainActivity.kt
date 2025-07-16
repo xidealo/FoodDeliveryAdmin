@@ -15,6 +15,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -30,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.FloatingWindow
@@ -56,6 +60,10 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
+        }
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
@@ -91,6 +99,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     @Composable
     private fun MainScreen(mainState: Main.ViewDataState, snackbarHostState: SnackbarHostState) {
         Scaffold(
+            modifier = Modifier.navigationBarsPadding(),
             snackbarHost = {
                 AdminSnackbarHost(snackbarHostState)
             },
@@ -98,7 +107,11 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
                 AdminNavigationBar(options = mainState.navigationBarOptions)
             }
         ) { padding ->
-            Column(modifier = Modifier.padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .padding(padding)
+                    .imePadding()
+            ) {
                 ConnectionErrorMessage(visible = mainState.connectionLost)
                 NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
                 Box(modifier = Modifier.weight(1f)) {
@@ -212,7 +225,8 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
         }
 
     private fun setupNavigationListener() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.containerFcv) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.containerFcv) as NavHostFragment
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { controller, destination, _ ->
             if (destination !is FloatingWindow) {
