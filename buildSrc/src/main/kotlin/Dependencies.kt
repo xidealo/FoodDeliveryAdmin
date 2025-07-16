@@ -1,11 +1,11 @@
 object Application {
     const val versionMajor = 1
     const val versionMinor = 9
-    const val versionPatch = 0
+    const val versionPatch = 1
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 190
+    const val versionCode = 191
 }
 
 object Namespace {
@@ -18,6 +18,6 @@ object Namespace {
 
 object AndroidSdk {
     const val min = 26
-    const val compile = 35
+    const val compile = 36
     const val target = compile
 }

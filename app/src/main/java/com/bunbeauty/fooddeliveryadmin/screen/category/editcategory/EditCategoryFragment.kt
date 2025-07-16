@@ -170,7 +170,6 @@ class EditCategoryFragment :
                         ),
                         isLoading = false
                     )
-
                 ),
                 onAction = {}
             )
