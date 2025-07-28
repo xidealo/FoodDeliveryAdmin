@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -79,7 +81,19 @@ class SettingsFragment :
             backActionClick = {
                 onAction(SettingsState.Action.OnBackClicked)
             },
-            backgroundColor = AdminTheme.colors.main.surface
+            backgroundColor = AdminTheme.colors.main.surface,
+            actionButton = {
+                if (state.state is State.Success) {
+                    LoadingButton(
+                        modifier = Modifier.padding(16.dp),
+                        text = stringResource(R.string.action_edit_addition_save),
+                        isLoading = state.state.isLoading,
+                        onClick = {
+                            onAction(SettingsState.Action.OnSaveSettingsClick)
+                        }
+                    )
+                }
+            }
         ) {
             when (state.state) {
                 State.Loading -> {
@@ -113,23 +127,12 @@ class SettingsFragment :
         modifier: Modifier = Modifier
     ) {
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 72.dp)
+
         ) {
-            SwitcherCard(
-                modifier = Modifier.padding(vertical = 8.dp),
-                elevated = false,
-
-                text = stringResource(R.string.msg_settings_unlimited_notifications),
-                checked = state.isNotifications,
-                onCheckChanged = { isUnlimitedNotifications ->
-                    onAction(
-                        SettingsState.Action.OnNotificationsClicked(
-                            isUnlimitedNotifications = isUnlimitedNotifications
-                        )
-                    )
-                }
-            )
-
             WorkTypeScreen(
                 state = state,
                 onAction = onAction
@@ -145,17 +148,37 @@ class SettingsFragment :
                 state = state,
                 onAction = onAction
             )
+            SwitcherCard(
+                modifier = Modifier.padding(vertical = 8.dp),
+                elevated = false,
+                text = stringResource(R.string.msg_settings_unlimited_notifications),
+                checked = state.isNotifications,
+                onCheckChanged = { isUnlimitedNotifications ->
+                    onAction(
+                        SettingsState.Action.OnNotificationsClicked(
+                            isUnlimitedNotifications = isUnlimitedNotifications
+                        )
+                    )
+                }
+            )
+            SwitcherCard(
+                hint = stringResource(R.string.msg_settings_kitchen_appliances_hint),
+                modifier = Modifier.padding(vertical = 8.dp),
+                elevated = false,
+                text = stringResource(R.string.msg_settings_kitchen_appliances),
+                checked = state.isAppliances,
+                onCheckChanged = { isKitchenAppliances ->
+                    onAction(
+                        SettingsState.Action.OnAppliancesClicked(
+                            isKitchenAppliances = isKitchenAppliances
+                        )
+                    )
+                }
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 
-            LoadingButton(
-                modifier = Modifier.padding(16.dp),
-                text = stringResource(R.string.action_edit_addition_save),
-                isLoading = state.isLoading,
-                onClick = {
-                    onAction(SettingsState.Action.OnSaveSettingsClick)
-                }
-            )
+
         }
     }
 
@@ -397,16 +420,17 @@ class SettingsFragment :
                 state = SettingsViewState(
                     state = State.Success(
                         isNotifications = true,
+                        isAppliances = true,
                         workType = SettingsViewState.WorkType.DELIVERY_AND_PICKUP,
                         acceptOrdersConfirmation = SettingsViewState.AcceptOrdersConfirmation(
                             isShown = false,
                             titleResId = 0,
                             descriptionResId = 0,
-                            buttonResId = 0
+                            buttonResId = 0,
                         ),
                         isLoading = false,
-                        workLoad = SettingsViewState.WorkLoad.LOW
-                    )
+                        workLoad = SettingsViewState.WorkLoad.LOW,
+                    ),
                 ),
                 onAction = {}
             )

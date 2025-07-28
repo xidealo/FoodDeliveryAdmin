@@ -165,15 +165,6 @@ class ProfileFragment :
                     onAction(Profile.Action.StatisticClick)
                 }
             )
-            Text(
-                text = stringResource(R.string.msg_profile_close_cafe_settings),
-                style = AdminTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-
-            )
         }
         Column(
             modifier = Modifier

@@ -13,6 +13,7 @@ data class Cafe(
     val offset: Int,
     val phone: String,
     val visible: Boolean,
+    val additional: Boolean,
     val cityUuid: String,
     val workload: WorkLoad,
     val workType: WorkType
