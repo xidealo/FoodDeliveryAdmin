@@ -46,7 +46,8 @@ class UpdateWorkCafeUseCaseTest {
 
         // When
         updateWorkCafeUseCase(
-            testWorkLoad, testWorkType,
+            testWorkLoad,
+            testWorkType,
             testKitchenAppliances
         )
 
