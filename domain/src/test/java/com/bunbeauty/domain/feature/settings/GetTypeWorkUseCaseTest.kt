@@ -38,7 +38,8 @@ class GetTypeWorkUseCaseTest {
         visible = true,
         cityUuid = "cityUuid",
         workload = WorkLoad.AVERAGE,
-        workType = WorkType.DELIVERY
+        workType = WorkType.DELIVERY,
+        additional = false
     )
 
     @Before

@@ -39,19 +39,25 @@ class UpdateWorkCafeUseCaseTest {
         val testToken = "token-abc"
         val testWorkLoad = WorkLoad.HIGH
         val testWorkType = WorkType.DELIVERY
+        val testKitchenAppliances = false
 
         coEvery { dataStoreRepo.cafeUuid } returns flowOf(testCafeUuid)
         coEvery { dataStoreRepo.getToken() } returns testToken
 
         // When
-        updateWorkCafeUseCase(testWorkLoad, testWorkType)
+        updateWorkCafeUseCase(
+            testWorkLoad, testWorkType,
+            testKitchenAppliances
+        )
 
         // Then
         coVerify {
             cafeRepo.patchCafe(
                 updateCafe = UpdateCafe(
                     workload = testWorkLoad,
-                    workType = testWorkType
+                    workType = testWorkType,
+                    additionalUtensils = testKitchenAppliances
+
                 ),
                 cafeUuid = testCafeUuid,
                 token = testToken
@@ -64,7 +70,7 @@ class UpdateWorkCafeUseCaseTest {
         coEvery { dataStoreRepo.cafeUuid } returns emptyFlow()
 
         assertFailsWith<NoCafeException> {
-            updateWorkCafeUseCase(WorkLoad.LOW, WorkType.CLOSED)
+            updateWorkCafeUseCase(WorkLoad.LOW, WorkType.CLOSED, isKitchenAppliances = false)
         }
 
         coVerify(exactly = 0) { cafeRepo.patchCafe(any(), any(), any()) }
@@ -77,7 +83,7 @@ class UpdateWorkCafeUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns null
 
         assertFailsWith<NoTokenException> {
-            updateWorkCafeUseCase(WorkLoad.AVERAGE, WorkType.PICKUP)
+            updateWorkCafeUseCase(WorkLoad.AVERAGE, WorkType.PICKUP, isKitchenAppliances = true)
         }
 
         coVerify(exactly = 0) { cafeRepo.patchCafe(any(), any(), any()) }
