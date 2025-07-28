@@ -177,8 +177,6 @@ class SettingsFragment :
             )
 
             Spacer(modifier = Modifier.weight(1f))
-
-
         }
     }
 
@@ -426,11 +424,11 @@ class SettingsFragment :
                             isShown = false,
                             titleResId = 0,
                             descriptionResId = 0,
-                            buttonResId = 0,
+                            buttonResId = 0
                         ),
                         isLoading = false,
-                        workLoad = SettingsViewState.WorkLoad.LOW,
-                    ),
+                        workLoad = SettingsViewState.WorkLoad.LOW
+                    )
                 ),
                 onAction = {}
             )

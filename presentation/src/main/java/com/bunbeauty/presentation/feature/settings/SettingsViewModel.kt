@@ -122,8 +122,6 @@ class SettingsViewModel(
                         isUnlimitedNotifications = getIsUnlimitedNotification(),
                         state = SettingsState.DataState.State.SUCCESS,
 
-
-
                         isLoading = false
                     )
                 }
@@ -166,7 +164,7 @@ class SettingsViewModel(
                 updateWorkCafeUseCase(
                     workLoad = workLoad,
                     workInfoData = workType,
-                    isKitchenAppliances = isKitchenAppliances,
+                    isKitchenAppliances = isKitchenAppliances
                 )
                 sendEvent {
                     SettingsState.Event.ShowSaveSettingEvent
