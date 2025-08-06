@@ -23,7 +23,8 @@ class CafeMapper {
                 visible = isVisible,
                 cityUuid = cityUuid,
                 workload = WorkLoad.valueOf(workload),
-                workType = WorkType.valueOf(workType)
+                workType = WorkType.valueOf(workType),
+                additional = additionalUtensils
             )
         }
     }
@@ -39,7 +40,8 @@ class CafeMapper {
                 phone = phone,
                 isVisible = visible,
                 workload = workload.name,
-                workType = workType.name
+                workType = workType.name,
+                additionalUtensils = additional
             )
         }
     }
@@ -55,7 +57,8 @@ class CafeMapper {
                 address = address,
                 isVisible = visible,
                 workload = workload?.name,
-                workType = workType?.name
+                workType = workType?.name,
+                additionalUtensils = additionalUtensils
             )
         }
     }
