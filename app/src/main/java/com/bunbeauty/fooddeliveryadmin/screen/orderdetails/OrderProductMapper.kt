@@ -23,7 +23,7 @@ class OrderProductMapper {
 
     private fun getDescription(orderProduct: OrderProduct): String? {
         val additions = getAdditionsString(orderProduct = orderProduct)
-        return if (orderProduct.comboDescription == null && additions == null) {
+        return if (orderProduct.comboDescription.isNullOrEmpty() && additions == null) {
             null
         } else {
             buildString {
