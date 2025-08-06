@@ -166,8 +166,8 @@ fun commonPlayConfig(
     with(playPublisherExtension) {
         track.set("production")
         defaultToAppBundles.set(true)
-        userFraction.set(1.0)
+        userFraction.set(0.99)
         serviceAccountCredentials.set(buildGradle.file("google-play-api-key.json"))
-        releaseStatus.set(ReleaseStatus.DRAFT)
+        releaseStatus.set(ReleaseStatus.IN_PROGRESS)
     }
 }

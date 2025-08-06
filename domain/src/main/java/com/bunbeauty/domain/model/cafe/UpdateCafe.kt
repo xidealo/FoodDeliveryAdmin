@@ -13,6 +13,7 @@ data class UpdateCafe(
     val offset: Int? = null,
     val phone: String? = null,
     val visible: Boolean? = null,
+    val additionalUtensils: Boolean? = null,
     val cityUuid: String? = null,
     val workload: WorkLoad? = null,
     val workType: WorkType? = null

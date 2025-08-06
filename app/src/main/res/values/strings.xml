@@ -177,6 +177,8 @@
     <!-- SETTINGS -->
     <string name="title_settings">Настройки</string>
     <string name="msg_settings_unlimited_notifications">Настойчивые оповещения</string>
+    <string name="msg_settings_kitchen_appliances">Приборы</string>
+    <string name="msg_settings_kitchen_appliances_hint">Пользователь должен указать количество приборов</string>
     <string name="msg_settings_type_work">Тип работы</string>
     <string name="msg_settings_status_delivery">Доставка</string>
     <string name="msg_settings_status_pickup">Самовывоз</string>
