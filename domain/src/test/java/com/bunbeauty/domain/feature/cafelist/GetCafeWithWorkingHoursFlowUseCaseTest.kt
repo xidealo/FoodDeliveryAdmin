@@ -42,7 +42,8 @@ class GetCafeWithWorkingHoursFlowUseCaseTest {
         visible = true,
         cityUuid = cityUuid,
         workload = WorkLoad.AVERAGE,
-        workType = WorkType.DELIVERY
+        workType = WorkType.DELIVERY,
+        additional = false
     )
     private val nightCafe = Cafe(
         uuid = "uuid",
@@ -56,7 +57,8 @@ class GetCafeWithWorkingHoursFlowUseCaseTest {
         visible = true,
         cityUuid = cityUuid,
         workload = WorkLoad.AVERAGE,
-        workType = WorkType.DELIVERY
+        workType = WorkType.DELIVERY,
+        additional = false
     )
     private val cafeWithWorkingHours = CafeWithWorkingHours(
         uuid = "uuid",

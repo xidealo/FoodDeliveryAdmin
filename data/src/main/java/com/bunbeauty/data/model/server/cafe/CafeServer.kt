@@ -14,6 +14,7 @@ data class CafeServer(
     val address: String,
     val cityUuid: String,
     val isVisible: Boolean,
+    val additionalUtensils: Boolean,
     val workType: String,
     val workload: String
 )

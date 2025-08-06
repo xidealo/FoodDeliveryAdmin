@@ -12,6 +12,7 @@ interface SettingsState {
     data class DataState(
         val state: State,
         val isUnlimitedNotifications: Boolean,
+        val isKitchenAppliances: Boolean,
         val workType: WorkType,
         val workLoad: WorkLoad,
         val isLoading: Boolean,
@@ -29,6 +30,7 @@ interface SettingsState {
         data object Init : Action
         data object OnBackClicked : Action
         data class OnNotificationsClicked(val isUnlimitedNotifications: Boolean) : Action
+        data class OnAppliancesClicked(val isKitchenAppliances: Boolean) : Action
         data object OnSaveSettingsClick : Action
         data class OnSelectStatusClicked(val workType: WorkType) : Action
         data class OnSelectWorkLoadClicked(val workload: WorkLoad) : Action

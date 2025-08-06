@@ -15,6 +15,7 @@ internal fun SettingsState.DataState.toViewState(): SettingsViewState {
             SettingsState.DataState.State.SUCCESS -> {
                 SettingsViewState.State.Success(
                     isNotifications = isUnlimitedNotifications,
+                    isAppliances = isKitchenAppliances,
                     workType = workType.toViewStateWorkType(),
                     workLoad = workLoad.toViewStateWorkLoad(),
                     acceptOrdersConfirmation = SettingsViewState.AcceptOrdersConfirmation(

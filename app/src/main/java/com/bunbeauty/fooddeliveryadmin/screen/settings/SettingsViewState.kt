@@ -13,6 +13,7 @@ data class SettingsViewState(
         data object Error : State
         data class Success(
             val isNotifications: Boolean,
+            val isAppliances: Boolean,
             val workType: WorkType,
             val acceptOrdersConfirmation: AcceptOrdersConfirmation,
             val isLoading: Boolean,

@@ -11,6 +11,7 @@ data class PatchCafeServer(
     val longitude: Double?,
     val address: String?,
     val isVisible: Boolean?,
+    val additionalUtensils: Boolean?,
     val workload: String?,
     val workType: String?
 )
