@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -15,7 +16,8 @@ interface EditAddition {
         val tag: String,
         val fullName: String,
         val isLoading: Boolean,
-        val isVisible: Boolean
+        val isVisible: Boolean,
+        val imageFieldData: EditImageFieldData
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
@@ -29,6 +31,7 @@ interface EditAddition {
         data object OnSaveEditAdditionClick : Action
         data class OnVisibleClick(val isVisible: Boolean) : Action
         data object OnBackClick : Action
+        data class SetImage(val croppedImageUri: String) : Action
     }
 
     sealed interface Event : BaseEvent {

@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
-import com.bunbeauty.presentation.feature.menulist.common.FieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
@@ -24,7 +24,7 @@ interface EditMenuProduct {
         val categoriesField: CategoriesFieldData,
         val isVisibleInMenu: Boolean,
         val isVisibleInRecommendations: Boolean,
-        val imageField: ImageFieldData,
+        val imageField: EditImageFieldData,
 
         val sendingToServer: Boolean
     ) : BaseDataState {
@@ -41,16 +41,6 @@ interface EditMenuProduct {
             NO_ERROR
         }
     }
-
-    data class MenuProductImage(
-        val photoLink: String,
-        val newImageUri: String?
-    )
-
-    data class ImageFieldData(
-        override val value: MenuProductImage?,
-        override val isError: Boolean
-    ) : FieldData<MenuProductImage?>()
 
     sealed interface Action : BaseAction {
         data class LoadData(val productUuid: String) : Action

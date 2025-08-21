@@ -16,6 +16,8 @@ class UploadPhotoUseCaseTest {
 
     private val imageUri = "uri"
     private val username = "username"
+    private val width = 1000
+    private val height = 667
 
     private val photoRepo: PhotoRepo = mockk()
     private val getUsernameUseCase: GetUsernameUseCase = mockk {
@@ -36,7 +38,9 @@ class UploadPhotoUseCaseTest {
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
-                username = username
+                username = username,
+                width = width,
+                height = height
             )
         } returns null
 
@@ -51,7 +55,9 @@ class UploadPhotoUseCaseTest {
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
-                username = username
+                username = username,
+                width = width,
+                height = height
             )
         } returns photo
 

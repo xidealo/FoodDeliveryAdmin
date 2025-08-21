@@ -122,6 +122,10 @@
         <argument
             android:name="uri"
             app:argType="android.net.Uri" />
+        <argument
+            android:name="launchMode"
+            app:argType="com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode"
+            android:defaultValue="MENU_PRODUCT" />
     </fragment>
 
     <fragment
@@ -201,6 +205,9 @@
         <argument
             android:name="additionUuid"
             app:argType="string" />
+        <action
+            android:id="@+id/to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
     </fragment>
 
     <fragment

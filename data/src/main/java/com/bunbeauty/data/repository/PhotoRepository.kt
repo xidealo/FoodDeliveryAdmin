@@ -18,8 +18,6 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
-private const val DEFAULT_WIDTH = 1000
-private const val DEFAULT_HEIGHT = 667
 private const val DEFAULT_BYTE_SIZE = 100 * 1024
 
 class PhotoRepository(
@@ -48,12 +46,19 @@ class PhotoRepository(
 
     override suspend fun uploadPhoto(
         uri: String,
-        username: String
+        username: String,
+        width: Int,
+        height: Int
     ): Photo? {
         return withContext(Dispatchers.IO) {
-            val data = compressPhoto(uri) ?: return@withContext null
+            val data = compressPhoto(
+                uri = uri,
+                width = width,
+                height = height
+            ) ?: return@withContext null
             val uuid = UUID.randomUUID()
-            val uploadReference = FirebaseStorage.getInstance().reference.child("$username/$uuid.webp")
+            val uploadReference =
+                FirebaseStorage.getInstance().reference.child("$username/$uuid.webp")
             val uploadTask = uploadReference.putBytes(data)
             uploadTask.await().metadata?.reference?.let { reference ->
                 Photo(url = reference.downloadUrl.await().toString())
@@ -70,10 +75,19 @@ class PhotoRepository(
         photoListCache = null
     }
 
-    private fun compressPhoto(uri: String): ByteArray? {
+    private fun compressPhoto(
+        uri: String,
+        width: Int,
+        height: Int
+    ): ByteArray? {
         val photoUri = uri.toUri()
         val bitmap = photoUri.toBitmap() ?: return null
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
+        val scaledBitmap = Bitmap.createScaledBitmap(
+            bitmap,
+            width,
+            height,
+            true
+        )
 
         var quality = 100
         var resultByteArray: ByteArray
