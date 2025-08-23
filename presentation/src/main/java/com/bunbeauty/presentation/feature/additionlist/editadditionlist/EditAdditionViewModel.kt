@@ -8,6 +8,8 @@ import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.image.ProductImage
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_UUID = "additionUuid"
@@ -27,7 +29,11 @@ class EditAdditionViewModel(
         fullName = "",
         hasEditNameError = false,
         hasEditPriorityError = false,
-        tag = ""
+        tag = "",
+        imageFieldData = EditImageFieldData(
+            value = null,
+            isError = false
+        )
     )
 ) {
 
@@ -74,6 +80,19 @@ class EditAdditionViewModel(
                     tag = action.tag
                 )
             }
+
+            is EditAddition.Action.SetImage -> {
+                setState {
+                    copy(
+                        imageFieldData = imageFieldData.copy(
+                            value = imageFieldData.value?.copy(
+                                newImageUri = action.croppedImageUri
+                            ),
+                            isError = false
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -95,7 +114,9 @@ class EditAdditionViewModel(
                             fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
                             price = price.toIntOrNull(),
                             isVisible = isVisible,
-                            tag = tag
+                            tag = tag,
+                            photoLink = imageFieldData.value?.photoLink,
+                            newImageUri = imageFieldData.value?.newImageUri
                         )
                     },
                     additionUuid = state.value.uuid
@@ -131,7 +152,8 @@ class EditAdditionViewModel(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    val additionUuidNavigation = savedStateHandle.get<String>(ADDITION_UUID).orEmpty()
+                    val additionUuidNavigation =
+                        savedStateHandle.get<String>(ADDITION_UUID).orEmpty()
                     val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                     copy(
                         uuid = addition.uuid,
@@ -141,7 +163,14 @@ class EditAdditionViewModel(
                         price = addition.price?.toString().orEmpty(),
                         isVisible = addition.isVisible,
                         tag = addition.tag.orEmpty(),
-                        isLoading = false
+                        isLoading = false,
+                        imageFieldData = EditImageFieldData(
+                            value = ProductImage(
+                                photoLink = addition.photoLink,
+                                newImageUri = null
+                            ),
+                            isError = false
+                        )
                     )
                 }
             },

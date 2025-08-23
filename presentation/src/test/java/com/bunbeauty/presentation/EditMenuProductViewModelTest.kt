@@ -7,6 +7,8 @@ import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.image.ProductImage
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
@@ -91,8 +93,8 @@ class EditMenuProductViewModelTest {
             ),
             isVisibleInMenu = true,
             isVisibleInRecommendations = false,
-            imageField = EditMenuProduct.ImageFieldData(
-                value = EditMenuProduct.MenuProductImage(
+            imageField = EditImageFieldData(
+                value = ProductImage(
                     photoLink = "photoLink",
                     newImageUri = null
                 ),

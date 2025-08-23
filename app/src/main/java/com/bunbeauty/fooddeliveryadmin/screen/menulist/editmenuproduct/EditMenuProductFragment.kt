@@ -49,12 +49,14 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct.mapper.toEditMenuProductViewState
 import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
@@ -219,7 +221,8 @@ class EditMenuProductFragment :
                     } else {
                         AdminTheme.colors.main.primary
                     },
-                    buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
+                    buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
+                    elevated = false
                 )
                 LoadingButton(
                     text = stringResource(R.string.action_order_details_save),
@@ -460,7 +463,8 @@ class EditMenuProductFragment :
         findNavController()
             .navigate(
                 directions = EditMenuProductFragmentDirections.toCropImageFragment(
-                    uri = uri
+                    uri = uri,
+                    launchMode = CropImageLaunchMode.MENU_PRODUCT
                 )
             )
     }
@@ -492,7 +496,7 @@ class EditMenuProductFragment :
                         ),
                         isVisibleInMenu = true,
                         isVisibleInRecommendation = false,
-                        imageField = EditMenuProductViewState.ImageFieldUi(
+                        imageField = ImageFieldUi(
                             value = null,
                             isError = false
                         ),
