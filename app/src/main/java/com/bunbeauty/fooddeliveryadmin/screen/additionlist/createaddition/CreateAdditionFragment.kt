@@ -241,7 +241,8 @@ class CreateAdditionFragment :
                     AdminTheme.colors.main.primary
                 },
                 buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
-                elevated = false
+                elevated = false,
+                isEnabled = !state.isLoading
             )
 
             LoadingButton(

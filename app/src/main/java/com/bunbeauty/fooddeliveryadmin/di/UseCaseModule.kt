@@ -8,8 +8,6 @@ import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
-import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
-import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNameUseCase
@@ -21,11 +19,11 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
-import com.bunbeauty.domain.usecase.GetAdditionUseCase
+import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
+import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.usecase.LogoutUseCase
-import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.domain.util.GetNewUuidUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
@@ -172,12 +170,6 @@ fun useCaseModule() = module {
         )
     }
 
-    factory {
-        GetAdditionUseCase(
-            additionRepo = get(),
-            dataStoreRepo = get()
-        )
-    }
 
     factory {
         GetSeparatedMenuProductListUseCase(
@@ -206,15 +198,6 @@ fun useCaseModule() = module {
             orderRepo = get(),
             photoRepo = get(),
             categoryRepo = get()
-        )
-    }
-
-    factory {
-        UpdateAdditionUseCase(
-            dataStoreRepo = get(),
-            additionRepo = get(),
-            deletePhotoUseCase = get(),
-            uploadPhotoUseCase = get()
         )
     }
 

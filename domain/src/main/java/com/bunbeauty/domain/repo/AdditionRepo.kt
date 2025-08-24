@@ -19,6 +19,11 @@ interface AdditionRepo {
         additionUuid: String
     )
 
+    /*CREATE*/
+    suspend fun createAddition(
+        token: String,
+    )
+
     /*DELETE*/
     fun clearCache()
 }

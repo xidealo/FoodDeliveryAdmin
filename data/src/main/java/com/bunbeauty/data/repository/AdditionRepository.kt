@@ -68,6 +68,10 @@ class AdditionRepository(
         }
     }
 
+    override suspend fun createAddition(token: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun clearCache() {
         additionListCache = null
     }

@@ -219,6 +219,7 @@
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
     <string name="title_addition_other_additions">Прочие</string>
+    <string name="action_addition_list_create">Создать</string>
 
     <!-- EDIT ADDITION  -->
     <string name="title_edit_addition">Редактировать добавку</string>

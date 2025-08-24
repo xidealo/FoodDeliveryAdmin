@@ -6,7 +6,7 @@ import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
-import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
+import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.feature.image.ProductImage
@@ -39,60 +39,126 @@ class EditAdditionViewModel(
 
     override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
         when (action) {
-            is EditAddition.Action.OnBackClick -> sendEvent { EditAddition.Event.Back }
+            is EditAddition.Action.OnBackClick -> backClick()
 
             EditAddition.Action.OnSaveEditAdditionClick -> updateEditAddition()
 
             EditAddition.Action.InitAddition -> loadData()
 
-            is EditAddition.Action.OnVisibleClick -> setState {
-                copy(
-                    isVisible = action.isVisible
-                )
-            }
+            is EditAddition.Action.OnVisibleClick -> editOnVisible(isVisible = action.isVisible)
 
-            is EditAddition.Action.EditFullNameAddition -> setState {
-                copy(
-                    fullName = action.fullName
-                )
-            }
+            is EditAddition.Action.EditFullNameAddition -> editFullNameAddition(
+                fullName = action.fullName
+            )
 
-            is EditAddition.Action.EditNameAddition -> setState {
-                copy(
-                    name = action.name
-                )
-            }
+            is EditAddition.Action.EditNameAddition -> editNameAddition(name = action.name)
 
-            is EditAddition.Action.EditPriorityAddition -> setState {
-                copy(
-                    priority = action.priority
-                )
-            }
+            is EditAddition.Action.EditPriorityAddition -> editPriorityAddition(
+                priority = action.priority
+            )
 
-            is EditAddition.Action.EditPriceAddition -> setState {
-                copy(
-                    price = action.price
-                )
-            }
+            is EditAddition.Action.EditPriceAddition -> editPriceAddition(price = action.price)
 
-            is EditAddition.Action.EditTagAddition -> setState {
-                copy(
-                    tag = action.tag
-                )
-            }
+            is EditAddition.Action.EditTagAddition -> editTagAddition(tag = action.tag)
 
-            is EditAddition.Action.SetImage -> {
+            is EditAddition.Action.SetImage -> setImage(croppedImageUri = action.croppedImageUri)
+        }
+    }
+
+    private fun loadData() {
+        viewModelScope.launchSafe(
+            block = {
                 setState {
+                    val additionUuidNavigation =
+                        savedStateHandle.get<String>(ADDITION_UUID).orEmpty()
+                    val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                     copy(
-                        imageFieldData = imageFieldData.copy(
-                            value = imageFieldData.value?.copy(
-                                newImageUri = action.croppedImageUri
+                        uuid = addition.uuid,
+                        name = addition.name,
+                        priority = addition.priority.toString(),
+                        fullName = addition.fullName.orEmpty(),
+                        price = addition.price?.toString().orEmpty(),
+                        isVisible = addition.isVisible,
+                        tag = addition.tag.orEmpty(),
+                        isLoading = false,
+                        imageFieldData = EditImageFieldData(
+                            value = ProductImage(
+                                photoLink = addition.photoLink,
+                                newImageUri = null
                             ),
                             isError = false
                         )
                     )
                 }
+            },
+            onError = {
+                // No errors
             }
+        )
+    }
+
+    private fun editOnVisible(isVisible: Boolean) {
+        setState {
+            copy(
+                isVisible = isVisible
+            )
+        }
+    }
+
+    private fun backClick() {
+        sendEvent { EditAddition.Event.Back }
+    }
+
+    private fun editFullNameAddition(fullName: String) {
+        setState {
+            copy(
+                fullName = fullName
+            )
+        }
+    }
+
+    private fun editNameAddition(name: String) {
+        setState {
+            copy(
+                name = name
+            )
+        }
+    }
+
+    private fun editPriorityAddition(priority: String) {
+        setState {
+            copy(
+                priority = priority
+            )
+        }
+    }
+
+    private fun editPriceAddition(price: String) {
+        setState {
+            copy(
+                price = price
+            )
+        }
+    }
+
+    private fun editTagAddition(tag: String) {
+        setState {
+            copy(
+                tag = tag
+            )
+        }
+    }
+
+    fun setImage(croppedImageUri: String) {
+        setState {
+            copy(
+                imageFieldData = imageFieldData.copy(
+                    value = imageFieldData.value?.copy(
+                        newImageUri = croppedImageUri
+                    ),
+                    isError = false
+                )
+            )
         }
     }
 
@@ -144,38 +210,6 @@ class EditAdditionViewModel(
                         else -> copy(isLoading = false)
                     }
                 }
-            }
-        )
-    }
-
-    private fun loadData() {
-        viewModelScope.launchSafe(
-            block = {
-                setState {
-                    val additionUuidNavigation =
-                        savedStateHandle.get<String>(ADDITION_UUID).orEmpty()
-                    val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
-                    copy(
-                        uuid = addition.uuid,
-                        name = addition.name,
-                        priority = addition.priority.toString(),
-                        fullName = addition.fullName.orEmpty(),
-                        price = addition.price?.toString().orEmpty(),
-                        isVisible = addition.isVisible,
-                        tag = addition.tag.orEmpty(),
-                        isLoading = false,
-                        imageFieldData = EditImageFieldData(
-                            value = ProductImage(
-                                photoLink = addition.photoLink,
-                                newImageUri = null
-                            ),
-                            isError = false
-                        )
-                    )
-                }
-            },
-            onError = {
-                // No errors
             }
         )
     }

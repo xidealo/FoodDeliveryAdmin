@@ -50,7 +50,9 @@ fun viewModelModule() = module {
         )
     }
     viewModel {
-        CreateAdditionViewModel()
+        CreateAdditionViewModel(
+            createAdditionUseCase = get()
+        )
     }
 
     viewModel {

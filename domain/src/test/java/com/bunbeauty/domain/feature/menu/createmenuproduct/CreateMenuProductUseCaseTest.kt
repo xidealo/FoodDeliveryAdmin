@@ -2,7 +2,7 @@ package com.bunbeauty.domain.feature.menu.createmenuproduct
 
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
-import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
+import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNameUseCase

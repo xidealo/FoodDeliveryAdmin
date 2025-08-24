@@ -5,13 +5,13 @@ import com.bunbeauty.domain.MockLogRule
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
-import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
-import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
+import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
+import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
+import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
