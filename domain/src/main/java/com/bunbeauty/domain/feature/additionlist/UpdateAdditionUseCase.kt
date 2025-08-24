@@ -1,6 +1,8 @@
 package com.bunbeauty.domain.feature.additionlist
 
 import android.util.Log
+import com.bunbeauty.common.Constants.ADDITION_HEIGHT
+import com.bunbeauty.common.Constants.ADDITION_WIDTH
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
@@ -11,8 +13,6 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
 private const val UPDATE_ADDITION_TAG = "UpdateAdditionUseCase"
-private const val ADDITION_WIDTH = 240
-private const val ADDITION_HEIGHT = 240
 
 class UpdateAdditionUseCase(
     private val additionRepo: AdditionRepo,
