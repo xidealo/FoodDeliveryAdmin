@@ -8,7 +8,6 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 @Immutable
 data class EditAdditionViewState(
     val nameField: TextFieldUi,
-    val priorityField: TextFieldUi,
     val fullName: String,
     val price: String,
     val tag: String,

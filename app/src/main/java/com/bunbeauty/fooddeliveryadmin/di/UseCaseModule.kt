@@ -170,7 +170,6 @@ fun useCaseModule() = module {
         )
     }
 
-
     factory {
         GetSeparatedMenuProductListUseCase(
             dataStoreRepo = get(),

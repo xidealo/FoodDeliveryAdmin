@@ -3,10 +3,9 @@ package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
+import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
-import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.feature.image.ProductImage
@@ -22,13 +21,11 @@ class EditAdditionViewModel(
     initState = EditAddition.DataState(
         uuid = "",
         name = "",
-        priority = "",
         price = "",
         isLoading = true,
         isVisible = false,
         fullName = "",
         hasEditNameError = false,
-        hasEditPriorityError = false,
         tag = "",
         imageFieldData = EditImageFieldData(
             value = null,
@@ -53,10 +50,6 @@ class EditAdditionViewModel(
 
             is EditAddition.Action.EditNameAddition -> editNameAddition(name = action.name)
 
-            is EditAddition.Action.EditPriorityAddition -> editPriorityAddition(
-                priority = action.priority
-            )
-
             is EditAddition.Action.EditPriceAddition -> editPriceAddition(price = action.price)
 
             is EditAddition.Action.EditTagAddition -> editTagAddition(tag = action.tag)
@@ -75,7 +68,6 @@ class EditAdditionViewModel(
                     copy(
                         uuid = addition.uuid,
                         name = addition.name,
-                        priority = addition.priority.toString(),
                         fullName = addition.fullName.orEmpty(),
                         price = addition.price?.toString().orEmpty(),
                         isVisible = addition.isVisible,
@@ -125,14 +117,6 @@ class EditAdditionViewModel(
         }
     }
 
-    private fun editPriorityAddition(priority: String) {
-        setState {
-            copy(
-                priority = priority
-            )
-        }
-    }
-
     private fun editPriceAddition(price: String) {
         setState {
             copy(
@@ -166,8 +150,7 @@ class EditAdditionViewModel(
         setState {
             copy(
                 isLoading = true,
-                hasEditNameError = false,
-                hasEditPriorityError = false
+                hasEditNameError = false
             )
         }
         viewModelScope.launchSafe(
@@ -176,7 +159,6 @@ class EditAdditionViewModel(
                     updateAddition = state.value.run {
                         UpdateAddition(
                             name = name.trim(),
-                            priority = priority.toIntOrNull(),
                             fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
                             price = price.toIntOrNull(),
                             isVisible = isVisible,
@@ -201,10 +183,6 @@ class EditAdditionViewModel(
                     when (throwable) {
                         is AdditionNameException -> {
                             copy(hasEditNameError = true, isLoading = false)
-                        }
-
-                        is AdditionPriorityException -> {
-                            copy(hasEditPriorityError = true, isLoading = false)
                         }
 
                         else -> copy(isLoading = false)

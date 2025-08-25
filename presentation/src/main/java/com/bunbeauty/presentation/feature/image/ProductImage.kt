@@ -11,3 +11,8 @@ data class EditImageFieldData(
     override val value: ProductImage?,
     override val isError: Boolean
 ) : FieldData<ProductImage?>()
+
+data class ImageFieldData(
+    override val value: String?,
+    override val isError: Boolean
+) : FieldData<String?>()

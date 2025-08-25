@@ -25,7 +25,6 @@ object Constants {
     const val BULLET_SYMBOL = "•"
     const val PERCENT = "%"
 
-   const val ADDITION_WIDTH = 240
-   const val ADDITION_HEIGHT = 240
-
+    const val ADDITION_WIDTH = 240
+    const val ADDITION_HEIGHT = 240
 }

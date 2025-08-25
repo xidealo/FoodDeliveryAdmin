@@ -127,23 +127,6 @@ class EditAdditionFragment :
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            labelText = stringResource(R.string.hint_edit_addition_priority),
-                            value = state.priorityField.value,
-                            onValueChange = { priority ->
-                                onAction(
-                                    EditAddition.Action.EditPriorityAddition(priority)
-                                )
-                            },
-                            errorText = stringResource(state.priorityField.errorResId),
-                            isError = state.priorityField.isError,
-                            enabled = !state.isLoading,
-                            keyboardOptions = keyboardOptions(
-                                keyboardType = KeyboardType.Number
-                            )
-                        )
-
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
                             labelText = stringResource(R.string.hint_edit_addition_full_name),
                             value = state.fullName,
                             onValueChange = { fullName ->
@@ -276,11 +259,6 @@ class EditAdditionFragment :
                 errorResId = R.string.error_edit_addition_empty_name,
                 isError = state.hasEditNameError
             ),
-            priorityField = TextFieldUi(
-                value = state.priority,
-                isError = state.hasEditPriorityError,
-                errorResId = R.string.error_add_addition_empty_priority
-            ),
             fullName = state.fullName,
             price = state.price,
             isVisible = state.isVisible,
@@ -314,11 +292,6 @@ class EditAdditionFragment :
                     nameField = TextFieldUi(
                         value = "",
                         errorResId = 0,
-                        isError = false
-                    ),
-                    priorityField = TextFieldUi(
-                        value = "",
-                        errorResId = R.string.error_edit_addition_empty_name,
                         isError = false
                     ),
                     fullName = "",

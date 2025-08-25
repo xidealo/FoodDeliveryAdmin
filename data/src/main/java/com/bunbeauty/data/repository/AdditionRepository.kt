@@ -7,6 +7,7 @@ import com.bunbeauty.data.mapper.addition.mapAdditionServerToAddition
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionServerToPatchAddition
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.domain.model.addition.Addition
+import com.bunbeauty.domain.model.addition.CreateAdditionModel
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 
@@ -68,8 +69,19 @@ class AdditionRepository(
         }
     }
 
-    override suspend fun createAddition(token: String) {
-        TODO("Not yet implemented")
+    override suspend fun createAddition(
+        token: String,
+        createAdditionModel: CreateAdditionModel
+    ) {
+//        networkConnector.patchAddition(
+//            additionPostServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
+//            token = token
+//        ).onSuccess { additionServer ->
+//            updateLocalCache(
+//                uuid = additionUuid,
+//                additionServer = additionServer
+//            )
+//        }
     }
 
     override fun clearCache() {

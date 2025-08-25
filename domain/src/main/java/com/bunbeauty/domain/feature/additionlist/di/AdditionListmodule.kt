@@ -35,7 +35,6 @@ fun additionModule() = module {
         CreateAdditionUseCase(
             dataStoreRepo = get(),
             additionRepo = get(),
-            deletePhotoUseCase = get(),
             uploadPhotoUseCase = get()
         )
     }

@@ -1,12 +1,11 @@
 package com.bunbeauty.domain.model.addition
 
 data class CreateAdditionModel(
-    val name: String? = null,
-    val priority: Int? = null,
-    val fullName: String? = null,
-    val price: Int? = null,
-    val photoLink: String? = null,
-    val isVisible: Boolean? = null,
-    val tag: String? = null,
-    val newImageUri: String? = null
+    val name: String,
+    val isVisible: Boolean,
+    val photoLink: String,
+    val price: Int?,
+    val fullName: String?,
+    val priority: Int?,
+    val tag: String?
 )

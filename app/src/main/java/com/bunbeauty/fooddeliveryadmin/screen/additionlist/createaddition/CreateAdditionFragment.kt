@@ -41,6 +41,7 @@ import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.additionlist.editaddition.EditAdditionFragmentDirections
 import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.mapper.toImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode
@@ -122,23 +123,6 @@ class CreateAdditionFragment :
                             errorText = stringResource(state.nameField.errorResId),
                             isError = state.nameField.isError,
                             enabled = !state.isLoading
-                        )
-
-                        AdminTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            labelText = stringResource(R.string.hint_create_addition_priority),
-                            value = state.priorityField.value,
-                            onValueChange = { priority ->
-                                onAction(
-                                    CreateAddition.Action.EditPriorityAddition(priority)
-                                )
-                            },
-                            errorText = stringResource(state.priorityField.errorResId),
-                            isError = state.priorityField.isError,
-                            enabled = !state.isLoading,
-                            keyboardOptions = keyboardOptions(
-                                keyboardType = KeyboardType.Number
-                            )
                         )
 
                         AdminTextField(
@@ -275,20 +259,12 @@ class CreateAdditionFragment :
                 errorResId = R.string.error_create_addition_empty_name,
                 isError = state.hasEditNameError
             ),
-            priorityField = TextFieldUi(
-                value = state.priority,
-                isError = state.hasEditPriorityError,
-                errorResId = R.string.error_add_addition_empty_priority
-            ),
             fullName = state.fullName,
             price = state.price,
             isVisible = state.isVisible,
             isLoading = state.isLoading,
             tag = state.tag,
-            imageFieldUi = ImageFieldUi(
-                value = null,
-                isError = false
-            )//state.imageFieldData.toImageFieldUi()
+            imageFieldUi = state.imageField.toImageFieldUi()
         )
     }
 
@@ -316,11 +292,6 @@ class CreateAdditionFragment :
                     nameField = TextFieldUi(
                         value = "",
                         errorResId = 0,
-                        isError = false
-                    ),
-                    priorityField = TextFieldUi(
-                        value = "",
-                        errorResId = R.string.error_create_addition_empty_name,
                         isError = false
                     ),
                     fullName = "",

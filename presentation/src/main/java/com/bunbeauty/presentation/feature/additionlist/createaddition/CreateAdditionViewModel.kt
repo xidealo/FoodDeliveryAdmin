@@ -2,12 +2,9 @@ package com.bunbeauty.presentation.feature.additionlist.createaddition
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.feature.additionlist.CreateAdditionUseCase
-import com.bunbeauty.domain.model.addition.CreateAdditionModel
-import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAddition
+import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class CreateAdditionViewModel(
@@ -17,20 +14,19 @@ class CreateAdditionViewModel(
         initState = CreateAddition.DataState(
             uuid = "",
             name = "",
-            priority = "",
             price = "",
             isLoading = false,
             isVisible = false,
             fullName = "",
             hasEditNameError = false,
-            hasEditPriorityError = false,
             tag = "",
-            //  imageFieldData = EditImageFieldData(
-            //      value = null,
-            //      isError = false
-            //  )
+            imageField = ImageFieldData(
+                value = null,
+                isError = false
+            )
         )
     ) {
+
     override fun reduce(
         action: CreateAddition.Action,
         dataState: CreateAddition.DataState
@@ -42,9 +38,6 @@ class CreateAdditionViewModel(
 
             is CreateAddition.Action.EditNameAddition -> editNameAddition(name = action.name)
             is CreateAddition.Action.EditPriceAddition -> editPriceAddition(price = action.price)
-            is CreateAddition.Action.EditPriorityAddition -> editPriorityAddition(
-                priority = action.priority
-            )
 
             is CreateAddition.Action.EditTagAddition -> editTagAddition(tag = action.tag)
             CreateAddition.Action.OnBackClick -> backClick()
@@ -53,7 +46,6 @@ class CreateAdditionViewModel(
             is CreateAddition.Action.SetImage -> setImage(croppedImageUri = action.croppedImageUri)
         }
     }
-
 
     private fun editOnVisible(isVisible: Boolean) {
         setState {
@@ -83,14 +75,6 @@ class CreateAdditionViewModel(
         }
     }
 
-    private fun editPriorityAddition(priority: String) {
-        setState {
-            copy(
-                priority = priority
-            )
-        }
-    }
-
     private fun editPriceAddition(price: String) {
         setState {
             copy(
@@ -108,41 +92,40 @@ class CreateAdditionViewModel(
     }
 
     private fun setImage(croppedImageUri: String) {
-//        setState {
-//            copy(
-//                imageFieldData = imageFieldData.copy(
-//                    value = imageFieldData.value?.copy(
-//                        newImageUri = croppedImageUri
-//                    ),
-//                    isError = false
-//                )
-//            )
-//        }
+        setState {
+            copy(
+                imageField = imageField.copy(
+                    value = croppedImageUri,
+                    isError = false
+                )
+            )
+        }
     }
 
     fun createAddition() {
         setState {
             copy(
                 isLoading = true,
-                hasEditNameError = false,
-                hasEditPriorityError = false
+                hasEditNameError = false
             )
         }
         viewModelScope.launchSafe(
             block = {
                 createAdditionUseCase(
-                    createAdditionModel = state.value.run {
-                        CreateAdditionModel(
+                    params = state.value.run {
+                        CreateAdditionUseCase.Params(
                             name = name.trim(),
-                            priority = priority.toIntOrNull(),
                             fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
                             price = price.toIntOrNull(),
                             isVisible = isVisible,
                             tag = tag,
-                           //photoLink = imageFieldData.value?.photoLink,
-                           //newImageUri = imageFieldData.value?.newImageUri
+                            newImageUri = "",
+                            priority = null
+
+                            // photoLink = imageFieldData.value?.photoLink,
+                            // newImageUri = imageFieldData.value?.newImageUri
                         )
-                    },
+                    }
                 )
                 setState {
                     copy(isLoading = false)
@@ -158,10 +141,6 @@ class CreateAdditionViewModel(
                     when (throwable) {
                         is AdditionNameException -> {
                             copy(hasEditNameError = true, isLoading = false)
-                        }
-
-                        is AdditionPriorityException -> {
-                            copy(hasEditPriorityError = true, isLoading = false)
                         }
 
                         else -> copy(isLoading = false)

@@ -5,7 +5,6 @@ import com.bunbeauty.common.Constants.ADDITION_HEIGHT
 import com.bunbeauty.common.Constants.ADDITION_WIDTH
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
 import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.addition.UpdateAddition
@@ -28,7 +27,6 @@ class UpdateAdditionUseCase(
 
         when {
             updateAddition.name.isNullOrBlank() -> throw AdditionNameException()
-            updateAddition.priority == null -> throw AdditionPriorityException()
         }
 
         val newPhotoLink: String? = uploadNewPhoto(newImageUri = updateAddition.newImageUri)
