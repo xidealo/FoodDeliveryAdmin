@@ -53,7 +53,7 @@ val mapCreateAdditionToAdditionPostServer: CreateAdditionModel.() -> AdditionPos
         photoLink = photoLink,
         price = price,
         fullName = fullName,
-        priority = priority,
+        priority = priority ?: 0,
         tag = tag
     )
 }

@@ -241,7 +241,7 @@
     <string name="hint_create_addition_price">Цена</string>
     <string name="hint_create_addition_tag">Тэг</string>
     <string name="title_create_addition_is_visible">Показывать в меню</string>
-    <string name="msg_create_addition_updated">%s обновлён</string>
+    <string name="msg_create_addition_updated">%s добавлен</string>
     <string name="error_create_addition_empty_name">Название не может быть пустым</string>
     <string name="error_create_addition_empty_full_name">Полное название не может быть пустым</string>
     <string name="error_create_addition_empty_priority">Приоритет не может быть пустым</string>

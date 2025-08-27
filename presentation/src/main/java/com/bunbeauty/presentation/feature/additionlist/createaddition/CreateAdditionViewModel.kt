@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.additionlist.createaddition
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
+import com.bunbeauty.domain.exception.updateaddition.AdditionPhotoException
 import com.bunbeauty.domain.feature.additionlist.CreateAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.image.ImageFieldData
@@ -115,15 +116,14 @@ class CreateAdditionViewModel(
                     params = state.value.run {
                         CreateAdditionUseCase.Params(
                             name = name.trim(),
-                            fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
+                            fullName = fullName.takeIf {
+                                fullName.isNotBlank()
+                            }?.trim(),
                             price = price.toIntOrNull(),
                             isVisible = isVisible,
                             tag = tag,
-                            newImageUri = "",
+                            newImageUri = imageField.value,
                             priority = null
-
-                            // photoLink = imageFieldData.value?.photoLink,
-                            // newImageUri = imageFieldData.value?.newImageUri
                         )
                     }
                 )
@@ -141,6 +141,15 @@ class CreateAdditionViewModel(
                     when (throwable) {
                         is AdditionNameException -> {
                             copy(hasEditNameError = true, isLoading = false)
+                        }
+
+                        is AdditionPhotoException -> {
+                            copy(
+                                isLoading = false,
+                                imageField = imageField.copy(
+                                    isError = true
+                                )
+                            )
                         }
 
                         else -> copy(isLoading = false)

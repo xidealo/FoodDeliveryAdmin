@@ -4,6 +4,7 @@ import com.bunbeauty.common.Constants.ADDITION_HEIGHT
 import com.bunbeauty.common.Constants.ADDITION_WIDTH
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
+import com.bunbeauty.domain.exception.updateaddition.AdditionPhotoException
 import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.addition.CreateAdditionModel
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -18,7 +19,7 @@ class CreateAdditionUseCase(
     data class Params(
         val name: String,
         val isVisible: Boolean,
-        val newImageUri: String,
+        val newImageUri: String?,
         val price: Int?,
         val fullName: String?,
         val priority: Int?,
@@ -32,6 +33,7 @@ class CreateAdditionUseCase(
 
         when {
             params.name.isBlank() -> throw AdditionNameException()
+            params.newImageUri.isNullOrBlank() -> throw AdditionPhotoException()
         }
 
         val newPhotoLink: String = uploadPhotoUseCase(

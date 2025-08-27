@@ -38,7 +38,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldD
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.additionlist.editaddition.EditAdditionFragmentDirections
 import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.mapper.toImageFieldUi
@@ -244,7 +243,7 @@ class CreateAdditionFragment :
 
         findNavController()
             .navigate(
-                directions = EditAdditionFragmentDirections.toCropImageFragment(
+                directions = CreateAdditionFragmentDirections.actionCreateAdditionFragmentToCropImageFragment(
                     uri = uri,
                     launchMode = CropImageLaunchMode.ADDITION
                 )

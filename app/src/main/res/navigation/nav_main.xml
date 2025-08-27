@@ -264,6 +264,9 @@
         android:id="@+id/createAdditionFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additionlist.createaddition.CreateAdditionFragment"
         android:label="createAdditionFragment">
+        <action
+            android:id="@+id/action_createAdditionFragment_to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
     </fragment>
 
 </navigation>

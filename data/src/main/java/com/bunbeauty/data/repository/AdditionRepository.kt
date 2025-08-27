@@ -4,6 +4,7 @@ import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.addition.mapAdditionServerToAddition
+import com.bunbeauty.data.mapper.addition.mapCreateAdditionToAdditionPostServer
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionServerToPatchAddition
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.domain.model.addition.Addition
@@ -73,15 +74,15 @@ class AdditionRepository(
         token: String,
         createAdditionModel: CreateAdditionModel
     ) {
-//        networkConnector.patchAddition(
-//            additionPostServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
-//            token = token
-//        ).onSuccess { additionServer ->
-//            updateLocalCache(
-//                uuid = additionUuid,
-//                additionServer = additionServer
-//            )
-//        }
+        networkConnector.postAddition(
+            additionPostServer = createAdditionModel.mapCreateAdditionToAdditionPostServer(),
+            token = token
+        ).onSuccess { additionServer ->
+            addToLocalCache(
+                uuid = additionServer.uuid,
+                additionServer = additionServer
+            )
+        }
     }
 
     override fun clearCache() {
@@ -98,6 +99,15 @@ class AdditionRepository(
             } else {
                 addition
             }
+        }
+    }
+
+    private fun addToLocalCache(
+        uuid: String,
+        additionServer: AdditionServer
+    ) {
+        additionListCache = additionListCache?.toMutableList()?.apply {
+            add(additionServer.mapAdditionServerToAddition())
         }
     }
 }

@@ -14,7 +14,7 @@ data class AdditionPostServer(
     @SerialName("tag")
     val tag: String?,
     @SerialName("priority")
-    val priority: Int?,
+    val priority: Int,
     @SerialName("fullName")
     val fullName: String?,
     @SerialName("price")
