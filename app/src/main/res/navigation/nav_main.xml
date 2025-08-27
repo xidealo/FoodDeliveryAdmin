@@ -207,6 +207,9 @@
         android:id="@+id/additionGroupListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.AdditionGroupListFragment"
         android:label="AdditionGroupListFragment">
+        <action
+            android:id="@+id/to_CreateAdditionGroupList"
+            app:destination="@id/createAdditionCroupListFragment" />
     </fragment>
 
     <fragment
@@ -248,6 +251,12 @@
         <argument
             android:name="cafeAddress"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAdditionCroupListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.createadditiongrouplist.CreateAdditionGroupListFragment"
+        android:label="createAdditionCroupListFragment">
     </fragment>
 
 </navigation>

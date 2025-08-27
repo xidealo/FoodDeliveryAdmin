@@ -237,6 +237,13 @@
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
 
+    <!-- CREATE ADDITION GROUP LIST -->
+    <string name="hint_edit_create_addition_list_group_name">Название*</string>
+    <string name="action_addition_list_group_show_in_menu">Показывать в меню</string>
+    <string name="msg_addition_list_group_appliances_hint">Какая-то инфа</string>
+    <string name="msg_addition_list_group_switcher_card">Можно выбрать 1 добавку</string>
+    <string name="msg_create_addition_list_group_created">%s создан</string>
+
     <!--CATEGORIES LIST-->
     <string name="title_categories_list">Категории</string>
     <string name="title_edit_priority">"Изменение порядка</string>
