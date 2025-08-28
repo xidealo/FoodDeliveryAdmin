@@ -220,7 +220,9 @@ fun useCaseModule() = module {
     factory {
         UpdateAdditionUseCase(
             dataStoreRepo = get(),
-            additionRepo = get()
+            additionRepo = get(),
+            deletePhotoUseCase = get(),
+            uploadPhotoUseCase = get()
         )
     }
 
