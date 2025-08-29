@@ -21,7 +21,7 @@ interface AdditionGroupRepo {
     )
 
     /*POST*/
-    suspend fun postAdditionGroup(token: String, createAdditionGroup: CreateAdditionGroup): CreateAdditionGroup
+    suspend fun postAdditionGroup(token: String, createAdditionGroup: CreateAdditionGroup): AdditionGroup
 
     /*DELETE*/
     fun clearCache()

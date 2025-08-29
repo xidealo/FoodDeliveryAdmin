@@ -2,10 +2,9 @@ package com.bunbeauty.domain.feature.additiongrouplist
 
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.AdditionGroupNameException
-import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupListUseCase
+import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.DuplicateAdditionGroupNameException
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
-import com.bunbeauty.domain.model.additiongroup.CreateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
@@ -16,15 +15,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-class CreateAdditionGroupListUseCaseTest {
+class CreateAdditionGroupUseCaseTest {
 
     private val additionGroupRepo: AdditionGroupRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
-    private lateinit var createAdditionGroupListUseCase: CreateAdditionGroupListUseCase
+    private lateinit var createAdditionGroupUseCase: CreateAdditionGroupUseCase
 
     @BeforeTest
     fun setup() {
-        createAdditionGroupListUseCase = CreateAdditionGroupListUseCase(
+        createAdditionGroupUseCase = CreateAdditionGroupUseCase(
             additionGroupRepo = additionGroupRepo,
             dataStoreRepo = dataStoreRepo
         )
@@ -36,9 +35,9 @@ class CreateAdditionGroupListUseCaseTest {
         val additionGroupName = "New Group"
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { additionGroupRepo.getAdditionGroupList(token) } returns emptyList()
-        coEvery { additionGroupRepo.postAdditionGroup(token, any()) } returns createAdditionGroupMock
+        coEvery { additionGroupRepo.postAdditionGroup(token, any()) } returns additionGroupMock
 
-        createAdditionGroupListUseCase(
+        createAdditionGroupUseCase(
             additionName = additionGroupName,
             isVisible = true,
             singleChoice = false
@@ -57,7 +56,7 @@ class CreateAdditionGroupListUseCaseTest {
         coEvery { dataStoreRepo.getToken() } returns null
 
         assertFailsWith<NoTokenException> {
-            createAdditionGroupListUseCase(
+            createAdditionGroupUseCase(
                 additionName = "Any",
                 isVisible = true,
                 singleChoice = false
@@ -72,7 +71,7 @@ class CreateAdditionGroupListUseCaseTest {
         coEvery { additionGroupRepo.getAdditionGroupList(token) } returns emptyList()
 
         assertFailsWith<AdditionGroupNameException> {
-            createAdditionGroupListUseCase(
+            createAdditionGroupUseCase(
                 additionName = " ",
                 isVisible = true,
                 singleChoice = false
@@ -85,17 +84,11 @@ class CreateAdditionGroupListUseCaseTest {
         val token = "test_token"
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { additionGroupRepo.getAdditionGroupList(token) } returns listOf(
-            AdditionGroup(
-                uuid = "1",
-                name = "Existing",
-                priority = 0,
-                isVisible = false,
-                singleChoice = false
-            )
+            additionGroupMock
         )
 
         assertFailsWith<DuplicateAdditionGroupNameException> {
-            createAdditionGroupListUseCase(
+            createAdditionGroupUseCase(
                 additionName = "Existing",
                 isVisible = true,
                 singleChoice = false
@@ -103,8 +96,9 @@ class CreateAdditionGroupListUseCaseTest {
         }
     }
 
-    private val createAdditionGroupMock = CreateAdditionGroup(
-        name = "",
+    private val additionGroupMock = AdditionGroup(
+        uuid = "1",
+        name = "Existing",
         priority = 0,
         isVisible = false,
         singleChoice = false

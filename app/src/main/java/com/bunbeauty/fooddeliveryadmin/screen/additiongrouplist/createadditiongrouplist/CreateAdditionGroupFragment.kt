@@ -22,32 +22,32 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
-import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupListDataState
-import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupListViewModel
+import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupDataState
+import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreateAdditionGroupListFragment :
-    BaseComposeFragment<CreateAdditionGroupListDataState.DataState, CreateAdditionGroupListViewState, CreateAdditionGroupListDataState.Action, CreateAdditionGroupListDataState.Event>() {
+class CreateAdditionGroupFragment :
+    BaseComposeFragment<CreateAdditionGroupDataState.DataState, CreateAdditionGroupViewState, CreateAdditionGroupDataState.Action, CreateAdditionGroupDataState.Event>() {
 
-    override val viewModel: CreateAdditionGroupListViewModel by viewModel()
+    override val viewModel: CreateAdditionGroupViewModel by viewModel()
 
     @Composable
-    override fun mapState(state: CreateAdditionGroupListDataState.DataState): CreateAdditionGroupListViewState {
-        return CreateAdditionGroupListViewState(
+    override fun mapState(state: CreateAdditionGroupDataState.DataState): CreateAdditionGroupViewState {
+        return CreateAdditionGroupViewState(
             state = when (state.state) {
-                CreateAdditionGroupListDataState.DataState.State.SUCCESS -> CreateAdditionGroupListViewState.State.Success(
+                CreateAdditionGroupDataState.DataState.State.SUCCESS -> CreateAdditionGroupViewState.State.Success(
                     isLoading = state.isLoading,
                     nameField = TextFieldUi(
                         value = state.nameField.value,
                         isError = state.nameField.isError,
                         errorResId = when (state.nameStateError) {
-                            CreateAdditionGroupListDataState.DataState.NameStateError.EMPTY_NAME ->
-                                R.string.error_common_create_category_empty_name
+                            CreateAdditionGroupDataState.DataState.NameStateError.EMPTY_NAME ->
+                                R.string.error_common_create_addition_group_name
 
-                            CreateAdditionGroupListDataState.DataState.NameStateError.DUPLICATE_NAME ->
-                                R.string.error_common_create_category_duplicate_name
+                            CreateAdditionGroupDataState.DataState.NameStateError.DUPLICATE_NAME ->
+                                R.string.error_common_create_addition_group_duplicate_name
 
-                            CreateAdditionGroupListDataState.DataState.NameStateError.NO_ERROR ->
+                            CreateAdditionGroupDataState.DataState.NameStateError.NO_ERROR ->
                                 R.string.error_common_something_went_wrong
                         }
                     ),
@@ -55,16 +55,16 @@ class CreateAdditionGroupListFragment :
                     isShowMenuVisible = state.isShowMenuVisible
                 )
 
-                CreateAdditionGroupListDataState.DataState.State.ERROR -> CreateAdditionGroupListViewState.State.Error
-                CreateAdditionGroupListDataState.DataState.State.LOADING -> CreateAdditionGroupListViewState.State.Loading
+                CreateAdditionGroupDataState.DataState.State.ERROR -> CreateAdditionGroupViewState.State.Error
+                CreateAdditionGroupDataState.DataState.State.LOADING -> CreateAdditionGroupViewState.State.Loading
             }
         )
     }
 
     @Composable
     override fun Screen(
-        state: CreateAdditionGroupListViewState,
-        onAction: (CreateAdditionGroupListDataState.Action) -> Unit
+        state: CreateAdditionGroupViewState,
+        onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
         CreateAdditionGroupListScreen(
             state = state,
@@ -74,29 +74,29 @@ class CreateAdditionGroupListFragment :
 
     @Composable
     private fun CreateAdditionGroupListScreen(
-        state: CreateAdditionGroupListViewState,
-        onAction: (CreateAdditionGroupListDataState.Action) -> Unit
+        state: CreateAdditionGroupViewState,
+        onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
         AdminScaffold(
-            title = stringResource(R.string.title_addition_group_list),
+            title = stringResource(R.string.title_create_addition_group),
             backgroundColor = AdminTheme.colors.main.surface,
             pullRefreshEnabled = true,
             backActionClick = {
-                onAction(CreateAdditionGroupListDataState.Action.OnBackClick)
+                onAction(CreateAdditionGroupDataState.Action.OnBackClick)
             }
         ) {
             when (state.state) {
-                CreateAdditionGroupListViewState.State.Error -> ErrorScreen(
+                CreateAdditionGroupViewState.State.Error -> ErrorScreen(
                     mainTextId = R.string.title_common_can_not_load_data,
                     extraTextId = R.string.msg_common_check_connection_and_retry,
                     onClick = {
-                        onAction(CreateAdditionGroupListDataState.Action.OnErrorStateClicked)
+                        onAction(CreateAdditionGroupDataState.Action.OnErrorStateClicked)
                     }
                 )
 
-                CreateAdditionGroupListViewState.State.Loading -> LoadingScreen()
+                CreateAdditionGroupViewState.State.Loading -> LoadingScreen()
 
-                is CreateAdditionGroupListViewState.State.Success -> CreateAdditionGroupListScreenSuccess(
+                is CreateAdditionGroupViewState.State.Success -> CreateAdditionGroupListScreenSuccess(
                     state = state.state,
                     onAction = onAction
                 )
@@ -106,19 +106,19 @@ class CreateAdditionGroupListFragment :
 
     @Composable
     private fun CreateAdditionGroupListScreenSuccess(
-        state: CreateAdditionGroupListViewState.State.Success,
-        onAction: (CreateAdditionGroupListDataState.Action) -> Unit
+        state: CreateAdditionGroupViewState.State.Success,
+        onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             AdminTextField(
                 modifier = Modifier.fillMaxWidth(),
-                labelText = stringResource(R.string.hint_edit_create_addition_list_group_name),
+                labelText = stringResource(R.string.hint_edit_create_addition_group_name),
                 value = state.nameField.value,
                 onValueChange = { name ->
                     onAction(
-                        CreateAdditionGroupListDataState.Action.CreateNameAdditionGroupListChanged(
+                        CreateAdditionGroupDataState.Action.CreateNameAdditionGroupListChanged(
                             name
                         )
                     )
@@ -134,7 +134,7 @@ class CreateAdditionGroupListFragment :
                 checked = state.isShowMenuVisible,
                 onCheckChanged = { isVisible ->
                     onAction(
-                        CreateAdditionGroupListDataState.Action.OnVisibleClick
+                        CreateAdditionGroupDataState.Action.OnVisibleClick
                     )
                 }
             )
@@ -148,7 +148,7 @@ class CreateAdditionGroupListFragment :
                 checked = state.singleChoice,
                 onCheckChanged = { isOneVisible ->
                     onAction(
-                        CreateAdditionGroupListDataState.Action.OnOneAdditionVisibleClick
+                        CreateAdditionGroupDataState.Action.OnOneAdditionVisibleClick
                     )
                 }
             )
@@ -159,19 +159,19 @@ class CreateAdditionGroupListFragment :
                 text = stringResource(R.string.action_create_category_save),
                 isLoading = state.isLoading,
                 onClick = {
-                    onAction(CreateAdditionGroupListDataState.Action.OnSaveAdditionGroupListClick)
+                    onAction(CreateAdditionGroupDataState.Action.OnSaveAdditionGroupListClick)
                 }
             )
         }
     }
 
-    override fun handleEvent(event: CreateAdditionGroupListDataState.Event) {
+    override fun handleEvent(event: CreateAdditionGroupDataState.Event) {
         when (event) {
-            CreateAdditionGroupListDataState.Event.GoBackEvent -> findNavController().navigateUp()
-            is CreateAdditionGroupListDataState.Event.ShowUpdateAdditionGroupSuccess -> {
+            CreateAdditionGroupDataState.Event.GoBackEvent -> findNavController().navigateUp()
+            is CreateAdditionGroupDataState.Event.ShowUpdateAdditionGroupSuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(
-                        R.string.msg_create_addition_list_group_created,
+                        R.string.msg_create_addition_group_created,
                         event.additionGroupName
                     )
                 )
@@ -185,8 +185,8 @@ class CreateAdditionGroupListFragment :
     fun CreateCategoryPreview() {
         AdminTheme {
             CreateAdditionGroupListScreen(
-                state = CreateAdditionGroupListViewState(
-                    state = CreateAdditionGroupListViewState.State.Success(
+                state = CreateAdditionGroupViewState(
+                    state = CreateAdditionGroupViewState.State.Success(
                         isLoading = false,
                         nameField = TextFieldUi(
                             value = "",

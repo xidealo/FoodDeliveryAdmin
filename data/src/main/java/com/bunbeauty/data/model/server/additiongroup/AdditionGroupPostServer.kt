@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 class AdditionGroupPostServer(
     @SerialName("name")
-    val name: String?,
+    val name: String,
     @SerialName("priority")
-    val priority: Int?,
+    val priority: Int,
     @SerialName("singleChoice")
-    val singleChoice: Boolean?,
+    val singleChoice: Boolean,
     @SerialName("isVisible")
-    val isVisible: Boolean?
+    val isVisible: Boolean
 )

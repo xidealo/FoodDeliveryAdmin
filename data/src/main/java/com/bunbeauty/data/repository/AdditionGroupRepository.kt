@@ -70,7 +70,7 @@ class AdditionGroupRepository(
     override suspend fun postAdditionGroup(
         token: String,
         createAdditionGroup: CreateAdditionGroup
-    ): CreateAdditionGroup {
+    ): AdditionGroup {
         return networkConnector.postAdditionGroup(
             token = token,
             additionGroupServerPost = createAdditionGroup.toAdditionGroupCategoryServer()
@@ -80,7 +80,8 @@ class AdditionGroupRepository(
                 cache + createAdditionGroup
             } ?: listOf(createAdditionGroup)
 
-            CreateAdditionGroup(
+            AdditionGroup(
+                uuid = createAdditionGroup.uuid,
                 name = createAdditionGroup.name,
                 priority = createAdditionGroup.priority,
                 singleChoice = createAdditionGroup.singleChoice,

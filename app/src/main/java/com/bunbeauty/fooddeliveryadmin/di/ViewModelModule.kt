@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.fooddeliveryadmin.screen.login.LoginViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
-import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupListViewModel
+import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
@@ -51,8 +51,8 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        CreateAdditionGroupListViewModel(
-            createAdditionGroupListUseCase = get()
+        CreateAdditionGroupViewModel(
+            createAdditionGroupUseCase = get()
         )
     }
 

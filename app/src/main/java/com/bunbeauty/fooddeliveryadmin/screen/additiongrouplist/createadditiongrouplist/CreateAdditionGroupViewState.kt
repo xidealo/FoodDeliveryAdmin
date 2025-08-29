@@ -5,7 +5,7 @@ import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
-data class CreateAdditionGroupListViewState(
+data class CreateAdditionGroupViewState(
     val state: State
 ) : BaseViewState {
 

@@ -6,20 +6,20 @@ import com.bunbeauty.domain.model.additiongroup.CreateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
-class CreateAdditionGroupListUseCase(
+class CreateAdditionGroupUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(additionName: String, isVisible: Boolean, singleChoice: Boolean) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        val categoryList = additionGroupRepo.getAdditionGroupList(
+        val name = additionGroupRepo.getAdditionGroupList(
             token = token
         )
 
         when {
             additionName.isBlank() -> throw AdditionGroupNameException()
             getHasSameName(
-                additionGroup = categoryList,
+                additionGroup = name,
                 name = additionName
             ) -> throw DuplicateAdditionGroupNameException()
         }

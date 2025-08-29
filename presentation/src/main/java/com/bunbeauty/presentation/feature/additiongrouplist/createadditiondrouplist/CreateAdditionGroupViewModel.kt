@@ -2,41 +2,41 @@ package com.bunbeauty.presentation.feature.additiongrouplist.createadditiondroup
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.AdditionGroupNameException
-import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupListUseCase
+import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.DuplicateAdditionGroupNameException
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-class CreateAdditionGroupListViewModel(
-    private val createAdditionGroupListUseCase: CreateAdditionGroupListUseCase
-) : BaseStateViewModel<CreateAdditionGroupListDataState.DataState, CreateAdditionGroupListDataState.Action, CreateAdditionGroupListDataState.Event>(
-    initState = CreateAdditionGroupListDataState.DataState(
-        state = CreateAdditionGroupListDataState.DataState.State.SUCCESS,
+class CreateAdditionGroupViewModel(
+    private val createAdditionGroupUseCase: CreateAdditionGroupUseCase
+) : BaseStateViewModel<CreateAdditionGroupDataState.DataState, CreateAdditionGroupDataState.Action, CreateAdditionGroupDataState.Event>(
+    initState = CreateAdditionGroupDataState.DataState(
+        state = CreateAdditionGroupDataState.DataState.State.SUCCESS,
         isLoading = false,
         nameField = TextFieldData.empty,
         isShowMenuVisible = false,
         singleChoice = false,
-        nameStateError = CreateAdditionGroupListDataState.DataState.NameStateError.NO_ERROR
+        nameStateError = CreateAdditionGroupDataState.DataState.NameStateError.NO_ERROR
     )
 ) {
     override fun reduce(
-        action: CreateAdditionGroupListDataState.Action,
-        dataState: CreateAdditionGroupListDataState.DataState
+        action: CreateAdditionGroupDataState.Action,
+        dataState: CreateAdditionGroupDataState.DataState
     ) {
         when (action) {
-            CreateAdditionGroupListDataState.Action.OnBackClick -> onBackClicked()
-            CreateAdditionGroupListDataState.Action.OnErrorStateClicked -> onErrorState()
-            CreateAdditionGroupListDataState.Action.OnSaveAdditionGroupListClick -> saveAdditionGroup(
+            CreateAdditionGroupDataState.Action.OnBackClick -> onBackClicked()
+            CreateAdditionGroupDataState.Action.OnErrorStateClicked -> onErrorState()
+            CreateAdditionGroupDataState.Action.OnSaveAdditionGroupListClick -> saveAdditionGroup(
                 additionGroupName = dataState.nameField.value,
                 isVisible = dataState.isShowMenuVisible,
                 singleChoice = dataState.singleChoice
             )
 
-            is CreateAdditionGroupListDataState.Action.OnOneAdditionVisibleClick -> onOneAdditionVisibleClick()
+            is CreateAdditionGroupDataState.Action.OnOneAdditionVisibleClick -> onOneAdditionVisibleClick()
 
-            is CreateAdditionGroupListDataState.Action.OnVisibleClick -> onVisibleClick()
-            is CreateAdditionGroupListDataState.Action.CreateNameAdditionGroupListChanged -> createNameAdditionGroup(
+            is CreateAdditionGroupDataState.Action.OnVisibleClick -> onVisibleClick()
+            is CreateAdditionGroupDataState.Action.CreateNameAdditionGroupListChanged -> createNameAdditionGroup(
                 additionGroupName = action.nameGroup
             )
         }
@@ -65,14 +65,14 @@ class CreateAdditionGroupListViewModel(
         }
         viewModelScope.launchSafe(
             block = {
-                createAdditionGroupListUseCase(
+                createAdditionGroupUseCase(
                     additionName = additionGroupName,
                     isVisible = isVisible,
                     singleChoice = singleChoice
                 )
                 setState { copy(isLoading = false) }
                 sendEvent {
-                    CreateAdditionGroupListDataState.Event.ShowUpdateAdditionGroupSuccess(
+                    CreateAdditionGroupDataState.Event.ShowUpdateAdditionGroupSuccess(
                         additionGroupName = additionGroupName
                     )
                 }
@@ -82,7 +82,7 @@ class CreateAdditionGroupListViewModel(
                     when (throwable) {
                         is AdditionGroupNameException -> {
                             copy(
-                                nameStateError = CreateAdditionGroupListDataState
+                                nameStateError = CreateAdditionGroupDataState
                                     .DataState.NameStateError.EMPTY_NAME,
                                 nameField = nameField.copy(
                                     isError = true
@@ -93,7 +93,7 @@ class CreateAdditionGroupListViewModel(
 
                         is DuplicateAdditionGroupNameException -> {
                             copy(
-                                nameStateError = CreateAdditionGroupListDataState
+                                nameStateError = CreateAdditionGroupDataState
                                     .DataState.NameStateError.DUPLICATE_NAME,
                                 nameField = nameField.copy(
                                     isError = true
@@ -104,7 +104,7 @@ class CreateAdditionGroupListViewModel(
 
                         else -> copy(
                             isLoading = false,
-                            nameStateError = CreateAdditionGroupListDataState
+                            nameStateError = CreateAdditionGroupDataState
                                 .DataState.NameStateError.NO_ERROR
                         )
                     }
@@ -128,14 +128,14 @@ class CreateAdditionGroupListViewModel(
     private fun onErrorState() {
         setState {
             copy(
-                state = CreateAdditionGroupListDataState.DataState.State.SUCCESS
+                state = CreateAdditionGroupDataState.DataState.State.SUCCESS
             )
         }
     }
 
     private fun onBackClicked() {
         sendEvent {
-            CreateAdditionGroupListDataState.Event.GoBackEvent
+            CreateAdditionGroupDataState.Event.GoBackEvent
         }
     }
 }
