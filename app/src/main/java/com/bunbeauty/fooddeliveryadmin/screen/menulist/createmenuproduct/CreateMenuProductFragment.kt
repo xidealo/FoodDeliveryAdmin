@@ -46,6 +46,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
@@ -423,7 +424,7 @@ class CreateMenuProductFragment :
                     ),
                     isVisibleInMenu = true,
                     isVisibleInRecommendation = false,
-                    imageField = CreateMenuProductViewState.ImageFieldUi(
+                    imageField = ImageFieldUi(
                         value = null,
                         isError = false
                     ),

@@ -12,6 +12,7 @@ suspend fun <T, R> ApiResult<T>.getNullableResult(
             onSuccess(data)
         } ?: onError?.invoke(ApiError.DATA_IS_NULL)
     }
+
     is ApiResult.Error -> {
         onError?.invoke(apiError)
     }
@@ -22,5 +23,13 @@ suspend fun <T> ApiResult<T>.onSuccess(
 ) {
     if (this is ApiResult.Success) {
         block(this.data)
+    }
+}
+
+suspend fun <T> ApiResult<T>.onError(
+    block: suspend (ApiError) -> Unit
+) {
+    if (this is ApiResult.Error) {
+        block(this.apiError)
     }
 }

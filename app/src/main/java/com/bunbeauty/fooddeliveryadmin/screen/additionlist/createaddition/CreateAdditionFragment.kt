@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.additionlist.editaddition
+package com.bunbeauty.fooddeliveryadmin.screen.additionlist.createaddition
 
 import android.net.Uri
 import android.os.Bundle
@@ -39,32 +39,31 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
-import com.bunbeauty.fooddeliveryadmin.screen.image.toImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.mapper.toImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode
 import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
-import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAddition
-import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
+import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition
+import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAdditionViewModel
 import com.canhub.cropper.parcelable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class EditAdditionFragment :
-    BaseComposeFragment<EditAddition.DataState, EditAdditionViewState, EditAddition.Action, EditAddition.Event>() {
+class CreateAdditionFragment :
+    BaseComposeFragment<CreateAddition.DataState, CreateAdditionViewState, CreateAddition.Action, CreateAddition.Event>() {
 
-    override val viewModel: EditAdditionViewModel by viewModel()
+    override val viewModel: CreateAdditionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.onAction(EditAddition.Action.InitAddition)
 
         setFragmentResultListener(CROP_IMAGE_REQUEST_KEY) { _, bundle ->
             val croppedImageUri =
                 bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
 
             viewModel.onAction(
-                action = EditAddition.Action.SetImage(
+                action = CreateAddition.Action.SetImage(
                     croppedImageUri = croppedImageUri.toString()
                 )
             )
@@ -72,14 +71,14 @@ class EditAdditionFragment :
     }
 
     @Composable
-    override fun Screen(state: EditAdditionViewState, onAction: (EditAddition.Action) -> Unit) {
-        EditAdditionScreen(onAction = onAction, state = state)
+    override fun Screen(state: CreateAdditionViewState, onAction: (CreateAddition.Action) -> Unit) {
+        CreateAdditionScreen(onAction = onAction, state = state)
     }
 
     @Composable
-    fun EditAdditionScreen(
-        state: EditAdditionViewState,
-        onAction: (EditAddition.Action) -> Unit
+    fun CreateAdditionScreen(
+        state: CreateAdditionViewState,
+        onAction: (CreateAddition.Action) -> Unit
     ) {
         val galleryLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -87,8 +86,8 @@ class EditAdditionFragment :
             }
 
         AdminScaffold(
-            title = stringResource(R.string.title_edit_addition),
-            backActionClick = { onAction(EditAddition.Action.OnBackClick) },
+            title = stringResource(R.string.title_create_addition),
+            backActionClick = { onAction(CreateAddition.Action.OnBackClick) },
             actionButton = {
                 BottomButtons(
                     state = state,
@@ -113,11 +112,11 @@ class EditAdditionFragment :
                     ) {
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            labelText = stringResource(R.string.hint_edit_addition_name),
+                            labelText = stringResource(R.string.hint_create_addition_name),
                             value = state.nameField.value,
                             onValueChange = { name ->
                                 onAction(
-                                    EditAddition.Action.EditNameAddition(name)
+                                    CreateAddition.Action.EditNameAddition(name)
                                 )
                             },
                             errorText = stringResource(state.nameField.errorResId),
@@ -127,11 +126,11 @@ class EditAdditionFragment :
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            labelText = stringResource(R.string.hint_edit_addition_full_name),
+                            labelText = stringResource(R.string.hint_create_addition_full_name),
                             value = state.fullName,
                             onValueChange = { fullName ->
                                 onAction(
-                                    EditAddition.Action.EditFullNameAddition(fullName)
+                                    CreateAddition.Action.EditFullNameAddition(fullName)
                                 )
                             },
                             maxLines = 20,
@@ -140,10 +139,10 @@ class EditAdditionFragment :
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            labelText = stringResource(R.string.hint_edit_addition_price),
+                            labelText = stringResource(R.string.hint_create_addition_price),
                             value = state.price,
                             onValueChange = { price ->
-                                onAction(EditAddition.Action.EditPriceAddition(price))
+                                onAction(CreateAddition.Action.EditPriceAddition(price))
                             },
                             enabled = !state.isLoading,
                             keyboardOptions = keyboardOptions(
@@ -153,10 +152,10 @@ class EditAdditionFragment :
 
                         AdminTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            labelText = stringResource(R.string.hint_edit_addition_tag),
+                            labelText = stringResource(R.string.hint_create_addition_tag),
                             value = state.tag,
                             onValueChange = { tag ->
-                                onAction(EditAddition.Action.EditTagAddition(tag = tag))
+                                onAction(CreateAddition.Action.EditTagAddition(tag = tag))
                             },
                             enabled = !state.isLoading
                         )
@@ -169,12 +168,12 @@ class EditAdditionFragment :
                     checked = state.isVisible,
                     onCheckChanged = { isVisible ->
                         onAction(
-                            EditAddition.Action.OnVisibleClick(
+                            CreateAddition.Action.OnVisibleClick(
                                 isVisible = isVisible
                             )
                         )
                     },
-                    text = stringResource(R.string.title_edit_addition_is_visible),
+                    text = stringResource(R.string.title_create_addition_is_visible),
                     enabled = !state.isLoading
                 )
 
@@ -202,9 +201,9 @@ class EditAdditionFragment :
 
     @Composable
     private fun BottomButtons(
-        state: EditAdditionViewState,
+        state: CreateAdditionViewState,
         onAddPhotoClick: () -> Unit,
-        onAction: (EditAddition.Action) -> Unit,
+        onAction: (CreateAddition.Action) -> Unit,
         modifier: Modifier = Modifier
     ) {
         Column(
@@ -230,10 +229,10 @@ class EditAdditionFragment :
             )
 
             LoadingButton(
-                text = stringResource(R.string.action_edit_addition_save),
+                text = stringResource(R.string.action_create_addition_save),
                 isLoading = state.isLoading,
                 onClick = {
-                    onAction(EditAddition.Action.OnSaveEditAdditionClick)
+                    onAction(CreateAddition.Action.OnSaveCreateAdditionClick)
                 }
             )
         }
@@ -244,7 +243,7 @@ class EditAdditionFragment :
 
         findNavController()
             .navigate(
-                directions = EditAdditionFragmentDirections.toCropImageFragment(
+                directions = CreateAdditionFragmentDirections.actionCreateAdditionFragmentToCropImageFragment(
                     uri = uri,
                     launchMode = CropImageLaunchMode.ADDITION
                 )
@@ -252,11 +251,11 @@ class EditAdditionFragment :
     }
 
     @Composable
-    override fun mapState(state: EditAddition.DataState): EditAdditionViewState {
-        return EditAdditionViewState(
+    override fun mapState(state: CreateAddition.DataState): CreateAdditionViewState {
+        return CreateAdditionViewState(
             nameField = TextFieldUi(
                 value = state.name,
-                errorResId = R.string.error_edit_addition_empty_name,
+                errorResId = R.string.error_create_addition_empty_name,
                 isError = state.hasEditNameError
             ),
             fullName = state.fullName,
@@ -264,19 +263,19 @@ class EditAdditionFragment :
             isVisible = state.isVisible,
             isLoading = state.isLoading,
             tag = state.tag,
-            imageFieldUi = state.imageFieldData.toImageFieldUi()
+            imageFieldUi = state.imageField.toImageFieldUi()
         )
     }
 
-    override fun handleEvent(event: EditAddition.Event) {
+    override fun handleEvent(event: CreateAddition.Event) {
         when (event) {
-            is EditAddition.Event.Back -> {
+            is CreateAddition.Event.Back -> {
                 findNavController().navigateUp()
             }
 
-            is EditAddition.Event.ShowUpdateAdditionSuccess -> {
+            is CreateAddition.Event.ShowCreatedAdditionSuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_edit_addition_updated, event.additionName)
+                    resources.getString(R.string.msg_create_addition_updated, event.additionName)
                 )
                 findNavController().popBackStack()
             }
@@ -285,10 +284,10 @@ class EditAdditionFragment :
 
     @Preview(showSystemUi = true)
     @Composable
-    fun EditAdditionScreenPreview() {
+    fun CreateAdditionScreenPreview() {
         AdminTheme {
-            EditAdditionScreen(
-                state = EditAdditionViewState(
+            CreateAdditionScreen(
+                state = CreateAdditionViewState(
                     nameField = TextFieldUi(
                         value = "",
                         errorResId = 0,

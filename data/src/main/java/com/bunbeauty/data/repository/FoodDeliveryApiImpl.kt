@@ -7,6 +7,7 @@ import com.bunbeauty.common.Constants.WEB_SOCKET_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
+import com.bunbeauty.data.model.server.addition.AdditionPostServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
@@ -445,6 +446,17 @@ class FoodDeliveryApiImpl(
             path = "addition",
             body = additionPatchServer,
             parameters = mapOf("uuid" to additionUuid),
+            token = token
+        )
+    }
+
+    override suspend fun postAddition(
+        additionPostServer: AdditionPostServer,
+        token: String
+    ): ApiResult<AdditionServer> {
+        return post(
+            path = "addition",
+            body = additionPostServer,
             token = token
         )
     }

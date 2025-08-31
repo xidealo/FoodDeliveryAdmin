@@ -1,9 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct
 
 import androidx.compose.runtime.Immutable
-import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
+import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.FieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
@@ -21,13 +20,4 @@ data class CreateMenuProductViewState(
     val isVisibleInRecommendation: Boolean,
     val imageField: ImageFieldUi,
     val sendingToServer: Boolean
-) : BaseViewState {
-
-    @Immutable
-    data class ImageFieldUi(
-        override val value: ImageData.LocalUri?,
-        override val isError: Boolean
-    ) : FieldUi<ImageData.LocalUri?>() {
-        val isSelected: Boolean = value != null
-    }
-}
+) : BaseViewState
