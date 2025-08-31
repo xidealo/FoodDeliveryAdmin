@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.menu.common.photo
+package com.bunbeauty.domain.feature.photo
 
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase

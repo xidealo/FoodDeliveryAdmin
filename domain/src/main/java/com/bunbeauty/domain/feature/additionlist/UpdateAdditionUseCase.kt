@@ -1,18 +1,17 @@
-package com.bunbeauty.domain.usecase
+package com.bunbeauty.domain.feature.additionlist
 
 import android.util.Log
+import com.bunbeauty.common.Constants.ADDITION_HEIGHT
+import com.bunbeauty.common.Constants.ADDITION_WIDTH
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
-import com.bunbeauty.domain.exception.updateaddition.AdditionPriorityException
-import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
-import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
+import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
+import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 
 private const val UPDATE_ADDITION_TAG = "UpdateAdditionUseCase"
-private const val ADDITION_WIDTH = 240
-private const val ADDITION_HEIGHT = 240
 
 class UpdateAdditionUseCase(
     private val additionRepo: AdditionRepo,
@@ -28,7 +27,6 @@ class UpdateAdditionUseCase(
 
         when {
             updateAddition.name.isNullOrBlank() -> throw AdditionNameException()
-            updateAddition.priority == null -> throw AdditionPriorityException()
         }
 
         val newPhotoLink: String? = uploadNewPhoto(newImageUri = updateAddition.newImageUri)
