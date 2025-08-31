@@ -75,9 +75,9 @@ class AdditionGroupListFragment :
             actionButton = {
                 FloatingButton(
                     iconId = R.drawable.ic_plus,
-                    textStringId = R.string.action_menu_list_create,
+                    textStringId = R.string.action_addition_group_create,
                     onClick = {
-                        findNavController().navigateSafe(AdditionGroupListFragmentDirections.toCreateAdditionGroupList())
+                        findNavController().navigateSafe(AdditionGroupListFragmentDirections.toCreateAdditionGroup())
                     }
                 )
             },

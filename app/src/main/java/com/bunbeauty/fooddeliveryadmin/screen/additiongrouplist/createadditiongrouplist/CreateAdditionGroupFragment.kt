@@ -66,14 +66,14 @@ class CreateAdditionGroupFragment :
         state: CreateAdditionGroupViewState,
         onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
-        CreateAdditionGroupListScreen(
+        CreateAdditionGroupScreen(
             state = state,
             onAction = onAction
         )
     }
 
     @Composable
-    private fun CreateAdditionGroupListScreen(
+    private fun CreateAdditionGroupScreen(
         state: CreateAdditionGroupViewState,
         onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
@@ -96,7 +96,7 @@ class CreateAdditionGroupFragment :
 
                 CreateAdditionGroupViewState.State.Loading -> LoadingScreen()
 
-                is CreateAdditionGroupViewState.State.Success -> CreateAdditionGroupListScreenSuccess(
+                is CreateAdditionGroupViewState.State.Success -> CreateAdditionGroupScreenSuccess(
                     state = state.state,
                     onAction = onAction
                 )
@@ -105,7 +105,7 @@ class CreateAdditionGroupFragment :
     }
 
     @Composable
-    private fun CreateAdditionGroupListScreenSuccess(
+    private fun CreateAdditionGroupScreenSuccess(
         state: CreateAdditionGroupViewState.State.Success,
         onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
@@ -118,7 +118,7 @@ class CreateAdditionGroupFragment :
                 value = state.nameField.value,
                 onValueChange = { name ->
                     onAction(
-                        CreateAdditionGroupDataState.Action.CreateNameAdditionGroupListChanged(
+                        CreateAdditionGroupDataState.Action.CreateNameAdditionGroupChanged(
                             name
                         )
                     )
@@ -159,7 +159,7 @@ class CreateAdditionGroupFragment :
                 text = stringResource(R.string.action_create_category_save),
                 isLoading = state.isLoading,
                 onClick = {
-                    onAction(CreateAdditionGroupDataState.Action.OnSaveAdditionGroupListClick)
+                    onAction(CreateAdditionGroupDataState.Action.OnSaveAdditionGroupClick)
                 }
             )
         }
@@ -184,7 +184,7 @@ class CreateAdditionGroupFragment :
     @Composable
     fun CreateCategoryPreview() {
         AdminTheme {
-            CreateAdditionGroupListScreen(
+            CreateAdditionGroupScreen(
                 state = CreateAdditionGroupViewState(
                     state = CreateAdditionGroupViewState.State.Success(
                         isLoading = false,

@@ -30,10 +30,10 @@ interface CreateAdditionGroupDataState {
     sealed interface Action : BaseAction {
         data object OnBackClick : Action
         data object OnErrorStateClicked : Action
-        data class CreateNameAdditionGroupListChanged(val nameGroup: String) : Action
+        data class CreateNameAdditionGroupChanged(val nameGroup: String) : Action
         data object OnVisibleClick : Action
         data object OnOneAdditionVisibleClick : Action
-        data object OnSaveAdditionGroupListClick : Action
+        data object OnSaveAdditionGroupClick : Action
     }
 
     sealed interface Event : BaseEvent {

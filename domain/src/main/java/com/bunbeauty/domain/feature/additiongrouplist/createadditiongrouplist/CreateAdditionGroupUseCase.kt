@@ -12,14 +12,14 @@ class CreateAdditionGroupUseCase(
 ) {
     suspend operator fun invoke(additionName: String, isVisible: Boolean, singleChoice: Boolean) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        val name = additionGroupRepo.getAdditionGroupList(
+        val additionGroupList = additionGroupRepo.getAdditionGroupList(
             token = token
         )
 
         when {
             additionName.isBlank() -> throw AdditionGroupNameException()
             getHasSameName(
-                additionGroup = name,
+                additionGroup = additionGroupList,
                 name = additionName
             ) -> throw DuplicateAdditionGroupNameException()
         }

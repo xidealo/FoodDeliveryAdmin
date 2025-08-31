@@ -27,7 +27,7 @@ class CreateAdditionGroupViewModel(
         when (action) {
             CreateAdditionGroupDataState.Action.OnBackClick -> onBackClicked()
             CreateAdditionGroupDataState.Action.OnErrorStateClicked -> onErrorState()
-            CreateAdditionGroupDataState.Action.OnSaveAdditionGroupListClick -> saveAdditionGroup(
+            CreateAdditionGroupDataState.Action.OnSaveAdditionGroupClick -> saveAdditionGroup(
                 additionGroupName = dataState.nameField.value,
                 isVisible = dataState.isShowMenuVisible,
                 singleChoice = dataState.singleChoice
@@ -36,7 +36,7 @@ class CreateAdditionGroupViewModel(
             is CreateAdditionGroupDataState.Action.OnOneAdditionVisibleClick -> onOneAdditionVisibleClick()
 
             is CreateAdditionGroupDataState.Action.OnVisibleClick -> onVisibleClick()
-            is CreateAdditionGroupDataState.Action.CreateNameAdditionGroupListChanged -> createNameAdditionGroup(
+            is CreateAdditionGroupDataState.Action.CreateNameAdditionGroupChanged -> createNameAdditionGroup(
                 additionGroupName = action.nameGroup
             )
         }
