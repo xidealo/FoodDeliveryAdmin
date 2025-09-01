@@ -3,6 +3,9 @@ package com.bunbeauty.data.mapper
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
+import com.bunbeauty.domain.model.addition.Addition
+import com.bunbeauty.domain.model.additiongroup.AdditionGroup
+import com.bunbeauty.domain.model.additiongroup.AdditionGroupWithAdditions
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
@@ -16,7 +19,7 @@ class MenuProductMapper {
                 name = name,
                 newPrice = newPrice,
                 oldPrice = oldPrice,
-                units = utils ?: "",
+                units = utils.orEmpty(),
                 nutrition = nutrition ?: 0,
                 description = description,
                 comboDescription = comboDescription,
@@ -26,6 +29,29 @@ class MenuProductMapper {
                 isRecommended = isRecommended,
                 categoryUuids = categories.map { category ->
                     category.uuid
+                },
+                additionGroups = menuProductServer.additionGroupServers.map { additionGroupServer ->
+                    AdditionGroupWithAdditions(
+                        additionList = additionGroupServer.additionServerList.map { additionServer ->
+                            Addition(
+                                isVisible = additionServer.isVisible,
+                                name = additionServer.name,
+                                photoLink = additionServer.photoLink,
+                                price = additionServer.price,
+                                uuid = additionServer.uuid,
+                                fullName = additionServer.fullName,
+                                priority = additionServer.priority,
+                                tag = additionServer.tag
+                            )
+                        },
+                        additionGroup = AdditionGroup(
+                            isVisible = additionGroupServer.isVisible,
+                            name = additionGroupServer.name,
+                            singleChoice = additionGroupServer.singleChoice,
+                            uuid = additionGroupServer.uuid,
+                            priority = additionGroupServer.priority
+                        )
+                    )
                 }
             )
         }

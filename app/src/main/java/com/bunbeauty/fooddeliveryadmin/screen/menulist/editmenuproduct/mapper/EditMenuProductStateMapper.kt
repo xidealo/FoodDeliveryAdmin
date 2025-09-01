@@ -29,7 +29,8 @@ fun EditMenuProduct.DataState.toEditMenuProductViewState(): EditMenuProductViewS
                 isVisibleInMenu = isVisibleInMenu,
                 isVisibleInRecommendation = isVisibleInRecommendations,
                 imageField = imageField.toImageFieldUi(),
-                sendingToServer = sendingToServer
+                sendingToServer = sendingToServer,
+                additionListField = additionGroupListField.toCardFieldUi()
             )
 
             EditMenuProduct.DataState.State.ERROR -> EditMenuProductViewState.State.Error
