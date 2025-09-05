@@ -172,7 +172,7 @@ class EditMenuProductFragment :
             is EditMenuProduct.Event.NavigateToAdditionList -> {
                 findNavController().navigate(
                     directions = EditMenuProductFragmentDirections
-                        .toAdditionGroupForMenuProductFragment(
+                        .toAdditionGroupForMenuProductListFragment(
                             menuProductUuid = event.menuProductUuid
                         )
                 )

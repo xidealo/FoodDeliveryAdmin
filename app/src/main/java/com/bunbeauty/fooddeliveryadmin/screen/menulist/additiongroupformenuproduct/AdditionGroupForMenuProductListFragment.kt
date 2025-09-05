@@ -24,22 +24,23 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.no
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProduct
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductViewModel
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList.DataState.AdditionGroupForMenuProduct
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
-class AdditionGroupForMenuProductFragment :
-    BaseComposeFragment<AdditionGroupForMenuProduct.DataState, AdditionGroupForMenuProductViewState, AdditionGroupForMenuProduct.Action, AdditionGroupForMenuProduct.Event>() {
+class AdditionGroupForMenuProductListFragment :
+    BaseComposeFragment<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductListViewState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>() {
 
-    override val viewModel: AdditionGroupForMenuProductViewModel by viewModel()
-    private val additionGroupForMenuProductFragmentArgs: AdditionGroupForMenuProductFragmentArgs by navArgs()
+    override val viewModel: AdditionGroupForMenuProductListViewModel by viewModel()
+    private val additionGroupForMenuProductFragmentArgs: AdditionGroupForMenuProductListFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(
-            AdditionGroupForMenuProduct.Action.Init(
+            AdditionGroupForMenuProductList.Action.Init(
                 menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
             )
         )
@@ -47,21 +48,21 @@ class AdditionGroupForMenuProductFragment :
 
     @Composable
     override fun Screen(
-        state: AdditionGroupForMenuProductViewState,
-        onAction: (AdditionGroupForMenuProduct.Action) -> Unit
+        state: AdditionGroupForMenuProductListViewState,
+        onAction: (AdditionGroupForMenuProductList.Action) -> Unit
     ) {
         AdditionGroupForMenuProductScreen(state = state, onAction = onAction)
     }
 
     @Composable
     fun AdditionGroupForMenuProductScreen(
-        state: AdditionGroupForMenuProductViewState,
-        onAction: (AdditionGroupForMenuProduct.Action) -> Unit
+        state: AdditionGroupForMenuProductListViewState,
+        onAction: (AdditionGroupForMenuProductList.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(id = R.string.title_addition_group_for_menu_product),
             backActionClick = {
-                onAction(AdditionGroupForMenuProduct.Action.OnBackClick)
+                onAction(AdditionGroupForMenuProductList.Action.OnBackClick)
             },
             backgroundColor = AdminTheme.colors.main.surface
         ) {
@@ -92,7 +93,7 @@ class AdditionGroupForMenuProductFragment :
     @Composable
     private fun AdditionGroupItemView(
         modifier: Modifier = Modifier,
-        additionGroup: AdditionGroupForMenuProductViewState.AdditionGroupWithAdditions,
+        additionGroup: AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions,
         onClick: () -> Unit,
         isClickable: Boolean
     ) {
@@ -132,42 +133,36 @@ class AdditionGroupForMenuProductFragment :
     }
 
     @Composable
-    override fun mapState(state: AdditionGroupForMenuProduct.DataState): AdditionGroupForMenuProductViewState {
-        return AdditionGroupForMenuProductViewState(
-            additionGroupWithAdditionsList = state.additionGroupList.map { additionGroupWithAdditions ->
-                AdditionGroupForMenuProductViewState.AdditionGroupWithAdditions(
-                    uuid = additionGroupWithAdditions.additionGroup.uuid,
-                    name = additionGroupWithAdditions.additionGroup.name,
-                    additionNameList = additionGroupWithAdditions.additionList
-                        .takeIf { list ->
-                            list.isNotEmpty()
-                        }
-                        ?.joinToString(separator = " ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
-                            selectableCategory.name
-                        }
+    override fun mapState(state: AdditionGroupForMenuProductList.DataState): AdditionGroupForMenuProductListViewState {
+        return AdditionGroupForMenuProductListViewState(
+            additionGroupWithAdditionsList = state.additionGroupList.map { additionGroupForMenuProduct ->
+                AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                    uuid = additionGroupForMenuProduct.uuid,
+                    name = additionGroupForMenuProduct.name,
+                    additionNameList = additionGroupForMenuProduct.additionNameList
                 )
             }
         )
     }
 
-    override fun handleEvent(event: AdditionGroupForMenuProduct.Event) {
+    override fun handleEvent(event: AdditionGroupForMenuProductList.Event) {
         when (event) {
-            AdditionGroupForMenuProduct.Event.Back -> {
+            AdditionGroupForMenuProductList.Event.Back -> {
                 findNavController().popBackStack()
             }
 
-            is AdditionGroupForMenuProduct.Event.OnAdditionGroupClick -> TODO()
+            is AdditionGroupForMenuProductList.Event.OnAdditionGroupClick -> TODO()
         }
     }
 
-    val additionGroupForMenuProductViewState = AdditionGroupForMenuProductViewState(
+    val additionGroupForMenuProductListViewState = AdditionGroupForMenuProductListViewState(
         additionGroupWithAdditionsList = listOf(
-            AdditionGroupForMenuProductViewState.AdditionGroupWithAdditions(
+            AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
                 uuid = "12321",
                 name = "Вкусняшки",
                 additionNameList = "Оленина Сопли Вопли"
             ),
-            AdditionGroupForMenuProductViewState.AdditionGroupWithAdditions(
+            AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
                 uuid = "1232112",
                 name = "Не Вкусняшки",
                 additionNameList = "Жижи Топли Нопли"
@@ -180,7 +175,7 @@ class AdditionGroupForMenuProductFragment :
     fun AdditionGroupForMenuProductScreenPreview() {
         AdminTheme {
             AdditionGroupForMenuProductScreen(
-                state = additionGroupForMenuProductViewState,
+                state = additionGroupForMenuProductListViewState,
                 onAction = {}
             )
         }

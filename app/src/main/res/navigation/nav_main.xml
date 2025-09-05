@@ -102,8 +102,8 @@
             android:id="@+id/to_cropImageFragment"
             app:destination="@id/cropImageFragment" />
         <action
-            android:id="@+id/to_additionGroupForMenuProductFragment"
-            app:destination="@id/additionGroupForMenuProductFragment" />
+            android:id="@+id/to_additionGroupForMenuProductListFragment"
+            app:destination="@id/additionGroupForMenuProductListFragment" />
     </fragment>
 
     <fragment
@@ -270,11 +270,23 @@
     </fragment>
 
     <fragment
-        android:id="@+id/additionGroupForMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductFragment"
-        android:label="additionGroupForMenuProductFragment">
+        android:id="@+id/additionGroupForMenuProductListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListFragment"
+        android:label="additionGroupForMenuProductListFragment">
         <argument
             android:name="menuProductUuid"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editAdditionGroupForMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct.EditAdditionGroupForMenuProductFragment"
+        android:label="editAdditionGroupForMenuProductFragment">
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string" />
+        <argument
+            android:name="additionGroupForMenuUuid"
             app:argType="string" />
     </fragment>
 

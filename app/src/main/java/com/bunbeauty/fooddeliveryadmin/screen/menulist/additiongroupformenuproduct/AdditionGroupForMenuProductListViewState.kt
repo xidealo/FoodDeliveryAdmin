@@ -2,7 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuprod
 
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
-data class AdditionGroupForMenuProductViewState(
+data class AdditionGroupForMenuProductListViewState(
     val additionGroupWithAdditionsList: List<AdditionGroupWithAdditions>
 ) : BaseViewState {
     data class AdditionGroupWithAdditions(
