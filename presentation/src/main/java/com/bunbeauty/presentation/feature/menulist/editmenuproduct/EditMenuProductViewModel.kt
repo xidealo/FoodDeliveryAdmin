@@ -52,7 +52,7 @@ class EditMenuProductViewModel(
         additionGroupListField = AdditionGroupListFieldData(
             value = listOf(),
             isError = false
-        ),
+        )
     )
 ) {
 

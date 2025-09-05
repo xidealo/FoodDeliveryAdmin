@@ -16,5 +16,5 @@ data class MenuProduct(
     val isVisible: Boolean,
     val isRecommended: Boolean,
     val categoryUuids: List<String>,
-    val additionGroups: List<AdditionGroupWithAdditions>,
+    val additionGroups: List<AdditionGroupWithAdditions>
 )

@@ -14,7 +14,7 @@ class GetAdditionGroupListFromMenuProductUseCase(
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         return menuProductRepo.getMenuProduct(
             menuProductUuid = menuProductUuid,
-            companyUuid = companyUuid,
+            companyUuid = companyUuid
         )?.additionGroups ?: emptyList()
     }
 }

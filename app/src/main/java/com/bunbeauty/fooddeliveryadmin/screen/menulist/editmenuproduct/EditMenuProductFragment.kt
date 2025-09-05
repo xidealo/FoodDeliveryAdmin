@@ -524,7 +524,7 @@ class EditMenuProductFragment :
                             value = "Группа 1 • Группа 2 • Группа 3",
                             isError = false,
                             errorResId = 0
-                        ),
+                        )
                     )
                 ),
                 onAction = {}

@@ -1,17 +1,17 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct
 
-import com.bunbeauty.domain.model.additiongroup.AdditionGroup
+import com.bunbeauty.domain.model.additiongroup.AdditionGroupWithAdditions
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 
 interface AdditionGroupForMenuProduct {
     data class DataState(
-        val additionGroupList: List<AdditionGroup>,
+        val additionGroupList: List<AdditionGroupWithAdditions>
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
-        data object Init : Action
+        data class Init(val menuProductUuid: String) : Action
         data object OnBackClick : Action
         data class OnAdditionGroupClick(val uuid: String) : Action
     }

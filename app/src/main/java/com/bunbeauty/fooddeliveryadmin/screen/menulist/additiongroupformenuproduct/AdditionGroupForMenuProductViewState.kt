@@ -8,6 +8,6 @@ data class AdditionGroupForMenuProductViewState(
     data class AdditionGroupWithAdditions(
         val uuid: String,
         val name: String,
-        val additionNameList: String
+        val additionNameList: String?
     )
 }
