@@ -27,6 +27,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupList
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -140,7 +141,9 @@ class AdditionGroupListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionGroupList.Action.OnAdditionClick)
+                onAction(AdditionGroupList.Action.OnAdditionClick(
+                    additionUuid = additionItem.uuid
+                ))
             }
         ) {
             Row(
@@ -193,7 +196,11 @@ class AdditionGroupListFragment :
         when (event) {
             AdditionGroupList.Event.Back -> findNavController().popBackStack()
             is AdditionGroupList.Event.OnAdditionGroupClick -> {
-                // TODO (implement)
+                findNavController().navigateSafe(
+                    AdditionGroupListFragmentDirections.toEditAdditionGroupFragment(
+                        event.additionUuid
+                    )
+                )
             }
         }
     }

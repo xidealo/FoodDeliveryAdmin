@@ -217,6 +217,20 @@
         android:id="@+id/additionGroupListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.AdditionGroupListFragment"
         android:label="AdditionGroupListFragment">
+        <action
+            android:id="@+id/to_EditAdditionGroupFragment"
+            app:destination="@id/editAdditionGroupFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/editAdditionGroupFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.editadditiongroup.EditAdditionGroupFragment"
+        android:label="EditAdditionGroupFragment">
+        <argument
+            android:name="additionGroupUuid"
+            app:argType="string" />
+
     </fragment>
 
     <fragment
