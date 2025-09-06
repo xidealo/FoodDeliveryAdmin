@@ -10,7 +10,7 @@ interface EditAdditionGroupForMenu {
         val groupName: String,
         val state: State,
         val additionNameList: String?,
-        val isVisible: Boolean,
+        val isVisible: Boolean
     ) : BaseViewDataState {
         enum class State {
             Loading,
@@ -22,7 +22,7 @@ interface EditAdditionGroupForMenu {
     sealed interface Action : BaseAction {
         data class Init(
             val additionGroupForMenuUuid: String,
-            val menuProductUuid: String,
+            val menuProductUuid: String
         ) : Action
 
         data object OnBackClick : Action

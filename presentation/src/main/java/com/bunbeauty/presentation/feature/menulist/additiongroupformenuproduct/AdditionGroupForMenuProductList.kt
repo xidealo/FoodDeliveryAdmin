@@ -7,12 +7,19 @@ import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 interface AdditionGroupForMenuProductList {
     data class DataState(
         val additionGroupList: List<AdditionGroupForMenuProduct>,
+        val state: State
     ) : BaseDataState {
         data class AdditionGroupForMenuProduct(
             val uuid: String,
             val name: String,
             val additionNameList: String?
         )
+
+        enum class State {
+            Loading,
+            Error,
+            Success
+        }
     }
 
     sealed interface Action : BaseAction {

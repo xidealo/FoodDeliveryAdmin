@@ -44,7 +44,7 @@ class EditAdditionGroupForMenuProductViewModel(
                 val additionGroupWithAdditionsForMenu =
                     getAdditionGroupWithAdditionsForMenuUseCase(
                         menuProductUuid = menuProductUuid,
-                        additionGroupForMenuUuid = additionGroupForMenuUuid,
+                        additionGroupForMenuUuid = additionGroupForMenuUuid
                     )
                 setState {
                     copy(
@@ -54,14 +54,14 @@ class EditAdditionGroupForMenuProductViewModel(
                         additionNameList = getAdditionListNameUseCase(
                             additionList = additionGroupWithAdditionsForMenu.additionList
                         ),
-                        isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible,
+                        isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = EditAdditionGroupForMenu.DataState.State.Error,
+                        state = EditAdditionGroupForMenu.DataState.State.Error
                     )
                 }
             }

@@ -12,7 +12,8 @@ class AdditionGroupForMenuProductListViewModel(
 ) :
     BaseStateViewModel<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>(
         initState = AdditionGroupForMenuProductList.DataState(
-            additionGroupList = listOf()
+            additionGroupList = listOf(),
+            state = AdditionGroupForMenuProductList.DataState.State.Loading
         )
     ) {
 
@@ -26,7 +27,7 @@ class AdditionGroupForMenuProductListViewModel(
             )
 
             is AdditionGroupForMenuProductList.Action.OnAdditionGroupClick -> onAdditionGroupClick(
-                additionGroupUuid = action.uuid,
+                additionGroupUuid = action.uuid
             )
 
             AdditionGroupForMenuProductList.Action.OnBackClick -> backClick()
@@ -46,9 +47,10 @@ class AdditionGroupForMenuProductListViewModel(
                                 name = additionGroupList.additionGroup.name,
                                 additionNameList = getAdditionListNameUseCase(
                                     additionList = additionGroupList.additionList
-                                ),
+                                )
                             )
-                        }
+                        },
+                        state = AdditionGroupForMenuProductList.DataState.State.Success
                     )
                 }
             },
@@ -61,7 +63,7 @@ class AdditionGroupForMenuProductListViewModel(
     fun onAdditionGroupClick(additionGroupUuid: String) {
         sendEvent {
             AdditionGroupForMenuProductList.Event.OnAdditionGroupClick(
-                additionGroupUuid = additionGroupUuid,
+                additionGroupUuid = additionGroupUuid
             )
         }
     }

@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bunbeauty.common.Constants
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
@@ -25,9 +24,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDiv
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
-import com.bunbeauty.fooddeliveryadmin.screen.additionlist.AdditionListFragmentDirections
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList.DataState.AdditionGroupForMenuProduct
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
@@ -68,6 +65,7 @@ class AdditionGroupForMenuProductListFragment :
             },
             backgroundColor = AdminTheme.colors.main.surface
         ) {
+            //TODO add state loading and error
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()

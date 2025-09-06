@@ -20,7 +20,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
-import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
@@ -82,7 +81,6 @@ class EditAdditionGroupForMenuProductFragment :
             NavigationTextCard(
                 valueText = state.groupName,
                 onClick = {
-
                 },
                 elevated = false,
                 labelText = stringResource(
@@ -94,7 +92,6 @@ class EditAdditionGroupForMenuProductFragment :
             NavigationTextCard(
                 valueText = state.additionNameList,
                 onClick = {
-
                 },
                 elevated = false,
                 labelText = stringResource(
@@ -109,10 +106,8 @@ class EditAdditionGroupForMenuProductFragment :
                 text = stringResource(R.string.title_edit_addition_group_for_menu_product_visible),
                 checked = state.isVisible,
                 onCheckChanged = { isVisible ->
-
                 }
             )
-
         }
     }
 
