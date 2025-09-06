@@ -26,7 +26,7 @@ class AdditionGroupForMenuProductListViewModel(
             )
 
             is AdditionGroupForMenuProductList.Action.OnAdditionGroupClick -> onAdditionGroupClick(
-                uuid = action.uuid
+                additionGroupUuid = action.uuid,
             )
 
             AdditionGroupForMenuProductList.Action.OnBackClick -> backClick()
@@ -58,9 +58,11 @@ class AdditionGroupForMenuProductListViewModel(
         )
     }
 
-    fun onAdditionGroupClick(uuid: String) {
+    fun onAdditionGroupClick(additionGroupUuid: String) {
         sendEvent {
-            AdditionGroupForMenuProductList.Event.OnAdditionGroupClick(uuid = uuid)
+            AdditionGroupForMenuProductList.Event.OnAdditionGroupClick(
+                additionGroupUuid = additionGroupUuid,
+            )
         }
     }
 

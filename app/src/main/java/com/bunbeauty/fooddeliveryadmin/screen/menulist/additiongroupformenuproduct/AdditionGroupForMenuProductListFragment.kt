@@ -24,6 +24,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.no
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
+import com.bunbeauty.fooddeliveryadmin.screen.additionlist.AdditionListFragmentDirections
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList.DataState.AdditionGroupForMenuProduct
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
@@ -78,6 +80,11 @@ class AdditionGroupForMenuProductListFragment :
                         AdditionGroupItemView(
                             additionGroup = additionGroup,
                             onClick = {
+                                onAction(
+                                    AdditionGroupForMenuProductList.Action.OnAdditionGroupClick(
+                                        uuid = additionGroup.uuid
+                                    )
+                                )
                             },
                             isClickable = true
                         )
@@ -147,11 +154,17 @@ class AdditionGroupForMenuProductListFragment :
 
     override fun handleEvent(event: AdditionGroupForMenuProductList.Event) {
         when (event) {
-            AdditionGroupForMenuProductList.Event.Back -> {
-                findNavController().popBackStack()
-            }
+            AdditionGroupForMenuProductList.Event.Back -> findNavController().popBackStack()
 
-            is AdditionGroupForMenuProductList.Event.OnAdditionGroupClick -> TODO()
+            is AdditionGroupForMenuProductList.Event.OnAdditionGroupClick -> {
+                findNavController().navigateSafe(
+                    AdditionGroupForMenuProductListFragmentDirections
+                        .toEditAdditionGroupForMenuProductFragment(
+                            menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid,
+                            additionGroupForMenuUuid = event.additionGroupUuid
+                        )
+                )
+            }
         }
     }
 

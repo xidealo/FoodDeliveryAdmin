@@ -1,20 +1,30 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct
 
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
-import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface EditAdditionGroupForMenu {
     data class DataState(
+        val additionUuid: String,
         val groupName: String,
-        val loading: Boolean,
-        val additionNameList: String,
+        val state: State,
+        val additionNameList: String?,
         val isVisible: Boolean,
-    ) : BaseViewDataState
+    ) : BaseViewDataState {
+        enum class State {
+            Loading,
+            Error,
+            Success
+        }
+    }
 
     sealed interface Action : BaseAction {
-        data class Init(val additionGroupForMenuUuid: String) : Action
+        data class Init(
+            val additionGroupForMenuUuid: String,
+            val menuProductUuid: String,
+        ) : Action
+
         data object OnBackClick : Action
         data class OnAdditionGroupClick(val uuid: String) : Action
     }

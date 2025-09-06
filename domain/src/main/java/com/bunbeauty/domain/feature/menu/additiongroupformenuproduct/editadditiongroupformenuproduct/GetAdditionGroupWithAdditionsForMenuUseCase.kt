@@ -22,7 +22,9 @@ class GetAdditionGroupWithAdditionsForMenuUseCase(
             companyUuid = companyUuid,
             menuProductUuid = menuProductUuid
         )?.additionGroups
-            ?.find { it.additionGroup.uuid == additionGroupForMenuUuid }
+            ?.find { additionGroupWithAdditions ->
+                additionGroupWithAdditions.additionGroup.uuid == additionGroupForMenuUuid
+            }
             ?: throw NoAdditionGroupException()
     }
 }

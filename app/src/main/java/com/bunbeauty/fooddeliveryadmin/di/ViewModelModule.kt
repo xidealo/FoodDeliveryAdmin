@@ -120,13 +120,15 @@ fun viewModelModule() = module {
 
     viewModel {
         AdditionGroupForMenuProductListViewModel(
-            getAdditionGroupListFromMenuProductUseCase = get()
+            getAdditionGroupListFromMenuProductUseCase = get(),
+            getAdditionListNameUseCase = get()
         )
     }
 
     viewModel {
         EditAdditionGroupForMenuProductViewModel(
-            getAdditionGroupWithAdditionsForMenuUseCase = get()
+            getAdditionGroupWithAdditionsForMenuUseCase = get(),
+            getAdditionListNameUseCase = get()
         )
     }
 

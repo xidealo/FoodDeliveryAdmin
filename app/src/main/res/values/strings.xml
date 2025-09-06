@@ -287,4 +287,10 @@
     <string name="title_addition_group_for_menu_product">Список групп</string>
 
 
+    <!-- Edit Addition Group For Menu Product -->
+    <string name="title_edit_addition_group_for_menu_product_group">Группа</string>
+    <string name="title_edit_addition_group_for_menu_product_addition">Добавка</string>
+    <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
+
+
 </resources>
