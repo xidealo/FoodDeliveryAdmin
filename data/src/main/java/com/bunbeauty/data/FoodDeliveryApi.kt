@@ -6,6 +6,7 @@ import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionPostServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
@@ -176,5 +177,10 @@ interface FoodDeliveryApi {
         additionGroupUuid: String,
         additionGroupPatchServer: AdditionGroupPatchServer,
         token: String
+    ): ApiResult<AdditionGroupServer>
+
+    suspend fun postAdditionGroup(
+        token: String,
+        additionGroupServerPost: AdditionGroupPostServer
     ): ApiResult<AdditionGroupServer>
 }
