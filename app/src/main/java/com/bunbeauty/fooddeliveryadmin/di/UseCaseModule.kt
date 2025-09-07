@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
+import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
@@ -167,6 +168,13 @@ fun useCaseModule() = module {
         UpdateOrderStatusUseCase(
             dataStoreRepo = get(),
             orderRepo = get()
+        )
+    }
+
+    factory {
+        CreateAdditionGroupUseCase(
+            additionGroupRepo = get(),
+            dataStoreRepo = get()
         )
     }
 

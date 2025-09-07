@@ -3,11 +3,14 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.addition.mapAdditionGroupServerToAddition
 import com.bunbeauty.data.mapper.addition.mapUpdateAdditionGroupServerToPatchAdditionGroup
 import com.bunbeauty.data.mapper.additiongroup.mapAdditionGroupServerToAdditionGroup
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
+import com.bunbeauty.domain.model.additiongroup.CreateAdditionGroup
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 
@@ -68,6 +71,38 @@ class AdditionGroupRepository(
                 additionGroupServer = additionGroupServer
             )
         }
+    }
+
+    override suspend fun postAdditionGroup(
+        token: String,
+        createAdditionGroup: CreateAdditionGroup
+    ): AdditionGroup {
+        return networkConnector.postAdditionGroup(
+            token = token,
+            additionGroupServerPost = createAdditionGroup.toAdditionGroupCategoryServer()
+        ).dataOrNull()?.let { additionGroupServer ->
+            val createAdditionGroup = additionGroupServer.mapAdditionGroupServerToAddition()
+            additionGroupListCache = additionGroupListCache?.let { cache ->
+                cache + createAdditionGroup
+            } ?: listOf(createAdditionGroup)
+
+            AdditionGroup(
+                uuid = createAdditionGroup.uuid,
+                name = createAdditionGroup.name,
+                priority = createAdditionGroup.priority,
+                singleChoice = createAdditionGroup.singleChoice,
+                isVisible = createAdditionGroup.isVisible
+            )
+        } ?: throw Exception("additionGroup create error")
+    }
+
+    private val toAdditionGroupCategoryServer: CreateAdditionGroup.() -> AdditionGroupPostServer = {
+        AdditionGroupPostServer(
+            name = name,
+            priority = priority,
+            singleChoice = singleChoice,
+            isVisible = isVisible
+        )
     }
 
     override fun clearCache() {

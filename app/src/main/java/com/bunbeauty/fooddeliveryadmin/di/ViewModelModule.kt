@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.fooddeliveryadmin.screen.login.LoginViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
+import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.EditAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAdditionViewModel
@@ -53,6 +54,12 @@ fun viewModelModule() = module {
     viewModel {
         CreateAdditionViewModel(
             createAdditionUseCase = get()
+        )
+    }
+
+    viewModel {
+        CreateAdditionGroupViewModel(
+            createAdditionGroupUseCase = get()
         )
     }
 
