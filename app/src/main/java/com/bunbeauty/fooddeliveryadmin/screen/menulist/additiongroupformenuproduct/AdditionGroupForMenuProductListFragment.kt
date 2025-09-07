@@ -65,7 +65,7 @@ class AdditionGroupForMenuProductListFragment :
             },
             backgroundColor = AdminTheme.colors.main.surface
         ) {
-            //TODO add state loading and error
+            // TODO add state loading and error
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
