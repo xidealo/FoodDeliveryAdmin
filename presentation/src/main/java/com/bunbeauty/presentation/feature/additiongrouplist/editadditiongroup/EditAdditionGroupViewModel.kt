@@ -1,37 +1,54 @@
 package com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.EditAdditionGroupUseCase
+import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
+import com.bunbeauty.domain.feature.menu.common.category.CategoryNameException
+import com.bunbeauty.domain.feature.menu.common.category.DuplicateCategoryNameException
+import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
+import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
+import com.bunbeauty.presentation.extension.launchSafe
+import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryState
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
+import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_GROUP_UUID = "additionGroupUuid"
 
 class EditAdditionGroupViewModel(
     private val savedStateHandle: SavedStateHandle,
-   // private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
+    private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
+    private val saveEditAdditionGroupUseCase: EditAdditionGroupUseCase,
 
-): BaseStateViewModel<EditAdditionGroupDataState.DataState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>(
-    initState = EditAdditionGroupDataState.DataState(
-        uuid = "",
-        name = TextFieldData.empty,
-        isLoading = false,
-        state = EditAdditionGroupDataState.DataState.State.SUCCESS,
-        nameStateError = EditAdditionGroupDataState.DataState.NameStateError.NO_ERROR,
-        isVisible = true,
-        isVisibleSingleChoice = true
-    )
-) {
+    ) :
+    BaseStateViewModel<EditAdditionGroupDataState.DataState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>(
+        initState = EditAdditionGroupDataState.DataState(
+            uuid = "",
+            name = TextFieldData.empty,
+            isLoading = false,
+            state = EditAdditionGroupDataState.DataState.State.SUCCESS,
+            nameStateError = EditAdditionGroupDataState.DataState.NameStateError.NO_ERROR,
+            isVisible = true,
+            isVisibleSingleChoice = true
+        )
+    ) {
     override fun reduce(
         action: EditAdditionGroupDataState.Action,
         dataState: EditAdditionGroupDataState.DataState
     ) {
-        when(action){
-            EditAdditionGroupDataState.Action.Init -> TODO()
+        when (action) {
+            EditAdditionGroupDataState.Action.Init -> loadData()
             EditAdditionGroupDataState.Action.OnBackClicked -> onBackClicked()
-            is EditAdditionGroupDataState.Action.EditNameAdditionGroup -> TODO()
+            is EditAdditionGroupDataState.Action.EditNameAdditionGroup -> editNameAddition(
+                nameEditAddition = action.nameEditAdditionGroup
+            )
+
             EditAdditionGroupDataState.Action.OnSaveEditAdditionGroupClick -> TODO()
-            is EditAdditionGroupDataState.Action.OnVisibleMenu -> TODO()
-            is EditAdditionGroupDataState.Action.OnVisibleSingleChoice -> TODO()
+            is EditAdditionGroupDataState.Action.OnVisibleMenu -> onVisibleMenu(action = action)
+            is EditAdditionGroupDataState.Action.OnVisibleSingleChoice -> onVisibleSingleChoice(
+                action = action
+            )
         }
     }
 
@@ -41,25 +58,116 @@ class EditAdditionGroupViewModel(
         }
     }
 
-//    private fun loadData() {
-//        viewModelScope.launchSafe(
-//            block = {
-//                val additionGroupUuidNavigation =
-//                    savedStateHandle.get<String>(ADDITION_GROUP_UUID).orEmpty()
-//                val additionGroup = getAdditionGroupUseCase(additionGroupUuid = additionGroupUuidNavigation)
-//                setState {
-//                    copy(
-//                        uuid = additionGroup.uuid,
-//                        name = name.copy(
-//                            value = additionGroup.name,
-//                            isError = false
-//                        )
-//                    )
-//                }
-//            },
-//            onError = {
-//                // No errors
-//            }
-//        )
-//    }
+    private fun editNameAddition(nameEditAddition: String) {
+        setState {
+            copy(
+                name = name.copy(
+                    value = nameEditAddition,
+                    isError = false
+                )
+            )
+        }
+    }
+
+    private fun onVisibleMenu(action: EditAdditionGroupDataState.Action.OnVisibleMenu) {
+        setState {
+            copy(isVisible = action.isVisible)
+        }
+    }
+
+    private fun onVisibleSingleChoice(action: EditAdditionGroupDataState.Action.OnVisibleSingleChoice) {
+        setState {
+            copy(isVisibleSingleChoice = action.isVisibleSingleChoice)
+        }
+    }
+
+    private fun loadData() {
+        viewModelScope.launchSafe(
+            block = {
+                val additionGroupUuidNavigation =
+                    savedStateHandle.get<String>(ADDITION_GROUP_UUID).orEmpty()
+                val additionGroup =
+                    getAdditionGroupUseCase(additionGroupUuid = additionGroupUuidNavigation)
+                setState {
+                    copy(
+                        uuid = additionGroup.uuid,
+                        name = name.copy(
+                            value = additionGroup.name,
+                            isError = false
+                        )
+                    )
+                }
+            },
+            onError = {
+                // No errors
+            }
+        )
+    }
+
+
+    private fun saveEditCategory(
+        additionGroupUuid: String,
+        additionGroupName: String,
+        isVisible: Boolean,
+        isVisibleSingleChoice: Boolean
+    ) {
+        viewModelScope.launchSafe(
+            block = {
+                saveEditAdditionGroupUseCase(
+                    additionGroupUuid = additionGroupUuid,
+                    updateAdditionGroup = state.value.run {
+                        UpdateAdditionGroup(
+                            name = additionGroupName.trim(),
+                            isVisible = isVisible,
+                            singleChoice = isVisibleSingleChoice,
+                            priority = 1
+                        )
+                    }
+                )
+                setState {
+                    copy(isLoading = false)
+                }
+
+                sendEvent {
+                    EditAdditionGroupDataState.Event.ShowUpdateAdditionGroupSuccess(
+                        additionGroupName = additionGroupName
+
+                    )
+                }
+            },
+            onError = { throwable ->
+                setState {
+                    when (throwable) {
+                        is CategoryNameException -> {
+                            copy(
+                                nameStateError = EditAdditionGroupDataState
+                                    .DataState.NameStateError.EMPTY_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
+                            )
+                        }
+
+                        is DuplicateCategoryNameException -> {
+                            copy(
+                                nameStateError = EditAdditionGroupDataState
+                                    .DataState.NameStateError.DUPLICATE_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
+                            )
+                        }
+
+                        else -> copy(
+                            isLoading = false,
+                            nameStateError = EditAdditionGroupDataState
+                                .DataState.NameStateError.NO_ERROR
+                        )
+                    }
+                }
+            }
+        )
+    }
 }

@@ -141,9 +141,11 @@ class AdditionGroupListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionGroupList.Action.OnAdditionClick(
-                    additionUuid = additionItem.uuid
-                ))
+                onAction(
+                    AdditionGroupList.Action.OnAdditionClick(
+                        additionUuid = additionItem.uuid
+                    )
+                )
             }
         ) {
             Row(

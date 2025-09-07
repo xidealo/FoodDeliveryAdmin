@@ -123,7 +123,7 @@ class EditAdditionGroupFragment :
                 hint = stringResource(R.string.msg_edit_addition_group_single_сhoice_hint),
                 elevated = false,
                 text = stringResource(R.string.msg_edit_addition_group_single_addition_menu),
-                checked = state.isVisible,
+                checked = state.isVisibleSingleChoice,
                 onCheckChanged = { isVisibleSingleChoice ->
                     onAction(
                         EditAdditionGroupDataState.Action.OnVisibleSingleChoice(
