@@ -41,8 +41,9 @@ class UpdateVisibleAdditionGroupListUseCaseTest {
         // Given
         val token = "token"
         val additionGroupUuidMock = ""
+        val name = ""
         val isVisible = true
-        val updateAdditionGroupMock = UpdateAdditionGroup(isVisible = isVisible)
+        val updateAdditionGroupMock = UpdateAdditionGroup(isVisible = isVisible, name = name)
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery {
             additionGroupRepo.updateAdditionGroup(

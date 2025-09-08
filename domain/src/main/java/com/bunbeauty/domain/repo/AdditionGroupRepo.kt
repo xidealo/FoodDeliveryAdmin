@@ -11,7 +11,7 @@ interface AdditionGroupRepo {
         refreshing: Boolean = false
     ): List<AdditionGroup>
 
-    suspend fun getAdditionGroup(additionUuid: String,token: String): AdditionGroup?
+    suspend fun getAdditionGroup(additionUuid: String, token: String): AdditionGroup?
 
     /*UPDATE*/
     suspend fun updateAdditionGroup(

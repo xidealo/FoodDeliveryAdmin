@@ -215,7 +215,8 @@ fun viewModelModule() = module {
     viewModel {
         EditAdditionGroupViewModel(
             savedStateHandle = get(),
-            getAdditionGroupUseCase = get()
+            getAdditionGroupUseCase = get(),
+            saveEditAdditionGroupUseCase = get()
         )
     }
 }

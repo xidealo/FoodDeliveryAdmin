@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup
 
-
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.repo.AdditionGroupRepo

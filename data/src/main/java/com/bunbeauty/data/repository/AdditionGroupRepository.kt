@@ -51,7 +51,8 @@ class AdditionGroupRepository(
             addition.uuid == additionUuid
         }
         return additionGroup ?: fetchAdditionGroupList(
-            token = token).find { foundAddition ->
+            token = token
+        ).find { foundAddition ->
             foundAddition.uuid == additionUuid
         }
     }

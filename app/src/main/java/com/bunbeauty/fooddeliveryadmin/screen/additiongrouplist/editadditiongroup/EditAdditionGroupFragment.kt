@@ -3,7 +3,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.editadditiongro
 import android.os.Bundle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,14 +29,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class EditAdditionGroupFragment :
     BaseComposeFragment<EditAdditionGroupDataState.DataState, EditAdditionGroupViewState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>() {
 
-
     override val viewModel: EditAdditionGroupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(EditAdditionGroupDataState.Action.Init)
     }
-
 
     @Composable
     override fun Screen(
@@ -49,7 +46,6 @@ class EditAdditionGroupFragment :
             onAction = onAction
         )
     }
-
 
     @Composable
     private fun EditAdditionGroupScreen(
@@ -90,7 +86,7 @@ class EditAdditionGroupFragment :
         state: EditAdditionGroupViewState.State.Success,
         onAction: (EditAdditionGroupDataState.Action) -> Unit
     ) {
-        Column{
+        Column {
             AdminTextField(
                 modifier = Modifier.padding(16.dp),
                 labelText = stringResource(R.string.hint_edit_addition_group_name),
@@ -113,7 +109,8 @@ class EditAdditionGroupFragment :
                 onCheckChanged = { isVisible ->
                     onAction(
                         EditAdditionGroupDataState.Action.OnVisibleMenu(
-                            isVisible = isVisible                        )
+                            isVisible = isVisible
+                        )
                     )
                 }
             )
@@ -127,7 +124,8 @@ class EditAdditionGroupFragment :
                 onCheckChanged = { isVisibleSingleChoice ->
                     onAction(
                         EditAdditionGroupDataState.Action.OnVisibleSingleChoice(
-                            isVisibleSingleChoice = isVisibleSingleChoice                        )
+                            isVisibleSingleChoice = isVisibleSingleChoice
+                        )
                     )
                 }
             )
@@ -144,7 +142,6 @@ class EditAdditionGroupFragment :
             )
         }
     }
-
 
     override fun handleEvent(event: EditAdditionGroupDataState.Event) {
         when (event) {
@@ -164,7 +161,7 @@ class EditAdditionGroupFragment :
     @Composable
     override fun mapState(state: EditAdditionGroupDataState.DataState): EditAdditionGroupViewState {
         return EditAdditionGroupViewState(
-            state = when(state.state){
+            state = when (state.state) {
                 EditAdditionGroupDataState.DataState.State.LOADING -> EditAdditionGroupViewState.State.Loading
                 EditAdditionGroupDataState.DataState.State.ERROR -> EditAdditionGroupViewState.State.Error
                 EditAdditionGroupDataState.DataState.State.SUCCESS -> EditAdditionGroupViewState.State.Success(
@@ -186,7 +183,6 @@ class EditAdditionGroupFragment :
                         }
                     )
                 )
-
             }
         )
     }
@@ -212,5 +208,4 @@ class EditAdditionGroupFragment :
             )
         }
     }
-
 }

@@ -1,8 +1,6 @@
 package com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup
 
-import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryState
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
-import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -24,7 +22,6 @@ interface EditAdditionGroupDataState {
             NO_ERROR
         }
 
-
         enum class State {
             LOADING,
             SUCCESS,
@@ -39,12 +36,10 @@ interface EditAdditionGroupDataState {
         data object OnSaveEditAdditionGroupClick : Action
         data class OnVisibleMenu(val isVisible: Boolean) : Action
         data class OnVisibleSingleChoice(val isVisibleSingleChoice: Boolean) : Action
-
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
         data class ShowUpdateAdditionGroupSuccess(val additionGroupName: String) : Event
-
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additiongrouplist.GetSeparatedAdditionGroupListUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroupListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.category.CategoryListState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class AdditionGroupListViewModel(

@@ -2,16 +2,13 @@ package com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.AdditionGroupNameException
+import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.DuplicateAdditionGroupNameException
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.EditAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
-import com.bunbeauty.domain.feature.menu.common.category.CategoryNameException
-import com.bunbeauty.domain.feature.menu.common.category.DuplicateCategoryNameException
-import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryState
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
-import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_GROUP_UUID = "additionGroupUuid"
@@ -19,9 +16,9 @@ private const val ADDITION_GROUP_UUID = "additionGroupUuid"
 class EditAdditionGroupViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
-    private val saveEditAdditionGroupUseCase: EditAdditionGroupUseCase,
+    private val saveEditAdditionGroupUseCase: EditAdditionGroupUseCase
 
-    ) :
+) :
     BaseStateViewModel<EditAdditionGroupDataState.DataState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>(
         initState = EditAdditionGroupDataState.DataState(
             uuid = "",
@@ -44,7 +41,12 @@ class EditAdditionGroupViewModel(
                 nameEditAddition = action.nameEditAdditionGroup
             )
 
-            EditAdditionGroupDataState.Action.OnSaveEditAdditionGroupClick -> TODO()
+            EditAdditionGroupDataState.Action.OnSaveEditAdditionGroupClick -> saveEditCategory(
+                additionGroupUuid = dataState.uuid,
+                additionGroupName = dataState.name.value,
+                isVisible = dataState.isVisible,
+                isVisibleSingleChoice = dataState.isVisibleSingleChoice
+            )
             is EditAdditionGroupDataState.Action.OnVisibleMenu -> onVisibleMenu(action = action)
             is EditAdditionGroupDataState.Action.OnVisibleSingleChoice -> onVisibleSingleChoice(
                 action = action
@@ -104,7 +106,6 @@ class EditAdditionGroupViewModel(
         )
     }
 
-
     private fun saveEditCategory(
         additionGroupUuid: String,
         additionGroupName: String,
@@ -138,7 +139,7 @@ class EditAdditionGroupViewModel(
             onError = { throwable ->
                 setState {
                     when (throwable) {
-                        is CategoryNameException -> {
+                        is AdditionGroupNameException -> {
                             copy(
                                 nameStateError = EditAdditionGroupDataState
                                     .DataState.NameStateError.EMPTY_NAME,
@@ -149,7 +150,7 @@ class EditAdditionGroupViewModel(
                             )
                         }
 
-                        is DuplicateCategoryNameException -> {
+                        is DuplicateAdditionGroupNameException -> {
                             copy(
                                 nameStateError = EditAdditionGroupDataState
                                     .DataState.NameStateError.DUPLICATE_NAME,
