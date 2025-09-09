@@ -219,6 +219,11 @@
         android:id="@+id/additionGroupListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.AdditionGroupListFragment"
         android:label="AdditionGroupListFragment" />
+        android:label="AdditionGroupListFragment">
+        <action
+            android:id="@+id/to_CreateAdditionGroup"
+            app:destination="@id/createAdditionGroupFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/categoryListFragment"
@@ -267,6 +272,12 @@
         <action
             android:id="@+id/action_createAdditionFragment_to_cropImageFragment"
             app:destination="@id/cropImageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAdditionGroupFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.createadditiongrouplist.CreateAdditionGroupFragment"
+        android:label="createAdditionGroupFragment">
     </fragment>
 
     <fragment
