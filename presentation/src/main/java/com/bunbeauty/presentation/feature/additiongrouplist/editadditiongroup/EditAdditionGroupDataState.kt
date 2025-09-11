@@ -12,7 +12,7 @@ interface EditAdditionGroupDataState {
         val state: State,
         val isLoading: Boolean,
         val isVisible: Boolean,
-        val isVisibleSingleChoice: Boolean,
+        val isSingleChoice: Boolean,
         val nameStateError: NameStateError
     ) : BaseDataState {
 

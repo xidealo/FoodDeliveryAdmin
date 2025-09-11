@@ -167,7 +167,7 @@ class EditAdditionGroupFragment :
                 EditAdditionGroupDataState.DataState.State.SUCCESS -> EditAdditionGroupViewState.State.Success(
                     isLoading = state.isLoading,
                     isVisible = state.isVisible,
-                    isVisibleSingleChoice = state.isVisibleSingleChoice,
+                    isVisibleSingleChoice = state.isSingleChoice,
                     nameField = TextFieldUi(
                         value = state.name.value,
                         isError = state.name.isError,

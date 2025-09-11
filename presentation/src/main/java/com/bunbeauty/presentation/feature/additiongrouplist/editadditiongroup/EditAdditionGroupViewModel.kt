@@ -27,7 +27,7 @@ class EditAdditionGroupViewModel(
             state = EditAdditionGroupDataState.DataState.State.SUCCESS,
             nameStateError = EditAdditionGroupDataState.DataState.NameStateError.NO_ERROR,
             isVisible = true,
-            isVisibleSingleChoice = true
+            isSingleChoice = true
         )
     ) {
     override fun reduce(
@@ -45,7 +45,7 @@ class EditAdditionGroupViewModel(
                 additionGroupUuid = dataState.uuid,
                 additionGroupName = dataState.name.value,
                 isVisible = dataState.isVisible,
-                isVisibleSingleChoice = dataState.isVisibleSingleChoice
+                isVisibleSingleChoice = dataState.isSingleChoice
             )
             is EditAdditionGroupDataState.Action.OnVisibleMenu -> onVisibleMenu(action = action)
             is EditAdditionGroupDataState.Action.OnVisibleSingleChoice -> onVisibleSingleChoice(
@@ -79,7 +79,7 @@ class EditAdditionGroupViewModel(
 
     private fun onVisibleSingleChoice(action: EditAdditionGroupDataState.Action.OnVisibleSingleChoice) {
         setState {
-            copy(isVisibleSingleChoice = action.isVisibleSingleChoice)
+            copy(isSingleChoice = action.isVisibleSingleChoice)
         }
     }
 
