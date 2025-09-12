@@ -125,7 +125,6 @@ class CreateAdditionGroupFragment :
                 enabled = !state.isLoading
             )
             SwitcherCard(
-                modifier = Modifier.padding(horizontal = 0.dp),
                 elevated = false,
                 text = stringResource(R.string.action_addition_list_group_show_in_menu),
                 checked = state.isShowMenuVisible,
@@ -139,7 +138,6 @@ class CreateAdditionGroupFragment :
 
             SwitcherCard(
                 hint = stringResource(R.string.msg_addition_list_group_appliances_hint),
-                modifier = Modifier.padding(horizontal = 0.dp),
                 elevated = false,
                 text = stringResource(R.string.msg_addition_list_group_switcher_card),
                 checked = state.singleChoice,

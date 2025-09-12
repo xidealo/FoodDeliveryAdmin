@@ -102,7 +102,6 @@ class EditAdditionGroupFragment :
 
             )
             SwitcherCard(
-                modifier = Modifier.padding(horizontal = 0.dp),
                 elevated = false,
                 text = stringResource(R.string.msg_edit_addition_group_is_visible_menu),
                 checked = state.isVisible,
@@ -116,7 +115,6 @@ class EditAdditionGroupFragment :
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             SwitcherCard(
-                modifier = Modifier.padding(horizontal = 0.dp),
                 hint = stringResource(R.string.msg_edit_addition_group_single_сhoice_hint),
                 elevated = false,
                 text = stringResource(R.string.msg_edit_addition_group_single_addition_menu),
