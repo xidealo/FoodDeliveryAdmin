@@ -1,6 +1,6 @@
 package com.bunbeauty.data.model.server.menuproduct
 
-import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupWithAdditionsServer
 import com.bunbeauty.data.model.server.category.CategoryServer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,5 +24,5 @@ data class MenuProductServer(
     val categories: List<CategoryServer>,
 
     @SerialName("additionGroups")
-    val additionGroupServers: List<AdditionGroupServer>
+    val additionGroupServers: List<AdditionGroupWithAdditionsServer>
 )

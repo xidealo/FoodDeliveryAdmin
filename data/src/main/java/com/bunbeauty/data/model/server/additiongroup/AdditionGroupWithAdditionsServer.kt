@@ -1,10 +1,11 @@
 package com.bunbeauty.data.model.server.additiongroup
 
+import com.bunbeauty.data.model.server.addition.AdditionServer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AdditionGroupServer(
+data class AdditionGroupWithAdditionsServer(
     @SerialName("uuid")
     val uuid: String,
     @SerialName("name")
@@ -15,4 +16,6 @@ data class AdditionGroupServer(
     val singleChoice: Boolean,
     @SerialName("isVisible")
     val isVisible: Boolean,
+    @SerialName("additions")
+    val additionServerList: List<AdditionServer>
 )
