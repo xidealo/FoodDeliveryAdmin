@@ -103,7 +103,11 @@ class EditAdditionGroupViewModel(
                 }
             },
             onError = {
-                // No errors
+                setState {
+                    copy(
+                        state = EditAdditionGroupDataState.DataState.State.ERROR
+                    )
+                }
             }
         )
     }
