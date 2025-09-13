@@ -2,7 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.createadditiong
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -109,11 +108,9 @@ class CreateAdditionGroupFragment :
         state: CreateAdditionGroupViewState.State.Success,
         onAction: (CreateAdditionGroupDataState.Action) -> Unit
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
+        Column {
             AdminTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.padding(16.dp),
                 labelText = stringResource(R.string.hint_edit_create_addition_group_name),
                 value = state.nameField.value,
                 onValueChange = { name ->
@@ -128,7 +125,6 @@ class CreateAdditionGroupFragment :
                 enabled = !state.isLoading
             )
             SwitcherCard(
-                modifier = Modifier.padding(vertical = 8.dp),
                 elevated = false,
                 text = stringResource(R.string.action_addition_list_group_show_in_menu),
                 checked = state.isShowMenuVisible,
@@ -142,7 +138,6 @@ class CreateAdditionGroupFragment :
 
             SwitcherCard(
                 hint = stringResource(R.string.msg_addition_list_group_appliances_hint),
-                modifier = Modifier.padding(vertical = 8.dp),
                 elevated = false,
                 text = stringResource(R.string.msg_addition_list_group_switcher_card),
                 checked = state.singleChoice,
@@ -156,6 +151,7 @@ class CreateAdditionGroupFragment :
 
             Spacer(modifier = Modifier.weight(1f))
             LoadingButton(
+                modifier = Modifier.padding(16.dp),
                 text = stringResource(R.string.action_create_category_save),
                 isLoading = state.isLoading,
                 onClick = {

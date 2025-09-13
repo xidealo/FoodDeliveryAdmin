@@ -153,7 +153,11 @@ class AdditionGroupListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionGroupList.Action.OnAdditionClick)
+                onAction(
+                    AdditionGroupList.Action.OnAdditionClick(
+                        additionUuid = additionItem.uuid
+                    )
+                )
             }
         ) {
             Row(
@@ -206,7 +210,11 @@ class AdditionGroupListFragment :
         when (event) {
             AdditionGroupList.Event.Back -> findNavController().popBackStack()
             is AdditionGroupList.Event.OnAdditionGroupClick -> {
-                // TODO (implement)
+                findNavController().navigateSafe(
+                    AdditionGroupListFragmentDirections.toEditAdditionGroupFragment(
+                        event.additionUuid
+                    )
+                )
             }
         }
     }

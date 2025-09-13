@@ -46,8 +46,15 @@ class AdditionGroupRepository(
         }
     }
 
-    override suspend fun getAdditionGroup(additionUuid: String): AdditionGroup? {
-        TODO("Not yet implemented")
+    override suspend fun getAdditionGroup(additionUuid: String, token: String): AdditionGroup? {
+        val additionGroup = additionGroupListCache?.find { addition ->
+            addition.uuid == additionUuid
+        }
+        return additionGroup ?: fetchAdditionGroupList(
+            token = token
+        ).find { foundAddition ->
+            foundAddition.uuid == additionUuid
+        }
     }
 
     override suspend fun updateAdditionGroup(

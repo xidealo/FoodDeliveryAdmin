@@ -262,6 +262,21 @@
     <string name="title_create_addition_group">Создание группы добавок</string>
     <string name="action_addition_group_create">Создать</string>
 
+    <!-- EDIT ADDITION GROUP -->
+    <string name="title_edit_addition_group">Редактирование группы</string>
+    <string name="msg_edit_addition_group_updated">%s обновлён</string>
+    <string name="action_edit_addition_group_save">Сохранить</string>
+    <string name="hint_edit_addition_group_name">Название*</string>
+    <string name="error_common_edit_addition_group_empty_name">Название не может быть пустым</string>
+    <string name="error_common_edit_addition_group_duplicate_name">Группа с таким именем уже существует</string>
+    <string name="msg_edit_addition_group_is_visible_menu">Показывать в меню</string>
+    <string name="msg_edit_addition_group_single_addition_menu">Можно выбрать 1 добавку</string>
+    <string name="msg_edit_addition_group_single_сhoice_hint">Пользователь сможет выбрать только одну добавку из группы</string>
+
+
+
+
+
     <!--CATEGORIES LIST-->
     <string name="title_categories_list">Категории</string>
     <string name="title_edit_priority">"Изменение порядка</string>
