@@ -14,7 +14,6 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 private const val ADDITION_GROUP_UUID = "additionGroupUuid"
 private const val PRIORITY_ADDITION_GROUP = 1
 
-
 class EditAdditionGroupViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
