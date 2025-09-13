@@ -12,6 +12,8 @@ import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_GROUP_UUID = "additionGroupUuid"
+private const val PRIORITY_ADDITION_GROUP = 1
+
 
 class EditAdditionGroupViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -121,7 +123,7 @@ class EditAdditionGroupViewModel(
                             name = additionGroupName.trim(),
                             isVisible = isVisible,
                             singleChoice = isVisibleSingleChoice,
-                            priority = 1
+                            priority = PRIORITY_ADDITION_GROUP
                         )
                     }
                 )
