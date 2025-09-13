@@ -16,9 +16,9 @@ interface AdditionGroupForMenuProductList {
         )
 
         enum class State {
-            Loading,
-            Error,
-            Success
+            LOADING,
+            SUCCESS,
+            ERROR
         }
     }
 

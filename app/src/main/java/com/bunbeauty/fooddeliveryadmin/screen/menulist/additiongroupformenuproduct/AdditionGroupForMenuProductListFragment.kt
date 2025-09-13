@@ -21,6 +21,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
+import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
@@ -50,12 +52,17 @@ class AdditionGroupForMenuProductListFragment :
         state: AdditionGroupForMenuProductListViewState,
         onAction: (AdditionGroupForMenuProductList.Action) -> Unit
     ) {
-        AdditionGroupForMenuProductScreen(state = state, onAction = onAction)
+        AdditionGroupForMenuProductScreen(
+            state = state,
+            onAction = onAction,
+            menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
+        )
     }
 
     @Composable
     fun AdditionGroupForMenuProductScreen(
         state: AdditionGroupForMenuProductListViewState,
+        menuProductUuid: String,
         onAction: (AdditionGroupForMenuProductList.Action) -> Unit
     ) {
         AdminScaffold(
@@ -65,31 +72,60 @@ class AdditionGroupForMenuProductListFragment :
             },
             backgroundColor = AdminTheme.colors.main.surface
         ) {
-            // TODO add state loading and error
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                items(
-                    items = state.additionGroupWithAdditionsList,
-                    key = { additionGroupWithAddition -> additionGroupWithAddition.uuid }
-                ) { additionGroup ->
-                    Column {
-                        AdditionGroupItemView(
-                            additionGroup = additionGroup,
-                            onClick = {
-                                onAction(
-                                    AdditionGroupForMenuProductList.Action.OnAdditionGroupClick(
-                                        uuid = additionGroup.uuid
-                                    )
+            when (state.state) {
+                is AdditionGroupForMenuProductListViewState.State.Loading -> LoadingScreen()
+                is AdditionGroupForMenuProductListViewState.State.Error -> {
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = {
+                            onAction(
+                                AdditionGroupForMenuProductList.Action.Init(
+                                    menuProductUuid = menuProductUuid
                                 )
-                            },
-                            isClickable = true
-                        )
-                        AdminHorizontalDivider(
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
+                            )
+                        }
+                    )
+                }
+
+                is AdditionGroupForMenuProductListViewState.State.Success -> {
+                    AdditionGroupForMenuProductScreenSuccess(
+                        state = state.state,
+                        onAction = onAction
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun AdditionGroupForMenuProductScreenSuccess(
+        state: AdditionGroupForMenuProductListViewState.State.Success,
+        onAction: (AdditionGroupForMenuProductList.Action) -> Unit
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(
+                items = state.additionGroupWithAdditionsList,
+                key = { additionGroupWithAddition -> additionGroupWithAddition.uuid }
+            ) { additionGroup ->
+                Column {
+                    AdditionGroupItemView(
+                        additionGroup = additionGroup,
+                        onClick = {
+                            onAction(
+                                AdditionGroupForMenuProductList.Action.OnAdditionGroupClick(
+                                    uuid = additionGroup.uuid
+                                )
+                            )
+                        },
+                        isClickable = true
+                    )
+                    AdminHorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
                 }
             }
         }
@@ -140,12 +176,23 @@ class AdditionGroupForMenuProductListFragment :
     @Composable
     override fun mapState(state: AdditionGroupForMenuProductList.DataState): AdditionGroupForMenuProductListViewState {
         return AdditionGroupForMenuProductListViewState(
-            additionGroupWithAdditionsList = state.additionGroupList.map { additionGroupForMenuProduct ->
-                AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
-                    uuid = additionGroupForMenuProduct.uuid,
-                    name = additionGroupForMenuProduct.name,
-                    additionNameList = additionGroupForMenuProduct.additionNameList
-                )
+            state = when (state.state) {
+                AdditionGroupForMenuProductList.DataState.State.LOADING ->
+                    AdditionGroupForMenuProductListViewState.State.Loading
+
+                AdditionGroupForMenuProductList.DataState.State.ERROR ->
+                    AdditionGroupForMenuProductListViewState.State.Error
+
+                AdditionGroupForMenuProductList.DataState.State.SUCCESS ->
+                    AdditionGroupForMenuProductListViewState.State.Success(
+                        additionGroupWithAdditionsList = state.additionGroupList.map { additionGroupForMenuProduct ->
+                            AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                                uuid = additionGroupForMenuProduct.uuid,
+                                name = additionGroupForMenuProduct.name,
+                                additionNameList = additionGroupForMenuProduct.additionNameList
+                            )
+                        }
+                    )
             }
         )
     }
@@ -167,16 +214,18 @@ class AdditionGroupForMenuProductListFragment :
     }
 
     val additionGroupForMenuProductListViewState = AdditionGroupForMenuProductListViewState(
-        additionGroupWithAdditionsList = listOf(
-            AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
-                uuid = "12321",
-                name = "Вкусняшки",
-                additionNameList = "Оленина Сопли Вопли"
-            ),
-            AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
-                uuid = "1232112",
-                name = "Не Вкусняшки",
-                additionNameList = "Жижи Топли Нопли"
+        state = AdditionGroupForMenuProductListViewState.State.Success(
+            additionGroupWithAdditionsList = listOf(
+                AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                    uuid = "12321",
+                    name = "Вкусняшки",
+                    additionNameList = "Оленина Сопли Вопли"
+                ),
+                AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                    uuid = "1232112",
+                    name = "Не Вкусняшки",
+                    additionNameList = "Жижи Топли Нопли"
+                )
             )
         )
     )
@@ -187,7 +236,8 @@ class AdditionGroupForMenuProductListFragment :
         AdminTheme {
             AdditionGroupForMenuProductScreen(
                 state = additionGroupForMenuProductListViewState,
-                onAction = {}
+                onAction = {},
+                menuProductUuid = ""
             )
         }
     }

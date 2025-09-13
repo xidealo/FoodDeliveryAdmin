@@ -13,7 +13,7 @@ class AdditionGroupForMenuProductListViewModel(
     BaseStateViewModel<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>(
         initState = AdditionGroupForMenuProductList.DataState(
             additionGroupList = listOf(),
-            state = AdditionGroupForMenuProductList.DataState.State.Loading
+            state = AdditionGroupForMenuProductList.DataState.State.LOADING
         )
     ) {
 
@@ -50,12 +50,16 @@ class AdditionGroupForMenuProductListViewModel(
                                 )
                             )
                         },
-                        state = AdditionGroupForMenuProductList.DataState.State.Success
+                        state = AdditionGroupForMenuProductList.DataState.State.SUCCESS
                     )
                 }
             },
             onError = {
-                // TODO handle error
+                setState {
+                    copy(
+                        state = AdditionGroupForMenuProductList.DataState.State.ERROR
+                    )
+                }
             }
         )
     }
