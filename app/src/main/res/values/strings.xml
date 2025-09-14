@@ -129,6 +129,7 @@
     <string name="hint_common_menu_product_description">Описание*</string>
     <string name="hint_common_menu_product_combo_description">Описание комбо</string>
     <string name="hint_common_menu_product_categories">Категории*</string>
+    <string name="hint_common_menu_product_additions">Группы добавок</string>
     <string name="action_common_menu_product_recommend">Рекомендовать</string>
     <string name="action_common_menu_product_show_in_menu">Показывать в меню</string>
     <string name="error_common_menu_product_empty_name">Название не может быть пустым</string>
@@ -139,6 +140,7 @@
     <string name="error_common_menu_product_empty_description">Описание не может быть пустым</string>
     <string name="error_common_menu_product_long_description">Максимальная длина описания — 512 символов</string>
     <string name="error_common_menu_product_categories">Выберите категории</string>
+    <string name="error_common_menu_product_addition_groups">Выберите группы добавок</string>
     <string name="error_common_menu_product_image_uploading">Не удалось загрузить изображение</string>
 
     <!-- CREATE MENU PRODUCT -->
@@ -306,5 +308,15 @@
     <string name="title_select_photo">Выбор фото</string>
     <string name="action_select_photo_save">Сохранить</string>
     <string name="msg_select_photo_selected">Фото добавлено</string>
+
+    <!-- Addition Group For Menu Product -->
+    <string name="title_addition_group_for_menu_product">Список групп</string>
+
+
+    <!-- Edit Addition Group For Menu Product -->
+    <string name="title_edit_addition_group_for_menu_product_group">Группа</string>
+    <string name="title_edit_addition_group_for_menu_product_addition">Добавка</string>
+    <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
+
 
 </resources>

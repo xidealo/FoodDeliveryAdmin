@@ -24,6 +24,7 @@ data class EditMenuProductViewState(
             val descriptionField: TextFieldUi,
             val comboDescription: String,
             val categoriesField: CardFieldUi,
+            val additionListField: CardFieldUi,
             val isVisibleInMenu: Boolean,
             val isVisibleInRecommendation: Boolean,
             val imageField: ImageFieldUi,

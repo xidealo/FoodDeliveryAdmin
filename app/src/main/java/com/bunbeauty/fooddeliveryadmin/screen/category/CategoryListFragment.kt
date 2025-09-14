@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -42,6 +43,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
+import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -192,17 +194,20 @@ class CategoryListFragment :
                 items = state.categoryList,
                 key = { category -> category.uuid }
             ) { category ->
-                CategoryItemView(
-                    category = category,
-                    onClick = {
-                        onAction(
-                            CategoryListState.Action.OnCategoryClick(
-                                categoryUuid = category.uuid
+                Column {
+                    CategoryItemView(
+                        category = category,
+                        onClick = {
+                            onAction(
+                                CategoryListState.Action.OnCategoryClick(
+                                    categoryUuid = category.uuid
+                                )
                             )
-                        )
-                    },
-                    isClickable = true
-                )
+                        },
+                        isClickable = true
+                    )
+                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                }
             }
         }
     }
@@ -409,7 +414,8 @@ class CategoryListFragment :
             modifier = modifier.fillMaxWidth(),
             onClick = onClick,
             clickable = isClickable,
-            shape = noCornerCardShape
+            shape = noCornerCardShape,
+            elevated = false
         ) {
             Row(
                 modifier = Modifier
@@ -419,8 +425,7 @@ class CategoryListFragment :
             ) {
                 Text(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 16.dp),
+                        .weight(1f),
                     text = category.name,
                     style = AdminTheme.typography.bodyLarge,
                     color = AdminTheme.colors.main.onSurface
@@ -431,7 +436,7 @@ class CategoryListFragment :
 
     @Preview(showSystemUi = true)
     @Composable
-    private fun SettingsScreenPreview() {
+    private fun CategoryScreenPreview() {
         AdminTheme {
             CategoriesScreen(
                 state = CategoryListViewState(

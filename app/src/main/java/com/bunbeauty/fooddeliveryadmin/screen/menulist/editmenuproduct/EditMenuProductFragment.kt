@@ -169,6 +169,15 @@ class EditMenuProductFragment :
                 )
             }
 
+            is EditMenuProduct.Event.NavigateToAdditionList -> {
+                findNavController().navigate(
+                    directions = EditMenuProductFragmentDirections
+                        .toAdditionGroupForMenuProductListFragment(
+                            menuProductUuid = event.menuProductUuid
+                        )
+                )
+            }
+
             is EditMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(R.string.error_common_menu_product_image_uploading)
@@ -258,6 +267,15 @@ class EditMenuProductFragment :
                 errorText = stringResource(state.categoriesField.errorResId),
                 onClick = {
                     onAction(EditMenuProduct.Action.CategoriesClick)
+                }
+            )
+            NavigationTextCard(
+                labelText = stringResource(state.additionListField.labelResId),
+                valueText = state.additionListField.value,
+                isError = state.additionListField.isError,
+                errorText = stringResource(state.additionListField.errorResId),
+                onClick = {
+                    onAction(EditMenuProduct.Action.AdditionListClick)
                 }
             )
             SwitcherCard(
@@ -500,7 +518,13 @@ class EditMenuProductFragment :
                             value = null,
                             isError = false
                         ),
-                        sendingToServer = false
+                        sendingToServer = false,
+                        additionListField = CardFieldUi(
+                            labelResId = R.string.hint_common_menu_product_additions,
+                            value = "Группа 1 • Группа 2 • Группа 3",
+                            isError = false,
+                            errorResId = 0
+                        )
                     )
                 ),
                 onAction = {}

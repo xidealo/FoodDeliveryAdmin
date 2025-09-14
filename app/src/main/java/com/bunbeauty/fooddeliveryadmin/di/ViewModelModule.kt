@@ -15,6 +15,8 @@ import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
 import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
 import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryListViewModel
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProductViewModel
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageViewModel
@@ -121,6 +123,20 @@ fun viewModelModule() = module {
     viewModel {
         CreateCategoryViewModel(
             createCategoryUseCase = get()
+        )
+    }
+
+    viewModel {
+        AdditionGroupForMenuProductListViewModel(
+            getAdditionGroupListFromMenuProductUseCase = get(),
+            getAdditionListNameUseCase = get()
+        )
+    }
+
+    viewModel {
+        EditAdditionGroupForMenuProductViewModel(
+            getAdditionGroupWithAdditionsForMenuUseCase = get(),
+            getAdditionListNameUseCase = get()
         )
     }
 

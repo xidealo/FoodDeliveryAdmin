@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.feature.additionlist.di
 
 import com.bunbeauty.domain.feature.additionlist.CreateAdditionUseCase
+import com.bunbeauty.domain.feature.additionlist.GetAdditionListNameUseCase
 import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
@@ -44,5 +45,8 @@ fun additionModule() = module {
             additionRepo = get(),
             dataStoreRepo = get()
         )
+    }
+    factory {
+        GetAdditionListNameUseCase()
     }
 }

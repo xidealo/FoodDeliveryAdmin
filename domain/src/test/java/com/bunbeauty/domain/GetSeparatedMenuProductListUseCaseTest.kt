@@ -297,6 +297,7 @@ class GetSeparatedMenuProductListUseCaseTest {
         barcode = 2,
         isVisible = true,
         isRecommended = true,
-        categoryUuids = emptyList()
+        categoryUuids = emptyList(),
+        additionGroups = emptyList()
     )
 }
