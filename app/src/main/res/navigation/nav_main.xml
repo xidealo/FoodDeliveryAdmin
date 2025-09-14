@@ -289,8 +289,7 @@
     <fragment
         android:id="@+id/createAdditionGroupFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.createadditiongrouplist.CreateAdditionGroupFragment"
-        android:label="createAdditionGroupFragment">
-    </fragment>
+        android:label="createAdditionGroupFragment"></fragment>
 
     <fragment
         android:id="@+id/additionGroupForMenuProductListFragment"
@@ -314,6 +313,16 @@
         <argument
             android:name="additionGroupForMenuUuid"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectAdditionGroupFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment"
+        android:label="selectAdditionGroupFragment">
+        <argument
+            android:name="additionGroupUuid"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 
