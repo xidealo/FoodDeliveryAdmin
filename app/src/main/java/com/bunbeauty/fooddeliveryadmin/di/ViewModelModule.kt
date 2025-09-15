@@ -135,7 +135,9 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        SelectAdditionGroupViewModel()
+        SelectAdditionGroupViewModel(
+            getSeparatedSelectableAdditionListUseCase = get()
+        )
     }
 
     viewModel {

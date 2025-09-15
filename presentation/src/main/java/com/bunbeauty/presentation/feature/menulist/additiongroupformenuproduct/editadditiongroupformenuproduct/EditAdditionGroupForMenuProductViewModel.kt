@@ -13,10 +13,10 @@ class EditAdditionGroupForMenuProductViewModel(
     BaseStateViewModel<EditAdditionGroupForMenu.DataState, EditAdditionGroupForMenu.Action, EditAdditionGroupForMenu.Event>(
         initState = EditAdditionGroupForMenu.DataState(
             groupName = "",
-            state = EditAdditionGroupForMenu.DataState.State.Loading,
+            state = EditAdditionGroupForMenu.DataState.State.LOADING,
             additionNameList = null,
             isVisible = false,
-            additionUuid = ""
+            additionGroupUuid = ""
         )
     ) {
 
@@ -38,7 +38,7 @@ class EditAdditionGroupForMenuProductViewModel(
         }
     }
 
-    fun loadData(menuProductUuid: String, additionGroupForMenuUuid: String) {
+    private fun loadData(menuProductUuid: String, additionGroupForMenuUuid: String) {
         viewModelScope.launchSafe(
             block = {
                 val additionGroupWithAdditionsForMenu =
@@ -48,9 +48,9 @@ class EditAdditionGroupForMenuProductViewModel(
                     )
                 setState {
                     copy(
-                        additionUuid = additionGroupWithAdditionsForMenu.additionGroup.uuid,
+                        additionGroupUuid = additionGroupWithAdditionsForMenu.additionGroup.uuid,
                         groupName = additionGroupWithAdditionsForMenu.additionGroup.name,
-                        state = EditAdditionGroupForMenu.DataState.State.Success,
+                        state = EditAdditionGroupForMenu.DataState.State.SUCCESS,
                         additionNameList = getAdditionListNameUseCase(
                             additionList = additionGroupWithAdditionsForMenu.additionList
                         ),
@@ -61,20 +61,20 @@ class EditAdditionGroupForMenuProductViewModel(
             onError = {
                 setState {
                     copy(
-                        state = EditAdditionGroupForMenu.DataState.State.Error
+                        state = EditAdditionGroupForMenu.DataState.State.ERROR
                     )
                 }
             }
         )
     }
 
-    fun onAdditionGroupClick(uuid: String) {
+    private fun onAdditionGroupClick(uuid: String) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionGroupClick(uuid = uuid)
         }
     }
 
-    fun backClick() {
+    private fun backClick() {
         sendEvent {
             EditAdditionGroupForMenu.Event.Back
         }

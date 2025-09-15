@@ -274,9 +274,6 @@
     <string name="msg_edit_addition_group_single_сhoice_hint">Пользователь сможет выбрать только одну добавку из группы</string>
 
 
-
-
-
     <!--CATEGORIES LIST-->
     <string name="title_categories_list">Категории</string>
     <string name="title_edit_priority">"Изменение порядка</string>
@@ -317,6 +314,12 @@
     <string name="title_edit_addition_group_for_menu_product_group">Группа</string>
     <string name="title_edit_addition_group_for_menu_product_addition">Добавка</string>
     <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
+
+    <!--Select Addition Group-->
+    <string name="title_select_addition_group">Выбор группы</string>
+    <string name="title_select_addition_group_position_visible">Видимые позиции</string>
+    <string name="title_select_addition_group_position_hidden">Скрытые позиции</string>
+    <string name="action_select_addition_group_create">Создать</string>
 
 
 </resources>

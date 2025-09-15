@@ -2,14 +2,14 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuprod
 
 import android.os.Bundle
 import android.view.View
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,25 +17,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.SelectableAdditionGroup
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem.SelectableItem
 import com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem.SelectableItemView
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroup
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupViewModel
-import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryList
-import com.bunbeauty.presentation.feature.profile.Profile
-import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
+
+private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
+private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
+private const val LIST_ANIMATION_DURATION = 500
 
 class SelectAdditionGroupFragment :
     SingleStateComposeFragment<SelectAdditionGroup.DataState, SelectAdditionGroup.Action, SelectAdditionGroup.Event>() {
@@ -61,7 +60,6 @@ class SelectAdditionGroupFragment :
         SelectAdditionGroupScreen(state = state, onAction = onAction)
     }
 
-
     override fun handleEvent(event: SelectAdditionGroup.Event) {
         when (event) {
             SelectAdditionGroup.Event.Back -> {
@@ -76,7 +74,7 @@ class SelectAdditionGroupFragment :
         onAction: (SelectAdditionGroup.Action) -> Unit
     ) {
         AdminScaffold(
-            title = "Выбор группы",
+            title = stringResource(id = R.string.title_select_addition_group),
             backActionClick = {
                 onAction(SelectAdditionGroup.Action.OnBackClick)
             },
@@ -89,7 +87,7 @@ class SelectAdditionGroupFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            //onAction(SelectAdditionGroup.Action)
+                            // onAction(SelectAdditionGroup.Action)
                         }
                     )
                 }
@@ -114,13 +112,33 @@ class SelectAdditionGroupFragment :
                 bottom = AdminTheme.dimensions.scrollScreenBottomSpace
             )
         ) {
+            item(
+                key = TITLE_POSITION_VISIBLE_KEY
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            start = 16.dp,
+                            bottom = 16.dp
+                        )
+                        .animateItem()
+                        .animateContentSize(
+                            animationSpec = tween(LIST_ANIMATION_DURATION)
+                        ),
+                    text = stringResource(id = R.string.title_select_addition_group_position_visible),
+                    style = AdminTheme.typography.titleMedium.bold
+                )
+            }
+
             items(
-                items = state.selectableAdditionGroupList,
+                items = state.visibleSelectableAdditionGroupList,
                 key = { selectableAdditionGroup ->
                     selectableAdditionGroup.uuid
                 }
             ) { selectableCategory ->
                 SelectableItemView(
+                    modifier = Modifier
+                        .animateItem(),
                     selectableItem = SelectableItem(
                         uuid = selectableCategory.uuid,
                         title = selectableCategory.name,
@@ -139,20 +157,72 @@ class SelectAdditionGroupFragment :
                     isClickable = true
                 )
             }
+
+            if (state.hiddenSelectableAdditionGroupList.isNotEmpty()) {
+                item(
+                    key = TITLE_POSITION_HIDDEN_KEY
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(
+                                all = 16.dp
+                            )
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
+                        text = stringResource(id = R.string.title_menu_list_position_hidden),
+                        style = AdminTheme.typography.titleMedium.bold
+                    )
+                }
+                items(
+                    items = state.hiddenSelectableAdditionGroupList,
+                    key = { hiddenAdditionGroup ->
+                        hiddenAdditionGroup.uuid
+                    }
+                ) { hiddenAdditionGroup ->
+                    SelectableItemView(
+                        modifier = Modifier
+                            .animateItem(),
+                        selectableItem = SelectableItem(
+                            uuid = hiddenAdditionGroup.uuid,
+                            title = hiddenAdditionGroup.name,
+                            isSelected = hiddenAdditionGroup.isSelected
+                        ),
+                        hasDivider = true,
+                        onClick = {
+//                        onAction(
+//                            SelectCategoryList.Action.OnCategoryClick(
+//                                uuid = selectableCategory.uuid,
+//                                selected = selectableCategory.selected
+//                            )
+//                        )
+                        },
+                        elevated = false,
+                        isClickable = true
+                    )
+                }
+            }
         }
     }
 
-
     val selectAdditionGroupViewState = SelectAdditionGroup.DataState(
         state = SelectAdditionGroup.DataState.State.SUCCESS,
-        selectableAdditionGroupList = listOf(
-            SelectAdditionGroup.DataState.SelectableAdditionGroupItem(
+        visibleSelectableAdditionGroupList = listOf(
+            SelectableAdditionGroup(
                 uuid = "uuid1",
                 name = "Roy Faulkner",
                 isSelected = false
             ),
-            SelectAdditionGroup.DataState.SelectableAdditionGroupItem(
+            SelectableAdditionGroup(
                 uuid = "uuid2",
+                name = "Roy Faulkner",
+                isSelected = false
+            )
+        ),
+        hiddenSelectableAdditionGroupList = listOf(
+            SelectableAdditionGroup(
+                uuid = "uuid3",
                 name = "Roy Faulkner",
                 isSelected = false
             )

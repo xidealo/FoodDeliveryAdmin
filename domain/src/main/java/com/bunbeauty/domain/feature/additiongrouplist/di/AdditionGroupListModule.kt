@@ -6,6 +6,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.EditAddi
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.GetAdditionGroupListFromMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetAdditionGroupWithAdditionsForMenuUseCase
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionListUseCase
 import org.koin.dsl.module
 
 fun additionGroupListModule() = module {
@@ -45,6 +46,11 @@ fun additionGroupListModule() = module {
         EditAdditionGroupUseCase(
             additionGroupRepo = get(),
             dataStoreRepo = get()
+        )
+    }
+    factory {
+        GetSeparatedSelectableAdditionListUseCase(
+            getSeparatedAdditionGroupListUseCase = get()
         )
     }
 }

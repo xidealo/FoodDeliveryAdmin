@@ -6,16 +6,16 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface EditAdditionGroupForMenu {
     data class DataState(
-        val additionUuid: String,
+        val additionGroupUuid: String,
         val groupName: String,
         val state: State,
         val additionNameList: String?,
         val isVisible: Boolean
     ) : BaseViewDataState {
         enum class State {
-            Loading,
-            Error,
-            Success
+            LOADING,
+            ERROR,
+            SUCCESS
         }
     }
 

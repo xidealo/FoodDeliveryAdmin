@@ -1,20 +1,16 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup
 
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.SelectableAdditionGroup
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface SelectAdditionGroup {
     data class DataState(
-        val selectableAdditionGroupList: List<SelectableAdditionGroupItem>,
-        val state: State,
+        val visibleSelectableAdditionGroupList: List<SelectableAdditionGroup>,
+        val hiddenSelectableAdditionGroupList: List<SelectableAdditionGroup>,
+        val state: State
     ) : BaseViewDataState {
-
-        data class SelectableAdditionGroupItem(
-            val uuid: String,
-            val name: String,
-            val isSelected: Boolean
-        )
 
         enum class State {
             LOADING,
@@ -25,7 +21,7 @@ interface SelectAdditionGroup {
 
     sealed interface Action : BaseAction {
         data class Init(
-            val selectedAdditionGroupUuid: String?,
+            val selectedAdditionGroupUuid: String?
         ) : Action
 
         data object OnBackClick : Action
