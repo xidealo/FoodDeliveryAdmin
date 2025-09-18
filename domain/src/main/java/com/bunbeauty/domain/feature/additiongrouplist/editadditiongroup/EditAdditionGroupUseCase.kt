@@ -20,12 +20,17 @@ class EditAdditionGroupUseCase(
 
         val additionGroupList = additionGroupRepo.getAdditionGroupList(token = token)
 
-        val oldAdditionGroup = additionGroupList.find { addition -> addition.uuid == additionGroupUuid }
-            ?: throw NotFindAdditionGroupException()
+        val oldAdditionGroup =
+            additionGroupList.find { addition -> addition.uuid == additionGroupUuid }
+                ?: throw NotFindAdditionGroupException()
 
         when {
-            updateAdditionGroup.name.isBlank() -> throw AdditionGroupNameException()
-            isNameUnchanged(oldName = oldAdditionGroup.name, newName = updateAdditionGroup.name) -> return
+            updateAdditionGroup.name.isNullOrBlank() -> throw AdditionGroupNameException()
+            isNameUnchanged(
+                oldName = oldAdditionGroup.name,
+                newName = updateAdditionGroup.name
+            ) -> return
+
             getHasSameName(
                 additionGroupList = additionGroupList,
                 name = updateAdditionGroup.name

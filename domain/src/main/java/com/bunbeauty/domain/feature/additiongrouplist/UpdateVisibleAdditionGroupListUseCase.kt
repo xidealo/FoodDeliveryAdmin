@@ -16,7 +16,6 @@ class UpdateVisibleAdditionGroupListUseCase(
             additionGroupUuid = additionUuidGroup,
             updateAdditionGroup = UpdateAdditionGroup(
                 isVisible = isVisible,
-                name = ""
             ),
             token = token
         )
