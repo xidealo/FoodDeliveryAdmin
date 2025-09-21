@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-class GetAdditionGroupWithAdditionsForMenuUseCase(
+class GetAdditionGroupWithAdditionsForMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo
 ) {

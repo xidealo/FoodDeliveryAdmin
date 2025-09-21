@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.SelectableAdditionGroup
@@ -27,6 +29,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroup
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,6 +43,11 @@ private const val LIST_ANIMATION_DURATION = 500
 
 class SelectAdditionGroupFragment :
     SingleStateComposeFragment<SelectAdditionGroup.DataState, SelectAdditionGroup.Action, SelectAdditionGroup.Event>() {
+
+    companion object {
+        const val SELECT_ADDITION_GROUP_KEY = "SELECT_ADDITION_GROUP_KEY"
+        const val ADDITION_GROUP_KEY = "ADDITION_GROUP_KEY"
+    }
 
     override val viewModel: SelectAdditionGroupViewModel by viewModel()
     private val selectAdditionGroupFragmentArgs: SelectAdditionGroupFragmentArgs by navArgs()
@@ -63,6 +73,20 @@ class SelectAdditionGroupFragment :
     override fun handleEvent(event: SelectAdditionGroup.Event) {
         when (event) {
             SelectAdditionGroup.Event.Back -> {
+                findNavController().popBackStack()
+            }
+
+            is SelectAdditionGroup.Event.SelectAdditionGroupClicked -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(
+                        R.string.msg_select_addition_group_selected,
+                        event.additionGroupName
+                    )
+                )
+                setFragmentResult(
+                    requestKey = SELECT_ADDITION_GROUP_KEY,
+                    result = bundleOf(ADDITION_GROUP_KEY to event.additionGroupUuid)
+                )
                 findNavController().popBackStack()
             }
         }
@@ -146,12 +170,12 @@ class SelectAdditionGroupFragment :
                     ),
                     hasDivider = true,
                     onClick = {
-//                        onAction(
-//                            SelectCategoryList.Action.OnCategoryClick(
-//                                uuid = selectableCategory.uuid,
-//                                selected = selectableCategory.selected
-//                            )
-//                        )
+                        onAction(
+                            SelectAdditionGroup.Action.SelectAdditionGroupClick(
+                                uuid = selectableCategory.uuid,
+                                name = selectableCategory.name
+                            )
+                        )
                     },
                     elevated = false,
                     isClickable = true
@@ -191,12 +215,12 @@ class SelectAdditionGroupFragment :
                         ),
                         hasDivider = true,
                         onClick = {
-//                        onAction(
-//                            SelectCategoryList.Action.OnCategoryClick(
-//                                uuid = selectableCategory.uuid,
-//                                selected = selectableCategory.selected
-//                            )
-//                        )
+                            onAction(
+                                SelectAdditionGroup.Action.SelectAdditionGroupClick(
+                                    uuid = hiddenAdditionGroup.uuid,
+                                    name = hiddenAdditionGroup.name
+                                )
+                            )
                         },
                         elevated = false,
                         isClickable = true

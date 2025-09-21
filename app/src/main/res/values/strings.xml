@@ -314,12 +314,12 @@
     <string name="title_edit_addition_group_for_menu_product_group">Группа</string>
     <string name="title_edit_addition_group_for_menu_product_addition">Добавка</string>
     <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
+    <string name="action_edit_addition_group_for_menu_product_save">Сохранить</string>
 
     <!--Select Addition Group-->
     <string name="title_select_addition_group">Выбор группы</string>
     <string name="title_select_addition_group_position_visible">Видимые позиции</string>
     <string name="title_select_addition_group_position_hidden">Скрытые позиции</string>
-    <string name="action_select_addition_group_create">Создать</string>
-
+    <string name="msg_select_addition_group_selected">Выбрана группа %s</string>
 
 </resources>

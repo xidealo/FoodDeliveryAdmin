@@ -3,26 +3,30 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuprod
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.ADDITION_GROUP_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.SELECT_ADDITION_GROUP_KEY
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.getValue
 
 class EditAdditionGroupForMenuProductFragment :
     SingleStateComposeFragment<EditAdditionGroupForMenu.DataState, EditAdditionGroupForMenu.Action, EditAdditionGroupForMenu.Event>() {
@@ -30,9 +34,8 @@ class EditAdditionGroupForMenuProductFragment :
     override val viewModel: EditAdditionGroupForMenuProductViewModel by viewModel()
     private val editAdditionGroupForMenuProductFragmentArgs: EditAdditionGroupForMenuProductFragmentArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.onAction(
             EditAdditionGroupForMenu.Action.Init(
                 additionGroupForMenuUuid = editAdditionGroupForMenuProductFragmentArgs
@@ -40,6 +43,14 @@ class EditAdditionGroupForMenuProductFragment :
                 menuProductUuid = editAdditionGroupForMenuProductFragmentArgs.menuProductUuid
             )
         )
+
+        setFragmentResultListener(SELECT_ADDITION_GROUP_KEY) { _, bundle ->
+            viewModel.onAction(
+                EditAdditionGroupForMenu.Action.SelectAdditionGroup(
+                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty()
+                )
+            )
+        }
     }
 
     @Composable
@@ -94,7 +105,7 @@ class EditAdditionGroupForMenuProductFragment :
                 onClick = {
                     onAction(
                         EditAdditionGroupForMenu.Action.OnAdditionGroupClick(
-                            uuid = state.additionGroupUuid
+                            uuid = state.additionGroupForMenuProductUuid
                         )
                     )
                 },
@@ -122,6 +133,17 @@ class EditAdditionGroupForMenuProductFragment :
                 text = stringResource(R.string.title_edit_addition_group_for_menu_product_visible),
                 checked = state.isVisible,
                 onCheckChanged = { isVisible ->
+
+                }
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+            LoadingButton(
+                modifier = Modifier.padding(16.dp),
+                text = stringResource(R.string.action_edit_addition_group_for_menu_product_save),
+                isLoading = state.state == EditAdditionGroupForMenu.DataState.State.LOADING,
+                onClick = {
+                    onAction(EditAdditionGroupForMenu.Action.OnSaveClick)
                 }
             )
         }
@@ -148,7 +170,7 @@ class EditAdditionGroupForMenuProductFragment :
         groupName = "Вкусняхи",
         additionNameList = "Бекон * Страпон * Бурбон",
         isVisible = true,
-        additionGroupUuid = ""
+        additionGroupForMenuProductUuid = ""
     )
 
     @Composable

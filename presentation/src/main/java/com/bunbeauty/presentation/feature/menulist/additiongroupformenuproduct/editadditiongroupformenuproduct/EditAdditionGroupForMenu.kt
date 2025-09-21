@@ -6,7 +6,8 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface EditAdditionGroupForMenu {
     data class DataState(
-        val additionGroupUuid: String,
+        val additionGroupForMenuProductUuid: String,
+        val editedAdditionGroupUuid: String? = null,
         val groupName: String,
         val state: State,
         val additionNameList: String?,
@@ -27,6 +28,8 @@ interface EditAdditionGroupForMenu {
 
         data object OnBackClick : Action
         data class OnAdditionGroupClick(val uuid: String) : Action
+        data object OnSaveClick : Action
+        data class SelectAdditionGroup(val additionGroupUuid: String) : Action
     }
 
     sealed interface Event : BaseEvent {

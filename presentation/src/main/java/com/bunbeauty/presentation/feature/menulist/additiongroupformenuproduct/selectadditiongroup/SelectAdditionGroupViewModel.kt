@@ -27,10 +27,14 @@ class SelectAdditionGroupViewModel(
             )
 
             SelectAdditionGroup.Action.OnBackClick -> backClick()
+            is SelectAdditionGroup.Action.SelectAdditionGroupClick -> selectAdditionGroupClick(
+                uuid = action.uuid,
+                name = action.name
+            )
         }
     }
 
-    fun loadData(selectedAdditionGroupUuid: String?) {
+    private fun loadData(selectedAdditionGroupUuid: String?) {
         viewModelScope.launchSafe(
             block = {
                 val separatedAdditionGroupList =
@@ -56,9 +60,18 @@ class SelectAdditionGroupViewModel(
         )
     }
 
-    fun backClick() {
+    private fun backClick() {
         sendEvent {
             SelectAdditionGroup.Event.Back
+        }
+    }
+
+    private fun selectAdditionGroupClick(uuid: String, name: String) {
+        sendEvent {
+            SelectAdditionGroup.Event.SelectAdditionGroupClicked(
+                additionGroupUuid = uuid,
+                additionGroupName = name
+            )
         }
     }
 }

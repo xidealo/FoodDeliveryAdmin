@@ -162,7 +162,7 @@ class EditAdditionViewModel(
                             fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
                             price = price.toIntOrNull(),
                             isVisible = isVisible,
-                            tag = tag,
+                            tag = tag.trim(),
                             photoLink = imageFieldData.value?.photoLink,
                             newImageUri = imageFieldData.value?.newImageUri
                         )
