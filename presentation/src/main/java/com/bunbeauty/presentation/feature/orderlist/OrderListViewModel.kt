@@ -90,7 +90,7 @@ class OrderListViewModel(
                         refreshing = false,
                         hasConnectionError = true,
                         loadingOrderList = false,
-                        orderListState = OrderList.DataState.State.ERROR
+                        orderListState = OrderList.DataState.State.SUCCESS,
                     )
                 }
             },
@@ -134,7 +134,6 @@ class OrderListViewModel(
                     setState {
                         copy(
                             hasConnectionError = true,
-                            orderListState = OrderList.DataState.State.ERROR
                         )
                     }
                 }

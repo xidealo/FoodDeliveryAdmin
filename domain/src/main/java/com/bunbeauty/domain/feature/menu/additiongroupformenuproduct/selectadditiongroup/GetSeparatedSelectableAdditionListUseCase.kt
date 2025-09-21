@@ -31,7 +31,7 @@ class GetSeparatedSelectableAdditionListUseCase(
             menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
                 uuid = selectedAdditionGroupUuid
             )
-        }?.additionGroupUuid
+        }?.additionGroupUuid ?: selectedAdditionGroupUuid
 
         return SeparatedSelectableAdditionList(
             visibleList = separatedAdditionGroupList.visibleList.map { additionGroup ->

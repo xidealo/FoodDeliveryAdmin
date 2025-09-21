@@ -33,7 +33,7 @@ class EditAdditionGroupForMenuProductViewModel(
             )
 
             is EditAdditionGroupForMenu.Action.OnAdditionGroupClick -> onAdditionGroupClick(
-                uuid = action.uuid
+                uuid = dataState.editedAdditionGroupUuid ?: action.uuid
             )
 
             EditAdditionGroupForMenu.Action.OnBackClick -> backClick()
