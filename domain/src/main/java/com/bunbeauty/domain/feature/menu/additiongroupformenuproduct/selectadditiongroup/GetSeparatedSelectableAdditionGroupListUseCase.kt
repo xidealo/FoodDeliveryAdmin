@@ -16,7 +16,7 @@ data class SelectableAdditionGroup(
 )
 
 // TODO tests
-class GetSeparatedSelectableAdditionListUseCase(
+class GetSeparatedSelectableAdditionGroupListUseCase(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
     private val menuProductToAdditionGroupRepository: MenuProductToAdditionGroupRepository
 ) {

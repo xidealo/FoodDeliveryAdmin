@@ -1,12 +1,12 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionListUseCase
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionGroupListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class SelectAdditionGroupViewModel(
-    private val getSeparatedSelectableAdditionListUseCase: GetSeparatedSelectableAdditionListUseCase
+    private val getSeparatedSelectableAdditionGroupListUseCase: GetSeparatedSelectableAdditionGroupListUseCase
 ) :
     BaseStateViewModel<SelectAdditionGroup.DataState, SelectAdditionGroup.Action, SelectAdditionGroup.Event>(
         initState = SelectAdditionGroup.DataState(
@@ -38,7 +38,7 @@ class SelectAdditionGroupViewModel(
         viewModelScope.launchSafe(
             block = {
                 val separatedAdditionGroupList =
-                    getSeparatedSelectableAdditionListUseCase(
+                    getSeparatedSelectableAdditionGroupListUseCase(
                         refreshing = false,
                         selectedAdditionGroupUuid = selectedAdditionGroupUuid
                     )

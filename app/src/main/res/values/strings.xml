@@ -322,4 +322,8 @@
     <string name="title_select_addition_group_position_hidden">Скрытые позиции</string>
     <string name="msg_select_addition_group_selected">Выбрана группа %s</string>
 
+    <!--Select Addition List-->
+    <string name="title_select_addition_list">Выбор добавок</string>
+    <string name="action_select_addition_list_save">Сохранить</string>
+    <string name="action_select_addition_list_title_group">Добавки в группе %s</string>
 </resources>
