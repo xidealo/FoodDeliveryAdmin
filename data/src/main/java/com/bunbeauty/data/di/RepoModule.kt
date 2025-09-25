@@ -126,7 +126,7 @@ fun repositoryModule() = module {
     single<MenuProductToAdditionGroupRepository> {
         MenuProductToAdditionGroupRepositoryImpl(
             foodDeliveryApi = get(),
-            dataStoreRepo = get(),
+            dataStoreRepo = get()
         )
     }
 }

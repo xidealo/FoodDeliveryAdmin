@@ -39,7 +39,7 @@ fun additionGroupListModule() = module {
 
     factory {
         GetSelectedAdditionListsUeCase(
-            menuProductRepo = get(),
+            menuProductRepo = get()
         )
     }
 

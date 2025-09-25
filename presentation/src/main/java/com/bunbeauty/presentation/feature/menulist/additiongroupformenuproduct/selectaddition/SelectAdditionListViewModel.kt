@@ -4,9 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-class SelectAdditionListViewModel(
-
-) :
+class SelectAdditionListViewModel() :
     BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
         initState = SelectAdditionList.DataState(
             state = SelectAdditionList.DataState.State.LOADING,
@@ -35,7 +33,6 @@ class SelectAdditionListViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
-
                 setState {
                     copy(
                         state = SelectAdditionList.DataState.State.SUCCESS
@@ -59,6 +56,5 @@ class SelectAdditionListViewModel(
     }
 
     private fun selectAdditionGroupClick(uuid: String, name: String) {
-
     }
 }

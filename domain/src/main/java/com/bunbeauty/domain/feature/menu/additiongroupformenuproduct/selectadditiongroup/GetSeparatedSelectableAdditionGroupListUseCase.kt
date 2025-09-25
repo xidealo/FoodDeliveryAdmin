@@ -22,7 +22,7 @@ class GetSeparatedSelectableAdditionGroupListUseCase(
 ) {
     suspend operator fun invoke(
         refreshing: Boolean,
-        selectedAdditionGroupUuid: String?,
+        selectedAdditionGroupUuid: String?
     ): SeparatedSelectableAdditionList {
         val separatedAdditionGroupList =
             getSeparatedAdditionGroupListUseCase(refreshing = refreshing)
@@ -44,7 +44,7 @@ class GetSeparatedSelectableAdditionGroupListUseCase(
     }
 
     fun AdditionGroup.toSelectableAdditionGroupItem(
-        selectedAdditionGroupUuid: String?,
+        selectedAdditionGroupUuid: String?
     ): SelectableAdditionGroup {
         return SelectableAdditionGroup(
             uuid = uuid,
