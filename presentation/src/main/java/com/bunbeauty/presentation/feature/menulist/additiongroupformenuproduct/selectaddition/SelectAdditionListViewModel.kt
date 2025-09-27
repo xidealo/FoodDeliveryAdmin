@@ -1,16 +1,19 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class SelectAdditionListViewModel(
-
+    val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
 ) :
     BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
         initState = SelectAdditionList.DataState(
             state = SelectAdditionList.DataState.State.LOADING,
-            groupName = ""
+            groupName = "",
+            selectedAdditionList = emptyList(),
+            notSelectedAdditionList = emptyList()
         )
     ) {
 
@@ -35,7 +38,6 @@ class SelectAdditionListViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
-
                 setState {
                     copy(
                         state = SelectAdditionList.DataState.State.SUCCESS
@@ -59,6 +61,5 @@ class SelectAdditionListViewModel(
     }
 
     private fun selectAdditionGroupClick(uuid: String, name: String) {
-
     }
 }

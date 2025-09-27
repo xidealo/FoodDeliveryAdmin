@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct
 
 import android.os.Bundle
-import android.view.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -133,7 +132,6 @@ class EditAdditionGroupForMenuProductFragment :
                 text = stringResource(R.string.title_edit_addition_group_for_menu_product_visible),
                 checked = state.isVisible,
                 onCheckChanged = { isVisible ->
-
                 }
             )
 

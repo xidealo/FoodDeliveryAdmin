@@ -19,7 +19,7 @@ class MenuProductToAdditionGroupRepositoryImpl(
             menuProductToAdditionGroup.uuid == uuid
         } ?: getMenuProductToAdditionGroupNetwork(
             token = dataStoreRepo.getToken() ?: throw NoTokenException(),
-            uuid = uuid,
+            uuid = uuid
         )?.toMenuProductToAdditionGroup().also { menuProductToAdditionGroup ->
             menuProductToAdditionGroup?.let {
                 cache.add(menuProductToAdditionGroup)
@@ -41,7 +41,7 @@ class MenuProductToAdditionGroupRepositoryImpl(
         return MenuProductToAdditionGroup(
             uuid = uuid,
             menuProductUuid = menuProductUuid,
-            additionGroupUuid = additionGroupUuid,
+            additionGroupUuid = additionGroupUuid
         )
     }
 

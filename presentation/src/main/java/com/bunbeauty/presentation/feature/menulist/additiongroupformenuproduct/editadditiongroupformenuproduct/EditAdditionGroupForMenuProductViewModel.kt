@@ -41,7 +41,6 @@ class EditAdditionGroupForMenuProductViewModel(
             is EditAdditionGroupForMenu.Action.SelectAdditionGroup -> setSelectedAdditionGroup(
                 action.additionGroupUuid
             )
-
         }
     }
 
