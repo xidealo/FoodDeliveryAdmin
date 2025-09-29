@@ -43,7 +43,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.WebSocketException
-import io.ktor.client.plugins.websocket.webSocket
+import io.ktor.client.plugins.websocket.wss
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -235,10 +235,10 @@ class FoodDeliveryApiImpl(
         CoroutineScope(Job() + IO).launch {
             try {
                 webSocketSessionOpened = true
-                client.webSocket(
+                client.wss(
                     HttpMethod.Get,
                     path = "user/order/subscribe",
-                    port = 80,
+                    port = 443,
                     request = {
                         header("Authorization", "Bearer $token")
                         parameter("cafeUuid", cafeUuid)
