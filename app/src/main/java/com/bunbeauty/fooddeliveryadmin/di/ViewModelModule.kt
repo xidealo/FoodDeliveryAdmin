@@ -150,7 +150,9 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        SelectAdditionListViewModel()
+        SelectAdditionListViewModel(
+            getSelectedAdditionListUseCase = get()
+        )
     }
 
     viewModel {

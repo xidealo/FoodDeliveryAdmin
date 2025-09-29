@@ -1,14 +1,19 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-class SelectAdditionListViewModel() :
+class SelectAdditionListViewModel(
+    val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
+) :
     BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
         initState = SelectAdditionList.DataState(
             state = SelectAdditionList.DataState.State.LOADING,
-            groupName = ""
+            groupName = "",
+            selectedAdditionList = emptyList(),
+            notSelectedAdditionList = emptyList()
         )
     ) {
 
@@ -18,8 +23,9 @@ class SelectAdditionListViewModel() :
     ) {
         when (action) {
             is SelectAdditionList.Action.Init -> loadData(
-                selectedAdditionUuid = action.additionGroupUuid,
-                menuProductUuid = action.menuProductUuid
+                selectedGroupAdditionUuid = action.additionGroupUuid,
+                menuProductUuid = action.menuProductUuid,
+                selectedGroupAdditionName = action.additionGroupName
             )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
@@ -28,14 +34,32 @@ class SelectAdditionListViewModel() :
     }
 
     private fun loadData(
-        selectedAdditionUuid: String?,
+        selectedGroupAdditionUuid: String?,
+        selectedGroupAdditionName: String,
         menuProductUuid: String
     ) {
         viewModelScope.launchSafe(
             block = {
+                val additionPack = getSelectedAdditionListUseCase(
+                    menuProductUuid = menuProductUuid,
+                    selectedGroupAdditionUuid = selectedGroupAdditionUuid
+                )
                 setState {
                     copy(
-                        state = SelectAdditionList.DataState.State.SUCCESS
+                        state = SelectAdditionList.DataState.State.SUCCESS,
+                        selectedAdditionList = additionPack.selectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        },
+                        notSelectedAdditionList = additionPack.notSelectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        },
+                        groupName = selectedGroupAdditionName
                     )
                 }
             },

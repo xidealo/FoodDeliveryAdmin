@@ -168,7 +168,9 @@ class AdditionGroupListFragment :
             ) {
                 Text(
                     text = additionItem.name,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    style = AdminTheme.typography.bodyLarge,
+                    color = AdminTheme.colors.main.onSurface
                 )
 
                 IconButton(

@@ -7,8 +7,15 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 interface SelectAdditionList {
     data class DataState(
         val state: State,
+        val selectedAdditionList: List<AdditionItem>,
+        val notSelectedAdditionList: List<AdditionItem>,
         val groupName: String
     ) : BaseViewDataState {
+
+        data class AdditionItem(
+            val uuid: String,
+            val name: String
+        )
 
         enum class State {
             LOADING,
@@ -20,7 +27,8 @@ interface SelectAdditionList {
     sealed interface Action : BaseAction {
         data class Init(
             val menuProductUuid: String,
-            val additionGroupUuid: String?
+            val additionGroupUuid: String?,
+            val additionGroupName: String
         ) : Action
 
         data object OnBackClick : Action

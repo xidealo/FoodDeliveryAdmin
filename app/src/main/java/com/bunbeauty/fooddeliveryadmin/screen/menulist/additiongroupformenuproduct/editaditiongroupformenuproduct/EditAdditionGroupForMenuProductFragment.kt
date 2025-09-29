@@ -118,6 +118,11 @@ class EditAdditionGroupForMenuProductFragment :
             NavigationTextCard(
                 valueText = state.additionNameList,
                 onClick = {
+                    onAction(
+                        EditAdditionGroupForMenu.Action.OnAdditionListClick(
+                            uuid = state.additionGroupForMenuProductUuid
+                        )
+                    )
                 },
                 elevated = false,
                 labelText = stringResource(
@@ -155,8 +160,18 @@ class EditAdditionGroupForMenuProductFragment :
 
             is EditAdditionGroupForMenu.Event.OnAdditionGroupClick -> {
                 findNavController().navigate(
-                    EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
+                    directions = EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
                         additionGroupUuid = event.uuid
+                    )
+                )
+            }
+
+            is EditAdditionGroupForMenu.Event.OnAdditionListClick -> {
+                findNavController().navigate(
+                    directions = EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
+                        additionGroupUuid = event.additionGroupUuid,
+                        menuProductUuid = event.menuProductUuid,
+                        additionGroupForMenuName = event.additionGroupName
                     )
                 )
             }
@@ -168,7 +183,9 @@ class EditAdditionGroupForMenuProductFragment :
         groupName = "Вкусняхи",
         additionNameList = "Бекон * Страпон * Бурбон",
         isVisible = true,
-        additionGroupForMenuProductUuid = ""
+        additionGroupForMenuProductUuid = "",
+        menuProductUuid = "",
+        editedAdditionGroupUuid = ""
     )
 
     @Composable
