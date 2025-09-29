@@ -23,8 +23,9 @@ class SelectAdditionListViewModel(
     ) {
         when (action) {
             is SelectAdditionList.Action.Init -> loadData(
-                selectedAdditionUuid = action.additionGroupUuid,
-                menuProductUuid = action.menuProductUuid
+                selectedGroupAdditionUuid = action.additionGroupUuid,
+                menuProductUuid = action.menuProductUuid,
+                selectedGroupAdditionName = action.additionGroupName
             )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
@@ -33,14 +34,32 @@ class SelectAdditionListViewModel(
     }
 
     private fun loadData(
-        selectedAdditionUuid: String?,
+        selectedGroupAdditionUuid: String?,
+        selectedGroupAdditionName: String,
         menuProductUuid: String
     ) {
         viewModelScope.launchSafe(
             block = {
+                val additionPack = getSelectedAdditionListUseCase(
+                    menuProductUuid = menuProductUuid,
+                    selectedGroupAdditionUuid = selectedGroupAdditionUuid
+                )
                 setState {
                     copy(
-                        state = SelectAdditionList.DataState.State.SUCCESS
+                        state = SelectAdditionList.DataState.State.SUCCESS,
+                        selectedAdditionList = additionPack.selectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        },
+                        notSelectedAdditionList = additionPack.notSelectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        },
+                        groupName = selectedGroupAdditionName
                     )
                 }
             },
@@ -61,5 +80,6 @@ class SelectAdditionListViewModel(
     }
 
     private fun selectAdditionGroupClick(uuid: String, name: String) {
+
     }
 }

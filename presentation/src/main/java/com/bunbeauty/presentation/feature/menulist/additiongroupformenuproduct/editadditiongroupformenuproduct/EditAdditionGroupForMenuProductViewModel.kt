@@ -18,7 +18,9 @@ class EditAdditionGroupForMenuProductViewModel(
             state = EditAdditionGroupForMenu.DataState.State.LOADING,
             additionNameList = null,
             isVisible = false,
-            additionGroupForMenuProductUuid = ""
+            additionGroupForMenuProductUuid = "",
+            menuProductUuid = "",
+            editedAdditionGroupUuid = null
         )
     ) {
 
@@ -36,7 +38,16 @@ class EditAdditionGroupForMenuProductViewModel(
                 uuid = dataState.editedAdditionGroupUuid ?: action.uuid
             )
 
-            EditAdditionGroupForMenu.Action.OnBackClick -> backClick()
+            is EditAdditionGroupForMenu.Action.OnAdditionListClick -> onAdditionListClick(
+                additionGroupUuid = action.uuid,
+                menuProductUuid = dataState.menuProductUuid,
+                additionGroupName = dataState.groupName
+            )
+
+            EditAdditionGroupForMenu.Action.OnBackClick
+
+                -> backClick()
+
             EditAdditionGroupForMenu.Action.OnSaveClick -> saveClick()
             is EditAdditionGroupForMenu.Action.SelectAdditionGroup -> setSelectedAdditionGroup(
                 action.additionGroupUuid
@@ -72,7 +83,8 @@ class EditAdditionGroupForMenuProductViewModel(
                         additionNameList = getAdditionListNameUseCase(
                             additionList = additionGroupWithAdditionsForMenu.additionList
                         ),
-                        isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible
+                        isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible,
+                        menuProductUuid = menuProductUuid
                     )
                 }
             },
@@ -89,6 +101,20 @@ class EditAdditionGroupForMenuProductViewModel(
     private fun onAdditionGroupClick(uuid: String) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionGroupClick(uuid = uuid)
+        }
+    }
+
+    private fun onAdditionListClick(
+        additionGroupUuid: String,
+        additionGroupName: String,
+        menuProductUuid: String,
+    ) {
+        sendEvent {
+            EditAdditionGroupForMenu.Event.OnAdditionListClick(
+                additionGroupUuid = additionGroupUuid,
+                menuProductUuid = menuProductUuid,
+                additionGroupName = additionGroupName
+            )
         }
     }
 

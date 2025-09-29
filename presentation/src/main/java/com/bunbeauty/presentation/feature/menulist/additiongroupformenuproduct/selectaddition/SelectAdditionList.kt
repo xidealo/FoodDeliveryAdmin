@@ -27,7 +27,8 @@ interface SelectAdditionList {
     sealed interface Action : BaseAction {
         data class Init(
             val menuProductUuid: String,
-            val additionGroupUuid: String?
+            val additionGroupUuid: String?,
+            val additionGroupName: String
         ) : Action
 
         data object OnBackClick : Action
