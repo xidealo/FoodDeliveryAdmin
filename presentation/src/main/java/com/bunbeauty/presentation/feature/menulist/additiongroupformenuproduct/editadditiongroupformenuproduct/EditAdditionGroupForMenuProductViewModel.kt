@@ -46,7 +46,7 @@ class EditAdditionGroupForMenuProductViewModel(
 
             EditAdditionGroupForMenu.Action.OnBackClick
 
-                -> backClick()
+            -> backClick()
 
             EditAdditionGroupForMenu.Action.OnSaveClick -> saveClick()
             is EditAdditionGroupForMenu.Action.SelectAdditionGroup -> setSelectedAdditionGroup(
@@ -107,7 +107,7 @@ class EditAdditionGroupForMenuProductViewModel(
     private fun onAdditionListClick(
         additionGroupUuid: String,
         additionGroupName: String,
-        menuProductUuid: String,
+        menuProductUuid: String
     ) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionListClick(

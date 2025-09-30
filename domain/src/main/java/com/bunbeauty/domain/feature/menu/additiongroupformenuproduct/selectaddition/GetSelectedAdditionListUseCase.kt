@@ -23,7 +23,7 @@ class GetSelectedAdditionListUseCase(
         return SelectedAdditionForMenu(
             selectedAdditionList = emptyList(),
             notSelectedAdditionList = additionRepo.getAdditionList(
-                token = token,
+                token = token
             )
         )
     }

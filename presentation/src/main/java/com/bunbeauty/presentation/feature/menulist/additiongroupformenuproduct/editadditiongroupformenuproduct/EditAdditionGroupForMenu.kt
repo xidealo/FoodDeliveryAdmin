@@ -40,7 +40,7 @@ interface EditAdditionGroupForMenu {
         data class OnAdditionListClick(
             val additionGroupUuid: String,
             val menuProductUuid: String,
-            val additionGroupName: String,
+            val additionGroupName: String
         ) : Event
     }
 }

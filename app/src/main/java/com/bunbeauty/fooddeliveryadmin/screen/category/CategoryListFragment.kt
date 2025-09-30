@@ -5,8 +5,10 @@ import android.view.View
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -141,7 +143,7 @@ class CategoryListFragment :
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .padding(start = 16.dp, end = 16.dp)
                         )
                     }
 
@@ -225,7 +227,8 @@ class CategoryListFragment :
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(bottom = 56.dp)
         ) {
             itemsIndexed(items = state.categoryList) { index, item ->
                 val isDragging = draggingIndex == index
@@ -458,6 +461,35 @@ class CategoryListFragment :
                     isLoading = false,
                     isRefreshing = false,
                     isEditPriority = false
+                ),
+                onAction = {}
+            )
+        }
+    }
+
+    @Preview(showSystemUi = true)
+    @Composable
+    private fun CategoryScreenDraggablePreview() {
+        AdminTheme {
+            CategoriesScreen(
+                state = CategoryListViewState(
+                    state = CategoryListViewState.State.SuccessDragDrop(
+                        categoryList = persistentListOf(
+                            Category(
+                                uuid = "",
+                                name = "Лаваш",
+                                priority = 0
+                            ),
+                            Category(
+                                uuid = "BBB",
+                                name = "Соус",
+                                priority = 1
+                            )
+                        )
+                    ),
+                    isLoading = false,
+                    isRefreshing = false,
+                    isEditPriority = true
                 ),
                 onAction = {}
             )
