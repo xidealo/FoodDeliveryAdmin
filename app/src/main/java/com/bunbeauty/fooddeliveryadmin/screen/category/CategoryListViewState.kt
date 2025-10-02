@@ -10,7 +10,8 @@ data class CategoryListViewState(
     val state: State,
     val isLoading: Boolean,
     val isRefreshing: Boolean,
-    val isEditPriority: Boolean
+    val isEditPriority: Boolean,
+    val categoryList: ImmutableList<Category>
 ) : BaseViewState {
 
     @Immutable
