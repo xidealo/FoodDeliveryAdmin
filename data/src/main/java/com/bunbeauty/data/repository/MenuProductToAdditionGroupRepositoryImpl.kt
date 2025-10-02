@@ -2,7 +2,7 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
-import com.bunbeauty.data.model.server.menproducttoadditiongroup.MenuProductToAdditionGroupServer
+import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.menuprocuttoadditiongroup.MenuProductToAdditionGroup
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -27,6 +27,7 @@ class MenuProductToAdditionGroupRepositoryImpl(
         }
     }
 
+    //todo add handle error
     private suspend fun getMenuProductToAdditionGroupNetwork(
         token: String,
         uuid: String

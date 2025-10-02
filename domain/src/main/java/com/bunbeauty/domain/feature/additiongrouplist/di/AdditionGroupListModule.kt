@@ -48,6 +48,8 @@ fun additionGroupListModule() = module {
         GetSelectedAdditionListUseCase(
             additionRepo = get(),
             dataStoreRepo = get(),
+            menuProductToAdditionGroupToAdditionRepository = get(),
+            menuProductRepo = get()
         )
     }
 

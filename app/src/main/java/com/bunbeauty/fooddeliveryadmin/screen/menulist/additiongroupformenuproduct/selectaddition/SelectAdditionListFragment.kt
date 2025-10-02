@@ -61,8 +61,8 @@ class SelectAdditionListFragment :
 
         viewModel.onAction(
             SelectAdditionList.Action.Init(
-                menuProductUuid = selectAdditionFragmentArgs.additionGroupUuid,
-                additionGroupUuid = selectAdditionFragmentArgs.menuProductUuid,
+                menuProductUuid = selectAdditionFragmentArgs.menuProductUuid,
+                additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
                 additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName
             )
         )

@@ -11,6 +11,7 @@ import com.bunbeauty.data.repository.DataStoreRepository
 import com.bunbeauty.data.repository.FoodDeliveryApiImpl
 import com.bunbeauty.data.repository.MenuProductRepository
 import com.bunbeauty.data.repository.MenuProductToAdditionGroupRepositoryImpl
+import com.bunbeauty.data.repository.MenuProductToAdditionGroupToAdditionRepositoryImpl
 import com.bunbeauty.data.repository.NonWorkingDayRepository
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.data.repository.PhotoRepository
@@ -27,6 +28,7 @@ import com.bunbeauty.domain.repo.CompanyRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
+import com.bunbeauty.domain.repo.MenuProductToAdditionGroupToAdditionRepository
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.SettingsRepo
@@ -125,6 +127,12 @@ fun repositoryModule() = module {
     }
     single<MenuProductToAdditionGroupRepository> {
         MenuProductToAdditionGroupRepositoryImpl(
+            foodDeliveryApi = get(),
+            dataStoreRepo = get()
+        )
+    }
+    single<MenuProductToAdditionGroupToAdditionRepository> {
+        MenuProductToAdditionGroupToAdditionRepositoryImpl(
             foodDeliveryApi = get(),
             dataStoreRepo = get()
         )
