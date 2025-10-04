@@ -183,7 +183,13 @@ class SelectAdditionListFragment :
                     additionItem = additionItem,
                     icon = R.drawable.ic_minus,
                     iconColor = AdminTheme.colors.main.onSurfaceVariant,
-                    onAction = onAction
+                    onClick = {
+                        onAction(
+                            SelectAdditionList.Action.RemoveAdditionClick(
+                                uuid = additionItem.uuid
+                            )
+                        )
+                    }
                 )
             }
 
@@ -216,7 +222,13 @@ class SelectAdditionListFragment :
                     additionItem = additionItem,
                     icon = R.drawable.ic_plus,
                     iconColor = AdminTheme.colors.main.primary,
-                    onAction = onAction
+                    onClick = {
+                        onAction(
+                            SelectAdditionList.Action.SelectAdditionClick(
+                                uuid = additionItem.uuid
+                            )
+                        )
+                    }
                 )
             }
         }
@@ -227,7 +239,7 @@ class SelectAdditionListFragment :
         additionItem: SelectAdditionList.DataState.AdditionItem,
         @DrawableRes icon: Int,
         iconColor: Color,
-        onAction: (SelectAdditionList.Action) -> Unit
+        onClick: () -> Unit
     ) {
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
@@ -252,8 +264,7 @@ class SelectAdditionListFragment :
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .padding(vertical = 8.dp),
-                        onClick = {
-                        }
+                        onClick = onClick
                     ) {
                         Icon(
                             painter = painterResource(icon),

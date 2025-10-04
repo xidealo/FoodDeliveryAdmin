@@ -33,6 +33,7 @@ interface SelectAdditionList {
 
         data object OnBackClick : Action
         data class SelectAdditionClick(val uuid: String) : Action
+        data class RemoveAdditionClick(val uuid: String) : Action
     }
 
     sealed interface Event : BaseEvent {
