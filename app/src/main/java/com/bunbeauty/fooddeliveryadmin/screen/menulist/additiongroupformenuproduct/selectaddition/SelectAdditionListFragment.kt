@@ -25,6 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
@@ -37,6 +39,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionList
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,8 +52,8 @@ class SelectAdditionListFragment :
     SingleStateComposeFragment<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>() {
 
     companion object {
-        const val SELECT_ADDITION_KEY = "SELECT_ADDITION_GROUP_KEY"
-        const val ADDITION_KEY = "ADDITION_GROUP_KEY"
+        const val SELECT_ADDITION_LIST_KEY = "SELECT_ADDITION_GROUP_KEY"
+        const val ADDITION_LIST_KEY = "ADDITION_GROUP_KEY"
     }
 
     override val viewModel: SelectAdditionListViewModel by viewModel()
@@ -82,19 +85,18 @@ class SelectAdditionListFragment :
                 findNavController().popBackStack()
             }
 
-//            is SelectAddition.Event.SelectAdditionGroupClicked -> {
-//                (activity as? MessageHost)?.showInfoMessage(
-//                    resources.getString(
-//                        R.string.msg_select_addition_group_selected,
-//                        event.additionGroupName
-//                    )
-//                )
-//                setFragmentResult(
-//                    requestKey = SELECT_ADDITION_KEY,
-//                    result = bundleOf(ADDITION_KEY to event.additionGroupUuid)
-//                )
-//                findNavController().popBackStack()
-//            }
+            is SelectAdditionList.Event.SelectAdditionListBack -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(
+                        R.string.action_select_addition_list_title_selected
+                    )
+                )
+                setFragmentResult(
+                    requestKey = SELECT_ADDITION_LIST_KEY,
+                    result = bundleOf(ADDITION_LIST_KEY to event.additionUuidList)
+                )
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -114,7 +116,7 @@ class SelectAdditionListFragment :
                     text = stringResource(R.string.action_order_details_save),
                     isLoading = false,
                     onClick = {
-                        // onAction(SelectAdditionList.Action.SaveMenuProductClick)
+                        onAction(SelectAdditionList.Action.SelectAdditionListClick)
                     },
                     modifier = Modifier
                         .padding(horizontal = AdminTheme.dimensions.mediumSpace)
@@ -128,7 +130,7 @@ class SelectAdditionListFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // onAction(SelectAdditionGroup.Action)
+                            // onAction(SelectAdditionList.Action.SelectAdditionListClick)
                         }
                     )
                 }

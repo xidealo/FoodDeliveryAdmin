@@ -31,6 +31,11 @@ class SelectAdditionListViewModel(
             SelectAdditionList.Action.OnBackClick -> backClick()
             is SelectAdditionList.Action.SelectAdditionClick -> selectAddition(uuid = action.uuid)
             is SelectAdditionList.Action.RemoveAdditionClick -> removeAddition(uuid = action.uuid)
+            SelectAdditionList.Action.SelectAdditionListClick -> selectAdditionListClick(
+                additionUuidList = dataState.selectedAdditionList.map { additionItem ->
+                    additionItem.uuid
+                }
+            )
         }
     }
 
@@ -121,6 +126,14 @@ class SelectAdditionListViewModel(
     private fun backClick() {
         sendEvent {
             SelectAdditionList.Event.Back
+        }
+    }
+
+    private fun selectAdditionListClick(additionUuidList: List<String>) {
+        sendEvent {
+            SelectAdditionList.Event.SelectAdditionListBack(
+                additionUuidList = additionUuidList
+            )
         }
     }
 }

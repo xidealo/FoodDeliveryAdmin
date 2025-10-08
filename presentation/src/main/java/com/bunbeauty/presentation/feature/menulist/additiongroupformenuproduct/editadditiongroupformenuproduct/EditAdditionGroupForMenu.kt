@@ -11,6 +11,7 @@ interface EditAdditionGroupForMenu {
         val groupName: String,
         val state: State,
         val additionNameList: String?,
+        val editedAdditionListUuid: List<String>?,
         val isVisible: Boolean,
         val menuProductUuid: String
     ) : BaseViewDataState {
@@ -32,6 +33,7 @@ interface EditAdditionGroupForMenu {
         data class OnAdditionListClick(val uuid: String) : Action
         data object OnSaveClick : Action
         data class SelectAdditionGroup(val additionGroupUuid: String) : Action
+        data class SelectAdditionList(val additionListUuid: List<String>) : Action
     }
 
     sealed interface Event : BaseEvent {
