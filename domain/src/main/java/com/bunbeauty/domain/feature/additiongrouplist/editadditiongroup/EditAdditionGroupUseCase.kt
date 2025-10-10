@@ -26,11 +26,13 @@ class EditAdditionGroupUseCase(
         val isNameUnchanged = old.name == updateAdditionGroup.name
         val isVisibleUnchanged = old.isVisible == updateAdditionGroup.isVisible
         val isSingleChoiceUnchanged = old.singleChoice == updateAdditionGroup.singleChoice
+        val name = updateAdditionGroup.name ?: throw AdditionGroupNameException()
+
 
         when {
             isNameUnchanged && isVisibleUnchanged && isSingleChoiceUnchanged -> return
 
-            updateAdditionGroup.name.isBlank() -> throw AdditionGroupNameException()
+            name.isBlank() -> throw AdditionGroupNameException()
 
             !isNameUnchanged && hasSameName(additionGroupList, updateAdditionGroup.name) ->
                 throw DuplicateAdditionGroupNameException()
