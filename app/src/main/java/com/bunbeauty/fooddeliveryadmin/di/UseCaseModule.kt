@@ -204,7 +204,8 @@ fun useCaseModule() = module {
             menuProductRepo = get(),
             orderRepo = get(),
             photoRepo = get(),
-            categoryRepo = get()
+            categoryRepo = get(),
+            menuProductToAdditionGroupRepository = get()
         )
     }
 

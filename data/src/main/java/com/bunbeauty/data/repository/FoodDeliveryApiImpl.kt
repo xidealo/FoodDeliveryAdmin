@@ -21,6 +21,8 @@ import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
+import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
+import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -42,7 +44,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.WebSocketException
-import io.ktor.client.plugins.websocket.webSocket
+import io.ktor.client.plugins.websocket.wss
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -135,14 +137,14 @@ class FoodDeliveryApiImpl(
     override suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>> {
         return get(
             path = "cafe",
-            parameters = mapOf("cityUuid" to cityUuid)
+            parameters = listOf("cityUuid" to cityUuid),
         )
     }
 
     override suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer> {
         return get(
             path = "v2/cafe",
-            parameters = mapOf("cafeUuid" to cafeUuid)
+            parameters = listOf("cafeUuid" to cafeUuid),
         )
     }
 
@@ -153,7 +155,7 @@ class FoodDeliveryApiImpl(
     ): ApiResult<CafeServer> {
         return patch(
             path = "cafe",
-            parameters = mapOf("cafeUuid" to cafeUuid),
+            parameters = listOf("cafeUuid" to cafeUuid),
             body = patchCafe,
             token = token
         )
@@ -162,14 +164,14 @@ class FoodDeliveryApiImpl(
     override suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>> {
         return get(
             path = "city",
-            parameters = mapOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid),
         )
     }
 
     override suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>> {
         return get(
             path = "menu_product",
-            parameters = mapOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid),
         )
     }
 
@@ -185,7 +187,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "menu_product",
             body = menuProductPatchServer,
-            parameters = mapOf("uuid" to menuProductUuid),
+            parameters = listOf("uuid" to menuProductUuid),
             token = token
         )
     }
@@ -234,10 +236,10 @@ class FoodDeliveryApiImpl(
         CoroutineScope(Job() + IO).launch {
             try {
                 webSocketSessionOpened = true
-                client.webSocket(
+                client.wss(
                     HttpMethod.Get,
                     path = "user/order/subscribe",
-                    port = 80,
+                    port = 443,
                     request = {
                         header("Authorization", "Bearer $token")
                         parameter("cafeUuid", cafeUuid)
@@ -289,7 +291,7 @@ class FoodDeliveryApiImpl(
     ): ApiResult<ServerList<OrderServer>> {
         return get(
             path = "order",
-            parameters = mapOf("cafeUuid" to cafeUuid),
+            parameters = listOf("cafeUuid" to cafeUuid),
             token = token
         )
     }
@@ -300,7 +302,7 @@ class FoodDeliveryApiImpl(
     ): ApiResult<OrderDetailsServer> {
         return get(
             path = "v2/order/details",
-            parameters = mapOf("uuid" to orderUuid),
+            parameters = listOf("uuid" to orderUuid),
             token = token
         )
     }
@@ -308,7 +310,7 @@ class FoodDeliveryApiImpl(
     override suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer> {
         return get(
             path = "order_availability",
-            parameters = mapOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid)
         )
     }
 
@@ -320,7 +322,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "order",
             body = mapOf("status" to status.toString()),
-            parameters = mapOf("uuid" to orderUuid),
+            parameters = listOf("uuid" to orderUuid),
             token = token
         )
     }
@@ -330,7 +332,7 @@ class FoodDeliveryApiImpl(
     ): ApiResult<WorkInfoData> {
         return get(
             path = "work_info",
-            parameters = mapOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid)
         )
     }
 
@@ -342,7 +344,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "company",
             body = companyPatch,
-            parameters = mapOf("companyUuid" to companyUuid),
+            parameters = listOf("companyUuid" to companyUuid),
             token = token
         )
     }
@@ -353,7 +355,7 @@ class FoodDeliveryApiImpl(
     ): ApiResult<ServerList<CategoryServer>> {
         return get(
             path = "category",
-            parameters = mapOf("companyUuid" to companyUuid),
+            parameters = listOf("companyUuid" to companyUuid),
             token = token
         )
     }
@@ -377,7 +379,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "category",
             body = patchCategory,
-            parameters = mapOf("uuid" to uuid),
+            parameters = listOf("uuid" to uuid),
             token = token
         )
     }
@@ -396,7 +398,7 @@ class FoodDeliveryApiImpl(
     override suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>> {
         return get(
             path = "non_working_day",
-            parameters = mapOf("cafeUuid" to cafeUuid)
+            parameters = listOf("cafeUuid" to cafeUuid)
         )
     }
 
@@ -419,7 +421,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "non_working_day",
             body = patchNonWorkingDay,
-            parameters = mapOf("uuid" to uuid),
+            parameters = listOf("uuid" to uuid),
             token = token
         )
     }
@@ -446,7 +448,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "addition",
             body = additionPatchServer,
-            parameters = mapOf("uuid" to additionUuid),
+            parameters = listOf("uuid" to additionUuid),
             token = token
         )
     }
@@ -470,7 +472,7 @@ class FoodDeliveryApiImpl(
         return patch(
             path = "addition_group",
             body = additionGroupPatchServer,
-            parameters = mapOf("uuid" to additionGroupUuid),
+            parameters = listOf("uuid" to additionGroupUuid),
             token = token
         )
     }
@@ -486,9 +488,31 @@ class FoodDeliveryApiImpl(
         )
     }
 
+    override suspend fun getMenuProductToAdditionGroup(
+        token: String,
+        uuid: String
+    ): ApiResult<MenuProductToAdditionGroupServer> {
+        return get(
+            path = "menu_product_to_addition_group",
+            token = token,
+            parameters = listOf("uuid" to uuid)
+        )
+    }
+
+    override suspend fun getMenuProductToAdditionGroupToAdditionList(
+        token: String,
+        uuidList: List<String>
+    ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>> {
+        return get(
+            path = "menu_product_to_addition_group_to_addition",
+            token = token,
+            parameters = uuidList.map { uuid -> "uuidList" to uuid }
+        )
+    }
+
     private suspend inline fun <reified T> get(
         path: String,
-        parameters: Map<String, String?> = mapOf(),
+        parameters: List<Pair<String, String?>> = listOf(),
         token: String? = null
     ): ApiResult<T> {
         return safeCall {
@@ -506,7 +530,7 @@ class FoodDeliveryApiImpl(
     private suspend inline fun <reified T> post(
         path: String,
         body: Any,
-        parameters: Map<String, String> = mapOf(),
+        parameters: List<Pair<String, String?>> = listOf(),
         token: String? = null
     ): ApiResult<T> {
         return safeCall {
@@ -524,7 +548,7 @@ class FoodDeliveryApiImpl(
     private suspend inline fun <reified T> put(
         path: String,
         body: Any,
-        parameters: Map<String, String> = mapOf(),
+        parameters: List<Pair<String, String?>> = listOf(),
         token: String? = null
     ): ApiResult<T> {
         return safeCall {
@@ -542,7 +566,7 @@ class FoodDeliveryApiImpl(
     private suspend inline fun <reified T> patch(
         path: String,
         body: Any,
-        parameters: Map<String, String?> = mapOf(),
+        parameters: List<Pair<String, String?>> = listOf(),
         token: String? = null
     ): ApiResult<T> {
         return safeCall {
@@ -559,7 +583,7 @@ class FoodDeliveryApiImpl(
 
     private suspend inline fun <reified T> delete(
         path: String,
-        parameters: Map<String, String?> = mapOf(),
+        parameters: List<Pair<String, String?>> = listOf(),
         token: String? = null
     ): ApiResult<T> {
         return safeCall {
@@ -577,7 +601,7 @@ class FoodDeliveryApiImpl(
     private fun HttpRequestBuilder.buildRequest(
         path: String,
         body: Any?,
-        parameters: Map<String, String?> = mapOf(),
+        parameters: List<Pair<String, String?>> = listOf(),
         token: String? = null
     ) {
         if (body != null) {
@@ -587,7 +611,7 @@ class FoodDeliveryApiImpl(
             path(path)
         }
         parameters.forEach { parameterMap ->
-            parameter(parameterMap.key, parameterMap.value)
+            parameter(parameterMap.first, parameterMap.second)
         }
         header(Authorization, "Bearer $token")
     }
