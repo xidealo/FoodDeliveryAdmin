@@ -20,30 +20,32 @@ class EditAdditionGroupUseCase(
 
         val additionGroupList = additionGroupRepo.getAdditionGroupList(token = token)
 
-        val oldAdditionGroup = additionGroupList.find { addition -> addition.uuid == additionGroupUuid }
+        val old = additionGroupList.find { addition -> addition.uuid == additionGroupUuid }
             ?: throw NotFindAdditionGroupException()
 
+        val isNameUnchanged = old.name == updateAdditionGroup.name
+        val isVisibleUnchanged = old.isVisible == updateAdditionGroup.isVisible
+        val isSingleChoiceUnchanged = old.singleChoice == updateAdditionGroup.singleChoice
+
         when {
+            isNameUnchanged && isVisibleUnchanged && isSingleChoiceUnchanged -> return
+
             updateAdditionGroup.name.isBlank() -> throw AdditionGroupNameException()
-            isNameUnchanged(oldName = oldAdditionGroup.name, newName = updateAdditionGroup.name) -> return
-            getHasSameName(
-                additionGroupList = additionGroupList,
-                name = updateAdditionGroup.name
-            ) -> throw DuplicateAdditionGroupNameException()
+
+            !isNameUnchanged && hasSameName(additionGroupList, updateAdditionGroup.name) ->
+                throw DuplicateAdditionGroupNameException()
+
+            else -> {
+                additionGroupRepo.updateAdditionGroup(
+                    updateAdditionGroup = updateAdditionGroup,
+                    token = token,
+                    additionGroupUuid = additionGroupUuid
+                )
+            }
         }
-
-        additionGroupRepo.updateAdditionGroup(
-            updateAdditionGroup = updateAdditionGroup,
-            token = token,
-            additionGroupUuid = additionGroupUuid
-        )
     }
 
-    private fun getHasSameName(additionGroupList: List<AdditionGroup>, name: String): Boolean {
-        return additionGroupList.any { additionName -> additionName.name == name }
-    }
-
-    private fun isNameUnchanged(oldName: String, newName: String): Boolean {
-        return oldName == newName
+    private fun hasSameName(list: List<AdditionGroup>, name: String): Boolean {
+        return list.any { additionName -> additionName.name == name }
     }
 }
