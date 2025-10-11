@@ -8,7 +8,6 @@ import kotlinx.collections.immutable.ImmutableList
 @Immutable
 data class CategoryListViewState(
     val state: State,
-    val isLoading: Boolean,
     val isRefreshing: Boolean,
     val isEditPriority: Boolean,
     val categoryList: ImmutableList<Category>

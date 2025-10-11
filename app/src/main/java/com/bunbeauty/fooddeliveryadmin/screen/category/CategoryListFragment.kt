@@ -5,7 +5,6 @@ import android.view.View
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +23,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -42,7 +40,6 @@ import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
@@ -105,27 +102,33 @@ class CategoryListFragment :
                     onAction(CategoryListState.Action.OnBackClicked)
                 }
             },
-            topActions = listOf(
-                AdminTopBarAction(
-                    iconId = if (state.isEditPriority) {
-                        R.drawable.ic_check
-                    } else {
-                        R.drawable.ic_edit
-                    },
-                    color = AdminTheme.colors.main.primary,
-                    onClick = {
-                        if (state.isEditPriority) {
+            topActions = when (state.state) {
+                CategoryListViewState.State.Error -> emptyList()
+                CategoryListViewState.State.Loading -> emptyList()
+                is CategoryListViewState.State.Success -> listOf(
+                    AdminTopBarAction(
+                        iconId = R.drawable.ic_edit,
+                        color = AdminTheme.colors.main.primary,
+                        onClick = {
+                            onAction(CategoryListState.Action.OnPriorityEditClicked)
+                        }
+                    )
+                )
+
+                is CategoryListViewState.State.SuccessDragDrop -> listOf(
+                    AdminTopBarAction(
+                        iconId =  R.drawable.ic_check,
+                        color = AdminTheme.colors.main.primary,
+                        onClick = {
                             onAction(
                                 CategoryListState.Action.OnSaveEditPriorityCategoryClick(
                                     updatedList = state.categoryList
                                 )
                             )
-                        } else {
-                            onAction(CategoryListState.Action.OnPriorityEditClicked)
                         }
-                    }
+                    )
                 )
-            ),
+            },
             actionButton = {
                 when (state.state) {
                     is CategoryListViewState.State.Success -> {
@@ -137,6 +140,7 @@ class CategoryListFragment :
                             }
                         )
                     }
+
                     else -> Unit
                 }
             },
@@ -389,10 +393,9 @@ class CategoryListFragment :
                     }
                 }
             },
-            isLoading = state.isLoading,
             isRefreshing = state.isRefreshing,
             isEditPriority = state.isEditPriority,
-            categoryList = category
+            categoryList = category,
         )
     }
 
@@ -448,7 +451,6 @@ class CategoryListFragment :
                             )
                         )
                     ),
-                    isLoading = false,
                     isRefreshing = false,
                     isEditPriority = false,
                     categoryList = persistentListOf(
@@ -462,7 +464,7 @@ class CategoryListFragment :
                             name = "Соус",
                             priority = 1
                         )
-                    )
+                    ),
                 ),
                 onAction = {}
             )
@@ -489,7 +491,6 @@ class CategoryListFragment :
                             )
                         )
                     ),
-                    isLoading = false,
                     isRefreshing = false,
                     isEditPriority = true,
                     categoryList = persistentListOf(
@@ -503,7 +504,7 @@ class CategoryListFragment :
                             name = "Соус",
                             priority = 1
                         )
-                    )
+                    ),
                 ),
                 onAction = {}
             )

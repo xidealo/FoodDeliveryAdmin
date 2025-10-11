@@ -17,7 +17,7 @@ class CategoryListViewModel(
         categoryList = listOf(),
         isLoading = true,
         isRefreshing = false,
-        isEditPriority = false
+        isEditPriority = false,
     )
 ) {
     override fun reduce(
@@ -106,6 +106,12 @@ class CategoryListViewModel(
     private fun saveCategoryDrop(category: List<Category>) {
         viewModelScope.launchSafe(
             block = {
+                setState {
+                    copy(
+                        isLoading = true,
+                        state = CategoryListState.DataState.State.LOADING
+                    )
+                }
                 val updatedList = updatedPrioritiesItem(category)
                 saveCategoryListUseCase(
                     categoryList = updatedList
