@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition
 
-import android.util.Log
 import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.addition.Addition
@@ -17,7 +16,7 @@ data class SelectedAdditionForMenu(
     val notSelectedAdditionList: List<Addition>
 )
 
-//todo Tests
+// todo Tests
 class GetSelectedAdditionListUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo,
@@ -44,7 +43,7 @@ class GetSelectedAdditionListUseCase(
             )
 
         val commonAdditionList = additionRepo.getAdditionList(
-            token = token,
+            token = token
         )
         return SelectedAdditionForMenu(
             selectedAdditionList = getAdditionContainedInMenuProduct(
@@ -57,7 +56,6 @@ class GetSelectedAdditionListUseCase(
             )
         )
     }
-
 
     private fun getMenuProductAdditionUuidList(
         menuProduct: MenuProduct?,

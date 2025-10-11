@@ -137,14 +137,14 @@ class FoodDeliveryApiImpl(
     override suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>> {
         return get(
             path = "cafe",
-            parameters = listOf("cityUuid" to cityUuid),
+            parameters = listOf("cityUuid" to cityUuid)
         )
     }
 
     override suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer> {
         return get(
             path = "v2/cafe",
-            parameters = listOf("cafeUuid" to cafeUuid),
+            parameters = listOf("cafeUuid" to cafeUuid)
         )
     }
 
@@ -164,14 +164,14 @@ class FoodDeliveryApiImpl(
     override suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>> {
         return get(
             path = "city",
-            parameters = listOf("companyUuid" to companyUuid),
+            parameters = listOf("companyUuid" to companyUuid)
         )
     }
 
     override suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>> {
         return get(
             path = "menu_product",
-            parameters = listOf("companyUuid" to companyUuid),
+            parameters = listOf("companyUuid" to companyUuid)
         )
     }
 
