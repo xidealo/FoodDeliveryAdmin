@@ -17,7 +17,7 @@ class CategoryListViewModel(
         categoryList = listOf(),
         isLoading = true,
         isRefreshing = false,
-        isEditPriority = false,
+        isEditPriority = false
     )
 ) {
     override fun reduce(

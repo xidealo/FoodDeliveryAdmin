@@ -116,7 +116,7 @@ class CategoryListFragment :
 
                 is CategoryListViewState.State.SuccessDragDrop -> listOf(
                     AdminTopBarAction(
-                        iconId =  R.drawable.ic_check,
+                        iconId = R.drawable.ic_check,
                         color = AdminTheme.colors.main.primary,
                         onClick = {
                             onAction(
@@ -394,7 +394,7 @@ class CategoryListFragment :
             },
             isRefreshing = state.isRefreshing,
             isEditPriority = state.isEditPriority,
-            categoryList = category,
+            categoryList = category
         )
     }
 
@@ -463,7 +463,7 @@ class CategoryListFragment :
                             name = "Соус",
                             priority = 1
                         )
-                    ),
+                    )
                 ),
                 onAction = {}
             )
@@ -503,7 +503,7 @@ class CategoryListFragment :
                             name = "Соус",
                             priority = 1
                         )
-                    ),
+                    )
                 ),
                 onAction = {}
             )
