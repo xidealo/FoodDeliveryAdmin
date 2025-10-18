@@ -21,6 +21,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment.Companion.ADDITION_LIST_KEY
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment.Companion.SELECT_ADDITION_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.ADDITION_GROUP_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.SELECT_ADDITION_GROUP_KEY
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
@@ -47,6 +49,15 @@ class EditAdditionGroupForMenuProductFragment :
             viewModel.onAction(
                 EditAdditionGroupForMenu.Action.SelectAdditionGroup(
                     additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty()
+                )
+            )
+        }
+
+        setFragmentResultListener(SELECT_ADDITION_LIST_KEY) { _, bundle ->
+            viewModel.onAction(
+                EditAdditionGroupForMenu.Action.SelectAdditionList(
+                    additionListUuid = bundle.getStringArrayList(ADDITION_LIST_KEY)
+                        ?: emptyList()
                 )
             )
         }
@@ -185,7 +196,8 @@ class EditAdditionGroupForMenuProductFragment :
         isVisible = true,
         additionGroupForMenuProductUuid = "",
         menuProductUuid = "",
-        editedAdditionGroupUuid = ""
+        editedAdditionGroupUuid = "",
+        editedAdditionListUuid = null
     )
 
     @Composable

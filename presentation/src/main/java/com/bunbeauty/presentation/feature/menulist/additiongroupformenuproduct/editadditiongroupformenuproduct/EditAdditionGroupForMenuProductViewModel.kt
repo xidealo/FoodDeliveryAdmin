@@ -4,13 +4,15 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additionlist.GetAdditionListNameUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetAdditionGroupWithAdditionsForMenuProductUseCase
+import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class EditAdditionGroupForMenuProductViewModel(
     val getAdditionGroupWithAdditionsForMenuProductUseCase: GetAdditionGroupWithAdditionsForMenuProductUseCase,
     val getAdditionListNameUseCase: GetAdditionListNameUseCase,
-    val getAdditionGroupUseCase: GetAdditionGroupUseCase
+    val getAdditionGroupUseCase: GetAdditionGroupUseCase,
+    val getAdditionUseCase: GetAdditionUseCase
 ) :
     BaseStateViewModel<EditAdditionGroupForMenu.DataState, EditAdditionGroupForMenu.Action, EditAdditionGroupForMenu.Event>(
         initState = EditAdditionGroupForMenu.DataState(
@@ -20,7 +22,8 @@ class EditAdditionGroupForMenuProductViewModel(
             isVisible = false,
             additionGroupForMenuProductUuid = "",
             menuProductUuid = "",
-            editedAdditionGroupUuid = null
+            editedAdditionGroupUuid = null,
+            editedAdditionListUuid = null
         )
     ) {
 
@@ -31,7 +34,8 @@ class EditAdditionGroupForMenuProductViewModel(
         when (action) {
             is EditAdditionGroupForMenu.Action.Init -> loadData(
                 additionGroupForMenuUuid = action.additionGroupForMenuUuid,
-                menuProductUuid = action.menuProductUuid
+                menuProductUuid = action.menuProductUuid,
+                editedAdditionListUuid = dataState.editedAdditionListUuid
             )
 
             is EditAdditionGroupForMenu.Action.OnAdditionGroupClick -> onAdditionGroupClick(
@@ -44,14 +48,29 @@ class EditAdditionGroupForMenuProductViewModel(
                 additionGroupName = dataState.groupName
             )
 
-            EditAdditionGroupForMenu.Action.OnBackClick
-
-            -> backClick()
+            EditAdditionGroupForMenu.Action.OnBackClick -> backClick()
 
             EditAdditionGroupForMenu.Action.OnSaveClick -> saveClick()
             is EditAdditionGroupForMenu.Action.SelectAdditionGroup -> setSelectedAdditionGroup(
                 action.additionGroupUuid
             )
+
+            is EditAdditionGroupForMenu.Action.SelectAdditionList -> {
+                viewModelScope.launchSafe(
+                    block = {
+                        setState {
+                            copy(
+                                additionNameList = getEditedAdditionUuidList(
+                                    editedAdditionListUuid = action.additionListUuid
+                                )
+                            )
+                        }
+                    },
+                    onError = {
+                        // set error
+                    }
+                )
+            }
         }
     }
 
@@ -67,7 +86,11 @@ class EditAdditionGroupForMenuProductViewModel(
         }
     }
 
-    private fun loadData(menuProductUuid: String, additionGroupForMenuUuid: String) {
+    private fun loadData(
+        menuProductUuid: String,
+        additionGroupForMenuUuid: String,
+        editedAdditionListUuid: List<String>?
+    ) {
         viewModelScope.launchSafe(
             block = {
                 val additionGroupWithAdditionsForMenu =
@@ -80,7 +103,9 @@ class EditAdditionGroupForMenuProductViewModel(
                         additionGroupForMenuProductUuid = additionGroupWithAdditionsForMenu.additionGroup.uuid,
                         groupName = additionGroupWithAdditionsForMenu.additionGroup.name,
                         state = EditAdditionGroupForMenu.DataState.State.SUCCESS,
-                        additionNameList = getAdditionListNameUseCase(
+                        additionNameList = getEditedAdditionUuidList(
+                            editedAdditionListUuid = editedAdditionListUuid
+                        ) ?: getAdditionListNameUseCase(
                             additionList = additionGroupWithAdditionsForMenu.additionList
                         ),
                         isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible,
@@ -144,6 +169,16 @@ class EditAdditionGroupForMenuProductViewModel(
                     )
                 }
             }
+        )
+    }
+
+    private suspend fun getEditedAdditionUuidList(editedAdditionListUuid: List<String>?): String? {
+        if (editedAdditionListUuid == null) return null
+        val additionList = editedAdditionListUuid.map { additionUuid ->
+            getAdditionUseCase(additionUuid)
+        }
+        return getAdditionListNameUseCase(
+            additionList = additionList
         )
     }
 }

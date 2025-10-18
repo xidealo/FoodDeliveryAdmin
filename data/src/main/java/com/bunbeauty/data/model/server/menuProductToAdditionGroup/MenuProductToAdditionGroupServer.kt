@@ -1,4 +1,4 @@
-package com.bunbeauty.data.model.server.menproducttoadditiongroup
+package com.bunbeauty.data.model.server.menuProductToAdditionGroup
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

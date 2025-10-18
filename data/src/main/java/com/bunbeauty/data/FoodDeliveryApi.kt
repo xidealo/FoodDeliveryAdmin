@@ -17,7 +17,8 @@ import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
-import com.bunbeauty.data.model.server.menproducttoadditiongroup.MenuProductToAdditionGroupServer
+import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
+import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -190,4 +191,10 @@ interface FoodDeliveryApi {
         token: String,
         uuid: String
     ): ApiResult<MenuProductToAdditionGroupServer>
+
+    // MENU PRODUCT TO ADDITION GROUP TO ADDITION
+    suspend fun getMenuProductToAdditionGroupToAdditionList(
+        token: String,
+        uuidList: List<String>
+    ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>>
 }

@@ -47,7 +47,9 @@ fun additionGroupListModule() = module {
     factory {
         GetSelectedAdditionListUseCase(
             additionRepo = get(),
-            dataStoreRepo = get()
+            dataStoreRepo = get(),
+            menuProductToAdditionGroupToAdditionRepository = get(),
+            menuProductRepo = get()
         )
     }
 

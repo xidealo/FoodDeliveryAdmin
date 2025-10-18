@@ -29,7 +29,55 @@ class SelectAdditionListViewModel(
             )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
-            is SelectAdditionList.Action.SelectAdditionClick -> {}
+            is SelectAdditionList.Action.SelectAdditionClick -> selectAddition(uuid = action.uuid)
+            is SelectAdditionList.Action.RemoveAdditionClick -> removeAddition(uuid = action.uuid)
+            SelectAdditionList.Action.SelectAdditionListClick -> selectAdditionListClick(
+                additionUuidList = dataState.selectedAdditionList.map { additionItem ->
+                    additionItem.uuid
+                }
+            )
+        }
+    }
+
+    fun selectAddition(uuid: String) {
+        setState {
+            val commonList = notSelectedAdditionList + selectedAdditionList
+            val addition =
+                commonList.find { additionItem ->
+                    additionItem.uuid == uuid
+                } ?: return
+
+            copy(
+                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
+                    .apply {
+                        remove(element = addition)
+                    },
+                selectedAdditionList = selectedAdditionList.toMutableList()
+                    .apply {
+                        add(addition)
+                    }
+            )
+        }
+    }
+
+    fun removeAddition(uuid: String) {
+        setState {
+            val commonList = notSelectedAdditionList + selectedAdditionList
+            val addition =
+                commonList.find { additionItem ->
+                    additionItem.uuid == uuid
+                } ?: return
+
+            copy(
+                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
+                    .apply {
+                        add(element = addition)
+                    },
+                selectedAdditionList = selectedAdditionList.toMutableList()
+                    .apply {
+                        remove(element = addition)
+                    }
+            )
         }
     }
 
@@ -79,6 +127,11 @@ class SelectAdditionListViewModel(
         }
     }
 
-    private fun selectAdditionGroupClick(uuid: String, name: String) {
+    private fun selectAdditionListClick(additionUuidList: List<String>) {
+        sendEvent {
+            SelectAdditionList.Event.SelectAdditionListBack(
+                additionUuidList = additionUuidList
+            )
+        }
     }
 }
