@@ -41,7 +41,6 @@ class SelectAdditionListViewModel(
 
     fun selectAddition(uuid: String) {
         setState {
-
             val commonList = notSelectedAdditionList + selectedAdditionList
             val addition =
                 commonList.find { additionItem ->
@@ -63,7 +62,6 @@ class SelectAdditionListViewModel(
 
     fun removeAddition(uuid: String) {
         setState {
-
             val commonList = notSelectedAdditionList + selectedAdditionList
             val addition =
                 commonList.find { additionItem ->

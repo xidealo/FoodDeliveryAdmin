@@ -7,8 +7,6 @@ import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditio
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 
 class EditAdditionGroupForMenuProductViewModel(
     val getAdditionGroupWithAdditionsForMenuProductUseCase: GetAdditionGroupWithAdditionsForMenuProductUseCase,
@@ -69,10 +67,9 @@ class EditAdditionGroupForMenuProductViewModel(
                         }
                     },
                     onError = {
-                        //set error
+                        // set error
                     }
                 )
-
             }
         }
     }
@@ -135,7 +132,7 @@ class EditAdditionGroupForMenuProductViewModel(
     private fun onAdditionListClick(
         additionGroupUuid: String,
         additionGroupName: String,
-        menuProductUuid: String,
+        menuProductUuid: String
     ) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionListClick(
@@ -174,7 +171,6 @@ class EditAdditionGroupForMenuProductViewModel(
             }
         )
     }
-
 
     private suspend fun getEditedAdditionUuidList(editedAdditionListUuid: List<String>?): String? {
         if (editedAdditionListUuid == null) return null
