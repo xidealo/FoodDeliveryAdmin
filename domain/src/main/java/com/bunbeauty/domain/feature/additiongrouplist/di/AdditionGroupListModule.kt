@@ -5,7 +5,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroup
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.EditAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.GetAdditionGroupListFromMenuProductUseCase
-import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetAdditionGroupWithAdditionsForMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListsUeCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionGroupListUseCase
@@ -27,12 +27,13 @@ fun additionGroupListModule() = module {
     factory {
         GetAdditionGroupListFromMenuProductUseCase(
             menuProductRepo = get(),
-            dataStoreRepo = get()
+            dataStoreRepo = get(),
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = get()
         )
     }
 
     factory {
-        GetAdditionGroupWithAdditionsForMenuProductUseCase(
+        GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
             menuProductRepo = get(),
             dataStoreRepo = get()
         )
@@ -49,7 +50,7 @@ fun additionGroupListModule() = module {
             additionRepo = get(),
             dataStoreRepo = get(),
             menuProductToAdditionGroupToAdditionRepository = get(),
-            menuProductRepo = get()
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = get()
         )
     }
 

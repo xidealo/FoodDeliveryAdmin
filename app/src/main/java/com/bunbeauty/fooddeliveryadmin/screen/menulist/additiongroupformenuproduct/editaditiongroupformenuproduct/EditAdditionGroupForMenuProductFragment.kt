@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +18,6 @@ import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -34,6 +35,11 @@ class EditAdditionGroupForMenuProductFragment :
 
     override val viewModel: EditAdditionGroupForMenuProductViewModel by viewModel()
     private val editAdditionGroupForMenuProductFragmentArgs: EditAdditionGroupForMenuProductFragmentArgs by navArgs()
+
+    companion object {
+        const val EDIT_ADDITION_GROUP = "EDIT_ADDITION_GROUP"
+        const val EDIT_ADDITION_GROUP_KEY = "ADDITION_GROUP_KEY"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +83,7 @@ class EditAdditionGroupForMenuProductFragment :
         onAction: (EditAdditionGroupForMenu.Action) -> Unit
     ) {
         AdminScaffold(
-            title = state.groupName,
+            title = state.groupName ?: stringResource(R.string.title_common_loading),
             backActionClick = {
                 onAction(EditAdditionGroupForMenu.Action.OnBackClick)
             },
@@ -142,16 +148,8 @@ class EditAdditionGroupForMenuProductFragment :
                 hasDivider = true
             )
 
-            SwitcherCard(
-                modifier = Modifier.padding(vertical = 8.dp),
-                elevated = false,
-                text = stringResource(R.string.title_edit_addition_group_for_menu_product_visible),
-                checked = state.isVisible,
-                onCheckChanged = { isVisible ->
-                }
-            )
-
             Spacer(modifier = Modifier.weight(1f))
+
             LoadingButton(
                 modifier = Modifier.padding(16.dp),
                 text = stringResource(R.string.action_edit_addition_group_for_menu_product_save),
@@ -166,6 +164,14 @@ class EditAdditionGroupForMenuProductFragment :
     override fun handleEvent(event: EditAdditionGroupForMenu.Event) {
         when (event) {
             EditAdditionGroupForMenu.Event.Back -> {
+                findNavController().popBackStack()
+            }
+
+            EditAdditionGroupForMenu.Event.SaveAndBack -> {
+                setFragmentResult(
+                    requestKey = EDIT_ADDITION_GROUP,
+                    result = bundleOf(EDIT_ADDITION_GROUP_KEY to true)
+                )
                 findNavController().popBackStack()
             }
 

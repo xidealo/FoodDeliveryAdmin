@@ -26,6 +26,13 @@ interface MenuProductRepo {
         token: String
     ): MenuProduct?
 
+    /*UPDATE*/
+    suspend fun updateMenuProductAdditions(
+        menuProductToAdditionGroupUuid: String,
+        additionGroupUuid: String?,
+        additionList: List<String>?
+    )
+
     /*DELETE*/
     fun clearCache()
 

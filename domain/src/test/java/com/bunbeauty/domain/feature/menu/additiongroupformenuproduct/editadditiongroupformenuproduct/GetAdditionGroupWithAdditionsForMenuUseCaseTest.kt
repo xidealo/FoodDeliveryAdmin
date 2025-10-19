@@ -23,11 +23,11 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
 
     private val menuProductRepo: MenuProductRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
-    private lateinit var getAdditionGroupWithAdditionsForMenuProductUseCase: GetAdditionGroupWithAdditionsForMenuProductUseCase
+    private lateinit var getFilteredAdditionGroupWithAdditionsForMenuProductUseCase: GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 
     @BeforeTest
     fun setup() {
-        getAdditionGroupWithAdditionsForMenuProductUseCase = GetAdditionGroupWithAdditionsForMenuProductUseCase(
+        getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
             menuProductRepo = menuProductRepo,
             dataStoreRepo = dataStoreRepo
         )
@@ -44,7 +44,7 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
         coEvery { menuProductRepo.getMenuProduct(companyUuid = companyUuid, menuProductUuid = menuProductUuid) } returns menuProductMock
 
         // When
-        val result = getAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
+        val result = getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
 
         // Then
         assertEquals(additionGroupWithAdditionsMock, result)
@@ -61,7 +61,7 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
 
         // When & Then
         assertFailsWith<NoCompanyUuidException> {
-            getAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
         }
         coVerify { dataStoreRepo.companyUuid }
         coVerify(exactly = 0) { menuProductRepo.getMenuProduct(any(), any()) }
@@ -79,7 +79,7 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
 
         // When & Then
         assertFailsWith<NoAdditionGroupException> {
-            getAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
         }
         coVerify { dataStoreRepo.companyUuid }
         coVerify { menuProductRepo.getMenuProduct(companyUuid = companyUuid, menuProductUuid = menuProductUuid) }
@@ -97,7 +97,7 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
 
         // When & Then
         assertFailsWith<NoAdditionGroupException> {
-            getAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
         }
         coVerify { dataStoreRepo.companyUuid }
         coVerify { menuProductRepo.getMenuProduct(companyUuid = companyUuid, menuProductUuid = menuProductUuid) }

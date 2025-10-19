@@ -19,6 +19,7 @@ import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
 import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -79,6 +80,12 @@ interface FoodDeliveryApi {
         menuProductPatchServer: MenuProductPatchServer,
         token: String
     ): ApiResult<MenuProductServer>
+
+    suspend fun patchMenuProductAdditions(
+        token: String,
+        menuProductToAdditionGroupUuid: String,
+        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer
+    ): ApiResult<Unit>
 
     suspend fun postMenuProduct(
         token: String,

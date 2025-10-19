@@ -23,6 +23,7 @@ import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
 import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -188,6 +189,19 @@ class FoodDeliveryApiImpl(
             path = "menu_product",
             body = menuProductPatchServer,
             parameters = listOf("uuid" to menuProductUuid),
+            token = token
+        )
+    }
+
+    override suspend fun patchMenuProductAdditions(
+        token: String,
+        menuProductToAdditionGroupUuid: String,
+        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer
+    ): ApiResult<Unit> {
+        return patch(
+            path = "menu_product/addition_group_with_additions",
+            body = menuProductAdditionsPatchServer,
+            parameters = listOf("uuid" to menuProductToAdditionGroupUuid),
             token = token
         )
     }
