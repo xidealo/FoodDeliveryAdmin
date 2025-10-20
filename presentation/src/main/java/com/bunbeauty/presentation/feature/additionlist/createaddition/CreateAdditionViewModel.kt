@@ -121,7 +121,7 @@ class CreateAdditionViewModel(
                             }?.trim(),
                             price = price.toIntOrNull(),
                             isVisible = isVisible,
-                            tag = tag,
+                            tag = tag.trim(),
                             newImageUri = imageField.value,
                             priority = null
                         )

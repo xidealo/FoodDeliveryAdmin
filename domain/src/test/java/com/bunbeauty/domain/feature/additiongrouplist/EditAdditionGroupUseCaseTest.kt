@@ -98,21 +98,6 @@ class EditAdditionGroupUseCaseTest {
     }
 
     @Test
-    fun `invoke does nothing when name is unchanged`() = runTest {
-        val token = "valid_token"
-        val uuid = "123"
-        val existingGroup = AdditionGroup(uuid, "SameName", 1, false, true)
-        val update = updateAdditionGroupMock.copy(name = "SameName")
-
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { additionGroupRepo.getAdditionGroupList(token) } returns listOf(existingGroup)
-
-        editAdditionGroupUseCase(uuid, update)
-
-        coVerify(exactly = 0) { additionGroupRepo.updateAdditionGroup(any(), any(), any()) }
-    }
-
-    @Test
     fun `invoke throws DuplicateAdditionGroupNameException when name already exists`() = runTest {
         val token = "valid_token"
         val uuid = "123"
@@ -124,6 +109,35 @@ class EditAdditionGroupUseCaseTest {
 
         assertFailsWith<DuplicateAdditionGroupNameException> {
             editAdditionGroupUseCase(uuid, updateAdditionGroupMock.copy(name = "Duplicate"))
+        }
+    }
+
+    @Test
+    fun `invoke does nothing when name and flags are unchanged`() = runTest {
+        val token = "valid_token"
+        val uuid = "123"
+        val existingGroup = AdditionGroup(
+            uuid = uuid,
+            name = "SameName",
+            isVisible = true,
+            singleChoice = false,
+            priority = 1
+        )
+
+        val update = UpdateAdditionGroup(
+            name = "SameName",
+            isVisible = true,
+            singleChoice = false,
+            priority = 1
+        )
+
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { additionGroupRepo.getAdditionGroupList(token) } returns listOf(existingGroup)
+
+        editAdditionGroupUseCase(uuid, update)
+
+        coVerify(exactly = 0) {
+            additionGroupRepo.updateAdditionGroup(any(), any(), any())
         }
     }
 
