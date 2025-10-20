@@ -55,7 +55,7 @@ class EditAdditionGroupForMenuProductViewModel(
             EditAdditionGroupForMenu.Action.OnSaveClick -> saveClick(
                 menuProductToAdditionGroupUuid = dataState.additionGroupForMenuProductUuid,
                 additionGroupUuid = dataState.editedAdditionGroupUuid,
-                additionList = dataState.editedAdditionListUuid,
+                additionList = dataState.editedAdditionListUuid
             )
 
             is EditAdditionGroupForMenu.Action.SelectAdditionGroup -> setSelectedAdditionGroup(
@@ -98,7 +98,7 @@ class EditAdditionGroupForMenuProductViewModel(
                 saveEditAdditionGroupWithAdditionsUseCase(
                     menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
                     additionGroupUuid = additionGroupUuid,
-                    additionList = additionList,
+                    additionList = additionList
                 )
 
                 sendEvent {
@@ -113,7 +113,6 @@ class EditAdditionGroupForMenuProductViewModel(
                 }
             }
         )
-
     }
 
     private fun loadData(

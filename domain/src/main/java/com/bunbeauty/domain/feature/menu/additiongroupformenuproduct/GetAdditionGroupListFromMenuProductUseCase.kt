@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-//todo add test to additionList.filter
+// todo add test to additionList.filter
 class GetAdditionGroupListFromMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
@@ -21,7 +21,7 @@ class GetAdditionGroupListFromMenuProductUseCase(
         )?.additionGroups?.map { additionGroupWithAdditions ->
             getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
                 menuProductUuid = menuProductUuid,
-                additionGroupForMenuUuid = additionGroupWithAdditions.additionGroup.uuid,
+                additionGroupForMenuUuid = additionGroupWithAdditions.additionGroup.uuid
             )
         } ?: emptyList()
     }

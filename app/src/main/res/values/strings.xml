@@ -328,5 +328,5 @@
     <string name="action_select_addition_list_save">Сохранить</string>
     <string name="action_select_addition_list_title_group">Добавки в группе %s</string>
     <string name="action_select_addition_list_title_additions">Добавки</string>
-    <string name="action_select_addition_list_title_selected">Добавки выбраны</string>
+    <string name="action_select_addition_list_title_selected">Изменены добавки</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.feature.menu.additiongroupformenuproduct
 
 import com.bunbeauty.domain.exception.NoCompanyUuidException
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.model.additiongroup.AdditionGroupWithAdditions
@@ -22,13 +23,16 @@ import kotlin.test.assertFailsWith
 class GetAdditionGroupListFromMenuProductUseCaseTest {
     private val menuProductRepo: MenuProductRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
+    private val getFilteredAdditionGroupWithAdditionsForMenuProductUseCase: GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase =
+        mockk()
     private lateinit var getAdditionGroupListFromMenuProductUseCase: GetAdditionGroupListFromMenuProductUseCase
 
     @BeforeTest
     fun setup() {
         getAdditionGroupListFromMenuProductUseCase = GetAdditionGroupListFromMenuProductUseCase(
             menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo
+            dataStoreRepo = dataStoreRepo,
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = getFilteredAdditionGroupWithAdditionsForMenuProductUseCase
         )
     }
 
@@ -58,7 +62,12 @@ class GetAdditionGroupListFromMenuProductUseCaseTest {
         )
 
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { menuProductRepo.getMenuProduct(menuUuid, companyUuid) } returns menuProductWithGroups
+        coEvery {
+            menuProductRepo.getMenuProduct(
+                menuUuid,
+                companyUuid
+            )
+        } returns menuProductWithGroups
 
         // When
         val result = getAdditionGroupListFromMenuProductUseCase(menuUuid)
@@ -92,7 +101,12 @@ class GetAdditionGroupListFromMenuProductUseCaseTest {
         val menuUuid = "uuid"
 
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { menuProductRepo.getMenuProduct(menuUuid, companyUuid) } returns menuProductMock.copy(
+        coEvery {
+            menuProductRepo.getMenuProduct(
+                menuUuid,
+                companyUuid
+            )
+        } returns menuProductMock.copy(
             additionGroups = emptyList()
         )
 

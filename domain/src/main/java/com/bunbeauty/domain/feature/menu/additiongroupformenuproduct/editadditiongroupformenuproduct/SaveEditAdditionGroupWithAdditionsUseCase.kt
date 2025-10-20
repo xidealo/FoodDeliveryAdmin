@@ -14,7 +14,7 @@ class SaveEditAdditionGroupWithAdditionsUseCase(
         menuProductRepo.updateMenuProductAdditions(
             menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
             additionGroupUuid = additionGroupUuid,
-            additionList = additionList,
+            additionList = additionList
         )
     }
 }

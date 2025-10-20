@@ -52,8 +52,8 @@ class SelectAdditionListFragment :
     SingleStateComposeFragment<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>() {
 
     companion object {
-        const val SELECT_ADDITION_LIST_KEY = "SELECT_ADDITION_GROUP_KEY"
-        const val ADDITION_LIST_KEY = "ADDITION_GROUP_KEY"
+        const val SELECT_ADDITION_LIST_KEY = "SELECT_ADDITION_LIST_KEY"
+        const val ADDITION_LIST_KEY = "ADDITION_LIST_KEY"
     }
 
     override val viewModel: SelectAdditionListViewModel by viewModel()

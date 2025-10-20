@@ -60,7 +60,7 @@ class GetSelectedAdditionListUseCase(
 
         return getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
             menuProductUuid = menuProductUuid,
-            additionGroupForMenuUuid = selectedGroupAdditionUuid,
+            additionGroupForMenuUuid = selectedGroupAdditionUuid
         ).additionList.map { addition ->
             addition.uuid
         }

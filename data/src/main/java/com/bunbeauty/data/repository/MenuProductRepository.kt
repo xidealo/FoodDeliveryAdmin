@@ -100,8 +100,8 @@ class MenuProductRepository(
             menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
             menuProductAdditionsPatchServer = MenuProductAdditionsPatchServer(
                 additionGroupUuid = additionGroupUuid,
-                additionUuidList = additionList,
-            ),
+                additionUuidList = additionList
+            )
         )
     }
 

@@ -61,7 +61,6 @@ class AdditionGroupForMenuProductListViewModel(
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS
                     )
                 }
-
             },
             onError = {
                 setState {
