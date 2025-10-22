@@ -166,6 +166,7 @@ class AdditionListFragment :
                     }
                 }
             }
+
             if (state.hiddenAdditionItems.isNotEmpty()) {
                 item(
                     key = TITLE_POSITION_HIDDEN_KEY

@@ -15,8 +15,7 @@ class UpdateVisibleAdditionGroupListUseCase(
         additionGroupRepo.updateAdditionGroup(
             additionGroupUuid = additionUuidGroup,
             updateAdditionGroup = UpdateAdditionGroup(
-                isVisible = isVisible,
-                name = ""
+                isVisible = isVisible
             ),
             token = token
         )

@@ -94,6 +94,8 @@ class EditAdditionGroupViewModel(
                 setState {
                     copy(
                         uuid = additionGroup.uuid,
+                        isSingleChoice = additionGroup.singleChoice,
+                        isVisible = additionGroup.isVisible,
                         name = name.copy(
                             value = additionGroup.name,
                             isError = false

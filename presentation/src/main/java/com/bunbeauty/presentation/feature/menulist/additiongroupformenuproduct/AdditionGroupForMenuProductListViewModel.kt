@@ -39,17 +39,25 @@ class AdditionGroupForMenuProductListViewModel(
             block = {
                 setState {
                     copy(
-                        additionGroupList = getAdditionGroupListFromMenuProductUseCase(
-                            menuProductUuid = menuProductUuid
-                        ).map { additionGroupList ->
-                            AdditionGroupForMenuProductList.DataState.AdditionGroupForMenuProduct(
-                                uuid = additionGroupList.additionGroup.uuid,
-                                name = additionGroupList.additionGroup.name,
-                                additionNameList = getAdditionListNameUseCase(
-                                    additionList = additionGroupList.additionList
-                                )
-                            )
-                        },
+                        state = AdditionGroupForMenuProductList.DataState.State.LOADING
+                    )
+                }
+
+                val additionGroupList = getAdditionGroupListFromMenuProductUseCase(
+                    menuProductUuid = menuProductUuid
+                ).map { additionGroupList ->
+                    AdditionGroupForMenuProductList.DataState.AdditionGroupForMenuProduct(
+                        uuid = additionGroupList.additionGroup.uuid,
+                        name = additionGroupList.additionGroup.name,
+                        additionNameList = getAdditionListNameUseCase(
+                            additionList = additionGroupList.additionList
+                        )
+                    )
+                }
+
+                setState {
+                    copy(
+                        additionGroupList = additionGroupList,
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS
                     )
                 }
