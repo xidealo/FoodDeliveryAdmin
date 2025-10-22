@@ -13,7 +13,6 @@ data class OrderListViewState(
     @Immutable
     sealed interface State {
         data object Loading : State
-        data object Error : State
         data class Success(
             val cafeAddress: String,
             val orderList: ImmutableList<OrderItem>,

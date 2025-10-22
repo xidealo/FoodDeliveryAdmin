@@ -5,7 +5,7 @@ import com.bunbeauty.data.di.mapperModule
 import com.bunbeauty.data.di.repositoryModule
 import com.bunbeauty.domain.di.domainModule
 import com.bunbeauty.domain.feature.additiongrouplist.di.additionGroupListModule
-import com.bunbeauty.domain.feature.additionlist.di.additionListModule
+import com.bunbeauty.domain.feature.additionlist.di.additionModule
 import com.bunbeauty.domain.feature.cafelist.di.cafeListModule
 import com.bunbeauty.domain.feature.editcafe.di.editCafeModule
 import com.bunbeauty.domain.feature.gallery.di.galleryModule
@@ -31,7 +31,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
         useCaseModule(),
         editCafeModule(),
         additionGroupListModule(),
-        additionListModule(),
+        additionModule(),
         galleryModule(),
         loginModule(),
         mainModule(),

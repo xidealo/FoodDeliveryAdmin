@@ -13,6 +13,7 @@
 
     <!-- COMMON -->
     <string name="title_common_can_not_load_data">Не удается загрузить данные</string>
+    <string name="title_common_loading">Загрузка</string>
     <string name="title_common_select_date">Выбрать дату</string>
     <string name="title_common_select_time">Выбрать дату</string>
     <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
@@ -129,6 +130,7 @@
     <string name="hint_common_menu_product_description">Описание*</string>
     <string name="hint_common_menu_product_combo_description">Описание комбо</string>
     <string name="hint_common_menu_product_categories">Категории*</string>
+    <string name="hint_common_menu_product_additions">Группы добавок</string>
     <string name="action_common_menu_product_recommend">Рекомендовать</string>
     <string name="action_common_menu_product_show_in_menu">Показывать в меню</string>
     <string name="error_common_menu_product_empty_name">Название не может быть пустым</string>
@@ -139,6 +141,7 @@
     <string name="error_common_menu_product_empty_description">Описание не может быть пустым</string>
     <string name="error_common_menu_product_long_description">Максимальная длина описания — 512 символов</string>
     <string name="error_common_menu_product_categories">Выберите категории</string>
+    <string name="error_common_menu_product_addition_groups">Выберите группы добавок</string>
     <string name="error_common_menu_product_image_uploading">Не удалось загрузить изображение</string>
 
     <!-- CREATE MENU PRODUCT -->
@@ -219,12 +222,12 @@
     <!-- ADDITION LIST -->
     <string name="title_addition_list">Добавки</string>
     <string name="title_addition_other_additions">Прочие</string>
+    <string name="action_addition_list_create">Создать</string>
 
     <!-- EDIT ADDITION  -->
     <string name="title_edit_addition">Редактировать добавку</string>
     <string name="action_edit_addition_save">Сохранить</string>
     <string name="hint_edit_addition_name">Название*</string>
-    <string name="hint_edit_addition_priority">Приоритет*</string>
     <string name="hint_edit_addition_full_name">Полное название</string>
     <string name="hint_edit_addition_price">Цена</string>
     <string name="hint_edit_addition_tag">Тэг</string>
@@ -232,10 +235,45 @@
     <string name="msg_edit_addition_updated">%s обновлён</string>
     <string name="error_edit_addition_empty_name">Название не может быть пустым</string>
     <string name="error_edit_addition_empty_full_name">Полное название не может быть пустым</string>
-    <string name="error_add_addition_empty_priority">Приоритет не может быть пустым</string>
+
+    <!-- CREATE ADDITION  -->
+    <string name="title_create_addition">Создание добавки</string>
+    <string name="action_create_addition_save">Сохранить</string>
+    <string name="hint_create_addition_name">Название*</string>
+    <string name="hint_create_addition_full_name">Полное название</string>
+    <string name="hint_create_addition_price">Цена</string>
+    <string name="hint_create_addition_tag">Тэг</string>
+    <string name="title_create_addition_is_visible">Показывать в меню</string>
+    <string name="msg_create_addition_updated">%s добавлен</string>
+    <string name="error_create_addition_empty_name">Название не может быть пустым</string>
+    <string name="error_create_addition_empty_full_name">Полное название не может быть пустым</string>
+    <string name="error_create_addition_empty_priority">Приоритет не может быть пустым</string>
 
     <!-- ADDITION GROUP LIST -->
     <string name="title_addition_group_list">Группы добавок</string>
+
+    <!-- CREATE ADDITION GROUP -->
+    <string name="hint_edit_create_addition_group_name">Название*</string>
+    <string name="action_addition_list_group_show_in_menu">Показывать в меню</string>
+    <string name="msg_addition_list_group_appliances_hint">Пользователь сможет выбрать только одну добавку из группы</string>
+    <string name="msg_addition_list_group_switcher_card">Можно выбрать 1 добавку</string>
+    <string name="msg_create_addition_group_created">%s создан</string>
+    <string name="error_common_create_addition_group_name">Название не может быть пустым</string>
+    <string name="error_common_create_addition_group_duplicate_name">Группа добавок с таким именем уже существует</string>
+    <string name="title_create_addition_group">Создание группы добавок</string>
+    <string name="action_addition_group_create">Создать</string>
+
+    <!-- EDIT ADDITION GROUP -->
+    <string name="title_edit_addition_group">Редактирование группы</string>
+    <string name="msg_edit_addition_group_updated">%s обновлён</string>
+    <string name="action_edit_addition_group_save">Сохранить</string>
+    <string name="hint_edit_addition_group_name">Название*</string>
+    <string name="error_common_edit_addition_group_empty_name">Название не может быть пустым</string>
+    <string name="error_common_edit_addition_group_duplicate_name">Группа с таким именем уже существует</string>
+    <string name="msg_edit_addition_group_is_visible_menu">Показывать в меню</string>
+    <string name="msg_edit_addition_group_single_addition_menu">Можно выбрать 1 добавку</string>
+    <string name="msg_edit_addition_group_single_сhoice_hint">Пользователь сможет выбрать только одну добавку из группы</string>
+
 
     <!--CATEGORIES LIST-->
     <string name="title_categories_list">Категории</string>
@@ -269,4 +307,26 @@
     <string name="action_select_photo_save">Сохранить</string>
     <string name="msg_select_photo_selected">Фото добавлено</string>
 
+    <!-- Addition Group For Menu Product -->
+    <string name="title_addition_group_for_menu_product">Список групп</string>
+
+
+    <!-- Edit Addition Group For Menu Product -->
+    <string name="title_edit_addition_group_for_menu_product_group">Группа</string>
+    <string name="title_edit_addition_group_for_menu_product_addition">Добавки</string>
+    <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
+    <string name="action_edit_addition_group_for_menu_product_save">Сохранить</string>
+
+    <!--Select Addition Group-->
+    <string name="title_select_addition_group">Выбор группы</string>
+    <string name="title_select_addition_group_position_visible">Видимые позиции</string>
+    <string name="title_select_addition_group_position_hidden">Скрытые позиции</string>
+    <string name="msg_select_addition_group_selected">Выбрана группа %s</string>
+
+    <!--Select Addition List-->
+    <string name="title_select_addition_list">Выбор добавок</string>
+    <string name="action_select_addition_list_save">Сохранить</string>
+    <string name="action_select_addition_list_title_group">Добавки в группе %s</string>
+    <string name="action_select_addition_list_title_additions">Добавки</string>
+    <string name="action_select_addition_list_title_selected">Изменены добавки</string>
 </resources>

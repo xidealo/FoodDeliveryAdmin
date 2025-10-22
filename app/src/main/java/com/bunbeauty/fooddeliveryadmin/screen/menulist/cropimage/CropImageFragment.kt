@@ -35,9 +35,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImage
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageViewModel
+import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.CropImageView.OnCropImageCompleteListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 const val CROP_IMAGE_REQUEST_KEY = "crop image"
 const val CROPPED_IMAGE_URI_KEY = "cropped image uri"
 const val ORIGINAL_QUALITY = 100
@@ -74,7 +76,8 @@ class CropImageFragment :
     override fun mapState(state: CropImage.DataState): CropImageViewState {
         return CropImageViewState(
             isLoading = state.isLoading,
-            imageContent = ImageContent(uri = state.uri?.toUri())
+            imageContent = ImageContent(uri = state.uri?.toUri()),
+            cropImageLaunchMode = cropImageFragmentArgs.launchMode
         )
     }
 
@@ -126,13 +129,20 @@ class CropImageFragment :
                 }
             }
         ) {
-            CropImageView(imageContent = state.imageContent)
+            CropImageView(
+                imageContent = state.imageContent,
+                cropImageDefaults = when (state.cropImageLaunchMode) {
+                    CropImageLaunchMode.MENU_PRODUCT -> CropImageDefaults.menuProductOptions()
+                    CropImageLaunchMode.ADDITION -> CropImageDefaults.additionOptions()
+                }
+            )
         }
     }
 
     @Composable
     private fun CropImageView(
         imageContent: ImageContent,
+        cropImageDefaults: CropImageOptions,
         modifier: Modifier = Modifier
     ) {
         val uri = imageContent.uri ?: return
@@ -143,7 +153,7 @@ class CropImageFragment :
                 factory = { context ->
                     LinearLayout(context).apply {
                         cropImageView = CropImageView(context).apply {
-                            setImageCropOptions(CropImageDefaults.options())
+                            setImageCropOptions(cropImageDefaults)
                             setImageUriAsync(uri)
                         }.also { view ->
                             view.setOnCropImageCompleteListener(cropImageCompleteListener)
@@ -160,9 +170,12 @@ class CropImageFragment :
             CropImage.Event.GoBack -> {
                 findNavController().popBackStack()
             }
+
             CropImage.Event.CropImage -> {
                 cropImageView?.croppedImageAsync(
-                    saveCompressQuality = ORIGINAL_QUALITY
+                    saveCompressQuality = ORIGINAL_QUALITY,
+                    reqWidth = 320,
+                    reqHeight = 320
                 )
             }
         }
@@ -176,7 +189,8 @@ class CropImageFragment :
                 isLoading = false,
                 imageContent = ImageContent(
                     uri = null
-                )
+                ),
+                cropImageLaunchMode = CropImageLaunchMode.MENU_PRODUCT
             ),
             onAction = {}
         )
