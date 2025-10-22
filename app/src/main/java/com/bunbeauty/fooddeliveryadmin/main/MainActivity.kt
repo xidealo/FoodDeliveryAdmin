@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.core.app.NotificationManagerCompat
@@ -102,10 +101,7 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
         Scaffold(
             modifier = Modifier.navigationBarsPadding(),
             snackbarHost = {
-                AdminSnackbarHost(
-                    snackbarHostState = snackbarHostState,
-                    paddingBottom = AdminTheme.dimensions.snackBarPadding
-                )
+                AdminSnackbarHost(snackbarHostState)
             },
             bottomBar = {
                 AdminNavigationBar(options = mainState.navigationBarOptions)
@@ -172,15 +168,8 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
     }
 
     @Composable
-    private fun AdminSnackbarHost(
-        snackbarHostState: SnackbarHostState,
-        paddingBottom: Dp
-    ) {
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier
-                .padding(bottom = paddingBottom)
-        ) { snackbarData ->
+    private fun AdminSnackbarHost(snackbarHostState: SnackbarHostState) {
+        SnackbarHost(hostState = snackbarHostState) { snackbarData ->
             (snackbarData.visuals as? AdminSnackbarVisuals)?.let { visuals ->
                 val containerColor = when (visuals.adminMessage.type) {
                     Main.Message.Type.INFO -> AdminTheme.colors.main.primary

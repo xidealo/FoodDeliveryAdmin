@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 
@@ -28,8 +27,6 @@ fun NavigationTextCard(
     isError: Boolean = false,
     errorText: String? = null,
     clickable: Boolean = true,
-    elevated: Boolean = true,
-    hasDivider: Boolean = false,
     onClick: () -> Unit
 ) {
     Column {
@@ -44,17 +41,12 @@ fun NavigationTextCard(
             } else {
                 null
             },
-            onClick = onClick,
-            elevated = elevated
+            onClick = onClick
         ) {
             Row(
                 modifier = Modifier.padding(
                     horizontal = 16.dp,
-                    vertical = if (valueText == null) {
-                        16.dp
-                    } else {
-                        12.dp
-                    }
+                    vertical = 12.dp
                 ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -101,14 +93,6 @@ fun NavigationTextCard(
                     color = AdminTheme.colors.main.error
                 )
             }
-        }
-
-        if (hasDivider) {
-            AdminHorizontalDivider(
-                modifier = Modifier.padding(
-                    horizontal = 16.dp
-                )
-            )
         }
     }
 }

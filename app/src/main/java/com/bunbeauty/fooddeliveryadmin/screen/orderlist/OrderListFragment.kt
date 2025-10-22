@@ -27,6 +27,7 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.TextWithHintCard
+import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeListFragment
@@ -82,6 +83,16 @@ class OrderListFragment :
                     LoadingScreen()
                 }
 
+                OrderListViewState.State.Error -> {
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = {
+                            onAction(OrderList.Action.RetryClick)
+                        }
+                    )
+                }
+
                 is OrderListViewState.State.Success -> {
                     OrderListSuccessScreen(
                         state = state.state,
@@ -98,6 +109,7 @@ class OrderListFragment :
         return OrderListViewState(
             state = when (state.orderListState) {
                 OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
+                OrderList.DataState.State.ERROR -> OrderListViewState.State.Error
                 OrderList.DataState.State.SUCCESS -> OrderListViewState.State.Success(
                     cafeAddress = state.cafe?.address.orEmpty(),
                     orderList = state.orderList.map(orderMapper::map).toPersistentList(),

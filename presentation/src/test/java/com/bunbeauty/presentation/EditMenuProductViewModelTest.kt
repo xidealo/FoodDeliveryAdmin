@@ -7,9 +7,6 @@ import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
-import com.bunbeauty.presentation.feature.image.EditImageFieldData
-import com.bunbeauty.presentation.feature.image.ProductImage
-import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
@@ -94,19 +91,15 @@ class EditMenuProductViewModelTest {
             ),
             isVisibleInMenu = true,
             isVisibleInRecommendations = false,
-            imageField = EditImageFieldData(
-                value = ProductImage(
+            imageField = EditMenuProduct.ImageFieldData(
+                value = EditMenuProduct.MenuProductImage(
                     photoLink = "photoLink",
                     newImageUri = null
                 ),
                 isError = false
             ),
             sendingToServer = false,
-            descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
-            additionGroupListField = AdditionGroupListFieldData(
-                value = emptyList(),
-                isError = false
-            )
+            descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR
         )
 
         viewModel.state.test {
@@ -140,8 +133,7 @@ class EditMenuProductViewModelTest {
         barcode = 0,
         isVisible = true,
         isRecommended = false,
-        categoryUuids = listOf("1", "2"),
-        additionGroups = emptyList()
+        categoryUuids = listOf("1", "2")
     )
 
     private fun getMockCategory(uuid: String): Category {

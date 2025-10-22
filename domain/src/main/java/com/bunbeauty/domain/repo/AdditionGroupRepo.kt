@@ -1,7 +1,6 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
-import com.bunbeauty.domain.model.additiongroup.CreateAdditionGroup
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 
 interface AdditionGroupRepo {
@@ -11,7 +10,7 @@ interface AdditionGroupRepo {
         refreshing: Boolean = false
     ): List<AdditionGroup>
 
-    suspend fun getAdditionGroup(additionUuid: String, token: String): AdditionGroup?
+    suspend fun getAdditionGroup(additionUuid: String): AdditionGroup?
 
     /*UPDATE*/
     suspend fun updateAdditionGroup(
@@ -19,9 +18,6 @@ interface AdditionGroupRepo {
         token: String,
         additionGroupUuid: String
     )
-
-    /*POST*/
-    suspend fun postAdditionGroup(token: String, createAdditionGroup: CreateAdditionGroup): AdditionGroup
 
     /*DELETE*/
     fun clearCache()

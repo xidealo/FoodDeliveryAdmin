@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct.mapper
 
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.screen.image.toImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.toCardFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.toTextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct.EditMenuProductViewState
@@ -29,8 +28,7 @@ fun EditMenuProduct.DataState.toEditMenuProductViewState(): EditMenuProductViewS
                 isVisibleInMenu = isVisibleInMenu,
                 isVisibleInRecommendation = isVisibleInRecommendations,
                 imageField = imageField.toImageFieldUi(),
-                sendingToServer = sendingToServer,
-                additionListField = additionGroupListField.toCardFieldUi()
+                sendingToServer = sendingToServer
             )
 
             EditMenuProduct.DataState.State.ERROR -> EditMenuProductViewState.State.Error

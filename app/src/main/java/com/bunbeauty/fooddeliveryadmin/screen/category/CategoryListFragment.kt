@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -22,6 +21,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -39,9 +39,9 @@ import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
-import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
@@ -95,39 +95,25 @@ class CategoryListFragment :
                 onAction(CategoryListState.Action.OnRefreshData)
             },
             backActionClick = {
-                if (state.isEditPriority) {
-                    onAction(CategoryListState.Action.OnCancelClicked)
-                } else {
-                    onAction(CategoryListState.Action.OnBackClicked)
-                }
+                onAction(CategoryListState.Action.OnBackClicked)
             },
-            topActions = when (state.state) {
-                CategoryListViewState.State.Error -> emptyList()
-                CategoryListViewState.State.Loading -> emptyList()
-                is CategoryListViewState.State.Success -> listOf(
-                    AdminTopBarAction(
-                        iconId = R.drawable.ic_edit,
-                        color = AdminTheme.colors.main.primary,
-                        onClick = {
+            topActions = listOf(
+                AdminTopBarAction(
+                    iconId = if (state.isEditPriority) {
+                        R.drawable.ic_clear
+                    } else {
+                        R.drawable.ic_edit
+                    },
+                    color = AdminTheme.colors.main.primary,
+                    onClick = {
+                        if (state.isEditPriority) {
+                            onAction(CategoryListState.Action.OnCancelClicked)
+                        } else {
                             onAction(CategoryListState.Action.OnPriorityEditClicked)
                         }
-                    )
+                    }
                 )
-
-                is CategoryListViewState.State.SuccessDragDrop -> listOf(
-                    AdminTopBarAction(
-                        iconId = R.drawable.ic_check,
-                        color = AdminTheme.colors.main.primary,
-                        onClick = {
-                            onAction(
-                                CategoryListState.Action.OnSaveEditPriorityCategoryClick(
-                                    updatedList = state.categoryList
-                                )
-                            )
-                        }
-                    )
-                )
-            },
+            ),
             actionButton = {
                 when (state.state) {
                     is CategoryListViewState.State.Success -> {
@@ -137,6 +123,23 @@ class CategoryListFragment :
                             onClick = {
                                 onAction(CategoryListState.Action.OnCreateClicked)
                             }
+                        )
+                    }
+
+                    is CategoryListViewState.State.SuccessDragDrop -> {
+                        LoadingButton(
+                            text = stringResource(R.string.action_create_category_save),
+                            isLoading = state.isLoading,
+                            onClick = {
+                                onAction(
+                                    CategoryListState.Action.OnSaveEditPriorityCategoryClick(
+                                        updatedList = state.state.categoryList.toMutableStateList()
+                                    )
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
                         )
                     }
 
@@ -189,20 +192,17 @@ class CategoryListFragment :
                 items = state.categoryList,
                 key = { category -> category.uuid }
             ) { category ->
-                Column {
-                    CategoryItemView(
-                        category = category,
-                        onClick = {
-                            onAction(
-                                CategoryListState.Action.OnCategoryClick(
-                                    categoryUuid = category.uuid
-                                )
+                CategoryItemView(
+                    category = category,
+                    onClick = {
+                        onAction(
+                            CategoryListState.Action.OnCategoryClick(
+                                categoryUuid = category.uuid
                             )
-                        },
-                        isClickable = true
-                    )
-                    AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                }
+                        )
+                    },
+                    isClickable = true
+                )
             }
         }
     }
@@ -302,8 +302,7 @@ class CategoryListFragment :
 
         AdminCard(
             modifier = modifier.padding(vertical = 4.dp),
-            shape = noCornerCardShape,
-            elevated = false
+            shape = noCornerCardShape
         ) {
             Row(
                 modifier = Modifier
@@ -313,7 +312,8 @@ class CategoryListFragment :
             ) {
                 Text(
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(1f)
+                        .padding(start = 16.dp),
                     text = category.name,
                     style = AdminTheme.typography.bodyLarge,
                     color = AdminTheme.colors.main.onSurface
@@ -392,9 +392,9 @@ class CategoryListFragment :
                     }
                 }
             },
+            isLoading = state.isLoading,
             isRefreshing = state.isRefreshing,
-            isEditPriority = state.isEditPriority,
-            categoryList = category
+            isEditPriority = state.isEditPriority
         )
     }
 
@@ -409,8 +409,7 @@ class CategoryListFragment :
             modifier = modifier.fillMaxWidth(),
             onClick = onClick,
             clickable = isClickable,
-            shape = noCornerCardShape,
-            elevated = false
+            shape = noCornerCardShape
         ) {
             Row(
                 modifier = Modifier
@@ -420,7 +419,8 @@ class CategoryListFragment :
             ) {
                 Text(
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(1f)
+                        .padding(start = 16.dp),
                     text = category.name,
                     style = AdminTheme.typography.bodyLarge,
                     color = AdminTheme.colors.main.onSurface
@@ -431,7 +431,7 @@ class CategoryListFragment :
 
     @Preview(showSystemUi = true)
     @Composable
-    private fun CategoryScreenPreview() {
+    private fun SettingsScreenPreview() {
         AdminTheme {
             CategoriesScreen(
                 state = CategoryListViewState(
@@ -450,60 +450,9 @@ class CategoryListFragment :
                             )
                         )
                     ),
+                    isLoading = false,
                     isRefreshing = false,
-                    isEditPriority = false,
-                    categoryList = persistentListOf(
-                        Category(
-                            uuid = "",
-                            name = "Лаваш",
-                            priority = 0
-                        ),
-                        Category(
-                            uuid = "BBB",
-                            name = "Соус",
-                            priority = 1
-                        )
-                    )
-                ),
-                onAction = {}
-            )
-        }
-    }
-
-    @Preview(showSystemUi = true)
-    @Composable
-    private fun CategoryScreenDraggablePreview() {
-        AdminTheme {
-            CategoriesScreen(
-                state = CategoryListViewState(
-                    state = CategoryListViewState.State.SuccessDragDrop(
-                        categoryList = persistentListOf(
-                            Category(
-                                uuid = "",
-                                name = "Лаваш",
-                                priority = 0
-                            ),
-                            Category(
-                                uuid = "BBB",
-                                name = "Соус",
-                                priority = 1
-                            )
-                        )
-                    ),
-                    isRefreshing = false,
-                    isEditPriority = true,
-                    categoryList = persistentListOf(
-                        Category(
-                            uuid = "",
-                            name = "Лаваш",
-                            priority = 0
-                        ),
-                        Category(
-                            uuid = "BBB",
-                            name = "Соус",
-                            priority = 1
-                        )
-                    )
+                    isEditPriority = false
                 ),
                 onAction = {}
             )

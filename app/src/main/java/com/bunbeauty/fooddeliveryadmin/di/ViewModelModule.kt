@@ -2,10 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.fooddeliveryadmin.screen.login.LoginViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
-import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
-import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.EditAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
-import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAdditionViewModel
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
 import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
 import com.bunbeauty.presentation.feature.category.CategoryListViewModel
@@ -15,10 +12,6 @@ import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
 import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListViewModel
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryListViewModel
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProductViewModel
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageViewModel
@@ -53,17 +46,6 @@ fun viewModelModule() = module {
             getAdditionUseCase = get(),
             savedStateHandle = get(),
             updateAdditionUseCase = get()
-        )
-    }
-    viewModel {
-        CreateAdditionViewModel(
-            createAdditionUseCase = get()
-        )
-    }
-
-    viewModel {
-        CreateAdditionGroupViewModel(
-            createAdditionGroupUseCase = get()
         )
     }
 
@@ -125,35 +107,6 @@ fun viewModelModule() = module {
     viewModel {
         CreateCategoryViewModel(
             createCategoryUseCase = get()
-        )
-    }
-
-    viewModel {
-        AdditionGroupForMenuProductListViewModel(
-            getAdditionGroupListFromMenuProductUseCase = get(),
-            getAdditionListNameUseCase = get()
-        )
-    }
-
-    viewModel {
-        SelectAdditionGroupViewModel(
-            getSeparatedSelectableAdditionGroupListUseCase = get()
-        )
-    }
-
-    viewModel {
-        EditAdditionGroupForMenuProductViewModel(
-            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = get(),
-            getAdditionListNameUseCase = get(),
-            getAdditionGroupUseCase = get(),
-            getAdditionUseCase = get(),
-            saveEditAdditionGroupWithAdditionsUseCase = get()
-        )
-    }
-
-    viewModel {
-        SelectAdditionListViewModel(
-            getSelectedAdditionListUseCase = get()
         )
     }
 
@@ -242,14 +195,6 @@ fun viewModelModule() = module {
         LoginViewModel(
             checkAuthorizationUseCase = get(),
             loginUseCase = get()
-        )
-    }
-
-    viewModel {
-        EditAdditionGroupViewModel(
-            savedStateHandle = get(),
-            getAdditionGroupUseCase = get(),
-            saveEditAdditionGroupUseCase = get()
         )
     }
 }

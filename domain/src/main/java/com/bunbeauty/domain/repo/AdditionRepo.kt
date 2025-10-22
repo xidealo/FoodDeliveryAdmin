@@ -1,7 +1,6 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.addition.Addition
-import com.bunbeauty.domain.model.addition.CreateAdditionModel
 import com.bunbeauty.domain.model.addition.UpdateAddition
 
 interface AdditionRepo {
@@ -18,12 +17,6 @@ interface AdditionRepo {
         updateAddition: UpdateAddition,
         token: String,
         additionUuid: String
-    )
-
-    /*CREATE*/
-    suspend fun createAddition(
-        token: String,
-        createAdditionModel: CreateAdditionModel
     )
 
     /*DELETE*/
