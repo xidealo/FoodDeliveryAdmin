@@ -14,6 +14,9 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingIm
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.presentation.extension.launchSafe
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.image.ProductImage
+import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -25,7 +28,7 @@ class EditMenuProductViewModel(
 ) : BaseStateViewModel<EditMenuProduct.DataState, EditMenuProduct.Action, EditMenuProduct.Event>(
     initState = EditMenuProduct.DataState(
         state = EditMenuProduct.DataState.State.LOADING,
-        productUuid = null,
+        productUuid = "",
         productName = "",
         nameField = TextFieldData.empty,
         newPriceField = TextFieldData.empty,
@@ -40,12 +43,16 @@ class EditMenuProductViewModel(
         ),
         isVisibleInMenu = true,
         isVisibleInRecommendations = false,
-        imageField = EditMenuProduct.ImageFieldData(
+        imageField = EditImageFieldData(
             value = null,
             isError = false
         ),
         sendingToServer = false,
-        descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR
+        descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
+        additionGroupListField = AdditionGroupListFieldData(
+            value = listOf(),
+            isError = false
+        )
     )
 ) {
 
@@ -143,6 +150,14 @@ class EditMenuProductViewModel(
                 }
             }
 
+            EditMenuProduct.Action.AdditionListClick -> {
+                sendEvent {
+                    EditMenuProduct.Event.NavigateToAdditionList(
+                        menuProductUuid = dataState.productUuid
+                    )
+                }
+            }
+
             is EditMenuProduct.Action.SelectCategories -> {
                 setState {
                     copy(
@@ -231,11 +246,17 @@ class EditMenuProductViewModel(
                         ),
                         isVisibleInMenu = menuProduct.isVisible,
                         isVisibleInRecommendations = menuProduct.isRecommended,
-                        imageField = EditMenuProduct.ImageFieldData(
-                            value = EditMenuProduct.MenuProductImage(
+                        imageField = EditImageFieldData(
+                            value = ProductImage(
                                 photoLink = menuProduct.photoLink,
                                 newImageUri = null
                             ),
+                            isError = false
+                        ),
+                        additionGroupListField = AdditionGroupListFieldData(
+                            value = menuProduct.additionGroups.map { additionGroupWithAdditions ->
+                                additionGroupWithAdditions.additionGroup
+                            },
                             isError = false
                         )
                     )
@@ -267,7 +288,7 @@ class EditMenuProductViewModel(
                 updateMenuProductUseCase(
                     params = state.value.run {
                         UpdateMenuProductUseCase.Params(
-                            uuid = productUuid ?: error("Uuid can't be null"),
+                            uuid = productUuid,
                             name = nameField.value,
                             newPrice = newPriceField.value,
                             oldPrice = oldPriceField.value,

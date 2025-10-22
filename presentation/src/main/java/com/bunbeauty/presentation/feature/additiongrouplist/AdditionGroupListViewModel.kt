@@ -28,9 +28,7 @@ class AdditionGroupListViewModel(
                 sendEvent { AdditionGroupList.Event.Back }
             }
 
-            AdditionGroupList.Action.OnAdditionClick -> {
-                // TODO (implement)
-            }
+            is AdditionGroupList.Action.OnAdditionClick -> additionGroupClick(action.additionUuid)
 
             is AdditionGroupList.Action.OnVisibleClick -> updateVisible(
                 uuid = action.uuid,
@@ -115,5 +113,11 @@ class AdditionGroupListViewModel(
                 }
             }
         )
+    }
+
+    private fun additionGroupClick(additionUuid: String) {
+        sendEvent {
+            AdditionGroupList.Event.OnAdditionGroupClick(additionUuid = additionUuid)
+        }
     }
 }
