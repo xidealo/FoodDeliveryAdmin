@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -22,11 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupList
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -68,7 +71,17 @@ class AdditionGroupListFragment :
             },
             backActionClick = {
                 onAction(AdditionGroupList.Action.OnBackClick)
-            }
+            },
+            actionButton = {
+                FloatingButton(
+                    iconId = R.drawable.ic_plus,
+                    textStringId = R.string.action_addition_group_create,
+                    onClick = {
+                        findNavController().navigateSafe(AdditionGroupListFragmentDirections.toCreateAdditionGroup())
+                    }
+                )
+            },
+            actionButtonPosition = FabPosition.End
         ) {
             when {
                 state.isLoading -> LoadingScreen()
@@ -140,7 +153,11 @@ class AdditionGroupListFragment :
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(AdditionGroupList.Action.OnAdditionClick)
+                onAction(
+                    AdditionGroupList.Action.OnAdditionClick(
+                        additionUuid = additionItem.uuid
+                    )
+                )
             }
         ) {
             Row(
@@ -151,7 +168,9 @@ class AdditionGroupListFragment :
             ) {
                 Text(
                     text = additionItem.name,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    style = AdminTheme.typography.bodyLarge,
+                    color = AdminTheme.colors.main.onSurface
                 )
 
                 IconButton(
@@ -193,7 +212,11 @@ class AdditionGroupListFragment :
         when (event) {
             AdditionGroupList.Event.Back -> findNavController().popBackStack()
             is AdditionGroupList.Event.OnAdditionGroupClick -> {
-                // TODO (implement)
+                findNavController().navigateSafe(
+                    AdditionGroupListFragmentDirections.toEditAdditionGroupFragment(
+                        event.additionUuid
+                    )
+                )
             }
         }
     }

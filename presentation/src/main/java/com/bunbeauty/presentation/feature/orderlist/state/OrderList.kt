@@ -17,8 +17,7 @@ interface OrderList {
     ) : BaseDataState {
         enum class State {
             LOADING,
-            SUCCESS,
-            ERROR
+            SUCCESS
         }
     }
 

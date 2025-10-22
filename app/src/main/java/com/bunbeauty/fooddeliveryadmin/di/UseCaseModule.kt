@@ -1,15 +1,15 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
+import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.SaveEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.category.SaveCategoryListUseCase
-import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
-import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNameUseCase
@@ -21,11 +21,11 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
-import com.bunbeauty.domain.usecase.GetAdditionUseCase
+import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
+import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.usecase.LogoutUseCase
-import com.bunbeauty.domain.usecase.UpdateAdditionUseCase
 import com.bunbeauty.domain.usecase.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.domain.util.GetNewUuidUseCase
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
@@ -152,6 +152,12 @@ fun useCaseModule() = module {
     }
 
     factory {
+        SaveEditAdditionGroupWithAdditionsUseCase(
+            menuProductRepo = get()
+        )
+    }
+
+    factory {
         GetMenuProductUseCase(
             dataStoreRepo = get(),
             menuProductRepo = get()
@@ -173,8 +179,8 @@ fun useCaseModule() = module {
     }
 
     factory {
-        GetAdditionUseCase(
-            additionRepo = get(),
+        CreateAdditionGroupUseCase(
+            additionGroupRepo = get(),
             dataStoreRepo = get()
         )
     }
@@ -205,14 +211,8 @@ fun useCaseModule() = module {
             menuProductRepo = get(),
             orderRepo = get(),
             photoRepo = get(),
-            categoryRepo = get()
-        )
-    }
-
-    factory {
-        UpdateAdditionUseCase(
-            dataStoreRepo = get(),
-            additionRepo = get()
+            categoryRepo = get(),
+            menuProductToAdditionGroupRepository = get()
         )
     }
 

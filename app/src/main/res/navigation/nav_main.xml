@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/statisticDetailsFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.statisticdetails.StatisticDetailsFragment"
-        android:label="StatisticDetailsFragment"/>
+        android:label="StatisticDetailsFragment" />
 
     <fragment
         android:id="@+id/menuListFragment"
@@ -101,12 +101,15 @@
         <action
             android:id="@+id/to_cropImageFragment"
             app:destination="@id/cropImageFragment" />
+        <action
+            android:id="@+id/to_additionGroupForMenuProductListFragment"
+            app:destination="@id/additionGroupForMenuProductListFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/createMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.CreateMenuProductFragment"
-        android:label="AddMenuProductFragment" >
+        android:label="AddMenuProductFragment">
         <action
             android:id="@+id/to_selectCategoryListFragment"
             app:destination="@id/selectCategoryListFragment" />
@@ -118,16 +121,20 @@
     <fragment
         android:id="@+id/cropImageFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageFragment"
-        android:label="CropImageFragment" >
+        android:label="CropImageFragment">
         <argument
             android:name="uri"
             app:argType="android.net.Uri" />
+        <argument
+            android:name="launchMode"
+            android:defaultValue="MENU_PRODUCT"
+            app:argType="com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode" />
     </fragment>
 
     <fragment
         android:id="@+id/selectCategoryListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment"
-        android:label="SelectCategoryListFragment" >
+        android:label="SelectCategoryListFragment">
         <argument
             android:name="selectedCategoryUuidList"
             app:argType="string[]" />
@@ -136,8 +143,7 @@
     <fragment
         android:id="@+id/galleryFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.gallery.GalleryFragment"
-        android:label="GalleryFragment" >
-    </fragment>
+        android:label="GalleryFragment" />
 
     <fragment
         android:id="@+id/profileFragment"
@@ -192,6 +198,9 @@
         <action
             android:id="@+id/to_EditAdditionFragment"
             app:destination="@id/editAdditionFragment" />
+        <action
+            android:id="@+id/action_additionListFragment_to_createAdditionFragment"
+            app:destination="@id/createAdditionFragment" />
     </fragment>
 
     <fragment
@@ -201,12 +210,30 @@
         <argument
             android:name="additionUuid"
             app:argType="string" />
+        <action
+            android:id="@+id/to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/additionGroupListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.AdditionGroupListFragment"
         android:label="AdditionGroupListFragment">
+        <action
+            android:id="@+id/to_CreateAdditionGroup"
+            app:destination="@id/createAdditionGroupFragment" />
+        <action
+            android:id="@+id/to_EditAdditionGroupFragment"
+            app:destination="@id/editAdditionGroupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editAdditionGroupFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.editadditiongroup.EditAdditionGroupFragment"
+        android:label="EditAdditionGroupFragment">
+        <argument
+            android:name="additionGroupUuid"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -219,14 +246,12 @@
         <action
             android:id="@+id/to_EditCategoryListFragment"
             app:destination="@id/editCategoryListFragment" />
-
     </fragment>
 
     <fragment
         android:id="@+id/createCategoryFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.category.createcategory.CreateCategoryFragment"
-        android:label="CreateCategoryFragment">
-    </fragment>
+        android:label="CreateCategoryFragment" />
 
     <fragment
         android:id="@+id/editCategoryListFragment"
@@ -235,7 +260,6 @@
         <argument
             android:name="categoryUuid"
             app:argType="string" />
-
     </fragment>
 
     <fragment
@@ -249,5 +273,75 @@
             android:name="cafeAddress"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/createAdditionFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additionlist.createaddition.CreateAdditionFragment"
+        android:label="createAdditionFragment">
+        <action
+            android:id="@+id/action_createAdditionFragment_to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAdditionGroupFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist.createadditiongrouplist.CreateAdditionGroupFragment"
+        android:label="createAdditionGroupFragment" />
+
+    <fragment
+        android:id="@+id/additionGroupForMenuProductListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListFragment"
+        android:label="additionGroupForMenuProductListFragment">
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_editAdditionGroupForMenuProductFragment"
+            app:destination="@id/editAdditionGroupForMenuProductFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editAdditionGroupForMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct.EditAdditionGroupForMenuProductFragment"
+        android:label="editAdditionGroupForMenuProductFragment">
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string" />
+        <argument
+            android:name="additionGroupForMenuUuid"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_selectAdditionGroupFragment"
+            app:destination="@id/selectAdditionGroupFragment" />
+        <action
+            android:id="@+id/to_selectAdditionListFragment"
+            app:destination="@id/selectAdditionListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectAdditionGroupFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment"
+        android:label="selectAdditionGroupFragment">
+        <argument
+            android:name="additionGroupUuid"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectAdditionListFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment"
+        android:label="selectAdditionListFragment">
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string" />
+        <argument
+            android:name="additionGroupUuid"
+            app:argType="string" />
+        <argument
+            android:name="additionGroupForMenuName"
+            app:argType="string" />
+    </fragment>
+
 
 </navigation>

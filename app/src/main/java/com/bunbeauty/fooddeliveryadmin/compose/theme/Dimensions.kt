@@ -32,5 +32,6 @@ data class AdminDimensions(
 
     val codeWidth: Dp = 56.dp,
 
-    val scrollScreenBottomSpace: Dp = ButtonDefaults.MinHeight + 32.dp
+    val scrollScreenBottomSpace: Dp = ButtonDefaults.MinHeight + 32.dp,
+    val snackBarPadding: Dp = ButtonDefaults.MinHeight + 12.dp
 )
