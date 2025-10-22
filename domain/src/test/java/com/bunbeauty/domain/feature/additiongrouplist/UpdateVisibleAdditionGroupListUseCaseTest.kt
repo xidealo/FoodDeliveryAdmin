@@ -37,7 +37,7 @@ class UpdateVisibleAdditionGroupListUseCaseTest {
     }
 
     @Test
-    fun `should call updateAdditionGroup function when token not null`() = runTest {
+    fun `should call updateAdditionGroup function when token non null`() = runTest {
         // Given
         val token = "token"
         val additionGroupUuidMock = ""

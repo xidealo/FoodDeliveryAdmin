@@ -2,6 +2,8 @@ package com.bunbeauty.domain.feature.menu.editmenuproduct
 
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
+import com.bunbeauty.domain.feature.menu.common.photo.DeletePhotoUseCase
+import com.bunbeauty.domain.feature.menu.common.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductCategoriesUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductDescriptionUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNameUseCase
@@ -9,8 +11,6 @@ import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNe
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductNutritionUseCase
 import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductOldPriceUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNotUpdatedException
-import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
-import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo

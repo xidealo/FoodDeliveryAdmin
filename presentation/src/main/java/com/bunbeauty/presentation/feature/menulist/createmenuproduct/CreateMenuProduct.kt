@@ -1,8 +1,8 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
-import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
+import com.bunbeauty.presentation.feature.menulist.common.FieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
@@ -39,6 +39,11 @@ interface CreateMenuProduct {
             NO_ERROR
         }
     }
+
+    data class ImageFieldData(
+        override val value: String?,
+        override val isError: Boolean
+    ) : FieldData<String?>()
 
     sealed interface Action : BaseAction {
         data object Init : Action

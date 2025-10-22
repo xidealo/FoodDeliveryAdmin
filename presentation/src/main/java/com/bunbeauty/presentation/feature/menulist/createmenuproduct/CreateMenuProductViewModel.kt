@@ -13,7 +13,6 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceExc
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -36,7 +35,7 @@ class CreateMenuProductViewModel(
         ),
         isVisibleInMenu = true,
         isVisibleInRecommendations = false,
-        imageField = ImageFieldData(
+        imageField = CreateMenuProduct.ImageFieldData(
             value = null,
             isError = false
         ),
@@ -266,8 +265,7 @@ class CreateMenuProductViewModel(
             is MenuProductDescriptionException -> {
                 setState {
                     copy(
-                        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError
-                            .EMPTY_DESCRIPTION_ERROR,
+                        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.EMPTY_DESCRIPTION_ERROR,
                         descriptionField = descriptionField.copy(
                             isError = true
                         )
@@ -278,8 +276,7 @@ class CreateMenuProductViewModel(
             is MenuProductDescriptionLongException -> {
                 setState {
                     copy(
-                        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError
-                            .LONG_DESCRIPTION_ERROR,
+                        descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.LONG_DESCRIPTION_ERROR,
                         descriptionField = descriptionField.copy(
                             isError = true
                         )

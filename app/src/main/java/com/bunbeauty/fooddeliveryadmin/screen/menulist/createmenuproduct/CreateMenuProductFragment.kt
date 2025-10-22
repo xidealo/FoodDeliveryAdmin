@@ -46,7 +46,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldW
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
@@ -54,7 +53,6 @@ import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.createmenuproduct.mapper.toAddMenuProductViewState
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode
 import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProductViewModel
@@ -78,8 +76,7 @@ class CreateMenuProductFragment :
             )
         }
         setFragmentResultListener(CROP_IMAGE_REQUEST_KEY) { _, bundle ->
-            val croppedImageUri =
-                bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
+            val croppedImageUri = bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
 
             viewModel.onAction(
                 action = CreateMenuProduct.Action.SetImage(
@@ -90,14 +87,10 @@ class CreateMenuProductFragment :
     }
 
     @Composable
-    override fun Screen(
-        state: CreateMenuProductViewState,
-        onAction: (CreateMenuProduct.Action) -> Unit
-    ) {
-        val galleryLauncher =
-            rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-                navigateToCropImage(uri)
-            }
+    override fun Screen(state: CreateMenuProductViewState, onAction: (CreateMenuProduct.Action) -> Unit) {
+        val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            navigateToCropImage(uri)
+        }
 
         AdminScaffold(
             title = stringResource(R.string.title_create_menu_product_new_product),
@@ -363,10 +356,7 @@ class CreateMenuProductFragment :
 
             is CreateMenuProduct.Event.ShowMenuProductCreated -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(
-                        R.string.msg_create_menu_product_add_menu_added,
-                        event.menuProductName
-                    )
+                    resources.getString(R.string.msg_create_menu_product_add_menu_added, event.menuProductName)
                 )
                 findNavController().popBackStack()
             }
@@ -382,7 +372,6 @@ class CreateMenuProductFragment :
                     resources.getString(R.string.error_common_something_went_wrong)
                 )
             }
-
             CreateMenuProduct.Event.ShowEmptyPhoto -> {
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(R.string.error_common_menu_product_empty_photo)
@@ -397,8 +386,7 @@ class CreateMenuProductFragment :
         findNavController()
             .navigate(
                 directions = CreateMenuProductFragmentDirections.toCropImageFragment(
-                    uri = uri,
-                    launchMode = CropImageLaunchMode.MENU_PRODUCT
+                    uri = uri
                 )
             )
     }
@@ -424,7 +412,7 @@ class CreateMenuProductFragment :
                     ),
                     isVisibleInMenu = true,
                     isVisibleInRecommendation = false,
-                    imageField = ImageFieldUi(
+                    imageField = CreateMenuProductViewState.ImageFieldUi(
                         value = null,
                         isError = false
                     ),

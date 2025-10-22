@@ -3,10 +3,8 @@ package com.bunbeauty.data
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
-import com.bunbeauty.data.model.server.addition.AdditionPostServer
 import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
-import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
@@ -17,9 +15,6 @@ import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
-import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
-import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
-import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -80,12 +75,6 @@ interface FoodDeliveryApi {
         menuProductPatchServer: MenuProductPatchServer,
         token: String
     ): ApiResult<MenuProductServer>
-
-    suspend fun patchMenuProductAdditions(
-        token: String,
-        menuProductToAdditionGroupUuid: String,
-        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer
-    ): ApiResult<Unit>
 
     suspend fun postMenuProduct(
         token: String,
@@ -175,11 +164,6 @@ interface FoodDeliveryApi {
         token: String
     ): ApiResult<AdditionServer>
 
-    suspend fun postAddition(
-        additionPostServer: AdditionPostServer,
-        token: String
-    ): ApiResult<AdditionServer>
-
     // ADDITION GROUP LIST
     suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>>
     suspend fun patchAdditionGroup(
@@ -187,21 +171,4 @@ interface FoodDeliveryApi {
         additionGroupPatchServer: AdditionGroupPatchServer,
         token: String
     ): ApiResult<AdditionGroupServer>
-
-    suspend fun postAdditionGroup(
-        token: String,
-        additionGroupServerPost: AdditionGroupPostServer
-    ): ApiResult<AdditionGroupServer>
-
-    // MENU PRODUCT TO ADDITION GROUP
-    suspend fun getMenuProductToAdditionGroup(
-        token: String,
-        uuid: String
-    ): ApiResult<MenuProductToAdditionGroupServer>
-
-    // MENU PRODUCT TO ADDITION GROUP TO ADDITION
-    suspend fun getMenuProductToAdditionGroupToAdditionList(
-        token: String,
-        uuidList: List<String>
-    ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>>
 }
