@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,14 +31,12 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
-import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.additionlist.AdditionList
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -75,22 +72,7 @@ class AdditionListFragment :
             },
             backActionClick = {
                 onAction(AdditionList.Action.OnBackClick)
-            },
-            actionButton = {
-                if (!state.isLoading && !state.hasError) {
-                    FloatingButton(
-                        iconId = R.drawable.ic_plus,
-                        textStringId = R.string.action_addition_list_create,
-                        onClick = {
-                            findNavController().navigateSafe(
-                                AdditionListFragmentDirections
-                                    .actionAdditionListFragmentToCreateAdditionFragment()
-                            )
-                        }
-                    )
-                }
-            },
-            actionButtonPosition = FabPosition.End
+            }
         ) {
             when {
                 state.hasError -> {
@@ -115,12 +97,7 @@ class AdditionListFragment :
         onAction: (AdditionList.Action) -> Unit
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(
-                top = 16.dp,
-                start = 16.dp,
-                end = 16.dp,
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-            ),
+            contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (state.visibleAdditionItems.isNotEmpty()) {
@@ -166,7 +143,6 @@ class AdditionListFragment :
                     }
                 }
             }
-
             if (state.hiddenAdditionItems.isNotEmpty()) {
                 item(
                     key = TITLE_POSITION_HIDDEN_KEY

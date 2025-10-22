@@ -1,7 +1,6 @@
 package com.bunbeauty.domain.feature.menu.common.photo
 
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
-import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
@@ -17,8 +16,6 @@ class UploadPhotoUseCaseTest {
 
     private val imageUri = "uri"
     private val username = "username"
-    private val width = 1000
-    private val height = 667
 
     private val photoRepo: PhotoRepo = mockk()
     private val getUsernameUseCase: GetUsernameUseCase = mockk {
@@ -39,9 +36,7 @@ class UploadPhotoUseCaseTest {
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
-                username = username,
-                width = width,
-                height = height
+                username = username
             )
         } returns null
 
@@ -56,9 +51,7 @@ class UploadPhotoUseCaseTest {
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
-                username = username,
-                width = width,
-                height = height
+                username = username
             )
         } returns photo
 

@@ -90,7 +90,7 @@ class OrderListViewModel(
                         refreshing = false,
                         hasConnectionError = true,
                         loadingOrderList = false,
-                        orderListState = OrderList.DataState.State.SUCCESS
+                        orderListState = OrderList.DataState.State.ERROR
                     )
                 }
             },
@@ -133,7 +133,8 @@ class OrderListViewModel(
                 getOrderErrorFlow(cafeUuid = getCafeUseCase().uuid).collect {
                     setState {
                         copy(
-                            hasConnectionError = true
+                            hasConnectionError = true,
+                            orderListState = OrderList.DataState.State.ERROR
                         )
                     }
                 }

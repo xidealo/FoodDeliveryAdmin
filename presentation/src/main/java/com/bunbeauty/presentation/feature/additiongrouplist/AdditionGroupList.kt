@@ -18,7 +18,7 @@ interface AdditionGroupList {
 
         data object Init : Action
         data object RefreshData : Action
-        data class OnAdditionClick(val additionUuid: String) : Action
+        data object OnAdditionClick : Action
         data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action
     }

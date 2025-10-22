@@ -1,4 +1,4 @@
-package com.bunbeauty.domain.feature.photo
+package com.bunbeauty.domain.feature.menu.common.photo
 
 import com.bunbeauty.domain.repo.PhotoRepo
 

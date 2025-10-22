@@ -5,18 +5,14 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.toMenuProductPostServer
-import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
-import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
-import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 
 class MenuProductRepository(
     private val networkConnector: FoodDeliveryApi,
-    private val menuProductMapper: MenuProductMapper,
-    private val dataStoreRepository: DataStoreRepo
+    private val menuProductMapper: MenuProductMapper
 ) : MenuProductRepo {
 
     private var menuProductCache: List<MenuProduct>? = null
@@ -88,21 +84,6 @@ class MenuProductRepository(
                 }
                 menuProduct
             }
-    }
-
-    override suspend fun updateMenuProductAdditions(
-        menuProductToAdditionGroupUuid: String,
-        additionGroupUuid: String?,
-        additionList: List<String>?
-    ) {
-        networkConnector.patchMenuProductAdditions(
-            token = dataStoreRepository.getToken() ?: throw NoTokenException(),
-            menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
-            menuProductAdditionsPatchServer = MenuProductAdditionsPatchServer(
-                additionGroupUuid = additionGroupUuid,
-                additionUuidList = additionList
-            )
-        )
     }
 
     override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String {

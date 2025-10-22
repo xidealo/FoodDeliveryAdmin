@@ -49,14 +49,12 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.categorylist.SelectCategoryListFragment.Companion.CATEGORY_LIST_REQUEST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.CardFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROPPED_IMAGE_URI_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CROP_IMAGE_REQUEST_KEY
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.cropimage.CropImageLaunchMode
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.editmenuproduct.mapper.toEditMenuProductViewState
 import com.bunbeauty.fooddeliveryadmin.util.Constants.IMAGE
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
@@ -169,15 +167,6 @@ class EditMenuProductFragment :
                 )
             }
 
-            is EditMenuProduct.Event.NavigateToAdditionList -> {
-                findNavController().navigate(
-                    directions = EditMenuProductFragmentDirections
-                        .toAdditionGroupForMenuProductListFragment(
-                            menuProductUuid = event.menuProductUuid
-                        )
-                )
-            }
-
             is EditMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(R.string.error_common_menu_product_image_uploading)
@@ -230,8 +219,7 @@ class EditMenuProductFragment :
                     } else {
                         AdminTheme.colors.main.primary
                     },
-                    buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
-                    elevated = false
+                    buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
                 )
                 LoadingButton(
                     text = stringResource(R.string.action_order_details_save),
@@ -269,17 +257,6 @@ class EditMenuProductFragment :
                     onAction(EditMenuProduct.Action.CategoriesClick)
                 }
             )
-            // TODO расскоментировать в следующем релизе
-           /* NavigationTextCard(
-                labelText = stringResource(state.additionListField.labelResId),
-                valueText = state.additionListField.value,
-                isError = state.additionListField.isError,
-                errorText = stringResource(state.additionListField.errorResId),
-                onClick = {
-                    onAction(EditMenuProduct.Action.AdditionListClick)
-                }
-            )*/
-
             SwitcherCard(
                 text = stringResource(R.string.action_common_menu_product_show_in_menu),
                 checked = state.isVisibleInMenu,
@@ -483,8 +460,7 @@ class EditMenuProductFragment :
         findNavController()
             .navigate(
                 directions = EditMenuProductFragmentDirections.toCropImageFragment(
-                    uri = uri,
-                    launchMode = CropImageLaunchMode.MENU_PRODUCT
+                    uri = uri
                 )
             )
     }
@@ -516,17 +492,11 @@ class EditMenuProductFragment :
                         ),
                         isVisibleInMenu = true,
                         isVisibleInRecommendation = false,
-                        imageField = ImageFieldUi(
+                        imageField = EditMenuProductViewState.ImageFieldUi(
                             value = null,
                             isError = false
                         ),
-                        sendingToServer = false,
-                        additionListField = CardFieldUi(
-                            labelResId = R.string.hint_common_menu_product_additions,
-                            value = "Группа 1 • Группа 2 • Группа 3",
-                            isError = false,
-                            errorResId = 0
-                        )
+                        sendingToServer = false
                     )
                 ),
                 onAction = {}
