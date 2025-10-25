@@ -6,14 +6,15 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class SelectAdditionListViewModel(
-    val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
+    private val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
 ) :
     BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
         initState = SelectAdditionList.DataState(
             state = SelectAdditionList.DataState.State.LOADING,
             groupName = "",
             selectedAdditionList = emptyList(),
-            notSelectedAdditionList = emptyList()
+            notSelectedAdditionList = emptyList(),
+            isEditPriority = false
         )
     ) {
 
@@ -36,6 +37,27 @@ class SelectAdditionListViewModel(
                     additionItem.uuid
                 }
             )
+
+            is SelectAdditionList.Action.MoveSelectedItem -> moveSelectedItem(
+                action.fromIndex,
+                action.toIndex
+            )
+
+            SelectAdditionList.Action.OnCancelClicked -> cancelEditPriority()
+            SelectAdditionList.Action.OnPriorityEditClicked -> onEditPriorityClicked()
+            is SelectAdditionList.Action.OnSaveEditPriorityClick -> saveCategoryDrop()
+        }
+    }
+
+    private fun moveSelectedItem(fromIndex: Int, toIndex: Int) {
+        setState {
+            val mutableList = selectedAdditionList.toMutableList()
+
+            val item = mutableList.removeAt(fromIndex)
+
+            mutableList.add(toIndex, item)
+
+            copy(selectedAdditionList = mutableList)
         }
     }
 
@@ -121,6 +143,32 @@ class SelectAdditionListViewModel(
         )
     }
 
+    private fun saveCategoryDrop() {
+        viewModelScope.launchSafe(
+            block = {
+                val updatedList = state.value.selectedAdditionList.mapIndexed {
+                        index, addition ->
+                    addition.copy()
+                }
+
+                setState {
+                    copy(
+                        selectedAdditionList = updatedList,
+                        isEditPriority = false,
+                        state = SelectAdditionList.DataState.State.SUCCESS
+                    )
+                }
+            },
+            onError = {
+                setState {
+                    copy(
+                        state = SelectAdditionList.DataState.State.ERROR
+                    )
+                }
+            }
+        )
+    }
+
     private fun backClick() {
         sendEvent {
             SelectAdditionList.Event.Back
@@ -131,6 +179,24 @@ class SelectAdditionListViewModel(
         sendEvent {
             SelectAdditionList.Event.SelectAdditionListBack(
                 additionUuidList = additionUuidList
+            )
+        }
+    }
+
+    private fun cancelEditPriority() {
+        setState {
+            copy(
+                SelectAdditionList.DataState.State.SUCCESS,
+                isEditPriority = false
+            )
+        }
+    }
+
+    private fun onEditPriorityClicked() {
+        setState {
+            copy(
+                SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP,
+                isEditPriority = true
             )
         }
     }
