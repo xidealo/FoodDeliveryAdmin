@@ -150,18 +150,7 @@ class EditAdditionGroupForMenuProductFragment :
                 ),
                 hasDivider = true
             )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            LoadingButton(
-                modifier = Modifier.padding(16.dp),
-                text = stringResource(R.string.action_edit_addition_group_for_menu_product_save),
-                isLoading = state.state == EditAdditionGroupForMenu.DataState.State.LOADING,
-                onClick = {
-                    onAction(EditAdditionGroupForMenu.Action.OnSaveClick)
-                }
-            )
-
+            
             Spacer(modifier = Modifier.weight(1f))
             LoadingButton(
                 modifier = Modifier.padding(16.dp),

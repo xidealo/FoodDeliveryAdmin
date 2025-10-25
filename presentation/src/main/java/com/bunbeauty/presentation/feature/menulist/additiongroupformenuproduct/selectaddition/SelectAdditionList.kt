@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition
 
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionList.DataState.AdditionItem
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
@@ -10,7 +9,8 @@ interface SelectAdditionList {
         val state: State,
         val selectedAdditionList: List<AdditionItem>,
         val notSelectedAdditionList: List<AdditionItem>,
-        val groupName: String
+        val groupName: String,
+        val isEditPriority: Boolean
     ) : BaseViewDataState {
 
         data class AdditionItem(
@@ -21,7 +21,8 @@ interface SelectAdditionList {
         enum class State {
             LOADING,
             ERROR,
-            SUCCESS
+            SUCCESS,
+            SUCCESS_DRAG_DROP
         }
     }
 

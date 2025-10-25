@@ -59,6 +59,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionList
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionList.DataState.AdditionItem
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
@@ -199,8 +200,16 @@ class SelectAdditionListFragment :
                 )
 
                 SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> SelectAdditionSuccessDragScreen(
-                    state = state,
-                    onAction = onAction
+                    title = state.groupName,
+                    selectedAdditionList = state.selectedAdditionList.map { it.name },
+                    onAction = { fromIndex, toIndex ->
+                        onAction(
+                            SelectAdditionList.Action.MoveSelectedItem(
+                                fromIndex = fromIndex,
+                                toIndex = toIndex
+                            )
+                        )
+                    }
                 )
             }
         }
@@ -346,8 +355,9 @@ class SelectAdditionListFragment :
 
     @Composable
     private fun SelectAdditionSuccessDragScreen(
-        state: SelectAdditionList.DataState,
-        onAction: (SelectAdditionList.Action) -> Unit
+        title: String,
+        selectedAdditionList: List<String>,
+        onAction: (fromIndex: Int, toIndex: Int) -> Unit,
     ) {
         var draggingIndex by remember { mutableStateOf<Int?>(null) }
         var fromIndex by remember { mutableIntStateOf(0) }
@@ -370,13 +380,13 @@ class SelectAdditionListFragment :
                         .animateItem(),
                     text = stringResource(
                         id = R.string.action_select_addition_list_title_group,
-                        state.groupName
+                        title
                     ),
                     style = AdminTheme.typography.titleMedium.bold
                 )
             }
             itemsIndexed(
-                items = state.selectedAdditionList
+                items = selectedAdditionList
             ) { index, additionItem ->
                 val isDragging = draggingIndex == index
 
@@ -409,16 +419,14 @@ class SelectAdditionListFragment :
                             val delta = (dragOffset.y / itemHeight).roundToInt()
                             toIndex = (fromIndex + delta).coerceIn(
                                 0,
-                                state.selectedAdditionList.lastIndex
+                                selectedAdditionList.lastIndex
                             )
                         },
                         onDragEnd = {
-                            if (fromIndex != toIndex && toIndex in state.selectedAdditionList.indices) {
+                            if (fromIndex != toIndex && toIndex in selectedAdditionList.indices) {
                                 onAction(
-                                    SelectAdditionList.Action.MoveSelectedItem(
-                                        fromIndex = fromIndex,
-                                        toIndex = toIndex
-                                    )
+                                    fromIndex,
+                                    toIndex
                                 )
                             }
                             dragOffset = Offset.Zero
@@ -439,7 +447,7 @@ class SelectAdditionListFragment :
 
     @Composable
     private fun AdditionItemDraggable(
-        additionItem: SelectAdditionList.DataState.AdditionItem,
+        additionItem: String,
         onDragStart: (Offset) -> Unit,
         onDrag: (PointerInputChange, Offset) -> Unit,
         onDragEnd: () -> Unit,
@@ -466,7 +474,7 @@ class SelectAdditionListFragment :
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = additionItem.name,
+                    text = additionItem,
                     style = AdminTheme.typography.bodyLarge,
                     color = AdminTheme.colors.main.onSurface
                 )
