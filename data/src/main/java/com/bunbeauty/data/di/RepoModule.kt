@@ -40,7 +40,8 @@ fun repositoryModule() = module {
     single<MenuProductRepo> {
         MenuProductRepository(
             menuProductMapper = get(),
-            networkConnector = get()
+            networkConnector = get(),
+            dataStoreRepository = get()
         )
     }
     single<FoodDeliveryApi> {

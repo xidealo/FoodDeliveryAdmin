@@ -143,10 +143,11 @@ fun viewModelModule() = module {
 
     viewModel {
         EditAdditionGroupForMenuProductViewModel(
-            getAdditionGroupWithAdditionsForMenuProductUseCase = get(),
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = get(),
             getAdditionListNameUseCase = get(),
             getAdditionGroupUseCase = get(),
-            getAdditionUseCase = get()
+            getAdditionUseCase = get(),
+            saveEditAdditionGroupWithAdditionsUseCase = get()
         )
     }
 

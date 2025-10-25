@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.SaveEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.GetCategoryListUseCase
@@ -147,6 +148,12 @@ fun useCaseModule() = module {
             menuProductRepo = get(),
             uploadPhotoUseCase = get(),
             deletePhotoUseCase = get()
+        )
+    }
+
+    factory {
+        SaveEditAdditionGroupWithAdditionsUseCase(
+            menuProductRepo = get()
         )
     }
 

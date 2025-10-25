@@ -6,7 +6,7 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class SelectAdditionListViewModel(
-    private val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
+    val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
 ) :
     BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
         initState = SelectAdditionList.DataState(

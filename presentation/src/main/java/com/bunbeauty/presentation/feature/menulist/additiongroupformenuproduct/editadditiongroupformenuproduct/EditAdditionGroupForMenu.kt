@@ -8,7 +8,7 @@ interface EditAdditionGroupForMenu {
     data class DataState(
         val additionGroupForMenuProductUuid: String,
         val editedAdditionGroupUuid: String?,
-        val groupName: String,
+        val groupName: String?,
         val state: State,
         val additionNameList: String?,
         val editedAdditionListUuid: List<String>?,
@@ -38,6 +38,7 @@ interface EditAdditionGroupForMenu {
 
     sealed interface Event : BaseEvent {
         data object Back : Event
+        data object SaveAndBack : Event
         data class OnAdditionGroupClick(val uuid: String) : Event
         data class OnAdditionListClick(
             val additionGroupUuid: String,

@@ -1,7 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct
 
 import android.os.Bundle
-import android.view.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
@@ -26,6 +26,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
+import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct.EditAdditionGroupForMenuProductFragment.Companion.EDIT_ADDITION_GROUP
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductList
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,14 +38,22 @@ class AdditionGroupForMenuProductListFragment :
     override val viewModel: AdditionGroupForMenuProductListViewModel by viewModel()
     private val additionGroupForMenuProductFragmentArgs: AdditionGroupForMenuProductListFragmentArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         viewModel.onAction(
             AdditionGroupForMenuProductList.Action.Init(
                 menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
             )
         )
+
+        setFragmentResultListener(EDIT_ADDITION_GROUP) { _, bundle ->
+            viewModel.onAction(
+                AdditionGroupForMenuProductList.Action.Init(
+                    menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
+                )
+            )
+        }
     }
 
     @Composable

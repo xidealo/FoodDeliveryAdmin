@@ -269,6 +269,7 @@ class EditMenuProductFragment :
                     onAction(EditMenuProduct.Action.CategoriesClick)
                 }
             )
+
             NavigationTextCard(
                 labelText = stringResource(state.additionListField.labelResId),
                 valueText = state.additionListField.value,
@@ -278,6 +279,7 @@ class EditMenuProductFragment :
                     onAction(EditMenuProduct.Action.AdditionListClick)
                 }
             )
+
             SwitcherCard(
                 text = stringResource(R.string.action_common_menu_product_show_in_menu),
                 checked = state.isVisibleInMenu,

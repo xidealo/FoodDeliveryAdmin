@@ -10,8 +10,7 @@ interface SelectAdditionList {
         val state: State,
         val selectedAdditionList: List<AdditionItem>,
         val notSelectedAdditionList: List<AdditionItem>,
-        val groupName: String,
-        val isEditPriority: Boolean
+        val groupName: String
     ) : BaseViewDataState {
 
         data class AdditionItem(
@@ -22,8 +21,7 @@ interface SelectAdditionList {
         enum class State {
             LOADING,
             ERROR,
-            SUCCESS,
-            SUCCESS_DRAG_DROP
+            SUCCESS
         }
     }
 
