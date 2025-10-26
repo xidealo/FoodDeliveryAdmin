@@ -310,7 +310,7 @@ class SelectAdditionListFragment :
 
     @Composable
     private fun SelectAdditionCard(
-        additionItem: SelectAdditionList.DataState.AdditionItem,
+        additionItem: AdditionItem,
         @DrawableRes icon: Int,
         iconColor: Color,
         onClick: () -> Unit
