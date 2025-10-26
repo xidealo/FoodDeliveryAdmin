@@ -502,21 +502,21 @@ class SelectAdditionListFragment :
         groupName = "Some group",
         isEditPriority = false,
         selectedAdditionList = listOf(
-            SelectAdditionList.DataState.AdditionItem(
+            AdditionItem(
                 uuid = "1",
                 name = "Картошка"
             ),
-            SelectAdditionList.DataState.AdditionItem(
+            AdditionItem(
                 uuid = "2",
                 name = "Крошка"
             )
         ),
         notSelectedAdditionList = listOf(
-            SelectAdditionList.DataState.AdditionItem(
+            AdditionItem(
                 uuid = "4",
                 name = "Подношка"
             ),
-            SelectAdditionList.DataState.AdditionItem(
+            AdditionItem(
                 uuid = "5",
                 name = "Ложка"
             )
