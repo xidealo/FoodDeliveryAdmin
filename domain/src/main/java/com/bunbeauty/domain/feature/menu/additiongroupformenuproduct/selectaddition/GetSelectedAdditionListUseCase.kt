@@ -1,16 +1,12 @@
 package com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition
 
-import com.bunbeauty.domain.exception.NoCompanyUuidException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.menuProcutToAdditionGroupToAddition.MenuProductToAdditionGroupToAddition
-import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupToAdditionRepository
-import kotlinx.coroutines.flow.firstOrNull
 
 data class SelectedAdditionForMenu(
     val selectedAdditionList: List<Addition>,

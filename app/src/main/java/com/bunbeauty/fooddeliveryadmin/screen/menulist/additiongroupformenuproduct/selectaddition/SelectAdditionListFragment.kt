@@ -357,7 +357,7 @@ class SelectAdditionListFragment :
     private fun SelectAdditionSuccessDragScreen(
         title: String,
         selectedAdditionList: List<String>,
-        onAction: (fromIndex: Int, toIndex: Int) -> Unit,
+        onAction: (fromIndex: Int, toIndex: Int) -> Unit
     ) {
         var draggingIndex by remember { mutableStateOf<Int?>(null) }
         var fromIndex by remember { mutableIntStateOf(0) }
