@@ -1,6 +1,6 @@
 [versions]
-gradle = "8.6.1"
-kotlin = "2.0.20"
+gradle = "8.13.0"
+kotlin = "2.2.20"
 googleServices = "4.4.2"
 navigation = "2.7.0"
 ktor = "2.3.2"

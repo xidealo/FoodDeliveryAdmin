@@ -26,11 +26,13 @@ interface AdditionGroupForMenuProductList {
         data class Init(val menuProductUuid: String) : Action
         data object OnBackClick : Action
         data class OnAdditionGroupClick(val uuid: String) : Action
+        data object OnCreateClick : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-        data class OnAdditionGroupClick(
+        data object OnCreateClicked : Event
+        data class OnAdditionGroupClicked(
             val additionGroupUuid: String
         ) : Event
     }

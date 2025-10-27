@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
@@ -79,7 +81,23 @@ class AdditionGroupForMenuProductListFragment :
             backActionClick = {
                 onAction(AdditionGroupForMenuProductList.Action.OnBackClick)
             },
-            backgroundColor = AdminTheme.colors.main.surface
+            backgroundColor = AdminTheme.colors.main.surface,
+            actionButton = {
+                when (state.state) {
+                    AdditionGroupForMenuProductListViewState.State.Error -> Unit
+                    AdditionGroupForMenuProductListViewState.State.Loading -> Unit
+                    is AdditionGroupForMenuProductListViewState.State.Success -> {
+                        FloatingButton(
+                            iconId = R.drawable.ic_plus,
+                            textStringId = R.string.action_menu_list_create,
+                            onClick = {
+                                onAction(AdditionGroupForMenuProductList.Action.OnCreateClick)
+                            },
+                        )
+                    }
+                }
+            },
+            actionButtonPosition = FabPosition.End
         ) {
             when (state.state) {
                 is AdditionGroupForMenuProductListViewState.State.Loading -> LoadingScreen()
@@ -210,7 +228,7 @@ class AdditionGroupForMenuProductListFragment :
         when (event) {
             AdditionGroupForMenuProductList.Event.Back -> findNavController().popBackStack()
 
-            is AdditionGroupForMenuProductList.Event.OnAdditionGroupClick -> {
+            is AdditionGroupForMenuProductList.Event.OnAdditionGroupClicked -> {
                 findNavController().navigateSafe(
                     AdditionGroupForMenuProductListFragmentDirections
                         .toEditAdditionGroupForMenuProductFragment(
@@ -218,6 +236,10 @@ class AdditionGroupForMenuProductListFragment :
                             additionGroupForMenuUuid = event.additionGroupUuid
                         )
                 )
+            }
+
+            AdditionGroupForMenuProductList.Event.OnCreateClicked -> {
+                // todo go to create addition group
             }
         }
     }

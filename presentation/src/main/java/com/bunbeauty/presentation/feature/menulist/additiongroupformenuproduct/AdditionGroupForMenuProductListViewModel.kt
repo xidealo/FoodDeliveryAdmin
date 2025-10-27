@@ -31,10 +31,11 @@ class AdditionGroupForMenuProductListViewModel(
             )
 
             AdditionGroupForMenuProductList.Action.OnBackClick -> backClick()
+            AdditionGroupForMenuProductList.Action.OnCreateClick -> onCreateClick()
         }
     }
 
-    fun loadData(menuProductUuid: String) {
+    private fun loadData(menuProductUuid: String) {
         viewModelScope.launchSafe(
             block = {
                 setState {
@@ -72,17 +73,23 @@ class AdditionGroupForMenuProductListViewModel(
         )
     }
 
-    fun onAdditionGroupClick(additionGroupUuid: String) {
+    private fun onAdditionGroupClick(additionGroupUuid: String) {
         sendEvent {
-            AdditionGroupForMenuProductList.Event.OnAdditionGroupClick(
+            AdditionGroupForMenuProductList.Event.OnAdditionGroupClicked(
                 additionGroupUuid = additionGroupUuid
             )
         }
     }
 
-    fun backClick() {
+    private fun backClick() {
         sendEvent {
             AdditionGroupForMenuProductList.Event.Back
+        }
+    }
+
+    private fun onCreateClick() {
+        sendEvent {
+            AdditionGroupForMenuProductList.Event.OnCreateClicked
         }
     }
 }
