@@ -47,6 +47,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.DragDropList
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
@@ -353,149 +354,184 @@ class SelectAdditionListFragment :
         }
     }
 
+
     @Composable
     private fun SelectAdditionSuccessDragScreen(
         title: String,
         selectedAdditionList: List<String>,
         onAction: (fromIndex: Int, toIndex: Int) -> Unit
     ) {
-        var draggingIndex by remember { mutableStateOf<Int?>(null) }
-        var fromIndex by remember { mutableIntStateOf(0) }
-        var toIndex by remember { mutableIntStateOf(0) }
-        var dragOffset by remember { mutableStateOf(Offset.Zero) }
-        var itemHeight by remember { mutableFloatStateOf(0f) }
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentPadding = PaddingValues(
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-            )
-        ) {
-            item(key = TITLE_POSITION_VISIBLE_KEY) {
+        DragDropList(
+            items = selectedAdditionList,
+            headerContent = {
                 Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp, bottom = 16.dp)
-                        .fillMaxWidth()
-                        .animateItem(),
+                    modifier = Modifier.padding(16.dp),
                     text = stringResource(
                         id = R.string.action_select_addition_list_title_group,
                         title
                     ),
                     style = AdminTheme.typography.titleMedium.bold
                 )
-            }
-            itemsIndexed(
-                items = selectedAdditionList
-            ) { index, additionItem ->
-                val isDragging = draggingIndex == index
-
-                val offsetModifier = if (isDragging) {
-                    Modifier
-                        .offset { IntOffset(0, dragOffset.y.roundToInt()) }
-                        .zIndex(1f)
-                } else {
-                    Modifier
-                }
-
-                Box(
-                    modifier = Modifier
-                        .then(offsetModifier)
-                        .fillMaxWidth()
-                        .zIndex(0.9f)
-                        .animateItem()
+            },
+            itemContent = { additionItem ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AdditionItemDraggable(
-                        additionItem = additionItem,
-                        onDragStart = {
-                            draggingIndex = index
-                            dragOffset = Offset.Zero
-                        },
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            dragOffset += dragAmount
-                            fromIndex = draggingIndex ?: return@AdditionItemDraggable
-
-                            val delta = (dragOffset.y / itemHeight).roundToInt()
-                            toIndex = (fromIndex + delta).coerceIn(
-                                0,
-                                selectedAdditionList.lastIndex
-                            )
-                        },
-                        onDragEnd = {
-                            if (fromIndex != toIndex && toIndex in selectedAdditionList.indices) {
-                                onAction(
-                                    fromIndex,
-                                    toIndex
-                                )
-                            }
-                            dragOffset = Offset.Zero
-                            draggingIndex = null
-                        },
-                        onDragCancel = {
-                            dragOffset = Offset.Zero
-                            draggingIndex = null
-                        },
-                        onHeightMeasured = { height ->
-                            itemHeight = height
-                        }
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = additionItem,
+                        style = AdminTheme.typography.bodyLarge
                     )
                 }
-            }
-        }
+            },
+            onItemReorder = onAction
+        )
     }
 
-    @Composable
-    private fun AdditionItemDraggable(
-        additionItem: String,
-        onDragStart: (Offset) -> Unit,
-        onDrag: (PointerInputChange, Offset) -> Unit,
-        onDragEnd: () -> Unit,
-        onDragCancel: () -> Unit,
-        onHeightMeasured: (Float) -> Unit
-    ) {
-        val modifier = Modifier
-            .fillMaxWidth()
-            .onGloballyPositioned { coordinates ->
-                onHeightMeasured(coordinates.size.height.toFloat())
-            }
-
-        AdminCard(
-            modifier = modifier
-                .padding(vertical = 4.dp),
-            shape = noCornerCardShape,
-            elevated = false
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = additionItem,
-                    style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface
-                )
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_drad_handle),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .pointerInput(Unit) {
-                            detectDragGestures(
-                                onDragStart = onDragStart,
-                                onDragEnd = onDragEnd,
-                                onDragCancel = onDragCancel,
-                                onDrag = onDrag
-                            )
-                        }
-                )
-            }
-        }
-    }
+//    @Composable
+//    private fun SelectAdditionSuccessDragScreen(
+//        title: String,
+//        selectedAdditionList: List<String>,
+//        onAction: (fromIndex: Int, toIndex: Int) -> Unit
+//    ) {
+//        var draggingIndex by remember { mutableStateOf<Int?>(null) }
+//        var fromIndex by remember { mutableIntStateOf(0) }
+//        var toIndex by remember { mutableIntStateOf(0) }
+//        var dragOffset by remember { mutableStateOf(Offset.Zero) }
+//        var itemHeight by remember { mutableFloatStateOf(0f) }
+//
+//        LazyColumn(
+//            modifier = Modifier
+//                .fillMaxSize(),
+//            contentPadding = PaddingValues(
+//                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
+//            )
+//        ) {
+//            item(key = TITLE_POSITION_VISIBLE_KEY) {
+//                Text(
+//                    modifier = Modifier
+//                        .padding(start = 16.dp, bottom = 16.dp)
+//                        .fillMaxWidth()
+//                        .animateItem(),
+//                    text = stringResource(
+//                        id = R.string.action_select_addition_list_title_group,
+//                        title
+//                    ),
+//                    style = AdminTheme.typography.titleMedium.bold
+//                )
+//            }
+//            itemsIndexed(
+//                items = selectedAdditionList
+//            ) { index, additionItem ->
+//                val isDragging = draggingIndex == index
+//
+//                val offsetModifier = if (isDragging) {
+//                    Modifier
+//                        .offset { IntOffset(0, dragOffset.y.roundToInt()) }
+//                        .zIndex(1f)
+//                } else {
+//                    Modifier
+//                }
+//
+//                Box(
+//                    modifier = Modifier
+//                        .then(offsetModifier)
+//                        .fillMaxWidth()
+//                        .zIndex(0.9f)
+//                        .animateItem()
+//                ) {
+//                    AdditionItemDraggable(
+//                        additionItem = additionItem,
+//                        onDragStart = {
+//                            draggingIndex = index
+//                            dragOffset = Offset.Zero
+//                        },
+//                        onDrag = { change, dragAmount ->
+//                            change.consume()
+//                            dragOffset += dragAmount
+//                            fromIndex = draggingIndex ?: return@AdditionItemDraggable
+//
+//                            val delta = (dragOffset.y / itemHeight).roundToInt()
+//                            toIndex = (fromIndex + delta).coerceIn(
+//                                0,
+//                                selectedAdditionList.lastIndex
+//                            )
+//                        },
+//                        onDragEnd = {
+//                            if (fromIndex != toIndex && toIndex in selectedAdditionList.indices) {
+//                                onAction(
+//                                    fromIndex,
+//                                    toIndex
+//                                )
+//                            }
+//                            dragOffset = Offset.Zero
+//                            draggingIndex = null
+//                        },
+//                        onDragCancel = {
+//                            dragOffset = Offset.Zero
+//                            draggingIndex = null
+//                        },
+//                        onHeightMeasured = { height ->
+//                            itemHeight = height
+//                        }
+//                    )
+//                }
+//            }
+//        }
+//    }
+//
+//    @Composable
+//    private fun AdditionItemDraggable(
+//        additionItem: String,
+//        onDragStart: (Offset) -> Unit,
+//        onDrag: (PointerInputChange, Offset) -> Unit,
+//        onDragEnd: () -> Unit,
+//        onDragCancel: () -> Unit,
+//        onHeightMeasured: (Float) -> Unit
+//    ) {
+//        val modifier = Modifier
+//            .fillMaxWidth()
+//            .onGloballyPositioned { coordinates ->
+//                onHeightMeasured(coordinates.size.height.toFloat())
+//            }
+//
+//        AdminCard(
+//            modifier = modifier
+//                .padding(vertical = 4.dp),
+//            shape = noCornerCardShape,
+//            elevated = false
+//        ) {
+//            Row(
+//                modifier = Modifier
+//                    .padding(horizontal = 16.dp, vertical = 16.dp)
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    modifier = Modifier.weight(1f),
+//                    text = additionItem,
+//                    style = AdminTheme.typography.bodyLarge,
+//                    color = AdminTheme.colors.main.onSurface
+//                )
+//
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_drad_handle),
+//                    contentDescription = null,
+//                    modifier = Modifier
+//                        .padding(start = 8.dp)
+//                        .pointerInput(Unit) {
+//                            detectDragGestures(
+//                                onDragStart = onDragStart,
+//                                onDragEnd = onDragEnd,
+//                                onDragCancel = onDragCancel,
+//                                onDrag = onDrag
+//                            )
+//                        }
+//                )
+//            }
+//        }
+//    }
 
     private val selectAdditionListViewState = SelectAdditionList.DataState(
         state = SelectAdditionList.DataState.State.SUCCESS,
