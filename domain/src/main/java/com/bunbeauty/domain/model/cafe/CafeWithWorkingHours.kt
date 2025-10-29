@@ -6,4 +6,14 @@ data class CafeWithWorkingHours(
     val workingHours: String,
     val status: CafeStatus,
     val cityUuid: String
-)
+) {
+    companion object {
+        val mock = CafeWithWorkingHours(
+            uuid = "",
+            address = "",
+            workingHours = "",
+            status = CafeStatus.Closed,
+            cityUuid = ""
+        )
+    }
+}

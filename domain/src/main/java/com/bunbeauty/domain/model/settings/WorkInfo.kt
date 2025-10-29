@@ -9,4 +9,10 @@ data class WorkInfo(
         DELIVERY_AND_PICKUP,
         CLOSED
     }
+
+    companion object {
+        val mock = WorkInfo(
+            workType = WorkType.CLOSED
+        )
+    }
 }

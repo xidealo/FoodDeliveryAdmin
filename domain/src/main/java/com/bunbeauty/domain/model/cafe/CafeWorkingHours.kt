@@ -7,4 +7,13 @@ data class CafeWorkingHours(
     val fromTime: LocalTime,
     val toTimeText: String,
     val toTime: LocalTime
-)
+) {
+    companion object {
+        val mock = CafeWorkingHours(
+            fromTimeText = "",
+            fromTime = LocalTime.MIN,
+            toTimeText = "",
+            toTime = LocalTime.MIN
+        )
+    }
+}

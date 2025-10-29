@@ -9,4 +9,17 @@ data class UpdateAddition(
     val isVisible: Boolean? = null,
     val tag: String? = null,
     val newImageUri: String? = null
-)
+) {
+    companion object {
+        val mock = UpdateAddition(
+            name = null,
+            priority = null,
+            fullName = null,
+            price = null,
+            photoLink = null,
+            isVisible = null,
+            tag = null,
+            newImageUri = null
+        )
+    }
+}

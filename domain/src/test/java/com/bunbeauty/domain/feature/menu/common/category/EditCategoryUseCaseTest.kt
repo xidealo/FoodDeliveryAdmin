@@ -33,7 +33,7 @@ class EditCategoryUseCaseTest {
         assertFailsWith<NoTokenException> {
             editCategoryUseCase(
                 "category_uuid",
-                UpdateCategory(name = "Updated Name", priority = 0)
+                UpdateCategory.mock.copy(name = "Updated Name", priority = 0)
             )
         }
     }
@@ -42,8 +42,8 @@ class EditCategoryUseCaseTest {
     fun `invoke throws DuplicateCategoryNameException when name already exists`() = runTest {
         val token = "token"
         val companyUuid = "companyUuid"
-        val existingCategory = Category(uuid = "1", name = "Duplicate", priority = 1)
-        val editingCategory = Category(uuid = "2", name = "Old Name", priority = 1)
+        val existingCategory = Category.mock.copy(uuid = "1", name = "Duplicate", priority = 1)
+        val editingCategory = Category.mock.copy(uuid = "2", name = "Old Name", priority = 1)
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
@@ -54,7 +54,7 @@ class EditCategoryUseCaseTest {
         assertFailsWith<DuplicateCategoryNameException> {
             editCategoryUseCase(
                 "2",
-                UpdateCategory(name = "Duplicate", priority = 0)
+                UpdateCategory.mock.copy(name = "Duplicate", priority = 0)
             )
         }
     }
@@ -65,12 +65,12 @@ class EditCategoryUseCaseTest {
         coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
         coEvery {
             categoryRepo.getCategoryList(any(), any())
-        } returns listOf(Category(uuid = "1", name = "Old Name", priority = 1))
+        } returns listOf(Category.mock.copy(uuid = "1", name = "Old Name", priority = 1))
 
         assertFailsWith<CategoryNameException> {
             editCategoryUseCase(
                 "1",
-                UpdateCategory(name = "", priority = 0)
+                UpdateCategory.mock.copy(name = "", priority = 0)
             )
         }
     }
@@ -79,7 +79,7 @@ class EditCategoryUseCaseTest {
     fun `invoke does nothing when name is unchanged`() = runTest {
         val token = "test_token"
         val companyUuid = "test_company_uuid"
-        val category = Category(uuid = "category_uuid", name = "Old Name", priority = 1)
+        val category = Category.mock.copy(uuid = "category_uuid", name = "Old Name", priority = 1)
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
@@ -89,7 +89,7 @@ class EditCategoryUseCaseTest {
 
         editCategoryUseCase(
             categoryUuid = category.uuid,
-            updateCategory = UpdateCategory(name = "Old Name", priority = 1)
+            updateCategory = UpdateCategory.mock.copy(name = "Old Name", priority = 1)
         )
 
         coVerify(exactly = 0) {
@@ -101,9 +101,9 @@ class EditCategoryUseCaseTest {
     fun `invoke successfully updates category`() = runTest {
         val token = "test_token"
         val companyUuid = "test_company_uuid"
-        val updateCategory = UpdateCategory(name = "Updated Name", priority = 0)
+        val updateCategory = UpdateCategory.mock.copy(name = "Updated Name", priority = 0)
         val categoryUuid = "category_uuid"
-        val oldCategory = Category(uuid = categoryUuid, name = "Old Name", priority = 1)
+        val oldCategory = Category.mock.copy(uuid = categoryUuid, name = "Old Name", priority = 1)
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)

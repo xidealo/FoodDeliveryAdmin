@@ -52,7 +52,7 @@ class UploadPhotoUseCaseTest {
 
     @Test
     fun `return photo when photo successfully uploaded`() = runTest {
-        val photo = Photo(url = "url")
+        val photo = Photo.mock.copy(url = "url")
         coEvery {
             photoRepo.uploadPhoto(
                 uri = imageUri,
