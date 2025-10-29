@@ -64,7 +64,7 @@ class GetCategoryUseCaseTest {
     fun `invoke returns category when found`() = runTest {
         val token = "test_token"
         val companyUuid = "test_company_uuid"
-        val expectedCategory = Category(uuid = "category_uuid", name = "Test Category", priority = 1)
+        val expectedCategory = Category.mock.copy(uuid = "category_uuid", name = "Test Category", priority = 1)
 
         coEvery { dataStoreRepo.getToken() } returns token
         coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)

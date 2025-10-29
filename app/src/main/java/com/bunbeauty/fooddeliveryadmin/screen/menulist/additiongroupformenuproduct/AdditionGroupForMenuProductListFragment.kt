@@ -92,7 +92,7 @@ class AdditionGroupForMenuProductListFragment :
                             textStringId = R.string.action_menu_list_create,
                             onClick = {
                                 onAction(AdditionGroupForMenuProductList.Action.OnCreateClick)
-                            },
+                            }
                         )
                     }
                 }

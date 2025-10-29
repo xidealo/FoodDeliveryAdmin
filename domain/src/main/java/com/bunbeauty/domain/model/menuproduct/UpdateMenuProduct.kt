@@ -12,4 +12,20 @@ data class UpdateMenuProduct(
     val isVisible: Boolean? = null,
     val isRecommended: Boolean? = null,
     val categories: List<String>? = null
-)
+) {
+    companion object {
+        val mock = UpdateMenuProduct(
+            name = null,
+            newPrice = null,
+            oldPrice = null,
+            utils = null,
+            nutrition = null,
+            description = null,
+            comboDescription = null,
+            photoLink = null,
+            isVisible = null,
+            isRecommended = null,
+            categories = null
+        )
+    }
+}

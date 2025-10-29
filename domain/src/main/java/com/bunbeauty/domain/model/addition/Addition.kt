@@ -9,4 +9,17 @@ data class Addition(
     val photoLink: String,
     val isVisible: Boolean,
     val tag: String?
-)
+) {
+    companion object {
+        val mock = Addition(
+            uuid = "",
+            name = "",
+            priority = 0,
+            fullName = null,
+            price = null,
+            photoLink = "",
+            isVisible = false,
+            tag = null
+        )
+    }
+}

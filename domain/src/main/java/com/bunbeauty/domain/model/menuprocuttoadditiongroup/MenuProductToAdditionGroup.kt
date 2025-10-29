@@ -4,4 +4,12 @@ data class MenuProductToAdditionGroup(
     val uuid: String,
     val menuProductUuid: String,
     val additionGroupUuid: String
-)
+) {
+    companion object {
+        val mock = MenuProductToAdditionGroup(
+            uuid = "",
+            menuProductUuid = "",
+            additionGroupUuid = ""
+        )
+    }
+}

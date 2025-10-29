@@ -8,4 +8,16 @@ data class CreateAdditionModel(
     val fullName: String?,
     val priority: Int?,
     val tag: String?
-)
+) {
+    companion object {
+        val mock = CreateAdditionModel(
+            name = "",
+            isVisible = false,
+            photoLink = "",
+            price = null,
+            fullName = null,
+            priority = null,
+            tag = null
+        )
+    }
+}

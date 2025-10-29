@@ -5,4 +5,13 @@ data class UpdateAdditionGroup(
     val priority: Int? = null,
     val isVisible: Boolean? = null,
     val singleChoice: Boolean? = null
-)
+) {
+    companion object {
+        val mock = UpdateAdditionGroup(
+            name = null,
+            priority = null,
+            singleChoice = null,
+            isVisible = null
+        )
+    }
+}

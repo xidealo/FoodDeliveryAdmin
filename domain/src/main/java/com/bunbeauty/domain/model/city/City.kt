@@ -5,4 +5,13 @@ data class City(
     val name: String,
     val timeZone: String,
     val isVisible: Boolean
-)
+) {
+    companion object {
+        val mock = City(
+            uuid = "",
+            name = "",
+            timeZone = "",
+            isVisible = false
+        )
+    }
+}
