@@ -19,7 +19,7 @@ data class Addition(
             price = null,
             photoLink = "",
             isVisible = false,
-            tag = null,
+            tag = null
         )
     }
 }
