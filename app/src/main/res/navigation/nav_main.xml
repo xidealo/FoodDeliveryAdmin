@@ -302,7 +302,25 @@
 
     <fragment
         android:id="@+id/editAdditionGroupForMenuProductFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct.EditAdditionGroupForMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductFragment"
+        android:label="editAdditionGroupForMenuProductFragment">
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string" />
+        <argument
+            android:name="additionGroupForMenuUuid"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_selectAdditionGroupFragment"
+            app:destination="@id/selectAdditionGroupFragment" />
+        <action
+            android:id="@+id/to_selectAdditionListFragment"
+            app:destination="@id/selectAdditionListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAdditionGroupForMenuProductFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateAdditionGroupForMenuProductFragment"
         android:label="editAdditionGroupForMenuProductFragment">
         <argument
             android:name="menuProductUuid"
