@@ -298,6 +298,9 @@
         <action
             android:id="@+id/to_editAdditionGroupForMenuProductFragment"
             app:destination="@id/editAdditionGroupForMenuProductFragment" />
+        <action
+            android:id="@+id/to_createAdditionGroupForMenuProductFragment"
+            app:destination="@id/createAdditionGroupForMenuProductFragment" />
     </fragment>
 
     <fragment
@@ -324,9 +327,6 @@
         android:label="editAdditionGroupForMenuProductFragment">
         <argument
             android:name="menuProductUuid"
-            app:argType="string" />
-        <argument
-            android:name="additionGroupForMenuUuid"
             app:argType="string" />
         <action
             android:id="@+id/to_selectAdditionGroupFragment"

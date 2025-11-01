@@ -153,7 +153,9 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        CreateAdditionGroupForMenuProductViewModel()
+        CreateAdditionGroupForMenuProductViewModel(
+            createEditAdditionGroupWithAdditionsUseCase = get(),
+        )
     }
 
     viewModel {

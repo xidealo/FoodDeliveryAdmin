@@ -239,7 +239,12 @@ class AdditionGroupForMenuProductListFragment :
             }
 
             AdditionGroupForMenuProductList.Event.OnCreateClicked -> {
-                // todo go to create addition group
+                findNavController().navigateSafe(
+                    AdditionGroupForMenuProductListFragmentDirections
+                        .toCreateAdditionGroupForMenuProductFragment(
+                            menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid,
+                        )
+                )
             }
         }
     }

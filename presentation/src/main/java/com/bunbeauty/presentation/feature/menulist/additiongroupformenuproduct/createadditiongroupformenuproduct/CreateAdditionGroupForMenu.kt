@@ -6,11 +6,14 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface CreateAdditionGroupForMenu {
     data class DataState(
-        val state: State,
+        val additionGroupForMenuProductUuid: String,
+        val editedAdditionGroupUuid: String?,
         val groupName: String?,
+        val state: State,
         val additionNameList: String?,
-        val menuProductUuid: String,
-        val isLoading: Boolean,
+        val editedAdditionListUuid: List<String>?,
+        val isVisible: Boolean,
+        val menuProductUuid: String
     ) : BaseViewDataState {
 
         enum class State {
@@ -21,8 +24,6 @@ interface CreateAdditionGroupForMenu {
     }
 
     sealed interface Action : BaseAction {
-        data class Init(val menuProductUuid: String) : Action
-        data object OnErrorButtonClick : Action
         data class SelectAdditionGroup(val additionGroupUuid: String) : Action
         data class SelectAdditionList(val additionListUuid: List<String>) : Action
         data object OnAdditionGroupClick : Action
