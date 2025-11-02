@@ -3,7 +3,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuprod
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 data class AdditionGroupForMenuProductListViewState(
-    val state: State
+    val state: State,
+    val isRefreshing: Boolean
 ) : BaseViewState {
     data class AdditionGroupWithAdditions(
         val uuid: String,

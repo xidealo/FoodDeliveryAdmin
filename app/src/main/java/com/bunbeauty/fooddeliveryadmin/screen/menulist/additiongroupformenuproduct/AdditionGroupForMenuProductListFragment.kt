@@ -78,6 +78,15 @@ class AdditionGroupForMenuProductListFragment :
     ) {
         AdminScaffold(
             title = stringResource(id = R.string.title_addition_group_for_menu_product),
+            pullRefreshEnabled = true,
+            refreshing = state.isRefreshing,
+            onRefresh = {
+                onAction(
+                    AdditionGroupForMenuProductList.Action.RefreshData(
+                        menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
+                    )
+                )
+            },
             backActionClick = {
                 onAction(AdditionGroupForMenuProductList.Action.OnBackClick)
             },
@@ -220,7 +229,8 @@ class AdditionGroupForMenuProductListFragment :
                             )
                         }
                     )
-            }
+            },
+            isRefreshing = state.isRefreshing
         )
     }
 
@@ -258,7 +268,8 @@ class AdditionGroupForMenuProductListFragment :
                     additionNameList = "Жижи Топли Нопли"
                 )
             )
-        )
+        ),
+        isRefreshing = false
     )
 
     @Composable
