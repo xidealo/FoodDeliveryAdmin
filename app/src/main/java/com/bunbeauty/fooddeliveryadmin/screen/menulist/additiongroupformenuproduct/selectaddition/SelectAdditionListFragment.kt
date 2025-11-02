@@ -347,7 +347,6 @@ class SelectAdditionListFragment :
         )
     }
 
-
     private val selectAdditionListViewState = SelectAdditionList.DataState(
         state = SelectAdditionList.DataState.State.SUCCESS,
         groupName = "Some group",
