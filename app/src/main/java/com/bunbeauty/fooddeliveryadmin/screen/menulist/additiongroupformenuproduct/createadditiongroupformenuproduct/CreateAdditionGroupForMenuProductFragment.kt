@@ -93,8 +93,8 @@ class CreateAdditionGroupForMenuProductFragment :
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = {                            
-                            onAction(CreateAdditionGroupForMenu.Action.OnErrorButtonClick)
+                        onClick = {
+                            // todo click
                         }
                     )
                 }
@@ -124,6 +124,10 @@ class CreateAdditionGroupForMenuProductFragment :
                 labelText = stringResource(
                     id = R.string.title_create_addition_group_for_menu_product_group
                 ),
+                isError = state.groupHasError,
+                errorText = stringResource(
+                    id = R.string.error_create_addition_group_for_menu_product_group
+                ),
                 hasDivider = true
             )
 
@@ -138,6 +142,10 @@ class CreateAdditionGroupForMenuProductFragment :
                 labelText = stringResource(
                     id = R.string.title_create_addition_group_for_menu_product_addition
                 ),
+                isError = state.additionListHasError,
+                errorText = stringResource(
+                    id = R.string.error_create_addition_group_for_menu_product_addition
+                ),
                 hasDivider = true
             )
 
@@ -145,7 +153,7 @@ class CreateAdditionGroupForMenuProductFragment :
             LoadingButton(
                 modifier = Modifier.padding(16.dp),
                 text = stringResource(R.string.action_create_addition_group_for_menu_product_save),
-                isLoading = state.isLoading,
+                isLoading = state.isSaveLoading,
                 onClick = {
                     onAction(CreateAdditionGroupForMenu.Action.OnSaveClick)
                 }
@@ -178,7 +186,7 @@ class CreateAdditionGroupForMenuProductFragment :
             is CreateAdditionGroupForMenu.Event.OnAdditionListClick -> {
                 findNavController().navigate(
                     directions = CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
-                        additionGroupUuid = event.additionGroupUuid,
+                        additionGroupUuid = null,
                         menuProductUuid = event.menuProductUuid,
                         additionGroupForMenuName = event.additionGroupName
                     )
@@ -192,7 +200,13 @@ class CreateAdditionGroupForMenuProductFragment :
         groupName = "Вкусняхи",
         additionNameList = "Бекон * Страпон * Бурбон",
         menuProductUuid = "",
-        isLoading = false,
+        additionGroupForMenuProductUuid = "",
+        editedAdditionGroupUuid = "",
+        editedAdditionListUuid = listOf(),
+        isVisible = false,
+        groupHasError = false,
+        isSaveLoading = false,
+        additionListHasError = false
     )
 
     @Composable

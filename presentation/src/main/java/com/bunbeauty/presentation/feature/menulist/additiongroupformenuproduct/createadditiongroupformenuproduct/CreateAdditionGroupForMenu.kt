@@ -9,11 +9,14 @@ interface CreateAdditionGroupForMenu {
         val additionGroupForMenuProductUuid: String,
         val editedAdditionGroupUuid: String?,
         val groupName: String?,
+        val groupHasError: Boolean,
         val state: State,
         val additionNameList: String?,
         val editedAdditionListUuid: List<String>?,
+        val additionListHasError: Boolean,
         val isVisible: Boolean,
-        val menuProductUuid: String
+        val menuProductUuid: String,
+        val isSaveLoading: Boolean
     ) : BaseViewDataState {
 
         enum class State {
@@ -24,6 +27,7 @@ interface CreateAdditionGroupForMenu {
     }
 
     sealed interface Action : BaseAction {
+        data class Init(val menuProductUuid: String) : Action
         data class SelectAdditionGroup(val additionGroupUuid: String) : Action
         data class SelectAdditionList(val additionListUuid: List<String>) : Action
         data object OnAdditionGroupClick : Action
@@ -37,7 +41,6 @@ interface CreateAdditionGroupForMenu {
         data object SaveAndBack : Event
         data class OnAdditionGroupClick(val uuid: String) : Event
         data class OnAdditionListClick(
-            val additionGroupUuid: String,
             val menuProductUuid: String,
             val additionGroupName: String
         ) : Event

@@ -69,7 +69,7 @@ class MenuProductRepository(
             menuProductAdditionsPostServer = MenuProductAdditionsPostServer(
                 menuProductUuids = listOf(menuProductUuid),
                 additionGroupUuid = additionGroupUuid,
-                additionUuids = additionList,
+                additionUuids = additionList
             )
         )
     }

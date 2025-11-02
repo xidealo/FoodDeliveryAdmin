@@ -40,10 +40,9 @@ fun additionGroupListModule() = module {
         )
     }
 
-
     factory {
         CreateEditAdditionGroupWithAdditionsUseCase(
-            menuProductRepo = get(),
+            menuProductRepo = get()
         )
     }
 

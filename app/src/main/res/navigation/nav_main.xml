@@ -355,7 +355,8 @@
             app:argType="string" />
         <argument
             android:name="additionGroupUuid"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="additionGroupForMenuName"
             app:argType="string" />
