@@ -7,7 +7,8 @@ import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 interface AdditionGroupForMenuProductList {
     data class DataState(
         val additionGroupList: List<AdditionGroupForMenuProduct>,
-        val state: State
+        val state: State,
+        val isRefreshing: Boolean
     ) : BaseDataState {
         data class AdditionGroupForMenuProduct(
             val uuid: String,
@@ -24,6 +25,7 @@ interface AdditionGroupForMenuProductList {
 
     sealed interface Action : BaseAction {
         data class Init(val menuProductUuid: String) : Action
+        data class RefreshData(val menuProductUuid: String) : Action
         data object OnBackClick : Action
         data class OnAdditionGroupClick(val uuid: String) : Action
         data object OnCreateClick : Action

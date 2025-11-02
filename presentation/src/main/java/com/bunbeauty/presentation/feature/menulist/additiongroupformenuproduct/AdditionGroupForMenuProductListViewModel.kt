@@ -13,7 +13,8 @@ class AdditionGroupForMenuProductListViewModel(
     BaseStateViewModel<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>(
         initState = AdditionGroupForMenuProductList.DataState(
             additionGroupList = listOf(),
-            state = AdditionGroupForMenuProductList.DataState.State.LOADING
+            state = AdditionGroupForMenuProductList.DataState.State.LOADING,
+            isRefreshing = false
         )
     ) {
 
@@ -32,6 +33,9 @@ class AdditionGroupForMenuProductListViewModel(
 
             AdditionGroupForMenuProductList.Action.OnBackClick -> backClick()
             AdditionGroupForMenuProductList.Action.OnCreateClick -> onCreateClick()
+            is AdditionGroupForMenuProductList.Action.RefreshData -> refreshData(
+                menuProductUuid = action.menuProductUuid
+            )
         }
     }
 
@@ -40,7 +44,8 @@ class AdditionGroupForMenuProductListViewModel(
             block = {
                 setState {
                     copy(
-                        state = AdditionGroupForMenuProductList.DataState.State.LOADING
+                        state = AdditionGroupForMenuProductList.DataState.State.LOADING,
+                        isRefreshing = false
                     )
                 }
 
@@ -70,6 +75,45 @@ class AdditionGroupForMenuProductListViewModel(
                     )
                 }
             }
+        )
+    }
+
+    private fun refreshData(menuProductUuid: String) {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        isRefreshing = true
+                    )
+                }
+                val additionGroupList = getAdditionGroupListFromMenuProductUseCase(
+                    menuProductUuid = menuProductUuid
+                ).map { additionGroupList ->
+                    AdditionGroupForMenuProductList.DataState.AdditionGroupForMenuProduct(
+                        uuid = additionGroupList.additionGroup.uuid,
+                        name = additionGroupList.additionGroup.name,
+                        additionNameList = getAdditionListNameUseCase(
+                            additionList = additionGroupList.additionList
+                        )
+                    )
+                }
+
+                setState {
+                    copy(
+                        additionGroupList = additionGroupList,
+                        state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
+                        isRefreshing = false
+                    )
+                }
+            },
+            onError = {
+                setState {
+                    copy(
+                        state = AdditionGroupForMenuProductList.DataState.State.ERROR
+                    )
+                }
+            }
+
         )
     }
 
