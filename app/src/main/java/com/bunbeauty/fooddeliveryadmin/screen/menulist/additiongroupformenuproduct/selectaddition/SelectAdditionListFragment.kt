@@ -5,42 +5,26 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
@@ -50,7 +34,6 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.DragDropList
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
@@ -63,7 +46,6 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.s
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionList.DataState.AdditionItem
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.roundToInt
 
 private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
 private const val TITLE_POSITION_ADDITIONS_KEY = "title_position_additions"
@@ -201,16 +183,8 @@ class SelectAdditionListFragment :
                 )
 
                 SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> SelectAdditionSuccessDragScreen(
-                    title = state.groupName,
-                    selectedAdditionList = state.selectedAdditionList.map { it.name },
-                    onAction = { fromIndex, toIndex ->
-                        onAction(
-                            SelectAdditionList.Action.MoveSelectedItem(
-                                fromIndex = fromIndex,
-                                toIndex = toIndex
-                            )
-                        )
-                    }
+                    state = state,
+                    onAction = onAction
                 )
             }
         }
@@ -354,38 +328,24 @@ class SelectAdditionListFragment :
         }
     }
 
-
     @Composable
-    private fun SelectAdditionSuccessDragScreen(
-        title: String,
-        selectedAdditionList: List<String>,
-        onAction: (fromIndex: Int, toIndex: Int) -> Unit
+    fun SelectAdditionSuccessDragScreen(
+        state: SelectAdditionList.DataState,
+        onAction: (SelectAdditionList.Action) -> Unit
     ) {
         DragDropList(
-            items = selectedAdditionList,
-            headerContent = {
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = stringResource(
-                        id = R.string.action_select_addition_list_title_group,
-                        title
-                    ),
-                    style = AdminTheme.typography.titleMedium.bold
+            title = state.groupName,
+            items = state.selectedAdditionList,
+            itemKey = { it.uuid },
+            onMove = { fromIndex, toIndex ->
+                onAction(
+                    SelectAdditionList.Action.MoveSelectedItem(
+                        fromIndex = fromIndex,
+                        toIndex = toIndex
+                    )
                 )
             },
-            itemContent = { additionItem ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier.weight(1f),
-                        text = additionItem,
-                        style = AdminTheme.typography.bodyLarge
-                    )
-                }
-            },
-            onItemReorder = onAction
+            itemLabel = { it.name }
         )
     }
 

@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -19,29 +21,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
-import androidx.compose.material3.Icon
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
+import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 import kotlin.math.roundToInt
 
 @Composable
 fun <T> DragDropList(
+    title: String? = null,
     items: List<T>,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(),
-    key: ((item: T) -> Any)? = null,
-    headerContent: (@Composable () -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit,
-    onItemReorder: (fromIndex: Int, toIndex: Int) -> Unit
+    itemKey: (T) -> Any,
+    onMove: (fromIndex: Int, toIndex: Int) -> Unit,
+    itemLabel: (T) -> String
 ) {
     var draggingIndex by remember { mutableStateOf<Int?>(null) }
     var fromIndex by remember { mutableIntStateOf(0) }
@@ -49,20 +51,33 @@ fun <T> DragDropList(
     var dragOffset by remember { mutableStateOf(Offset.Zero) }
     var itemHeight by remember { mutableFloatStateOf(0f) }
 
+    LaunchedEffect(items) {
+        draggingIndex = null
+        fromIndex = 0
+        toIndex = 0
+        dragOffset = Offset.Zero
+    }
+
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = contentPadding
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            bottom = AdminTheme.dimensions.scrollScreenBottomSpace
+        )
     ) {
-        headerContent?.let {
-            item(key = "header") {
-                it()
+        title?.takeIf { titleItems -> titleItems.isNotBlank() }?.let { nonEmptyTitle ->
+            item(key = "title_key") {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 16.dp)
+                        .fillMaxWidth()
+                        .animateItem(),
+                    text = nonEmptyTitle,
+                    style = AdminTheme.typography.titleMedium.bold
+                )
             }
         }
 
-        itemsIndexed(
-            items = items,
-            key = key?.let { k -> { index, item -> k(item) } } ?: { index, item -> index }
-        ) { index, item ->
+        itemsIndexed(items, key = { index, item -> "${itemKey(item)}-$index" }) { index, item ->
             val isDragging = draggingIndex == index
 
             val offsetModifier = if (isDragging) {
@@ -80,36 +95,38 @@ fun <T> DragDropList(
                     .zIndex(0.9f)
                     .animateItem()
             ) {
-                DragDropListItem(
-                    item = item,
-                    isDragging = isDragging,
-                    itemContent = itemContent,
+                DraggableListItem(
+                    text = itemLabel(item),
                     onDragStart = {
-                        draggingIndex = index
+                        draggingIndex = items.indexOfFirst { itemKey(it) == itemKey(item) }
+                        fromIndex = draggingIndex ?: 0
                         dragOffset = Offset.Zero
                     },
                     onDrag = { change, dragAmount ->
                         change.consume()
                         dragOffset += dragAmount
-                        fromIndex = draggingIndex ?: return@DragDropListItem
 
-                        val delta = (dragOffset.y / itemHeight).roundToInt()
-                        toIndex = (fromIndex + delta).coerceIn(0, items.lastIndex)
+                        val startIndex = draggingIndex ?: return@DraggableListItem
+                        val offsetItems = (dragOffset.y / itemHeight).roundToInt()
+                        val potentialIndex = (startIndex + offsetItems)
+                            .coerceIn(0, items.lastIndex)
+
+                        if (toIndex != potentialIndex) {
+                            toIndex = potentialIndex
+                        }
                     },
+
                     onDragEnd = {
                         if (fromIndex != toIndex && toIndex in items.indices) {
-                            onItemReorder(fromIndex, toIndex)
+                            onMove(fromIndex, toIndex)
                         }
-                        dragOffset = Offset.Zero
                         draggingIndex = null
+                        dragOffset = Offset.Zero
                     },
                     onDragCancel = {
                         dragOffset = Offset.Zero
-                        draggingIndex = null
                     },
-                    onHeightMeasured = { height ->
-                        itemHeight = height
-                    }
+                    onHeightMeasured = { height -> itemHeight = height }
                 )
             }
         }
@@ -117,10 +134,8 @@ fun <T> DragDropList(
 }
 
 @Composable
-private fun <T> DragDropListItem(
-    item: T,
-    isDragging: Boolean,
-    itemContent: @Composable (T) -> Unit,
+private fun DraggableListItem(
+    text: String,
     onDragStart: (Offset) -> Unit,
     onDrag: (PointerInputChange, Offset) -> Unit,
     onDragEnd: () -> Unit,
@@ -144,7 +159,13 @@ private fun <T> DragDropListItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            itemContent(item)
+            Text(
+                modifier = Modifier.weight(1f),
+                text = text,
+                style = AdminTheme.typography.bodyLarge,
+                color = AdminTheme.colors.main.onSurface
+            )
+
             Icon(
                 painter = painterResource(id = R.drawable.ic_drad_handle),
                 contentDescription = null,
