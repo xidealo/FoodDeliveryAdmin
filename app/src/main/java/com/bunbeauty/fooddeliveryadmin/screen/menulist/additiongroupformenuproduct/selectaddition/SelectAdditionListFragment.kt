@@ -149,17 +149,21 @@ class SelectAdditionListFragment :
                 )
 
                 SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> {
-                    listOf(
-                        AdminTopBarAction(
-                            iconId = R.drawable.ic_check,
-                            color = AdminTheme.colors.main.primary,
-                            onClick = {
-                                onAction(
-                                    SelectAdditionList.Action.OnSaveEditPriorityClick
-                                )
-                            }
+                    if (state.emptySelectedList) {
+                        emptyList()
+                    } else {
+                        listOf(
+                            AdminTopBarAction(
+                                iconId = R.drawable.ic_check,
+                                color = AdminTheme.colors.main.primary,
+                                onClick = {
+                                    onAction(
+                                        SelectAdditionList.Action.OnSaveEditPriorityClick
+                                    )
+                                }
+                            )
                         )
-                    )
+                    }
                 }
             }
         ) {
@@ -370,7 +374,8 @@ class SelectAdditionListFragment :
                 uuid = "5",
                 name = "Ложка"
             )
-        )
+        ),
+        emptySelectedList = TODO()
     )
 
     @Composable
