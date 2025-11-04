@@ -200,7 +200,11 @@ class EditAdditionGroupForMenuProductViewModel(
                 }
             },
             onError = {
-                // set error
+                setState {
+                    copy(
+                        state = EditAdditionGroupForMenu.DataState.State.ERROR
+                    )
+                }
             }
         )
     }
