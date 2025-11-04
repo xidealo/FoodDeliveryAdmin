@@ -59,8 +59,7 @@ class SelectAdditionListViewModel(
             mutableList.add(toIndex, item)
 
             copy(
-                selectedAdditionList = mutableList,
-                emptySelectedList = mutableList.isEmpty()
+                selectedAdditionList = mutableList
             )
         }
     }
@@ -107,7 +106,7 @@ class SelectAdditionListViewModel(
                     .apply {
                         remove(element = addition)
                     },
-                emptySelectedList =  selectedAdditionList.toMutableList()
+                emptySelectedList = selectedAdditionList.toMutableList()
                     .apply {
                         remove(element = addition)
                     }.isEmpty()
@@ -142,7 +141,12 @@ class SelectAdditionListViewModel(
                             )
                         },
                         groupName = selectedGroupAdditionName,
-                        emptySelectedList = additionPack.selectedAdditionList.isEmpty()
+                        emptySelectedList = additionPack.selectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        }.isEmpty()
                     )
                 }
             },
