@@ -5,51 +5,35 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.DragDropList
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
@@ -62,7 +46,6 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.s
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionList.DataState.AdditionItem
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.roundToInt
 
 private const val TITLE_POSITION_VISIBLE_KEY = "title_position_visible"
 private const val TITLE_POSITION_ADDITIONS_KEY = "title_position_additions"
@@ -140,9 +123,7 @@ class SelectAdditionListFragment :
             },
             backgroundColor = AdminTheme.colors.main.surface,
             actionButton = {
-                if (state.isEditPriority) {
-                    null
-                } else {
+                if (!state.isEditPriority) {
                     LoadingButton(
                         text = stringResource(R.string.action_order_details_save),
                         isLoading = false,
@@ -200,16 +181,8 @@ class SelectAdditionListFragment :
                 )
 
                 SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> SelectAdditionSuccessDragScreen(
-                    title = state.groupName,
-                    selectedAdditionList = state.selectedAdditionList.map { it.name },
-                    onAction = { fromIndex, toIndex ->
-                        onAction(
-                            SelectAdditionList.Action.MoveSelectedItem(
-                                fromIndex = fromIndex,
-                                toIndex = toIndex
-                            )
-                        )
-                    }
+                    state = state,
+                    onAction = onAction
                 )
             }
         }
@@ -354,147 +327,24 @@ class SelectAdditionListFragment :
     }
 
     @Composable
-    private fun SelectAdditionSuccessDragScreen(
-        title: String,
-        selectedAdditionList: List<String>,
-        onAction: (fromIndex: Int, toIndex: Int) -> Unit
+    fun SelectAdditionSuccessDragScreen(
+        state: SelectAdditionList.DataState,
+        onAction: (SelectAdditionList.Action) -> Unit
     ) {
-        var draggingIndex by remember { mutableStateOf<Int?>(null) }
-        var fromIndex by remember { mutableIntStateOf(0) }
-        var toIndex by remember { mutableIntStateOf(0) }
-        var dragOffset by remember { mutableStateOf(Offset.Zero) }
-        var itemHeight by remember { mutableFloatStateOf(0f) }
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentPadding = PaddingValues(
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-            )
-        ) {
-            item(key = TITLE_POSITION_VISIBLE_KEY) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp, bottom = 16.dp)
-                        .fillMaxWidth()
-                        .animateItem(),
-                    text = stringResource(
-                        id = R.string.action_select_addition_list_title_group,
-                        title
-                    ),
-                    style = AdminTheme.typography.titleMedium.bold
-                )
-            }
-            itemsIndexed(
-                items = selectedAdditionList
-            ) { index, additionItem ->
-                val isDragging = draggingIndex == index
-
-                val offsetModifier = if (isDragging) {
-                    Modifier
-                        .offset { IntOffset(0, dragOffset.y.roundToInt()) }
-                        .zIndex(1f)
-                } else {
-                    Modifier
-                }
-
-                Box(
-                    modifier = Modifier
-                        .then(offsetModifier)
-                        .fillMaxWidth()
-                        .zIndex(0.9f)
-                        .animateItem()
-                ) {
-                    AdditionItemDraggable(
-                        additionItem = additionItem,
-                        onDragStart = {
-                            draggingIndex = index
-                            dragOffset = Offset.Zero
-                        },
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            dragOffset += dragAmount
-                            fromIndex = draggingIndex ?: return@AdditionItemDraggable
-
-                            val delta = (dragOffset.y / itemHeight).roundToInt()
-                            toIndex = (fromIndex + delta).coerceIn(
-                                0,
-                                selectedAdditionList.lastIndex
-                            )
-                        },
-                        onDragEnd = {
-                            if (fromIndex != toIndex && toIndex in selectedAdditionList.indices) {
-                                onAction(
-                                    fromIndex,
-                                    toIndex
-                                )
-                            }
-                            dragOffset = Offset.Zero
-                            draggingIndex = null
-                        },
-                        onDragCancel = {
-                            dragOffset = Offset.Zero
-                            draggingIndex = null
-                        },
-                        onHeightMeasured = { height ->
-                            itemHeight = height
-                        }
+        DragDropList(
+            title = state.groupName,
+            items = state.selectedAdditionList,
+            itemKey = { it.uuid },
+            onMove = { fromIndex, toIndex ->
+                onAction(
+                    SelectAdditionList.Action.MoveSelectedItem(
+                        fromIndex = fromIndex,
+                        toIndex = toIndex
                     )
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun AdditionItemDraggable(
-        additionItem: String,
-        onDragStart: (Offset) -> Unit,
-        onDrag: (PointerInputChange, Offset) -> Unit,
-        onDragEnd: () -> Unit,
-        onDragCancel: () -> Unit,
-        onHeightMeasured: (Float) -> Unit
-    ) {
-        val modifier = Modifier
-            .fillMaxWidth()
-            .onGloballyPositioned { coordinates ->
-                onHeightMeasured(coordinates.size.height.toFloat())
-            }
-
-        AdminCard(
-            modifier = modifier
-                .padding(vertical = 4.dp),
-            shape = noCornerCardShape,
-            elevated = false
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = additionItem,
-                    style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface
                 )
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_drad_handle),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .pointerInput(Unit) {
-                            detectDragGestures(
-                                onDragStart = onDragStart,
-                                onDragEnd = onDragEnd,
-                                onDragCancel = onDragCancel,
-                                onDrag = onDrag
-                            )
-                        }
-                )
-            }
-        }
+            },
+            itemLabel = { it.name }
+        )
     }
 
     private val selectAdditionListViewState = SelectAdditionList.DataState(
