@@ -8,7 +8,6 @@ import com.bunbeauty.domain.feature.additionlist.GetAdditionListNameUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class CreateAdditionGroupForMenuProductViewModel(
