@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct
 
 import android.os.Bundle
 import androidx.compose.foundation.layout.Column

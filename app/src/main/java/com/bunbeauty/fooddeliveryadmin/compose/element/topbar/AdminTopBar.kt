@@ -15,7 +15,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
+import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
+
+private const val MAX_TITLE_LINES = 1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,9 +32,9 @@ fun AdminTopBar(
             colors = AdminTopBarDefaults.topAppBarColors(),
             title = {
                 Text(
-                    text = title ?: "",
-                    maxLines = 1,
-                    style = AdminTheme.typography.titleMedium.bold,
+                    text = title.orEmpty(),
+                    maxLines = MAX_TITLE_LINES,
+                    style = AdminTheme.typography.titleMedium.medium,
                     overflow = TextOverflow.Ellipsis
                 )
             },
@@ -66,9 +68,9 @@ private fun AdminAction(action: AdminTopBarAction) {
         onClick = action.onClick
     ) {
         Icon(
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(20.dp),
             painter = painterResource(id = action.iconId),
-            tint = AdminTheme.colors.main.onSurfaceVariant,
+            tint = AdminTheme.colors.main.onSurface,
             contentDescription = null
         )
     }
