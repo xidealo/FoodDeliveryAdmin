@@ -8,6 +8,7 @@ import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
+import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
@@ -204,4 +205,9 @@ interface FoodDeliveryApi {
         token: String,
         uuidList: List<String>
     ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>>
+
+    suspend fun patchMenuProductToAdditionGroupPriorityUuid(
+        token: String,
+        additionGroupListUuid: PatchMenuProductToAdditionGroupPriorityUuid
+    ): ApiResult<Unit>
 }

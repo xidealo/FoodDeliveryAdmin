@@ -17,12 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bunbeauty.domain.model.additiongroup.AdditionGroupForMenuProduct
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
+import com.bunbeauty.fooddeliveryadmin.compose.element.DragDropList
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.FloatingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
+import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -77,7 +80,11 @@ class AdditionGroupForMenuProductListFragment :
         onAction: (AdditionGroupForMenuProductList.Action) -> Unit
     ) {
         AdminScaffold(
-            title = stringResource(id = R.string.title_addition_group_for_menu_product),
+            title = if (state.isEditPriority) {
+                stringResource(id = R.string.title_edit_priority)
+            } else {
+                stringResource(id = R.string.title_addition_group_for_menu_product)
+            },
             pullRefreshEnabled = true,
             refreshing = state.isRefreshing,
             onRefresh = {
@@ -88,9 +95,40 @@ class AdditionGroupForMenuProductListFragment :
                 )
             },
             backActionClick = {
-                onAction(AdditionGroupForMenuProductList.Action.OnBackClick)
+                if (state.isEditPriority) {
+                    onAction(AdditionGroupForMenuProductList.Action.OnCancelClicked)
+                } else {
+                    onAction(AdditionGroupForMenuProductList.Action.OnBackClick)
+                }
             },
             backgroundColor = AdminTheme.colors.main.surface,
+            topActions = when (state.state) {
+                AdditionGroupForMenuProductListViewState.State.Error -> emptyList()
+                AdditionGroupForMenuProductListViewState.State.Loading -> emptyList()
+                is AdditionGroupForMenuProductListViewState.State.Success -> listOf(
+                    AdminTopBarAction(
+                        iconId = R.drawable.ic_edit,
+                        color = AdminTheme.colors.main.primary,
+                        onClick = {
+                            onAction(AdditionGroupForMenuProductList.Action.OnPriorityEditClicked)
+                        }
+                    )
+                )
+
+                is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop -> listOf(
+                    AdminTopBarAction(
+                        iconId = R.drawable.ic_check,
+                        color = AdminTheme.colors.main.primary,
+                        onClick = {
+                            onAction(
+                                AdditionGroupForMenuProductList.Action.OnSaveEditPriorityClick(
+                                    updateAdditionGroupForMenuProductList = state.state.additionGroupWithAdditionsList
+                                )
+                            )
+                        }
+                    )
+                )
+            },
             actionButton = {
                 when (state.state) {
                     AdditionGroupForMenuProductListViewState.State.Error -> Unit
@@ -98,12 +136,14 @@ class AdditionGroupForMenuProductListFragment :
                     is AdditionGroupForMenuProductListViewState.State.Success -> {
                         FloatingButton(
                             iconId = R.drawable.ic_plus,
-                            textStringId = R.string.action_menu_list_create,
+                            textStringId = R.string.action_addition_group_for_menu_product_addition_add,
                             onClick = {
                                 onAction(AdditionGroupForMenuProductList.Action.OnCreateClick)
                             }
                         )
                     }
+
+                    is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop -> Unit
                 }
             },
             actionButtonPosition = FabPosition.End
@@ -126,6 +166,13 @@ class AdditionGroupForMenuProductListFragment :
 
                 is AdditionGroupForMenuProductListViewState.State.Success -> {
                     AdditionGroupForMenuProductScreenSuccess(
+                        state = state.state,
+                        onAction = onAction
+                    )
+                }
+
+                is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop -> {
+                    AdditionGroupForMenuProductScreenSuccessDragDrop(
                         state = state.state,
                         onAction = onAction
                     )
@@ -170,7 +217,7 @@ class AdditionGroupForMenuProductListFragment :
     @Composable
     private fun AdditionGroupItemView(
         modifier: Modifier = Modifier,
-        additionGroup: AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions,
+        additionGroup: AdditionGroupForMenuProduct,
         onClick: () -> Unit,
         isClickable: Boolean
     ) {
@@ -195,18 +242,38 @@ class AdditionGroupForMenuProductListFragment :
                     style = AdminTheme.typography.bodyLarge,
                     color = AdminTheme.colors.main.onSurface
                 )
-                additionGroup.additionNameList?.let {
+                additionGroup.additionNameList?.let { additionNameList ->
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 4.dp),
-                        text = additionGroup.additionNameList,
+                        text = additionNameList,
                         style = AdminTheme.typography.bodySmall,
                         color = AdminTheme.colors.main.onSurfaceVariant
                     )
                 }
             }
         }
+    }
+
+    @Composable
+    private fun AdditionGroupForMenuProductScreenSuccessDragDrop(
+        state: AdditionGroupForMenuProductListViewState.State.SuccessDragDrop,
+        onAction: (AdditionGroupForMenuProductList.Action) -> Unit
+    ) {
+        DragDropList(
+            items = state.additionGroupWithAdditionsList,
+            itemKey = { it.uuid },
+            onMove = { fromIndex, toIndex ->
+                onAction(
+                    AdditionGroupForMenuProductList.Action.MoveSelectedItem(
+                        fromIndex = fromIndex,
+                        toIndex = toIndex
+                    )
+                )
+            },
+            itemLabel = { it.name }
+        )
     }
 
     @Composable
@@ -219,18 +286,32 @@ class AdditionGroupForMenuProductListFragment :
                 AdditionGroupForMenuProductList.DataState.State.ERROR ->
                     AdditionGroupForMenuProductListViewState.State.Error
 
+                AdditionGroupForMenuProductList.DataState.State.SUCCESS_DRAG_DROP ->
+                    AdditionGroupForMenuProductListViewState.State.SuccessDragDrop(
+                        additionGroupWithAdditionsList = state.additionGroupList.map { additionGroupForMenuProduct ->
+                            AdditionGroupForMenuProduct(
+                                uuid = additionGroupForMenuProduct.uuid,
+                                name = additionGroupForMenuProduct.name,
+                                additionNameList = additionGroupForMenuProduct.additionNameList,
+                                priority = additionGroupForMenuProduct.priority
+                            )
+                        }
+                    )
+
                 AdditionGroupForMenuProductList.DataState.State.SUCCESS ->
                     AdditionGroupForMenuProductListViewState.State.Success(
                         additionGroupWithAdditionsList = state.additionGroupList.map { additionGroupForMenuProduct ->
-                            AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                            AdditionGroupForMenuProduct(
                                 uuid = additionGroupForMenuProduct.uuid,
                                 name = additionGroupForMenuProduct.name,
-                                additionNameList = additionGroupForMenuProduct.additionNameList
+                                additionNameList = additionGroupForMenuProduct.additionNameList,
+                                priority = additionGroupForMenuProduct.priority
                             )
                         }
                     )
             },
-            isRefreshing = state.isRefreshing
+            isRefreshing = state.isRefreshing,
+            isEditPriority = state.isEditPriority
         )
     }
 
@@ -257,19 +338,22 @@ class AdditionGroupForMenuProductListFragment :
     val additionGroupForMenuProductListViewState = AdditionGroupForMenuProductListViewState(
         state = AdditionGroupForMenuProductListViewState.State.Success(
             additionGroupWithAdditionsList = listOf(
-                AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                AdditionGroupForMenuProduct(
                     uuid = "12321",
                     name = "Вкусняшки",
-                    additionNameList = "Оленина Сопли Вопли"
+                    additionNameList = "Оленина Сопли Вопли",
+                    priority = 1
                 ),
-                AdditionGroupForMenuProductListViewState.AdditionGroupWithAdditions(
+                AdditionGroupForMenuProduct(
                     uuid = "1232112",
                     name = "Не Вкусняшки",
-                    additionNameList = "Жижи Топли Нопли"
+                    additionNameList = "Жижи Топли Нопли",
+                    priority = 2
                 )
             )
         ),
-        isRefreshing = false
+        isRefreshing = false,
+        isEditPriority = false
     )
 
     @Composable

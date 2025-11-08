@@ -12,6 +12,7 @@ import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
+import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
@@ -521,6 +522,17 @@ class FoodDeliveryApiImpl(
             path = "menu_product_to_addition_group_to_addition",
             token = token,
             parameters = uuidList.map { uuid -> "uuidList" to uuid }
+        )
+    }
+
+    override suspend fun patchMenuProductToAdditionGroupPriorityUuid(
+        token: String,
+        additionGroupListUuid: PatchMenuProductToAdditionGroupPriorityUuid
+    ): ApiResult<Unit> {
+        return patch(
+            path = "menu_product_to_addition_group/priority_list",
+            token = token,
+            body = additionGroupListUuid
         )
     }
 

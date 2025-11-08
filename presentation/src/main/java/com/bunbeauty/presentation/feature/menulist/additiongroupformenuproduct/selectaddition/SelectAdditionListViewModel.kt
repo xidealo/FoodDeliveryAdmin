@@ -45,7 +45,7 @@ class SelectAdditionListViewModel(
 
             SelectAdditionList.Action.OnCancelClicked -> cancelEditPriority()
             SelectAdditionList.Action.OnPriorityEditClicked -> onEditPriorityClicked()
-            is SelectAdditionList.Action.OnSaveEditPriorityClick -> saveCategoryDrop()
+            is SelectAdditionList.Action.OnSaveEditPriorityClick -> saveSelectAdditionDrop()
         }
     }
 
@@ -143,17 +143,11 @@ class SelectAdditionListViewModel(
         )
     }
 
-    private fun saveCategoryDrop() {
+    private fun saveSelectAdditionDrop() {
         viewModelScope.launchSafe(
             block = {
-                val updatedList = state.value.selectedAdditionList.mapIndexed {
-                        index, addition ->
-                    addition.copy()
-                }
-
                 setState {
                     copy(
-                        selectedAdditionList = updatedList,
                         isEditPriority = false,
                         state = SelectAdditionList.DataState.State.SUCCESS
                     )

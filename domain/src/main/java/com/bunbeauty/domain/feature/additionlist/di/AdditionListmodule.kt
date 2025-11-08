@@ -3,6 +3,7 @@ package com.bunbeauty.domain.feature.additionlist.di
 import com.bunbeauty.domain.feature.additionlist.CreateAdditionUseCase
 import com.bunbeauty.domain.feature.additionlist.GetAdditionListNameUseCase
 import com.bunbeauty.domain.feature.additionlist.GetSeparatedAdditionListUseCase
+import com.bunbeauty.domain.feature.additionlist.SaveAdditionGroupForMenuProductListPriorityUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.domain.feature.additionlist.UpdateVisibleAdditionUseCase
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
@@ -48,5 +49,12 @@ fun additionModule() = module {
     }
     factory {
         GetAdditionListNameUseCase()
+    }
+
+    factory {
+        SaveAdditionGroupForMenuProductListPriorityUseCase(
+            menuProductToAdditionGroupRepository = get(),
+            dataStoreRepo = get()
+        )
     }
 }

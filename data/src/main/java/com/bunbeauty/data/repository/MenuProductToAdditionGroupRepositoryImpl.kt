@@ -2,6 +2,7 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
+import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.menuprocuttoadditiongroup.MenuProductToAdditionGroup
@@ -25,6 +26,20 @@ class MenuProductToAdditionGroupRepositoryImpl(
                 cache.add(menuProductToAdditionGroup)
             }
         }
+    }
+
+    override suspend fun saveMenuProductToAdditionGroupPriorityUuid(
+        token: String,
+        additionGroupListUuid: List<String>
+    ) {
+        val patchMenuProductToAdditionGroupPriorityUuid =
+            PatchMenuProductToAdditionGroupPriorityUuid(
+                additionGroupUuidList = additionGroupListUuid
+            )
+        foodDeliveryApi.patchMenuProductToAdditionGroupPriorityUuid(
+            token = token,
+            additionGroupListUuid = patchMenuProductToAdditionGroupPriorityUuid
+        )
     }
 
     // todo add handle error
