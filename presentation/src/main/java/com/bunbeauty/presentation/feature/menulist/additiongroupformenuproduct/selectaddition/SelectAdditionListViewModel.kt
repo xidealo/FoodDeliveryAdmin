@@ -71,20 +71,17 @@ class SelectAdditionListViewModel(
                 commonList.find { additionItem ->
                     additionItem.uuid == uuid
                 } ?: return
+            val newNotSelectedList = notSelectedAdditionList.toMutableList().apply {
+                remove(element = addition)
+            }
+            val newSelectedList = selectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
 
             copy(
-                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    },
-                selectedAdditionList = selectedAdditionList.toMutableList()
-                    .apply {
-                        add(addition)
-                    },
-                emptySelectedList = selectedAdditionList.toMutableList()
-                    .apply {
-                        add(addition)
-                    }.isEmpty()
+                notSelectedAdditionList = newNotSelectedList,
+                selectedAdditionList = newSelectedList,
+                emptySelectedList = newSelectedList.isEmpty()
             )
         }
     }
@@ -97,19 +94,17 @@ class SelectAdditionListViewModel(
                     additionItem.uuid == uuid
                 } ?: return
 
+            val newNotSelectedList = notSelectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
+            val newSelectedList = selectedAdditionList.toMutableList().apply {
+                remove(addition)
+            }
+
             copy(
-                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
-                    .apply {
-                        add(element = addition)
-                    },
-                selectedAdditionList = selectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    },
-                emptySelectedList = selectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    }.isEmpty()
+                notSelectedAdditionList = newNotSelectedList,
+                selectedAdditionList = newSelectedList,
+                emptySelectedList = newSelectedList.isEmpty()
             )
         }
     }
@@ -141,12 +136,7 @@ class SelectAdditionListViewModel(
                             )
                         },
                         groupName = selectedGroupAdditionName,
-                        emptySelectedList = additionPack.selectedAdditionList.map { addition ->
-                            SelectAdditionList.DataState.AdditionItem(
-                                uuid = addition.uuid,
-                                name = addition.name
-                            )
-                        }.isEmpty()
+                        emptySelectedList = additionPack.selectedAdditionList.isEmpty()
                     )
                 }
             },
