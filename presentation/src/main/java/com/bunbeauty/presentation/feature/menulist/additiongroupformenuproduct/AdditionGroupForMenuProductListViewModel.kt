@@ -13,7 +13,11 @@ class AdditionGroupForMenuProductListViewModel(
     private val getAdditionGroupListFromMenuProductUseCase: GetAdditionGroupListFromMenuProductUseCase,
     private val getAdditionListNameUseCase: GetAdditionListNameUseCase,
     private val saveAdditionGroupForMenuProductListUseCase: SaveAdditionGroupForMenuProductListPriorityUseCase,
-) : BaseStateViewModel<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>(
+) : BaseStateViewModel<
+        AdditionGroupForMenuProductList.DataState,
+        AdditionGroupForMenuProductList.Action,
+        AdditionGroupForMenuProductList.Event,
+    >(
         initState =
             AdditionGroupForMenuProductList.DataState(
                 additionGroupList = listOf(),
