@@ -203,14 +203,13 @@ class FoodDeliveryApiImpl(
 
     override suspend fun postMenuProductAdditions(
         token: String,
-        menuProductAdditionsPostServer: MenuProductAdditionsPostServer
-    ): ApiResult<MenuProductServer> {
-        return post<MenuProductServer>(
+        menuProductAdditionsPostServer: MenuProductAdditionsPostServer,
+    ): ApiResult<MenuProductServer> =
+        post<MenuProductServer>(
             path = "addition_group_to_menu_products",
             body = menuProductAdditionsPostServer,
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun getStatistic(
         token: String,

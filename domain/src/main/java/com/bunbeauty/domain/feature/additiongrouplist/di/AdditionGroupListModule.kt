@@ -41,17 +41,17 @@ fun additionGroupListModule() =
             )
         }
 
-    factory {
-        CreateEditAdditionGroupWithAdditionsUseCase(
-            menuProductRepo = get()
-        )
-    }
+        factory {
+            CreateEditAdditionGroupWithAdditionsUseCase(
+                menuProductRepo = get(),
+            )
+        }
 
-    factory {
-        GetSelectedAdditionListsUeCase(
-            menuProductRepo = get()
-        )
-    }
+        factory {
+            GetSelectedAdditionListsUeCase(
+                menuProductRepo = get(),
+            )
+        }
 
         factory {
             GetSelectedAdditionListUseCase(

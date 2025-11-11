@@ -154,20 +154,20 @@ fun viewModelModule() =
             )
         }
 
-    viewModel {
-        CreateAdditionGroupForMenuProductViewModel(
-            createEditAdditionGroupWithAdditionsUseCase = get(),
-            getAdditionGroupUseCase = get(),
-            getAdditionListNameUseCase = get(),
-            getAdditionUseCase = get()
-        )
-    }
+        viewModel {
+            CreateAdditionGroupForMenuProductViewModel(
+                createEditAdditionGroupWithAdditionsUseCase = get(),
+                getAdditionGroupUseCase = get(),
+                getAdditionListNameUseCase = get(),
+                getAdditionUseCase = get(),
+            )
+        }
 
-    viewModel {
-        SelectAdditionListViewModel(
-            getSelectedAdditionListUseCase = get()
-        )
-    }
+        viewModel {
+            SelectAdditionListViewModel(
+                getSelectedAdditionListUseCase = get(),
+            )
+        }
 
         viewModel {
             EditCategoryViewModel(

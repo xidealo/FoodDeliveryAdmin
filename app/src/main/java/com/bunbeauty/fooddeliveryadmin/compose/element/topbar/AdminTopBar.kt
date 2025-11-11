@@ -35,13 +35,13 @@ fun AdminTopBar(
                     text = title.orEmpty(),
                     maxLines = MAX_TITLE_LINES,
                     style = AdminTheme.typography.titleMedium.medium,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             navigationIcon = {
                 backActionClick?.let {
                     IconButton(
-                        onClick = backActionClick
+                        onClick = backActionClick,
                     ) {
                         Icon(
                             modifier = Modifier.size(16.dp),
@@ -71,7 +71,7 @@ private fun AdminAction(action: AdminTopBarAction) {
             modifier = Modifier.size(20.dp),
             painter = painterResource(id = action.iconId),
             tint = AdminTheme.colors.main.onSurface,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

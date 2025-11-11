@@ -63,8 +63,8 @@ class AdditionGroupForMenuProductListFragment :
         setFragmentResultListener(CREATE_ADDITION_GROUP) { _, bundle ->
             viewModel.onAction(
                 AdditionGroupForMenuProductList.Action.Init(
-                    menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
-                )
+                    menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid,
+                ),
             )
         }
     }
@@ -349,8 +349,8 @@ class AdditionGroupForMenuProductListFragment :
                 findNavController().navigateSafe(
                     AdditionGroupForMenuProductListFragmentDirections
                         .toCreateAdditionGroupForMenuProductFragment(
-                            menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid
-                        )
+                            menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid,
+                        ),
                 )
             }
         }

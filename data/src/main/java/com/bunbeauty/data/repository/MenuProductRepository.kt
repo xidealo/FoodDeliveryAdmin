@@ -62,15 +62,16 @@ class MenuProductRepository(
     override suspend fun createMenuProductAdditions(
         menuProductUuid: String,
         additionGroupUuid: String,
-        additionList: List<String>
+        additionList: List<String>,
     ) {
         networkConnector.postMenuProductAdditions(
             token = dataStoreRepository.getToken() ?: throw NoTokenException(),
-            menuProductAdditionsPostServer = MenuProductAdditionsPostServer(
-                menuProductUuids = listOf(menuProductUuid),
-                additionGroupUuid = additionGroupUuid,
-                additionUuids = additionList
-            )
+            menuProductAdditionsPostServer =
+                MenuProductAdditionsPostServer(
+                    menuProductUuids = listOf(menuProductUuid),
+                    additionGroupUuid = additionGroupUuid,
+                    additionUuids = additionList,
+                ),
         )
     }
 

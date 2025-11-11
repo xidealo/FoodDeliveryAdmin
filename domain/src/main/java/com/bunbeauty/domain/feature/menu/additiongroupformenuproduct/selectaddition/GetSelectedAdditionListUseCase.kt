@@ -35,7 +35,7 @@ class GetSelectedAdditionListUseCase(
         if (uuidList.isEmpty()) {
             return SelectedAdditionForMenu(
                 selectedAdditionList = emptyList(),
-                notSelectedAdditionList = additionRepo.getAdditionList(token = token)
+                notSelectedAdditionList = additionRepo.getAdditionList(token = token),
             )
         }
 

@@ -6,13 +6,12 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 
 // todo tests
 class CreateEditAdditionGroupWithAdditionsUseCase(
-    private val menuProductRepo: MenuProductRepo
+    private val menuProductRepo: MenuProductRepo,
 ) {
-
     suspend operator fun invoke(
         menuProductUuid: String,
         additionGroupUuid: String?,
-        additionList: List<String>
+        additionList: List<String>,
     ) {
         if (additionGroupUuid == null) {
             throw NoAdditionGroupException()
@@ -25,7 +24,7 @@ class CreateEditAdditionGroupWithAdditionsUseCase(
         menuProductRepo.createMenuProductAdditions(
             menuProductUuid = menuProductUuid,
             additionGroupUuid = additionGroupUuid,
-            additionList = additionList
+            additionList = additionList,
         )
     }
 }

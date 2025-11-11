@@ -96,7 +96,7 @@ interface FoodDeliveryApi {
 
     suspend fun postMenuProductAdditions(
         token: String,
-        menuProductAdditionsPostServer: MenuProductAdditionsPostServer
+        menuProductAdditionsPostServer: MenuProductAdditionsPostServer,
     ): ApiResult<MenuProductServer>
 
     // STATISTIC

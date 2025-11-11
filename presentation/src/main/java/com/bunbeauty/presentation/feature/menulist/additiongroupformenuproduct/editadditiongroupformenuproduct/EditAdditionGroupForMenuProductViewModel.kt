@@ -66,9 +66,10 @@ class EditAdditionGroupForMenuProductViewModel(
                     action.additionGroupUuid,
                 )
 
-            is EditAdditionGroupForMenu.Action.SelectAdditionList -> selectAdditionList(
-                additionUuidList = action.additionListUuid
-            )
+            is EditAdditionGroupForMenu.Action.SelectAdditionList ->
+                selectAdditionList(
+                    additionUuidList = action.additionListUuid,
+                )
         }
     }
 
@@ -197,20 +198,21 @@ class EditAdditionGroupForMenuProductViewModel(
             block = {
                 setState {
                     copy(
-                        additionNameList = getEditedAdditionUuidList(
-                            editedAdditionListUuid = additionUuidList
-                        ),
-                        editedAdditionListUuid = additionUuidList
+                        additionNameList =
+                            getEditedAdditionUuidList(
+                                editedAdditionListUuid = additionUuidList,
+                            ),
+                        editedAdditionListUuid = additionUuidList,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = EditAdditionGroupForMenu.DataState.State.ERROR
+                        state = EditAdditionGroupForMenu.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 

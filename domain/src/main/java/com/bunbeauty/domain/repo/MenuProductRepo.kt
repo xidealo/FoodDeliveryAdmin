@@ -5,16 +5,19 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 interface MenuProductRepo {
-    /*CREATE*/
-    suspend fun saveMenuProduct(token: String, menuProductPost: MenuProductPost): MenuProduct?
+    // CREATE
+    suspend fun saveMenuProduct(
+        token: String,
+        menuProductPost: MenuProductPost,
+    ): MenuProduct?
 
     suspend fun createMenuProductAdditions(
         menuProductUuid: String,
         additionGroupUuid: String,
-        additionList: List<String>
+        additionList: List<String>,
     )
 
-    /*GET*/
+    // GET
     suspend fun getMenuProductList(
         companyUuid: String,
         takeRemote: Boolean = true,
