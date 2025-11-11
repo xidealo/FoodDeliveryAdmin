@@ -6,6 +6,7 @@ import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
 import com.bunbeauty.data.mapper.toMenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPostServer
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
@@ -57,6 +58,21 @@ class MenuProductRepository(
                 }
                 menuProduct
             }
+
+    override suspend fun createMenuProductAdditions(
+        menuProductUuid: String,
+        additionGroupUuid: String,
+        additionList: List<String>
+    ) {
+        networkConnector.postMenuProductAdditions(
+            token = dataStoreRepository.getToken() ?: throw NoTokenException(),
+            menuProductAdditionsPostServer = MenuProductAdditionsPostServer(
+                menuProductUuids = listOf(menuProductUuid),
+                additionGroupUuid = additionGroupUuid,
+                additionUuids = additionList
+            )
+        )
+    }
 
     override suspend fun getMenuProduct(
         menuProductUuid: String,

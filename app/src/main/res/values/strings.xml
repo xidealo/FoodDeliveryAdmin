@@ -319,6 +319,16 @@
     <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
     <string name="action_edit_addition_group_for_menu_product_save">Сохранить</string>
 
+
+    <!-- Edit Addition Group For Menu Product -->
+    <string name="title_create_addition_group_for_menu_product">Добавление группы</string>
+    <string name="title_create_addition_group_for_menu_product_group">Группа</string>
+    <string name="title_create_addition_group_for_menu_product_addition">Добавки</string>
+    <string name="title_create_addition_group_for_menu_product_visible">Показать в меню</string>
+    <string name="action_create_addition_group_for_menu_product_save">Сохранить</string>
+    <string name="error_create_addition_group_for_menu_product_group">Выберите группу</string>
+    <string name="error_create_addition_group_for_menu_product_addition">Выберите добавки</string>
+
     <!--Select Addition Group-->
     <string name="title_select_addition_group">Выбор группы</string>
     <string name="title_select_addition_group_position_visible">Видимые позиции</string>

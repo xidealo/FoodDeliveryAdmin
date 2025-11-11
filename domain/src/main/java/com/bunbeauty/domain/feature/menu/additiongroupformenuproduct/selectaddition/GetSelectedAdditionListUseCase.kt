@@ -32,6 +32,13 @@ class GetSelectedAdditionListUseCase(
                 selectedGroupAdditionUuid = selectedGroupAdditionUuid,
             )
 
+        if (uuidList.isEmpty()) {
+            return SelectedAdditionForMenu(
+                selectedAdditionList = emptyList(),
+                notSelectedAdditionList = additionRepo.getAdditionList(token = token)
+            )
+        }
+
         val menuProductToAdditionGroupToAdditionList =
             menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
                 uuidList = uuidList,

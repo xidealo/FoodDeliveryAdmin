@@ -5,6 +5,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroup
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.EditAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.GetAdditionGroupListFromMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListsUeCase
@@ -40,11 +41,17 @@ fun additionGroupListModule() =
             )
         }
 
-        factory {
-            GetSelectedAdditionListsUeCase(
-                menuProductRepo = get(),
-            )
-        }
+    factory {
+        CreateEditAdditionGroupWithAdditionsUseCase(
+            menuProductRepo = get()
+        )
+    }
+
+    factory {
+        GetSelectedAdditionListsUeCase(
+            menuProductRepo = get()
+        )
+    }
 
         factory {
             GetSelectedAdditionListUseCase(

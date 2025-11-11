@@ -66,24 +66,9 @@ class EditAdditionGroupForMenuProductViewModel(
                     action.additionGroupUuid,
                 )
 
-            is EditAdditionGroupForMenu.Action.SelectAdditionList -> {
-                viewModelScope.launchSafe(
-                    block = {
-                        setState {
-                            copy(
-                                additionNameList =
-                                    getEditedAdditionUuidList(
-                                        editedAdditionListUuid = action.additionListUuid,
-                                    ),
-                                editedAdditionListUuid = action.additionListUuid,
-                            )
-                        }
-                    },
-                    onError = {
-                        // set error
-                    },
-                )
-            }
+            is EditAdditionGroupForMenu.Action.SelectAdditionList -> selectAdditionList(
+                additionUuidList = action.additionListUuid
+            )
         }
     }
 
@@ -204,6 +189,28 @@ class EditAdditionGroupForMenuProductViewModel(
                     )
                 }
             },
+        )
+    }
+
+    private fun selectAdditionList(additionUuidList: List<String>) {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        additionNameList = getEditedAdditionUuidList(
+                            editedAdditionListUuid = additionUuidList
+                        ),
+                        editedAdditionListUuid = additionUuidList
+                    )
+                }
+            },
+            onError = {
+                setState {
+                    copy(
+                        state = EditAdditionGroupForMenu.DataState.State.ERROR
+                    )
+                }
+            }
         )
     }
 
