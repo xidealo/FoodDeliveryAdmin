@@ -62,9 +62,13 @@ class MainActivity :
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
+            isAppearanceLightStatusBars = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+        } else {
+            WindowCompat.setDecorFitsSystemWindows(window, true)
         }
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
