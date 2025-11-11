@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
@@ -45,28 +46,33 @@ fun AdminModalBottomSheet(
     isShown: Boolean,
     modifier: Modifier = Modifier,
     title: String? = null,
-    contentPadding: PaddingValues = PaddingValues(
-        top = 8.dp,
-        start = 16.dp,
-        end = 16.dp,
-        bottom = 16.dp
-    ),
+    contentPadding: PaddingValues =
+        PaddingValues(
+            top = 8.dp,
+            start = 16.dp,
+            end = 16.dp,
+            bottom = 16.dp,
+        ),
     shape: Shape = AdminBottomSheetDefaults.shape,
     containerColor: Color = AdminTheme.colors.main.surface,
     contentColor: Color = contentColorFor(containerColor),
     dragHandle: @Composable (() -> Unit)? = { AdminBottomSheetDefaults.DragHandle() },
-    windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
-    content: @Composable ColumnScope.() -> Unit
+    contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
+    content: @Composable ColumnScope.() -> Unit,
+    density: Density = LocalDensity.current,
 ) {
     var isVisible by remember {
         mutableStateOf(false)
     }
-    val sheetState = remember {
-        SheetState(
-            skipPartiallyExpanded = true,
-            initialValue = SheetValue.Hidden
-        )
-    }
+    val sheetState =
+        remember {
+            SheetState(
+                skipPartiallyExpanded = true,
+                initialValue = SheetValue.Hidden,
+                positionalThreshold = { with(density) { 56.dp.toPx() } },
+                velocityThreshold = { with(density) { 125.dp.toPx() } },
+            )
+        }
 
     LaunchedEffect(isShown) {
         if (!isShown) {
@@ -85,19 +91,20 @@ fun AdminModalBottomSheet(
             containerColor = containerColor,
             contentColor = contentColor,
             dragHandle = dragHandle,
-            windowInsets = windowInsets,
-            modifier = modifier
+            contentWindowInsets = contentWindowInsets,
+            modifier = modifier,
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues = contentPadding)
-                    .padding(bottom = systemBottomBarHeight)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues = contentPadding)
+                        .padding(bottom = systemBottomBarHeight),
             ) {
                 title?.let {
                     Title(
                         modifier = Modifier.padding(vertical = 16.dp),
-                        title = title
+                        title = title,
                     )
                 }
                 content()
@@ -127,14 +134,14 @@ private fun getSystemBottomBarHeight(): Dp {
 @Composable
 private fun Title(
     modifier: Modifier = Modifier,
-    title: String
+    title: String,
 ) {
     Text(
         modifier = modifier.fillMaxWidth(),
         text = title,
         style = AdminTheme.typography.titleMedium.bold,
         color = AdminTheme.colors.main.onSurface,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 }
 
@@ -151,21 +158,23 @@ private fun AdminModalBottomSheetPreview() {
     AdminTheme {
         AdminModalBottomSheet(
             onDismissRequest = {},
-            isShown = isShownState
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.Absolute.spacedBy(8.dp)
-            ) {
-                repeat(4) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .fillMaxWidth()
-                            .background(AdminTheme.colors.main.surface)
-                    )
+            isShown = isShownState,
+            content = {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.Absolute.spacedBy(8.dp),
+                ) {
+                    repeat(4) {
+                        Spacer(
+                            modifier =
+                                Modifier
+                                    .height(40.dp)
+                                    .fillMaxWidth()
+                                    .background(AdminTheme.colors.main.surface),
+                        )
+                    }
                 }
-            }
-        }
+            },
+        )
     }
 }

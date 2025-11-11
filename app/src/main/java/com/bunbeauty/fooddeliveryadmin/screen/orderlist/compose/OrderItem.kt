@@ -23,26 +23,28 @@ import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListViewState
 fun OrderItem(
     modifier: Modifier = Modifier,
     orderItem: OrderListViewState.OrderItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     AdminCard(
         modifier = modifier,
-        onClick = onClick
+        onClick = onClick,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = orderItem.code,
-                modifier = Modifier
-                    .requiredWidthIn(min = AdminTheme.dimensions.codeWidth)
-                    .padding(end = AdminTheme.dimensions.smallSpace),
+                modifier =
+                    Modifier
+                        .requiredWidthIn(min = AdminTheme.dimensions.codeWidth)
+                        .padding(end = AdminTheme.dimensions.smallSpace),
                 style = AdminTheme.typography.titleMedium.bold,
-                color = AdminTheme.colors.main.onSurface
+                color = AdminTheme.colors.main.onSurface,
             )
             OrderStatusChip(orderStatus = orderItem.status, statusName = orderItem.statusString)
             Spacer(modifier = Modifier.weight(1f))
@@ -51,13 +53,13 @@ fun OrderItem(
                     text = orderItem.dateTime,
                     style = AdminTheme.typography.bodySmall,
                     color = AdminTheme.colors.main.onSurfaceVariant,
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
                 )
                 Text(
                     text = orderItem.deferredTime,
                     style = AdminTheme.typography.bodySmall,
                     color = AdminTheme.colors.main.onSurface,
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
                 )
             }
         }
@@ -69,15 +71,16 @@ fun OrderItem(
 private fun OrderItemPreview() {
     AdminTheme {
         OrderItem(
-            orderItem = OrderListViewState.OrderItem(
-                uuid = "",
-                status = OrderStatus.NOT_ACCEPTED,
-                statusString = "Обрабатывается",
-                code = "Щ-99",
-                deferredTime = "",
-                dateTime = "9 февраля 22:00"
-            ),
-            onClick = {}
+            orderItem =
+                OrderListViewState.OrderItem(
+                    uuid = "",
+                    status = OrderStatus.NOT_ACCEPTED,
+                    statusString = "Обрабатывается",
+                    code = "Щ-99",
+                    deferredTime = "",
+                    dateTime = "9 февраля 22:00",
+                ),
+            onClick = {},
         )
     }
 }
@@ -87,15 +90,16 @@ private fun OrderItemPreview() {
 private fun OrderItemLageFontPreview() {
     AdminTheme {
         OrderItem(
-            orderItem = OrderListViewState.OrderItem(
-                uuid = "",
-                status = OrderStatus.NOT_ACCEPTED,
-                statusString = "Обрабатывается",
-                code = "Щ-99",
-                deferredTime = "Ко времени: 15:00",
-                dateTime = "9 февраля 22:00"
-            ),
-            onClick = {}
+            orderItem =
+                OrderListViewState.OrderItem(
+                    uuid = "",
+                    status = OrderStatus.NOT_ACCEPTED,
+                    statusString = "Обрабатывается",
+                    code = "Щ-99",
+                    deferredTime = "Ко времени: 15:00",
+                    dateTime = "9 февраля 22:00",
+                ),
+            onClick = {},
         )
     }
 }

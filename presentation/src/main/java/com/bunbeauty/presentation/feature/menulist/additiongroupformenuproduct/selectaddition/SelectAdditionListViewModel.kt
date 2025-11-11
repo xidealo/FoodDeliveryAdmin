@@ -6,42 +6,45 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class SelectAdditionListViewModel(
-    val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase
-) :
-    BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
-        initState = SelectAdditionList.DataState(
-            state = SelectAdditionList.DataState.State.LOADING,
-            groupName = "",
-            selectedAdditionList = emptyList(),
-            notSelectedAdditionList = emptyList(),
-            isEditPriority = false
-        )
+    val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase,
+) : BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
+        initState =
+            SelectAdditionList.DataState(
+                state = SelectAdditionList.DataState.State.LOADING,
+                groupName = "",
+                selectedAdditionList = emptyList(),
+                notSelectedAdditionList = emptyList(),
+                isEditPriority = false,
+            ),
     ) {
-
     override fun reduce(
         action: SelectAdditionList.Action,
-        dataState: SelectAdditionList.DataState
+        dataState: SelectAdditionList.DataState,
     ) {
         when (action) {
-            is SelectAdditionList.Action.Init -> loadData(
-                selectedGroupAdditionUuid = action.additionGroupUuid,
-                menuProductUuid = action.menuProductUuid,
-                selectedGroupAdditionName = action.additionGroupName
-            )
+            is SelectAdditionList.Action.Init ->
+                loadData(
+                    selectedGroupAdditionUuid = action.additionGroupUuid,
+                    menuProductUuid = action.menuProductUuid,
+                    selectedGroupAdditionName = action.additionGroupName,
+                )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
             is SelectAdditionList.Action.SelectAdditionClick -> selectAddition(uuid = action.uuid)
             is SelectAdditionList.Action.RemoveAdditionClick -> removeAddition(uuid = action.uuid)
-            SelectAdditionList.Action.SelectAdditionListClick -> selectAdditionListClick(
-                additionUuidList = dataState.selectedAdditionList.map { additionItem ->
-                    additionItem.uuid
-                }
-            )
+            SelectAdditionList.Action.SelectAdditionListClick ->
+                selectAdditionListClick(
+                    additionUuidList =
+                        dataState.selectedAdditionList.map { additionItem ->
+                            additionItem.uuid
+                        },
+                )
 
-            is SelectAdditionList.Action.MoveSelectedItem -> moveSelectedItem(
-                action.fromIndex,
-                action.toIndex
-            )
+            is SelectAdditionList.Action.MoveSelectedItem ->
+                moveSelectedItem(
+                    action.fromIndex,
+                    action.toIndex,
+                )
 
             SelectAdditionList.Action.OnCancelClicked -> cancelEditPriority()
             SelectAdditionList.Action.OnPriorityEditClicked -> onEditPriorityClicked()
@@ -49,7 +52,10 @@ class SelectAdditionListViewModel(
         }
     }
 
-    private fun moveSelectedItem(fromIndex: Int, toIndex: Int) {
+    private fun moveSelectedItem(
+        fromIndex: Int,
+        toIndex: Int,
+    ) {
         setState {
             val mutableList = selectedAdditionList.toMutableList()
 
@@ -70,14 +76,18 @@ class SelectAdditionListViewModel(
                 } ?: return
 
             copy(
-                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    },
-                selectedAdditionList = selectedAdditionList.toMutableList()
-                    .apply {
-                        add(addition)
-                    }
+                notSelectedAdditionList =
+                    notSelectedAdditionList
+                        .toMutableList()
+                        .apply {
+                            remove(element = addition)
+                        },
+                selectedAdditionList =
+                    selectedAdditionList
+                        .toMutableList()
+                        .apply {
+                            add(addition)
+                        },
             )
         }
     }
@@ -91,14 +101,18 @@ class SelectAdditionListViewModel(
                 } ?: return
 
             copy(
-                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
-                    .apply {
-                        add(element = addition)
-                    },
-                selectedAdditionList = selectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    }
+                notSelectedAdditionList =
+                    notSelectedAdditionList
+                        .toMutableList()
+                        .apply {
+                            add(element = addition)
+                        },
+                selectedAdditionList =
+                    selectedAdditionList
+                        .toMutableList()
+                        .apply {
+                            remove(element = addition)
+                        },
             )
         }
     }
@@ -106,40 +120,43 @@ class SelectAdditionListViewModel(
     private fun loadData(
         selectedGroupAdditionUuid: String?,
         selectedGroupAdditionName: String,
-        menuProductUuid: String
+        menuProductUuid: String,
     ) {
         viewModelScope.launchSafe(
             block = {
-                val additionPack = getSelectedAdditionListUseCase(
-                    menuProductUuid = menuProductUuid,
-                    selectedGroupAdditionUuid = selectedGroupAdditionUuid
-                )
+                val additionPack =
+                    getSelectedAdditionListUseCase(
+                        menuProductUuid = menuProductUuid,
+                        selectedGroupAdditionUuid = selectedGroupAdditionUuid,
+                    )
                 setState {
                     copy(
                         state = SelectAdditionList.DataState.State.SUCCESS,
-                        selectedAdditionList = additionPack.selectedAdditionList.map { addition ->
-                            SelectAdditionList.DataState.AdditionItem(
-                                uuid = addition.uuid,
-                                name = addition.name
-                            )
-                        },
-                        notSelectedAdditionList = additionPack.notSelectedAdditionList.map { addition ->
-                            SelectAdditionList.DataState.AdditionItem(
-                                uuid = addition.uuid,
-                                name = addition.name
-                            )
-                        },
-                        groupName = selectedGroupAdditionName
+                        selectedAdditionList =
+                            additionPack.selectedAdditionList.map { addition ->
+                                SelectAdditionList.DataState.AdditionItem(
+                                    uuid = addition.uuid,
+                                    name = addition.name,
+                                )
+                            },
+                        notSelectedAdditionList =
+                            additionPack.notSelectedAdditionList.map { addition ->
+                                SelectAdditionList.DataState.AdditionItem(
+                                    uuid = addition.uuid,
+                                    name = addition.name,
+                                )
+                            },
+                        groupName = selectedGroupAdditionName,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = SelectAdditionList.DataState.State.ERROR
+                        state = SelectAdditionList.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
@@ -149,17 +166,17 @@ class SelectAdditionListViewModel(
                 setState {
                     copy(
                         isEditPriority = false,
-                        state = SelectAdditionList.DataState.State.SUCCESS
+                        state = SelectAdditionList.DataState.State.SUCCESS,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = SelectAdditionList.DataState.State.ERROR
+                        state = SelectAdditionList.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
@@ -172,7 +189,7 @@ class SelectAdditionListViewModel(
     private fun selectAdditionListClick(additionUuidList: List<String>) {
         sendEvent {
             SelectAdditionList.Event.SelectAdditionListBack(
-                additionUuidList = additionUuidList
+                additionUuidList = additionUuidList,
             )
         }
     }
@@ -181,7 +198,7 @@ class SelectAdditionListViewModel(
         setState {
             copy(
                 SelectAdditionList.DataState.State.SUCCESS,
-                isEditPriority = false
+                isEditPriority = false,
             )
         }
     }
@@ -190,7 +207,7 @@ class SelectAdditionListViewModel(
         setState {
             copy(
                 SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP,
-                isEditPriority = true
+                isEditPriority = true,
             )
         }
     }

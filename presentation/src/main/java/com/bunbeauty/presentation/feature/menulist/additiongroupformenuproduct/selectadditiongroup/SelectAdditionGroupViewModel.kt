@@ -6,31 +6,31 @@ import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class SelectAdditionGroupViewModel(
-    private val getSeparatedSelectableAdditionGroupListUseCase: GetSeparatedSelectableAdditionGroupListUseCase
-) :
-    BaseStateViewModel<SelectAdditionGroup.DataState, SelectAdditionGroup.Action, SelectAdditionGroup.Event>(
-        initState = SelectAdditionGroup.DataState(
-            visibleSelectableAdditionGroupList = emptyList(),
-            hiddenSelectableAdditionGroupList = emptyList(),
-            state = SelectAdditionGroup.DataState.State.LOADING
-
-        )
+    private val getSeparatedSelectableAdditionGroupListUseCase: GetSeparatedSelectableAdditionGroupListUseCase,
+) : BaseStateViewModel<SelectAdditionGroup.DataState, SelectAdditionGroup.Action, SelectAdditionGroup.Event>(
+        initState =
+            SelectAdditionGroup.DataState(
+                visibleSelectableAdditionGroupList = emptyList(),
+                hiddenSelectableAdditionGroupList = emptyList(),
+                state = SelectAdditionGroup.DataState.State.LOADING,
+            ),
     ) {
-
     override fun reduce(
         action: SelectAdditionGroup.Action,
-        dataState: SelectAdditionGroup.DataState
+        dataState: SelectAdditionGroup.DataState,
     ) {
         when (action) {
-            is SelectAdditionGroup.Action.Init -> loadData(
-                selectedAdditionGroupUuid = action.selectedAdditionGroupUuid
-            )
+            is SelectAdditionGroup.Action.Init ->
+                loadData(
+                    selectedAdditionGroupUuid = action.selectedAdditionGroupUuid,
+                )
 
             SelectAdditionGroup.Action.OnBackClick -> backClick()
-            is SelectAdditionGroup.Action.SelectAdditionGroupClick -> selectAdditionGroupClick(
-                uuid = action.uuid,
-                name = action.name
-            )
+            is SelectAdditionGroup.Action.SelectAdditionGroupClick ->
+                selectAdditionGroupClick(
+                    uuid = action.uuid,
+                    name = action.name,
+                )
         }
     }
 
@@ -40,23 +40,23 @@ class SelectAdditionGroupViewModel(
                 val separatedAdditionGroupList =
                     getSeparatedSelectableAdditionGroupListUseCase(
                         refreshing = false,
-                        selectedAdditionGroupUuid = selectedAdditionGroupUuid
+                        selectedAdditionGroupUuid = selectedAdditionGroupUuid,
                     )
                 setState {
                     copy(
                         visibleSelectableAdditionGroupList = separatedAdditionGroupList.visibleList,
                         hiddenSelectableAdditionGroupList = separatedAdditionGroupList.hiddenList,
-                        state = SelectAdditionGroup.DataState.State.SUCCESS
+                        state = SelectAdditionGroup.DataState.State.SUCCESS,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = SelectAdditionGroup.DataState.State.ERROR
+                        state = SelectAdditionGroup.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
@@ -66,11 +66,14 @@ class SelectAdditionGroupViewModel(
         }
     }
 
-    private fun selectAdditionGroupClick(uuid: String, name: String) {
+    private fun selectAdditionGroupClick(
+        uuid: String,
+        name: String,
+    ) {
         sendEvent {
             SelectAdditionGroup.Event.SelectAdditionGroupClicked(
                 additionGroupUuid = uuid,
-                additionGroupName = name
+                additionGroupName = name,
             )
         }
     }

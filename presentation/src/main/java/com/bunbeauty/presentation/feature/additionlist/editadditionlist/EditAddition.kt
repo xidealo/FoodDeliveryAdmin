@@ -15,24 +15,46 @@ interface EditAddition {
         val fullName: String,
         val isLoading: Boolean,
         val isVisible: Boolean,
-        val imageFieldData: EditImageFieldData
+        val imageFieldData: EditImageFieldData,
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
-
         data object InitAddition : Action
-        data class EditNameAddition(val name: String) : Action
-        data class EditFullNameAddition(val fullName: String) : Action
-        data class EditPriceAddition(val price: String) : Action
-        data class EditTagAddition(val tag: String) : Action
+
+        data class EditNameAddition(
+            val name: String,
+        ) : Action
+
+        data class EditFullNameAddition(
+            val fullName: String,
+        ) : Action
+
+        data class EditPriceAddition(
+            val price: String,
+        ) : Action
+
+        data class EditTagAddition(
+            val tag: String,
+        ) : Action
+
         data object OnSaveEditAdditionClick : Action
-        data class OnVisibleClick(val isVisible: Boolean) : Action
+
+        data class OnVisibleClick(
+            val isVisible: Boolean,
+        ) : Action
+
         data object OnBackClick : Action
-        data class SetImage(val croppedImageUri: String) : Action
+
+        data class SetImage(
+            val croppedImageUri: String,
+        ) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-        data class ShowUpdateAdditionSuccess(val additionName: String) : Event
+
+        data class ShowUpdateAdditionSuccess(
+            val additionName: String,
+        ) : Event
     }
 }

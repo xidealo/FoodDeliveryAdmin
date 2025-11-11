@@ -10,59 +10,60 @@ import com.bunbeauty.domain.feature.editcafe.UpdateCafeFromTimeUseCase
 import com.bunbeauty.domain.feature.editcafe.UpdateCafeToTimeUseCase
 import org.koin.dsl.module
 
-fun editCafeModule() = module {
-    factory {
-        CreateCafeNonWorkingDayUseCase(
-            dataStoreRepo = get(),
-            cafeRepo = get(),
-            nonWorkingDayRepo = get()
-        )
-    }
+fun editCafeModule() =
+    module {
+        factory {
+            CreateCafeNonWorkingDayUseCase(
+                dataStoreRepo = get(),
+                cafeRepo = get(),
+                nonWorkingDayRepo = get(),
+            )
+        }
 
-    factory {
-        DeleteCafeNonWorkingDayUseCase(
-            dataStoreRepo = get(),
-            nonWorkingDayRepo = get()
-        )
-    }
+        factory {
+            DeleteCafeNonWorkingDayUseCase(
+                dataStoreRepo = get(),
+                nonWorkingDayRepo = get(),
+            )
+        }
 
-    factory {
-        GetCafeWorkingHoursByUuidUseCase(
-            cafeRepo = get(),
-            dateTimeUtil = get()
-        )
-    }
+        factory {
+            GetCafeWorkingHoursByUuidUseCase(
+                cafeRepo = get(),
+                dateTimeUtil = get(),
+            )
+        }
 
-    factory {
-        GetInitialNonWorkingDayDateUseCase()
-    }
+        factory {
+            GetInitialNonWorkingDayDateUseCase()
+        }
 
-    factory {
-        GetMinNonWorkingDayDateUseCase()
-    }
+        factory {
+            GetMinNonWorkingDayDateUseCase()
+        }
 
-    factory {
-        GetNonWorkingDayListByCafeUuidUseCase(
-            cafeRepo = get(),
-            dateTimeUtil = get(),
-            nonWorkingDayRepo = get(),
-            timeService = get()
-        )
-    }
+        factory {
+            GetNonWorkingDayListByCafeUuidUseCase(
+                cafeRepo = get(),
+                dateTimeUtil = get(),
+                nonWorkingDayRepo = get(),
+                timeService = get(),
+            )
+        }
 
-    factory {
-        UpdateCafeFromTimeUseCase(
-            cafeRepo = get(),
-            dataStoreRepo = get(),
-            dateTimeUtil = get()
-        )
-    }
+        factory {
+            UpdateCafeFromTimeUseCase(
+                cafeRepo = get(),
+                dataStoreRepo = get(),
+                dateTimeUtil = get(),
+            )
+        }
 
-    factory {
-        UpdateCafeToTimeUseCase(
-            cafeRepo = get(),
-            dataStoreRepo = get(),
-            dateTimeUtil = get()
-        )
+        factory {
+            UpdateCafeToTimeUseCase(
+                cafeRepo = get(),
+                dataStoreRepo = get(),
+                dateTimeUtil = get(),
+            )
+        }
     }
-}

@@ -36,106 +36,107 @@ import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import org.koin.dsl.module
 
-fun repositoryModule() = module {
-    single<MenuProductRepo> {
-        MenuProductRepository(
-            menuProductMapper = get(),
-            networkConnector = get(),
-            dataStoreRepository = get()
-        )
+fun repositoryModule() =
+    module {
+        single<MenuProductRepo> {
+            MenuProductRepository(
+                menuProductMapper = get(),
+                networkConnector = get(),
+                dataStoreRepository = get(),
+            )
+        }
+        single<FoodDeliveryApi> {
+            FoodDeliveryApiImpl(
+                client = get(),
+                json = get(),
+            )
+        }
+        single<DataStoreRepo> {
+            DataStoreRepository(
+                context = get(),
+            )
+        }
+        single<UserAuthorizationRepo> {
+            UserAuthorizationRepository(
+                context = get(),
+                dataStoreRepo = get(),
+                networkConnector = get(),
+            )
+        }
+        single<CategoryRepo> {
+            CategoryRepository(
+                categoryMapper = get(),
+                networkConnector = get(),
+            )
+        }
+        single<OrderRepo> {
+            OrderRepository(
+                networkConnector = get(),
+                serverOrderMapper = get(),
+            )
+        }
+        single<StatisticRepo> {
+            StatisticRepository(
+                networkConnector = get(),
+                statisticMapper = get(),
+            )
+        }
+        single<CafeRepo> {
+            CafeRepository(
+                cafeMapper = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<CityRepo> {
+            CityRepository(
+                cityDao = get(),
+                cityMapper = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<NonWorkingDayRepo> {
+            NonWorkingDayRepository(
+                foodDeliveryApi = get(),
+                nonWorkingDayDao = get(),
+                nonWorkingDayMapper = get(),
+            )
+        }
+        single<AdditionRepo> {
+            AdditionRepository(
+                networkConnector = get(),
+            )
+        }
+        single<AdditionGroupRepo> {
+            AdditionGroupRepository(
+                networkConnector = get(),
+            )
+        }
+        single<PhotoRepo> {
+            PhotoRepository(
+                context = get(),
+            )
+        }
+        single<SettingsRepo> {
+            SettingsRepository(
+                dataStoreRepo = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<CompanyRepo> {
+            CompanyRepository(
+                networkConnector = get(),
+            )
+        }
+        single<MenuProductToAdditionGroupRepository> {
+            MenuProductToAdditionGroupRepositoryImpl(
+                foodDeliveryApi = get(),
+                dataStoreRepo = get(),
+            )
+        }
+        single<MenuProductToAdditionGroupToAdditionRepository> {
+            MenuProductToAdditionGroupToAdditionRepositoryImpl(
+                foodDeliveryApi = get(),
+                dataStoreRepo = get(),
+            )
+        }
     }
-    single<FoodDeliveryApi> {
-        FoodDeliveryApiImpl(
-            client = get(),
-            json = get()
-        )
-    }
-    single<DataStoreRepo> {
-        DataStoreRepository(
-            context = get()
-        )
-    }
-    single<UserAuthorizationRepo> {
-        UserAuthorizationRepository(
-            context = get(),
-            dataStoreRepo = get(),
-            networkConnector = get()
-        )
-    }
-    single<CategoryRepo> {
-        CategoryRepository(
-            categoryMapper = get(),
-            networkConnector = get()
-        )
-    }
-    single<OrderRepo> {
-        OrderRepository(
-            networkConnector = get(),
-            serverOrderMapper = get()
-        )
-    }
-    single<StatisticRepo> {
-        StatisticRepository(
-            networkConnector = get(),
-            statisticMapper = get()
-        )
-    }
-    single<CafeRepo> {
-        CafeRepository(
-            cafeMapper = get(),
-            foodDeliveryApi = get()
-        )
-    }
-    single<CityRepo> {
-        CityRepository(
-            cityDao = get(),
-            cityMapper = get(),
-            foodDeliveryApi = get()
-        )
-    }
-    single<NonWorkingDayRepo> {
-        NonWorkingDayRepository(
-            foodDeliveryApi = get(),
-            nonWorkingDayDao = get(),
-            nonWorkingDayMapper = get()
-        )
-    }
-    single<AdditionRepo> {
-        AdditionRepository(
-            networkConnector = get()
-        )
-    }
-    single<AdditionGroupRepo> {
-        AdditionGroupRepository(
-            networkConnector = get()
-        )
-    }
-    single<PhotoRepo> {
-        PhotoRepository(
-            context = get()
-        )
-    }
-    single<SettingsRepo> {
-        SettingsRepository(
-            dataStoreRepo = get(),
-            foodDeliveryApi = get()
-        )
-    }
-    single<CompanyRepo> {
-        CompanyRepository(
-            networkConnector = get()
-        )
-    }
-    single<MenuProductToAdditionGroupRepository> {
-        MenuProductToAdditionGroupRepositoryImpl(
-            foodDeliveryApi = get(),
-            dataStoreRepo = get()
-        )
-    }
-    single<MenuProductToAdditionGroupToAdditionRepository> {
-        MenuProductToAdditionGroupToAdditionRepositoryImpl(
-            foodDeliveryApi = get(),
-            dataStoreRepo = get()
-        )
-    }
-}

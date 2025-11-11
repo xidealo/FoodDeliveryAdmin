@@ -12,5 +12,5 @@ data class AdditionGroupPatchServer(
     @SerialName("singleChoice")
     val singleChoice: Boolean?,
     @SerialName("isVisible")
-    val isVisible: Boolean?
+    val isVisible: Boolean?,
 )

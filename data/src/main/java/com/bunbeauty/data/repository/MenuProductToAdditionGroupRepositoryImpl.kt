@@ -11,55 +11,53 @@ import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
 
 class MenuProductToAdditionGroupRepositoryImpl(
     private val foodDeliveryApi: FoodDeliveryApi,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) : MenuProductToAdditionGroupRepository {
     private val cache: MutableSet<MenuProductToAdditionGroup> = mutableSetOf()
 
-    override suspend fun getMenuProductToAdditionGroup(uuid: String): MenuProductToAdditionGroup? {
-        return cache.find { menuProductToAdditionGroup ->
+    override suspend fun getMenuProductToAdditionGroup(uuid: String): MenuProductToAdditionGroup? =
+        cache.find { menuProductToAdditionGroup ->
             menuProductToAdditionGroup.uuid == uuid
         } ?: getMenuProductToAdditionGroupNetwork(
             token = dataStoreRepo.getToken() ?: throw NoTokenException(),
-            uuid = uuid
+            uuid = uuid,
         )?.toMenuProductToAdditionGroup().also { menuProductToAdditionGroup ->
             menuProductToAdditionGroup?.let {
                 cache.add(menuProductToAdditionGroup)
             }
         }
-    }
 
     override suspend fun saveMenuProductToAdditionGroupPriorityUuid(
         token: String,
-        additionGroupListUuid: List<String>
+        additionGroupListUuid: List<String>,
     ) {
         val patchMenuProductToAdditionGroupPriorityUuid =
             PatchMenuProductToAdditionGroupPriorityUuid(
-                additionGroupUuidList = additionGroupListUuid
+                additionGroupUuidList = additionGroupListUuid,
             )
         foodDeliveryApi.patchMenuProductToAdditionGroupPriorityUuid(
             token = token,
-            additionGroupListUuid = patchMenuProductToAdditionGroupPriorityUuid
+            additionGroupListUuid = patchMenuProductToAdditionGroupPriorityUuid,
         )
     }
 
     // todo add handle error
     private suspend fun getMenuProductToAdditionGroupNetwork(
         token: String,
-        uuid: String
-    ): MenuProductToAdditionGroupServer? {
-        return foodDeliveryApi.getMenuProductToAdditionGroup(
-            token = token,
-            uuid = uuid
-        ).dataOrNull()
-    }
+        uuid: String,
+    ): MenuProductToAdditionGroupServer? =
+        foodDeliveryApi
+            .getMenuProductToAdditionGroup(
+                token = token,
+                uuid = uuid,
+            ).dataOrNull()
 
-    private fun MenuProductToAdditionGroupServer.toMenuProductToAdditionGroup(): MenuProductToAdditionGroup {
-        return MenuProductToAdditionGroup(
+    private fun MenuProductToAdditionGroupServer.toMenuProductToAdditionGroup(): MenuProductToAdditionGroup =
+        MenuProductToAdditionGroup(
             uuid = uuid,
             menuProductUuid = menuProductUuid,
-            additionGroupUuid = additionGroupUuid
+            additionGroupUuid = additionGroupUuid,
         )
-    }
 
     override fun clearCache() {
         cache.clear()

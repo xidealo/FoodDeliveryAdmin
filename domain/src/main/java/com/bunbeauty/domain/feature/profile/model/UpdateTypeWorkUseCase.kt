@@ -9,17 +9,15 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class UpdateTypeWorkUseCase(
     private val workInfoRepository: CompanyRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
-    suspend operator fun invoke(
-        workInfoData: WorkType
-    ) {
+    suspend operator fun invoke(workInfoData: WorkType) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         workInfoRepository.updateTypeWork(
             workInfoData = workInfoData,
             companyUuid = companyUuid,
-            token = token
+            token = token,
         )
     }
 }

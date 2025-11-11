@@ -16,25 +16,29 @@ private const val ADDITION_UUID = "additionUuid"
 class EditAdditionViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
-    private val updateAdditionUseCase: UpdateAdditionUseCase
+    private val updateAdditionUseCase: UpdateAdditionUseCase,
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
-    initState = EditAddition.DataState(
-        uuid = "",
-        name = "",
-        price = "",
-        isLoading = true,
-        isVisible = false,
-        fullName = "",
-        hasEditNameError = false,
-        tag = "",
-        imageFieldData = EditImageFieldData(
-            value = null,
-            isError = false
-        )
-    )
-) {
-
-    override fun reduce(action: EditAddition.Action, dataState: EditAddition.DataState) {
+        initState =
+            EditAddition.DataState(
+                uuid = "",
+                name = "",
+                price = "",
+                isLoading = true,
+                isVisible = false,
+                fullName = "",
+                hasEditNameError = false,
+                tag = "",
+                imageFieldData =
+                    EditImageFieldData(
+                        value = null,
+                        isError = false,
+                    ),
+            ),
+    ) {
+    override fun reduce(
+        action: EditAddition.Action,
+        dataState: EditAddition.DataState,
+    ) {
         when (action) {
             is EditAddition.Action.OnBackClick -> backClick()
 
@@ -44,9 +48,10 @@ class EditAdditionViewModel(
 
             is EditAddition.Action.OnVisibleClick -> editOnVisible(isVisible = action.isVisible)
 
-            is EditAddition.Action.EditFullNameAddition -> editFullNameAddition(
-                fullName = action.fullName
-            )
+            is EditAddition.Action.EditFullNameAddition ->
+                editFullNameAddition(
+                    fullName = action.fullName,
+                )
 
             is EditAddition.Action.EditNameAddition -> editNameAddition(name = action.name)
 
@@ -73,26 +78,28 @@ class EditAdditionViewModel(
                         isVisible = addition.isVisible,
                         tag = addition.tag.orEmpty(),
                         isLoading = false,
-                        imageFieldData = EditImageFieldData(
-                            value = ProductImage(
-                                photoLink = addition.photoLink,
-                                newImageUri = null
+                        imageFieldData =
+                            EditImageFieldData(
+                                value =
+                                    ProductImage(
+                                        photoLink = addition.photoLink,
+                                        newImageUri = null,
+                                    ),
+                                isError = false,
                             ),
-                            isError = false
-                        )
                     )
                 }
             },
             onError = {
                 // No errors
-            }
+            },
         )
     }
 
     private fun editOnVisible(isVisible: Boolean) {
         setState {
             copy(
-                isVisible = isVisible
+                isVisible = isVisible,
             )
         }
     }
@@ -104,7 +111,7 @@ class EditAdditionViewModel(
     private fun editFullNameAddition(fullName: String) {
         setState {
             copy(
-                fullName = fullName
+                fullName = fullName,
             )
         }
     }
@@ -112,7 +119,7 @@ class EditAdditionViewModel(
     private fun editNameAddition(name: String) {
         setState {
             copy(
-                name = name
+                name = name,
             )
         }
     }
@@ -120,7 +127,7 @@ class EditAdditionViewModel(
     private fun editPriceAddition(price: String) {
         setState {
             copy(
-                price = price
+                price = price,
             )
         }
     }
@@ -128,7 +135,7 @@ class EditAdditionViewModel(
     private fun editTagAddition(tag: String) {
         setState {
             copy(
-                tag = tag
+                tag = tag,
             )
         }
     }
@@ -136,12 +143,14 @@ class EditAdditionViewModel(
     fun setImage(croppedImageUri: String) {
         setState {
             copy(
-                imageFieldData = imageFieldData.copy(
-                    value = imageFieldData.value?.copy(
-                        newImageUri = croppedImageUri
+                imageFieldData =
+                    imageFieldData.copy(
+                        value =
+                            imageFieldData.value?.copy(
+                                newImageUri = croppedImageUri,
+                            ),
+                        isError = false,
                     ),
-                    isError = false
-                )
             )
         }
     }
@@ -150,31 +159,32 @@ class EditAdditionViewModel(
         setState {
             copy(
                 isLoading = true,
-                hasEditNameError = false
+                hasEditNameError = false,
             )
         }
         viewModelScope.launchSafe(
             block = {
                 updateAdditionUseCase(
-                    updateAddition = state.value.run {
-                        UpdateAddition(
-                            name = name.trim(),
-                            fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
-                            price = price.toIntOrNull(),
-                            isVisible = isVisible,
-                            tag = tag.trim(),
-                            photoLink = imageFieldData.value?.photoLink,
-                            newImageUri = imageFieldData.value?.newImageUri
-                        )
-                    },
-                    additionUuid = state.value.uuid
+                    updateAddition =
+                        state.value.run {
+                            UpdateAddition(
+                                name = name.trim(),
+                                fullName = fullName.takeIf { fullName.isNotBlank() }?.trim(),
+                                price = price.toIntOrNull(),
+                                isVisible = isVisible,
+                                tag = tag.trim(),
+                                photoLink = imageFieldData.value?.photoLink,
+                                newImageUri = imageFieldData.value?.newImageUri,
+                            )
+                        },
+                    additionUuid = state.value.uuid,
                 )
                 setState {
                     copy(isLoading = false)
                 }
                 sendEvent {
                     EditAddition.Event.ShowUpdateAdditionSuccess(
-                        additionName = state.value.name
+                        additionName = state.value.name,
                     )
                 }
             },
@@ -188,7 +198,7 @@ class EditAdditionViewModel(
                         else -> copy(isLoading = false)
                     }
                 }
-            }
+            },
         )
     }
 }

@@ -6,11 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PatchMenuProductToAdditionGroupPriorityUuid(
     @SerialName("additionGroupUuidList")
-    val additionGroupUuidList: List<String>
+    val additionGroupUuidList: List<String>,
 ) {
     companion object {
-        val mock = PatchMenuProductToAdditionGroupPriorityUuid(
-            additionGroupUuidList = emptyList()
-        )
+        val mock =
+            PatchMenuProductToAdditionGroupPriorityUuid(
+                additionGroupUuidList = emptyList(),
+            )
     }
 }

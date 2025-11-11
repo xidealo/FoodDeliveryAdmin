@@ -41,10 +41,12 @@ private const val TITLE_POSITION_HIDDEN_KEY = "title_position_hidden"
 
 class AdditionGroupListFragment :
     BaseComposeFragment<AdditionGroupList.DataState, AdditionGroupListViewState, AdditionGroupList.Action, AdditionGroupList.Event>() {
-
     override val viewModel: AdditionGroupListViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(AdditionGroupList.Action.Init)
     }
@@ -52,7 +54,7 @@ class AdditionGroupListFragment :
     @Composable
     override fun Screen(
         state: AdditionGroupListViewState,
-        onAction: (AdditionGroupList.Action) -> Unit
+        onAction: (AdditionGroupList.Action) -> Unit,
     ) {
         AdditionGroupListScreen(state = state, onAction = onAction)
     }
@@ -60,7 +62,7 @@ class AdditionGroupListFragment :
     @Composable
     fun AdditionGroupListScreen(
         state: AdditionGroupListViewState,
-        onAction: (AdditionGroupList.Action) -> Unit
+        onAction: (AdditionGroupList.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_addition_group_list),
@@ -78,10 +80,10 @@ class AdditionGroupListFragment :
                     textStringId = R.string.action_addition_group_create,
                     onClick = {
                         findNavController().navigateSafe(AdditionGroupListFragmentDirections.toCreateAdditionGroup())
-                    }
+                    },
                 )
             },
-            actionButtonPosition = FabPosition.End
+            actionButtonPosition = FabPosition.End,
         ) {
             when {
                 state.isLoading -> LoadingScreen()
@@ -93,52 +95,52 @@ class AdditionGroupListFragment :
     @Composable
     private fun AdditionGroupListSuccess(
         state: AdditionGroupListViewState,
-        onAction: (AdditionGroupList.Action) -> Unit
+        onAction: (AdditionGroupList.Action) -> Unit,
     ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             if (state.visibleAdditionItems.isNotEmpty()) {
                 item(
-                    key = TITLE_POSITION_VISIBLE_KEY
+                    key = TITLE_POSITION_VISIBLE_KEY,
                 ) {
                     Text(
                         text = stringResource(id = R.string.title_menu_list_position_visible),
-                        style = AdminTheme.typography.titleMedium.bold
+                        style = AdminTheme.typography.titleMedium.bold,
                     )
                 }
                 items(
                     items = state.visibleAdditionItems,
                     key = { additionItem ->
                         additionItem.uuid
-                    }
+                    },
                 ) { visibleAddition ->
                     AdditionGroupCard(
                         additionItem = visibleAddition,
-                        onAction = onAction
+                        onAction = onAction,
                     )
                 }
             }
             if (state.hiddenAdditionItems.isNotEmpty()) {
                 item(
-                    key = TITLE_POSITION_HIDDEN_KEY
+                    key = TITLE_POSITION_HIDDEN_KEY,
                 ) {
                     Text(
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
                         style = AdminTheme.typography.titleMedium.bold,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(top = 8.dp),
                     )
                 }
                 items(
                     items = state.hiddenAdditionItems,
                     key = { additionGroupItem ->
                         additionGroupItem.uuid
-                    }
+                    },
                 ) { hiddenAddition ->
                     AdditionGroupCard(
                         additionItem = hiddenAddition,
-                        onAction = onAction
+                        onAction = onAction,
                     )
                 }
             }
@@ -148,29 +150,30 @@ class AdditionGroupListFragment :
     @Composable
     private fun AdditionGroupCard(
         additionItem: AdditionGroupListViewState.AdditionGroupItem,
-        onAction: (AdditionGroupList.Action) -> Unit
+        onAction: (AdditionGroupList.Action) -> Unit,
     ) {
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 onAction(
                     AdditionGroupList.Action.OnAdditionClick(
-                        additionUuid = additionItem.uuid
-                    )
+                        additionUuid = additionItem.uuid,
+                    ),
                 )
-            }
+            },
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = additionItem.name,
                     modifier = Modifier.weight(1f),
                     style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface
+                    color = AdminTheme.colors.main.onSurface,
                 )
 
                 IconButton(
@@ -179,15 +182,15 @@ class AdditionGroupListFragment :
                         onAction(
                             AdditionGroupList.Action.OnVisibleClick(
                                 isVisible = additionItem.isVisible,
-                                uuid = additionItem.uuid
-                            )
+                                uuid = additionItem.uuid,
+                            ),
                         )
-                    }
+                    },
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_visible),
                         contentDescription = null,
-                        tint = additionItem.iconColor
+                        tint = additionItem.iconColor,
                     )
                 }
             }
@@ -195,18 +198,21 @@ class AdditionGroupListFragment :
     }
 
     @Composable
-    override fun mapState(state: AdditionGroupList.DataState): AdditionGroupListViewState {
-        return AdditionGroupListViewState(
-            visibleAdditionItems = state.visibleAdditionGroups.map { additionGroup ->
-                additionGroup.toItem()
-            }.toPersistentList(),
-            hiddenAdditionItems = state.hiddenAdditionGroups.map { additionGroup ->
-                additionGroup.toItem()
-            }.toPersistentList(),
+    override fun mapState(state: AdditionGroupList.DataState): AdditionGroupListViewState =
+        AdditionGroupListViewState(
+            visibleAdditionItems =
+                state.visibleAdditionGroups
+                    .map { additionGroup ->
+                        additionGroup.toItem()
+                    }.toPersistentList(),
+            hiddenAdditionItems =
+                state.hiddenAdditionGroups
+                    .map { additionGroup ->
+                        additionGroup.toItem()
+                    }.toPersistentList(),
             isRefreshing = state.isRefreshing,
-            isLoading = state.isLoading
+            isLoading = state.isLoading,
         )
-    }
 
     override fun handleEvent(event: AdditionGroupList.Event) {
         when (event) {
@@ -214,8 +220,8 @@ class AdditionGroupListFragment :
             is AdditionGroupList.Event.OnAdditionGroupClick -> {
                 findNavController().navigateSafe(
                     AdditionGroupListFragmentDirections.toEditAdditionGroupFragment(
-                        event.additionUuid
-                    )
+                        event.additionUuid,
+                    ),
                 )
             }
         }
@@ -226,27 +232,30 @@ class AdditionGroupListFragment :
     fun AdditionListScreenPreview() {
         AdminTheme {
             AdditionGroupListScreen(
-                state = AdditionGroupListViewState(
-                    visibleAdditionItems = persistentListOf(
-                        AdditionGroupListViewState.AdditionGroupItem(
-                            uuid = "1",
-                            name = "additio1",
-                            iconColor = AdminTheme.colors.main.primary,
-                            isVisible = true
-                        )
+                state =
+                    AdditionGroupListViewState(
+                        visibleAdditionItems =
+                            persistentListOf(
+                                AdditionGroupListViewState.AdditionGroupItem(
+                                    uuid = "1",
+                                    name = "additio1",
+                                    iconColor = AdminTheme.colors.main.primary,
+                                    isVisible = true,
+                                ),
+                            ),
+                        hiddenAdditionItems =
+                            persistentListOf(
+                                AdditionGroupListViewState.AdditionGroupItem(
+                                    uuid = "2",
+                                    name = "additio2",
+                                    iconColor = AdminTheme.colors.main.onSecondary,
+                                    isVisible = false,
+                                ),
+                            ),
+                        isRefreshing = false,
+                        isLoading = false,
                     ),
-                    hiddenAdditionItems = persistentListOf(
-                        AdditionGroupListViewState.AdditionGroupItem(
-                            uuid = "2",
-                            name = "additio2",
-                            iconColor = AdminTheme.colors.main.onSecondary,
-                            isVisible = false
-                        )
-                    ),
-                    isRefreshing = false,
-                    isLoading = false
-                ),
-                onAction = {}
+                onAction = {},
             )
         }
     }

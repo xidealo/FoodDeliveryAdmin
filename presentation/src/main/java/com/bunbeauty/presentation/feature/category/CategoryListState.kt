@@ -11,31 +11,51 @@ interface CategoryListState {
         val isLoading: Boolean,
         val categoryList: List<Category>,
         val isRefreshing: Boolean,
-        val isEditPriority: Boolean
+        val isEditPriority: Boolean,
     ) : BaseDataState {
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR
+            ERROR,
         }
     }
 
     sealed interface Action : BaseAction {
         data object OnRefreshData : Action
+
         data object OnBackClicked : Action
+
         data object OnCancelClicked : Action
+
         data object OnPriorityEditClicked : Action
+
         data object OnCreateClicked : Action
+
         data object Init : Action
-        data class PutInItem(val fromIndex: Int, val toIndex: Int) : Action
-        data class OnSaveEditPriorityCategoryClick(val updatedList: List<Category>) : Action
-        data class OnCategoryClick(val categoryUuid: String) : Action
+
+        data class PutInItem(
+            val fromIndex: Int,
+            val toIndex: Int,
+        ) : Action
+
+        data class OnSaveEditPriorityCategoryClick(
+            val updatedList: List<Category>,
+        ) : Action
+
+        data class OnCategoryClick(
+            val categoryUuid: String,
+        ) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
+
         data object CreateCategoryEvent : Event
+
         data object ShowUpdateCategoryListSuccess : Event
-        data class OnCategoryClick(val categoryUuid: String) : Event
+
+        data class OnCategoryClick(
+            val categoryUuid: String,
+        ) : Event
     }
 }

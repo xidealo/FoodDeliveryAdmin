@@ -40,34 +40,32 @@ import com.bunbeauty.domain.enums.OrderStatus
 import kotlinx.coroutines.flow.Flow
 
 interface FoodDeliveryApi {
-
     // LOGIN
-    suspend fun login(
-        userAuthorizationRequest: UserAuthorizationRequest
-    ): ApiResult<UserAuthorizationResponse>
+    suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
 
     suspend fun getUser(token: String): ApiResult<UserResponse>
 
     suspend fun putNotificationToken(
         updateNotificationTokenRequest: UpdateNotificationTokenRequest,
-        token: String
+        token: String,
     ): ApiResult<Unit>
 
     suspend fun deleteNotificationToken(token: String): ApiResult<Unit>
 
     suspend fun putUnlimitedNotification(
         updateUnlimitedNotificationRequest: UpdateUnlimitedNotificationRequest,
-        token: String
+        token: String,
     ): ApiResult<Unit>
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
+
     suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer>
 
     suspend fun patchCafe(
         cafeUuid: String,
         patchCafe: PatchCafeServer,
-        token: String
+        token: String,
     ): ApiResult<CafeServer>
 
     // CITY
@@ -75,52 +73,58 @@ interface FoodDeliveryApi {
 
     // MENU PRODUCT
     suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>>
+
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
+
     suspend fun patchMenuProduct(
         menuProductUuid: String,
         menuProductPatchServer: MenuProductPatchServer,
-        token: String
+        token: String,
     ): ApiResult<MenuProductServer>
 
     suspend fun patchMenuProductAdditions(
         token: String,
         menuProductToAdditionGroupUuid: String,
-        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer
+        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer,
     ): ApiResult<Unit>
 
     suspend fun postMenuProduct(
         token: String,
-        menuProductPostServer: MenuProductPostServer
+        menuProductPostServer: MenuProductPostServer,
     ): ApiResult<MenuProductServer>
 
     // STATISTIC
     suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String
+        period: String,
     ): List<StatisticServer>
 
     // ORDER
 
     suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): Flow<ApiResult<OrderServer>>
 
     suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): ApiResult<ServerList<OrderServer>>
 
-    suspend fun getOrderByUuid(token: String, orderUuid: String): ApiResult<OrderDetailsServer>
+    suspend fun getOrderByUuid(
+        token: String,
+        orderUuid: String,
+    ): ApiResult<OrderDetailsServer>
+
     suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer>
 
     suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
-        status: OrderStatus
+        status: OrderStatus,
     ): ApiResult<OrderDetailsServer>
 
     suspend fun getWorkInfo(companyUuid: String): ApiResult<WorkInfoData>
@@ -129,42 +133,43 @@ interface FoodDeliveryApi {
     suspend fun patchCompany(
         token: String,
         companyPatch: CompanyPatchServer,
-        companyUuid: String
+        companyUuid: String,
     ): ApiResult<Unit>
 
     // CATEGORIES
     suspend fun getCategoriesByCompanyUuid(
         token: String,
-        companyUuid: String
+        companyUuid: String,
     ): ApiResult<ServerList<CategoryServer>>
 
     suspend fun postCategory(
         token: String,
-        categoryServerPost: CreateCategoryPostServer
+        categoryServerPost: CreateCategoryPostServer,
     ): ApiResult<CategoryServer>
 
     suspend fun patchCategory(
         token: String,
         uuid: String,
-        patchCategory: CategoryPatchServer
+        patchCategory: CategoryPatchServer,
     ): ApiResult<CategoryServer>
 
     suspend fun patchCategoryPriority(
         token: String,
-        patchCategoryItem: PatchCategoryList
+        patchCategoryItem: PatchCategoryList,
     ): ApiResult<Unit>
 
     // NON WORKING DAYS
     suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>>
+
     suspend fun postNonWorkingDay(
         token: String,
-        postNonWorkingDay: PostNonWorkingDayServer
+        postNonWorkingDay: PostNonWorkingDayServer,
     ): ApiResult<NonWorkingDayServer>
 
     suspend fun patchNonWorkingDay(
         token: String,
         uuid: String,
-        patchNonWorkingDay: PatchNonWorkingDayServer
+        patchNonWorkingDay: PatchNonWorkingDayServer,
     ): ApiResult<NonWorkingDayServer>
 
     // ADDITION LIST
@@ -173,41 +178,42 @@ interface FoodDeliveryApi {
     suspend fun patchAddition(
         additionUuid: String,
         additionPatchServer: AdditionPatchServer,
-        token: String
+        token: String,
     ): ApiResult<AdditionServer>
 
     suspend fun postAddition(
         additionPostServer: AdditionPostServer,
-        token: String
+        token: String,
     ): ApiResult<AdditionServer>
 
     // ADDITION GROUP LIST
     suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>>
+
     suspend fun patchAdditionGroup(
         additionGroupUuid: String,
         additionGroupPatchServer: AdditionGroupPatchServer,
-        token: String
+        token: String,
     ): ApiResult<AdditionGroupServer>
 
     suspend fun postAdditionGroup(
         token: String,
-        additionGroupServerPost: AdditionGroupPostServer
+        additionGroupServerPost: AdditionGroupPostServer,
     ): ApiResult<AdditionGroupServer>
 
     // MENU PRODUCT TO ADDITION GROUP
     suspend fun getMenuProductToAdditionGroup(
         token: String,
-        uuid: String
+        uuid: String,
     ): ApiResult<MenuProductToAdditionGroupServer>
 
     // MENU PRODUCT TO ADDITION GROUP TO ADDITION
     suspend fun getMenuProductToAdditionGroupToAdditionList(
         token: String,
-        uuidList: List<String>
+        uuidList: List<String>,
     ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>>
 
     suspend fun patchMenuProductToAdditionGroupPriorityUuid(
         token: String,
-        additionGroupListUuid: PatchMenuProductToAdditionGroupPriorityUuid
+        additionGroupListUuid: PatchMenuProductToAdditionGroupPriorityUuid,
     ): ApiResult<Unit>
 }

@@ -10,11 +10,12 @@ import com.bunbeauty.data.model.entity.NonWorkingDayEntity
 @Database(
     entities = [
         CityEntity::class,
-        NonWorkingDayEntity::class
+        NonWorkingDayEntity::class,
     ],
-    version = 29
+    version = 29,
 )
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
+
     abstract fun nonWorkingDayDao(): NonWorkingDayDao
 }

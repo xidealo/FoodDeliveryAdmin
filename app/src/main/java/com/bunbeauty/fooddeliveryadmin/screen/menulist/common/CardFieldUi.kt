@@ -8,5 +8,5 @@ data class CardFieldUi(
     @StringRes val labelResId: Int,
     override val value: String?,
     override val isError: Boolean,
-    @StringRes val errorResId: Int
+    @StringRes val errorResId: Int,
 ) : FieldUi<String?>()

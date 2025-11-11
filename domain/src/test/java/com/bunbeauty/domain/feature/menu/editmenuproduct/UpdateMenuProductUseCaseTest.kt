@@ -26,7 +26,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class UpdateMenuProductUseCaseTest {
-
     private val uuid = "uuid"
     private val name = "name"
     private val newPrice = "100"
@@ -41,195 +40,215 @@ class UpdateMenuProductUseCaseTest {
     private val photoLinkInitial = "linkInitial"
     private val photoLink = "link"
     private val tokenMock = "token"
-    private val categories = listOf(
-        SelectableCategory(
-            category = Category(
-                uuid = "123",
-                name = "",
-                priority = 0
+    private val categories =
+        listOf(
+            SelectableCategory(
+                category =
+                    Category(
+                        uuid = "123",
+                        name = "",
+                        priority = 0,
+                    ),
+                selected = true,
             ),
-            selected = true
         )
-    )
 
-    private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase = mockk {
-        every { this@mockk.invoke(name) } returns name
-    }
-    private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase = mockk {
-        every { this@mockk.invoke(newPrice) } returns newPriceInt
-    }
-    private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase = mockk {
-        every { this@mockk.invoke(oldPrice = oldPrice, newPrice = newPriceInt) } returns oldPriceInt
-    }
-    private val validateMenuProductNutritionUseCase: ValidateMenuProductNutritionUseCase = mockk {
-        every { this@mockk.invoke(nutrition = nutrition, units = units) } returns 200
-    }
-    private val validateMenuProductDescriptionUseCase: ValidateMenuProductDescriptionUseCase = mockk {
-        every { this@mockk.invoke(description = description) } returns description
-    }
-    private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase = mockk {
-        every { this@mockk.invoke(categories = categories) } returns categories
-    }
-    private val uploadPhotoUseCase: UploadPhotoUseCase = mockk {
-        coEvery { this@mockk.invoke(imageUri = imageUri) } returns Photo(url = photoLink)
-    }
-    private val deletePhotoUseCase: DeletePhotoUseCase = mockk {
-        coEvery { this@mockk.invoke(photoLink = photoLinkInitial) } returns Unit
-    }
+    private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase =
+        mockk {
+            every { this@mockk.invoke(name) } returns name
+        }
+    private val validateMenuProductNewPriceUseCase: ValidateMenuProductNewPriceUseCase =
+        mockk {
+            every { this@mockk.invoke(newPrice) } returns newPriceInt
+        }
+    private val validateMenuProductOldPriceUseCase: ValidateMenuProductOldPriceUseCase =
+        mockk {
+            every { this@mockk.invoke(oldPrice = oldPrice, newPrice = newPriceInt) } returns oldPriceInt
+        }
+    private val validateMenuProductNutritionUseCase: ValidateMenuProductNutritionUseCase =
+        mockk {
+            every { this@mockk.invoke(nutrition = nutrition, units = units) } returns 200
+        }
+    private val validateMenuProductDescriptionUseCase: ValidateMenuProductDescriptionUseCase =
+        mockk {
+            every { this@mockk.invoke(description = description) } returns description
+        }
+    private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase =
+        mockk {
+            every { this@mockk.invoke(categories = categories) } returns categories
+        }
+    private val uploadPhotoUseCase: UploadPhotoUseCase =
+        mockk {
+            coEvery { this@mockk.invoke(imageUri = imageUri) } returns Photo(url = photoLink)
+        }
+    private val deletePhotoUseCase: DeletePhotoUseCase =
+        mockk {
+            coEvery { this@mockk.invoke(photoLink = photoLinkInitial) } returns Unit
+        }
     private val menuProductRepo: MenuProductRepo = mockk()
-    private val dataStoreRepo: DataStoreRepo = mockk {
-        coEvery { getToken() } returns tokenMock
-    }
+    private val dataStoreRepo: DataStoreRepo =
+        mockk {
+            coEvery { getToken() } returns tokenMock
+        }
     private lateinit var updateMenuProductUseCase: UpdateMenuProductUseCase
 
     @BeforeTest
     fun setup() {
-        updateMenuProductUseCase = UpdateMenuProductUseCase(
-            validateMenuProductNameUseCase = validateMenuProductNameUseCase,
-            validateMenuProductNewPriceUseCase = validateMenuProductNewPriceUseCase,
-            validateMenuProductOldPriceUseCase = validateMenuProductOldPriceUseCase,
-            validateMenuProductNutritionUseCase = validateMenuProductNutritionUseCase,
-            validateMenuProductDescriptionUseCase = validateMenuProductDescriptionUseCase,
-            validateMenuProductCategoriesUseCase = validateMenuProductCategoriesUseCase,
-            uploadPhotoUseCase = uploadPhotoUseCase,
-            deletePhotoUseCase = deletePhotoUseCase,
-            menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo
-        )
+        updateMenuProductUseCase =
+            UpdateMenuProductUseCase(
+                validateMenuProductNameUseCase = validateMenuProductNameUseCase,
+                validateMenuProductNewPriceUseCase = validateMenuProductNewPriceUseCase,
+                validateMenuProductOldPriceUseCase = validateMenuProductOldPriceUseCase,
+                validateMenuProductNutritionUseCase = validateMenuProductNutritionUseCase,
+                validateMenuProductDescriptionUseCase = validateMenuProductDescriptionUseCase,
+                validateMenuProductCategoriesUseCase = validateMenuProductCategoriesUseCase,
+                uploadPhotoUseCase = uploadPhotoUseCase,
+                deletePhotoUseCase = deletePhotoUseCase,
+                menuProductRepo = menuProductRepo,
+                dataStoreRepo = dataStoreRepo,
+            )
     }
 
     @Test
-    fun `throw MenuProductNotUpdatedException when updating failed`() = runTest {
-        coEvery {
-            menuProductRepo.updateMenuProduct(
-                menuProductUuid = uuid,
-                token = tokenMock,
-                updateMenuProduct = UpdateMenuProduct(
-                    name = name,
-                    newPrice = newPriceInt,
-                    oldPrice = oldPriceInt,
-                    utils = units,
-                    nutrition = nutritionInt,
-                    description = description,
-                    comboDescription = "",
-                    photoLink = null,
-                    isVisible = true,
-                    isRecommended = false,
-                    categories = listOf("123")
+    fun `throw MenuProductNotUpdatedException when updating failed`() =
+        runTest {
+            coEvery {
+                menuProductRepo.updateMenuProduct(
+                    menuProductUuid = uuid,
+                    token = tokenMock,
+                    updateMenuProduct =
+                        UpdateMenuProduct(
+                            name = name,
+                            newPrice = newPriceInt,
+                            oldPrice = oldPriceInt,
+                            utils = units,
+                            nutrition = nutritionInt,
+                            description = description,
+                            comboDescription = "",
+                            photoLink = null,
+                            isVisible = true,
+                            isRecommended = false,
+                            categories = listOf("123"),
+                        ),
                 )
-            )
-        } returns null
+            } returns null
 
-        assertFailsWith<MenuProductNotUpdatedException> {
-            updateMenuProductUseCase(
-                UpdateMenuProductUseCase.Params(
-                    uuid = uuid,
-                    name = name,
-                    newPrice = newPrice,
-                    oldPrice = oldPrice,
-                    nutrition = nutrition,
-                    units = units,
-                    description = description,
-                    comboDescription = "",
-                    selectedCategories = categories,
-                    isVisible = true,
-                    isRecommended = false,
-                    newImageUri = null,
-                    photoLink = photoLinkInitial
+            assertFailsWith<MenuProductNotUpdatedException> {
+                updateMenuProductUseCase(
+                    UpdateMenuProductUseCase.Params(
+                        uuid = uuid,
+                        name = name,
+                        newPrice = newPrice,
+                        oldPrice = oldPrice,
+                        nutrition = nutrition,
+                        units = units,
+                        description = description,
+                        comboDescription = "",
+                        selectedCategories = categories,
+                        isVisible = true,
+                        isRecommended = false,
+                        newImageUri = null,
+                        photoLink = photoLinkInitial,
+                    ),
                 )
-            )
+            }
         }
-    }
 
     @Test
-    fun `return Unit when successfully updated with initial photo link`() = runTest {
-        coEvery {
-            menuProductRepo.updateMenuProduct(
-                menuProductUuid = uuid,
-                token = tokenMock,
-                updateMenuProduct = UpdateMenuProduct(
-                    name = name,
-                    newPrice = newPriceInt,
-                    oldPrice = oldPriceInt,
-                    utils = units,
-                    nutrition = nutritionInt,
-                    description = description,
-                    comboDescription = "",
-                    photoLink = null,
-                    isVisible = true,
-                    isRecommended = false,
-                    categories = listOf("123")
+    fun `return Unit when successfully updated with initial photo link`() =
+        runTest {
+            coEvery {
+                menuProductRepo.updateMenuProduct(
+                    menuProductUuid = uuid,
+                    token = tokenMock,
+                    updateMenuProduct =
+                        UpdateMenuProduct(
+                            name = name,
+                            newPrice = newPriceInt,
+                            oldPrice = oldPriceInt,
+                            utils = units,
+                            nutrition = nutritionInt,
+                            description = description,
+                            comboDescription = "",
+                            photoLink = null,
+                            isVisible = true,
+                            isRecommended = false,
+                            categories = listOf("123"),
+                        ),
                 )
-            )
-        } returns mockk()
+            } returns mockk()
 
-        val result = updateMenuProductUseCase(
-            UpdateMenuProductUseCase.Params(
-                uuid = "uuid",
-                name = name,
-                newPrice = newPrice,
-                oldPrice = oldPrice,
-                nutrition = nutrition,
-                units = units,
-                description = description,
-                comboDescription = "",
-                selectedCategories = categories,
-                isVisible = true,
-                isRecommended = false,
-                newImageUri = null,
-                photoLink = photoLinkInitial
-            )
-        )
+            val result =
+                updateMenuProductUseCase(
+                    UpdateMenuProductUseCase.Params(
+                        uuid = "uuid",
+                        name = name,
+                        newPrice = newPrice,
+                        oldPrice = oldPrice,
+                        nutrition = nutrition,
+                        units = units,
+                        description = description,
+                        comboDescription = "",
+                        selectedCategories = categories,
+                        isVisible = true,
+                        isRecommended = false,
+                        newImageUri = null,
+                        photoLink = photoLinkInitial,
+                    ),
+                )
 
-        coVerify(exactly = 0) {
-            deletePhotoUseCase(photoLink = photoLinkInitial)
+            coVerify(exactly = 0) {
+                deletePhotoUseCase(photoLink = photoLinkInitial)
+            }
+            assertEquals(Unit, result)
         }
-        assertEquals(Unit, result)
-    }
 
     @Test
-    fun `return Unit when successfully updated with new photo uri`() = runTest {
-        coEvery {
-            menuProductRepo.updateMenuProduct(
-                menuProductUuid = uuid,
-                token = tokenMock,
-                updateMenuProduct = UpdateMenuProduct(
-                    name = name,
-                    newPrice = newPriceInt,
-                    oldPrice = oldPriceInt,
-                    utils = units,
-                    nutrition = nutritionInt,
-                    description = description,
-                    comboDescription = "",
-                    photoLink = photoLink,
-                    isVisible = true,
-                    isRecommended = false,
-                    categories = listOf("123")
+    fun `return Unit when successfully updated with new photo uri`() =
+        runTest {
+            coEvery {
+                menuProductRepo.updateMenuProduct(
+                    menuProductUuid = uuid,
+                    token = tokenMock,
+                    updateMenuProduct =
+                        UpdateMenuProduct(
+                            name = name,
+                            newPrice = newPriceInt,
+                            oldPrice = oldPriceInt,
+                            utils = units,
+                            nutrition = nutritionInt,
+                            description = description,
+                            comboDescription = "",
+                            photoLink = photoLink,
+                            isVisible = true,
+                            isRecommended = false,
+                            categories = listOf("123"),
+                        ),
                 )
-            )
-        } returns mockk()
+            } returns mockk()
 
-        val result = updateMenuProductUseCase(
-            UpdateMenuProductUseCase.Params(
-                uuid = "uuid",
-                name = name,
-                newPrice = newPrice,
-                oldPrice = oldPrice,
-                nutrition = nutrition,
-                units = units,
-                description = description,
-                comboDescription = "",
-                selectedCategories = categories,
-                isVisible = true,
-                isRecommended = false,
-                newImageUri = imageUri,
-                photoLink = photoLinkInitial
-            )
-        )
+            val result =
+                updateMenuProductUseCase(
+                    UpdateMenuProductUseCase.Params(
+                        uuid = "uuid",
+                        name = name,
+                        newPrice = newPrice,
+                        oldPrice = oldPrice,
+                        nutrition = nutrition,
+                        units = units,
+                        description = description,
+                        comboDescription = "",
+                        selectedCategories = categories,
+                        isVisible = true,
+                        isRecommended = false,
+                        newImageUri = imageUri,
+                        photoLink = photoLinkInitial,
+                    ),
+                )
 
-        coVerify(exactly = 1) {
-            deletePhotoUseCase(photoLink = photoLinkInitial)
+            coVerify(exactly = 1) {
+                deletePhotoUseCase(photoLink = photoLinkInitial)
+            }
+            assertEquals(Unit, result)
         }
-        assertEquals(Unit, result)
-    }
 }

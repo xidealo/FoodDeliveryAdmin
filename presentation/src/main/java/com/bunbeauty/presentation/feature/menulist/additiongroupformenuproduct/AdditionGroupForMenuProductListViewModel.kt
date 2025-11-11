@@ -12,46 +12,50 @@ import kotlin.Int
 class AdditionGroupForMenuProductListViewModel(
     private val getAdditionGroupListFromMenuProductUseCase: GetAdditionGroupListFromMenuProductUseCase,
     private val getAdditionListNameUseCase: GetAdditionListNameUseCase,
-    private val saveAdditionGroupForMenuProductListUseCase: SaveAdditionGroupForMenuProductListPriorityUseCase
-) :
-    BaseStateViewModel<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>(
-        initState = AdditionGroupForMenuProductList.DataState(
-            additionGroupList = listOf(),
-            state = AdditionGroupForMenuProductList.DataState.State.LOADING,
-            isRefreshing = false,
-            isEditPriority = false
-        )
+    private val saveAdditionGroupForMenuProductListUseCase: SaveAdditionGroupForMenuProductListPriorityUseCase,
+) : BaseStateViewModel<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>(
+        initState =
+            AdditionGroupForMenuProductList.DataState(
+                additionGroupList = listOf(),
+                state = AdditionGroupForMenuProductList.DataState.State.LOADING,
+                isRefreshing = false,
+                isEditPriority = false,
+            ),
     ) {
-
     override fun reduce(
         action: AdditionGroupForMenuProductList.Action,
-        dataState: AdditionGroupForMenuProductList.DataState
+        dataState: AdditionGroupForMenuProductList.DataState,
     ) {
         when (action) {
-            is AdditionGroupForMenuProductList.Action.Init -> loadData(
-                menuProductUuid = action.menuProductUuid
-            )
+            is AdditionGroupForMenuProductList.Action.Init ->
+                loadData(
+                    menuProductUuid = action.menuProductUuid,
+                )
 
-            is AdditionGroupForMenuProductList.Action.OnAdditionGroupClick -> onAdditionGroupClick(
-                additionGroupUuid = action.uuid
-            )
+            is AdditionGroupForMenuProductList.Action.OnAdditionGroupClick ->
+                onAdditionGroupClick(
+                    additionGroupUuid = action.uuid,
+                )
 
             AdditionGroupForMenuProductList.Action.OnBackClick -> backClick()
             AdditionGroupForMenuProductList.Action.OnCreateClick -> onCreateClick()
-            is AdditionGroupForMenuProductList.Action.RefreshData -> refreshData(
-                menuProductUuid = action.menuProductUuid
-            )
+            is AdditionGroupForMenuProductList.Action.RefreshData ->
+                refreshData(
+                    menuProductUuid = action.menuProductUuid,
+                )
 
-            is AdditionGroupForMenuProductList.Action.MoveSelectedItem -> moveSelectedItem(
-                action.fromIndex,
-                action.toIndex
-            )
+            is AdditionGroupForMenuProductList.Action.MoveSelectedItem ->
+                moveSelectedItem(
+                    action.fromIndex,
+                    action.toIndex,
+                )
 
             AdditionGroupForMenuProductList.Action.OnCancelClicked -> cancelEditPriority()
             AdditionGroupForMenuProductList.Action.OnPriorityEditClicked -> onEditPriorityClicked()
-            is AdditionGroupForMenuProductList.Action.OnSaveEditPriorityClick -> saveAdditionGroupForMenuProductListDrop(
-                additionGroupWithAdditions = action.updateAdditionGroupForMenuProductList
-            )
+            is AdditionGroupForMenuProductList.Action.OnSaveEditPriorityClick ->
+                saveAdditionGroupForMenuProductListDrop(
+                    additionGroupWithAdditions = action.updateAdditionGroupForMenuProductList,
+                )
         }
     }
 
@@ -61,37 +65,39 @@ class AdditionGroupForMenuProductListViewModel(
                 setState {
                     copy(
                         state = AdditionGroupForMenuProductList.DataState.State.LOADING,
-                        isRefreshing = false
+                        isRefreshing = false,
                     )
                 }
 
-                val additionGroupList = getAdditionGroupListFromMenuProductUseCase(
-                    menuProductUuid = menuProductUuid
-                ).map { additionGroupList ->
-                    AdditionGroupForMenuProduct(
-                        uuid = additionGroupList.additionGroup.uuid,
-                        name = additionGroupList.additionGroup.name,
-                        additionNameList = getAdditionListNameUseCase(
-                            additionList = additionGroupList.additionList
-                        ),
-                        priority = additionGroupList.additionGroup.priority
-                    )
-                }
+                val additionGroupList =
+                    getAdditionGroupListFromMenuProductUseCase(
+                        menuProductUuid = menuProductUuid,
+                    ).map { additionGroupList ->
+                        AdditionGroupForMenuProduct(
+                            uuid = additionGroupList.additionGroup.uuid,
+                            name = additionGroupList.additionGroup.name,
+                            additionNameList =
+                                getAdditionListNameUseCase(
+                                    additionList = additionGroupList.additionList,
+                                ),
+                            priority = additionGroupList.additionGroup.priority,
+                        )
+                    }
 
                 setState {
                     copy(
                         additionGroupList = additionGroupList,
-                        state = AdditionGroupForMenuProductList.DataState.State.SUCCESS
+                        state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = AdditionGroupForMenuProductList.DataState.State.ERROR
+                        state = AdditionGroupForMenuProductList.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
@@ -100,42 +106,46 @@ class AdditionGroupForMenuProductListViewModel(
             block = {
                 setState {
                     copy(
-                        isRefreshing = true
+                        isRefreshing = true,
                     )
                 }
-                val additionGroupList = getAdditionGroupListFromMenuProductUseCase(
-                    menuProductUuid = menuProductUuid
-                ).map { additionGroupList ->
-                    AdditionGroupForMenuProduct(
-                        uuid = additionGroupList.additionGroup.uuid,
-                        name = additionGroupList.additionGroup.name,
-                        additionNameList = getAdditionListNameUseCase(
-                            additionList = additionGroupList.additionList
-                        ),
-                        priority = additionGroupList.additionGroup.priority
-                    )
-                }
+                val additionGroupList =
+                    getAdditionGroupListFromMenuProductUseCase(
+                        menuProductUuid = menuProductUuid,
+                    ).map { additionGroupList ->
+                        AdditionGroupForMenuProduct(
+                            uuid = additionGroupList.additionGroup.uuid,
+                            name = additionGroupList.additionGroup.name,
+                            additionNameList =
+                                getAdditionListNameUseCase(
+                                    additionList = additionGroupList.additionList,
+                                ),
+                            priority = additionGroupList.additionGroup.priority,
+                        )
+                    }
 
                 setState {
                     copy(
                         additionGroupList = additionGroupList,
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
-                        isRefreshing = false
+                        isRefreshing = false,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = AdditionGroupForMenuProductList.DataState.State.ERROR
+                        state = AdditionGroupForMenuProductList.DataState.State.ERROR,
                     )
                 }
-            }
-
+            },
         )
     }
 
-    private fun moveSelectedItem(fromIndex: Int, toIndex: Int) {
+    private fun moveSelectedItem(
+        fromIndex: Int,
+        toIndex: Int,
+    ) {
         setState {
             val mutableList = additionGroupList.toMutableList()
 
@@ -150,7 +160,7 @@ class AdditionGroupForMenuProductListViewModel(
     private fun onAdditionGroupClick(additionGroupUuid: String) {
         sendEvent {
             AdditionGroupForMenuProductList.Event.OnAdditionGroupClicked(
-                additionGroupUuid = additionGroupUuid
+                additionGroupUuid = additionGroupUuid,
             )
         }
     }
@@ -171,7 +181,7 @@ class AdditionGroupForMenuProductListViewModel(
         setState {
             copy(
                 state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
-                isEditPriority = false
+                isEditPriority = false,
             )
         }
     }
@@ -180,7 +190,7 @@ class AdditionGroupForMenuProductListViewModel(
         setState {
             copy(
                 state = AdditionGroupForMenuProductList.DataState.State.SUCCESS_DRAG_DROP,
-                isEditPriority = true
+                isEditPriority = true,
             )
         }
     }
@@ -190,36 +200,33 @@ class AdditionGroupForMenuProductListViewModel(
             block = {
                 setState {
                     copy(
-                        state = AdditionGroupForMenuProductList.DataState.State.LOADING
+                        state = AdditionGroupForMenuProductList.DataState.State.LOADING,
                     )
                 }
                 val newPriorityAdditionGroupForMenuProductList =
                     updatedPrioritiesItem(additionGroupWithAdditions)
                 saveAdditionGroupForMenuProductListUseCase(
-                    additionGroupList = newPriorityAdditionGroupForMenuProductList
+                    additionGroupList = newPriorityAdditionGroupForMenuProductList,
                 )
                 setState {
                     copy(
                         isEditPriority = false,
-                        state = AdditionGroupForMenuProductList.DataState.State.SUCCESS
+                        state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = AdditionGroupForMenuProductList.DataState.State.ERROR
+                        state = AdditionGroupForMenuProductList.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
-    private fun updatedPrioritiesItem(
-        additionGroupWithAdditions: List<AdditionGroupForMenuProduct>
-    ): List<String> {
-        return additionGroupWithAdditions.map { additionGroup ->
+    private fun updatedPrioritiesItem(additionGroupWithAdditions: List<AdditionGroupForMenuProduct>): List<String> =
+        additionGroupWithAdditions.map { additionGroup ->
             additionGroup.uuid
         }
-    }
 }

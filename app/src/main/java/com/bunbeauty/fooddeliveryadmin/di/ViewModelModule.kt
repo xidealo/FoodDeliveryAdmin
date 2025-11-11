@@ -33,224 +33,225 @@ import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-fun viewModelModule() = module {
-    viewModel {
-        AdditionGroupListViewModel(
-            getSeparatedAdditionGroupListUseCase = get(),
-            updateVisibleAdditionGroupListUseCase = get()
-        )
-    }
+fun viewModelModule() =
+    module {
+        viewModel {
+            AdditionGroupListViewModel(
+                getSeparatedAdditionGroupListUseCase = get(),
+                updateVisibleAdditionGroupListUseCase = get(),
+            )
+        }
 
-    viewModel {
-        AdditionListViewModel(
-            getSeparatedAdditionListUseCase = get(),
-            updateVisibleAdditionUseCase = get()
-        )
-    }
+        viewModel {
+            AdditionListViewModel(
+                getSeparatedAdditionListUseCase = get(),
+                updateVisibleAdditionUseCase = get(),
+            )
+        }
 
-    viewModel {
-        EditAdditionViewModel(
-            getAdditionUseCase = get(),
-            savedStateHandle = get(),
-            updateAdditionUseCase = get()
-        )
-    }
-    viewModel {
-        CreateAdditionViewModel(
-            createAdditionUseCase = get()
-        )
-    }
+        viewModel {
+            EditAdditionViewModel(
+                getAdditionUseCase = get(),
+                savedStateHandle = get(),
+                updateAdditionUseCase = get(),
+            )
+        }
+        viewModel {
+            CreateAdditionViewModel(
+                createAdditionUseCase = get(),
+            )
+        }
 
-    viewModel {
-        CreateAdditionGroupViewModel(
-            createAdditionGroupUseCase = get()
-        )
-    }
+        viewModel {
+            CreateAdditionGroupViewModel(
+                createAdditionGroupUseCase = get(),
+            )
+        }
 
-    viewModel {
-        CafeListViewModel(
-            getCafeWithWorkingHoursListFlow = get()
-        )
-    }
+        viewModel {
+            CafeListViewModel(
+                getCafeWithWorkingHoursListFlow = get(),
+            )
+        }
 
-    viewModel {
-        EditCafeViewModel(
-            createCafeNonWorkingDay = get(),
-            dateTimeUtil = get(),
-            deleteCafeNonWorkingDay = get(),
-            getNonWorkingDayListByCafeUuid = get(),
-            getMinNonWorkingDayDate = get(),
-            getCafeWorkingHoursByUuid = get(),
-            getNonWorkingDayYearRange = get(),
-            getInitialNonWorkingDayDate = get(),
-            updateCafeToTime = get(),
-            updateCafeFromTime = get()
-        )
-    }
+        viewModel {
+            EditCafeViewModel(
+                createCafeNonWorkingDay = get(),
+                dateTimeUtil = get(),
+                deleteCafeNonWorkingDay = get(),
+                getNonWorkingDayListByCafeUuid = get(),
+                getMinNonWorkingDayDate = get(),
+                getCafeWorkingHoursByUuid = get(),
+                getNonWorkingDayYearRange = get(),
+                getInitialNonWorkingDayDate = get(),
+                updateCafeToTime = get(),
+                updateCafeFromTime = get(),
+            )
+        }
 
-    viewModel {
-        GalleryViewModel(
-            fetchPhotoListUseCase = get(),
-            getPhotoListUseCase = get()
-        )
-    }
+        viewModel {
+            GalleryViewModel(
+                fetchPhotoListUseCase = get(),
+                getPhotoListUseCase = get(),
+            )
+        }
 
-    viewModel {
-        SelectPhotoViewModel(
-            savedStateHandle = get()
-        )
-    }
+        viewModel {
+            SelectPhotoViewModel(
+                savedStateHandle = get(),
+            )
+        }
 
-    viewModel {
-        MenuListViewModel(
-            getSeparatedMenuProductListUseCase = get(),
-            updateVisibleMenuProductUseCase = get()
-        )
-    }
+        viewModel {
+            MenuListViewModel(
+                getSeparatedMenuProductListUseCase = get(),
+                updateVisibleMenuProductUseCase = get(),
+            )
+        }
 
-    viewModel {
-        SelectCategoryListViewModel(
-            getSelectableCategoryListUseCase = get(),
-            savedStateHandle = get()
-        )
-    }
+        viewModel {
+            SelectCategoryListViewModel(
+                getSelectableCategoryListUseCase = get(),
+                savedStateHandle = get(),
+            )
+        }
 
-    viewModel {
-        CreateMenuProductViewModel(
-            getSelectableCategoryListUseCase = get(),
-            createMenuProductUseCase = get()
-        )
-    }
+        viewModel {
+            CreateMenuProductViewModel(
+                getSelectableCategoryListUseCase = get(),
+                createMenuProductUseCase = get(),
+            )
+        }
 
-    viewModel {
-        CreateCategoryViewModel(
-            createCategoryUseCase = get()
-        )
-    }
+        viewModel {
+            CreateCategoryViewModel(
+                createCategoryUseCase = get(),
+            )
+        }
 
-    viewModel {
-        AdditionGroupForMenuProductListViewModel(
-            getAdditionGroupListFromMenuProductUseCase = get(),
-            getAdditionListNameUseCase = get(),
-            saveAdditionGroupForMenuProductListUseCase = get()
-        )
-    }
+        viewModel {
+            AdditionGroupForMenuProductListViewModel(
+                getAdditionGroupListFromMenuProductUseCase = get(),
+                getAdditionListNameUseCase = get(),
+                saveAdditionGroupForMenuProductListUseCase = get(),
+            )
+        }
 
-    viewModel {
-        SelectAdditionGroupViewModel(
-            getSeparatedSelectableAdditionGroupListUseCase = get()
-        )
-    }
+        viewModel {
+            SelectAdditionGroupViewModel(
+                getSeparatedSelectableAdditionGroupListUseCase = get(),
+            )
+        }
 
-    viewModel {
-        EditAdditionGroupForMenuProductViewModel(
-            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = get(),
-            getAdditionListNameUseCase = get(),
-            getAdditionGroupUseCase = get(),
-            getAdditionUseCase = get(),
-            saveEditAdditionGroupWithAdditionsUseCase = get()
-        )
-    }
+        viewModel {
+            EditAdditionGroupForMenuProductViewModel(
+                getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = get(),
+                getAdditionListNameUseCase = get(),
+                getAdditionGroupUseCase = get(),
+                getAdditionUseCase = get(),
+                saveEditAdditionGroupWithAdditionsUseCase = get(),
+            )
+        }
 
-    viewModel {
-        SelectAdditionListViewModel(
-            getSelectedAdditionListUseCase = get()
-        )
-    }
+        viewModel {
+            SelectAdditionListViewModel(
+                getSelectedAdditionListUseCase = get(),
+            )
+        }
 
-    viewModel {
-        EditCategoryViewModel(
-            savedStateHandle = get(),
-            getCategoryUseCase = get(),
-            saveEditCategoryUseCase = get()
-        )
-    }
+        viewModel {
+            EditCategoryViewModel(
+                savedStateHandle = get(),
+                getCategoryUseCase = get(),
+                saveEditCategoryUseCase = get(),
+            )
+        }
 
-    viewModel {
-        CropImageViewModel()
-    }
+        viewModel {
+            CropImageViewModel()
+        }
 
-    viewModel {
-        EditMenuProductViewModel(
-            getSelectableCategoryListUseCase = get(),
-            getMenuProductUseCase = get(),
-            updateMenuProductUseCase = get()
-        )
-    }
+        viewModel {
+            EditMenuProductViewModel(
+                getSelectableCategoryListUseCase = get(),
+                getMenuProductUseCase = get(),
+                updateMenuProductUseCase = get(),
+            )
+        }
 
-    viewModel {
-        OrderDetailsViewModel(
-            loadOrderDetails = get(),
-            updateOrderStatus = get()
-        )
-    }
+        viewModel {
+            OrderDetailsViewModel(
+                loadOrderDetails = get(),
+                updateOrderStatus = get(),
+            )
+        }
 
-    viewModel {
-        OrderListViewModel(
-            getCafeUseCase = get(),
-            getOrderListFlow = get(),
-            getOrderErrorFlow = get()
-        )
-    }
+        viewModel {
+            OrderListViewModel(
+                getCafeUseCase = get(),
+                getOrderListFlow = get(),
+                getOrderErrorFlow = get(),
+            )
+        }
 
-    viewModel {
-        ProfileViewModel(
-            getUsernameUseCase = get(),
-            isOrderAvailableUseCase = get(),
-            logoutUseCase = get()
-        )
-    }
+        viewModel {
+            ProfileViewModel(
+                getUsernameUseCase = get(),
+                isOrderAvailableUseCase = get(),
+                logoutUseCase = get(),
+            )
+        }
 
-    viewModel {
-        SettingsViewModel(
-            getIsUnlimitedNotification = get(),
-            updateIsUnlimitedNotification = get(),
-            getTypeWorkUseCase = get(),
-            updateTypeWorkUseCase = get(),
-            updateWorkCafeUseCase = get()
-        )
-    }
+        viewModel {
+            SettingsViewModel(
+                getIsUnlimitedNotification = get(),
+                updateIsUnlimitedNotification = get(),
+                getTypeWorkUseCase = get(),
+                updateTypeWorkUseCase = get(),
+                updateWorkCafeUseCase = get(),
+            )
+        }
 
-    viewModel {
-        CategoryListViewModel(
-            getCategoryListUseCase = get(),
-            saveCategoryListUseCase = get()
-        )
-    }
+        viewModel {
+            CategoryListViewModel(
+                getCategoryListUseCase = get(),
+                saveCategoryListUseCase = get(),
+            )
+        }
 
-    viewModel {
-        StatisticViewModel(
-            dateTimeUtil = get(),
-            getStatisticUseCase = get(),
-            getCafeUseCase = get()
-        )
-    }
+        viewModel {
+            StatisticViewModel(
+                dateTimeUtil = get(),
+                getStatisticUseCase = get(),
+                getCafeUseCase = get(),
+            )
+        }
 
-    viewModel {
-        MainViewModel(
-            getIsNonWorkingDayFlow = get()
-        )
-    }
+        viewModel {
+            MainViewModel(
+                getIsNonWorkingDayFlow = get(),
+            )
+        }
 
-    viewModel {
-        StatisticDetailsViewModel(
-            savedStateHandle = get(),
-            stringUtil = get()
-        )
-    }
+        viewModel {
+            StatisticDetailsViewModel(
+                savedStateHandle = get(),
+                stringUtil = get(),
+            )
+        }
 
-    viewModel {
-        LoginViewModel(
-            checkAuthorizationUseCase = get(),
-            loginUseCase = get()
-        )
-    }
+        viewModel {
+            LoginViewModel(
+                checkAuthorizationUseCase = get(),
+                loginUseCase = get(),
+            )
+        }
 
-    viewModel {
-        EditAdditionGroupViewModel(
-            savedStateHandle = get(),
-            getAdditionGroupUseCase = get(),
-            saveEditAdditionGroupUseCase = get()
-        )
+        viewModel {
+            EditAdditionGroupViewModel(
+                savedStateHandle = get(),
+                getAdditionGroupUseCase = get(),
+                saveEditAdditionGroupUseCase = get(),
+            )
+        }
     }
-}

@@ -9,5 +9,5 @@ class NonWorkingDayEntity(
     val uuid: String,
     val timestamp: Long,
     val cafeUuid: String,
-    val isVisible: Boolean
+    val isVisible: Boolean,
 )

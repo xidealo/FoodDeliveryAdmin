@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 class WorkInfoData(
     @SerialName("workType")
-    val workType: String
+    val workType: String,
 )

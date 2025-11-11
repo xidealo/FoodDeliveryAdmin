@@ -12,20 +12,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
-class DataStoreRepository(private val context: Context) :
-    DataStoreRepo {
-
+class DataStoreRepository(
+    private val context: Context,
+) : DataStoreRepo {
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATA_STORE)
     private val Context.cafeUuidDataStore: DataStore<Preferences> by preferencesDataStore(name = CAFE_UUID_DATA_STORE)
     private val Context.isUnlimitedNotification: DataStore<Preferences> by preferencesDataStore(name = IS_UNLIMITED_NOTIFICATION_DATA_STORE)
 
-    override val token = context.userDataStore.data.map {
-        it[TOKEN_KEY]
-    }
+    override val token =
+        context.userDataStore.data.map {
+            it[TOKEN_KEY]
+        }
 
-    override suspend fun getToken(): String? {
-        return token.firstOrNull()
-    }
+    override suspend fun getToken(): String? = token.firstOrNull()
 
     override suspend fun saveToken(token: String) {
         context.userDataStore.edit {
@@ -33,9 +32,10 @@ class DataStoreRepository(private val context: Context) :
         }
     }
 
-    override val companyUuid: Flow<String> = context.userDataStore.data.map {
-        it[COMPANY_UUID_KEY] ?: ""
-    }
+    override val companyUuid: Flow<String> =
+        context.userDataStore.data.map {
+            it[COMPANY_UUID_KEY] ?: ""
+        }
 
     override suspend fun saveCompanyUuid(companyUuid: String) {
         context.userDataStore.edit {
@@ -43,9 +43,10 @@ class DataStoreRepository(private val context: Context) :
         }
     }
 
-    override val username = context.userDataStore.data.map {
-        it[USERNAME_KEY] ?: ""
-    }
+    override val username =
+        context.userDataStore.data.map {
+            it[USERNAME_KEY] ?: ""
+        }
 
     override suspend fun saveUsername(username: String) {
         context.userDataStore.edit {
@@ -53,9 +54,10 @@ class DataStoreRepository(private val context: Context) :
         }
     }
 
-    override val cafeUuid: Flow<String?> = context.cafeUuidDataStore.data.map {
-        it[CAFE_UUID_KEY]
-    }
+    override val cafeUuid: Flow<String?> =
+        context.cafeUuidDataStore.data.map {
+            it[CAFE_UUID_KEY]
+        }
 
     override suspend fun saveCafeUuid(cafeUuid: String) {
         context.cafeUuidDataStore.edit {
@@ -63,9 +65,10 @@ class DataStoreRepository(private val context: Context) :
         }
     }
 
-    override val previousCafeUuid: Flow<String?> = context.cafeUuidDataStore.data.map {
-        it[PREVIOUS_CAFE_UUID_KEY]
-    }
+    override val previousCafeUuid: Flow<String?> =
+        context.cafeUuidDataStore.data.map {
+            it[PREVIOUS_CAFE_UUID_KEY]
+        }
 
     override suspend fun savePreviousCafeUuid(cafeUuid: String) {
         context.cafeUuidDataStore.edit {
@@ -73,9 +76,10 @@ class DataStoreRepository(private val context: Context) :
         }
     }
 
-    override val isUnlimitedNotification: Flow<Boolean> = context.isUnlimitedNotification.data.map {
-        it[IS_UNLIMITED_NOTIFICATION_KEY] ?: true
-    }
+    override val isUnlimitedNotification: Flow<Boolean> =
+        context.isUnlimitedNotification.data.map {
+            it[IS_UNLIMITED_NOTIFICATION_KEY] ?: true
+        }
 
     override suspend fun saveIsUnlimitedNotification(isUnlimitedNotification: Boolean) {
         context.isUnlimitedNotification.edit {
@@ -93,7 +97,6 @@ class DataStoreRepository(private val context: Context) :
     }
 
     companion object {
-
         // NAMES
         private const val USER_DATA_STORE = "user dataStore"
         private const val CAFE_UUID_DATA_STORE = "cafe uuid dataStore"

@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults.getButtonElevation
 import com.bunbeauty.fooddeliveryadmin.compose.element.rememberMultipleEventsCutter
 import com.bunbeauty.fooddeliveryadmin.compose.provider.BooleanPreviewParameterProvider
@@ -25,10 +26,10 @@ fun LoadingButton(
     isLoading: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    hasShadow: Boolean = true
+    hasShadow: Boolean = true,
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false
+        LocalMinimumInteractiveComponentSize provides 0.dp,
     ) {
         val multipleEventsCutter = rememberMultipleEventsCutter()
         Button(
@@ -39,19 +40,20 @@ fun LoadingButton(
             colors = AdminButtonDefaults.mainButtonColors,
             shape = AdminButtonDefaults.buttonShape,
             elevation = getButtonElevation(hasShadow),
-            enabled = !isLoading
+            enabled = !isLoading,
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(AdminTheme.dimensions.smallProgressBarSize),
-                    color = AdminTheme.colors.main.onDisabled
+                    modifier =
+                        Modifier
+                            .size(AdminTheme.dimensions.smallProgressBarSize),
+                    color = AdminTheme.colors.main.onDisabled,
                 )
             } else {
                 Text(
                     text = text,
                     style = AdminTheme.typography.labelLarge.medium,
-                    color = AdminTheme.colors.main.onPrimary
+                    color = AdminTheme.colors.main.onPrimary,
                 )
             }
         }
@@ -62,13 +64,13 @@ fun LoadingButton(
 @Composable
 private fun LoadingButtonPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class)
-    isLoading: Boolean
+    isLoading: Boolean,
 ) {
     AdminTheme {
         LoadingButton(
             text = "Кнопка",
             isLoading = isLoading,
-            onClick = {}
+            onClick = {},
         )
     }
 }
