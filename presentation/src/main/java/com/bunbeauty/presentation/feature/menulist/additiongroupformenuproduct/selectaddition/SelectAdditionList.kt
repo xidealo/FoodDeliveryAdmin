@@ -10,7 +10,7 @@ interface SelectAdditionList {
         val selectedAdditionList: List<AdditionItem>,
         val notSelectedAdditionList: List<AdditionItem>,
         val groupName: String,
-        val emptySelectedList: Boolean
+        val emptySelectedList: Boolean,
     ) : BaseViewDataState {
         data class AdditionItem(
             val uuid: String,
@@ -21,7 +21,7 @@ interface SelectAdditionList {
             LOADING,
             ERROR,
             SUCCESS,
-            SUCCESS_DRAG_DROP
+            SUCCESS_DRAG_DROP,
         }
     }
 
@@ -29,14 +29,26 @@ interface SelectAdditionList {
         data class Init(
             val menuProductUuid: String,
             val additionGroupUuid: String?,
-            val additionGroupName: String
+            val additionGroupName: String,
         ) : Action
 
         data object OnBackClick : Action
-        data class SelectAdditionClick(val uuid: String) : Action
-        data class RemoveAdditionClick(val uuid: String) : Action
+
+        data class SelectAdditionClick(
+            val uuid: String,
+        ) : Action
+
+        data class RemoveAdditionClick(
+            val uuid: String,
+        ) : Action
+
         data object SelectAdditionListClick : Action
-        data class MoveSelectedItem(val fromIndex: Int, val toIndex: Int) : Action
+
+        data class MoveSelectedItem(
+            val fromIndex: Int,
+            val toIndex: Int,
+        ) : Action
+
         data object OnPriorityEditClicked : Action
 
         data object OnCancelClicked : Action
@@ -46,6 +58,9 @@ interface SelectAdditionList {
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-        data class SelectAdditionListBack(val additionUuidList: List<String>) : Event
+
+        data class SelectAdditionListBack(
+            val additionUuidList: List<String>,
+        ) : Event
     }
 }
