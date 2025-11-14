@@ -77,7 +77,8 @@ fun additionGroupListModule() = module {
     factory {
         GetSeparatedSelectableAdditionGroupListUseCase(
             getSeparatedAdditionGroupListUseCase = get(),
-            menuProductToAdditionGroupRepository = get()
+            menuProductToAdditionGroupRepository = get(),
+            getMenuProductUseCase = get()
         )
     }
 }
