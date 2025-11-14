@@ -10,7 +10,8 @@ interface SelectAdditionList {
         val selectedAdditionList: List<AdditionItem>,
         val notSelectedAdditionList: List<AdditionItem>,
         val groupName: String,
-        val isEditPriority: Boolean
+        val isEditPriority: Boolean,
+        val emptySelectedList: Boolean
     ) : BaseViewDataState {
 
         data class AdditionItem(

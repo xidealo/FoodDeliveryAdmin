@@ -14,7 +14,8 @@ class SelectAdditionListViewModel(
             groupName = "",
             selectedAdditionList = emptyList(),
             notSelectedAdditionList = emptyList(),
-            isEditPriority = false
+            isEditPriority = false,
+            emptySelectedList = true
         )
     ) {
 
@@ -57,7 +58,9 @@ class SelectAdditionListViewModel(
 
             mutableList.add(toIndex, item)
 
-            copy(selectedAdditionList = mutableList)
+            copy(
+                selectedAdditionList = mutableList
+            )
         }
     }
 
@@ -68,16 +71,17 @@ class SelectAdditionListViewModel(
                 commonList.find { additionItem ->
                     additionItem.uuid == uuid
                 } ?: return
+            val newNotSelectedList = notSelectedAdditionList.toMutableList().apply {
+                remove(element = addition)
+            }
+            val newSelectedList = selectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
 
             copy(
-                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    },
-                selectedAdditionList = selectedAdditionList.toMutableList()
-                    .apply {
-                        add(addition)
-                    }
+                notSelectedAdditionList = newNotSelectedList,
+                selectedAdditionList = newSelectedList,
+                emptySelectedList = newSelectedList.isEmpty()
             )
         }
     }
@@ -90,15 +94,17 @@ class SelectAdditionListViewModel(
                     additionItem.uuid == uuid
                 } ?: return
 
+            val newNotSelectedList = notSelectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
+            val newSelectedList = selectedAdditionList.toMutableList().apply {
+                remove(addition)
+            }
+
             copy(
-                notSelectedAdditionList = notSelectedAdditionList.toMutableList()
-                    .apply {
-                        add(element = addition)
-                    },
-                selectedAdditionList = selectedAdditionList.toMutableList()
-                    .apply {
-                        remove(element = addition)
-                    }
+                notSelectedAdditionList = newNotSelectedList,
+                selectedAdditionList = newSelectedList,
+                emptySelectedList = newSelectedList.isEmpty()
             )
         }
     }
@@ -129,7 +135,8 @@ class SelectAdditionListViewModel(
                                 name = addition.name
                             )
                         },
-                        groupName = selectedGroupAdditionName
+                        groupName = selectedGroupAdditionName,
+                        emptySelectedList = additionPack.selectedAdditionList.isEmpty()
                     )
                 }
             },
@@ -146,8 +153,7 @@ class SelectAdditionListViewModel(
     private fun saveCategoryDrop() {
         viewModelScope.launchSafe(
             block = {
-                val updatedList = state.value.selectedAdditionList.mapIndexed {
-                        index, addition ->
+                val updatedList = state.value.selectedAdditionList.mapIndexed { index, addition ->
                     addition.copy()
                 }
 
@@ -186,7 +192,7 @@ class SelectAdditionListViewModel(
     private fun cancelEditPriority() {
         setState {
             copy(
-                SelectAdditionList.DataState.State.SUCCESS,
+                state = SelectAdditionList.DataState.State.SUCCESS,
                 isEditPriority = false
             )
         }
@@ -195,7 +201,7 @@ class SelectAdditionListViewModel(
     private fun onEditPriorityClicked() {
         setState {
             copy(
-                SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP,
+                state = SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP,
                 isEditPriority = true
             )
         }
