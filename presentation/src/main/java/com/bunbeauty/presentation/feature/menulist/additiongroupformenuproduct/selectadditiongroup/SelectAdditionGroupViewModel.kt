@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionGroupListUseCase
+import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
@@ -23,7 +24,8 @@ class SelectAdditionGroupViewModel(
     ) {
         when (action) {
             is SelectAdditionGroup.Action.Init -> loadData(
-                selectedAdditionGroupUuid = action.selectedAdditionGroupUuid
+                selectedAdditionGroupUuid = action.selectedAdditionGroupUuid,
+                menuProductUuid = action.menuProductUuid
             )
 
             SelectAdditionGroup.Action.OnBackClick -> backClick()
@@ -34,18 +36,25 @@ class SelectAdditionGroupViewModel(
         }
     }
 
-    private fun loadData(selectedAdditionGroupUuid: String?) {
+    private fun loadData(selectedAdditionGroupUuid: String?, menuProductUuid: String) {
         viewModelScope.launchSafe(
             block = {
                 val separatedAdditionGroupList =
                     getSeparatedSelectableAdditionGroupListUseCase(
                         refreshing = false,
-                        selectedAdditionGroupUuid = selectedAdditionGroupUuid
+                        selectedAdditionGroupUuid = selectedAdditionGroupUuid,
+                        menuProductUuid = menuProductUuid
                     )
                 setState {
                     copy(
-                        visibleSelectableAdditionGroupList = separatedAdditionGroupList.visibleList,
-                        hiddenSelectableAdditionGroupList = separatedAdditionGroupList.hiddenList,
+                        visibleSelectableAdditionGroupList = separatedAdditionGroupList.visibleList
+                            .map { additionGroup ->
+                                additionGroup.toAdditionGroupItem()
+                            },
+                        hiddenSelectableAdditionGroupList = separatedAdditionGroupList.hiddenList
+                            .map { additionGroup ->
+                                additionGroup.toAdditionGroupItem()
+                            },
                         state = SelectAdditionGroup.DataState.State.SUCCESS
                     )
                 }
@@ -73,5 +82,12 @@ class SelectAdditionGroupViewModel(
                 additionGroupName = name
             )
         }
+    }
+
+    fun AdditionGroup.toAdditionGroupItem(): SelectAdditionGroup.DataState.AdditionGroupItem {
+        return SelectAdditionGroup.DataState.AdditionGroupItem(
+            uuid = uuid,
+            name = name
+        )
     }
 }

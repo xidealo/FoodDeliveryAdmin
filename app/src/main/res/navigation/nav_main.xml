@@ -344,6 +344,9 @@
             android:name="additionGroupUuid"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="menuProductUuid"
+            app:argType="string"/>
     </fragment>
 
     <fragment
