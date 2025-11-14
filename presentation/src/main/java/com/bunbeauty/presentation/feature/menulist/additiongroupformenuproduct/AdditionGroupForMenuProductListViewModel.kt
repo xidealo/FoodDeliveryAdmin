@@ -23,7 +23,6 @@ class AdditionGroupForMenuProductListViewModel(
                 additionGroupList = listOf(),
                 state = AdditionGroupForMenuProductList.DataState.State.LOADING,
                 isRefreshing = false,
-                isEditPriority = false,
             ),
     ) {
     override fun reduce(
@@ -185,7 +184,7 @@ class AdditionGroupForMenuProductListViewModel(
         setState {
             copy(
                 state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
-                isEditPriority = false,
+                // isEditPriority = false,
             )
         }
     }
@@ -194,7 +193,7 @@ class AdditionGroupForMenuProductListViewModel(
         setState {
             copy(
                 state = AdditionGroupForMenuProductList.DataState.State.SUCCESS_DRAG_DROP,
-                isEditPriority = true,
+                // isEditPriority = true,
             )
         }
     }
@@ -214,7 +213,7 @@ class AdditionGroupForMenuProductListViewModel(
                 )
                 setState {
                     copy(
-                        isEditPriority = false,
+                        //  isEditPriority = false,
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
                     )
                 }

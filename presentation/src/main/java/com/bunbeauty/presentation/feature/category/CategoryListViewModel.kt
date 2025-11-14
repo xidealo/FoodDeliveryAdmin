@@ -18,7 +18,6 @@ class CategoryListViewModel(
                 categoryList = listOf(),
                 isLoading = true,
                 isRefreshing = false,
-                isEditPriority = false,
             ),
     ) {
     override fun reduce(
@@ -121,7 +120,6 @@ class CategoryListViewModel(
                 setState {
                     copy(
                         isLoading = false,
-                        isEditPriority = false,
                         state = CategoryListState.DataState.State.SUCCESS,
                     )
                 }
@@ -146,7 +144,6 @@ class CategoryListViewModel(
                         categoryList = getCategoryListUseCase(refreshing = false),
                         state = CategoryListState.DataState.State.SUCCESS,
                         isLoading = false,
-                        isRefreshing = false,
                     )
                 }
             },
@@ -163,7 +160,7 @@ class CategoryListViewModel(
     private fun cancelEditPriority() {
         setState {
             copy(
-                isEditPriority = false,
+                state = CategoryListState.DataState.State.SUCCESS,
             )
         }
     }
@@ -177,7 +174,7 @@ class CategoryListViewModel(
     private fun onEditPriorityClicked() {
         setState {
             copy(
-                isEditPriority = true,
+                state = CategoryListState.DataState.State.DRAG_DROP_SUCCESS,
             )
         }
     }

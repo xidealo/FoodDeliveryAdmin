@@ -14,7 +14,6 @@ class SelectAdditionListViewModel(
                 groupName = "",
                 selectedAdditionList = emptyList(),
                 notSelectedAdditionList = emptyList(),
-                isEditPriority = false,
             ),
     ) {
     override fun reduce(
@@ -165,7 +164,6 @@ class SelectAdditionListViewModel(
             block = {
                 setState {
                     copy(
-                        isEditPriority = false,
                         state = SelectAdditionList.DataState.State.SUCCESS,
                     )
                 }
@@ -197,8 +195,7 @@ class SelectAdditionListViewModel(
     private fun cancelEditPriority() {
         setState {
             copy(
-                SelectAdditionList.DataState.State.SUCCESS,
-                isEditPriority = false,
+                state = SelectAdditionList.DataState.State.SUCCESS,
             )
         }
     }
@@ -206,8 +203,7 @@ class SelectAdditionListViewModel(
     private fun onEditPriorityClicked() {
         setState {
             copy(
-                SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP,
-                isEditPriority = true,
+                state = SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP,
             )
         }
     }

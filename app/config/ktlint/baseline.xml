@@ -197,11 +197,11 @@
     </file>
     <file name="src/main/java/com/bunbeauty/fooddeliveryadmin/screen/category/CategoryListFragment.kt">
         <error line="65" column="17" source="standard:function-naming" />
-        <error line="170" column="17" source="standard:function-naming" />
-        <error line="200" column="17" source="standard:function-naming" />
-        <error line="286" column="17" source="standard:function-naming" />
-        <error line="320" column="17" source="standard:function-naming" />
-        <error line="364" column="17" source="standard:function-naming" />
+        <error line="179" column="17" source="standard:function-naming" />
+        <error line="209" column="17" source="standard:function-naming" />
+        <error line="292" column="17" source="standard:function-naming" />
+        <error line="326" column="17" source="standard:function-naming" />
+        <error line="369" column="17" source="standard:function-naming" />
     </file>
     <file name="src/main/java/com/bunbeauty/fooddeliveryadmin/screen/category/createcategory/CreateCategoryFragment.kt">
         <error line="86" column="17" source="standard:function-naming" />
@@ -246,10 +246,10 @@
     <file name="src/main/java/com/bunbeauty/fooddeliveryadmin/screen/menulist/additiongroupformenuproduct/AdditionGroupForMenuProductListFragment.kt">
         <error line="42" column="141" source="standard:max-line-length" />
         <error line="85" column="9" source="standard:function-naming" />
-        <error line="197" column="17" source="standard:function-naming" />
-        <error line="231" column="17" source="standard:function-naming" />
-        <error line="274" column="17" source="standard:function-naming" />
-        <error line="385" column="9" source="standard:function-naming" />
+        <error line="214" column="17" source="standard:function-naming" />
+        <error line="248" column="17" source="standard:function-naming" />
+        <error line="291" column="17" source="standard:function-naming" />
+        <error line="401" column="9" source="standard:function-naming" />
     </file>
     <file name="src/main/java/com/bunbeauty/fooddeliveryadmin/screen/menulist/additiongroupformenuproduct/createadditiongroupformenuproduct/CreateAdditionGroupForMenuProductFragment.kt">
         <error line="34" column="141" source="standard:max-line-length" />
@@ -264,10 +264,10 @@
     </file>
     <file name="src/main/java/com/bunbeauty/fooddeliveryadmin/screen/menulist/additiongroupformenuproduct/selectaddition/SelectAdditionListFragment.kt">
         <error line="109" column="9" source="standard:function-naming" />
-        <error line="200" column="9" source="standard:function-naming" />
-        <error line="297" column="17" source="standard:function-naming" />
-        <error line="344" column="9" source="standard:function-naming" />
-        <error line="395" column="9" source="standard:function-naming" />
+        <error line="210" column="9" source="standard:function-naming" />
+        <error line="307" column="17" source="standard:function-naming" />
+        <error line="354" column="9" source="standard:function-naming" />
+        <error line="404" column="9" source="standard:function-naming" />
     </file>
     <file name="src/main/java/com/bunbeauty/fooddeliveryadmin/screen/menulist/additiongroupformenuproduct/selectadditiongroup/SelectAdditionGroupFragment.kt">
         <error line="96" column="9" source="standard:function-naming" />

@@ -112,31 +112,41 @@ class SelectAdditionListFragment :
     ) {
         AdminScaffold(
             title =
-                if (state.isEditPriority) {
-                    stringResource(R.string.title_edit_priority)
-                } else {
-                    stringResource(id = R.string.title_select_addition_group)
+                when (state.state) {
+                    SelectAdditionList.DataState.State.LOADING -> null
+                    SelectAdditionList.DataState.State.ERROR -> null
+                    SelectAdditionList.DataState.State.SUCCESS -> stringResource(id = R.string.title_select_addition_group)
+                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> stringResource(R.string.title_edit_priority)
                 },
             backActionClick = {
-                if (state.isEditPriority) {
-                    onAction(SelectAdditionList.Action.OnCancelClicked)
-                } else {
-                    onAction(SelectAdditionList.Action.OnBackClick)
+                when (state.state) {
+                    SelectAdditionList.DataState.State.LOADING -> Unit
+                    SelectAdditionList.DataState.State.ERROR -> Unit
+                    SelectAdditionList.DataState.State.SUCCESS -> onAction(SelectAdditionList.Action.OnBackClick)
+                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP ->
+                        onAction(
+                            SelectAdditionList.Action.OnCancelClicked,
+                        )
                 }
             },
             backgroundColor = AdminTheme.colors.main.surface,
             actionButton = {
-                if (!state.isEditPriority) {
-                    LoadingButton(
-                        text = stringResource(R.string.action_order_details_save),
-                        isLoading = false,
-                        onClick = {
-                            onAction(SelectAdditionList.Action.SelectAdditionListClick)
-                        },
-                        modifier =
-                            Modifier
-                                .padding(horizontal = AdminTheme.dimensions.mediumSpace),
-                    )
+                when (state.state) {
+                    SelectAdditionList.DataState.State.LOADING -> Unit
+                    SelectAdditionList.DataState.State.ERROR -> Unit
+                    SelectAdditionList.DataState.State.SUCCESS -> Unit
+                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> {
+                        LoadingButton(
+                            text = stringResource(R.string.action_order_details_save),
+                            isLoading = false,
+                            onClick = {
+                                onAction(SelectAdditionList.Action.SelectAdditionListClick)
+                            },
+                            modifier =
+                                Modifier
+                                    .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+                        )
+                    }
                 }
             },
             topActions =
@@ -365,7 +375,6 @@ class SelectAdditionListFragment :
         SelectAdditionList.DataState(
             state = SelectAdditionList.DataState.State.SUCCESS,
             groupName = "Some group",
-            isEditPriority = false,
             selectedAdditionList =
                 listOf(
                     AdditionItem(

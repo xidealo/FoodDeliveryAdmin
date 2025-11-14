@@ -69,23 +69,32 @@ class CategoryListFragment :
         AdminScaffold(
             backgroundColor = AdminTheme.colors.main.surface,
             title =
-                if (state.isEditPriority) {
-                    stringResource(R.string.title_edit_priority)
-                } else {
-                    stringResource(R.string.title_categories_list)
+                when (state.state) {
+                    CategoryListViewState.State.Error -> null
+                    CategoryListViewState.State.Loading -> null
+                    is CategoryListViewState.State.Success -> stringResource(R.string.title_categories_list)
+                    is CategoryListViewState.State.SuccessDragDrop -> stringResource(R.string.title_edit_priority)
                 },
-            pullRefreshEnabled = !state.isEditPriority,
+            pullRefreshEnabled =
+                when (state.state) {
+                    CategoryListViewState.State.Error -> false
+                    CategoryListViewState.State.Loading -> false
+                    is CategoryListViewState.State.Success -> true
+                    is CategoryListViewState.State.SuccessDragDrop -> false
+                },
             refreshing = state.isRefreshing,
             onRefresh = {
                 onAction(CategoryListState.Action.OnRefreshData)
             },
-            backActionClick = {
-                if (state.isEditPriority) {
-                    onAction(CategoryListState.Action.OnCancelClicked)
-                } else {
-                    onAction(CategoryListState.Action.OnBackClicked)
-                }
-            },
+            backActionClick =
+                {
+                    when (state.state) {
+                        CategoryListViewState.State.Error -> Unit
+                        CategoryListViewState.State.Loading -> Unit
+                        is CategoryListViewState.State.Success -> onAction(CategoryListState.Action.OnBackClicked)
+                        is CategoryListViewState.State.SuccessDragDrop -> onAction(CategoryListState.Action.OnCancelClicked)
+                    }
+                },
             topActions =
                 when (state.state) {
                     CategoryListViewState.State.Error -> emptyList()
@@ -268,16 +277,13 @@ class CategoryListFragment :
                 when (state.state) {
                     CategoryListState.DataState.State.LOADING -> CategoryListViewState.State.Loading
                     CategoryListState.DataState.State.ERROR -> CategoryListViewState.State.Error
-                    CategoryListState.DataState.State.SUCCESS -> {
-                        if (state.isEditPriority) {
-                            CategoryListViewState.State.SuccessDragDrop(category)
-                        } else {
-                            CategoryListViewState.State.Success(categoryItems)
-                        }
-                    }
+                    CategoryListState.DataState.State.SUCCESS ->
+                        CategoryListViewState.State.Success(categoryItems)
+
+                    CategoryListState.DataState.State.DRAG_DROP_SUCCESS ->
+                        CategoryListViewState.State.SuccessDragDrop(category)
                 },
             isRefreshing = state.isRefreshing,
-            isEditPriority = state.isEditPriority,
             categoryList = category,
         )
     }
@@ -339,7 +345,6 @@ class CategoryListFragment :
                                     ),
                             ),
                         isRefreshing = false,
-                        isEditPriority = false,
                         categoryList =
                             persistentListOf(
                                 Category(
@@ -383,7 +388,6 @@ class CategoryListFragment :
                                     ),
                             ),
                         isRefreshing = false,
-                        isEditPriority = true,
                         categoryList =
                             persistentListOf(
                                 Category(

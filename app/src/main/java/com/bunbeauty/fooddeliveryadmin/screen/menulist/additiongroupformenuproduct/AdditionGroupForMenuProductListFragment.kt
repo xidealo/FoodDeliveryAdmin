@@ -89,10 +89,19 @@ class AdditionGroupForMenuProductListFragment :
     ) {
         AdminScaffold(
             title =
-                if (state.isEditPriority) {
-                    stringResource(id = R.string.title_edit_priority)
-                } else {
-                    stringResource(id = R.string.title_addition_group_for_menu_product)
+                when (state.state) {
+                    is AdditionGroupForMenuProductListViewState.State.Success ->
+                        stringResource(
+                            id = R.string.title_addition_group_for_menu_product,
+                        )
+
+                    is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop ->
+                        stringResource(
+                            id = R.string.title_edit_priority,
+                        )
+
+                    AdditionGroupForMenuProductListViewState.State.Error -> null
+                    AdditionGroupForMenuProductListViewState.State.Loading -> null
                 },
             pullRefreshEnabled = true,
             refreshing = state.isRefreshing,
@@ -104,10 +113,18 @@ class AdditionGroupForMenuProductListFragment :
                 )
             },
             backActionClick = {
-                if (state.isEditPriority) {
-                    onAction(AdditionGroupForMenuProductList.Action.OnCancelClicked)
-                } else {
-                    onAction(AdditionGroupForMenuProductList.Action.OnBackClick)
+                when (state.state) {
+                    AdditionGroupForMenuProductListViewState.State.Error -> Unit
+                    AdditionGroupForMenuProductListViewState.State.Loading -> Unit
+                    is AdditionGroupForMenuProductListViewState.State.Success ->
+                        onAction(
+                            AdditionGroupForMenuProductList.Action.OnBackClick,
+                        )
+
+                    is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop ->
+                        onAction(
+                            AdditionGroupForMenuProductList.Action.OnCancelClicked,
+                        )
                 }
             },
             backgroundColor = AdminTheme.colors.main.surface,
@@ -328,7 +345,6 @@ class AdditionGroupForMenuProductListFragment :
                         )
                 },
             isRefreshing = state.isRefreshing,
-            isEditPriority = state.isEditPriority,
         )
 
     override fun handleEvent(event: AdditionGroupForMenuProductList.Event) {
@@ -377,7 +393,7 @@ class AdditionGroupForMenuProductListFragment :
                         ),
                 ),
             isRefreshing = false,
-            isEditPriority = false,
+            // isEditPriority = false,
         )
 
     @Composable

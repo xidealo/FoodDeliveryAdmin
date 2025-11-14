@@ -11,11 +11,11 @@ interface CategoryListState {
         val isLoading: Boolean,
         val categoryList: List<Category>,
         val isRefreshing: Boolean,
-        val isEditPriority: Boolean,
     ) : BaseDataState {
         enum class State {
             LOADING,
             SUCCESS,
+            DRAG_DROP_SUCCESS,
             ERROR,
         }
     }
