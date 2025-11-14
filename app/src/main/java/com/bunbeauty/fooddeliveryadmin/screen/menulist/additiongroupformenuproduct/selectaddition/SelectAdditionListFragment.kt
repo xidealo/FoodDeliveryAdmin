@@ -149,20 +149,24 @@ class SelectAdditionListFragment :
                     }
                 }
             },
-            topActions =
-                when (state.state) {
-                    SelectAdditionList.DataState.State.LOADING -> emptyList()
-                    SelectAdditionList.DataState.State.ERROR -> emptyList()
-                    SelectAdditionList.DataState.State.SUCCESS ->
+            topActions = when (state.state) {
+                SelectAdditionList.DataState.State.LOADING -> emptyList()
+                SelectAdditionList.DataState.State.ERROR -> emptyList()
+                SelectAdditionList.DataState.State.SUCCESS -> {
+                    if (state.emptySelectedList) {
+                        emptyList()
+                    } else {
                         listOf(
                             AdminTopBarAction(
                                 iconId = R.drawable.ic_edit,
                                 color = AdminTheme.colors.main.primary,
                                 onClick = {
                                     onAction(SelectAdditionList.Action.OnPriorityEditClicked)
-                                },
-                            ),
+                                }
+                            )
                         )
+                    }
+                }
 
                     SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> {
                         listOf(
@@ -397,6 +401,7 @@ class SelectAdditionListFragment :
                         name = "Ложка",
                     ),
                 ),
+            emptySelectedList = true
         )
 
     @Composable

@@ -14,8 +14,10 @@ class SelectAdditionListViewModel(
                 groupName = "",
                 selectedAdditionList = emptyList(),
                 notSelectedAdditionList = emptyList(),
+                emptySelectedList = true
             ),
     ) {
+
     override fun reduce(
         action: SelectAdditionList.Action,
         dataState: SelectAdditionList.DataState,
@@ -62,7 +64,9 @@ class SelectAdditionListViewModel(
 
             mutableList.add(toIndex, item)
 
-            copy(selectedAdditionList = mutableList)
+            copy(
+                selectedAdditionList = mutableList
+            )
         }
     }
 
@@ -73,20 +77,17 @@ class SelectAdditionListViewModel(
                 commonList.find { additionItem ->
                     additionItem.uuid == uuid
                 } ?: return
+            val newNotSelectedList = notSelectedAdditionList.toMutableList().apply {
+                remove(element = addition)
+            }
+            val newSelectedList = selectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
 
             copy(
-                notSelectedAdditionList =
-                    notSelectedAdditionList
-                        .toMutableList()
-                        .apply {
-                            remove(element = addition)
-                        },
-                selectedAdditionList =
-                    selectedAdditionList
-                        .toMutableList()
-                        .apply {
-                            add(addition)
-                        },
+                notSelectedAdditionList = newNotSelectedList,
+                selectedAdditionList = newSelectedList,
+                emptySelectedList = newSelectedList.isEmpty()
             )
         }
     }
@@ -99,19 +100,17 @@ class SelectAdditionListViewModel(
                     additionItem.uuid == uuid
                 } ?: return
 
+            val newNotSelectedList = notSelectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
+            val newSelectedList = selectedAdditionList.toMutableList().apply {
+                remove(addition)
+            }
+
             copy(
-                notSelectedAdditionList =
-                    notSelectedAdditionList
-                        .toMutableList()
-                        .apply {
-                            add(element = addition)
-                        },
-                selectedAdditionList =
-                    selectedAdditionList
-                        .toMutableList()
-                        .apply {
-                            remove(element = addition)
-                        },
+                notSelectedAdditionList = newNotSelectedList,
+                selectedAdditionList = newSelectedList,
+                emptySelectedList = newSelectedList.isEmpty()
             )
         }
     }
@@ -123,49 +122,52 @@ class SelectAdditionListViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
-                val additionPack =
-                    getSelectedAdditionListUseCase(
-                        menuProductUuid = menuProductUuid,
-                        selectedGroupAdditionUuid = selectedGroupAdditionUuid,
-                    )
+                val additionPack = getSelectedAdditionListUseCase(
+                    menuProductUuid = menuProductUuid,
+                    selectedGroupAdditionUuid = selectedGroupAdditionUuid
+                )
                 setState {
                     copy(
                         state = SelectAdditionList.DataState.State.SUCCESS,
-                        selectedAdditionList =
-                            additionPack.selectedAdditionList.map { addition ->
-                                SelectAdditionList.DataState.AdditionItem(
-                                    uuid = addition.uuid,
-                                    name = addition.name,
-                                )
-                            },
-                        notSelectedAdditionList =
-                            additionPack.notSelectedAdditionList.map { addition ->
-                                SelectAdditionList.DataState.AdditionItem(
-                                    uuid = addition.uuid,
-                                    name = addition.name,
-                                )
-                            },
+                        selectedAdditionList = additionPack.selectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        },
+                        notSelectedAdditionList = additionPack.notSelectedAdditionList.map { addition ->
+                            SelectAdditionList.DataState.AdditionItem(
+                                uuid = addition.uuid,
+                                name = addition.name
+                            )
+                        },
                         groupName = selectedGroupAdditionName,
+                        emptySelectedList = additionPack.selectedAdditionList.isEmpty()
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = SelectAdditionList.DataState.State.ERROR,
+                        state = SelectAdditionList.DataState.State.ERROR
                     )
                 }
-            },
+            }
         )
     }
 
     private fun saveSelectAdditionDrop() {
         viewModelScope.launchSafe(
             block = {
+                val updatedList = state.value.selectedAdditionList.mapIndexed { index, addition ->
+                    addition.copy()
+                }
+
                 setState {
                     copy(
                         state = SelectAdditionList.DataState.State.SUCCESS,
-                    )
+                        selectedAdditionList = updatedList,
+                        )
                 }
             },
             onError = {
