@@ -27,7 +27,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalMaterialApi::class
+    ExperimentalMaterialApi::class,
 )
 @Composable
 fun AdminScaffold(
@@ -40,51 +40,54 @@ fun AdminScaffold(
     pullRefreshEnabled: Boolean = false,
     refreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    content: (@Composable () -> Unit)
+    content: (@Composable () -> Unit),
 ) {
     val appBarState = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.pinnedScrollBehavior(appBarState)
     val scrollBehavior = remember { behavior }
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = refreshing,
-        onRefresh = onRefresh
-    )
-
+    val pullRefreshState =
+        rememberPullRefreshState(
+            refreshing = refreshing,
+            onRefresh = onRefresh,
+        )
     Scaffold(
-        modifier = Modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .pullRefresh(
-                state = pullRefreshState,
-                enabled = pullRefreshEnabled
-            ),
+        modifier =
+            Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .pullRefresh(
+                    state = pullRefreshState,
+                    enabled = pullRefreshEnabled,
+                ),
         topBar = {
             AdminTopBar(
                 title = title,
                 backActionClick = backActionClick,
                 scrollBehavior = scrollBehavior,
-                actions = topActions
+                actions = topActions,
             )
         },
         containerColor = AdminTheme.colors.main.background,
         floatingActionButton = actionButton,
         floatingActionButtonPosition = actionButtonPosition,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { padding ->
         Box(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(backgroundColor)
+            modifier =
+                Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(backgroundColor),
         ) {
             content()
             PullRefreshIndicator(
                 refreshing = refreshing,
                 state = pullRefreshState,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .zIndex(1F),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .zIndex(1F),
                 backgroundColor = AdminTheme.colors.main.surface,
-                contentColor = AdminTheme.colors.main.primary
+                contentColor = AdminTheme.colors.main.primary,
             )
         }
     }

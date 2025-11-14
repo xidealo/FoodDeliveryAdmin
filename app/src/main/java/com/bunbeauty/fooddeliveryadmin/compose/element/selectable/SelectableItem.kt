@@ -24,35 +24,38 @@ fun SelectableItem(
     elevated: Boolean,
     onClick: (() -> Unit),
     modifier: Modifier = Modifier,
-    isSelected: Boolean = false
+    isSelected: Boolean = false,
 ) {
     AdminCard(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick,
         clickable = clickable,
-        elevated = elevated
+        elevated = elevated,
     ) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 12.dp)
+            modifier =
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 12.dp),
         ) {
             Text(
-                modifier = Modifier
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .weight(1f),
                 text = title,
                 style = AdminTheme.typography.bodyLarge,
-                color = AdminTheme.colors.main.onSurface
+                color = AdminTheme.colors.main.onSurface,
             )
             if (isSelected) {
                 Icon(
-                    modifier = Modifier
-                        .padding(start = AdminTheme.dimensions.smallSpace)
-                        .icon16()
-                        .align(CenterVertically),
+                    modifier =
+                        Modifier
+                            .padding(start = AdminTheme.dimensions.smallSpace)
+                            .icon16()
+                            .align(CenterVertically),
                     painter = painterResource(R.drawable.ic_check),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
-                    contentDescription = stringResource(R.string.description_ic_checked)
+                    contentDescription = stringResource(R.string.description_ic_checked),
                 )
             }
         }
@@ -67,7 +70,7 @@ private fun AddressItemPreview() {
             title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
             clickable = false,
             elevated = false,
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -81,7 +84,7 @@ private fun AddressItemSelectedPreview() {
             clickable = false,
             elevated = false,
             isSelected = true,
-            onClick = {}
+            onClick = {},
         )
     }
 }

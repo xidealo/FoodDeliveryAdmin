@@ -1,7 +1,6 @@
 package com.bunbeauty.common
 
 object Constants {
-
     // NOTIFICATION
 
     const val CHANNEL_ID = "1"

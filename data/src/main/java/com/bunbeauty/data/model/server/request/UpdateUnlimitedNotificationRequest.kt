@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateUnlimitedNotificationRequest(
-
     @SerialName("isEnabled")
-    val isEnabled: Boolean
+    val isEnabled: Boolean,
 )

@@ -10,18 +10,19 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 
 class EditAdditionGroupUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(
         additionGroupUuid: String,
-        updateAdditionGroup: UpdateAdditionGroup
+        updateAdditionGroup: UpdateAdditionGroup,
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
         val additionGroupList = additionGroupRepo.getAdditionGroupList(token = token)
 
-        val old = additionGroupList.find { addition -> addition.uuid == additionGroupUuid }
-            ?: throw NotFindAdditionGroupException()
+        val old =
+            additionGroupList.find { addition -> addition.uuid == additionGroupUuid }
+                ?: throw NotFindAdditionGroupException()
 
         val isNameUnchanged = old.name == updateAdditionGroup.name
         val isVisibleUnchanged = old.isVisible == updateAdditionGroup.isVisible
@@ -40,13 +41,14 @@ class EditAdditionGroupUseCase(
                 additionGroupRepo.updateAdditionGroup(
                     updateAdditionGroup = updateAdditionGroup,
                     token = token,
-                    additionGroupUuid = additionGroupUuid
+                    additionGroupUuid = additionGroupUuid,
                 )
             }
         }
     }
 
-    private fun hasSameName(list: List<AdditionGroup>, name: String): Boolean {
-        return list.any { additionName -> additionName.name == name }
-    }
+    private fun hasSameName(
+        list: List<AdditionGroup>,
+        name: String,
+    ): Boolean = list.any { additionName -> additionName.name == name }
 }

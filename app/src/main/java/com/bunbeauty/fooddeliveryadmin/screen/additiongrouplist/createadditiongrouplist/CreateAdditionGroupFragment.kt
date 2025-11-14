@@ -27,54 +27,56 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAdditionGroupFragment :
     BaseComposeFragment<CreateAdditionGroupDataState.DataState, CreateAdditionGroupViewState, CreateAdditionGroupDataState.Action, CreateAdditionGroupDataState.Event>() {
-
     override val viewModel: CreateAdditionGroupViewModel by viewModel()
 
     @Composable
-    override fun mapState(state: CreateAdditionGroupDataState.DataState): CreateAdditionGroupViewState {
-        return CreateAdditionGroupViewState(
-            state = when (state.state) {
-                CreateAdditionGroupDataState.DataState.State.SUCCESS -> CreateAdditionGroupViewState.State.Success(
-                    isLoading = state.isLoading,
-                    nameField = TextFieldUi(
-                        value = state.nameField.value,
-                        isError = state.nameField.isError,
-                        errorResId = when (state.nameStateError) {
-                            CreateAdditionGroupDataState.DataState.NameStateError.EMPTY_NAME ->
-                                R.string.error_common_create_addition_group_name
+    override fun mapState(state: CreateAdditionGroupDataState.DataState): CreateAdditionGroupViewState =
+        CreateAdditionGroupViewState(
+            state =
+                when (state.state) {
+                    CreateAdditionGroupDataState.DataState.State.SUCCESS ->
+                        CreateAdditionGroupViewState.State.Success(
+                            isLoading = state.isLoading,
+                            nameField =
+                                TextFieldUi(
+                                    value = state.nameField.value,
+                                    isError = state.nameField.isError,
+                                    errorResId =
+                                        when (state.nameStateError) {
+                                            CreateAdditionGroupDataState.DataState.NameStateError.EMPTY_NAME ->
+                                                R.string.error_common_create_addition_group_name
 
-                            CreateAdditionGroupDataState.DataState.NameStateError.DUPLICATE_NAME ->
-                                R.string.error_common_create_addition_group_duplicate_name
+                                            CreateAdditionGroupDataState.DataState.NameStateError.DUPLICATE_NAME ->
+                                                R.string.error_common_create_addition_group_duplicate_name
 
-                            CreateAdditionGroupDataState.DataState.NameStateError.NO_ERROR ->
-                                R.string.error_common_something_went_wrong
-                        }
-                    ),
-                    singleChoice = state.singleChoice,
-                    isShowMenuVisible = state.isShowMenuVisible
-                )
+                                            CreateAdditionGroupDataState.DataState.NameStateError.NO_ERROR ->
+                                                R.string.error_common_something_went_wrong
+                                        },
+                                ),
+                            singleChoice = state.singleChoice,
+                            isShowMenuVisible = state.isShowMenuVisible,
+                        )
 
-                CreateAdditionGroupDataState.DataState.State.ERROR -> CreateAdditionGroupViewState.State.Error
-                CreateAdditionGroupDataState.DataState.State.LOADING -> CreateAdditionGroupViewState.State.Loading
-            }
+                    CreateAdditionGroupDataState.DataState.State.ERROR -> CreateAdditionGroupViewState.State.Error
+                    CreateAdditionGroupDataState.DataState.State.LOADING -> CreateAdditionGroupViewState.State.Loading
+                },
         )
-    }
 
     @Composable
     override fun Screen(
         state: CreateAdditionGroupViewState,
-        onAction: (CreateAdditionGroupDataState.Action) -> Unit
+        onAction: (CreateAdditionGroupDataState.Action) -> Unit,
     ) {
         CreateAdditionGroupScreen(
             state = state,
-            onAction = onAction
+            onAction = onAction,
         )
     }
 
     @Composable
     private fun CreateAdditionGroupScreen(
         state: CreateAdditionGroupViewState,
-        onAction: (CreateAdditionGroupDataState.Action) -> Unit
+        onAction: (CreateAdditionGroupDataState.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_create_addition_group),
@@ -82,23 +84,25 @@ class CreateAdditionGroupFragment :
             pullRefreshEnabled = true,
             backActionClick = {
                 onAction(CreateAdditionGroupDataState.Action.OnBackClick)
-            }
+            },
         ) {
             when (state.state) {
-                CreateAdditionGroupViewState.State.Error -> ErrorScreen(
-                    mainTextId = R.string.title_common_can_not_load_data,
-                    extraTextId = R.string.msg_common_check_connection_and_retry,
-                    onClick = {
-                        onAction(CreateAdditionGroupDataState.Action.OnErrorStateClicked)
-                    }
-                )
+                CreateAdditionGroupViewState.State.Error ->
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = {
+                            onAction(CreateAdditionGroupDataState.Action.OnErrorStateClicked)
+                        },
+                    )
 
                 CreateAdditionGroupViewState.State.Loading -> LoadingScreen()
 
-                is CreateAdditionGroupViewState.State.Success -> CreateAdditionGroupScreenSuccess(
-                    state = state.state,
-                    onAction = onAction
-                )
+                is CreateAdditionGroupViewState.State.Success ->
+                    CreateAdditionGroupScreenSuccess(
+                        state = state.state,
+                        onAction = onAction,
+                    )
             }
         }
     }
@@ -106,7 +110,7 @@ class CreateAdditionGroupFragment :
     @Composable
     private fun CreateAdditionGroupScreenSuccess(
         state: CreateAdditionGroupViewState.State.Success,
-        onAction: (CreateAdditionGroupDataState.Action) -> Unit
+        onAction: (CreateAdditionGroupDataState.Action) -> Unit,
     ) {
         Column {
             AdminTextField(
@@ -116,13 +120,13 @@ class CreateAdditionGroupFragment :
                 onValueChange = { name ->
                     onAction(
                         CreateAdditionGroupDataState.Action.CreateNameAdditionGroupChanged(
-                            name
-                        )
+                            name,
+                        ),
                     )
                 },
                 errorText = stringResource(state.nameField.errorResId),
                 isError = state.nameField.isError,
-                enabled = !state.isLoading
+                enabled = !state.isLoading,
             )
             SwitcherCard(
                 elevated = false,
@@ -130,9 +134,9 @@ class CreateAdditionGroupFragment :
                 checked = state.isShowMenuVisible,
                 onCheckChanged = { isVisible ->
                     onAction(
-                        CreateAdditionGroupDataState.Action.OnVisibleClick
+                        CreateAdditionGroupDataState.Action.OnVisibleClick,
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -143,9 +147,9 @@ class CreateAdditionGroupFragment :
                 checked = state.singleChoice,
                 onCheckChanged = { isOneVisible ->
                     onAction(
-                        CreateAdditionGroupDataState.Action.OnOneAdditionVisibleClick
+                        CreateAdditionGroupDataState.Action.OnOneAdditionVisibleClick,
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -156,7 +160,7 @@ class CreateAdditionGroupFragment :
                 isLoading = state.isLoading,
                 onClick = {
                     onAction(CreateAdditionGroupDataState.Action.OnSaveAdditionGroupClick)
-                }
+                },
             )
         }
     }
@@ -168,8 +172,8 @@ class CreateAdditionGroupFragment :
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(
                         R.string.msg_create_addition_group_created,
-                        event.additionGroupName
-                    )
+                        event.additionGroupName,
+                    ),
                 )
                 findNavController().popBackStack()
             }
@@ -181,19 +185,22 @@ class CreateAdditionGroupFragment :
     fun CreateCategoryPreview() {
         AdminTheme {
             CreateAdditionGroupScreen(
-                state = CreateAdditionGroupViewState(
-                    state = CreateAdditionGroupViewState.State.Success(
-                        isLoading = false,
-                        nameField = TextFieldUi(
-                            value = "",
-                            isError = false,
-                            errorResId = 0
-                        ),
-                        singleChoice = true,
-                        isShowMenuVisible = true
-                    )
-                ),
-                onAction = {}
+                state =
+                    CreateAdditionGroupViewState(
+                        state =
+                            CreateAdditionGroupViewState.State.Success(
+                                isLoading = false,
+                                nameField =
+                                    TextFieldUi(
+                                        value = "",
+                                        isError = false,
+                                        errorResId = 0,
+                                    ),
+                                singleChoice = true,
+                                isShowMenuVisible = true,
+                            ),
+                    ),
+                onAction = {},
             )
         }
     }

@@ -5,5 +5,5 @@ data class Statistic(
     val startPeriodTime: Long,
     val orderCount: Int,
     val proceeds: Int,
-    val currency: String
+    val currency: String,
 )

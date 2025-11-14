@@ -9,5 +9,5 @@ data class GalleryViewState(
     val photos: ImmutableList<String>,
     val isLoading: Boolean,
     val isRefreshing: Boolean,
-    val hasError: Boolean
+    val hasError: Boolean,
 ) : BaseViewState

@@ -7,13 +7,13 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 
 class GetAdditionGroupUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(additionGroupUuid: String): AdditionGroup {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         return additionGroupRepo.getAdditionGroup(
             additionUuid = additionGroupUuid,
-            token = token
+            token = token,
         ) ?: throw NotFoundAdditionGroupException()
     }
 }

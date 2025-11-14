@@ -12,12 +12,12 @@ fun AdminSurface(
     modifier: Modifier = Modifier,
     color: Color = AdminTheme.colors.main.surface,
     elevated: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Surface(
         modifier = modifier.zIndex(1f),
         color = color,
         shadowElevation = AdminSurfaceDefaults.getSurfaceElevation(elevated),
-        content = content
+        content = content,
     )
 }

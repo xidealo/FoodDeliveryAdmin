@@ -45,9 +45,7 @@ import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsFragment :
-    BaseComposeFragment<SettingsState.DataState, SettingsViewState, SettingsState.Action, SettingsState.Event>() {
-
+class SettingsFragment : BaseComposeFragment<SettingsState.DataState, SettingsViewState, SettingsState.Action, SettingsState.Event>() {
     override val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,23 +56,21 @@ class SettingsFragment :
     @Composable
     override fun Screen(
         state: SettingsViewState,
-        onAction: (SettingsState.Action) -> Unit
+        onAction: (SettingsState.Action) -> Unit,
     ) {
         SettingsScreen(
             state = state,
-            onAction = onAction
+            onAction = onAction,
         )
     }
 
     @Composable
-    override fun mapState(state: SettingsState.DataState): SettingsViewState {
-        return state.toViewState()
-    }
+    override fun mapState(state: SettingsState.DataState): SettingsViewState = state.toViewState()
 
     @Composable
     private fun SettingsScreen(
         state: SettingsViewState,
-        onAction: (SettingsState.Action) -> Unit
+        onAction: (SettingsState.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_settings),
@@ -90,10 +86,10 @@ class SettingsFragment :
                         isLoading = state.state.isLoading,
                         onClick = {
                             onAction(SettingsState.Action.OnSaveSettingsClick)
-                        }
+                        },
                     )
                 }
-            }
+            },
         ) {
             when (state.state) {
                 State.Loading -> {
@@ -106,14 +102,14 @@ class SettingsFragment :
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             onAction(SettingsState.Action.Init)
-                        }
+                        },
                     )
                 }
 
                 is State.Success -> {
                     SuccessSettingsScreen(
                         state = state.state,
-                        onAction = onAction
+                        onAction = onAction,
                     )
                 }
             }
@@ -124,29 +120,28 @@ class SettingsFragment :
     private fun SuccessSettingsScreen(
         state: State.Success,
         onAction: (SettingsState.Action) -> Unit,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
     ) {
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 72.dp)
-
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 72.dp),
         ) {
             WorkTypeScreen(
                 state = state,
-                onAction = onAction
-
+                onAction = onAction,
             )
 
             WorkLoadScreen(
                 state = state,
-                onAction = onAction
+                onAction = onAction,
             )
 
             BottomSheetScreen(
                 state = state,
-                onAction = onAction
+                onAction = onAction,
             )
             SwitcherCard(
                 modifier = Modifier.padding(vertical = 8.dp),
@@ -156,10 +151,10 @@ class SettingsFragment :
                 onCheckChanged = { isUnlimitedNotifications ->
                     onAction(
                         SettingsState.Action.OnNotificationsClicked(
-                            isUnlimitedNotifications = isUnlimitedNotifications
-                        )
+                            isUnlimitedNotifications = isUnlimitedNotifications,
+                        ),
                     )
-                }
+                },
             )
             SwitcherCard(
                 hint = stringResource(R.string.msg_settings_kitchen_appliances_hint),
@@ -170,10 +165,10 @@ class SettingsFragment :
                 onCheckChanged = { isKitchenAppliances ->
                     onAction(
                         SettingsState.Action.OnAppliancesClicked(
-                            isKitchenAppliances = isKitchenAppliances
-                        )
+                            isKitchenAppliances = isKitchenAppliances,
+                        ),
                     )
-                }
+                },
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -183,55 +178,56 @@ class SettingsFragment :
     @Composable
     private fun BottomSheetScreen(
         state: State.Success,
-        onAction: (SettingsState.Action) -> Unit
+        onAction: (SettingsState.Action) -> Unit,
     ) {
         AdminModalBottomSheet(
             title = stringResource(state.acceptOrdersConfirmation.titleResId),
             isShown = state.acceptOrdersConfirmation.isShown,
             onDismissRequest = {
                 onAction(SettingsState.Action.CancelAcceptOrders)
-            }
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
-                    style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.main.onSurface,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                MainButton(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(state.acceptOrdersConfirmation.buttonResId),
-                    onClick = {
-                        onAction(SettingsState.Action.ConfirmNotAcceptOrders)
-                    }
-                )
-                SecondaryButton(
-                    modifier = Modifier.padding(top = 8.dp),
-                    textStringId = R.string.action_common_cancel,
-                    onClick = {
-                        onAction(SettingsState.Action.CancelAcceptOrders)
-                    }
-                )
-            }
-        }
+            },
+            content = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = stringResource(state.acceptOrdersConfirmation.descriptionResId),
+                        style = AdminTheme.typography.bodyMedium,
+                        color = AdminTheme.colors.main.onSurface,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    MainButton(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = stringResource(state.acceptOrdersConfirmation.buttonResId),
+                        onClick = {
+                            onAction(SettingsState.Action.ConfirmNotAcceptOrders)
+                        },
+                    )
+                    SecondaryButton(
+                        modifier = Modifier.padding(top = 8.dp),
+                        textStringId = R.string.action_common_cancel,
+                        onClick = {
+                            onAction(SettingsState.Action.CancelAcceptOrders)
+                        },
+                    )
+                }
+            },
+        )
     }
 
     @Composable
     private fun WorkTypeScreen(
         state: State.Success,
         onAction: (SettingsState.Action) -> Unit,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
     ) {
         Column(modifier = modifier.padding(bottom = 16.dp)) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.msg_settings_type_work),
-                style = AdminTheme.typography.titleMedium.bold
+                style = AdminTheme.typography.titleMedium.bold,
             )
             SettingsTypeRow(
                 iconRes = R.drawable.ic_delivery,
@@ -240,10 +236,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            WorkType.DELIVERY
-                        )
+                            WorkType.DELIVERY,
+                        ),
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -254,10 +250,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            WorkType.PICKUP
-                        )
+                            WorkType.PICKUP,
+                        ),
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -268,10 +264,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            WorkType.DELIVERY_AND_PICKUP
-                        )
+                            WorkType.DELIVERY_AND_PICKUP,
+                        ),
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -282,10 +278,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectStatusClicked(
-                            WorkType.CLOSED
-                        )
+                            WorkType.CLOSED,
+                        ),
                     )
-                }
+                },
             )
         }
     }
@@ -293,12 +289,12 @@ class SettingsFragment :
     @Composable
     private fun WorkLoadScreen(
         state: State.Success,
-        onAction: (SettingsState.Action) -> Unit
+        onAction: (SettingsState.Action) -> Unit,
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             text = stringResource(R.string.action_work_load_cafe_disable),
-            style = AdminTheme.typography.titleMedium.bold
+            style = AdminTheme.typography.titleMedium.bold,
         )
         Column(modifier = Modifier.padding(top = 8.dp)) {
             SettingsTypeRow(
@@ -308,10 +304,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectWorkLoadClicked(
-                            WorkLoad.LOW
-                        )
+                            WorkLoad.LOW,
+                        ),
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -322,10 +318,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectWorkLoadClicked(
-                            WorkLoad.AVERAGE
-                        )
+                            WorkLoad.AVERAGE,
+                        ),
                     )
-                }
+                },
             )
             AdminHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -336,10 +332,10 @@ class SettingsFragment :
                 onClick = {
                     onAction(
                         SettingsState.Action.OnSelectWorkLoadClicked(
-                            WorkLoad.HIGH
-                        )
+                            WorkLoad.HIGH,
+                        ),
                     )
-                }
+                },
             )
         }
     }
@@ -350,40 +346,43 @@ class SettingsFragment :
         textRes: Int,
         isSelected: Boolean,
         onClick: () -> Unit,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
     ) {
         AdminCard(
             modifier = modifier.fillMaxWidth(),
             onClick = onClick,
             elevated = false,
-            shape = noCornerCardShape
+            shape = noCornerCardShape,
         ) {
             Row(
-                modifier = modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(vertical = 16.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(vertical = 16.dp)
+                        .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .size(24.dp),
+                    modifier =
+                        Modifier
+                            .padding(start = 8.dp)
+                            .size(24.dp),
                     painter = painterResource(iconRes),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 16.dp),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(start = 16.dp),
                     text = stringResource(textRes),
                     style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface
+                    color = AdminTheme.colors.main.onSurface,
                 )
                 RadioButton(
                     selected = isSelected,
-                    onClick = onClick
+                    onClick = onClick,
                 )
             }
         }
@@ -397,14 +396,14 @@ class SettingsFragment :
 
             SettingsState.Event.ShowSaveSettingEvent -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.action_settings_save)
+                    resources.getString(R.string.action_settings_save),
                 )
                 findNavController().popBackStack()
             }
 
             is SettingsState.Event.ShowErrorMessage -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(event.messageId)
+                    resources.getString(event.messageId),
                 )
             }
         }
@@ -415,22 +414,25 @@ class SettingsFragment :
     private fun SettingsScreenPreview() {
         AdminTheme {
             SettingsScreen(
-                state = SettingsViewState(
-                    state = State.Success(
-                        isNotifications = true,
-                        isAppliances = true,
-                        workType = SettingsViewState.WorkType.DELIVERY_AND_PICKUP,
-                        acceptOrdersConfirmation = SettingsViewState.AcceptOrdersConfirmation(
-                            isShown = false,
-                            titleResId = 0,
-                            descriptionResId = 0,
-                            buttonResId = 0
-                        ),
-                        isLoading = false,
-                        workLoad = SettingsViewState.WorkLoad.LOW
-                    )
-                ),
-                onAction = {}
+                state =
+                    SettingsViewState(
+                        state =
+                            State.Success(
+                                isNotifications = true,
+                                isAppliances = true,
+                                workType = SettingsViewState.WorkType.DELIVERY_AND_PICKUP,
+                                acceptOrdersConfirmation =
+                                    SettingsViewState.AcceptOrdersConfirmation(
+                                        isShown = false,
+                                        titleResId = 0,
+                                        descriptionResId = 0,
+                                        buttonResId = 0,
+                                    ),
+                                isLoading = false,
+                                workLoad = SettingsViewState.WorkLoad.LOW,
+                            ),
+                    ),
+                onAction = {},
             )
         }
     }

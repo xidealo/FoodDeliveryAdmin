@@ -23,39 +23,41 @@ private val orderStatusShape = RoundedCornerShape(12.dp)
 fun OrderStatusChip(
     modifier: Modifier = Modifier,
     orderStatus: OrderStatus,
-    statusName: String
+    statusName: String,
 ) {
     Box(
-        modifier = modifier
-            .clip(orderStatusShape)
-            .background(
-                color = getOrderColor(
-                    orderStatus = orderStatus
-                )
-            )
+        modifier =
+            modifier
+                .clip(orderStatusShape)
+                .background(
+                    color =
+                        getOrderColor(
+                            orderStatus = orderStatus,
+                        ),
+                ),
     ) {
         Text(
             text = statusName,
-            modifier = Modifier.padding(
-                vertical = 4.dp,
-                horizontal = 8.dp
-            ),
+            modifier =
+                Modifier.padding(
+                    vertical = 4.dp,
+                    horizontal = 8.dp,
+                ),
             style = AdminTheme.typography.labelSmall.medium,
             color = AdminTheme.colors.order.onOrder,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
 
 @Composable
-fun EmptyOrderStatusChip(
-    modifier: Modifier = Modifier
-) {
+fun EmptyOrderStatusChip(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxHeight()
-            .clip(orderStatusShape)
-            .background(AdminTheme.colors.main.disabled)
+        modifier =
+            modifier
+                .fillMaxHeight()
+                .clip(orderStatusShape)
+                .background(AdminTheme.colors.main.disabled),
     )
 }
 
@@ -65,7 +67,7 @@ private fun StatusChipPreview() {
     AdminTheme {
         OrderStatusChip(
             orderStatus = OrderStatus.ACCEPTED,
-            statusName = "Принят"
+            statusName = "Принят",
         )
     }
 }
@@ -75,7 +77,7 @@ private fun StatusChipPreview() {
 private fun EmptyOrderStatusChipPreview() {
     AdminTheme {
         EmptyOrderStatusChip(
-            modifier = Modifier.width(100.dp)
+            modifier = Modifier.width(100.dp),
         )
     }
 }

@@ -6,6 +6,6 @@ interface StatisticRepo {
     suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String
+        period: String,
     ): List<Statistic>
 }

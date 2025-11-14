@@ -13,27 +13,27 @@ data class AdditionGroupListViewState(
     val visibleAdditionItems: ImmutableList<AdditionGroupItem>,
     val hiddenAdditionItems: ImmutableList<AdditionGroupItem>,
     val isRefreshing: Boolean,
-    val isLoading: Boolean
+    val isLoading: Boolean,
 ) : BaseViewState {
     @Immutable
     data class AdditionGroupItem(
         val uuid: String,
         val name: String,
         val iconColor: Color,
-        val isVisible: Boolean
+        val isVisible: Boolean,
     )
 }
 
 @Composable
-fun AdditionGroup.toItem(): AdditionGroupListViewState.AdditionGroupItem {
-    return AdditionGroupListViewState.AdditionGroupItem(
+fun AdditionGroup.toItem(): AdditionGroupListViewState.AdditionGroupItem =
+    AdditionGroupListViewState.AdditionGroupItem(
         name = name,
         uuid = uuid,
-        iconColor = if (isVisible) {
-            AdminTheme.colors.main.primary
-        } else {
-            AdminTheme.colors.main.onSurfaceVariant
-        },
-        isVisible = isVisible
+        iconColor =
+            if (isVisible) {
+                AdminTheme.colors.main.primary
+            } else {
+                AdminTheme.colors.main.onSurfaceVariant
+            },
+        isVisible = isVisible,
     )
-}

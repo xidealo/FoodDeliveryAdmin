@@ -21,40 +21,43 @@ data class OrderDetails(
     val oldTotalCost: Int?,
     val newTotalCost: Int,
     val oderProductList: List<OrderProduct>,
-    val availableStatusList: List<OrderStatus>
+    val availableStatusList: List<OrderStatus>,
 ) {
     companion object {
-        val mock = OrderDetails(
-            uuid = "",
-            code = "",
-            status = OrderStatus.NOT_ACCEPTED,
-            time = 0,
-            timeZone = "",
-            isDelivery = false,
-            deferredTime = null,
-            paymentMethod = null,
-            address = OrderAddress(
-                description = null,
-                street = null,
-                house = null,
-                flat = null,
-                entrance = null,
-                floor = null,
-                comment = null
-            ),
-            comment = null,
-            clientUser = ClientUser(
+        val mock =
+            OrderDetails(
                 uuid = "",
-                phoneNumber = "",
-                email = null
-            ),
-            cafeUuid = "",
-            deliveryCost = null,
-            percentDiscount = null,
-            oldTotalCost = null,
-            newTotalCost = 0,
-            oderProductList = emptyList(),
-            availableStatusList = emptyList()
-        )
+                code = "",
+                status = OrderStatus.NOT_ACCEPTED,
+                time = 0,
+                timeZone = "",
+                isDelivery = false,
+                deferredTime = null,
+                paymentMethod = null,
+                address =
+                    OrderAddress(
+                        description = null,
+                        street = null,
+                        house = null,
+                        flat = null,
+                        entrance = null,
+                        floor = null,
+                        comment = null,
+                    ),
+                comment = null,
+                clientUser =
+                    ClientUser(
+                        uuid = "",
+                        phoneNumber = "",
+                        email = null,
+                    ),
+                cafeUuid = "",
+                deliveryCost = null,
+                percentDiscount = null,
+                oldTotalCost = null,
+                newTotalCost = 0,
+                oderProductList = emptyList(),
+                availableStatusList = emptyList(),
+            )
     }
 }

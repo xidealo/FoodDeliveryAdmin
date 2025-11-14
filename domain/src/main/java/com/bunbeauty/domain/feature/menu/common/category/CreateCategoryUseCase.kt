@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class CreateCategoryUseCase(
     private val categoryRepo: CategoryRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(categoryName: String) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -22,22 +22,24 @@ class CreateCategoryUseCase(
             categoryName.isBlank() -> throw CategoryNameException()
             getHasSameName(
                 categoryList = categoryList,
-                name = categoryName
+                name = categoryName,
             ) -> throw DuplicateCategoryNameException()
         }
 
         categoryRepo.postCategory(
             token = token,
-            createCategory = CreateCategory(
-                name = categoryName,
-                priority = getCategoryPriority(categoryList = categoryList)
-            )
+            createCategory =
+                CreateCategory(
+                    name = categoryName,
+                    priority = getCategoryPriority(categoryList = categoryList),
+                ),
         )
     }
 
-    private fun getHasSameName(categoryList: List<Category>, name: String): Boolean {
-        return categoryList.any { categoryName -> categoryName.name == name }
-    }
+    private fun getHasSameName(
+        categoryList: List<Category>,
+        name: String,
+    ): Boolean = categoryList.any { categoryName -> categoryName.name == name }
 
     private fun getCategoryPriority(categoryList: List<Category>) = categoryList.count() + 1
 }

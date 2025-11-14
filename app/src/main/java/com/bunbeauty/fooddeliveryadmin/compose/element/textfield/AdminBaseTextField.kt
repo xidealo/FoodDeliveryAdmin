@@ -33,17 +33,17 @@ fun AdminBaseTextField(
     isError: Boolean = false,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     CompositionLocalProvider(
-        LocalTextSelectionColors provides AdminTextFieldDefaults.textSelectionColors
+        LocalTextSelectionColors provides AdminTextFieldDefaults.textSelectionColors,
     ) {
         OutlinedTextField(
             modifier = modifier.fillMaxWidth(),
             value = value,
             onValueChange = { changedValue ->
                 onValueChange(
-                    changedValue.take(maxSymbols)
+                    changedValue.take(maxSymbols),
                 )
             },
             textStyle = AdminTheme.typography.bodyLarge,
@@ -51,23 +51,24 @@ fun AdminBaseTextField(
                 Text(
                     text = labelText,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             trailingIcon = {
                 if (trailingIcon == null) {
                     if (value.isNotEmpty()) {
                         Icon(
-                            modifier = Modifier
-                                .size(16.dp)
-                                .clickable(
-                                    onClick = {
-                                        onValueChange("")
-                                    }
-                                ),
+                            modifier =
+                                Modifier
+                                    .size(16.dp)
+                                    .clickable(
+                                        onClick = {
+                                            onValueChange("")
+                                        },
+                                    ),
                             painter = painterResource(R.drawable.ic_clear),
                             tint = AdminTheme.colors.main.onSurfaceVariant,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 } else {
@@ -81,7 +82,7 @@ fun AdminBaseTextField(
             keyboardActions = keyboardActions,
             singleLine = maxLines == 1,
             maxLines = maxLines,
-            colors = AdminTextFieldDefaults.textFieldColors
+            colors = AdminTextFieldDefaults.textFieldColors,
         )
     }
 }
@@ -98,10 +99,10 @@ fun AdminBaseTextField(
     maxLines: Int = 1,
     isError: Boolean = false,
     enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     CompositionLocalProvider(
-        LocalTextSelectionColors provides AdminTextFieldDefaults.textSelectionColors
+        LocalTextSelectionColors provides AdminTextFieldDefaults.textSelectionColors,
     ) {
         OutlinedTextField(
             modifier = modifier.fillMaxWidth(),
@@ -109,8 +110,8 @@ fun AdminBaseTextField(
             onValueChange = { changedValue ->
                 onValueChange(
                     changedValue.copy(
-                        text = changedValue.text.take(maxSymbols)
-                    )
+                        text = changedValue.text.take(maxSymbols),
+                    ),
                 )
             },
             textStyle = AdminTheme.typography.bodyLarge,
@@ -118,23 +119,24 @@ fun AdminBaseTextField(
                 Text(
                     text = labelText,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             trailingIcon = {
                 if (trailingIcon == null) {
                     if (value.text.isNotEmpty()) {
                         Icon(
-                            modifier = Modifier
-                                .size(16.dp)
-                                .clickable(
-                                    onClick = {
-                                        onValueChange(TextFieldValue(""))
-                                    }
-                                ),
+                            modifier =
+                                Modifier
+                                    .size(16.dp)
+                                    .clickable(
+                                        onClick = {
+                                            onValueChange(TextFieldValue(""))
+                                        },
+                                    ),
                             painter = painterResource(R.drawable.ic_clear),
                             tint = AdminTheme.colors.main.onSurfaceVariant,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 } else {
@@ -147,7 +149,7 @@ fun AdminBaseTextField(
             keyboardActions = keyboardActions,
             singleLine = maxLines == 1,
             maxLines = maxLines,
-            colors = AdminTextFieldDefaults.textFieldColors
+            colors = AdminTextFieldDefaults.textFieldColors,
         )
     }
 }
@@ -159,7 +161,7 @@ private fun AdminBaseTextFieldPreview() {
         AdminBaseTextField(
             labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
-            onValueChange = {}
+            onValueChange = {},
         )
     }
 }
@@ -172,7 +174,7 @@ private fun AdminBaseTextFieldWithErrorPreview() {
             labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
             onValueChange = {},
-            isError = true
+            isError = true,
         )
     }
 }
@@ -189,9 +191,9 @@ private fun AdminBaseTextFieldWithTrailingIconPreview() {
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(R.drawable.ic_clear),
-                    contentDescription = null
+                    contentDescription = null,
                 )
-            }
+            },
         )
     }
 }

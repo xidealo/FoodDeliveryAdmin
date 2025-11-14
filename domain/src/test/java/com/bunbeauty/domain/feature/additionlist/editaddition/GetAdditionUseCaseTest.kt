@@ -22,64 +22,69 @@ class GetAdditionUseCaseTest {
 
     @BeforeTest
     fun setup() {
-        getAdditionUseCase = GetAdditionUseCase(
-            additionRepo = additionRepo,
-            dataStoreRepo = dataStoreRepo
+        getAdditionUseCase =
+            GetAdditionUseCase(
+                additionRepo = additionRepo,
+                dataStoreRepo = dataStoreRepo,
+            )
+    }
+
+    @Test
+    fun `invoke should return Addition when addition is found`() =
+        runTest {
+            // Given
+            val additionUuid = "uuid"
+            val token = "valid_token"
+            val addition = additionMock.copy(name = "Бекон", priority = 1, price = 1)
+
+            coEvery { dataStoreRepo.getToken() } returns token
+            coEvery { additionRepo.getAddition(additionUuid, token) } returns addition
+
+            // When
+            val result = getAdditionUseCase(additionUuid)
+
+            // Then
+            assertEquals(addition, result)
+            coVerify { additionRepo.getAddition(additionUuid, token) }
+        }
+
+    @Test
+    fun `invoke should throw NoTokenException when token is null`() =
+        runTest {
+            // Given
+            val additionUuid = "uuid"
+            coEvery { dataStoreRepo.getToken() } returns null
+
+            // When / Then
+            assertFailsWith<NoTokenException> {
+                getAdditionUseCase(additionUuid)
+            }
+        }
+
+    @Test
+    fun `invoke should throw NotFoundAdditionException when addition is not found`() =
+        runTest {
+            // Given
+            val additionUuid = "uuid"
+            val token = "valid_token"
+            coEvery { dataStoreRepo.getToken() } returns token
+            coEvery { additionRepo.getAddition(additionUuid, token) } returns null
+
+            // When / Then
+            assertFailsWith<NotFoundAdditionException> {
+                getAdditionUseCase(additionUuid)
+            }
+        }
+
+    private val additionMock =
+        Addition(
+            name = "",
+            uuid = "uuid",
+            priority = 0,
+            fullName = "",
+            price = 0,
+            photoLink = "",
+            isVisible = false,
+            tag = null,
         )
-    }
-
-    @Test
-    fun `invoke should return Addition when addition is found`() = runTest {
-        // Given
-        val additionUuid = "uuid"
-        val token = "valid_token"
-        val addition = additionMock.copy(name = "Бекон", priority = 1, price = 1)
-
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { additionRepo.getAddition(additionUuid, token) } returns addition
-
-        // When
-        val result = getAdditionUseCase(additionUuid)
-
-        // Then
-        assertEquals(addition, result)
-        coVerify { additionRepo.getAddition(additionUuid, token) }
-    }
-
-    @Test
-    fun `invoke should throw NoTokenException when token is null`() = runTest {
-        // Given
-        val additionUuid = "uuid"
-        coEvery { dataStoreRepo.getToken() } returns null
-
-        // When / Then
-        assertFailsWith<NoTokenException> {
-            getAdditionUseCase(additionUuid)
-        }
-    }
-
-    @Test
-    fun `invoke should throw NotFoundAdditionException when addition is not found`() = runTest {
-        // Given
-        val additionUuid = "uuid"
-        val token = "valid_token"
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery { additionRepo.getAddition(additionUuid, token) } returns null
-
-        // When / Then
-        assertFailsWith<NotFoundAdditionException> {
-            getAdditionUseCase(additionUuid)
-        }
-    }
-
-    private val additionMock = Addition(
-        name = "",
-        uuid = "uuid",
-        priority = 0,
-        fullName = "",
-        price = 0,
-        photoLink = "",
-        isVisible = false,
-        tag = null
-    )
 }

@@ -11,11 +11,12 @@ import kotlinx.coroutines.flow.stateIn
 @OptIn(ExperimentalCoroutinesApi::class)
 fun <DATA, UI> MutableStateFlow<DATA>.mapToStateFlow(
     scope: CoroutineScope,
-    block: (DATA) -> UI
-): StateFlow<UI> = mapLatest { data ->
-    block(data)
-}.stateIn(
-    scope = scope,
-    started = SharingStarted.Eagerly,
-    initialValue = block(value)
-)
+    block: (DATA) -> UI,
+): StateFlow<UI> =
+    mapLatest { data ->
+        block(data)
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.Eagerly,
+        initialValue = block(value),
+    )

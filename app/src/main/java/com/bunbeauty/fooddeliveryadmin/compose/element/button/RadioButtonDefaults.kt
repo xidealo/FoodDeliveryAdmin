@@ -7,8 +7,9 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 object RadioButtonDefaults {
     val radioButtonColors: RadioButtonColors
-        @Composable get() = RadioButtonDefaults.colors(
-            selectedColor = AdminTheme.colors.main.primary,
-            unselectedColor = AdminTheme.colors.main.onSurfaceVariant
-        )
+        @Composable get() =
+            RadioButtonDefaults.colors(
+                selectedColor = AdminTheme.colors.main.primary,
+                unselectedColor = AdminTheme.colors.main.onSurfaceVariant,
+            )
 }

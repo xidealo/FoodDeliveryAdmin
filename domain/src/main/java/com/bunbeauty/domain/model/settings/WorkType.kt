@@ -4,5 +4,5 @@ enum class WorkType {
     DELIVERY,
     PICKUP,
     DELIVERY_AND_PICKUP,
-    CLOSED
+    CLOSED,
 }

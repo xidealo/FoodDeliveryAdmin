@@ -2,7 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.additionlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.key
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.model.addition.Addition
@@ -18,9 +17,8 @@ data class AdditionListViewState(
     val hiddenAdditionItems: ImmutableList<AdditionFeedViewItem>,
     val isRefreshing: Boolean,
     val isLoading: Boolean,
-    val hasError: Boolean
+    val hasError: Boolean,
 ) : BaseViewState {
-
     @Immutable
     sealed interface AdditionFeedViewItem {
         val key: String
@@ -28,13 +26,13 @@ data class AdditionListViewState(
         @Immutable
         data class Title(
             override val key: String,
-            val title: String
+            val title: String,
         ) : AdditionFeedViewItem
 
         @Immutable
         data class AdditionItem(
             override val key: String,
-            val addition: AdditionViewItem
+            val addition: AdditionViewItem,
         ) : AdditionFeedViewItem
     }
 
@@ -44,19 +42,19 @@ data class AdditionListViewState(
         val name: String,
         val photoLink: String,
         val iconColor: Color,
-        val isVisible: Boolean
+        val isVisible: Boolean,
     )
 }
 
 @Composable
-fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.AdditionFeedViewItem {
-    return when (this) {
+fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.AdditionFeedViewItem =
+    when (this) {
         is AdditionList.DataState.AdditionFeedItem.AdditionItem ->
             AdditionListViewState
                 .AdditionFeedViewItem
                 .AdditionItem(
                     key = addition.uuid,
-                    addition = addition.toItem()
+                    addition = addition.toItem(),
                 )
 
         is AdditionList.DataState.AdditionFeedItem.Title ->
@@ -64,22 +62,21 @@ fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.Addi
                 .AdditionFeedViewItem
                 .Title(
                     key = key,
-                    title = title ?: stringResource(R.string.title_addition_other_additions)
+                    title = title ?: stringResource(R.string.title_addition_other_additions),
                 )
     }
-}
 
 @Composable
-fun Addition.toItem(): AdditionListViewState.AdditionViewItem {
-    return AdditionListViewState.AdditionViewItem(
+fun Addition.toItem(): AdditionListViewState.AdditionViewItem =
+    AdditionListViewState.AdditionViewItem(
         name = name,
         photoLink = photoLink,
         uuid = uuid,
-        iconColor = if (isVisible) {
-            AdminTheme.colors.main.primary
-        } else {
-            AdminTheme.colors.main.onSurfaceVariant
-        },
-        isVisible = isVisible
+        iconColor =
+            if (isVisible) {
+                AdminTheme.colors.main.primary
+            } else {
+                AdminTheme.colors.main.onSurfaceVariant
+            },
+        isVisible = isVisible,
     )
-}

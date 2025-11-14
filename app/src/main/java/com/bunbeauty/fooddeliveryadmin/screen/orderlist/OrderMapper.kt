@@ -11,26 +11,23 @@ import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 class OrderMapper(
     private val orderStatusMapper: OrderStatusMapper,
     private val dateTimeUtil: DateTimeUtil,
-    private val resources: Resources
+    private val resources: Resources,
 ) {
-
-    fun map(order: Order): OrderListViewState.OrderItem {
-        return OrderListViewState.OrderItem(
+    fun map(order: Order): OrderListViewState.OrderItem =
+        OrderListViewState.OrderItem(
             uuid = order.uuid,
             status = order.orderStatus,
             statusString = orderStatusMapper.map(order.orderStatus),
             code = order.code,
             deferredTime = getDeferredTime(order.deferredTime),
-            dateTime = dateTimeUtil.formatDateTime(order.time, PATTERN_DD_MMMM_HH_MM)
+            dateTime = dateTimeUtil.formatDateTime(order.time, PATTERN_DD_MMMM_HH_MM),
         )
-    }
 
-    private fun getDeferredTime(deferredTime: Long?): String {
-        return if (deferredTime == null) {
+    private fun getDeferredTime(deferredTime: Long?): String =
+        if (deferredTime == null) {
             ""
         } else {
             resources.getString(R.string.msg_order_deferred_date_time) +
                 dateTimeUtil.formatDateTime(deferredTime, PATTERN_HH_MM)
         }
-    }
 }

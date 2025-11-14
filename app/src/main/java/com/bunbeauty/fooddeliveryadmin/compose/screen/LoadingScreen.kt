@@ -14,7 +14,7 @@ internal fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center),
-            color = AdminTheme.colors.main.primary
+            color = AdminTheme.colors.main.primary,
         )
     }
 }

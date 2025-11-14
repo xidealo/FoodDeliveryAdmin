@@ -13,14 +13,14 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class LoginUseCaseTest {
-
     private val userAuthorizationRepo: UserAuthorizationRepo = mockk()
     private val dataStoreRepo: DataStoreRepo = mockk()
 
-    private val loginUseCase = LoginUseCase(
-        userAuthorizationRepo = userAuthorizationRepo,
-        dataStoreRepo = dataStoreRepo
-    )
+    private val loginUseCase =
+        LoginUseCase(
+            userAuthorizationRepo = userAuthorizationRepo,
+            dataStoreRepo = dataStoreRepo,
+        )
 
     @Test
     fun `invoke should save token, cafeUuid, companyUuid, and username when login is successful`() =
@@ -56,18 +56,19 @@ class LoginUseCaseTest {
         }
 
     @Test
-    fun `invoke should throw LoginException when login fails`() = runTest {
-        // Arrange
-        val username = "testUser"
-        val password = "testPassword"
+    fun `invoke should throw LoginException when login fails`() =
+        runTest {
+            // Arrange
+            val username = "testUser"
+            val password = "testPassword"
 
-        coEvery {
-            userAuthorizationRepo.login(username = username, password = password)
-        } returns null
+            coEvery {
+                userAuthorizationRepo.login(username = username, password = password)
+            } returns null
 
-        // Act & Assert
-        assertThrows(LoginException::class.java) {
-            runBlocking { loginUseCase(username, password) }
+            // Act & Assert
+            assertThrows(LoginException::class.java) {
+                runBlocking { loginUseCase(username, password) }
+            }
         }
-    }
 }

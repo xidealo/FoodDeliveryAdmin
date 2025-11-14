@@ -5,38 +5,41 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
 data class SettingsViewState(
-    val state: State
+    val state: State,
 ) : BaseViewState {
     @Immutable
     sealed interface State {
         data object Loading : State
+
         data object Error : State
+
         data class Success(
             val isNotifications: Boolean,
             val isAppliances: Boolean,
             val workType: WorkType,
             val acceptOrdersConfirmation: AcceptOrdersConfirmation,
             val isLoading: Boolean,
-            val workLoad: WorkLoad
+            val workLoad: WorkLoad,
         ) : State
     }
+
     enum class WorkType {
         DELIVERY,
         PICKUP,
         DELIVERY_AND_PICKUP,
-        CLOSED
+        CLOSED,
     }
 
     enum class WorkLoad {
         LOW,
         AVERAGE,
-        HIGH
+        HIGH,
     }
 
     data class AcceptOrdersConfirmation(
         val isShown: Boolean,
         val titleResId: Int,
         val descriptionResId: Int,
-        val buttonResId: Int
+        val buttonResId: Int,
     )
 }

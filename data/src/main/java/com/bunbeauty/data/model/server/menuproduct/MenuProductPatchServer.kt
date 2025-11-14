@@ -14,5 +14,5 @@ data class MenuProductPatchServer(
     val photoLink: String?,
     val categoryUuids: List<String>?,
     val isVisible: Boolean?,
-    val isRecommended: Boolean?
+    val isRecommended: Boolean?,
 )

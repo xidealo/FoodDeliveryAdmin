@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class GetCafeUseCase(
     private val dataStoreRepo: DataStoreRepo,
-    private val cafeRepository: CafeRepo
+    private val cafeRepository: CafeRepo,
 ) {
-
     suspend operator fun invoke(): Cafe {
         val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull() ?: throw NoCafeException()
 

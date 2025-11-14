@@ -7,15 +7,17 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 
 class UpdateOrderStatusUseCase(
     private val dataStoreRepo: DataStoreRepo,
-    private val orderRepo: OrderRepo
+    private val orderRepo: OrderRepo,
 ) {
-
-    suspend operator fun invoke(orderUuid: String, status: OrderStatus) {
+    suspend operator fun invoke(
+        orderUuid: String,
+        status: OrderStatus,
+    ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         orderRepo.updateStatus(
             token = token,
             orderUuid = orderUuid,
-            status = status
+            status = status,
         )
     }
 }

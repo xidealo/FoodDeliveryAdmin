@@ -16,33 +16,49 @@ interface CreateAdditionGroupForMenu {
         val additionListHasError: Boolean,
         val isVisible: Boolean,
         val menuProductUuid: String,
-        val isSaveLoading: Boolean
+        val isSaveLoading: Boolean,
     ) : BaseViewDataState {
-
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR
+            ERROR,
         }
     }
 
     sealed interface Action : BaseAction {
-        data class Init(val menuProductUuid: String) : Action
-        data class SelectAdditionGroup(val additionGroupUuid: String) : Action
-        data class SelectAdditionList(val additionListUuid: List<String>) : Action
+        data class Init(
+            val menuProductUuid: String,
+        ) : Action
+
+        data class SelectAdditionGroup(
+            val additionGroupUuid: String,
+        ) : Action
+
+        data class SelectAdditionList(
+            val additionListUuid: List<String>,
+        ) : Action
+
         data object OnAdditionGroupClick : Action
+
         data object OnAdditionListClick : Action
+
         data object OnSaveClick : Action
+
         data object OnBackClick : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
+
         data object SaveAndBack : Event
-        data class OnAdditionGroupClick(val uuid: String) : Event
+
+        data class OnAdditionGroupClick(
+            val uuid: String,
+        ) : Event
+
         data class OnAdditionListClick(
             val menuProductUuid: String,
-            val additionGroupName: String
+            val additionGroupName: String,
         ) : Event
     }
 }

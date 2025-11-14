@@ -16,24 +16,25 @@ data class MenuProduct(
     val isVisible: Boolean,
     val isRecommended: Boolean,
     val categoryUuids: List<String>,
-    val additionGroups: List<AdditionGroupWithAdditions>
+    val additionGroups: List<AdditionGroupWithAdditions>,
 ) {
     companion object {
-        val mock = MenuProduct(
-            uuid = "",
-            name = "",
-            newPrice = 0,
-            oldPrice = null,
-            units = null,
-            nutrition = null,
-            description = "",
-            comboDescription = null,
-            photoLink = "",
-            barcode = null,
-            isVisible = false,
-            isRecommended = false,
-            categoryUuids = emptyList(),
-            additionGroups = emptyList()
-        )
+        val mock =
+            MenuProduct(
+                uuid = "",
+                name = "",
+                newPrice = 0,
+                oldPrice = null,
+                units = null,
+                nutrition = null,
+                description = "",
+                comboDescription = null,
+                photoLink = "",
+                barcode = null,
+                isVisible = false,
+                isRecommended = false,
+                categoryUuids = emptyList(),
+                additionGroups = emptyList(),
+            )
     }
 }

@@ -13,15 +13,15 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class SaveCategoryListUseCaseTest {
-
     private val categoryRepo: CategoryRepo = mockk(relaxed = true)
     private val dataStoreRepo: DataStoreRepo = mockk()
     private lateinit var saveCategoryListUseCase: SaveCategoryListUseCase
 
-    private val categoryList = listOf(
-        Category(uuid = "1", name = "Category 1", priority = 1),
-        Category(uuid = "2", name = "Category 2", priority = 2)
-    )
+    private val categoryList =
+        listOf(
+            Category(uuid = "1", name = "Category 1", priority = 1),
+            Category(uuid = "2", name = "Category 2", priority = 2),
+        )
 
     @BeforeTest
     fun setup() {
@@ -29,31 +29,33 @@ class SaveCategoryListUseCaseTest {
     }
 
     @Test
-    fun `invoke saves category list when token is available`() = runTest {
-        // Given
-        val token = "valid_token"
-        coEvery { dataStoreRepo.getToken() } returns token
+    fun `invoke saves category list when token is available`() =
+        runTest {
+            // Given
+            val token = "valid_token"
+            coEvery { dataStoreRepo.getToken() } returns token
 
-        // When
-        saveCategoryListUseCase(categoryList)
+            // When
+            saveCategoryListUseCase(categoryList)
 
-        // Then
-        coVerify {
-            categoryRepo.saveCategoryPriority(
-                token = token,
-                category = categoryList
-            )
+            // Then
+            coVerify {
+                categoryRepo.saveCategoryPriority(
+                    token = token,
+                    category = categoryList,
+                )
+            }
         }
-    }
 
     @Test
-    fun `invoke throws NoTokenException when token is null`() = runTest {
-        // Given
-        coEvery { dataStoreRepo.getToken() } returns null
+    fun `invoke throws NoTokenException when token is null`() =
+        runTest {
+            // Given
+            coEvery { dataStoreRepo.getToken() } returns null
 
-        // Then
-        assertFailsWith<NoTokenException> {
-            saveCategoryListUseCase(categoryList)
+            // Then
+            assertFailsWith<NoTokenException> {
+                saveCategoryListUseCase(categoryList)
+            }
         }
-    }
 }

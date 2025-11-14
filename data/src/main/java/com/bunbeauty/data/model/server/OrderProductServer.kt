@@ -21,5 +21,5 @@ data class OrderProductServer(
     val additionsPrice: Int?,
     val barcode: Int = 0,
     @SerialName("additions")
-    val additions: List<OrderAdditionServer>
+    val additions: List<OrderAdditionServer>,
 )

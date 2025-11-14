@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.element.rememberMultipleEventsCutter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,10 +23,10 @@ fun AdminCard(
     colors: CardColors = AdminCardDefaults.cardColors,
     shape: Shape = AdminCardDefaults.cardShape,
     border: BorderStroke? = null,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false
+        LocalMinimumInteractiveComponentSize provides 0.dp,
     ) {
         if (clickable) {
             val multipleEventsCutter = rememberMultipleEventsCutter()
@@ -38,7 +39,7 @@ fun AdminCard(
                     multipleEventsCutter.processEvent(onClick)
                 },
                 border = border,
-                content = content
+                content = content,
             )
         } else {
             Card(
@@ -47,7 +48,7 @@ fun AdminCard(
                 colors = colors,
                 elevation = AdminCardDefaults.getCardElevation(elevated),
                 border = border,
-                content = content
+                content = content,
             )
         }
     }

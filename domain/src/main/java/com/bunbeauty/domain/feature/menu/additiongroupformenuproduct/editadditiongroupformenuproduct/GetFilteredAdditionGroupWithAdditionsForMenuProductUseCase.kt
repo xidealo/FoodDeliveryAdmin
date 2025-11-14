@@ -10,27 +10,30 @@ import kotlinx.coroutines.flow.firstOrNull
 // todo add test to additionList.filter
 class GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(
         menuProductUuid: String,
-        additionGroupForMenuUuid: String
+        additionGroupForMenuUuid: String,
     ): AdditionGroupWithAdditions {
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
 
-        return menuProductRepo.getMenuProduct(
-            companyUuid = companyUuid,
-            menuProductUuid = menuProductUuid
-        )?.additionGroups
+        return menuProductRepo
+            .getMenuProduct(
+                companyUuid = companyUuid,
+                menuProductUuid = menuProductUuid,
+            )?.additionGroups
             ?.find { additionGroupWithAdditions ->
                 additionGroupWithAdditions.additionGroup.uuid == additionGroupForMenuUuid
             }?.let { additionGroupWithAdditions ->
                 additionGroupWithAdditions.copy(
-                    additionList = additionGroupWithAdditions.additionList.filter { addition ->
-                        addition.isVisible
-                    }.sortedBy { addition ->
-                        addition.priority
-                    }
+                    additionList =
+                        additionGroupWithAdditions.additionList
+                            .filter { addition ->
+                                addition.isVisible
+                            }.sortedBy { addition ->
+                                addition.priority
+                            },
                 )
             }
             ?: throw NoAdditionGroupException()

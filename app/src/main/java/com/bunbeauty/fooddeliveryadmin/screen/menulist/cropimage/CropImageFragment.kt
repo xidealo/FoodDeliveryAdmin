@@ -45,44 +45,48 @@ const val CROPPED_IMAGE_URI_KEY = "cropped image uri"
 const val ORIGINAL_QUALITY = 100
 const val DEFAULT_ANGEL = 90
 
-class CropImageFragment :
-    BaseComposeFragment<CropImage.DataState, CropImageViewState, CropImage.Action, CropImage.Event>() {
-
+class CropImageFragment : BaseComposeFragment<CropImage.DataState, CropImageViewState, CropImage.Action, CropImage.Event>() {
     private val cropImageFragmentArgs: CropImageFragmentArgs by navArgs()
 
     private var cropImageView: CropImageView? = null
 
-    private val cropImageCompleteListener = OnCropImageCompleteListener { _, result ->
-        setFragmentResult(
-            CROP_IMAGE_REQUEST_KEY,
-            bundleOf(CROPPED_IMAGE_URI_KEY to result.uriContent)
-        )
-        findNavController().popBackStack()
-    }
+    private val cropImageCompleteListener =
+        OnCropImageCompleteListener { _, result ->
+            setFragmentResult(
+                CROP_IMAGE_REQUEST_KEY,
+                bundleOf(CROPPED_IMAGE_URI_KEY to result.uriContent),
+            )
+            findNavController().popBackStack()
+        }
 
     override val viewModel: CropImageViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(
             CropImage.Action.SetImageUrl(
-                uri = cropImageFragmentArgs.uri.toString()
-            )
+                uri = cropImageFragmentArgs.uri.toString(),
+            ),
         )
     }
 
     @Composable
-    override fun mapState(state: CropImage.DataState): CropImageViewState {
-        return CropImageViewState(
+    override fun mapState(state: CropImage.DataState): CropImageViewState =
+        CropImageViewState(
             isLoading = state.isLoading,
             imageContent = ImageContent(uri = state.uri?.toUri()),
-            cropImageLaunchMode = cropImageFragmentArgs.launchMode
+            cropImageLaunchMode = cropImageFragmentArgs.launchMode,
         )
-    }
 
     @Composable
-    override fun Screen(state: CropImageViewState, onAction: (CropImage.Action) -> Unit) {
+    override fun Screen(
+        state: CropImageViewState,
+        onAction: (CropImage.Action) -> Unit,
+    ) {
         AdminScaffold(
             title = stringResource(R.string.title_crop_image),
             backActionClick = {
@@ -92,30 +96,34 @@ class CropImageFragment :
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     horizontalAlignment = Alignment.End,
-                    verticalArrangement = spacedBy(8.dp)
+                    verticalArrangement = spacedBy(8.dp),
                 ) {
                     IconButton(
-                        modifier = Modifier.border(
-                            width = 2.dp,
-                            shape = CircleShape,
-                            brush = SolidColor(
-                                value = AdminTheme.colors.main.primary
-                            )
-                        ),
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = AdminTheme.colors.main.secondary,
-                            contentColor = AdminTheme.colors.main.primary
-                        ),
+                        modifier =
+                            Modifier.border(
+                                width = 2.dp,
+                                shape = CircleShape,
+                                brush =
+                                    SolidColor(
+                                        value = AdminTheme.colors.main.primary,
+                                    ),
+                            ),
+                        colors =
+                            IconButtonDefaults.iconButtonColors(
+                                containerColor = AdminTheme.colors.main.secondary,
+                                contentColor = AdminTheme.colors.main.primary,
+                            ),
                         onClick = {
                             cropImageView?.rotateImage(DEFAULT_ANGEL)
-                        }
+                        },
                     ) {
                         Icon(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(24.dp),
+                            modifier =
+                                Modifier
+                                    .padding(8.dp)
+                                    .size(24.dp),
                             painter = painterResource(R.drawable.ic_turn),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
 
@@ -124,17 +132,18 @@ class CropImageFragment :
                         isLoading = state.isLoading,
                         onClick = {
                             onAction(CropImage.Action.SaveClick)
-                        }
+                        },
                     )
                 }
-            }
+            },
         ) {
             CropImageView(
                 imageContent = state.imageContent,
-                cropImageDefaults = when (state.cropImageLaunchMode) {
-                    CropImageLaunchMode.MENU_PRODUCT -> CropImageDefaults.menuProductOptions()
-                    CropImageLaunchMode.ADDITION -> CropImageDefaults.additionOptions()
-                }
+                cropImageDefaults =
+                    when (state.cropImageLaunchMode) {
+                        CropImageLaunchMode.MENU_PRODUCT -> CropImageDefaults.menuProductOptions()
+                        CropImageLaunchMode.ADDITION -> CropImageDefaults.additionOptions()
+                    },
             )
         }
     }
@@ -143,7 +152,7 @@ class CropImageFragment :
     private fun CropImageView(
         imageContent: ImageContent,
         cropImageDefaults: CropImageOptions,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
     ) {
         val uri = imageContent.uri ?: return
 
@@ -152,15 +161,17 @@ class CropImageFragment :
                 modifier = Modifier.align(Alignment.Center),
                 factory = { context ->
                     LinearLayout(context).apply {
-                        cropImageView = CropImageView(context).apply {
-                            setImageCropOptions(cropImageDefaults)
-                            setImageUriAsync(uri)
-                        }.also { view ->
-                            view.setOnCropImageCompleteListener(cropImageCompleteListener)
-                        }
+                        cropImageView =
+                            CropImageView(context)
+                                .apply {
+                                    setImageCropOptions(cropImageDefaults)
+                                    setImageUriAsync(uri)
+                                }.also { view ->
+                                    view.setOnCropImageCompleteListener(cropImageCompleteListener)
+                                }
                         addView(cropImageView)
                     }
-                }
+                },
             )
         }
     }
@@ -175,7 +186,7 @@ class CropImageFragment :
                 cropImageView?.croppedImageAsync(
                     saveCompressQuality = ORIGINAL_QUALITY,
                     reqWidth = 320,
-                    reqHeight = 320
+                    reqHeight = 320,
                 )
             }
         }
@@ -185,14 +196,16 @@ class CropImageFragment :
     @Composable
     private fun ScreenPreview() {
         Screen(
-            state = CropImageViewState(
-                isLoading = false,
-                imageContent = ImageContent(
-                    uri = null
+            state =
+                CropImageViewState(
+                    isLoading = false,
+                    imageContent =
+                        ImageContent(
+                            uri = null,
+                        ),
+                    cropImageLaunchMode = CropImageLaunchMode.MENU_PRODUCT,
                 ),
-                cropImageLaunchMode = CropImageLaunchMode.MENU_PRODUCT
-            ),
-            onAction = {}
+            onAction = {},
         )
     }
 }

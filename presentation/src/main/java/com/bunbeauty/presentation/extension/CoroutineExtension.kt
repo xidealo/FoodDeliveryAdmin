@@ -11,13 +11,14 @@ inline fun CoroutineScope.launchSafe(
     crossinline block: suspend CoroutineScope.() -> Unit,
     crossinline onError: suspend (Throwable) -> Unit,
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
-    errorDispatcher: CoroutineDispatcher = Dispatchers.Main
+    errorDispatcher: CoroutineDispatcher = Dispatchers.Main,
 ): Job {
-    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        launch(errorDispatcher) {
-            onError(throwable)
+    val exceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            launch(errorDispatcher) {
+                onError(throwable)
+            }
         }
-    }
 
     return launch(exceptionHandler + dispatcher) {
         block()

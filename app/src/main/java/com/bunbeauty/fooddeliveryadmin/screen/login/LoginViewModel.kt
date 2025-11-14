@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.update
 
 class LoginViewModel(
     private val checkAuthorizationUseCase: CheckAuthorizationUseCase,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
 ) : BaseViewModel() {
-
     private val mutableLoginViewState = MutableStateFlow(LoginViewState())
     val loginViewState = mutableLoginViewState.asStateFlow()
 
@@ -21,7 +20,10 @@ class LoginViewModel(
         checkAuthorization()
     }
 
-    fun login(username: String, password: String) {
+    fun login(
+        username: String,
+        password: String,
+    ) {
         mutableLoginViewState.update { oldState ->
             oldState.copy(isLoading = true)
         }
@@ -45,7 +47,7 @@ class LoginViewModel(
             block = {
                 loginUseCase(
                     username = processedUsername,
-                    password = processedPassword
+                    password = processedPassword,
                 )
                 mutableLoginViewState.update { oldState ->
                     oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
@@ -55,7 +57,7 @@ class LoginViewModel(
                 mutableLoginViewState.update { oldState ->
                     oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
                 }
-            }
+            },
         )
     }
 
@@ -74,22 +76,18 @@ class LoginViewModel(
             },
             onError = {
                 // No errors
-            }
+            },
         )
     }
 
-    private fun isCorrectUsername(username: String): Boolean {
-        return username.isNotEmpty()
-    }
+    private fun isCorrectUsername(username: String): Boolean = username.isNotEmpty()
 
-    private fun isCorrectPassword(password: String): Boolean {
-        return password.isNotEmpty()
-    }
+    private fun isCorrectPassword(password: String): Boolean = password.isNotEmpty()
 
     fun consumeEvents(events: List<LoginViewState.Event>) {
         mutableLoginViewState.update { loginState ->
             loginState.copy(
-                eventList = loginState.eventList - events.toSet()
+                eventList = loginState.eventList - events.toSet(),
             )
         }
     }

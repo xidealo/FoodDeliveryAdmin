@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class GetMenuProductUseCase(
     private val dataStoreRepo: DataStoreRepo,
-    private val menuProductRepo: MenuProductRepo
+    private val menuProductRepo: MenuProductRepo,
 ) {
     suspend operator fun invoke(menuProductUuid: String): MenuProduct {
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         return menuProductRepo.getMenuProduct(
             menuProductUuid = menuProductUuid,
-            companyUuid = companyUuid
+            companyUuid = companyUuid,
         ) ?: throw NotFoundMenuProductException()
     }
 }

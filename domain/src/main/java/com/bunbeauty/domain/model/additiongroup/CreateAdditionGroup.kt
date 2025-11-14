@@ -4,14 +4,15 @@ data class CreateAdditionGroup(
     val name: String,
     val singleChoice: Boolean,
     val isVisible: Boolean,
-    val priority: Int
+    val priority: Int,
 ) {
     companion object {
-        val mock = CreateAdditionGroup(
-            name = "",
-            singleChoice = false,
-            priority = 0,
-            isVisible = false
-        )
+        val mock =
+            CreateAdditionGroup(
+                name = "",
+                singleChoice = false,
+                priority = 0,
+                isVisible = false,
+            )
     }
 }

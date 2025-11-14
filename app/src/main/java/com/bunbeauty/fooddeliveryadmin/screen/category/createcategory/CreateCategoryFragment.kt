@@ -26,46 +26,48 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateCategoryFragment :
     BaseComposeFragment<CreateCategoryState.DataState, CreateCategoryViewState, CreateCategoryState.Action, CreateCategoryState.Event>() {
-
     override val viewModel: CreateCategoryViewModel by viewModel()
 
     @Composable
     override fun Screen(
         state: CreateCategoryViewState,
-        onAction: (CreateCategoryState.Action) -> Unit
+        onAction: (CreateCategoryState.Action) -> Unit,
     ) {
         CreateCategoryScreen(
             state = state,
-            onAction = onAction
+            onAction = onAction,
         )
     }
 
     @Composable
-    override fun mapState(state: CreateCategoryState.DataState): CreateCategoryViewState {
-        return CreateCategoryViewState(
-            state = when (state.state) {
-                CreateCategoryState.DataState.State.LOADING -> CreateCategoryViewState.State.Loading
-                CreateCategoryState.DataState.State.ERROR -> CreateCategoryViewState.State.Error
-                CreateCategoryState.DataState.State.SUCCESS -> CreateCategoryViewState.State.Success(
-                    isLoading = state.isLoading,
-                    nameField = TextFieldUi(
-                        value = state.nameField.value,
-                        isError = state.nameField.isError,
-                        errorResId = when (state.nameStateError) {
-                            CreateCategoryState.DataState.NameStateError.EMPTY_NAME ->
-                                R.string.error_common_create_category_empty_name
+    override fun mapState(state: CreateCategoryState.DataState): CreateCategoryViewState =
+        CreateCategoryViewState(
+            state =
+                when (state.state) {
+                    CreateCategoryState.DataState.State.LOADING -> CreateCategoryViewState.State.Loading
+                    CreateCategoryState.DataState.State.ERROR -> CreateCategoryViewState.State.Error
+                    CreateCategoryState.DataState.State.SUCCESS ->
+                        CreateCategoryViewState.State.Success(
+                            isLoading = state.isLoading,
+                            nameField =
+                                TextFieldUi(
+                                    value = state.nameField.value,
+                                    isError = state.nameField.isError,
+                                    errorResId =
+                                        when (state.nameStateError) {
+                                            CreateCategoryState.DataState.NameStateError.EMPTY_NAME ->
+                                                R.string.error_common_create_category_empty_name
 
-                            CreateCategoryState.DataState.NameStateError.DUPLICATE_NAME ->
-                                R.string.error_common_create_category_duplicate_name
+                                            CreateCategoryState.DataState.NameStateError.DUPLICATE_NAME ->
+                                                R.string.error_common_create_category_duplicate_name
 
-                            CreateCategoryState.DataState.NameStateError.NO_ERROR ->
-                                R.string.error_common_something_went_wrong
-                        }
-                    )
-                )
-            }
+                                            CreateCategoryState.DataState.NameStateError.NO_ERROR ->
+                                                R.string.error_common_something_went_wrong
+                                        },
+                                ),
+                        )
+                },
         )
-    }
 
     override fun handleEvent(event: CreateCategoryState.Event) {
         when (event) {
@@ -73,7 +75,7 @@ class CreateCategoryFragment :
 
             is CreateCategoryState.Event.ShowUpdateCategorySuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_create_category_created, event.categoryName)
+                    resources.getString(R.string.msg_create_category_created, event.categoryName),
                 )
                 findNavController().popBackStack()
             }
@@ -83,30 +85,32 @@ class CreateCategoryFragment :
     @Composable
     private fun CreateCategoryScreen(
         state: CreateCategoryViewState,
-        onAction: (CreateCategoryState.Action) -> Unit
+        onAction: (CreateCategoryState.Action) -> Unit,
     ) {
         AdminScaffold(
             backgroundColor = AdminTheme.colors.main.surface,
             title = stringResource(R.string.title_create_category),
             backActionClick = {
                 onAction(CreateCategoryState.Action.OnBackClicked)
-            }
+            },
         ) {
             when (state.state) {
-                CreateCategoryViewState.State.Error -> ErrorScreen(
-                    mainTextId = R.string.title_common_can_not_load_data,
-                    extraTextId = R.string.msg_common_check_connection_and_retry,
-                    onClick = {
-                        onAction(CreateCategoryState.Action.OnErrorStateClicked)
-                    }
-                )
+                CreateCategoryViewState.State.Error ->
+                    ErrorScreen(
+                        mainTextId = R.string.title_common_can_not_load_data,
+                        extraTextId = R.string.msg_common_check_connection_and_retry,
+                        onClick = {
+                            onAction(CreateCategoryState.Action.OnErrorStateClicked)
+                        },
+                    )
 
                 CreateCategoryViewState.State.Loading -> LoadingScreen()
 
-                is CreateCategoryViewState.State.Success -> CreateCategoryScreenSuccess(
-                    state = state.state,
-                    onAction = onAction
-                )
+                is CreateCategoryViewState.State.Success ->
+                    CreateCategoryScreenSuccess(
+                        state = state.state,
+                        onAction = onAction,
+                    )
             }
         }
     }
@@ -114,10 +118,10 @@ class CreateCategoryFragment :
     @Composable
     private fun CreateCategoryScreenSuccess(
         state: CreateCategoryViewState.State.Success,
-        onAction: (CreateCategoryState.Action) -> Unit
+        onAction: (CreateCategoryState.Action) -> Unit,
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             AdminTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -125,12 +129,12 @@ class CreateCategoryFragment :
                 value = state.nameField.value,
                 onValueChange = { name ->
                     onAction(
-                        CreateCategoryState.Action.CreateNameCategoryChanged(name)
+                        CreateCategoryState.Action.CreateNameCategoryChanged(name),
                     )
                 },
                 errorText = stringResource(state.nameField.errorResId),
                 isError = state.nameField.isError,
-                enabled = !state.isLoading
+                enabled = !state.isLoading,
             )
             Spacer(modifier = Modifier.weight(1f))
 
@@ -139,7 +143,7 @@ class CreateCategoryFragment :
                 isLoading = state.isLoading,
                 onClick = {
                     onAction(CreateCategoryState.Action.OnSaveCreateCategoryClick)
-                }
+                },
             )
         }
     }
@@ -149,18 +153,20 @@ class CreateCategoryFragment :
     fun CreateCategoryPreview() {
         AdminTheme {
             CreateCategoryScreen(
-                state = CreateCategoryViewState(
-                    state = CreateCategoryViewState.State.Success(
-                        isLoading = false,
-                        nameField = TextFieldUi(
-                            value = "",
-                            isError = false,
-                            errorResId = 0
-                        )
-                    )
-
-                ),
-                onAction = {}
+                state =
+                    CreateCategoryViewState(
+                        state =
+                            CreateCategoryViewState.State.Success(
+                                isLoading = false,
+                                nameField =
+                                    TextFieldUi(
+                                        value = "",
+                                        isError = false,
+                                        errorResId = 0,
+                                    ),
+                            ),
+                    ),
+                onAction = {},
             )
         }
     }

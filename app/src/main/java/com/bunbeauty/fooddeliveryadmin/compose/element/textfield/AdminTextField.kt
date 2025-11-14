@@ -33,15 +33,16 @@ fun AdminTextField(
     isError: Boolean = false,
     errorText: String? = null,
     enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         AdminBaseTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .applyIfNotNull(focusRequester) {
-                    focusRequester(it)
-                },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .applyIfNotNull(focusRequester) {
+                        focusRequester(it)
+                    },
             value = value,
             labelText = labelText,
             onValueChange = onValueChange,
@@ -51,11 +52,11 @@ fun AdminTextField(
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
-            trailingIcon = trailingIcon
+            trailingIcon = trailingIcon,
         )
         ErrorText(
             isError = isError,
-            errorText = errorText
+            errorText = errorText,
         )
     }
 }
@@ -74,15 +75,16 @@ fun AdminTextField(
     isError: Boolean = false,
     errorText: String? = null,
     enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         AdminBaseTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .applyIfNotNull(focusRequester) {
-                    focusRequester(it)
-                },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .applyIfNotNull(focusRequester) {
+                        focusRequester(it)
+                    },
             value = value,
             labelText = labelText,
             onValueChange = onValueChange,
@@ -92,11 +94,11 @@ fun AdminTextField(
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
-            trailingIcon = trailingIcon
+            trailingIcon = trailingIcon,
         )
         ErrorText(
             isError = isError,
-            errorText = errorText
+            errorText = errorText,
         )
     }
 }
@@ -104,16 +106,17 @@ fun AdminTextField(
 @Composable
 private fun ErrorText(
     isError: Boolean,
-    errorText: String?
+    errorText: String?,
 ) {
     if (isError && errorText != null) {
         Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 4.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 4.dp),
             text = errorText,
             style = AdminTheme.typography.bodySmall,
-            color = AdminTheme.colors.main.error
+            color = AdminTheme.colors.main.error,
         )
     }
 }
@@ -126,7 +129,7 @@ private fun FoodDeliveryTextFieldPreview() {
         AdminTextField(
             labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
-            onValueChange = {}
+            onValueChange = {},
         )
     }
 }

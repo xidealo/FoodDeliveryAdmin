@@ -20,8 +20,10 @@ import kotlin.coroutines.CoroutineContext
 
 private const val NOTIFICATION_CHANNEL_NAME = "Main channel"
 
-class FoodDeliveryAdminApplication : Application(), CoroutineScope, KoinComponent {
-
+class FoodDeliveryAdminApplication :
+    Application(),
+    CoroutineScope,
+    KoinComponent {
     override val coroutineContext: CoroutineContext = Job() + Dispatchers.Default
 
     override fun onCreate() {
@@ -37,16 +39,19 @@ class FoodDeliveryAdminApplication : Application(), CoroutineScope, KoinComponen
 
     private fun createNotificationChannel() {
         val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance).apply {
-            enableLights(true)
-            enableVibration(true)
+        val channel =
+            NotificationChannel(CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance).apply {
+                enableLights(true)
+                enableVibration(true)
 
-            val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            val attributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .build()
-            setSound(soundUri, attributes)
-        }
+                val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val attributes =
+                    AudioAttributes
+                        .Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .build()
+                setSound(soundUri, attributes)
+            }
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }

@@ -6,7 +6,7 @@ data class MenuListDataState(
     val isRefreshing: Boolean = false,
     val throwable: Throwable? = null,
     val eventList: List<MenuListEvent> = emptyList(),
-    val state: State = State.LOADING
+    val state: State = State.LOADING,
 ) {
     val isEmptyMenuProductListSize =
         (visibleMenuProductItems.size + hiddenMenuProductItems.size) == 0
@@ -14,31 +14,36 @@ data class MenuListDataState(
     enum class State {
         LOADING,
         SUCCESS,
-        ERROR
+        ERROR,
     }
 
     operator fun plus(event: MenuListEvent) = copy(eventList = eventList + event)
-    operator fun minus(events: List<MenuListEvent>) =
-        copy(eventList = eventList - events.toSet())
+
+    operator fun minus(events: List<MenuListEvent>) = copy(eventList = eventList - events.toSet())
 }
 
 sealed interface MenuListEvent {
-    data class GoToEditMenuProductList(val uuid: String) : MenuListEvent
+    data class GoToEditMenuProductList(
+        val uuid: String,
+    ) : MenuListEvent
 }
 
 data class MenuListViewState(
     val state: State,
     val isRefreshing: Boolean,
-    val eventList: List<MenuListEvent>
+    val eventList: List<MenuListEvent>,
 ) {
     sealed interface State {
         data class Success(
             val visibleMenuProductItems: List<MenuProductItem>,
-            val hiddenMenuProductItems: List<MenuProductItem>
+            val hiddenMenuProductItems: List<MenuProductItem>,
         ) : State
 
         data object Loading : State
-        data class Error(val throwable: Throwable?) : State
+
+        data class Error(
+            val throwable: Throwable?,
+        ) : State
     }
 }
 
@@ -46,5 +51,5 @@ data class MenuProductItem(
     val uuid: String,
     val name: String,
     val photoLink: String,
-    val visible: Boolean
+    val visible: Boolean,
 )

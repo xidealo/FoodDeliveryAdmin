@@ -20,25 +20,28 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : BaseAction, E : BaseEvent> :
     Fragment(R.layout.layout_compose) {
-
     abstract val viewModel: BaseStateViewModel<DS, A, E>
 
     private val viewBinding by viewBinding(LayoutComposeBinding::bind)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewBinding.root.setContentWithTheme {
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val onAction = remember {
-                { action: A ->
-                    viewModel.onAction(action)
+            val onAction =
+                remember {
+                    { action: A ->
+                        viewModel.onAction(action)
+                    }
                 }
-            }
 
             Screen(
                 state = mapState(state),
-                onAction = onAction
+                onAction = onAction,
             )
 
             val events by viewModel.events.collectAsStateWithLifecycle()
@@ -57,5 +60,8 @@ abstract class BaseComposeFragment<DS : BaseDataState, VS : BaseViewState, A : B
     abstract fun mapState(state: DS): VS
 
     @Composable
-    abstract fun Screen(state: VS, onAction: (A) -> Unit)
+    abstract fun Screen(
+        state: VS,
+        onAction: (A) -> Unit,
+    )
 }

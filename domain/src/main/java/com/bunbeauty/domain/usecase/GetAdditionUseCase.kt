@@ -8,13 +8,13 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 
 class GetAdditionUseCase(
     private val additionRepo: AdditionRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(additionUuid: String): Addition {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         return additionRepo.getAddition(
             additionUuid = additionUuid,
-            token = token
+            token = token,
         ) ?: throw NotFoundAdditionException()
     }
 }

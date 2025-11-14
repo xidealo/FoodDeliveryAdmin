@@ -7,17 +7,18 @@ data class OrderAddress(
     val flat: String?,
     val entrance: String?,
     val floor: String?,
-    val comment: String?
+    val comment: String?,
 ) {
     companion object {
-        val mock = OrderAddress(
-            description = null,
-            street = null,
-            house = null,
-            flat = null,
-            entrance = null,
-            floor = null,
-            comment = null
-        )
+        val mock =
+            OrderAddress(
+                description = null,
+                street = null,
+                house = null,
+                flat = null,
+                entrance = null,
+                floor = null,
+                comment = null,
+            )
     }
 }

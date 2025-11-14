@@ -6,20 +6,19 @@ import com.bunbeauty.common.Constants.X_SYMBOL
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
 class OrderProductMapper {
-
-    fun map(orderProduct: OrderProduct): OrderDetailsViewState.Product {
-        return OrderDetailsViewState.Product(
+    fun map(orderProduct: OrderProduct): OrderDetailsViewState.Product =
+        OrderDetailsViewState.Product(
             title = orderProduct.name,
-            price = if (orderProduct.additionsPrice == null) {
-                "${orderProduct.newPrice} $RUBLE_CURRENCY"
-            } else {
-                "(${orderProduct.newPrice} $RUBLE_CURRENCY + ${orderProduct.additionsPrice} $RUBLE_CURRENCY)"
-            },
+            price =
+                if (orderProduct.additionsPrice == null) {
+                    "${orderProduct.newPrice} $RUBLE_CURRENCY"
+                } else {
+                    "(${orderProduct.newPrice} $RUBLE_CURRENCY + ${orderProduct.additionsPrice} $RUBLE_CURRENCY)"
+                },
             count = "$X_SYMBOL ${orderProduct.count}",
             cost = "${orderProduct.newTotalCost} $RUBLE_CURRENCY",
-            description = getDescription(orderProduct = orderProduct)
+            description = getDescription(orderProduct = orderProduct),
         )
-    }
 
     private fun getDescription(orderProduct: OrderProduct): String? {
         val additions = getAdditionsString(orderProduct = orderProduct)
@@ -40,13 +39,13 @@ class OrderProductMapper {
         }
     }
 
-    private fun getAdditionsString(orderProduct: OrderProduct): String? {
-        return orderProduct.orderAdditions.takeIf { additions ->
-            additions.isNotEmpty()
-        }?.let { additions ->
-            additions.joinToString(" $BULLET_SYMBOL ") { orderAddition ->
-                orderAddition.name
+    private fun getAdditionsString(orderProduct: OrderProduct): String? =
+        orderProduct.orderAdditions
+            .takeIf { additions ->
+                additions.isNotEmpty()
+            }?.let { additions ->
+                additions.joinToString(" $BULLET_SYMBOL ") { orderAddition ->
+                    orderAddition.name
+                }
             }
-        }
-    }
 }

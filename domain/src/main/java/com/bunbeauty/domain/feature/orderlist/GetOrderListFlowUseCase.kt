@@ -10,19 +10,19 @@ import kotlinx.coroutines.flow.map
 
 class GetOrderListFlowUseCase(
     private val dataStoreRepo: DataStoreRepo,
-    private val orderRepo: OrderRepo
+    private val orderRepo: OrderRepo,
 ) {
-
     suspend operator fun invoke(cafeUuid: String): Flow<List<Order>> {
         val token = dataStoreRepo.getToken() ?: return emptyFlow()
 
-        return orderRepo.getOrderListFlow(
-            token = token,
-            cafeUuid = cafeUuid
-        ).map { orderList ->
-            orderList.filter { order ->
-                order.orderStatus != OrderStatus.CANCELED
+        return orderRepo
+            .getOrderListFlow(
+                token = token,
+                cafeUuid = cafeUuid,
+            ).map { orderList ->
+                orderList.filter { order ->
+                    order.orderStatus != OrderStatus.CANCELED
+                }
             }
-        }
     }
 }

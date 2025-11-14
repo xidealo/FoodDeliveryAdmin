@@ -19,5 +19,5 @@ data class CreateMenuProductViewState(
     val isVisibleInMenu: Boolean,
     val isVisibleInRecommendation: Boolean,
     val imageField: ImageFieldUi,
-    val sendingToServer: Boolean
+    val sendingToServer: Boolean,
 ) : BaseViewState

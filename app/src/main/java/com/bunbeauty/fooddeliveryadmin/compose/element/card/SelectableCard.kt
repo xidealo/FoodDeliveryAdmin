@@ -25,38 +25,41 @@ fun SelectableCard(
     label: String = "",
     selected: Boolean,
     elevated: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
-        elevated = elevated
+        elevated = elevated,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            val labelText = labelStringId?.let { id ->
-                stringResource(id)
-            } ?: label
+            val labelText =
+                labelStringId?.let { id ->
+                    stringResource(id)
+                } ?: label
             Text(
-                modifier = Modifier
-                    .padding(end = AdminTheme.dimensions.mediumSpace)
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .padding(end = AdminTheme.dimensions.mediumSpace)
+                        .weight(1f),
                 text = labelText,
                 style = AdminTheme.typography.bodyLarge,
                 color = AdminTheme.colors.main.onSurface,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             if (selected) {
                 Icon(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(R.drawable.ic_check),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
-                    contentDescription = stringResource(R.string.description_common_selected)
+                    contentDescription = stringResource(R.string.description_common_selected),
                 )
             }
         }
@@ -70,7 +73,7 @@ private fun SelectedSelectableCard() {
         SelectableCard(
             label = "Текст",
             selected = true,
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -82,7 +85,7 @@ private fun UnselectedSelectableCard() {
         SelectableCard(
             label = "Текст",
             selected = false,
-            onClick = {}
+            onClick = {},
         )
     }
 }

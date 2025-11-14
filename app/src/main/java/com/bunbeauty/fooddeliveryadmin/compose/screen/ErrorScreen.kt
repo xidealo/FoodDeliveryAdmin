@@ -28,55 +28,59 @@ fun ErrorScreen(
     @StringRes mainTextId: Int,
     isLoading: Boolean = false,
     @StringRes extraTextId: Int? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(1f))
         Box(
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-                .background(AdminTheme.colors.main.error),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .background(AdminTheme.colors.main.error),
+            contentAlignment = Alignment.Center,
         ) {
             androidx.compose.material3.Icon(
                 modifier = Modifier.size(64.dp),
                 painter = painterResource(R.drawable.ic_error),
                 tint = AdminTheme.colors.main.onError,
-                contentDescription = null
+                contentDescription = null,
             )
         }
         androidx.compose.material3.Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp)
-                .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp)
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace),
             text = stringResource(id = mainTextId),
             style = AdminTheme.typography.titleMedium.bold,
             color = AdminTheme.colors.main.onSurface,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         extraTextId?.let {
             androidx.compose.material3.Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = AdminTheme.dimensions.smallSpace)
-                    .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = AdminTheme.dimensions.smallSpace)
+                        .padding(horizontal = AdminTheme.dimensions.mediumSpace),
                 text = stringResource(id = extraTextId),
                 style = AdminTheme.typography.bodyLarge,
                 color = AdminTheme.colors.main.onSurface,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
         Spacer(modifier = Modifier.weight(1f))
 
         LoadingButton(
-            modifier = Modifier
-                .padding(bottom = AdminTheme.dimensions.mediumSpace)
-                .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+            modifier =
+                Modifier
+                    .padding(bottom = AdminTheme.dimensions.mediumSpace)
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace),
             text = stringResource(R.string.action_retry),
             isLoading = isLoading,
-            onClick = onClick
+            onClick = onClick,
         )
     }
 }
@@ -88,7 +92,7 @@ private fun ErrorScreenPreview() {
         ErrorScreen(
             mainTextId = R.string.title_common_can_not_load_data,
             extraTextId = R.string.msg_common_check_connection_and_retry,
-            onClick = {}
+            onClick = {},
         )
     }
 }

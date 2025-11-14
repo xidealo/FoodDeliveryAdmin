@@ -40,31 +40,33 @@ import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StatisticFragment :
-    BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
-
+class StatisticFragment : BaseComposeFragment<Statistic.DataState, StatisticViewState, Statistic.Action, Statistic.Event>() {
     override val viewModel: StatisticViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(
-            Statistic.Action.Init
+            Statistic.Action.Init,
         )
     }
 
     @Suppress("NonSkippableComposable")
     @Composable
-    override fun Screen(state: StatisticViewState, onAction: (Statistic.Action) -> Unit) {
+    override fun Screen(
+        state: StatisticViewState,
+        onAction: (Statistic.Action) -> Unit,
+    ) {
         StatisticScreen(
             statisticViewState = state,
-            onAction = onAction
+            onAction = onAction,
         )
     }
 
     @Composable
-    override fun mapState(state: Statistic.DataState): StatisticViewState {
-        return state.toViewState()
-    }
+    override fun mapState(state: Statistic.DataState): StatisticViewState = state.toViewState()
 
     override fun handleEvent(event: Statistic.Event) {
         when (event) {
@@ -78,7 +80,7 @@ class StatisticFragment :
     @Composable
     private fun StatisticScreen(
         statisticViewState: StatisticViewState,
-        onAction: (Statistic.Action) -> Unit
+        onAction: (Statistic.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_statistic),
@@ -91,10 +93,10 @@ class StatisticFragment :
                         isLoading = statisticViewState.state.loadingStatistic,
                         onClick = {
                             onAction(Statistic.Action.LoadStatisticClick)
-                        }
+                        },
                     )
                 }
-            }
+            },
         ) {
             when (statisticViewState.state) {
                 StatisticViewState.State.Error -> {
@@ -103,7 +105,7 @@ class StatisticFragment :
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             onAction(Statistic.Action.Init)
-                        }
+                        },
                     )
                 }
 
@@ -111,28 +113,30 @@ class StatisticFragment :
                 is StatisticViewState.State.Success -> {
                     Column {
                         TextWithHintCard(
-                            modifier = Modifier
-                                .padding(top = 16.dp)
-                                .padding(horizontal = 16.dp),
+                            modifier =
+                                Modifier
+                                    .padding(top = 16.dp)
+                                    .padding(horizontal = 16.dp),
                             hint = stringResource(R.string.msg_common_cafe),
-                            label = statisticViewState.state.cafeAddress
+                            label = statisticViewState.state.cafeAddress,
                         )
 
                         NavigationTextCard(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp)
-                                .padding(horizontal = 16.dp),
+                            modifier =
+                                Modifier
+                                    .padding(vertical = 8.dp)
+                                    .padding(horizontal = 16.dp),
                             labelText = stringResource(R.string.msg_common_period),
                             valueText = statisticViewState.state.period,
                             onClick = {
                                 onAction(Statistic.Action.SelectTimeIntervalClick)
-                            }
+                            },
                         )
 
                         if (!statisticViewState.state.loadingStatistic) {
                             StatisticSuccessScreen(
                                 state = statisticViewState.state,
-                                onAction = onAction
+                                onAction = onAction,
                             )
                         }
                     }
@@ -145,25 +149,26 @@ class StatisticFragment :
     @Composable
     private fun StatisticSuccessScreen(
         state: StatisticViewState.State.Success,
-        onAction: (Statistic.Action) -> Unit
+        onAction: (Statistic.Action) -> Unit,
     ) {
         val listState = rememberLazyListState()
 
         LazyColumn(
-            contentPadding = PaddingValues(
-                top = 8.dp,
-                start = 16.dp,
-                end = 16.dp,
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-            ),
+            contentPadding =
+                PaddingValues(
+                    top = 8.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            state = listState
+            state = listState,
         ) {
             items(
                 items = state.statisticList,
                 key = { statisticItemModel ->
                     statisticItemModel.startMillis
-                }
+                },
             ) { statisticItemModel ->
                 StatisticItem(statisticItemModel)
             }
@@ -180,34 +185,35 @@ class StatisticFragment :
     @Composable
     private fun TimeIntervalListBottomSheet(
         state: StatisticViewState.State.Success,
-        onAction: (Statistic.Action) -> Unit
+        onAction: (Statistic.Action) -> Unit,
     ) {
         AdminModalBottomSheet(
             title = stringResource(R.string.title_statistic_select_time_interval),
             isShown = state.timeIntervalListUI.isShown,
             onDismissRequest = {
                 onAction(Statistic.Action.CloseTimeIntervalListBottomSheet)
-            }
-        ) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                state.timeIntervalListUI.timeIntervalList.forEach { timeInterval ->
-                    SelectableItem(
-                        title = timeInterval.timeInterval,
-                        clickable = true,
-                        elevated = false,
-                        onClick = {
-                            onAction(
-                                Statistic.Action.SelectedTimeInterval(
-                                    timeInterval = timeInterval.timeIntervalType
+            },
+            content = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                ) {
+                    state.timeIntervalListUI.timeIntervalList.forEach { timeInterval ->
+                        SelectableItem(
+                            title = timeInterval.timeInterval,
+                            clickable = true,
+                            elevated = false,
+                            onClick = {
+                                onAction(
+                                    Statistic.Action.SelectedTimeInterval(
+                                        timeInterval = timeInterval.timeIntervalType,
+                                    ),
                                 )
-                            )
-                        }
-                    )
+                            },
+                        )
+                    }
                 }
-            }
-        }
+            },
+        )
     }
 
     @Suppress("NonSkippableComposable")
@@ -215,43 +221,47 @@ class StatisticFragment :
     private fun StatisticItem(statisticItemModel: StatisticViewState.State.Success.StatisticItemModel) {
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
-            clickable = false
+            clickable = false,
         ) {
             Row(
-                modifier = Modifier
-                    .padding(
-                        vertical = 8.dp,
-                        horizontal = 16.dp
-                    ),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .padding(
+                            vertical = 8.dp,
+                            horizontal = 16.dp,
+                        ),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    modifier = Modifier
-                        .weight(1f),
+                    modifier =
+                        Modifier
+                            .weight(1f),
                     text = statisticItemModel.date,
                     style = AdminTheme.typography.titleSmall,
-                    color = AdminTheme.colors.main.onSurface
+                    color = AdminTheme.colors.main.onSurface,
                 )
                 Column(
-                    modifier = Modifier
-                        .padding(
-                            start = 8.dp
-                        ),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .padding(
+                                start = 8.dp,
+                            ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = statisticItemModel.count,
                         style = AdminTheme.typography.bodySmall,
-                        color = AdminTheme.colors.main.onSurface
+                        color = AdminTheme.colors.main.onSurface,
                     )
                     Text(
-                        modifier = Modifier
-                            .padding(
-                                top = 4.dp
-                            ),
+                        modifier =
+                            Modifier
+                                .padding(
+                                    top = 4.dp,
+                                ),
                         text = statisticItemModel.proceeds,
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.main.onSurface
+                        color = AdminTheme.colors.main.onSurface,
                     )
                 }
             }
@@ -264,34 +274,38 @@ class StatisticFragment :
     private fun StatisticScreenPreview() {
         AdminTheme {
             StatisticScreen(
-                statisticViewState = StatisticViewState(
-                    state = StatisticViewState.State.Success(
-                        statisticList = persistentListOf(
-                            StatisticViewState.State.Success.StatisticItemModel(
-                                startMillis = 3064,
-                                period = "апрель",
-                                count = "Заказов: 20",
-                                proceeds = "2000 $",
-                                date = "ssss"
+                statisticViewState =
+                    StatisticViewState(
+                        state =
+                            StatisticViewState.State.Success(
+                                statisticList =
+                                    persistentListOf(
+                                        StatisticViewState.State.Success.StatisticItemModel(
+                                            startMillis = 3064,
+                                            period = "апрель",
+                                            count = "Заказов: 20",
+                                            proceeds = "2000 $",
+                                            date = "ssss",
+                                        ),
+                                        StatisticViewState.State.Success.StatisticItemModel(
+                                            startMillis = 3064,
+                                            period = "май",
+                                            count = "Заказов: 387",
+                                            proceeds = "128234 $",
+                                            date = "ssss",
+                                        ),
+                                    ),
+                                period = "По годам",
+                                timeIntervalListUI =
+                                    StatisticViewState.TimeIntervalListUI(
+                                        isShown = false,
+                                        timeIntervalList = persistentListOf(),
+                                    ),
+                                loadingStatistic = false,
+                                cafeAddress = "Кимры чупки 22 в",
                             ),
-                            StatisticViewState.State.Success.StatisticItemModel(
-                                startMillis = 3064,
-                                period = "май",
-                                count = "Заказов: 387",
-                                proceeds = "128234 $",
-                                date = "ssss"
-                            )
-                        ),
-                        period = "По годам",
-                        timeIntervalListUI = StatisticViewState.TimeIntervalListUI(
-                            isShown = false,
-                            timeIntervalList = persistentListOf()
-                        ),
-                        loadingStatistic = false,
-                        cafeAddress = "Кимры чупки 22 в"
-                    )
-                ),
-                onAction = {}
+                    ),
+                onAction = {},
             )
         }
     }

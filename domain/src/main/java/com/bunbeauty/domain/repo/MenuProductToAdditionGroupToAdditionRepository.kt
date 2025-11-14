@@ -4,5 +4,6 @@ import com.bunbeauty.domain.model.menuProcutToAdditionGroupToAddition.MenuProduc
 
 interface MenuProductToAdditionGroupToAdditionRepository {
     suspend fun getMenuProductToAdditionGroupToAdditionList(uuidList: List<String>): List<MenuProductToAdditionGroupToAddition>
+
     fun clearCache()
 }

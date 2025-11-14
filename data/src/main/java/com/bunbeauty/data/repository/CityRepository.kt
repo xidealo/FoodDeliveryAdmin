@@ -10,16 +10,17 @@ import com.bunbeauty.domain.repo.CityRepo
 class CityRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
     private val cityDao: CityDao,
-    private val cityMapper: CityMapper
+    private val cityMapper: CityMapper,
 ) : CityRepo {
-
     var cityListCache: List<City>? = null
 
-    override suspend fun getCityByUuid(companyUuid: String, cityUuid: String): City? {
-        return getCityList(companyUuid).find { city ->
+    override suspend fun getCityByUuid(
+        companyUuid: String,
+        cityUuid: String,
+    ): City? =
+        getCityList(companyUuid).find { city ->
             city.uuid == cityUuid
         }
-    }
 
     override fun clearCache() {
         cityListCache = null
@@ -41,20 +42,18 @@ class CityRepository(
         }
     }
 
-    suspend fun getRemoteCityList(companyUuid: String): List<City>? {
-        return foodDeliveryApi.getCityList(companyUuid)
+    suspend fun getRemoteCityList(companyUuid: String): List<City>? =
+        foodDeliveryApi
+            .getCityList(companyUuid)
             .getNullableResult { cityServerList ->
                 cityServerList.results.map(cityMapper::map)
             }
-    }
 
-    suspend fun getLocalCityList(): List<City> {
-        return cityDao.getCityList().map(cityMapper::map)
-    }
+    suspend fun getLocalCityList(): List<City> = cityDao.getCityList().map(cityMapper::map)
 
     suspend fun saveCityListLocally(cityList: List<City>) {
         cityDao.insertAll(
-            cityList.map(cityMapper::map)
+            cityList.map(cityMapper::map),
         )
     }
 }

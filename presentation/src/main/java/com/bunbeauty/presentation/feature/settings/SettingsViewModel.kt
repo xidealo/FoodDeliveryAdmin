@@ -17,30 +17,32 @@ class SettingsViewModel(
     private val updateIsUnlimitedNotification: UpdateIsUnlimitedNotificationUseCase,
     private val getTypeWorkUseCase: GetTypeWorkUseCase,
     private val updateTypeWorkUseCase: UpdateTypeWorkUseCase,
-    private val updateWorkCafeUseCase: UpdateWorkCafeUseCase
+    private val updateWorkCafeUseCase: UpdateWorkCafeUseCase,
 ) : BaseStateViewModel<SettingsState.DataState, SettingsState.Action, SettingsState.Event>(
-    initState = SettingsState.DataState(
-        state = SettingsState.DataState.State.LOADING,
-        isLoading = false,
-        isUnlimitedNotifications = true,
-        workType = WorkType.DELIVERY,
-        showAcceptOrdersConfirmation = false,
-        workLoad = WorkLoad.LOW,
-        isKitchenAppliances = false
-    )
-) {
+        initState =
+            SettingsState.DataState(
+                state = SettingsState.DataState.State.LOADING,
+                isLoading = false,
+                isUnlimitedNotifications = true,
+                workType = WorkType.DELIVERY,
+                showAcceptOrdersConfirmation = false,
+                workLoad = WorkLoad.LOW,
+                isKitchenAppliances = false,
+            ),
+    ) {
     override fun reduce(
         action: SettingsState.Action,
-        dataState: SettingsState.DataState
+        dataState: SettingsState.DataState,
     ) {
         when (action) {
             is SettingsState.Action.Init -> loadData()
             SettingsState.Action.OnBackClicked -> onBackClicked()
             is SettingsState.Action.OnNotificationsClicked -> setNotificationStatus(action = action)
 
-            is SettingsState.Action.OnSaveSettingsClick -> handleSaveSettingsClick(
-                dataState = dataState
-            )
+            is SettingsState.Action.OnSaveSettingsClick ->
+                handleSaveSettingsClick(
+                    dataState = dataState,
+                )
 
             is SettingsState.Action.OnSelectStatusClicked -> selectWorkType(workType = action.workType)
 
@@ -58,7 +60,7 @@ class SettingsViewModel(
             workType = WorkType.CLOSED,
             isUnlimitedNotifications = dataState.isUnlimitedNotifications,
             workLoad = dataState.workLoad,
-            isKitchenAppliances = dataState.isKitchenAppliances
+            isKitchenAppliances = dataState.isKitchenAppliances,
         )
     }
 
@@ -70,7 +72,7 @@ class SettingsViewModel(
                 workType = dataState.workType,
                 isUnlimitedNotifications = dataState.isUnlimitedNotifications,
                 workLoad = dataState.workLoad,
-                isKitchenAppliances = dataState.isKitchenAppliances
+                isKitchenAppliances = dataState.isKitchenAppliances,
             )
         }
     }
@@ -108,7 +110,7 @@ class SettingsViewModel(
     private fun loadData() {
         setState {
             copy(
-                state = SettingsState.DataState.State.LOADING
+                state = SettingsState.DataState.State.LOADING,
             )
         }
         viewModelScope.launchSafe(
@@ -121,14 +123,13 @@ class SettingsViewModel(
                         workLoad = data.workload,
                         isUnlimitedNotifications = getIsUnlimitedNotification(),
                         state = SettingsState.DataState.State.SUCCESS,
-
-                        isLoading = false
+                        isLoading = false,
                     )
                 }
             },
             onError = {
                 showErrorState()
-            }
+            },
         )
     }
 
@@ -148,7 +149,7 @@ class SettingsViewModel(
         workType: WorkType,
         workLoad: WorkLoad,
         isUnlimitedNotifications: Boolean,
-        isKitchenAppliances: Boolean
+        isKitchenAppliances: Boolean,
     ) {
         viewModelScope.launchSafe(
             block = {
@@ -156,15 +157,15 @@ class SettingsViewModel(
                     copy(isLoading = true)
                 }
                 updateTypeWorkUseCase(
-                    workInfoData = workType
+                    workInfoData = workType,
                 )
                 updateIsUnlimitedNotification(
-                    isEnabled = isUnlimitedNotifications
+                    isEnabled = isUnlimitedNotifications,
                 )
                 updateWorkCafeUseCase(
                     workLoad = workLoad,
                     workInfoData = workType,
-                    isKitchenAppliances = isKitchenAppliances
+                    isKitchenAppliances = isKitchenAppliances,
                 )
                 sendEvent {
                     SettingsState.Event.ShowSaveSettingEvent
@@ -172,7 +173,7 @@ class SettingsViewModel(
             },
             onError = {
                 showErrorState()
-            }
+            },
         )
     }
 
@@ -186,7 +187,7 @@ class SettingsViewModel(
         setState {
             copy(
                 showAcceptOrdersConfirmation = false,
-                workType = WorkType.CLOSED
+                workType = WorkType.CLOSED,
             )
         }
     }

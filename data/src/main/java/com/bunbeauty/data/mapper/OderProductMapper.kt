@@ -5,8 +5,8 @@ import com.bunbeauty.domain.model.addition.OrderAddition
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
 class OderProductMapper {
-    fun toModel(orderProductServer: OrderProductServer): OrderProduct {
-        return OrderProduct(
+    fun toModel(orderProductServer: OrderProductServer): OrderProduct =
+        OrderProduct(
             uuid = orderProductServer.uuid,
             count = orderProductServer.count,
             name = orderProductServer.name,
@@ -17,15 +17,15 @@ class OderProductMapper {
             description = orderProductServer.description,
             comboDescription = orderProductServer.comboDescription,
             barcode = orderProductServer.barcode,
-            orderAdditions = orderProductServer.additions.map { additionServer ->
-                OrderAddition(
-                    uuid = additionServer.uuid,
-                    name = additionServer.name,
-                    priority = additionServer.priority
-                )
-            },
+            orderAdditions =
+                orderProductServer.additions.map { additionServer ->
+                    OrderAddition(
+                        uuid = additionServer.uuid,
+                        name = additionServer.name,
+                        priority = additionServer.priority,
+                    )
+                },
             newTotalCost = orderProductServer.newTotalCost,
-            additionsPrice = orderProductServer.additionsPrice
+            additionsPrice = orderProductServer.additionsPrice,
         )
-    }
 }

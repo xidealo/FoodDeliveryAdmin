@@ -13,25 +13,39 @@ interface OrderList {
         val orderList: List<Order>,
         val hasConnectionError: Boolean,
         val cafe: Cafe?,
-        val loadingOrderList: Boolean
+        val loadingOrderList: Boolean,
     ) : BaseDataState {
         enum class State {
             LOADING,
-            SUCCESS
+            SUCCESS,
         }
     }
 
     sealed interface Action : BaseAction {
         data object StartObserveOrders : Action
+
         data object StopObserveOrders : Action
+
         data object RefreshSwipe : Action
+
         data object RetryClick : Action
-        data class OrderClick(val orderUuid: String, val orderCode: String) : Action
+
+        data class OrderClick(
+            val orderUuid: String,
+            val orderCode: String,
+        ) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object ScrollToTop : Event
-        data class OpenOrderDetailsEvent(val orderUuid: String, val orderCode: String) : Event
-        data class CancelNotification(val notificationId: Int) : Event
+
+        data class OpenOrderDetailsEvent(
+            val orderUuid: String,
+            val orderCode: String,
+        ) : Event
+
+        data class CancelNotification(
+            val notificationId: Int,
+        ) : Event
     }
 }

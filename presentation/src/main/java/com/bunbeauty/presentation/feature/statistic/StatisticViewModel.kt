@@ -12,20 +12,23 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 class StatisticViewModel(
     private val getCafeUseCase: GetCafeUseCase,
     private val dateTimeUtil: DateTimeUtil,
-    private val getStatisticUseCase: GetStatisticUseCase
+    private val getStatisticUseCase: GetStatisticUseCase,
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
-    initState = Statistic.DataState(
-        loadingStatistic = false,
-        state = Statistic.DataState.State.LOADING
-    )
-) {
-
-    override fun reduce(action: Statistic.Action, dataState: Statistic.DataState) {
+        initState =
+            Statistic.DataState(
+                loadingStatistic = false,
+                state = Statistic.DataState.State.LOADING,
+            ),
+    ) {
+    override fun reduce(
+        action: Statistic.Action,
+        dataState: Statistic.DataState,
+    ) {
         when (action) {
             is Statistic.Action.Init -> {
                 setState {
                     copy(
-                        selectedTimeInterval = TimeIntervalCode.MONTH
+                        selectedTimeInterval = TimeIntervalCode.MONTH,
                     )
                 }
                 updateData()
@@ -34,7 +37,7 @@ class StatisticViewModel(
             Statistic.Action.LoadStatisticClick -> {
                 loadStatistic(
                     cafeUuid = dataState.cafeUuid,
-                    period = dataState.selectedTimeInterval
+                    period = dataState.selectedTimeInterval,
                 )
             }
 
@@ -48,9 +51,10 @@ class StatisticViewModel(
 
             Statistic.Action.CloseTimeIntervalListBottomSheet -> closeTimeIntervalListBottomSheet()
 
-            is Statistic.Action.SelectedTimeInterval -> onTimeIntervalSelected(
-                timeInterval = action.timeInterval
-            )
+            is Statistic.Action.SelectedTimeInterval ->
+                onTimeIntervalSelected(
+                    timeInterval = action.timeInterval,
+                )
         }
     }
 
@@ -63,7 +67,7 @@ class StatisticViewModel(
     private fun onTimeIntervalClicked() {
         setState {
             copy(
-                isTimeIntervalListShown = true
+                isTimeIntervalListShown = true,
             )
         }
     }
@@ -71,7 +75,7 @@ class StatisticViewModel(
     private fun closeTimeIntervalListBottomSheet() {
         setState {
             copy(
-                isTimeIntervalListShown = false
+                isTimeIntervalListShown = false,
             )
         }
     }
@@ -80,51 +84,53 @@ class StatisticViewModel(
         setState {
             copy(
                 selectedTimeInterval = timeInterval,
-                isTimeIntervalListShown = false
+                isTimeIntervalListShown = false,
             )
         }
     }
 
     private fun loadStatistic(
         cafeUuid: String?,
-        period: TimeIntervalCode
+        period: TimeIntervalCode,
     ) {
         viewModelScope.launchSafe(
             block = {
                 setState {
                     copy(
-                        loadingStatistic = true
+                        loadingStatistic = true,
                     )
                 }
                 getStatisticUseCase(
                     cafeUuid = cafeUuid,
-                    period = period.name
+                    period = period.name,
                 ).map { statistic ->
                     Statistic.DataState.StatisticItemModel(
                         startMillis = statistic.startPeriodTime,
                         period = statistic.period,
                         count = statistic.orderCount,
                         proceeds = "${statistic.proceeds} ${statistic.currency}",
-                        date = when (period) {
-                            TimeIntervalCode.DAY -> dateTimeUtil.formatDateTime(
-                                statistic.startPeriodTime,
-                                PATTERN_DD_MMMM_YYYY
-                            )
+                        date =
+                            when (period) {
+                                TimeIntervalCode.DAY ->
+                                    dateTimeUtil.formatDateTime(
+                                        statistic.startPeriodTime,
+                                        PATTERN_DD_MMMM_YYYY,
+                                    )
 
-                            TimeIntervalCode.MONTH -> dateTimeUtil.formatDateTime(
-                                statistic.startPeriodTime,
-                                PATTERN_MMMM
-                            )
+                                TimeIntervalCode.MONTH ->
+                                    dateTimeUtil.formatDateTime(
+                                        statistic.startPeriodTime,
+                                        PATTERN_MMMM,
+                                    )
 
-                            TimeIntervalCode.WEEK -> dateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
-                        }
-
+                                TimeIntervalCode.WEEK -> dateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
+                            },
                     )
                 }.let { statisticItemList ->
                     setState {
                         copy(
                             statisticList = statisticItemList,
-                            loadingStatistic = false
+                            loadingStatistic = false,
                         )
                     }
                 }
@@ -133,10 +139,10 @@ class StatisticViewModel(
                 setState {
                     copy(
                         state = Statistic.DataState.State.ERROR,
-                        loadingStatistic = false
+                        loadingStatistic = false,
                     )
                 }
-            }
+            },
         )
     }
 
@@ -145,7 +151,7 @@ class StatisticViewModel(
             block = {
                 setState {
                     copy(
-                        state = Statistic.DataState.State.LOADING
+                        state = Statistic.DataState.State.LOADING,
                     )
                 }
                 val cafe = getCafeUseCase()
@@ -153,17 +159,17 @@ class StatisticViewModel(
                     copy(
                         cafeAddress = cafe.address,
                         cafeUuid = cafe.uuid,
-                        state = Statistic.DataState.State.SUCCESS
+                        state = Statistic.DataState.State.SUCCESS,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = Statistic.DataState.State.ERROR
+                        state = Statistic.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 }

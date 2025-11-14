@@ -26,23 +26,25 @@ class GetAdditionGroupListFromMenuProductUseCaseTest {
 
     @BeforeTest
     fun setup() {
-        getAdditionGroupListFromMenuProductUseCase = GetAdditionGroupListFromMenuProductUseCase(
-            menuProductRepo = menuProductRepo,
-            dataStoreRepo = dataStoreRepo,
-            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = getFilteredAdditionGroupWithAdditionsForMenuProductUseCase
-        )
+        getAdditionGroupListFromMenuProductUseCase =
+            GetAdditionGroupListFromMenuProductUseCase(
+                menuProductRepo = menuProductRepo,
+                dataStoreRepo = dataStoreRepo,
+                getFilteredAdditionGroupWithAdditionsForMenuProductUseCase = getFilteredAdditionGroupWithAdditionsForMenuProductUseCase,
+            )
     }
 
     @Test
-    fun `invoke throws NoCompanyUuidException when companyUuid is null`() = runTest {
-        // Given
-        coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
+    fun `invoke throws NoCompanyUuidException when companyUuid is null`() =
+        runTest {
+            // Given
+            coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
 
-        // When & Then
-        assertFailsWith<NoCompanyUuidException> {
-            getAdditionGroupListFromMenuProductUseCase("uuid")
+            // When & Then
+            assertFailsWith<NoCompanyUuidException> {
+                getAdditionGroupListFromMenuProductUseCase("uuid")
+            }
         }
-    }
     // TODO fix test
 //    @Test
 //    fun `invoke returns addition groups when menu product exists`() = runTest {
@@ -80,77 +82,83 @@ class GetAdditionGroupListFromMenuProductUseCaseTest {
 //    }
 
     @Test
-    fun `invoke returns empty list when menu product is not found`() = runTest {
-        // Given
-        val companyUuid = "123"
-        val menuUuid = "uuid"
+    fun `invoke returns empty list when menu product is not found`() =
+        runTest {
+            // Given
+            val companyUuid = "123"
+            val menuUuid = "uuid"
 
-        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery { menuProductRepo.getMenuProduct(menuUuid, companyUuid) } returns null
+            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+            coEvery { menuProductRepo.getMenuProduct(menuUuid, companyUuid) } returns null
 
-        // When
-        val result = getAdditionGroupListFromMenuProductUseCase(menuUuid)
+            // When
+            val result = getAdditionGroupListFromMenuProductUseCase(menuUuid)
 
-        // Then
-        assertTrue(result.isEmpty())
-    }
+            // Then
+            assertTrue(result.isEmpty())
+        }
 
     @Test
-    fun `invoke returns empty list when menu product has no addition groups`() = runTest {
-        // Given
-        val companyUuid = "123"
-        val menuUuid = "uuid"
+    fun `invoke returns empty list when menu product has no addition groups`() =
+        runTest {
+            // Given
+            val companyUuid = "123"
+            val menuUuid = "uuid"
 
-        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-        coEvery {
-            menuProductRepo.getMenuProduct(
-                menuUuid,
-                companyUuid
-            )
-        } returns menuProductMock.copy(
-            additionGroups = emptyList()
+            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+            coEvery {
+                menuProductRepo.getMenuProduct(
+                    menuUuid,
+                    companyUuid,
+                )
+            } returns
+                menuProductMock.copy(
+                    additionGroups = emptyList(),
+                )
+
+            // When
+            val result = getAdditionGroupListFromMenuProductUseCase(menuUuid)
+
+            // Then
+            assertTrue(result.isEmpty())
+        }
+
+    private val menuProductMock =
+        MenuProduct(
+            uuid = "",
+            name = "",
+            newPrice = 500,
+            oldPrice = null,
+            units = null,
+            nutrition = null,
+            description = "",
+            comboDescription = null,
+            photoLink = "",
+            barcode = null,
+            isVisible = true,
+            isRecommended = false,
+            categoryUuids = emptyList(),
+            additionGroups = emptyList(),
         )
 
-        // When
-        val result = getAdditionGroupListFromMenuProductUseCase(menuUuid)
+    private val additionMock =
+        Addition(
+            uuid = "",
+            name = "",
+            priority = 1,
+            fullName = "",
+            price = 1,
+            photoLink = "",
+            isVisible = true,
+            tag = "",
+        )
 
-        // Then
-        assertTrue(result.isEmpty())
-    }
-
-    private val menuProductMock = MenuProduct(
-        uuid = "",
-        name = "",
-        newPrice = 500,
-        oldPrice = null,
-        units = null,
-        nutrition = null,
-        description = "",
-        comboDescription = null,
-        photoLink = "",
-        barcode = null,
-        isVisible = true,
-        isRecommended = false,
-        categoryUuids = emptyList(),
-        additionGroups = emptyList()
-    )
-
-    private val additionMock = Addition(
-        uuid = "",
-        name = "",
-        priority = 1,
-        fullName = "",
-        price = 1,
-        photoLink = "",
-        isVisible = true,
-        tag = ""
-    )
-
-    private val additionGroupMock = AdditionGroup(
-        uuid = "123",
-        name = "Name",
-        priority = 1,
-        singleChoice = false,
-        isVisible = true
-    )
+    private val additionGroupMock =
+        AdditionGroup(
+            uuid = "123",
+            name = "Name",
+            priority = 1,
+            singleChoice = false,
+            isVisible = true,
+        )
 }

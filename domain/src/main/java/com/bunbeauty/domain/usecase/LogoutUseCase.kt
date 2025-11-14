@@ -25,9 +25,8 @@ class LogoutUseCase(
     private val additionGroupRepo: AdditionGroupRepo,
     private val additionRepo: AdditionRepo,
     private val categoryRepo: CategoryRepo,
-    private val menuProductToAdditionGroupRepository: MenuProductToAdditionGroupRepository
+    private val menuProductToAdditionGroupRepository: MenuProductToAdditionGroupRepository,
 ) {
-
     suspend operator fun invoke() {
         userAuthorizationRepo.clearNotificationToken()
         orderRepo.clearCache()

@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class UpdateVisibleAdditionGroupListUseCaseTest {
     private val dataStoreRepo: DataStoreRepo = mockk()
@@ -20,48 +21,51 @@ class UpdateVisibleAdditionGroupListUseCaseTest {
 
     @BeforeTest
     fun setup() {
-        useCase = UpdateVisibleAdditionGroupListUseCase(
-            additionGroupRepo = additionGroupRepo,
-            dataStoreRepo = dataStoreRepo
-        )
-    }
-
-    @Test
-    fun `should throw NoTokenException when token is null`() = runTest {
-        coEvery { dataStoreRepo.getToken() } returns null
-
-        assertFailsWith(
-            exceptionClass = NoTokenException::class,
-            block = { useCase(additionUuidGroup = "", isVisible = true) }
-        )
-    }
-
-    @Test
-    fun `should call updateAdditionGroup function when token not null`() = runTest {
-        // Given
-        val token = "token"
-        val additionGroupUuidMock = ""
-        val isVisible = true
-        val updateAdditionGroupMock = UpdateAdditionGroup(isVisible = isVisible)
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery {
-            additionGroupRepo.updateAdditionGroup(
-                updateAdditionGroup = updateAdditionGroupMock,
-                token = token,
-                additionGroupUuid = additionGroupUuidMock
+        useCase =
+            UpdateVisibleAdditionGroupListUseCase(
+                additionGroupRepo = additionGroupRepo,
+                dataStoreRepo = dataStoreRepo,
             )
-        } returns Unit
+    }
 
-        // When
-        useCase(additionUuidGroup = additionGroupUuidMock, isVisible = isVisible)
+    @Test
+    fun `should throw NoTokenException when token is null`() =
+        runTest {
+            coEvery { dataStoreRepo.getToken() } returns null
 
-        // Then
-        coVerify {
-            additionGroupRepo.updateAdditionGroup(
-                updateAdditionGroup = updateAdditionGroupMock,
-                token = token,
-                additionGroupUuid = additionGroupUuidMock
+            assertFailsWith(
+                exceptionClass = NoTokenException::class,
+                block = { useCase(additionUuidGroup = "", isVisible = true) },
             )
         }
-    }
+
+    @Test
+    fun `should call updateAdditionGroup function when token not null`() =
+        runTest {
+            // Given
+            val token = "token"
+            val additionGroupUuidMock = ""
+            val isVisible = true
+            val updateAdditionGroupMock = UpdateAdditionGroup(isVisible = isVisible)
+            coEvery { dataStoreRepo.getToken() } returns token
+            coEvery {
+                additionGroupRepo.updateAdditionGroup(
+                    updateAdditionGroup = updateAdditionGroupMock,
+                    token = token,
+                    additionGroupUuid = additionGroupUuidMock,
+                )
+            } returns Unit
+
+            // When
+            useCase(additionUuidGroup = additionGroupUuidMock, isVisible = isVisible)
+
+            // Then
+            coVerify {
+                additionGroupRepo.updateAdditionGroup(
+                    updateAdditionGroup = updateAdditionGroupMock,
+                    token = token,
+                    additionGroupUuid = additionGroupUuidMock,
+                )
+            }
+        }
 }

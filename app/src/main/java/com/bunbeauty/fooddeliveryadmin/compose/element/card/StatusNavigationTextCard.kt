@@ -33,48 +33,51 @@ fun StatusNavigationTextCard(
     @StringRes hintStringId: Int,
     label: String?,
     clickable: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
-        clickable = clickable
+        clickable = clickable,
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
             Spacer(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(8.dp)
-                    .background(statusColor)
+                modifier =
+                    Modifier
+                        .fillMaxHeight()
+                        .width(8.dp)
+                        .background(statusColor),
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 16.dp)
-                    .padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, end = 16.dp)
+                        .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = AdminTheme.dimensions.smallSpace)
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(end = AdminTheme.dimensions.smallSpace),
                 ) {
                     Text(
                         text = stringResource(hintStringId),
                         style = AdminTheme.typography.labelSmall.medium,
-                        color = AdminTheme.colors.main.onSurfaceVariant
+                        color = AdminTheme.colors.main.onSurfaceVariant,
                     )
                     Text(
                         text = label ?: "",
                         style = AdminTheme.typography.bodyMedium,
-                        color = AdminTheme.colors.main.onSurface
+                        color = AdminTheme.colors.main.onSurface,
                     )
                 }
                 Icon(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(R.drawable.ic_right_arrow),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
-                    contentDescription = stringResource(R.string.description_common_navigate)
+                    contentDescription = stringResource(R.string.description_common_navigate),
                 )
             }
         }
@@ -90,7 +93,7 @@ private fun NavigationIconCardPreview() {
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
             hintStringId = R.string.hint_login_login,
             label = "+7 999 000-00-00",
-            onClick = {}
+            onClick = {},
         )
     }
 }
