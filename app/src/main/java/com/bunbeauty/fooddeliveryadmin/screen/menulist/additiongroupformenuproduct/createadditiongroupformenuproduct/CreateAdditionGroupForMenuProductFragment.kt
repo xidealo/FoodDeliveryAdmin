@@ -179,7 +179,8 @@ class CreateAdditionGroupForMenuProductFragment :
                 findNavController().navigate(
                     directions = CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
                         additionGroupUuid = event.uuid,
-                        menuProductUuid = event.menuProductUuid
+                        menuProductUuid = event.menuProductUuid,
+                        mainEditedAdditionGroupUuid = null
                     )
                 )
             }

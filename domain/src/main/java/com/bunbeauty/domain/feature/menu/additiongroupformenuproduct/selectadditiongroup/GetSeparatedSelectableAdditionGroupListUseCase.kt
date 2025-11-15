@@ -6,8 +6,17 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
 
+data class SeparatedSelectableAdditionList(
+    val visibleList: List<SelectableAdditionGroup>,
+    val hiddenList: List<SelectableAdditionGroup>
+)
 
-// TODO tests
+data class SelectableAdditionGroup(
+    val uuid: String,
+    val name: String,
+    val isSelected: Boolean
+)
+
 class GetSeparatedSelectableAdditionGroupListUseCase(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
     private val menuProductToAdditionGroupRepository: MenuProductToAdditionGroupRepository,
@@ -16,36 +25,74 @@ class GetSeparatedSelectableAdditionGroupListUseCase(
     suspend operator fun invoke(
         refreshing: Boolean,
         selectedAdditionGroupUuid: String?,
-        menuProductUuid: String
-    ): SeparatedAdditionGroupList {
+        menuProductUuid: String,
+        mainEditedAdditionGroupUuid: String?
+    ): SeparatedSelectableAdditionList {
         val separatedAdditionGroupList =
             getSeparatedAdditionGroupListUseCase(refreshing = refreshing)
 
-        val selectedUuid = selectedAdditionGroupUuid?.let {
-            menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
-                uuid = selectedAdditionGroupUuid
-            )
-        }?.additionGroupUuid ?: selectedAdditionGroupUuid
+        val selectedUuid = getSelectedAdditionGroupUuid(selectedAdditionGroupUuid)
 
-        // TODO GET ALL ADDITION GROUPS FROM MENU PRODUCT
-        val containedAdditionGroupList = getMenuProductUseCase(
+        val mainAdditionGroupUuid = getMainAdditionGroupUuid(
+            mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid
+        )
+
+        val containedAdditionGroupList = getContainedAdditionGroupUuidList(
             menuProductUuid = menuProductUuid
-        ).additionGroups.map { (additionGroup, additionList) ->
-            menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
-                uuid = additionGroup.uuid
-            )
-        }.map { menuProductToAdditionGroup ->
-            menuProductToAdditionGroup?.additionGroupUuid
-        }
+        )
 
-        return SeparatedAdditionGroupList(
+        return SeparatedSelectableAdditionList(
             visibleList = separatedAdditionGroupList.visibleList.filterNot { additionGroup ->
-                additionGroup.uuid in containedAdditionGroupList
+                additionGroup.uuid in containedAdditionGroupList && mainAdditionGroupUuid != additionGroup.uuid
+            }.map { additionGroup ->
+                additionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid = selectedUuid)
             },
             hiddenList = separatedAdditionGroupList.hiddenList.filterNot { additionGroup ->
-                additionGroup.uuid in containedAdditionGroupList
+                additionGroup.uuid in containedAdditionGroupList && mainAdditionGroupUuid != additionGroup.uuid
+            }.map { additionGroup ->
+                additionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid = selectedUuid)
             }
         )
     }
 
+
+    private suspend fun getSelectedAdditionGroupUuid(selectedAdditionGroupUuid: String?): String? {
+        return selectedAdditionGroupUuid?.let {
+            menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
+                uuid = selectedAdditionGroupUuid
+            )
+        }?.additionGroupUuid ?: selectedAdditionGroupUuid
+    }
+
+    private suspend fun getMainAdditionGroupUuid(mainEditedAdditionGroupUuid: String?): String? {
+        return mainEditedAdditionGroupUuid?.let {
+            menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
+                uuid = mainEditedAdditionGroupUuid
+            )
+        }?.additionGroupUuid
+    }
+
+    private suspend fun getContainedAdditionGroupUuidList(
+        menuProductUuid: String
+    ): List<String> {
+        return getMenuProductUseCase(
+            menuProductUuid = menuProductUuid
+        ).additionGroups.mapNotNull { (additionGroup, additionList) ->
+            menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
+                uuid = additionGroup.uuid
+            )
+        }.map { menuProductToAdditionGroup ->
+            menuProductToAdditionGroup.additionGroupUuid
+        }
+    }
+
+    fun AdditionGroup.toSelectableAdditionGroupItem(
+        selectedAdditionGroupUuid: String?
+    ): SelectableAdditionGroup {
+        return SelectableAdditionGroup(
+            uuid = uuid,
+            name = name,
+            isSelected = selectedAdditionGroupUuid == uuid
+        )
+    }
 }

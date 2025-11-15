@@ -25,7 +25,8 @@ class SelectAdditionGroupViewModel(
         when (action) {
             is SelectAdditionGroup.Action.Init -> loadData(
                 selectedAdditionGroupUuid = action.selectedAdditionGroupUuid,
-                menuProductUuid = action.menuProductUuid
+                menuProductUuid = action.menuProductUuid,
+                mainEditedAdditionGroupUuid = action.mainEditedAdditionGroupUuid
             )
 
             SelectAdditionGroup.Action.OnBackClick -> backClick()
@@ -36,25 +37,23 @@ class SelectAdditionGroupViewModel(
         }
     }
 
-    private fun loadData(selectedAdditionGroupUuid: String?, menuProductUuid: String) {
+    private fun loadData(
+        selectedAdditionGroupUuid: String?,
+        menuProductUuid: String,
+        mainEditedAdditionGroupUuid: String?,
+    ) {
         viewModelScope.launchSafe(
             block = {
-                val separatedAdditionGroupList =
-                    getSeparatedSelectableAdditionGroupListUseCase(
-                        refreshing = false,
-                        selectedAdditionGroupUuid = selectedAdditionGroupUuid,
-                        menuProductUuid = menuProductUuid
-                    )
+                val separatedAdditionGroupList = getSeparatedSelectableAdditionGroupListUseCase(
+                    refreshing = false,
+                    selectedAdditionGroupUuid = selectedAdditionGroupUuid,
+                    menuProductUuid = menuProductUuid,
+                    mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid
+                )
                 setState {
                     copy(
-                        visibleSelectableAdditionGroupList = separatedAdditionGroupList.visibleList
-                            .map { additionGroup ->
-                                additionGroup.toAdditionGroupItem()
-                            },
-                        hiddenSelectableAdditionGroupList = separatedAdditionGroupList.hiddenList
-                            .map { additionGroup ->
-                                additionGroup.toAdditionGroupItem()
-                            },
+                        visibleSelectableAdditionGroupList = separatedAdditionGroupList.visibleList,
+                        hiddenSelectableAdditionGroupList = separatedAdditionGroupList.hiddenList,
                         state = SelectAdditionGroup.DataState.State.SUCCESS
                     )
                 }
@@ -82,12 +81,5 @@ class SelectAdditionGroupViewModel(
                 additionGroupName = name
             )
         }
-    }
-
-    fun AdditionGroup.toAdditionGroupItem(): SelectAdditionGroup.DataState.AdditionGroupItem {
-        return SelectAdditionGroup.DataState.AdditionGroupItem(
-            uuid = uuid,
-            name = name
-        )
     }
 }

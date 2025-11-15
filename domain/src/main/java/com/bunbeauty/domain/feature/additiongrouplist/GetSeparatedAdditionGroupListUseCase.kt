@@ -8,7 +8,14 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 data class SeparatedAdditionGroupList(
     val visibleList: List<AdditionGroup>,
     val hiddenList: List<AdditionGroup>
-)
+) {
+    companion object {
+        val mock = SeparatedAdditionGroupList(
+            visibleList = emptyList(),
+            hiddenList = emptyList(),
+        )
+    }
+}
 
 class GetSeparatedAdditionGroupListUseCase(
     private val additionGroupRepo: AdditionGroupRepo,

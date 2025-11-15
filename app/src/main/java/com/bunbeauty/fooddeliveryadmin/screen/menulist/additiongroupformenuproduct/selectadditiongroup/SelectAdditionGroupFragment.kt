@@ -19,6 +19,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.SelectableAdditionGroup
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.selectableitem.SelectableItem
@@ -55,7 +56,8 @@ class SelectAdditionGroupFragment :
         viewModel.onAction(
             SelectAdditionGroup.Action.Init(
                 selectedAdditionGroupUuid = selectAdditionGroupFragmentArgs.additionGroupUuid,
-                menuProductUuid = selectAdditionGroupFragmentArgs.menuProductUuid
+                menuProductUuid = selectAdditionGroupFragmentArgs.menuProductUuid,
+                mainEditedAdditionGroupUuid = selectAdditionGroupFragmentArgs.mainEditedAdditionGroupUuid
             )
         )
     }
@@ -164,7 +166,7 @@ class SelectAdditionGroupFragment :
                     selectableItem = SelectableItem(
                         uuid = selectableCategory.uuid,
                         title = selectableCategory.name,
-                        isSelected = false
+                        isSelected = selectableCategory.isSelected
                     ),
                     hasDivider = true,
                     onClick = {
@@ -209,7 +211,7 @@ class SelectAdditionGroupFragment :
                         selectableItem = SelectableItem(
                             uuid = hiddenAdditionGroup.uuid,
                             title = hiddenAdditionGroup.name,
-                            isSelected = false
+                            isSelected = hiddenAdditionGroup.isSelected
                         ),
                         hasDivider = true,
                         onClick = {
@@ -231,19 +233,22 @@ class SelectAdditionGroupFragment :
     val selectAdditionGroupViewState = SelectAdditionGroup.DataState(
         state = SelectAdditionGroup.DataState.State.SUCCESS,
         visibleSelectableAdditionGroupList = listOf(
-            SelectAdditionGroup.DataState.AdditionGroupItem(
+            SelectableAdditionGroup(
                 uuid = "uuid1",
                 name = "Roy Faulkner",
+                isSelected = true
             ),
-            SelectAdditionGroup.DataState.AdditionGroupItem(
+            SelectableAdditionGroup(
                 uuid = "uuid2",
                 name = "Roy Faulkner",
+                isSelected = false
             )
         ),
         hiddenSelectableAdditionGroupList = listOf(
-            SelectAdditionGroup.DataState.AdditionGroupItem(
+            SelectableAdditionGroup(
                 uuid = "uuid3",
                 name = "Roy Faulkner",
+                isSelected = false
             )
         )
     )

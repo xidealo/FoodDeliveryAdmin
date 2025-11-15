@@ -76,11 +76,11 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = JavaVersion.VERSION_21.toString()
             freeCompilerArgs = listOf("-Xstring-concat=inline")
         }
         composeOptions {
@@ -157,6 +157,8 @@ dependencies {
 
     // Time
     implementation(libs.kotlinx.datetime)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }
 
 fun commonPlayConfig(
