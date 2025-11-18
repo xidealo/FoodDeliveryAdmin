@@ -324,7 +324,7 @@
     <fragment
         android:id="@+id/createAdditionGroupForMenuProductFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateAdditionGroupForMenuProductFragment"
-        android:label="editAdditionGroupForMenuProductFragment">
+        android:label="createAdditionGroupForMenuProductFragment">
         <argument
             android:name="menuProductUuid"
             app:argType="string" />

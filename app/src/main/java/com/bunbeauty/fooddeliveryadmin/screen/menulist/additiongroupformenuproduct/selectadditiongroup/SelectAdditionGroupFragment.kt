@@ -41,7 +41,6 @@ private const val LIST_ANIMATION_DURATION = 500
 
 class SelectAdditionGroupFragment :
     SingleStateComposeFragment<SelectAdditionGroup.DataState, SelectAdditionGroup.Action, SelectAdditionGroup.Event>() {
-
     companion object {
         const val SELECT_ADDITION_GROUP_KEY = "SELECT_ADDITION_GROUP_KEY"
         const val ADDITION_GROUP_KEY = "ADDITION_GROUP_KEY"
@@ -50,7 +49,10 @@ class SelectAdditionGroupFragment :
     override val viewModel: SelectAdditionGroupViewModel by viewModel()
     private val selectAdditionGroupFragmentArgs: SelectAdditionGroupFragmentArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(
@@ -58,14 +60,14 @@ class SelectAdditionGroupFragment :
                 selectedAdditionGroupUuid = selectAdditionGroupFragmentArgs.additionGroupUuid,
                 menuProductUuid = selectAdditionGroupFragmentArgs.menuProductUuid,
                 mainEditedAdditionGroupUuid = selectAdditionGroupFragmentArgs.mainEditedAdditionGroupUuid
-            )
+            ),
         )
     }
 
     @Composable
     override fun Screen(
         state: SelectAdditionGroup.DataState,
-        onAction: (SelectAdditionGroup.Action) -> Unit
+        onAction: (SelectAdditionGroup.Action) -> Unit,
     ) {
         SelectAdditionGroupScreen(state = state, onAction = onAction)
     }
@@ -80,12 +82,12 @@ class SelectAdditionGroupFragment :
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(
                         R.string.msg_select_addition_group_selected,
-                        event.additionGroupName
-                    )
+                        event.additionGroupName,
+                    ),
                 )
                 setFragmentResult(
                     requestKey = SELECT_ADDITION_GROUP_KEY,
-                    result = bundleOf(ADDITION_GROUP_KEY to event.additionGroupUuid)
+                    result = bundleOf(ADDITION_GROUP_KEY to event.additionGroupUuid),
                 )
                 findNavController().popBackStack()
             }
@@ -95,14 +97,14 @@ class SelectAdditionGroupFragment :
     @Composable
     fun SelectAdditionGroupScreen(
         state: SelectAdditionGroup.DataState,
-        onAction: (SelectAdditionGroup.Action) -> Unit
+        onAction: (SelectAdditionGroup.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(id = R.string.title_select_addition_group),
             backActionClick = {
                 onAction(SelectAdditionGroup.Action.OnBackClick)
             },
-            backgroundColor = AdminTheme.colors.main.surface
+            backgroundColor = AdminTheme.colors.main.surface,
         ) {
             when (state.state) {
                 SelectAdditionGroup.DataState.State.LOADING -> LoadingScreen()
@@ -112,14 +114,15 @@ class SelectAdditionGroupFragment :
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             // onAction(SelectAdditionGroup.Action)
-                        }
+                        },
                     )
                 }
 
-                SelectAdditionGroup.DataState.State.SUCCESS -> SelectAdditionGroupSuccessScreen(
-                    state = state,
-                    onAction = onAction
-                )
+                SelectAdditionGroup.DataState.State.SUCCESS ->
+                    SelectAdditionGroupSuccessScreen(
+                        state = state,
+                        onAction = onAction,
+                    )
             }
         }
     }
@@ -127,30 +130,32 @@ class SelectAdditionGroupFragment :
     @Composable
     fun SelectAdditionGroupSuccessScreen(
         state: SelectAdditionGroup.DataState,
-        onAction: (SelectAdditionGroup.Action) -> Unit
+        onAction: (SelectAdditionGroup.Action) -> Unit,
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentPadding = PaddingValues(
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-            )
+            modifier =
+                Modifier
+                    .fillMaxSize(),
+            contentPadding =
+                PaddingValues(
+                    bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                ),
         ) {
             item(
-                key = TITLE_POSITION_VISIBLE_KEY
+                key = TITLE_POSITION_VISIBLE_KEY,
             ) {
                 Text(
-                    modifier = Modifier
-                        .padding(
-                            start = 16.dp,
-                            bottom = 16.dp
-                        )
-                        .animateItem()
-                        .animateContentSize(
-                            animationSpec = tween(LIST_ANIMATION_DURATION)
-                        ),
+                    modifier =
+                        Modifier
+                            .padding(
+                                start = 16.dp,
+                                bottom = 16.dp,
+                            ).animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION),
+                            ),
                     text = stringResource(id = R.string.title_select_addition_group_position_visible),
-                    style = AdminTheme.typography.titleMedium.bold
+                    style = AdminTheme.typography.titleMedium.bold,
                 )
             }
 
@@ -158,72 +163,76 @@ class SelectAdditionGroupFragment :
                 items = state.visibleSelectableAdditionGroupList,
                 key = { selectableAdditionGroup ->
                     selectableAdditionGroup.uuid
-                }
+                },
             ) { selectableCategory ->
                 SelectableItemView(
-                    modifier = Modifier
-                        .animateItem(),
-                    selectableItem = SelectableItem(
-                        uuid = selectableCategory.uuid,
-                        title = selectableCategory.name,
-                        isSelected = selectableCategory.isSelected
-                    ),
+                    modifier =
+                        Modifier
+                            .animateItem(),
+                    selectableItem =
+                        SelectableItem(
+                            uuid = selectableCategory.uuid,
+                            title = selectableCategory.name,
+                            isSelected = selectableCategory.isSelected,
+                        ),
                     hasDivider = true,
                     onClick = {
                         onAction(
                             SelectAdditionGroup.Action.SelectAdditionGroupClick(
                                 uuid = selectableCategory.uuid,
-                                name = selectableCategory.name
-                            )
+                                name = selectableCategory.name,
+                            ),
                         )
                     },
                     elevated = false,
-                    isClickable = true
+                    isClickable = true,
                 )
             }
 
             if (state.hiddenSelectableAdditionGroupList.isNotEmpty()) {
                 item(
-                    key = TITLE_POSITION_HIDDEN_KEY
+                    key = TITLE_POSITION_HIDDEN_KEY,
                 ) {
                     Text(
-                        modifier = Modifier
-                            .padding(
-                                all = 16.dp
-                            )
-                            .animateItem()
-                            .animateContentSize(
-                                animationSpec = tween(LIST_ANIMATION_DURATION)
-                            ),
+                        modifier =
+                            Modifier
+                                .padding(
+                                    all = 16.dp,
+                                ).animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION),
+                                ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
-                        style = AdminTheme.typography.titleMedium.bold
+                        style = AdminTheme.typography.titleMedium.bold,
                     )
                 }
                 items(
                     items = state.hiddenSelectableAdditionGroupList,
                     key = { hiddenAdditionGroup ->
                         hiddenAdditionGroup.uuid
-                    }
+                    },
                 ) { hiddenAdditionGroup ->
                     SelectableItemView(
-                        modifier = Modifier
-                            .animateItem(),
-                        selectableItem = SelectableItem(
-                            uuid = hiddenAdditionGroup.uuid,
-                            title = hiddenAdditionGroup.name,
-                            isSelected = hiddenAdditionGroup.isSelected
-                        ),
+                        modifier =
+                            Modifier
+                                .animateItem(),
+                        selectableItem =
+                            SelectableItem(
+                                uuid = hiddenAdditionGroup.uuid,
+                                title = hiddenAdditionGroup.name,
+                                isSelected = hiddenAdditionGroup.isSelected,
+                            ),
                         hasDivider = true,
                         onClick = {
                             onAction(
                                 SelectAdditionGroup.Action.SelectAdditionGroupClick(
                                     uuid = hiddenAdditionGroup.uuid,
-                                    name = hiddenAdditionGroup.name
-                                )
+                                    name = hiddenAdditionGroup.name,
+                                ),
                             )
                         },
                         elevated = false,
-                        isClickable = true
+                        isClickable = true,
                     )
                 }
             }
@@ -251,7 +260,6 @@ class SelectAdditionGroupFragment :
                 isSelected = false
             )
         )
-    )
 
     @Composable
     @Preview
@@ -259,7 +267,7 @@ class SelectAdditionGroupFragment :
         AdminTheme {
             SelectAdditionGroupScreen(
                 state = selectAdditionGroupViewState,
-                onAction = {}
+                onAction = {},
             )
         }
     }

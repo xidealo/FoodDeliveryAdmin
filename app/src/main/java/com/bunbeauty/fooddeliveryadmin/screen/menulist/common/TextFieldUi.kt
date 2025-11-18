@@ -7,14 +7,14 @@ import androidx.compose.runtime.Immutable
 data class TextFieldUi(
     override val value: String,
     override val isError: Boolean,
-    @StringRes val errorResId: Int
+    @StringRes val errorResId: Int,
 ) : FieldUi<String>() {
-
     companion object {
-        val empty = TextFieldUi(
-            value = "",
-            isError = false,
-            errorResId = 0
-        )
+        val empty =
+            TextFieldUi(
+                value = "",
+                isError = false,
+                errorResId = 0,
+            )
     }
 }

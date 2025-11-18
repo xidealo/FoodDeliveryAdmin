@@ -9,7 +9,6 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 interface EditCafeState {
-
     data class ViewDataState(
         val cafeUuid: String?,
         val cafeAddress: String,
@@ -17,39 +16,61 @@ interface EditCafeState {
         val nonWorkingDays: NonWorkingDays,
         val initialNonWorkingDayDate: LocalDate,
         val yearRange: IntRange,
-        val minNonWorkingDayDate: LocalDate
+        val minNonWorkingDayDate: LocalDate,
     ) : BaseViewDataState {
-
         sealed interface NonWorkingDays {
             data object Loading : NonWorkingDays
+
             data object Empty : NonWorkingDays
+
             data class Success(
-                val days: List<FormattedNonWorkingDay>
+                val days: List<FormattedNonWorkingDay>,
             ) : NonWorkingDays
         }
     }
 
     sealed interface Action : BaseAction {
-
         data class Init(
             val cafeUuid: String,
-            val cafeAddress: String
+            val cafeAddress: String,
         ) : Action
 
-        data class UpdateFromTime(val time: LocalTime) : Action
-        data class UpdateToTime(val time: LocalTime) : Action
-        data class AddNonWorkingDay(val date: LocalDate) : Action
-        data class DeleteNonWorkingDay(val uuid: String) : Action
-        data class ConfirmDeleteNonWorkingDay(val uuid: String) : Action
+        data class UpdateFromTime(
+            val time: LocalTime,
+        ) : Action
+
+        data class UpdateToTime(
+            val time: LocalTime,
+        ) : Action
+
+        data class AddNonWorkingDay(
+            val date: LocalDate,
+        ) : Action
+
+        data class DeleteNonWorkingDay(
+            val uuid: String,
+        ) : Action
+
+        data class ConfirmDeleteNonWorkingDay(
+            val uuid: String,
+        ) : Action
+
         data object BackClick : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBack : Event
+
         data object ShowFetchDataError : Event
+
         data object ShowUpdateDataError : Event
+
         data object ShowSaveDataError : Event
+
         data object ShowDeleteDataError : Event
-        data class ShowConfirmDeletion(val uuid: String) : Event
+
+        data class ShowConfirmDeletion(
+            val uuid: String,
+        ) : Event
     }
 }

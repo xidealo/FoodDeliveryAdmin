@@ -32,7 +32,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAdditionGroupForMenuProductFragment :
     SingleStateComposeFragment<CreateAdditionGroupForMenu.DataState, CreateAdditionGroupForMenu.Action, CreateAdditionGroupForMenu.Event>() {
-
     override val viewModel: CreateAdditionGroupForMenuProductViewModel by viewModel()
     private val createAdditionGroupForMenuProductFragmentArgs: CreateAdditionGroupForMenuProductFragmentArgs by navArgs()
 
@@ -45,24 +44,25 @@ class CreateAdditionGroupForMenuProductFragment :
         super.onCreate(savedInstanceState)
         viewModel.onAction(
             CreateAdditionGroupForMenu.Action.Init(
-                menuProductUuid = createAdditionGroupForMenuProductFragmentArgs.menuProductUuid
-            )
+                menuProductUuid = createAdditionGroupForMenuProductFragmentArgs.menuProductUuid,
+            ),
         )
 
         setFragmentResultListener(SELECT_ADDITION_GROUP_KEY) { _, bundle ->
             viewModel.onAction(
                 CreateAdditionGroupForMenu.Action.SelectAdditionGroup(
-                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty()
-                )
+                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty(),
+                ),
             )
         }
 
         setFragmentResultListener(SELECT_ADDITION_LIST_KEY) { _, bundle ->
             viewModel.onAction(
                 CreateAdditionGroupForMenu.Action.SelectAdditionList(
-                    additionListUuid = bundle.getStringArrayList(ADDITION_LIST_KEY)
-                        ?: emptyList()
-                )
+                    additionListUuid =
+                        bundle.getStringArrayList(ADDITION_LIST_KEY)
+                            ?: emptyList(),
+                ),
             )
         }
     }
@@ -70,7 +70,7 @@ class CreateAdditionGroupForMenuProductFragment :
     @Composable
     override fun Screen(
         state: CreateAdditionGroupForMenu.DataState,
-        onAction: (CreateAdditionGroupForMenu.Action) -> Unit
+        onAction: (CreateAdditionGroupForMenu.Action) -> Unit,
     ) {
         CreateAdditionGroupForMenuProductScreen(state = state, onAction = onAction)
     }
@@ -78,14 +78,14 @@ class CreateAdditionGroupForMenuProductFragment :
     @Composable
     fun CreateAdditionGroupForMenuProductScreen(
         state: CreateAdditionGroupForMenu.DataState,
-        onAction: (CreateAdditionGroupForMenu.Action) -> Unit
+        onAction: (CreateAdditionGroupForMenu.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_create_addition_group_for_menu_product),
             backActionClick = {
                 onAction(CreateAdditionGroupForMenu.Action.OnBackClick)
             },
-            backgroundColor = AdminTheme.colors.main.surface
+            backgroundColor = AdminTheme.colors.main.surface,
         ) {
             when (state.state) {
                 CreateAdditionGroupForMenu.DataState.State.LOADING -> LoadingScreen()
@@ -95,14 +95,15 @@ class CreateAdditionGroupForMenuProductFragment :
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             // todo click
-                        }
+                        },
                     )
                 }
 
-                CreateAdditionGroupForMenu.DataState.State.SUCCESS -> CreateAdditionGroupForMenuProductSuccessScreen(
-                    state = state,
-                    onAction = onAction
-                )
+                CreateAdditionGroupForMenu.DataState.State.SUCCESS ->
+                    CreateAdditionGroupForMenuProductSuccessScreen(
+                        state = state,
+                        onAction = onAction,
+                    )
             }
         }
     }
@@ -110,43 +111,47 @@ class CreateAdditionGroupForMenuProductFragment :
     @Composable
     fun CreateAdditionGroupForMenuProductSuccessScreen(
         state: CreateAdditionGroupForMenu.DataState,
-        onAction: (CreateAdditionGroupForMenu.Action) -> Unit
+        onAction: (CreateAdditionGroupForMenu.Action) -> Unit,
     ) {
         Column {
             NavigationTextCard(
                 valueText = state.groupName,
                 onClick = {
                     onAction(
-                        CreateAdditionGroupForMenu.Action.OnAdditionGroupClick
+                        CreateAdditionGroupForMenu.Action.OnAdditionGroupClick,
                     )
                 },
                 elevated = false,
-                labelText = stringResource(
-                    id = R.string.title_create_addition_group_for_menu_product_group
-                ),
+                labelText =
+                    stringResource(
+                        id = R.string.title_create_addition_group_for_menu_product_group,
+                    ),
                 isError = state.groupHasError,
-                errorText = stringResource(
-                    id = R.string.error_create_addition_group_for_menu_product_group
-                ),
-                hasDivider = true
+                errorText =
+                    stringResource(
+                        id = R.string.error_create_addition_group_for_menu_product_group,
+                    ),
+                hasDivider = true,
             )
 
             NavigationTextCard(
                 valueText = state.additionNameList,
                 onClick = {
                     onAction(
-                        CreateAdditionGroupForMenu.Action.OnAdditionListClick
+                        CreateAdditionGroupForMenu.Action.OnAdditionListClick,
                     )
                 },
                 elevated = false,
-                labelText = stringResource(
-                    id = R.string.title_create_addition_group_for_menu_product_addition
-                ),
+                labelText =
+                    stringResource(
+                        id = R.string.title_create_addition_group_for_menu_product_addition,
+                    ),
                 isError = state.additionListHasError,
-                errorText = stringResource(
-                    id = R.string.error_create_addition_group_for_menu_product_addition
-                ),
-                hasDivider = true
+                errorText =
+                    stringResource(
+                        id = R.string.error_create_addition_group_for_menu_product_addition,
+                    ),
+                hasDivider = true,
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -156,7 +161,7 @@ class CreateAdditionGroupForMenuProductFragment :
                 isLoading = state.isSaveLoading,
                 onClick = {
                     onAction(CreateAdditionGroupForMenu.Action.OnSaveClick)
-                }
+                },
             )
         }
     }
@@ -170,46 +175,49 @@ class CreateAdditionGroupForMenuProductFragment :
             CreateAdditionGroupForMenu.Event.SaveAndBack -> {
                 setFragmentResult(
                     requestKey = CREATE_ADDITION_GROUP,
-                    result = bundleOf(CREATE_ADDITION_GROUP_KEY to true)
+                    result = bundleOf(CREATE_ADDITION_GROUP_KEY to true),
                 )
                 findNavController().popBackStack()
             }
 
             is CreateAdditionGroupForMenu.Event.OnAdditionGroupClick -> {
                 findNavController().navigate(
-                    directions = CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
-                        additionGroupUuid = event.uuid,
+                    directions =
+                        CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
+                            additionGroupUuid = event.uuid,
                         menuProductUuid = event.menuProductUuid,
                         mainEditedAdditionGroupUuid = null
-                    )
+                    ),
                 )
             }
 
             is CreateAdditionGroupForMenu.Event.OnAdditionListClick -> {
                 findNavController().navigate(
-                    directions = CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
-                        additionGroupUuid = null,
-                        menuProductUuid = event.menuProductUuid,
-                        additionGroupForMenuName = event.additionGroupName
-                    )
+                    directions =
+                        CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
+                            additionGroupUuid = null,
+                            menuProductUuid = event.menuProductUuid,
+                            additionGroupForMenuName = event.additionGroupName,
+                        ),
                 )
             }
         }
     }
 
-    val createAdditionGroupForMenuProductViewState = CreateAdditionGroupForMenu.DataState(
-        state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
-        groupName = "Вкусняхи",
-        additionNameList = "Бекон * Страпон * Бурбон",
-        menuProductUuid = "",
-        additionGroupForMenuProductUuid = "",
-        editedAdditionGroupUuid = "",
-        editedAdditionListUuid = listOf(),
-        isVisible = false,
-        groupHasError = false,
-        isSaveLoading = false,
-        additionListHasError = false
-    )
+    val createAdditionGroupForMenuProductViewState =
+        CreateAdditionGroupForMenu.DataState(
+            state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
+            groupName = "Вкусняхи",
+            additionNameList = "Бекон * Страпон * Бурбон",
+            menuProductUuid = "",
+            additionGroupForMenuProductUuid = "",
+            editedAdditionGroupUuid = "",
+            editedAdditionListUuid = listOf(),
+            isVisible = false,
+            groupHasError = false,
+            isSaveLoading = false,
+            additionListHasError = false,
+        )
 
     @Composable
     @Preview
@@ -217,7 +225,7 @@ class CreateAdditionGroupForMenuProductFragment :
         AdminTheme {
             CreateAdditionGroupForMenuProductScreen(
                 state = createAdditionGroupForMenuProductViewState,
-                onAction = {}
+                onAction = {},
             )
         }
     }

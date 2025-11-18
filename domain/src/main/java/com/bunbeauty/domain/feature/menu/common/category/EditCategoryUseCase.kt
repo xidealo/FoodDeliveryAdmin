@@ -10,40 +10,43 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class EditCategoryUseCase(
     private val categoryRepo: CategoryRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(
         categoryUuid: String,
-        updateCategory: UpdateCategory
+        updateCategory: UpdateCategory,
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         val categoryList = categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
 
-        val oldCategory = categoryList.find { category -> category.uuid == categoryUuid }
-            ?: throw NotFindCategoryException()
+        val oldCategory =
+            categoryList.find { category -> category.uuid == categoryUuid }
+                ?: throw NotFindCategoryException()
 
         when {
             updateCategory.name.isBlank() -> throw CategoryNameException()
             isNameUnchanged(oldName = oldCategory.name, newName = updateCategory.name) -> return
             getHasSameName(
                 categoryList = categoryList,
-                name = updateCategory.name
+                name = updateCategory.name,
             ) -> throw DuplicateCategoryNameException()
         }
 
         categoryRepo.updateCategory(
             categoryUuid = categoryUuid,
             updateCategory = updateCategory,
-            token = token
+            token = token,
         )
     }
 
-    private fun getHasSameName(categoryList: List<Category>, name: String): Boolean {
-        return categoryList.any { categoryName -> categoryName.name == name }
-    }
+    private fun getHasSameName(
+        categoryList: List<Category>,
+        name: String,
+    ): Boolean = categoryList.any { categoryName -> categoryName.name == name }
 
-    private fun isNameUnchanged(oldName: String, newName: String): Boolean {
-        return oldName == newName
-    }
+    private fun isNameUnchanged(
+        oldName: String,
+        newName: String,
+    ): Boolean = oldName == newName
 }

@@ -14,40 +14,40 @@ class CreateAdditionGroupForMenuProductViewModel(
     private val createEditAdditionGroupWithAdditionsUseCase: CreateEditAdditionGroupWithAdditionsUseCase,
     private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
     val getAdditionListNameUseCase: GetAdditionListNameUseCase,
-    val getAdditionUseCase: GetAdditionUseCase
-) :
-    BaseStateViewModel<CreateAdditionGroupForMenu.DataState, CreateAdditionGroupForMenu.Action, CreateAdditionGroupForMenu.Event>(
-        initState = CreateAdditionGroupForMenu.DataState(
-            state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
-            groupName = null,
-            additionNameList = null,
-            menuProductUuid = "",
-            editedAdditionGroupUuid = null,
-            additionGroupForMenuProductUuid = "",
-            editedAdditionListUuid = listOf(),
-            isVisible = false,
-            groupHasError = false,
-            isSaveLoading = false,
-            additionListHasError = false
-        )
+    val getAdditionUseCase: GetAdditionUseCase,
+) : BaseStateViewModel<CreateAdditionGroupForMenu.DataState, CreateAdditionGroupForMenu.Action, CreateAdditionGroupForMenu.Event>(
+        initState =
+            CreateAdditionGroupForMenu.DataState(
+                state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
+                groupName = null,
+                additionNameList = null,
+                menuProductUuid = "",
+                editedAdditionGroupUuid = null,
+                additionGroupForMenuProductUuid = "",
+                editedAdditionListUuid = listOf(),
+                isVisible = false,
+                groupHasError = false,
+                isSaveLoading = false,
+                additionListHasError = false,
+            ),
     ) {
-
     override fun reduce(
         action: CreateAdditionGroupForMenu.Action,
-        dataState: CreateAdditionGroupForMenu.DataState
+        dataState: CreateAdditionGroupForMenu.DataState,
     ) {
         when (action) {
             is CreateAdditionGroupForMenu.Action.Init -> initData(
-                menuProductUuid = action.menuProductUuid
+                menuProductUuid = action.menuProductUuid,
             )
 
             is CreateAdditionGroupForMenu.Action.SelectAdditionGroup -> {
                 setSelectedAdditionGroup(action.additionGroupUuid)
             }
 
-            is CreateAdditionGroupForMenu.Action.SelectAdditionList -> selectAdditionList(
-                additionUuidList = action.additionListUuid
-            )
+            is CreateAdditionGroupForMenu.Action.SelectAdditionList ->
+                selectAdditionList(
+                    additionUuidList = action.additionListUuid,
+                )
 
             CreateAdditionGroupForMenu.Action.OnAdditionGroupClick -> onAdditionGroupClick(
                 uuid = dataState.editedAdditionGroupUuid.orEmpty(),
@@ -56,16 +56,17 @@ class CreateAdditionGroupForMenuProductViewModel(
 
             CreateAdditionGroupForMenu.Action.OnAdditionListClick -> onAdditionListClick(
                 menuProductUuid = dataState.menuProductUuid,
-                groupName = dataState.groupName.orEmpty()
+                groupName = dataState.groupName.orEmpty(),
             )
 
             CreateAdditionGroupForMenu.Action.OnBackClick -> backClick()
 
-            CreateAdditionGroupForMenu.Action.OnSaveClick -> onSaveClick(
-                menuProductUuid = dataState.menuProductUuid,
-                editedAdditionGroupUuid = dataState.editedAdditionGroupUuid,
-                editedAdditionListUuid = dataState.editedAdditionListUuid.orEmpty()
-            )
+            CreateAdditionGroupForMenu.Action.OnSaveClick ->
+                onSaveClick(
+                    menuProductUuid = dataState.menuProductUuid,
+                    editedAdditionGroupUuid = dataState.editedAdditionGroupUuid,
+                    editedAdditionListUuid = dataState.editedAdditionListUuid.orEmpty(),
+                )
         }
     }
 
@@ -88,17 +89,17 @@ class CreateAdditionGroupForMenuProductViewModel(
                     copy(
                         groupName = selectedAdditionGroup.name,
                         editedAdditionGroupUuid = selectedAdditionGroup.uuid,
-                        groupHasError = false
+                        groupHasError = false,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = CreateAdditionGroupForMenu.DataState.State.ERROR
+                        state = CreateAdditionGroupForMenu.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
@@ -135,51 +136,53 @@ class CreateAdditionGroupForMenuProductViewModel(
             block = {
                 setState {
                     copy(
-                        additionNameList = getEditedAdditionUuidList(
-                            editedAdditionListUuid = additionUuidList
-                        ),
+                        additionNameList =
+                            getEditedAdditionUuidList(
+                                editedAdditionListUuid = additionUuidList,
+                            ),
                         editedAdditionListUuid = additionUuidList,
-                        additionListHasError = false
+                        additionListHasError = false,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = CreateAdditionGroupForMenu.DataState.State.ERROR
+                        state = CreateAdditionGroupForMenu.DataState.State.ERROR,
                     )
                 }
-            }
+            },
         )
     }
 
     private suspend fun getEditedAdditionUuidList(editedAdditionListUuid: List<String>?): String? {
         if (editedAdditionListUuid == null) return null
-        val additionList = editedAdditionListUuid.map { additionUuid ->
-            getAdditionUseCase(additionUuid)
-        }
+        val additionList =
+            editedAdditionListUuid.map { additionUuid ->
+                getAdditionUseCase(additionUuid)
+            }
         return getAdditionListNameUseCase(
-            additionList = additionList
+            additionList = additionList,
         )
     }
 
     private fun onSaveClick(
         menuProductUuid: String,
         editedAdditionGroupUuid: String?,
-        editedAdditionListUuid: List<String>
+        editedAdditionListUuid: List<String>,
     ) {
         viewModelScope.launchSafe(
             block = {
                 setState {
                     copy(
-                        isSaveLoading = true
+                        isSaveLoading = true,
                     )
                 }
 
                 createEditAdditionGroupWithAdditionsUseCase(
                     menuProductUuid = menuProductUuid,
                     additionGroupUuid = editedAdditionGroupUuid,
-                    additionList = editedAdditionListUuid
+                    additionList = editedAdditionListUuid,
                 )
 
                 sendEvent {
@@ -192,7 +195,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                         setState {
                             copy(
                                 groupHasError = true,
-                                isSaveLoading = false
+                                isSaveLoading = false,
                             )
                         }
                     }
@@ -201,7 +204,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                         setState {
                             copy(
                                 additionListHasError = true,
-                                isSaveLoading = false
+                                isSaveLoading = false,
                             )
                         }
                     }
@@ -210,12 +213,12 @@ class CreateAdditionGroupForMenuProductViewModel(
                         setState {
                             copy(
                                 state = CreateAdditionGroupForMenu.DataState.State.ERROR,
-                                isSaveLoading = false
+                                isSaveLoading = false,
                             )
                         }
                     }
                 }
-            }
+            },
         )
     }
 }

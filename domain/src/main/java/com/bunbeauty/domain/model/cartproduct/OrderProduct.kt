@@ -15,23 +15,24 @@ data class OrderProduct(
     val description: String,
     val comboDescription: String?,
     val barcode: Int,
-    val orderAdditions: List<OrderAddition>
+    val orderAdditions: List<OrderAddition>,
 ) {
     companion object {
-        val mock = OrderProduct(
-            uuid = "",
-            count = 0,
-            name = "",
-            newPrice = 0,
-            oldPrice = null,
-            newTotalCost = 0,
-            additionsPrice = null,
-            utils = null,
-            nutrition = null,
-            description = "",
-            comboDescription = null,
-            barcode = 0,
-            orderAdditions = emptyList()
-        )
+        val mock =
+            OrderProduct(
+                uuid = "",
+                count = 0,
+                name = "",
+                newPrice = 0,
+                oldPrice = null,
+                newTotalCost = 0,
+                additionsPrice = null,
+                utils = null,
+                nutrition = null,
+                description = "",
+                comboDescription = null,
+                barcode = 0,
+                orderAdditions = emptyList(),
+            )
     }
 }

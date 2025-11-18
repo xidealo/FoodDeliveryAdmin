@@ -25,7 +25,7 @@ fun AdminTopBar(
     title: String?,
     backActionClick: (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior,
-    actions: List<AdminTopBarAction> = emptyList()
+    actions: List<AdminTopBarAction> = emptyList(),
 ) {
     Box {
         TopAppBar(
@@ -35,19 +35,19 @@ fun AdminTopBar(
                     text = title.orEmpty(),
                     maxLines = MAX_TITLE_LINES,
                     style = AdminTheme.typography.titleMedium.medium,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             navigationIcon = {
                 backActionClick?.let {
                     IconButton(
-                        onClick = backActionClick
+                        onClick = backActionClick,
                     ) {
                         Icon(
                             modifier = Modifier.size(16.dp),
                             painter = painterResource(id = R.drawable.ic_arrow_left),
                             tint = AdminTheme.colors.main.onSurface,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 }
@@ -57,7 +57,7 @@ fun AdminTopBar(
                     AdminAction(action)
                 }
             },
-            scrollBehavior = scrollBehavior
+            scrollBehavior = scrollBehavior,
         )
     }
 }
@@ -65,13 +65,13 @@ fun AdminTopBar(
 @Composable
 private fun AdminAction(action: AdminTopBarAction) {
     IconButton(
-        onClick = action.onClick
+        onClick = action.onClick,
     ) {
         Icon(
             modifier = Modifier.size(20.dp),
             painter = painterResource(id = action.iconId),
             tint = AdminTheme.colors.main.onSurface,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

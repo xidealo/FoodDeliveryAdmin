@@ -9,50 +9,51 @@ import com.bunbeauty.domain.feature.profile.model.UpdateTypeWorkUseCase
 import com.bunbeauty.domain.feature.profile.model.UpdateWorkCafeUseCase
 import org.koin.dsl.module
 
-fun profileModule() = module {
-    factory {
-        GetIsUnlimitedNotificationUseCase(
-            settingsRepo = get()
-        )
-    }
+fun profileModule() =
+    module {
+        factory {
+            GetIsUnlimitedNotificationUseCase(
+                settingsRepo = get(),
+            )
+        }
 
-    factory {
-        UpdateTypeWorkUseCase(
-            workInfoRepository = get(),
-            dataStoreRepo = get()
-        )
-    }
+        factory {
+            UpdateTypeWorkUseCase(
+                workInfoRepository = get(),
+                dataStoreRepo = get(),
+            )
+        }
 
-    factory {
-        UpdateWorkCafeUseCase(
-            dataStoreRepo = get(),
-            workLoadRepository = get()
-        )
-    }
+        factory {
+            UpdateWorkCafeUseCase(
+                dataStoreRepo = get(),
+                workLoadRepository = get(),
+            )
+        }
 
-    factory {
-        GetUsernameUseCase(
-            dataStoreRepo = get()
-        )
-    }
+        factory {
+            GetUsernameUseCase(
+                dataStoreRepo = get(),
+            )
+        }
 
-    factory {
-        IsOrderAvailableUseCase(
-            dataStoreRepo = get(),
-            orderRepo = get()
-        )
-    }
+        factory {
+            IsOrderAvailableUseCase(
+                dataStoreRepo = get(),
+                orderRepo = get(),
+            )
+        }
 
-    factory {
-        UpdateIsUnlimitedNotificationUseCase(
-            settingsRepo = get()
-        )
-    }
+        factory {
+            UpdateIsUnlimitedNotificationUseCase(
+                settingsRepo = get(),
+            )
+        }
 
-    factory {
-        GetTypeWorkUseCase(
-            workInfoRepository = get(),
-            dataStoreRepo = get()
-        )
+        factory {
+            GetTypeWorkUseCase(
+                workInfoRepository = get(),
+                dataStoreRepo = get(),
+            )
+        }
     }
-}

@@ -17,24 +17,25 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 @Composable
 fun ColumnScope.AdminBottomSheetContent(
     @StringRes titleResId: Int,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top = 16.dp,
-                bottom = 12.dp
-            ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = 16.dp,
+                    bottom = 12.dp,
+                ),
         text = stringResource(titleResId),
         color = AdminTheme.colors.main.onSurface,
         style = AdminTheme.typography.titleMedium,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
     Divider(
         modifier = Modifier.fillMaxWidth(),
         thickness = 0.5.dp,
-        color = AdminTheme.colors.main.onSurfaceVariant
+        color = AdminTheme.colors.main.onSurfaceVariant,
     )
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         content()

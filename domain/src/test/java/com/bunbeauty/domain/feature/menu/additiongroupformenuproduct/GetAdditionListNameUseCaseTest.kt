@@ -9,7 +9,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class GetAdditionListNameUseCaseTest {
-
     private lateinit var getAdditionListNameUseCase: GetAdditionListNameUseCase
 
     @BeforeTest
@@ -42,25 +41,27 @@ class GetAdditionListNameUseCaseTest {
         assertNull(result)
     }
 
-    private val sugarAddition = Addition(
-        uuid = "1",
-        name = "Sugar",
-        priority = 1,
-        fullName = null,
-        price = null,
-        photoLink = "",
-        isVisible = true,
-        tag = null
-    )
+    private val sugarAddition =
+        Addition(
+            uuid = "1",
+            name = "Sugar",
+            priority = 1,
+            fullName = null,
+            price = null,
+            photoLink = "",
+            isVisible = true,
+            tag = null,
+        )
 
-    private val milkAddition = Addition(
-        uuid = "2",
-        name = "Milk",
-        priority = 2,
-        fullName = null,
-        price = null,
-        photoLink = "",
-        isVisible = true,
-        tag = null
-    )
+    private val milkAddition =
+        Addition(
+            uuid = "2",
+            name = "Milk",
+            priority = 2,
+            fullName = null,
+            price = null,
+            photoLink = "",
+            isVisible = true,
+            tag = null,
+        )
 }

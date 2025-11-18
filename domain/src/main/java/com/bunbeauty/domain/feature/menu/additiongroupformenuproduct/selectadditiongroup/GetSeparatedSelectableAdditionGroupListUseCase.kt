@@ -8,13 +8,13 @@ import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
 
 data class SeparatedSelectableAdditionList(
     val visibleList: List<SelectableAdditionGroup>,
-    val hiddenList: List<SelectableAdditionGroup>
+    val hiddenList: List<SelectableAdditionGroup>,
 )
 
 data class SelectableAdditionGroup(
     val uuid: String,
     val name: String,
-    val isSelected: Boolean
+    val isSelected: Boolean,
 )
 
 class GetSeparatedSelectableAdditionGroupListUseCase(
@@ -42,16 +42,18 @@ class GetSeparatedSelectableAdditionGroupListUseCase(
         )
 
         return SeparatedSelectableAdditionList(
-            visibleList = separatedAdditionGroupList.visibleList.filterNot { additionGroup ->
+            visibleList =
+                separatedAdditionGroupList.visibleList.filterNot { additionGroup ->
                 additionGroup.uuid in containedAdditionGroupList && mainAdditionGroupUuid != additionGroup.uuid
             }.map { additionGroup ->
-                additionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid = selectedUuid)
-            },
-            hiddenList = separatedAdditionGroupList.hiddenList.filterNot { additionGroup ->
+                    additionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid = selectedUuid)
+                },
+            hiddenList =
+                separatedAdditionGroupList.hiddenList.filterNot { additionGroup ->
                 additionGroup.uuid in containedAdditionGroupList && mainAdditionGroupUuid != additionGroup.uuid
             }.map { additionGroup ->
-                additionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid = selectedUuid)
-            }
+                    additionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid = selectedUuid)
+                },
         )
     }
 
@@ -86,13 +88,10 @@ class GetSeparatedSelectableAdditionGroupListUseCase(
         }
     }
 
-    fun AdditionGroup.toSelectableAdditionGroupItem(
-        selectedAdditionGroupUuid: String?
-    ): SelectableAdditionGroup {
-        return SelectableAdditionGroup(
+    fun AdditionGroup.toSelectableAdditionGroupItem(selectedAdditionGroupUuid: String?): SelectableAdditionGroup =
+        SelectableAdditionGroup(
             uuid = uuid,
             name = name,
-            isSelected = selectedAdditionGroupUuid == uuid
+            isSelected = selectedAdditionGroupUuid == uuid,
         )
-    }
 }

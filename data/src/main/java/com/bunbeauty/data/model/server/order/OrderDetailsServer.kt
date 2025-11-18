@@ -22,7 +22,7 @@ class OrderDetailsServer(
     val oldTotalCost: Int?,
     val newTotalCost: Int,
     val oderProductList: List<OrderProductServer>,
-    val availableStatusList: List<String>
+    val availableStatusList: List<String>,
 )
 
 @Serializable
@@ -33,5 +33,5 @@ class OrderAddressServer(
     val flat: String?,
     val entrance: String?,
     val floor: String?,
-    val comment: String?
+    val comment: String?,
 )

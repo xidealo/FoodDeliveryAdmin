@@ -1,34 +1,32 @@
 [versions]
 gradle = "8.13.0"
-kotlin = "2.2.20"
-googleServices = "4.4.2"
-navigation = "2.7.0"
-ktor = "2.3.2"
-coil = "3.1.0"
-datastorePreferences = "1.0.0"
-koin = "4.0.0"
-kotlinxDatetime = "0.4.0"
-crashlytics = "2.9.2"
-publisher = "3.11.0"
-joda = "2.12.5"
-ktLint = "11.5.1"
-tripletPlay = "3.12.1"
+kotlin = "2.2.21"
+googleServices = "4.4.4"
+navigation = "2.9.6"
+ktor = "3.3.2"
+coil = "3.3.0"
+datastorePreferences = "1.1.7"
+koin = "4.1.1"
+kotlinxDatetime = "0.7.1"
+crashlytics = "3.0.6"
+publisher = "3.12.2"
+joda = "2.14.0"
+ktLint = "13.1.0"
+tripletPlay = "3.12.2"
 room = "2.8.3"
-lifecycle = "2.6.1"
-lifecycleRuntimeCompose = "2.6.1"
-material = "1.9.0"
-viewBindingDelegate = "1.5.3"
-composeBom = "2024.05.00"
+lifecycle = "2.9.4"
+lifecycleRuntimeCompose = "2.9.4"
+material = "1.13.0"
+viewBindingDelegate = "1.5.9"
+composeBom = "2025.11.00"
 datetime = "0.9.0"
 firebase = "32.2.0"
 mockk = "1.12.5"
-kotlinCoroutines = "1.8.1"
+kotlinCoroutines = "1.10.2"
 imageCpropper = "4.6.0"
-turbine = "1.1.0"
-collectionsImmutable = "0.3.7"
-work = "2.10.0"
-navigationFragmentKtx = "2.9.6"
-navigationUiKtx = "2.9.6"
+turbine = "1.2.1"
+collectionsImmutable = "0.4.0"
+work = "2.11.0"
 
 
 [libraries]
@@ -125,8 +123,6 @@ kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", v
 navigation-services = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "crashlytics" }
 play-publisher = { module = "com.github.triplet.gradle:play-publisher", version.ref = "publisher" }
-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
-androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
 [plugins]
 
