@@ -4,12 +4,11 @@ import com.bunbeauty.common.Constants
 import com.bunbeauty.domain.model.addition.Addition
 
 class GetAdditionListNameUseCase {
-
-    operator fun invoke(additionList: List<Addition>): String? {
-        return additionList.takeIf { list ->
-            list.isNotEmpty()
-        }?.joinToString(separator = " ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
-            selectableCategory.name
-        }
-    }
+    operator fun invoke(additionList: List<Addition>): String? =
+        additionList
+            .takeIf { list ->
+                list.isNotEmpty()
+            }?.joinToString(separator = " ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
+                selectableCategory.name
+            }
 }

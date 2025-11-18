@@ -20,8 +20,8 @@ object CropImageDefaults {
         const val MIN_HEIGHT = 320
     }
 
-    fun menuProductOptions(): CropImageOptions {
-        return CropImageOptions(
+    fun menuProductOptions(): CropImageOptions =
+        CropImageOptions(
             imageSourceIncludeCamera = false,
             cropShape = CropImageView.CropShape.RECTANGLE,
             showProgressBar = false,
@@ -36,12 +36,11 @@ object CropImageDefaults {
             activityBackgroundColor = Color.WHITE,
             activityMenuIconColor = Color.BLACK,
             activityMenuTextColor = Color.BLACK,
-            toolbarBackButtonColor = Color.BLACK
+            toolbarBackButtonColor = Color.BLACK,
         )
-    }
 
-    fun additionOptions(): CropImageOptions {
-        return CropImageOptions(
+    fun additionOptions(): CropImageOptions =
+        CropImageOptions(
             imageSourceIncludeCamera = false,
             cropShape = CropImageView.CropShape.RECTANGLE,
             showProgressBar = false,
@@ -56,7 +55,6 @@ object CropImageDefaults {
             activityBackgroundColor = Color.WHITE,
             activityMenuIconColor = Color.BLACK,
             activityMenuTextColor = Color.BLACK,
-            toolbarBackButtonColor = Color.BLACK
+            toolbarBackButtonColor = Color.BLACK,
         )
-    }
 }

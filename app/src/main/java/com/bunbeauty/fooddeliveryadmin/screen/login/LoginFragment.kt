@@ -12,17 +12,19 @@ import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-
     override val viewModel: LoginViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
             fragmentLoginBtnLogin.setOnClickListener {
                 viewModel.login(
                     fragmentLoginEtLogin.text.toString(),
-                    fragmentLoginEtPassword.text.toString()
+                    fragmentLoginEtPassword.text.toString(),
                 )
             }
         }
@@ -43,12 +45,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
                 LoginViewState.Event.ShowWrongCredentialError -> {
                     (activity as? MessageHost)?.showErrorMessage(
-                        resources.getString(R.string.error_login_wrong_data)
+                        resources.getString(R.string.error_login_wrong_data),
                     )
                 }
                 LoginViewState.Event.ShowConnectionError -> {
                     (activity as? MessageHost)?.showErrorMessage(
-                        resources.getString(R.string.msg_common_check_connection_and_retry)
+                        resources.getString(R.string.msg_common_check_connection_and_retry),
                     )
                 }
             }

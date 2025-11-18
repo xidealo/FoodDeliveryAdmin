@@ -17,7 +17,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class ConfirmDeletionBottomSheet : ComposeBottomSheet<Boolean>() {
-
     @Composable
     override fun Content() {
         AdminBottomSheet(titleStringId = R.string.title_edit_cafe_delete_now_working_day) {
@@ -28,14 +27,14 @@ class ConfirmDeletionBottomSheet : ComposeBottomSheet<Boolean>() {
                     onClick = {
                         callback?.onResult(true)
                         dismiss()
-                    }
+                    },
                 )
                 SecondaryButton(
                     textStringId = R.string.action_common_cancel,
                     onClick = {
                         callback?.onResult(false)
                         dismiss()
-                    }
+                    },
                 )
             }
         }
@@ -52,17 +51,17 @@ class ConfirmDeletionBottomSheet : ComposeBottomSheet<Boolean>() {
     companion object {
         private const val TAG = "LogoutBottomSheet"
 
-        suspend fun show(
-            fragmentManager: FragmentManager
-        ) = suspendCoroutine { continuation ->
-            ConfirmDeletionBottomSheet().apply {
-                callback = object : Callback<Boolean> {
-                    override fun onResult(result: Boolean?) {
-                        continuation.resume(result)
-                    }
+        suspend fun show(fragmentManager: FragmentManager) =
+            suspendCoroutine { continuation ->
+                ConfirmDeletionBottomSheet().apply {
+                    callback =
+                        object : Callback<Boolean> {
+                            override fun onResult(result: Boolean?) {
+                                continuation.resume(result)
+                            }
+                        }
+                    show(fragmentManager, TAG)
                 }
-                show(fragmentManager, TAG)
             }
-        }
     }
 }

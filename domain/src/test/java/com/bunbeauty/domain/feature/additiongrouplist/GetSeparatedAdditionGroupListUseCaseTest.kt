@@ -11,41 +11,43 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GetSeparatedAdditionGroupListUseCaseTest {
-
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val additionGroupRepo: AdditionGroupRepo = mockk()
     private lateinit var useCase: GetSeparatedAdditionGroupListUseCase
 
     @BeforeTest
     fun setup() {
-        useCase = GetSeparatedAdditionGroupListUseCase(
-            additionGroupRepo = additionGroupRepo,
-            dataStoreRepo = dataStoreRepo
-        )
+        useCase =
+            GetSeparatedAdditionGroupListUseCase(
+                additionGroupRepo = additionGroupRepo,
+                dataStoreRepo = dataStoreRepo,
+            )
     }
 
     @Test
-    fun `should return empty lists when additionRepo return empty list`() = runTest {
-        // Given
-        val token = "token"
-        val isRefreshing = true
-        val expectedSeparatedAdditionGroupList = SeparatedAdditionGroupList(
-            visibleList = emptyList(),
-            hiddenList = emptyList()
-        )
-        coEvery { dataStoreRepo.getToken() } returns token
-        coEvery {
-            additionGroupRepo.getAdditionGroupList(
-                token = token,
-                refreshing = isRefreshing
-            )
-        } returns emptyList()
+    fun `should return empty lists when additionRepo return empty list`() =
+        runTest {
+            // Given
+            val token = "token"
+            val isRefreshing = true
+            val expectedSeparatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList = emptyList(),
+                    hiddenList = emptyList(),
+                )
+            coEvery { dataStoreRepo.getToken() } returns token
+            coEvery {
+                additionGroupRepo.getAdditionGroupList(
+                    token = token,
+                    refreshing = isRefreshing,
+                )
+            } returns emptyList()
 
-        // When
-        val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
-        // Then
-        assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
-    }
+            // When
+            val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
+            // Then
+            assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
+        }
 
     @Test
     fun `should return empty visible products when additionGroupRepo return list with empty isVisible`() =
@@ -53,51 +55,54 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             // Given
             val token = "token"
             val isRefreshing = true
-            val expectedSeparatedAdditionGroupList = SeparatedAdditionGroupList(
-                visibleList = emptyList(),
-                hiddenList = listOf(
-                    additionGroupMock.copy(
-                        uuid = "uuid1",
-                        isVisible = false
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid2",
-                        isVisible = false
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid3",
-                        isVisible = false
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid4",
-                        isVisible = false
-                    )
+            val expectedSeparatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList = emptyList(),
+                    hiddenList =
+                        listOf(
+                            additionGroupMock.copy(
+                                uuid = "uuid1",
+                                isVisible = false,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid2",
+                                isVisible = false,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid3",
+                                isVisible = false,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid4",
+                                isVisible = false,
+                            ),
+                        ),
                 )
-            )
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    refreshing = isRefreshing
+                    refreshing = isRefreshing,
                 )
-            } returns listOf(
-                additionGroupMock.copy(
-                    uuid = "uuid1",
-                    isVisible = false
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid2",
-                    isVisible = false
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid3",
-                    isVisible = false
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid4",
-                    isVisible = false
+            } returns
+                listOf(
+                    additionGroupMock.copy(
+                        uuid = "uuid1",
+                        isVisible = false,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid2",
+                        isVisible = false,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid3",
+                        isVisible = false,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid4",
+                        isVisible = false,
+                    ),
                 )
-            )
             // When
             val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
@@ -111,52 +116,55 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             val token = "token"
             val isRefreshing = true
 
-            val expectedSeparatedAdditionGroupList = SeparatedAdditionGroupList(
-                visibleList = listOf(
-                    additionGroupMock.copy(
-                        uuid = "uuid1",
-                        isVisible = true
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid2",
-                        isVisible = true
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid3",
-                        isVisible = true
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid4",
-                        isVisible = true
-                    )
-                ),
-                hiddenList = emptyList()
-            )
+            val expectedSeparatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList =
+                        listOf(
+                            additionGroupMock.copy(
+                                uuid = "uuid1",
+                                isVisible = true,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid2",
+                                isVisible = true,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid3",
+                                isVisible = true,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid4",
+                                isVisible = true,
+                            ),
+                        ),
+                    hiddenList = emptyList(),
+                )
 
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    refreshing = isRefreshing
+                    refreshing = isRefreshing,
                 )
-            } returns listOf(
-                additionGroupMock.copy(
-                    uuid = "uuid1",
-                    isVisible = true
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid2",
-                    isVisible = true
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid3",
-                    isVisible = true
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid4",
-                    isVisible = true
+            } returns
+                listOf(
+                    additionGroupMock.copy(
+                        uuid = "uuid1",
+                        isVisible = true,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid2",
+                        isVisible = true,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid3",
+                        isVisible = true,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid4",
+                        isVisible = true,
+                    ),
                 )
-            )
             // When
             val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
@@ -170,61 +178,65 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             val token = "token"
             val isRefreshing = true
 
-            val expectedSeparatedAdditionGroupList = SeparatedAdditionGroupList(
-                visibleList = listOf(
-                    additionGroupMock.copy(
-                        uuid = "uuid3",
-                        isVisible = true
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid4",
-                        isVisible = true
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid5",
-                        isVisible = true
-                    )
-                ),
-                hiddenList = listOf(
-                    additionGroupMock.copy(
-                        uuid = "uuid1",
-                        isVisible = false
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid2",
-                        isVisible = false
-                    )
+            val expectedSeparatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList =
+                        listOf(
+                            additionGroupMock.copy(
+                                uuid = "uuid3",
+                                isVisible = true,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid4",
+                                isVisible = true,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid5",
+                                isVisible = true,
+                            ),
+                        ),
+                    hiddenList =
+                        listOf(
+                            additionGroupMock.copy(
+                                uuid = "uuid1",
+                                isVisible = false,
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid2",
+                                isVisible = false,
+                            ),
+                        ),
                 )
-            )
 
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    refreshing = isRefreshing
+                    refreshing = isRefreshing,
                 )
-            } returns listOf(
-                additionGroupMock.copy(
-                    uuid = "uuid1",
-                    isVisible = false
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid2",
-                    isVisible = false
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid3",
-                    isVisible = true
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid4",
-                    isVisible = true
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid5",
-                    isVisible = true
+            } returns
+                listOf(
+                    additionGroupMock.copy(
+                        uuid = "uuid1",
+                        isVisible = false,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid2",
+                        isVisible = false,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid3",
+                        isVisible = true,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid4",
+                        isVisible = true,
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid5",
+                        isVisible = true,
+                    ),
                 )
-            )
             // When
             val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
@@ -238,63 +250,67 @@ class GetSeparatedAdditionGroupListUseCaseTest {
             val token = "token"
             val isRefreshing = true
 
-            val expectedSeparatedAdditionGroupList = SeparatedAdditionGroupList(
-                visibleList = listOf(
-                    additionGroupMock.copy(
-                        uuid = "uuid2",
-                        name = "A"
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid3",
-                        name = "B"
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid4",
-                        name = "C"
-                    ),
-                    additionGroupMock.copy(
-                        uuid = "uuid5",
-                        name = "Z"
-                    )
-                ),
-                hiddenList = listOf()
-            )
+            val expectedSeparatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList =
+                        listOf(
+                            additionGroupMock.copy(
+                                uuid = "uuid2",
+                                name = "A",
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid3",
+                                name = "B",
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid4",
+                                name = "C",
+                            ),
+                            additionGroupMock.copy(
+                                uuid = "uuid5",
+                                name = "Z",
+                            ),
+                        ),
+                    hiddenList = listOf(),
+                )
 
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery {
                 additionGroupRepo.getAdditionGroupList(
                     token = token,
-                    refreshing = isRefreshing
+                    refreshing = isRefreshing,
                 )
-            } returns listOf(
-                additionGroupMock.copy(
-                    uuid = "uuid2",
-                    name = "A"
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid4",
-                    name = "C"
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid3",
-                    name = "B"
-                ),
-                additionGroupMock.copy(
-                    uuid = "uuid5",
-                    name = "Z"
+            } returns
+                listOf(
+                    additionGroupMock.copy(
+                        uuid = "uuid2",
+                        name = "A",
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid4",
+                        name = "C",
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid3",
+                        name = "B",
+                    ),
+                    additionGroupMock.copy(
+                        uuid = "uuid5",
+                        name = "Z",
+                    ),
                 )
-            )
             // When
             val separatedAdditionGroupList = useCase(refreshing = isRefreshing)
             // Then
             assertEquals(expectedSeparatedAdditionGroupList, separatedAdditionGroupList)
         }
 
-    private val additionGroupMock = AdditionGroup(
-        uuid = "productUuidMock",
-        name = "name",
-        isVisible = true,
-        priority = 0,
-        singleChoice = false
-    )
+    private val additionGroupMock =
+        AdditionGroup(
+            uuid = "productUuidMock",
+            name = "name",
+            isVisible = true,
+            priority = 0,
+            singleChoice = false,
+        )
 }

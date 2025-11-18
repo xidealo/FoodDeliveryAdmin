@@ -16,6 +16,7 @@
     <string name="title_common_loading">Загрузка</string>
     <string name="title_common_select_date">Выбрать дату</string>
     <string name="title_common_select_time">Выбрать дату</string>
+    <string name="title_edit_priority">"Изменение порядка</string>
     <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
     <string name="msg_common_non_working_day">Сегодня запланирован нерабочий день</string>
     <string name="msg_common_cafe">Ресторан</string>
@@ -277,7 +278,7 @@
 
     <!--CATEGORIES LIST-->
     <string name="title_categories_list">Категории</string>
-    <string name="title_edit_priority">"Изменение порядка</string>
+
 
     <!--CATEGORY LIST-->
     <string name="title_category_list">Категории</string>
@@ -309,6 +310,7 @@
 
     <!-- Addition Group For Menu Product -->
     <string name="title_addition_group_for_menu_product">Список групп</string>
+    <string name="action_addition_group_for_menu_product_addition_add">Добавить</string>
 
 
     <!-- Edit Addition Group For Menu Product -->

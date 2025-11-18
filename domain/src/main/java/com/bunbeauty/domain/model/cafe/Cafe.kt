@@ -16,23 +16,24 @@ data class Cafe(
     val additional: Boolean,
     val cityUuid: String,
     val workload: WorkLoad,
-    val workType: WorkType
+    val workType: WorkType,
 ) {
     companion object {
-        val mock = Cafe(
-            uuid = "",
-            address = "",
-            latitude = 0.0,
-            longitude = 0.0,
-            fromTime = 0,
-            toTime = 0,
-            offset = 0,
-            phone = "",
-            visible = false,
-            additional = false,
-            cityUuid = "",
-            workload = WorkLoad.LOW,
-            workType = WorkType.PICKUP
-        )
+        val mock =
+            Cafe(
+                uuid = "",
+                address = "",
+                latitude = 0.0,
+                longitude = 0.0,
+                fromTime = 0,
+                toTime = 0,
+                offset = 0,
+                phone = "",
+                visible = false,
+                additional = false,
+                cityUuid = "",
+                workload = WorkLoad.LOW,
+                workType = WorkType.PICKUP,
+            )
     }
 }

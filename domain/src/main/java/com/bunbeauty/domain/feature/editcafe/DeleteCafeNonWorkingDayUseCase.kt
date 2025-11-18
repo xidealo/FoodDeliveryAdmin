@@ -7,15 +7,14 @@ import com.bunbeauty.domain.repo.NonWorkingDayRepo
 
 class DeleteCafeNonWorkingDayUseCase(
     private val nonWorkingDayRepo: NonWorkingDayRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
-
     suspend operator fun invoke(uuid: String) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         nonWorkingDayRepo.updateNonWorkingDay(
             token = token,
             uuid = uuid,
-            isVisible = false
+            isVisible = false,
         ) ?: throw DataDeletingFailedException()
     }
 }

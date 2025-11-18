@@ -24,28 +24,31 @@ import kotlinx.coroutines.CoroutineScope
 
 abstract class BaseComposeListFragment<DS : BaseDataState, VS : BaseViewState, A : BaseAction, E : BaseEvent> :
     Fragment(R.layout.layout_compose) {
-
     abstract val viewModel: BaseStateViewModel<DS, A, E>
 
     private val viewBinding by viewBinding(LayoutComposeBinding::bind)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewBinding.root.setContentWithTheme {
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val onAction = remember {
-                { action: A ->
-                    viewModel.onAction(action)
+            val onAction =
+                remember {
+                    { action: A ->
+                        viewModel.onAction(action)
+                    }
                 }
-            }
             val lazyListState = rememberLazyListState()
             val scope = rememberCoroutineScope()
 
             Screen(
                 state = mapState(state),
                 onAction = onAction,
-                lazyListState = lazyListState
+                lazyListState = lazyListState,
             )
 
             val events by viewModel.events.collectAsStateWithLifecycle()
@@ -58,11 +61,19 @@ abstract class BaseComposeListFragment<DS : BaseDataState, VS : BaseViewState, A
         }
     }
 
-    abstract fun handleEvent(event: E, lazyListState: LazyListState, coroutineScope: CoroutineScope)
+    abstract fun handleEvent(
+        event: E,
+        lazyListState: LazyListState,
+        coroutineScope: CoroutineScope,
+    )
 
     @Composable
     abstract fun mapState(state: DS): VS
 
     @Composable
-    abstract fun Screen(state: VS, lazyListState: LazyListState, onAction: (A) -> Unit)
+    abstract fun Screen(
+        state: VS,
+        lazyListState: LazyListState,
+        onAction: (A) -> Unit,
+    )
 }

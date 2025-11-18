@@ -32,7 +32,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SelectCategoryListFragment :
     BaseComposeFragment<SelectCategoryList.DataState, SelectCategoryListViewState, SelectCategoryList.Action, SelectCategoryList.Event>() {
-
     companion object {
         const val CATEGORY_LIST_REQUEST_KEY = "CATEGORY_LIST_REQUEST_KEY"
         const val CATEGORY_LIST_KEY = "CATEGORY_LIST_KEY"
@@ -48,7 +47,7 @@ class SelectCategoryListFragment :
     @Composable
     override fun Screen(
         state: SelectCategoryListViewState,
-        onAction: (SelectCategoryList.Action) -> Unit
+        onAction: (SelectCategoryList.Action) -> Unit,
     ) {
         CategoryListScreen(state = state, onAction = onAction)
     }
@@ -56,7 +55,7 @@ class SelectCategoryListFragment :
     @Composable
     fun CategoryListScreen(
         state: SelectCategoryListViewState,
-        onAction: (SelectCategoryList.Action) -> Unit
+        onAction: (SelectCategoryList.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_category_list),
@@ -69,43 +68,46 @@ class SelectCategoryListFragment :
                     text = stringResource(id = R.string.action_category_list_save),
                     onClick = {
                         onAction(SelectCategoryList.Action.OnSaveClick)
-                    }
+                    },
                 )
-            }
+            },
         ) {
             Column {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     verticalArrangement = Arrangement.Absolute.spacedBy(8.dp),
-                    contentPadding = PaddingValues(
-                        top = 16.dp,
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = AdminTheme.dimensions.scrollScreenBottomSpace
-                    )
+                    contentPadding =
+                        PaddingValues(
+                            top = 16.dp,
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                        ),
                 ) {
                     items(
                         items = state.selectableCategoryList,
-                        key = { category -> category.uuid }
+                        key = { category -> category.uuid },
                     ) { selectableCategory ->
                         SelectableItemView(
-                            selectableItem = SelectableItem(
-                                uuid = selectableCategory.uuid,
-                                title = selectableCategory.name,
-                                isSelected = selectableCategory.selected
-                            ),
+                            selectableItem =
+                                SelectableItem(
+                                    uuid = selectableCategory.uuid,
+                                    title = selectableCategory.name,
+                                    isSelected = selectableCategory.selected,
+                                ),
                             onClick = {
                                 onAction(
                                     SelectCategoryList.Action.OnCategoryClick(
                                         uuid = selectableCategory.uuid,
-                                        selected = selectableCategory.selected
-                                    )
+                                        selected = selectableCategory.selected,
+                                    ),
                                 )
                             },
                             elevated = false,
-                            isClickable = true
+                            isClickable = true,
                         )
                     }
                 }
@@ -114,33 +116,36 @@ class SelectCategoryListFragment :
     }
 
     @Composable
-    override fun mapState(state: SelectCategoryList.DataState): SelectCategoryListViewState {
-        return SelectCategoryListViewState(
-            selectableCategoryList = state.selectableCategoryList.map { selectableCategory ->
-                SelectCategoryListViewState.SelectCategoryItem(
-                    uuid = selectableCategory.category.uuid,
-                    name = selectableCategory.category.name,
-                    selected = selectableCategory.selected
-                )
-            }.toPersistentList()
+    override fun mapState(state: SelectCategoryList.DataState): SelectCategoryListViewState =
+        SelectCategoryListViewState(
+            selectableCategoryList =
+                state.selectableCategoryList
+                    .map { selectableCategory ->
+                        SelectCategoryListViewState.SelectCategoryItem(
+                            uuid = selectableCategory.category.uuid,
+                            name = selectableCategory.category.name,
+                            selected = selectableCategory.selected,
+                        )
+                    }.toPersistentList(),
         )
-    }
 
     @Preview(showSystemUi = true)
     @Composable
     fun CategoryListScreenPreview() {
         AdminTheme {
             CategoryListScreen(
-                state = SelectCategoryListViewState(
-                    selectableCategoryList = persistentListOf(
-                        SelectCategoryListViewState.SelectCategoryItem(
-                            uuid = "movet",
-                            name = "Roy Faulkner",
-                            selected = false
-                        )
-                    )
-                ),
-                onAction = {}
+                state =
+                    SelectCategoryListViewState(
+                        selectableCategoryList =
+                            persistentListOf(
+                                SelectCategoryListViewState.SelectCategoryItem(
+                                    uuid = "movet",
+                                    name = "Roy Faulkner",
+                                    selected = false,
+                                ),
+                            ),
+                    ),
+                onAction = {},
             )
         }
     }
@@ -153,11 +158,11 @@ class SelectCategoryListFragment :
 
             is SelectCategoryList.Event.Save -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_category_list_selected)
+                    resources.getString(R.string.msg_category_list_selected),
                 )
                 setFragmentResult(
                     CATEGORY_LIST_REQUEST_KEY,
-                    bundleOf(CATEGORY_LIST_KEY to event.selectedCategoryUuidList)
+                    bundleOf(CATEGORY_LIST_KEY to event.selectedCategoryUuidList),
                 )
                 findNavController().popBackStack()
             }

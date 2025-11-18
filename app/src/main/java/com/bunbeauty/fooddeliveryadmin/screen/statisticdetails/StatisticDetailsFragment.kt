@@ -8,10 +8,12 @@ import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>() {
-
     override val viewModel: StatisticDetailsViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {

@@ -13,10 +13,12 @@ import java.time.ZoneOffset
 class CreateCafeNonWorkingDayUseCase(
     private val cafeRepo: CafeRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
-
-    suspend operator fun invoke(date: LocalDate, cafeUuid: String) {
+    suspend operator fun invoke(
+        date: LocalDate,
+        cafeUuid: String,
+    ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
         val cafe = cafeRepo.getCafeByUuid(cafeUuid) ?: throw DataNotFoundException()
@@ -25,10 +27,11 @@ class CreateCafeNonWorkingDayUseCase(
 
         nonWorkingDayRepo.saveNonWorkingDay(
             token = token,
-            newNonWorkingDay = NewNonWorkingDay(
-                timestamp = timestamp,
-                cafeUuid = cafeUuid
-            )
+            newNonWorkingDay =
+                NewNonWorkingDay(
+                    timestamp = timestamp,
+                    cafeUuid = cafeUuid,
+                ),
         ) ?: throw DataSavingFailedException()
     }
 }

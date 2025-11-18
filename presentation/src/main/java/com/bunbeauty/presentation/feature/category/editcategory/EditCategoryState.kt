@@ -11,31 +11,38 @@ interface EditCategoryState {
         val name: TextFieldData,
         val state: State,
         val isLoading: Boolean,
-        val nameStateError: NameStateError
+        val nameStateError: NameStateError,
     ) : BaseDataState {
-
         enum class NameStateError {
             EMPTY_NAME,
             DUPLICATE_NAME,
-            NO_ERROR
+            NO_ERROR,
         }
 
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR
+            ERROR,
         }
     }
 
     sealed interface Action : BaseAction {
-        data class EditNameCategory(val nameEditCategory: String) : Action
+        data class EditNameCategory(
+            val nameEditCategory: String,
+        ) : Action
+
         data object OnBackClicked : Action
+
         data object Init : Action
+
         data object OnSaveEditCategoryClick : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
-        data class ShowUpdateCategorySuccess(val categoryName: String) : Event
+
+        data class ShowUpdateCategorySuccess(
+            val categoryName: String,
+        ) : Event
     }
 }
