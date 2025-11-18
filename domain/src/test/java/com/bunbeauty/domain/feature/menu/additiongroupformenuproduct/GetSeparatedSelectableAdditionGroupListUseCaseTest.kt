@@ -25,139 +25,156 @@ class GetSeparatedSelectableAdditionGroupListUseCaseTest {
 
     @Before
     fun setUp() {
-        useCase = GetSeparatedSelectableAdditionGroupListUseCase(
-            getSeparatedAdditionGroupListUseCase,
-            menuProductToAdditionGroupRepository,
-            getMenuProductUseCase
-        )
+        useCase =
+            GetSeparatedSelectableAdditionGroupListUseCase(
+                getSeparatedAdditionGroupListUseCase,
+                menuProductToAdditionGroupRepository,
+                getMenuProductUseCase,
+            )
 
         // Common mock setup
         coEvery { menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(any()) } returns null
-        coEvery { getMenuProductUseCase(any()) } returns MenuProduct.mock.copy(
-            "",
-            "",
-            additionGroups = emptyList()
-        )
+        coEvery { getMenuProductUseCase(any()) } returns
+            MenuProduct.mock.copy(
+                "",
+                "",
+                additionGroups = emptyList(),
+            )
     }
 
     @Test
-    fun `invoke should return empty lists when separatedAdditionGroupList is empty`() = runTest {
-        // Arrange
-        coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns
+    fun `invoke should return empty lists when separatedAdditionGroupList is empty`() =
+        runTest {
+            // Arrange
+            coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns
                 SeparatedAdditionGroupList(emptyList(), emptyList())
 
-        // Act
-        val result = useCase(false, null, "menu-product-uuid", null)
+            // Act
+            val result = useCase(false, null, "menu-product-uuid", null)
 
-        // Assert
-        assertEquals(SeparatedSelectableAdditionList(emptyList(), emptyList()), result)
-    }
-
-    @Test
-    fun `invoke should filter out contained addition groups from visible list`() = runTest {
-        // Arrange
-        val separatedAdditionGroupList = SeparatedAdditionGroupList(
-            visibleList = listOf(
-                AdditionGroup.mock.copy("group1", "Group 1"),
-                AdditionGroup.mock.copy("group2", "Group 2")
-            ),
-            hiddenList = emptyList()
-        )
-
-        coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
-        coEvery {
-            menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(any())
-        } returns MenuProductToAdditionGroup.mock.copy(
-            "main-uuid",
-            "menu-product-uuid",
-            "group1"
-        )
-
-        coEvery { getMenuProductUseCase(any()) } returns MenuProduct.mock.copy(
-            "",
-            "",
-            additionGroups = listOf(
-                AdditionGroupWithAdditions.mock.copy(
-                    AdditionGroup.mock.copy("group1", "Group 1"),
-                    emptyList()
-                )
-            )
-        )
-
-        // Act
-        val result = useCase(false, null, "menu-product-uuid", null)
-
-        // Assert
-        assertEquals(1, result.visibleList.size)
-    }
+            // Assert
+            assertEquals(SeparatedSelectableAdditionList(emptyList(), emptyList()), result)
+        }
 
     @Test
-    fun `invoke should not filter main edited addition group even if contained`() = runTest {
-        // Arrange
-        val separatedAdditionGroupList = SeparatedAdditionGroupList(
-            visibleList = listOf(AdditionGroup.mock.copy("group1", "Group 1")),
-            hiddenList = emptyList()
-        )
-
-        coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
-        coEvery { getMenuProductUseCase(any()) } returns MenuProduct.mock.copy(
-            "", "",
-            additionGroups = listOf(
-                AdditionGroupWithAdditions.mock.copy(
-                    AdditionGroup.mock.copy(
-                        "group1",
-                        "Group 1"
-                    ),
-                    emptyList()
+    fun `invoke should filter out contained addition groups from visible list`() =
+        runTest {
+            // Arrange
+            val separatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList =
+                        listOf(
+                            AdditionGroup.mock.copy("group1", "Group 1"),
+                            AdditionGroup.mock.copy("group2", "Group 2"),
+                        ),
+                    hiddenList = emptyList(),
                 )
-            )
-        )
-        coEvery { menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup("main-uuid") } returns
+
+            coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
+            coEvery {
+                menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(any())
+            } returns
+                MenuProductToAdditionGroup.mock.copy(
+                    "main-uuid",
+                    "menu-product-uuid",
+                    "group1",
+                )
+
+            coEvery { getMenuProductUseCase(any()) } returns
+                MenuProduct.mock.copy(
+                    "",
+                    "",
+                    additionGroups =
+                        listOf(
+                            AdditionGroupWithAdditions.mock.copy(
+                                AdditionGroup.mock.copy("group1", "Group 1"),
+                                emptyList(),
+                            ),
+                        ),
+                )
+
+            // Act
+            val result = useCase(false, null, "menu-product-uuid", null)
+
+            // Assert
+            assertEquals(1, result.visibleList.size)
+        }
+
+    @Test
+    fun `invoke should not filter main edited addition group even if contained`() =
+        runTest {
+            // Arrange
+            val separatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList = listOf(AdditionGroup.mock.copy("group1", "Group 1")),
+                    hiddenList = emptyList(),
+                )
+
+            coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
+            coEvery { getMenuProductUseCase(any()) } returns
+                MenuProduct.mock.copy(
+                    "",
+                    "",
+                    additionGroups =
+                        listOf(
+                            AdditionGroupWithAdditions.mock.copy(
+                                AdditionGroup.mock.copy(
+                                    "group1",
+                                    "Group 1",
+                                ),
+                                emptyList(),
+                            ),
+                        ),
+                )
+            coEvery { menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup("main-uuid") } returns
                 MenuProductToAdditionGroup.mock.copy(
                     uuid = "main-uuid",
                     menuProductUuid = "group1",
-                    additionGroupUuid = "menu-product-uuid"
+                    additionGroupUuid = "menu-product-uuid",
                 )
 
-        // Act
-        val result = useCase(false, null, "menu-product-uuid", "main-uuid")
+            // Act
+            val result = useCase(false, null, "menu-product-uuid", "main-uuid")
 
-        // Assert
-        assertEquals(1, result.visibleList.size)
-    }
-
-    @Test
-    fun `invoke should set isSelected true for selected addition group`() = runTest {
-        // Arrange
-        val separatedAdditionGroupList = SeparatedAdditionGroupList(
-            visibleList = listOf(AdditionGroup.mock.copy("group1", "Group 1")),
-            hiddenList = emptyList()
-        )
-
-        coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
-
-        // Act
-        val result = useCase(false, "group1", "menu-product-uuid", null)
-
-        // Assert
-        assertEquals(true, result.visibleList[0].isSelected)
-    }
+            // Assert
+            assertEquals(1, result.visibleList.size)
+        }
 
     @Test
-    fun `invoke should process both visible and hidden lists`() = runTest {
-        // Arrange
-        val separatedAdditionGroupList = SeparatedAdditionGroupList(
-            visibleList = listOf(AdditionGroup.mock.copy("group1", "Group 1")),
-            hiddenList = listOf(AdditionGroup.mock.copy("group2", "Group 2"))
-        )
+    fun `invoke should set isSelected true for selected addition group`() =
+        runTest {
+            // Arrange
+            val separatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList = listOf(AdditionGroup.mock.copy("group1", "Group 1")),
+                    hiddenList = emptyList(),
+                )
 
-        coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
+            coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
 
-        // Act
-        val result = useCase(false, null, "menu-product-uuid", null)
+            // Act
+            val result = useCase(false, "group1", "menu-product-uuid", null)
 
-        // Assert
-        assertEquals(2, result.visibleList.size + result.hiddenList.size)
-    }
+            // Assert
+            assertEquals(true, result.visibleList[0].isSelected)
+        }
 
+    @Test
+    fun `invoke should process both visible and hidden lists`() =
+        runTest {
+            // Arrange
+            val separatedAdditionGroupList =
+                SeparatedAdditionGroupList(
+                    visibleList = listOf(AdditionGroup.mock.copy("group1", "Group 1")),
+                    hiddenList = listOf(AdditionGroup.mock.copy("group2", "Group 2")),
+                )
+
+            coEvery { getSeparatedAdditionGroupListUseCase(any()) } returns separatedAdditionGroupList
+
+            // Act
+            val result = useCase(false, null, "menu-product-uuid", null)
+
+            // Assert
+            assertEquals(2, result.visibleList.size + result.hiddenList.size)
+        }
 }
