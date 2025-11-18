@@ -31,9 +31,14 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.c
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAdditionGroupForMenuProductFragment :
-    SingleStateComposeFragment<CreateAdditionGroupForMenu.DataState, CreateAdditionGroupForMenu.Action, CreateAdditionGroupForMenu.Event>() {
+    SingleStateComposeFragment<
+        CreateAdditionGroupForMenu.DataState,
+        CreateAdditionGroupForMenu.Action,
+        CreateAdditionGroupForMenu.Event,
+    >() {
     override val viewModel: CreateAdditionGroupForMenuProductViewModel by viewModel()
-    private val createAdditionGroupForMenuProductFragmentArgs: CreateAdditionGroupForMenuProductFragmentArgs by navArgs()
+    private val createAdditionGroupForMenuProductFragmentArgs:
+        CreateAdditionGroupForMenuProductFragmentArgs by navArgs()
 
     companion object {
         const val CREATE_ADDITION_GROUP = "CREATE_ADDITION_GROUP"
@@ -183,22 +188,24 @@ class CreateAdditionGroupForMenuProductFragment :
             is CreateAdditionGroupForMenu.Event.OnAdditionGroupClick -> {
                 findNavController().navigate(
                     directions =
-                        CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
-                            additionGroupUuid = event.uuid,
-                            menuProductUuid = event.menuProductUuid,
-                            mainEditedAdditionGroupUuid = null,
-                        ),
+                        CreateAdditionGroupForMenuProductFragmentDirections
+                            .toSelectAdditionGroupFragment(
+                                additionGroupUuid = event.uuid,
+                                menuProductUuid = event.menuProductUuid,
+                                mainEditedAdditionGroupUuid = null,
+                            ),
                 )
             }
 
             is CreateAdditionGroupForMenu.Event.OnAdditionListClick -> {
                 findNavController().navigate(
                     directions =
-                        CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
-                            additionGroupUuid = null,
-                            menuProductUuid = event.menuProductUuid,
-                            additionGroupForMenuName = event.additionGroupName,
-                        ),
+                        CreateAdditionGroupForMenuProductFragmentDirections
+                            .toSelectAdditionListFragment(
+                                additionGroupUuid = null,
+                                menuProductUuid = event.menuProductUuid,
+                                additionGroupForMenuName = event.additionGroupName,
+                            ),
                 )
             }
         }

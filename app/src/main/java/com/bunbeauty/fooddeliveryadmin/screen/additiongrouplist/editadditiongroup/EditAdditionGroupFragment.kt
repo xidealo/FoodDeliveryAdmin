@@ -27,7 +27,12 @@ import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.Ed
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditAdditionGroupFragment :
-    BaseComposeFragment<EditAdditionGroupDataState.DataState, EditAdditionGroupViewState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>() {
+    BaseComposeFragment<
+        EditAdditionGroupDataState.DataState,
+        EditAdditionGroupViewState,
+        EditAdditionGroupDataState.Action,
+        EditAdditionGroupDataState.Event,
+    >() {
     override val viewModel: EditAdditionGroupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
