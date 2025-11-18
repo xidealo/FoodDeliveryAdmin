@@ -79,7 +79,7 @@ fun additionGroupListModule() =
             GetSeparatedSelectableAdditionGroupListUseCase(
                 getSeparatedAdditionGroupListUseCase = get(),
                 menuProductToAdditionGroupRepository = get(),
-            getMenuProductUseCase = get()
-        )
+                getMenuProductUseCase = get(),
+            )
+        }
     }
-}

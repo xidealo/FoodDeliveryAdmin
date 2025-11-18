@@ -36,9 +36,10 @@ class CreateAdditionGroupForMenuProductViewModel(
         dataState: CreateAdditionGroupForMenu.DataState,
     ) {
         when (action) {
-            is CreateAdditionGroupForMenu.Action.Init -> initData(
-                menuProductUuid = action.menuProductUuid,
-            )
+            is CreateAdditionGroupForMenu.Action.Init ->
+                initData(
+                    menuProductUuid = action.menuProductUuid,
+                )
 
             is CreateAdditionGroupForMenu.Action.SelectAdditionGroup -> {
                 setSelectedAdditionGroup(action.additionGroupUuid)
@@ -49,15 +50,17 @@ class CreateAdditionGroupForMenuProductViewModel(
                     additionUuidList = action.additionListUuid,
                 )
 
-            CreateAdditionGroupForMenu.Action.OnAdditionGroupClick -> onAdditionGroupClick(
-                uuid = dataState.editedAdditionGroupUuid.orEmpty(),
-                menuProductUuid = dataState.menuProductUuid
-            )
+            CreateAdditionGroupForMenu.Action.OnAdditionGroupClick ->
+                onAdditionGroupClick(
+                    uuid = dataState.editedAdditionGroupUuid.orEmpty(),
+                    menuProductUuid = dataState.menuProductUuid,
+                )
 
-            CreateAdditionGroupForMenu.Action.OnAdditionListClick -> onAdditionListClick(
-                menuProductUuid = dataState.menuProductUuid,
-                groupName = dataState.groupName.orEmpty(),
-            )
+            CreateAdditionGroupForMenu.Action.OnAdditionListClick ->
+                onAdditionListClick(
+                    menuProductUuid = dataState.menuProductUuid,
+                    groupName = dataState.groupName.orEmpty(),
+                )
 
             CreateAdditionGroupForMenu.Action.OnBackClick -> backClick()
 
@@ -70,11 +73,10 @@ class CreateAdditionGroupForMenuProductViewModel(
         }
     }
 
-
     private fun initData(menuProductUuid: String) {
         setState {
             copy(
-                menuProductUuid = menuProductUuid
+                menuProductUuid = menuProductUuid,
             )
         }
     }
@@ -110,7 +112,7 @@ class CreateAdditionGroupForMenuProductViewModel(
         sendEvent {
             CreateAdditionGroupForMenu.Event.OnAdditionGroupClick(
                 uuid = uuid,
-                menuProductUuid = menuProductUuid
+                menuProductUuid = menuProductUuid,
             )
         }
     }
@@ -122,7 +124,7 @@ class CreateAdditionGroupForMenuProductViewModel(
         sendEvent {
             CreateAdditionGroupForMenu.Event.OnAdditionListClick(
                 menuProductUuid = menuProductUuid,
-                additionGroupName = groupName.orEmpty()
+                additionGroupName = groupName.orEmpty(),
             )
         }
     }

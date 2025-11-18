@@ -10,10 +10,11 @@ data class SeparatedAdditionGroupList(
     val hiddenList: List<AdditionGroup>,
 ) {
     companion object {
-        val mock = SeparatedAdditionGroupList(
-            visibleList = emptyList(),
-            hiddenList = emptyList(),
-        )
+        val mock =
+            SeparatedAdditionGroupList(
+                visibleList = emptyList(),
+                hiddenList = emptyList(),
+            )
     }
 }
 

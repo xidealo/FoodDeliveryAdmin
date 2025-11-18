@@ -1,20 +1,11 @@
 package com.bunbeauty.domain.feature.menu.additiongroupformenuproduct
 
 import com.bunbeauty.domain.feature.additiongrouplist.GetSeparatedAdditionGroupListUseCase
-import com.bunbeauty.domain.feature.additiongrouplist.SeparatedAdditionGroupList
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionGroupListUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
-import com.bunbeauty.domain.model.additiongroup.AdditionGroup
-import com.bunbeauty.domain.model.additiongroup.AdditionGroupWithAdditions
-import com.bunbeauty.domain.model.menuprocuttoadditiongroup.MenuProductToAdditionGroup
-import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
-import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import kotlin.test.Test
 
 class GetSeparatedSelectableAdditionGroupListUseCaseTest {
     private lateinit var useCase: GetSeparatedSelectableAdditionGroupListUseCase
@@ -24,11 +15,12 @@ class GetSeparatedSelectableAdditionGroupListUseCaseTest {
 
     @Before
     fun setUp() {
-        useCase = GetSeparatedSelectableAdditionGroupListUseCase(
-            getSeparatedAdditionGroupListUseCase,
-            menuProductToAdditionGroupRepository,
-            getMenuProductUseCase
-        )
+        useCase =
+            GetSeparatedSelectableAdditionGroupListUseCase(
+                getSeparatedAdditionGroupListUseCase,
+                menuProductToAdditionGroupRepository,
+                getMenuProductUseCase,
+            )
     }
 
 //    @Test

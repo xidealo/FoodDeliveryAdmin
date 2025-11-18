@@ -22,7 +22,7 @@ interface SelectAdditionGroup {
         data class Init(
             val selectedAdditionGroupUuid: String?,
             val menuProductUuid: String,
-            val mainEditedAdditionGroupUuid: String?
+            val mainEditedAdditionGroupUuid: String?,
         ) : Action
 
         data object OnBackClick : Action

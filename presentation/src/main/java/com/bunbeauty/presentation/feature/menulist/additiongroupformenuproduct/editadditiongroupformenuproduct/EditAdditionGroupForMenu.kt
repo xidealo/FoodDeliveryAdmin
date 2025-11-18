@@ -53,11 +53,13 @@ interface EditAdditionGroupForMenu {
         data object Back : Event
 
         data object SaveAndBack : Event
+
         data class OnAdditionGroupClick(
             val editedAdditionGroupUuid: String,
             val menuProductUuid: String,
-            val mainEditedAdditionGroupUuid: String
-        ,) : Event
+            val mainEditedAdditionGroupUuid: String,
+        ) : Event
+
         data class OnAdditionListClick(
             val additionGroupUuid: String,
             val menuProductUuid: String,

@@ -59,7 +59,7 @@ class SelectAdditionGroupFragment :
             SelectAdditionGroup.Action.Init(
                 selectedAdditionGroupUuid = selectAdditionGroupFragmentArgs.additionGroupUuid,
                 menuProductUuid = selectAdditionGroupFragmentArgs.menuProductUuid,
-                mainEditedAdditionGroupUuid = selectAdditionGroupFragmentArgs.mainEditedAdditionGroupUuid
+                mainEditedAdditionGroupUuid = selectAdditionGroupFragmentArgs.mainEditedAdditionGroupUuid,
             ),
         )
     }
@@ -239,26 +239,30 @@ class SelectAdditionGroupFragment :
         }
     }
 
-    val selectAdditionGroupViewState = SelectAdditionGroup.DataState(
-        state = SelectAdditionGroup.DataState.State.SUCCESS,
-        visibleSelectableAdditionGroupList = listOf(
-            SelectableAdditionGroup(
-                uuid = "uuid1",
-                name = "Roy Faulkner",
-                isSelected = true
-            ),
-            SelectableAdditionGroup(
-                uuid = "uuid2",
-                name = "Roy Faulkner",
-                isSelected = false
-            )
-        ),
-        hiddenSelectableAdditionGroupList = listOf(
-            SelectableAdditionGroup(
-                uuid = "uuid3",
-                name = "Roy Faulkner",
-                isSelected = false
-            )
+    val selectAdditionGroupViewState =
+        SelectAdditionGroup.DataState(
+            state = SelectAdditionGroup.DataState.State.SUCCESS,
+            visibleSelectableAdditionGroupList =
+                listOf(
+                    SelectableAdditionGroup(
+                        uuid = "uuid1",
+                        name = "Roy Faulkner",
+                        isSelected = true,
+                    ),
+                    SelectableAdditionGroup(
+                        uuid = "uuid2",
+                        name = "Roy Faulkner",
+                        isSelected = false,
+                    ),
+                ),
+            hiddenSelectableAdditionGroupList =
+                listOf(
+                    SelectableAdditionGroup(
+                        uuid = "uuid3",
+                        name = "Roy Faulkner",
+                        isSelected = false,
+                    ),
+                ),
         )
 
     @Composable

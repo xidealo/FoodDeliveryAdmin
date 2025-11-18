@@ -43,9 +43,9 @@ class EditAdditionGroupForMenuProductViewModel(
             is EditAdditionGroupForMenu.Action.OnAdditionGroupClick ->
                 onAdditionGroupClick(
                     editedAdditionGroupUuid = dataState.editedAdditionGroupUuid ?: action.uuid,
-                menuProductUuid = dataState.menuProductUuid,
-                mainEditedAdditionGroupUuid = dataState.additionGroupForMenuProductUuid
-            )
+                    menuProductUuid = dataState.menuProductUuid,
+                    mainEditedAdditionGroupUuid = dataState.additionGroupForMenuProductUuid,
+                )
 
             is EditAdditionGroupForMenu.Action.OnAdditionListClick ->
                 onAdditionListClick(
@@ -149,13 +149,13 @@ class EditAdditionGroupForMenuProductViewModel(
     private fun onAdditionGroupClick(
         editedAdditionGroupUuid: String,
         menuProductUuid: String,
-        mainEditedAdditionGroupUuid: String
+        mainEditedAdditionGroupUuid: String,
     ) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionGroupClick(
                 editedAdditionGroupUuid = editedAdditionGroupUuid,
                 menuProductUuid = menuProductUuid,
-                mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid
+                mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
             )
         }
     }

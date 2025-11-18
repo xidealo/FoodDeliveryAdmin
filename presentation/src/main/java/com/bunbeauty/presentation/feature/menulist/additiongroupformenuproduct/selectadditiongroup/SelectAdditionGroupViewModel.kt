@@ -2,7 +2,6 @@ package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionGroupListUseCase
-import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
@@ -24,9 +23,9 @@ class SelectAdditionGroupViewModel(
             is SelectAdditionGroup.Action.Init ->
                 loadData(
                     selectedAdditionGroupUuid = action.selectedAdditionGroupUuid,
-                menuProductUuid = action.menuProductUuid,
-                mainEditedAdditionGroupUuid = action.mainEditedAdditionGroupUuid
-            )
+                    menuProductUuid = action.menuProductUuid,
+                    mainEditedAdditionGroupUuid = action.mainEditedAdditionGroupUuid,
+                )
 
             SelectAdditionGroup.Action.OnBackClick -> backClick()
             is SelectAdditionGroup.Action.SelectAdditionGroupClick ->
@@ -44,12 +43,13 @@ class SelectAdditionGroupViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
-                val separatedAdditionGroupList = getSeparatedSelectableAdditionGroupListUseCase(
-                    refreshing = false,
-                    selectedAdditionGroupUuid = selectedAdditionGroupUuid,
-                    menuProductUuid = menuProductUuid,
-                    mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid
-                )
+                val separatedAdditionGroupList =
+                    getSeparatedSelectableAdditionGroupListUseCase(
+                        refreshing = false,
+                        selectedAdditionGroupUuid = selectedAdditionGroupUuid,
+                        menuProductUuid = menuProductUuid,
+                        mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
+                    )
                 setState {
                     copy(
                         visibleSelectableAdditionGroupList = separatedAdditionGroupList.visibleList,

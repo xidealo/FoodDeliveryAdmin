@@ -180,11 +180,12 @@ class EditAdditionGroupForMenuProductFragment :
 
             is EditAdditionGroupForMenu.Event.OnAdditionGroupClick -> {
                 findNavController().navigate(
-                    directions = EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
-                        additionGroupUuid = event.editedAdditionGroupUuid,
-                        menuProductUuid = event.menuProductUuid,
-                        mainEditedAdditionGroupUuid = event.mainEditedAdditionGroupUuid
-                    )
+                    directions =
+                        EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
+                            additionGroupUuid = event.editedAdditionGroupUuid,
+                            menuProductUuid = event.menuProductUuid,
+                            mainEditedAdditionGroupUuid = event.mainEditedAdditionGroupUuid,
+                        ),
                 )
             }
 

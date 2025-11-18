@@ -185,9 +185,9 @@ class CreateAdditionGroupForMenuProductFragment :
                     directions =
                         CreateAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
                             additionGroupUuid = event.uuid,
-                        menuProductUuid = event.menuProductUuid,
-                        mainEditedAdditionGroupUuid = null
-                    ),
+                            menuProductUuid = event.menuProductUuid,
+                            mainEditedAdditionGroupUuid = null,
+                        ),
                 )
             }
 
