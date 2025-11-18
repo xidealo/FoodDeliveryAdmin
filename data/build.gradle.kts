@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.datastore.preferences)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.messaging)
 
     implementation(libs.bundles.ktor)
 

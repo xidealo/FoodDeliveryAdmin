@@ -20,8 +20,8 @@ material = "1.13.0"
 viewBindingDelegate = "1.5.9"
 composeBom = "2025.11.00"
 datetime = "0.9.0"
-firebase = "32.2.0"
-mockk = "1.12.5"
+firebase = "34.6.0"
+mockk = "1.14.6"
 kotlinCoroutines = "1.10.2"
 imageCpropper = "4.6.0"
 turbine = "1.2.1"
@@ -98,13 +98,12 @@ work-runtime-ktx = {module ="androidx.work:work-runtime-ktx", version.ref ="work
 
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx" }
-firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
 
 # Testing
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockk" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinCoroutines" }
@@ -142,7 +141,6 @@ compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 [bundles]
 mockk = [
     "mockk",
-    "mockk-common"
 ]
 
 navigation = [
