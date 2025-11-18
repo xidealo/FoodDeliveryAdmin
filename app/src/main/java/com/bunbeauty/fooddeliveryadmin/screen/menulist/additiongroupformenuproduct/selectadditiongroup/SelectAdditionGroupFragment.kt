@@ -58,6 +58,8 @@ class SelectAdditionGroupFragment :
         viewModel.onAction(
             SelectAdditionGroup.Action.Init(
                 selectedAdditionGroupUuid = selectAdditionGroupFragmentArgs.additionGroupUuid,
+                menuProductUuid = selectAdditionGroupFragmentArgs.menuProductUuid,
+                mainEditedAdditionGroupUuid = selectAdditionGroupFragmentArgs.mainEditedAdditionGroupUuid,
             ),
         )
     }
@@ -245,7 +247,7 @@ class SelectAdditionGroupFragment :
                     SelectableAdditionGroup(
                         uuid = "uuid1",
                         name = "Roy Faulkner",
-                        isSelected = false,
+                        isSelected = true,
                     ),
                     SelectableAdditionGroup(
                         uuid = "uuid2",

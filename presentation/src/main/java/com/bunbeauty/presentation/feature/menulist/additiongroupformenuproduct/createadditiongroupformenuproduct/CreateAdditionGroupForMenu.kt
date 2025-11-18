@@ -54,6 +54,7 @@ interface CreateAdditionGroupForMenu {
 
         data class OnAdditionGroupClick(
             val uuid: String,
+            val menuProductUuid: String,
         ) : Event
 
         data class OnAdditionListClick(

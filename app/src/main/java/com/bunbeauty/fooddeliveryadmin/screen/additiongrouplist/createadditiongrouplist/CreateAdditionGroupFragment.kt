@@ -26,7 +26,12 @@ import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondroupl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAdditionGroupFragment :
-    BaseComposeFragment<CreateAdditionGroupDataState.DataState, CreateAdditionGroupViewState, CreateAdditionGroupDataState.Action, CreateAdditionGroupDataState.Event>() {
+    BaseComposeFragment<
+        CreateAdditionGroupDataState.DataState,
+        CreateAdditionGroupViewState,
+        CreateAdditionGroupDataState.Action,
+        CreateAdditionGroupDataState.Event,
+    >() {
     override val viewModel: CreateAdditionGroupViewModel by viewModel()
 
     @Composable
@@ -43,13 +48,19 @@ class CreateAdditionGroupFragment :
                                     isError = state.nameField.isError,
                                     errorResId =
                                         when (state.nameStateError) {
-                                            CreateAdditionGroupDataState.DataState.NameStateError.EMPTY_NAME ->
+                                            CreateAdditionGroupDataState
+                                                .DataState.NameStateError.EMPTY_NAME,
+                                            ->
                                                 R.string.error_common_create_addition_group_name
 
-                                            CreateAdditionGroupDataState.DataState.NameStateError.DUPLICATE_NAME ->
+                                            CreateAdditionGroupDataState
+                                                .DataState.NameStateError.DUPLICATE_NAME,
+                                            ->
                                                 R.string.error_common_create_addition_group_duplicate_name
 
-                                            CreateAdditionGroupDataState.DataState.NameStateError.NO_ERROR ->
+                                            CreateAdditionGroupDataState
+                                                .DataState.NameStateError.NO_ERROR,
+                                            ->
                                                 R.string.error_common_something_went_wrong
                                         },
                                 ),
@@ -57,8 +68,13 @@ class CreateAdditionGroupFragment :
                             isShowMenuVisible = state.isShowMenuVisible,
                         )
 
-                    CreateAdditionGroupDataState.DataState.State.ERROR -> CreateAdditionGroupViewState.State.Error
-                    CreateAdditionGroupDataState.DataState.State.LOADING -> CreateAdditionGroupViewState.State.Loading
+                    CreateAdditionGroupDataState
+                        .DataState.State.ERROR,
+                    -> CreateAdditionGroupViewState.State.Error
+
+                    CreateAdditionGroupDataState
+                        .DataState.State.LOADING,
+                    -> CreateAdditionGroupViewState.State.Loading
                 },
         )
 

@@ -21,9 +21,21 @@ fun EditMenuProduct.DataState.toEditMenuProductViewState(): EditMenuProductViewS
                             descriptionField.toTextFieldUi(
                                 errorResId =
                                     when (descriptionStateError) {
-                                        EditMenuProduct.DataState.DescriptionStateError.EMPTY_DESCRIPTION_ERROR -> R.string.error_common_menu_product_empty_description
-                                        EditMenuProduct.DataState.DescriptionStateError.LONG_DESCRIPTION_ERROR -> R.string.error_common_menu_product_long_description
-                                        EditMenuProduct.DataState.DescriptionStateError.NO_ERROR -> R.string.error_common_something_went_wrong
+                                        EditMenuProduct.DataState
+                                            .DescriptionStateError.EMPTY_DESCRIPTION_ERROR,
+                                        ->
+                                            R.string.error_common_menu_product_empty_description
+
+                                        EditMenuProduct
+                                            .DataState
+                                            .DescriptionStateError.LONG_DESCRIPTION_ERROR,
+                                        ->
+                                            R.string.error_common_menu_product_long_description
+
+                                        EditMenuProduct
+                                            .DataState.DescriptionStateError.NO_ERROR,
+                                        ->
+                                            R.string.error_common_something_went_wrong
                                     },
                             ),
                         nutritionField =

@@ -39,9 +39,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
 class AdditionGroupForMenuProductListFragment :
-    BaseComposeFragment<AdditionGroupForMenuProductList.DataState, AdditionGroupForMenuProductListViewState, AdditionGroupForMenuProductList.Action, AdditionGroupForMenuProductList.Event>() {
+    BaseComposeFragment<
+        AdditionGroupForMenuProductList.DataState,
+        AdditionGroupForMenuProductListViewState,
+        AdditionGroupForMenuProductList.Action,
+        AdditionGroupForMenuProductList.Event,
+    >() {
     override val viewModel: AdditionGroupForMenuProductListViewModel by viewModel()
-    private val additionGroupForMenuProductFragmentArgs: AdditionGroupForMenuProductListFragmentArgs by navArgs()
+    private val additionGroupForMenuProductFragmentArgs:
+        AdditionGroupForMenuProductListFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
