@@ -15,9 +15,19 @@ fun CreateMenuProduct.DataState.toAddMenuProductViewState(): CreateMenuProductVi
             descriptionField.toTextFieldUi(
                 errorResId =
                     when (descriptionStateError) {
-                        CreateMenuProduct.DataState.DescriptionStateError.EMPTY_DESCRIPTION_ERROR -> R.string.error_common_menu_product_empty_description
-                        CreateMenuProduct.DataState.DescriptionStateError.LONG_DESCRIPTION_ERROR -> R.string.error_common_menu_product_long_description
-                        CreateMenuProduct.DataState.DescriptionStateError.NO_ERROR -> R.string.error_common_something_went_wrong
+                        CreateMenuProduct.DataState
+                            .DescriptionStateError.EMPTY_DESCRIPTION_ERROR,
+                        ->
+                            R.string.error_common_menu_product_empty_description
+
+                        CreateMenuProduct.DataState
+                            .DescriptionStateError.LONG_DESCRIPTION_ERROR,
+                        ->
+                            R.string.error_common_menu_product_long_description
+
+                        CreateMenuProduct.DataState
+                            .DescriptionStateError.NO_ERROR,
+                        -> R.string.error_common_something_went_wrong
                     },
             ),
         nutritionField = nutritionField.toTextFieldUi(errorResId = R.string.error_common_menu_product_nutrition_without_units),

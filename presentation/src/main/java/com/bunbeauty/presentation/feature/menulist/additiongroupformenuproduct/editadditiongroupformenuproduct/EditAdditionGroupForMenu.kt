@@ -55,7 +55,9 @@ interface EditAdditionGroupForMenu {
         data object SaveAndBack : Event
 
         data class OnAdditionGroupClick(
-            val uuid: String,
+            val editedAdditionGroupUuid: String,
+            val menuProductUuid: String,
+            val mainEditedAdditionGroupUuid: String,
         ) : Event
 
         data class OnAdditionListClick(

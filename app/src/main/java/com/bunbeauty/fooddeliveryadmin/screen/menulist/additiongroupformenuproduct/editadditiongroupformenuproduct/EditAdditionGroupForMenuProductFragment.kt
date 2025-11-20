@@ -182,7 +182,9 @@ class EditAdditionGroupForMenuProductFragment :
                 findNavController().navigate(
                     directions =
                         EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
-                            additionGroupUuid = event.uuid,
+                            additionGroupUuid = event.editedAdditionGroupUuid,
+                            menuProductUuid = event.menuProductUuid,
+                            mainEditedAdditionGroupUuid = event.mainEditedAdditionGroupUuid,
                         ),
                 )
             }

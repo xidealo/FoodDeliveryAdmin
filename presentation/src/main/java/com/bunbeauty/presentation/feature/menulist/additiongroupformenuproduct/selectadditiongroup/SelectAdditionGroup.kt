@@ -21,6 +21,8 @@ interface SelectAdditionGroup {
     sealed interface Action : BaseAction {
         data class Init(
             val selectedAdditionGroupUuid: String?,
+            val menuProductUuid: String,
+            val mainEditedAdditionGroupUuid: String?,
         ) : Action
 
         data object OnBackClick : Action

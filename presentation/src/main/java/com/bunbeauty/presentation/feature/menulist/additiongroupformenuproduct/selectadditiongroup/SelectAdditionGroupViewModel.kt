@@ -23,6 +23,8 @@ class SelectAdditionGroupViewModel(
             is SelectAdditionGroup.Action.Init ->
                 loadData(
                     selectedAdditionGroupUuid = action.selectedAdditionGroupUuid,
+                    menuProductUuid = action.menuProductUuid,
+                    mainEditedAdditionGroupUuid = action.mainEditedAdditionGroupUuid,
                 )
 
             SelectAdditionGroup.Action.OnBackClick -> backClick()
@@ -34,13 +36,19 @@ class SelectAdditionGroupViewModel(
         }
     }
 
-    private fun loadData(selectedAdditionGroupUuid: String?) {
+    private fun loadData(
+        selectedAdditionGroupUuid: String?,
+        menuProductUuid: String,
+        mainEditedAdditionGroupUuid: String?,
+    ) {
         viewModelScope.launchSafe(
             block = {
                 val separatedAdditionGroupList =
                     getSeparatedSelectableAdditionGroupListUseCase(
                         refreshing = false,
                         selectedAdditionGroupUuid = selectedAdditionGroupUuid,
+                        menuProductUuid = menuProductUuid,
+                        mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
                     )
                 setState {
                     copy(
