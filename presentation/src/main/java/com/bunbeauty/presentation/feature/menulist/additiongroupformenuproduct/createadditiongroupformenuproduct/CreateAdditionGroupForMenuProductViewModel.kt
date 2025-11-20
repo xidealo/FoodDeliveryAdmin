@@ -77,6 +77,7 @@ class CreateAdditionGroupForMenuProductViewModel(
         setState {
             copy(
                 menuProductUuid = menuProductUuid,
+                state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
             )
         }
     }

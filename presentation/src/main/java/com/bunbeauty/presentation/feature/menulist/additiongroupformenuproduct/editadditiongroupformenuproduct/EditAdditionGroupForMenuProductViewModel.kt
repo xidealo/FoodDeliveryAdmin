@@ -115,6 +115,12 @@ class EditAdditionGroupForMenuProductViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
+                setState {
+                    copy(
+                        state = EditAdditionGroupForMenu.DataState.State.LOADING,
+                    )
+                }
+
                 val additionGroupWithAdditionsForMenu =
                     getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
                         menuProductUuid = menuProductUuid,

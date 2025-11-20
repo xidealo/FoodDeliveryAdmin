@@ -97,8 +97,14 @@ class EditAdditionGroupForMenuProductFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // todo refresh data
-                            // onAction(OrderList.Action.RetryClick)
+                            viewModel.onAction(
+                                EditAdditionGroupForMenu.Action.Init(
+                                    additionGroupForMenuUuid =
+                                        editAdditionGroupForMenuProductFragmentArgs
+                                            .additionGroupForMenuUuid,
+                                    menuProductUuid = editAdditionGroupForMenuProductFragmentArgs.menuProductUuid,
+                                ),
+                            )
                         },
                     )
                 }

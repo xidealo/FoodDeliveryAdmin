@@ -99,7 +99,13 @@ class CreateAdditionGroupForMenuProductFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // todo click
+                            viewModel.onAction(
+                                CreateAdditionGroupForMenu.Action.Init(
+                                    menuProductUuid =
+                                        createAdditionGroupForMenuProductFragmentArgs
+                                            .menuProductUuid,
+                                ),
+                            )
                         },
                     )
                 }
