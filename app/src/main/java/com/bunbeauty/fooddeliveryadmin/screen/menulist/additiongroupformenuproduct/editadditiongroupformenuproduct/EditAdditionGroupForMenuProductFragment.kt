@@ -197,8 +197,7 @@ class EditAdditionGroupForMenuProductFragment :
                             menuProductUuid = event.menuProductUuid,
                             additionGroupForMenuName = event.additionGroupName,
                             editedAdditionListUuid =
-                                event.editedAdditionListUuid?.toTypedArray()
-                                    ?: emptyArray(),
+                                event.editedAdditionListUuid.toTypedArray(),
                         ),
                 )
             }

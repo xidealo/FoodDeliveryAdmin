@@ -165,7 +165,7 @@ class EditAdditionGroupForMenuProductViewModel(
         additionGroupUuid: String,
         additionGroupName: String,
         menuProductUuid: String,
-        editedAdditionListUuid: List<String>?,
+        editedAdditionListUuid: List<String>,
     ) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionListClick(
