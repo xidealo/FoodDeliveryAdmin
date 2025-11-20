@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import kotlin.String
 
 class SelectAdditionListViewModel(
     val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase,
@@ -15,6 +16,7 @@ class SelectAdditionListViewModel(
                 selectedAdditionList = emptyList(),
                 notSelectedAdditionList = emptyList(),
                 emptySelectedList = true,
+                editedAdditionListUuid = emptyList(),
             ),
     ) {
     override fun reduce(
@@ -27,6 +29,7 @@ class SelectAdditionListViewModel(
                     selectedGroupAdditionUuid = action.additionGroupUuid,
                     menuProductUuid = action.menuProductUuid,
                     selectedGroupAdditionName = action.additionGroupName,
+                    editedAdditionListUuid = action.editedAdditionListUuid,
                 )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
@@ -122,6 +125,7 @@ class SelectAdditionListViewModel(
         selectedGroupAdditionUuid: String?,
         selectedGroupAdditionName: String,
         menuProductUuid: String,
+        editedAdditionListUuid: List<String>,
     ) {
         viewModelScope.launchSafe(
             block = {
@@ -129,6 +133,7 @@ class SelectAdditionListViewModel(
                     getSelectedAdditionListUseCase(
                         menuProductUuid = menuProductUuid,
                         selectedGroupAdditionUuid = selectedGroupAdditionUuid,
+                        editedAdditionListUuid = editedAdditionListUuid,
                     )
                 setState {
                     copy(
@@ -149,6 +154,7 @@ class SelectAdditionListViewModel(
                             },
                         groupName = selectedGroupAdditionName,
                         emptySelectedList = additionPack.selectedAdditionList.isEmpty(),
+                        editedAdditionListUuid = editedAdditionListUuid,
                     )
                 }
             },
