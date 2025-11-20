@@ -52,6 +52,7 @@ class EditAdditionGroupForMenuProductViewModel(
                     additionGroupUuid = action.uuid,
                     menuProductUuid = dataState.menuProductUuid,
                     additionGroupName = dataState.groupName.orEmpty(),
+                    editedAdditionListUuid = dataState.editedAdditionListUuid.orEmpty(),
                 )
 
             EditAdditionGroupForMenu.Action.OnBackClick -> backClick()
@@ -170,12 +171,14 @@ class EditAdditionGroupForMenuProductViewModel(
         additionGroupUuid: String,
         additionGroupName: String,
         menuProductUuid: String,
+        editedAdditionListUuid: List<String>,
     ) {
         sendEvent {
             EditAdditionGroupForMenu.Event.OnAdditionListClick(
                 additionGroupUuid = additionGroupUuid,
                 menuProductUuid = menuProductUuid,
                 additionGroupName = additionGroupName,
+                editedAdditionListUuid = editedAdditionListUuid,
             )
         }
     }

@@ -197,8 +197,8 @@ class CreateAdditionGroupForMenuProductFragment :
                         CreateAdditionGroupForMenuProductFragmentDirections
                             .toSelectAdditionGroupFragment(
                                 additionGroupUuid = event.uuid,
-                                menuProductUuid = event.menuProductUuid,
                                 mainEditedAdditionGroupUuid = null,
+                                menuProductUuid = event.menuProductUuid,
                             ),
                 )
             }
@@ -211,6 +211,7 @@ class CreateAdditionGroupForMenuProductFragment :
                                 additionGroupUuid = null,
                                 menuProductUuid = event.menuProductUuid,
                                 additionGroupForMenuName = event.additionGroupName,
+                                editedAdditionListUuid = null,
                             ),
                 )
             }
