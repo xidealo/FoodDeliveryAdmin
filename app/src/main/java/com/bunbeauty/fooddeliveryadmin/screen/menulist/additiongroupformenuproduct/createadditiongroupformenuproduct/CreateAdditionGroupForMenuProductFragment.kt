@@ -196,6 +196,7 @@ class CreateAdditionGroupForMenuProductFragment :
                             additionGroupUuid = null,
                             menuProductUuid = event.menuProductUuid,
                             additionGroupForMenuName = event.additionGroupName,
+                            editedAdditionListUuid = null,
                         ),
                 )
             }

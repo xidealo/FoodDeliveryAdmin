@@ -360,6 +360,10 @@
         <argument
             android:name="additionGroupForMenuName"
             app:argType="string" />
+        <argument
+            android:name="editedAdditionListUuid"
+            app:argType="string[]"
+            app:nullable="true" />
     </fragment>
 
 

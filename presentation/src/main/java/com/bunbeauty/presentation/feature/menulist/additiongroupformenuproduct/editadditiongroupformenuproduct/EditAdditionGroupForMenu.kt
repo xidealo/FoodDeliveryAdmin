@@ -62,6 +62,7 @@ interface EditAdditionGroupForMenu {
             val additionGroupUuid: String,
             val menuProductUuid: String,
             val additionGroupName: String,
+            val editedAdditionListUuid: List<String>?,
         ) : Event
     }
 }

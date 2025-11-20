@@ -23,6 +23,7 @@ class GetSelectedAdditionListUseCase(
     suspend operator fun invoke(
         selectedGroupAdditionUuid: String?,
         menuProductUuid: String,
+        editedAdditionListUuid: List<String>?,
     ): SelectedAdditionForMenu {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
@@ -31,6 +32,18 @@ class GetSelectedAdditionListUseCase(
                 menuProductUuid = menuProductUuid,
                 selectedGroupAdditionUuid = selectedGroupAdditionUuid,
             )
+
+        val commonAdditionList =
+            additionRepo.getAdditionList(
+                token = token,
+            )
+
+        if (!editedAdditionListUuid.isNullOrEmpty()) {
+            return getAdditionsBasedOnEditedList(
+                commonAdditionList = commonAdditionList,
+                editedAdditionListUuid = editedAdditionListUuid,
+            )
+        }
 
         if (uuidList.isEmpty()) {
             return SelectedAdditionForMenu(
@@ -42,11 +55,6 @@ class GetSelectedAdditionListUseCase(
         val menuProductToAdditionGroupToAdditionList =
             menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
                 uuidList = uuidList,
-            )
-
-        val commonAdditionList =
-            additionRepo.getAdditionList(
-                token = token,
             )
 
         return SelectedAdditionForMenu(
@@ -62,6 +70,21 @@ class GetSelectedAdditionListUseCase(
                 ),
         )
     }
+
+    private fun getAdditionsBasedOnEditedList(
+        commonAdditionList: List<Addition>,
+        editedAdditionListUuid: List<String>,
+    ): SelectedAdditionForMenu =
+        SelectedAdditionForMenu(
+            selectedAdditionList =
+                commonAdditionList.filter { addition ->
+                    addition.uuid in editedAdditionListUuid
+                },
+            notSelectedAdditionList =
+                commonAdditionList.filterNot { addition ->
+                    addition.uuid in editedAdditionListUuid
+                },
+        )
 
     private suspend fun getMenuProductAdditionUuidList(
         menuProductUuid: String,
