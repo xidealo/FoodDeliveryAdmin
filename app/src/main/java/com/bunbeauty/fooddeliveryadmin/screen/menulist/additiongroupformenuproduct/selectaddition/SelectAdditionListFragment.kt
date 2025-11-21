@@ -416,7 +416,7 @@ class SelectAdditionListFragment :
                     ),
                 ),
             emptySelectedList = true,
-            editedAdditionListUuid = null,
+            editedAdditionListUuid = emptyList(),
         )
 
     @Composable

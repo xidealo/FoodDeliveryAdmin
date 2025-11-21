@@ -23,7 +23,7 @@ class GetSelectedAdditionListUseCase(
     suspend operator fun invoke(
         selectedGroupAdditionUuid: String?,
         menuProductUuid: String,
-        editedAdditionListUuid: List<String>?,
+        editedAdditionListUuid: List<String>,
     ): SelectedAdditionForMenu {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
@@ -38,7 +38,7 @@ class GetSelectedAdditionListUseCase(
                 token = token,
             )
 
-        if (!editedAdditionListUuid.isNullOrEmpty()) {
+        if (editedAdditionListUuid.isNotEmpty()) {
             return getAdditionsBasedOnEditedList(
                 commonAdditionList = commonAdditionList,
                 editedAdditionListUuid = editedAdditionListUuid,
