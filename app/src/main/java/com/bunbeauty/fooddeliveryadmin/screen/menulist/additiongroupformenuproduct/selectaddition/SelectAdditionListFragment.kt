@@ -195,7 +195,16 @@ class SelectAdditionListFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // onAction(SelectAdditionList.Action.SelectAdditionListClick)
+                            onAction(
+                                SelectAdditionList.Action.Init(
+                                    menuProductUuid = selectAdditionFragmentArgs.menuProductUuid,
+                                    additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
+                                    additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName,
+                                    editedAdditionListUuid =
+                                        selectAdditionFragmentArgs.editedAdditionListUuid?.toList()
+                                            ?: emptyList(),
+                                ),
+                            )
                         },
                     )
                 }
