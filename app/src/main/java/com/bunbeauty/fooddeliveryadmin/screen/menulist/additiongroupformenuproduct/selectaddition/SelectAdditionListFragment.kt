@@ -72,7 +72,9 @@ class SelectAdditionListFragment :
                 menuProductUuid = selectAdditionFragmentArgs.menuProductUuid,
                 additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
                 additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName,
-                editedAdditionListUuid = selectAdditionFragmentArgs.editedAdditionListUuid?.toList(),
+                editedAdditionListUuid =
+                    selectAdditionFragmentArgs.editedAdditionListUuid?.toList()
+                        ?: emptyList(),
             ),
         )
     }
@@ -147,6 +149,7 @@ class SelectAdditionListFragment :
                                     .padding(horizontal = AdminTheme.dimensions.mediumSpace),
                         )
                     }
+
                     SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> Unit
                 }
             },

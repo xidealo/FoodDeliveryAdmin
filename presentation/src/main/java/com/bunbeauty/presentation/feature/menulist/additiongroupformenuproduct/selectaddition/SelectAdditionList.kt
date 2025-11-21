@@ -31,7 +31,7 @@ interface SelectAdditionList {
             val menuProductUuid: String,
             val additionGroupUuid: String?,
             val additionGroupName: String,
-            val editedAdditionListUuid: List<String>?,
+            val editedAdditionListUuid: List<String>,
         ) : Action
 
         data object OnBackClick : Action
