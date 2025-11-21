@@ -72,6 +72,9 @@ class SelectAdditionListFragment :
                 menuProductUuid = selectAdditionFragmentArgs.menuProductUuid,
                 additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
                 additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName,
+                editedAdditionListUuid =
+                    selectAdditionFragmentArgs.editedAdditionListUuid?.toList()
+                        ?: emptyList(),
             ),
         )
     }
@@ -134,8 +137,7 @@ class SelectAdditionListFragment :
                 when (state.state) {
                     SelectAdditionList.DataState.State.LOADING -> Unit
                     SelectAdditionList.DataState.State.ERROR -> Unit
-                    SelectAdditionList.DataState.State.SUCCESS -> Unit
-                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> {
+                    SelectAdditionList.DataState.State.SUCCESS -> {
                         LoadingButton(
                             text = stringResource(R.string.action_order_details_save),
                             isLoading = false,
@@ -147,6 +149,8 @@ class SelectAdditionListFragment :
                                     .padding(horizontal = AdminTheme.dimensions.mediumSpace),
                         )
                     }
+
+                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> Unit
                 }
             },
             topActions =
@@ -191,7 +195,16 @@ class SelectAdditionListFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // onAction(SelectAdditionList.Action.SelectAdditionListClick)
+                            onAction(
+                                SelectAdditionList.Action.Init(
+                                    menuProductUuid = selectAdditionFragmentArgs.menuProductUuid,
+                                    additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
+                                    additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName,
+                                    editedAdditionListUuid =
+                                        selectAdditionFragmentArgs.editedAdditionListUuid?.toList()
+                                            ?: emptyList(),
+                                ),
+                            )
                         },
                     )
                 }
@@ -403,6 +416,7 @@ class SelectAdditionListFragment :
                     ),
                 ),
             emptySelectedList = true,
+            editedAdditionListUuid = emptyList(),
         )
 
     @Composable
