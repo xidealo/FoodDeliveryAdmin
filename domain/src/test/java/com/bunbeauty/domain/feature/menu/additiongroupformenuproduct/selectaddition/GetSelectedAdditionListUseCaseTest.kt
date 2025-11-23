@@ -156,7 +156,6 @@ class GetSelectedAdditionListUseCaseTest {
             // Given
             val token = "token"
             val productUuid = "productUuid"
-            val groupUuid = "groupUuid"
 
             val commonAdditions =
                 listOf(
@@ -171,7 +170,7 @@ class GetSelectedAdditionListUseCaseTest {
             val result =
                 getSelectedAdditionListUseCase(
                     selectedGroupAdditionUuid = null,
-                    menuProductUuid = "product1",
+                    menuProductUuid = productUuid,
                     editedAdditionListUuid = emptyList(),
                 )
 
