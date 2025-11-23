@@ -1,11 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.compose.element.textfield
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -14,7 +11,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -59,32 +55,24 @@ fun AdminBaseTextField(
                 )
             },
             trailingIcon = {
-                Box(
-                    modifier =
-                        Modifier
-                            .wrapContentSize()
-                            .padding(end = 16.dp),
-                    contentAlignment = Alignment.CenterEnd,
-                ) {
-                    if (trailingIcon == null) {
-                        if (value.isNotEmpty()) {
-                            Icon(
-                                modifier =
-                                    Modifier
-                                        .size(16.dp)
-                                        .clickable(
-                                            onClick = {
-                                                onValueChange("")
-                                            },
-                                        ),
-                                painter = painterResource(R.drawable.ic_clear),
-                                tint = AdminTheme.colors.main.onSurfaceVariant,
-                                contentDescription = null,
-                            )
-                        }
-                    } else {
-                        trailingIcon()
+                if (trailingIcon == null) {
+                    if (value.isNotEmpty()) {
+                        Icon(
+                            modifier =
+                                Modifier
+                                    .size(16.dp)
+                                    .clickable(
+                                        onClick = {
+                                            onValueChange("")
+                                        },
+                                    ),
+                            painter = painterResource(R.drawable.ic_clear),
+                            tint = AdminTheme.colors.main.onSurfaceVariant,
+                            contentDescription = null,
+                        )
                     }
+                } else {
+                    trailingIcon()
                 }
             },
             isError = isError,
