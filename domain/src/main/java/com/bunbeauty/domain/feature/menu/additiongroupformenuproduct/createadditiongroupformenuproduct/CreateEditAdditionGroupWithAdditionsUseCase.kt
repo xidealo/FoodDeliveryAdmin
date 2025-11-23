@@ -4,7 +4,6 @@ import com.bunbeauty.domain.exception.NoAdditionGroupException
 import com.bunbeauty.domain.exception.NoAdditionListException
 import com.bunbeauty.domain.repo.MenuProductRepo
 
-// todo tests
 class CreateEditAdditionGroupWithAdditionsUseCase(
     private val menuProductRepo: MenuProductRepo,
 ) {
