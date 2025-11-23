@@ -113,7 +113,13 @@ class SelectAdditionGroupFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // onAction(SelectAdditionGroup.Action)
+                            viewModel.onAction(
+                                SelectAdditionGroup.Action.Init(
+                                    selectedAdditionGroupUuid = selectAdditionGroupFragmentArgs.additionGroupUuid,
+                                    menuProductUuid = selectAdditionGroupFragmentArgs.menuProductUuid,
+                                    mainEditedAdditionGroupUuid = selectAdditionGroupFragmentArgs.mainEditedAdditionGroupUuid,
+                                ),
+                            )
                         },
                     )
                 }

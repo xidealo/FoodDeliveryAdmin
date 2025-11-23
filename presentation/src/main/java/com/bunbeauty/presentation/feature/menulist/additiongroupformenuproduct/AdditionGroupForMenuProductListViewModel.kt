@@ -184,7 +184,6 @@ class AdditionGroupForMenuProductListViewModel(
         setState {
             copy(
                 state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
-                // isEditPriority = false,
             )
         }
     }
@@ -193,7 +192,6 @@ class AdditionGroupForMenuProductListViewModel(
         setState {
             copy(
                 state = AdditionGroupForMenuProductList.DataState.State.SUCCESS_DRAG_DROP,
-                // isEditPriority = true,
             )
         }
     }
@@ -213,7 +211,6 @@ class AdditionGroupForMenuProductListViewModel(
                 )
                 setState {
                     copy(
-                        //  isEditPriority = false,
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
                     )
                 }

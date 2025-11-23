@@ -106,8 +106,9 @@ class AdditionGroupForMenuProductListFragment :
                             id = R.string.title_edit_priority,
                         )
 
-                    AdditionGroupForMenuProductListViewState.State.Error -> null
-                    AdditionGroupForMenuProductListViewState.State.Loading -> null
+                    AdditionGroupForMenuProductListViewState.State.Error,
+                    AdditionGroupForMenuProductListViewState.State.Loading,
+                    -> null
                 },
             pullRefreshEnabled = true,
             refreshing = state.isRefreshing,
@@ -136,8 +137,6 @@ class AdditionGroupForMenuProductListFragment :
             backgroundColor = AdminTheme.colors.main.surface,
             topActions =
                 when (state.state) {
-                    AdditionGroupForMenuProductListViewState.State.Error -> emptyList()
-                    AdditionGroupForMenuProductListViewState.State.Loading -> emptyList()
                     is AdditionGroupForMenuProductListViewState.State.Success ->
                         listOf(
                             AdminTopBarAction(
@@ -163,11 +162,13 @@ class AdditionGroupForMenuProductListFragment :
                                 },
                             ),
                         )
+
+                    AdditionGroupForMenuProductListViewState.State.Error,
+                    AdditionGroupForMenuProductListViewState.State.Loading,
+                    -> emptyList()
                 },
             actionButton = {
                 when (state.state) {
-                    AdditionGroupForMenuProductListViewState.State.Error -> Unit
-                    AdditionGroupForMenuProductListViewState.State.Loading -> Unit
                     is AdditionGroupForMenuProductListViewState.State.Success -> {
                         FloatingButton(
                             iconId = R.drawable.ic_plus,
@@ -178,7 +179,10 @@ class AdditionGroupForMenuProductListFragment :
                         )
                     }
 
-                    is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop -> Unit
+                    AdditionGroupForMenuProductListViewState.State.Error,
+                    AdditionGroupForMenuProductListViewState.State.Loading,
+                    is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop,
+                    -> Unit
                 }
             },
             actionButtonPosition = FabPosition.End,
@@ -399,7 +403,6 @@ class AdditionGroupForMenuProductListFragment :
                         ),
                 ),
             isRefreshing = false,
-            // isEditPriority = false,
         )
 
     @Composable
