@@ -13,7 +13,6 @@ data class SelectedAdditionForMenu(
     val notSelectedAdditionList: List<Addition>,
 )
 
-// todo Tests
 class GetSelectedAdditionListUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo,

@@ -84,7 +84,7 @@ class EditAdditionGroupForMenuProductFragment :
         onAction: (EditAdditionGroupForMenu.Action) -> Unit,
     ) {
         AdminScaffold(
-            title = state.groupName ?: stringResource(R.string.title_common_loading),
+            title = stringResource(R.string.title_edit_addition_group_for_menu_product),
             backActionClick = {
                 onAction(EditAdditionGroupForMenu.Action.OnBackClick)
             },
