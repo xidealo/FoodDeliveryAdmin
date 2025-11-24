@@ -116,14 +116,20 @@ class SelectAdditionListFragment :
         AdminScaffold(
             title =
                 when (state.state) {
-                    SelectAdditionList.DataState.State.LOADING -> null
+                    SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR -> null
-                    SelectAdditionList.DataState.State.SUCCESS -> stringResource(id = R.string.title_select_addition_group)
-                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> stringResource(R.string.title_edit_priority)
+
+                    SelectAdditionList.DataState.State.SUCCESS -> stringResource(
+                        id = R.string.title_select_addition_list
+                    )
+
+                    SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP -> stringResource(
+                        id = R.string.title_edit_priority
+                    )
                 },
             backActionClick = {
                 when (state.state) {
-                    SelectAdditionList.DataState.State.LOADING -> Unit
+                    SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR -> Unit
                     SelectAdditionList.DataState.State.SUCCESS -> onAction(SelectAdditionList.Action.OnBackClick)
                     SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP ->
@@ -135,7 +141,7 @@ class SelectAdditionListFragment :
             backgroundColor = AdminTheme.colors.main.surface,
             actionButton = {
                 when (state.state) {
-                    SelectAdditionList.DataState.State.LOADING -> Unit
+                    SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR -> Unit
                     SelectAdditionList.DataState.State.SUCCESS -> {
                         LoadingButton(
@@ -155,7 +161,7 @@ class SelectAdditionListFragment :
             },
             topActions =
                 when (state.state) {
-                    SelectAdditionList.DataState.State.LOADING -> emptyList()
+                    SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR -> emptyList()
                     SelectAdditionList.DataState.State.SUCCESS -> {
                         if (state.emptySelectedList) {
@@ -247,7 +253,8 @@ class SelectAdditionListFragment :
                             .padding(
                                 start = 16.dp,
                                 bottom = 16.dp,
-                            ).fillMaxWidth()
+                            )
+                            .fillMaxWidth()
                             .animateItem()
                             .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION),
@@ -287,7 +294,8 @@ class SelectAdditionListFragment :
                         Modifier
                             .padding(
                                 all = 16.dp,
-                            ).fillMaxWidth()
+                            )
+                            .fillMaxWidth()
                             .animateItem()
                             .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION),
