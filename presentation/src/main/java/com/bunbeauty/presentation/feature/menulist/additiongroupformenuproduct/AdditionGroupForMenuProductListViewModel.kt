@@ -23,6 +23,7 @@ class AdditionGroupForMenuProductListViewModel(
                 additionGroupList = listOf(),
                 state = AdditionGroupForMenuProductList.DataState.State.LOADING,
                 isRefreshing = false,
+                emptyListAdditionGroup = false,
             ),
     ) {
     override fun reduce(
@@ -91,6 +92,7 @@ class AdditionGroupForMenuProductListViewModel(
                     copy(
                         additionGroupList = additionGroupList,
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
+                        emptyListAdditionGroup = additionGroupList.isEmpty(),
                     )
                 }
             },

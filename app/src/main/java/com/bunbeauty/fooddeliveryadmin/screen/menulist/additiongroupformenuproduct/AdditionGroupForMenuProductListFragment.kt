@@ -139,15 +139,19 @@ class AdditionGroupForMenuProductListFragment :
             topActions =
                 when (state.state) {
                     is AdditionGroupForMenuProductListViewState.State.Success ->
-                        listOf(
-                            AdminTopBarAction(
-                                iconId = R.drawable.ic_edit,
-                                color = AdminTheme.colors.main.primary,
-                                onClick = {
-                                    onAction(AdditionGroupForMenuProductList.Action.OnPriorityEditClicked)
-                                },
-                            ),
-                        )
+                        if (state.emptyListAdditionGroup) {
+                            emptyList()
+                        } else {
+                            listOf(
+                                AdminTopBarAction(
+                                    iconId = R.drawable.ic_edit,
+                                    color = AdminTheme.colors.main.primary,
+                                    onClick = {
+                                        onAction(AdditionGroupForMenuProductList.Action.OnPriorityEditClicked)
+                                    },
+                                ),
+                            )
+                        }
 
                     is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop ->
                         listOf(
@@ -356,6 +360,7 @@ class AdditionGroupForMenuProductListFragment :
                         )
                 },
             isRefreshing = state.isRefreshing,
+            emptyListAdditionGroup = state.emptyListAdditionGroup,
         )
 
     override fun handleEvent(event: AdditionGroupForMenuProductList.Event) {
@@ -410,6 +415,7 @@ class AdditionGroupForMenuProductListFragment :
                         ),
                 ),
             isRefreshing = false,
+            emptyListAdditionGroup = true,
         )
 
     @Composable
