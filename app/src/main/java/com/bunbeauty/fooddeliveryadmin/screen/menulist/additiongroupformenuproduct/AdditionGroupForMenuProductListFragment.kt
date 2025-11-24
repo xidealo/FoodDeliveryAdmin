@@ -30,6 +30,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateAdditionGroupForMenuProductFragment.Companion.CREATE_ADDITION_GROUP
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductFragment.Companion.EDIT_ADDITION_GROUP
@@ -377,6 +378,12 @@ class AdditionGroupForMenuProductListFragment :
                         .toCreateAdditionGroupForMenuProductFragment(
                             menuProductUuid = additionGroupForMenuProductFragmentArgs.menuProductUuid,
                         ),
+                )
+            }
+
+            AdditionGroupForMenuProductList.Event.ShowUpdateAdditionGroupListSuccess -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_update_addition_group_for_menu_product_priority_list),
                 )
             }
         }

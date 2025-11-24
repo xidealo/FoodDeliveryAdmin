@@ -58,5 +58,7 @@ interface AdditionGroupForMenuProductList {
         data class OnAdditionGroupClicked(
             val additionGroupUuid: String,
         ) : Event
+
+        data object ShowUpdateAdditionGroupListSuccess : Event
     }
 }

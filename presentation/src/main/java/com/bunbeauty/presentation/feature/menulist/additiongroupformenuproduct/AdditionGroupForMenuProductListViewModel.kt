@@ -214,6 +214,7 @@ class AdditionGroupForMenuProductListViewModel(
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
                     )
                 }
+                sendEvent { AdditionGroupForMenuProductList.Event.ShowUpdateAdditionGroupListSuccess }
             },
             onError = {
                 setState {
