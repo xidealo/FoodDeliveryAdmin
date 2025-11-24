@@ -43,6 +43,12 @@ class SelectAdditionGroupViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
+                setState {
+                    copy(
+                        state = SelectAdditionGroup.DataState.State.LOADING,
+                    )
+                }
+
                 val separatedAdditionGroupList =
                     getSeparatedSelectableAdditionGroupListUseCase(
                         refreshing = false,
