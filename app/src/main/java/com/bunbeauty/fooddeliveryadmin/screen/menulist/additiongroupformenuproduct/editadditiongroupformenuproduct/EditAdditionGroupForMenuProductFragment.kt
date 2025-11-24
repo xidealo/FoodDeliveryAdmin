@@ -27,6 +27,8 @@ import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuprodu
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.ADDITION_GROUP_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.SELECT_ADDITION_GROUP_KEY
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu.Action.Init
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu.Action.OnBackClick
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -86,7 +88,7 @@ class EditAdditionGroupForMenuProductFragment :
         AdminScaffold(
             title = stringResource(R.string.title_edit_addition_group_for_menu_product),
             backActionClick = {
-                onAction(EditAdditionGroupForMenu.Action.OnBackClick)
+                onAction(OnBackClick)
             },
             backgroundColor = AdminTheme.colors.main.surface,
         ) {
@@ -98,7 +100,7 @@ class EditAdditionGroupForMenuProductFragment :
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             viewModel.onAction(
-                                EditAdditionGroupForMenu.Action.Init(
+                                Init(
                                     additionGroupForMenuUuid =
                                         editAdditionGroupForMenuProductFragmentArgs
                                             .additionGroupForMenuUuid,

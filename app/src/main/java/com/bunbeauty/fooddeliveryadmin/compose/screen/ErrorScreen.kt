@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,14 +42,14 @@ fun ErrorScreen(
                     .background(AdminTheme.colors.main.error),
             contentAlignment = Alignment.Center,
         ) {
-            androidx.compose.material3.Icon(
+            Icon(
                 modifier = Modifier.size(64.dp),
                 painter = painterResource(R.drawable.ic_error),
                 tint = AdminTheme.colors.main.onError,
                 contentDescription = null,
             )
         }
-        androidx.compose.material3.Text(
+        Text(
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -59,7 +61,7 @@ fun ErrorScreen(
             textAlign = TextAlign.Center,
         )
         extraTextId?.let {
-            androidx.compose.material3.Text(
+            Text(
                 modifier =
                     Modifier
                         .fillMaxWidth()
