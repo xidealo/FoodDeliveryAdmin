@@ -92,7 +92,7 @@ class AdditionGroupForMenuProductListViewModel(
                     copy(
                         additionGroupList = additionGroupList,
                         state = AdditionGroupForMenuProductList.DataState.State.SUCCESS,
-                        emptyListAdditionGroup = additionGroupList.isEmpty(),
+                        emptyListAdditionGroup = additionGroupList.size < 2,
                     )
                 }
             },
