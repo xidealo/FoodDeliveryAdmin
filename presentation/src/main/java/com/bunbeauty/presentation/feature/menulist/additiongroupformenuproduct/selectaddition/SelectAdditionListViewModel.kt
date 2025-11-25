@@ -182,6 +182,7 @@ class SelectAdditionListViewModel(
                         selectedAdditionList = updatedList,
                     )
                 }
+                sendEvent { SelectAdditionList.Event.ShowUpdateSelectAdditionListSuccess }
             },
             onError = {
                 setState {

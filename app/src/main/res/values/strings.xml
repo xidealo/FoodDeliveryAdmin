@@ -312,6 +312,7 @@
     <string name="title_addition_group_for_menu_product">Список групп</string>
     <string name="title_addition_group_for_menu_product_empty">Здесь будут группы добавок</string>
     <string name="action_addition_group_for_menu_product_addition_add">Добавить</string>
+    <string name="msg_update_addition_group_for_menu_product_priority_list">Список обновлен</string>
 
 
     <!-- Edit Addition Group For Menu Product -->
@@ -342,4 +343,5 @@
     <string name="action_select_addition_list_title_group">Добавки в группе %s</string>
     <string name="action_select_addition_list_title_additions">Добавки</string>
     <string name="action_select_addition_list_title_selected">Изменены добавки</string>
+    <string name="msg_update_select_addition_list_priority_list">Список обновлен</string>
 </resources>

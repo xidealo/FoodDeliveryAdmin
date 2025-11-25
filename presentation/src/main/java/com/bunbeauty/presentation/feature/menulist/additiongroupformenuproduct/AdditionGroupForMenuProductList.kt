@@ -10,6 +10,7 @@ interface AdditionGroupForMenuProductList {
         val additionGroupList: List<AdditionGroupForMenuProduct>,
         val state: State,
         val isRefreshing: Boolean,
+        val emptyListAdditionGroup: Boolean,
     ) : BaseDataState {
         enum class State {
             LOADING,
@@ -58,5 +59,7 @@ interface AdditionGroupForMenuProductList {
         data class OnAdditionGroupClicked(
             val additionGroupUuid: String,
         ) : Event
+
+        data object ShowUpdateAdditionGroupListSuccess : Event
     }
 }
