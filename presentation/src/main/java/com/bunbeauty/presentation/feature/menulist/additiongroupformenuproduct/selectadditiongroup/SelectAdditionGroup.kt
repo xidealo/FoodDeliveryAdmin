@@ -11,6 +11,9 @@ interface SelectAdditionGroup {
         val hiddenSelectableAdditionGroupList: List<SelectableAdditionGroup>,
         val state: State,
     ) : BaseViewDataState {
+        val hasNoAvailableAdditionGroups =
+            (visibleSelectableAdditionGroupList + hiddenSelectableAdditionGroupList).isEmpty()
+
         enum class State {
             LOADING,
             ERROR,
