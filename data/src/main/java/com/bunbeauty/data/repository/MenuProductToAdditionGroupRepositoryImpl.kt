@@ -41,7 +41,6 @@ class MenuProductToAdditionGroupRepositoryImpl(
         )
     }
 
-    // todo add handle error
     private suspend fun getMenuProductToAdditionGroupNetwork(
         token: String,
         uuid: String,
