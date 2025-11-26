@@ -1,5 +1,6 @@
 package com.bunbeauty.data.repository
 
+import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
@@ -35,10 +36,13 @@ class MenuProductToAdditionGroupRepositoryImpl(
             PatchMenuProductToAdditionGroupPriorityUuid(
                 additionGroupUuidList = additionGroupListUuid,
             )
-        foodDeliveryApi.patchMenuProductToAdditionGroupPriorityUuid(
+        val result = foodDeliveryApi.patchMenuProductToAdditionGroupPriorityUuid(
             token = token,
             additionGroupListUuid = patchMenuProductToAdditionGroupPriorityUuid,
         )
+        if (result is ApiResult.Error){
+            throw Exception(result.apiError.message)
+        }
     }
 
     // todo add handle error
