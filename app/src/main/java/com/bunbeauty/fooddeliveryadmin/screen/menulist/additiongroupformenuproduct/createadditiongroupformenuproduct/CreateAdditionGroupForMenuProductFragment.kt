@@ -211,7 +211,7 @@ class CreateAdditionGroupForMenuProductFragment :
                                 additionGroupUuid = null,
                                 menuProductUuid = event.menuProductUuid,
                                 additionGroupForMenuName = event.additionGroupName,
-                                editedAdditionListUuid = null,
+                                editedAdditionListUuid = event.createEdAdditionListUuid.toTypedArray(),
                             ),
                 )
             }
@@ -226,7 +226,7 @@ class CreateAdditionGroupForMenuProductFragment :
             menuProductUuid = "",
             additionGroupForMenuProductUuid = "",
             editedAdditionGroupUuid = "",
-            editedAdditionListUuid = listOf(),
+            createdAdditionListUuid = listOf(),
             isVisible = false,
             groupHasError = false,
             isSaveLoading = false,

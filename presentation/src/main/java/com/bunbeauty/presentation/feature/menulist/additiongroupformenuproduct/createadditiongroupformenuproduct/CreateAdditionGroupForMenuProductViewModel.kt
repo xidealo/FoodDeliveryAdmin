@@ -24,7 +24,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                 menuProductUuid = "",
                 editedAdditionGroupUuid = null,
                 additionGroupForMenuProductUuid = "",
-                editedAdditionListUuid = listOf(),
+                createdAdditionListUuid = listOf(),
                 isVisible = false,
                 groupHasError = false,
                 isSaveLoading = false,
@@ -60,6 +60,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                 onAdditionListClick(
                     menuProductUuid = dataState.menuProductUuid,
                     groupName = dataState.groupName.orEmpty(),
+                    createdAdditionListUuid = dataState.createdAdditionListUuid.orEmpty(),
                 )
 
             CreateAdditionGroupForMenu.Action.OnBackClick -> backClick()
@@ -68,7 +69,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                 onSaveClick(
                     menuProductUuid = dataState.menuProductUuid,
                     editedAdditionGroupUuid = dataState.editedAdditionGroupUuid,
-                    editedAdditionListUuid = dataState.editedAdditionListUuid.orEmpty(),
+                    editedAdditionListUuid = dataState.createdAdditionListUuid.orEmpty(),
                 )
         }
     }
@@ -121,11 +122,13 @@ class CreateAdditionGroupForMenuProductViewModel(
     private fun onAdditionListClick(
         menuProductUuid: String,
         groupName: String,
+        createdAdditionListUuid: List<String>,
     ) {
         sendEvent {
             CreateAdditionGroupForMenu.Event.OnAdditionListClick(
                 menuProductUuid = menuProductUuid,
-                additionGroupName = groupName.orEmpty(),
+                additionGroupName = groupName,
+                createEdAdditionListUuid = createdAdditionListUuid,
             )
         }
     }
@@ -143,7 +146,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                             getEditedAdditionUuidList(
                                 editedAdditionListUuid = additionUuidList,
                             ),
-                        editedAdditionListUuid = additionUuidList,
+                        createdAdditionListUuid = additionUuidList,
                         additionListHasError = false,
                     )
                 }
