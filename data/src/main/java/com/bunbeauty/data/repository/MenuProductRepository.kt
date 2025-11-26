@@ -13,6 +13,7 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
+import java.lang.Exception
 
 class MenuProductRepository(
     private val networkConnector: FoodDeliveryApi,
@@ -112,15 +113,19 @@ class MenuProductRepository(
         additionGroupUuid: String?,
         additionList: List<String>?,
     ) {
-        networkConnector.patchMenuProductAdditions(
-            token = dataStoreRepository.getToken() ?: throw NoTokenException(),
-            menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
-            menuProductAdditionsPatchServer =
-                MenuProductAdditionsPatchServer(
-                    additionGroupUuid = additionGroupUuid,
-                    additionUuidList = additionList,
-                ),
-        )
+        val result =
+            networkConnector.patchMenuProductAdditions(
+                token = dataStoreRepository.getToken() ?: throw NoTokenException(),
+                menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
+                menuProductAdditionsPatchServer =
+                    MenuProductAdditionsPatchServer(
+                        additionGroupUuid = additionGroupUuid,
+                        additionUuidList = additionList,
+                    ),
+            )
+        if (result is ApiResult.Error) {
+            throw Exception(result.apiError.message)
+        }
     }
 
     override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String =

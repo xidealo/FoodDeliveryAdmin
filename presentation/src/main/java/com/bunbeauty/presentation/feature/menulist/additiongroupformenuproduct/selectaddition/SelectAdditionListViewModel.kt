@@ -125,7 +125,7 @@ class SelectAdditionListViewModel(
         selectedGroupAdditionUuid: String?,
         selectedGroupAdditionName: String,
         menuProductUuid: String,
-        editedAdditionListUuid: List<String>,
+        editedAdditionListUuid: List<String>?,
     ) {
         viewModelScope.launchSafe(
             block = {
