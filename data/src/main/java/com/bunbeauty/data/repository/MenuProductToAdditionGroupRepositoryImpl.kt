@@ -36,11 +36,12 @@ class MenuProductToAdditionGroupRepositoryImpl(
             PatchMenuProductToAdditionGroupPriorityUuid(
                 additionGroupUuidList = additionGroupListUuid,
             )
-        val result = foodDeliveryApi.patchMenuProductToAdditionGroupPriorityUuid(
-            token = token,
-            additionGroupListUuid = patchMenuProductToAdditionGroupPriorityUuid,
-        )
-        if (result is ApiResult.Error){
+        val result =
+            foodDeliveryApi.patchMenuProductToAdditionGroupPriorityUuid(
+                token = token,
+                additionGroupListUuid = patchMenuProductToAdditionGroupPriorityUuid,
+            )
+        if (result is ApiResult.Error) {
             throw Exception(result.apiError.message)
         }
     }

@@ -65,15 +65,19 @@ class MenuProductRepository(
         additionGroupUuid: String,
         additionList: List<String>,
     ) {
-        networkConnector.postMenuProductAdditions(
-            token = dataStoreRepository.getToken() ?: throw NoTokenException(),
-            menuProductAdditionsPostServer =
-                MenuProductAdditionsPostServer(
-                    menuProductUuids = listOf(menuProductUuid),
-                    additionGroupUuid = additionGroupUuid,
-                    additionUuids = additionList,
-                ),
-        )
+        val result =
+            networkConnector.postMenuProductAdditions(
+                token = dataStoreRepository.getToken() ?: throw NoTokenException(),
+                menuProductAdditionsPostServer =
+                    MenuProductAdditionsPostServer(
+                        menuProductUuids = listOf(menuProductUuid),
+                        additionGroupUuid = additionGroupUuid,
+                        additionUuids = additionList,
+                    ),
+            )
+        if (result is ApiResult.Error) {
+            throw Exception(result.apiError.message)
+        }
     }
 
     override suspend fun getMenuProduct(
