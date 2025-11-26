@@ -321,6 +321,8 @@
     <string name="title_edit_addition_group_for_menu_product_addition">Добавки</string>
     <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
     <string name="action_edit_addition_group_for_menu_product_save">Сохранить</string>
+    <string name="msg_update_edit_addition_group_for_menu_product">Группа успешно изменена</string>
+
 
     <!-- Edit Create Group For Menu Product -->
     <string name="title_create_addition_group_for_menu_product">Добавление группы</string>
