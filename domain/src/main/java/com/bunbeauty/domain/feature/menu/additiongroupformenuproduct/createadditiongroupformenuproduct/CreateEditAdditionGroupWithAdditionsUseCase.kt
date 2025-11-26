@@ -10,13 +10,13 @@ class CreateEditAdditionGroupWithAdditionsUseCase(
     suspend operator fun invoke(
         menuProductUuid: String,
         additionGroupUuid: String?,
-        additionList: List<String>,
+        additionList: List<String>?,
     ) {
         if (additionGroupUuid == null) {
             throw NoAdditionGroupException()
         }
 
-        if (additionList.isEmpty()) {
+        if (additionList.isNullOrEmpty()) {
             throw NoAdditionListException()
         }
 
