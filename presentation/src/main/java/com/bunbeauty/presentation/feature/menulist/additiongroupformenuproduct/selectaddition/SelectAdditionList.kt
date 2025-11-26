@@ -64,5 +64,7 @@ interface SelectAdditionList {
         data class SelectAdditionListBack(
             val additionUuidList: List<String>,
         ) : Event
+
+        data object ShowUpdateSelectAdditionListSuccess : Event
     }
 }

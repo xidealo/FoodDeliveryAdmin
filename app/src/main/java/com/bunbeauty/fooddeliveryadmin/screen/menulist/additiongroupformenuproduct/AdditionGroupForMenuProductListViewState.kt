@@ -6,6 +6,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 data class AdditionGroupForMenuProductListViewState(
     val state: State,
     val isRefreshing: Boolean,
+    val emptyListAdditionGroup: Boolean,
 ) : BaseViewState {
     sealed interface State {
         data object Loading : State

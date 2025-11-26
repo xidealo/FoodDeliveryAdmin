@@ -105,6 +105,12 @@ class SelectAdditionListFragment :
                 )
                 findNavController().popBackStack()
             }
+
+            SelectAdditionList.Event.ShowUpdateSelectAdditionListSuccess -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(R.string.msg_update_select_addition_list_priority_list),
+                )
+            }
         }
     }
 

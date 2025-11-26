@@ -12,7 +12,7 @@ interface CreateAdditionGroupForMenu {
         val groupHasError: Boolean,
         val state: State,
         val additionNameList: String?,
-        val editedAdditionListUuid: List<String>?,
+        val createdAdditionListUuid: List<String>?,
         val additionListHasError: Boolean,
         val isVisible: Boolean,
         val menuProductUuid: String,
@@ -60,6 +60,7 @@ interface CreateAdditionGroupForMenu {
         data class OnAdditionListClick(
             val menuProductUuid: String,
             val additionGroupName: String,
+            val createEdAdditionListUuid: List<String>,
         ) : Event
     }
 }
