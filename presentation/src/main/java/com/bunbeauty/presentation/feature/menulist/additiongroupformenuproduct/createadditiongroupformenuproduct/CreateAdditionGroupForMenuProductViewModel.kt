@@ -69,7 +69,7 @@ class CreateAdditionGroupForMenuProductViewModel(
                 onSaveClick(
                     menuProductUuid = dataState.menuProductUuid,
                     editedAdditionGroupUuid = dataState.editedAdditionGroupUuid,
-                    editedAdditionListUuid = dataState.createdAdditionListUuid.orEmpty(),
+                    editedAdditionListUuid = dataState.createdAdditionListUuid,
                 )
         }
     }
@@ -175,7 +175,7 @@ class CreateAdditionGroupForMenuProductViewModel(
     private fun onSaveClick(
         menuProductUuid: String,
         editedAdditionGroupUuid: String?,
-        editedAdditionListUuid: List<String>,
+        editedAdditionListUuid: List<String>?,
     ) {
         viewModelScope.launchSafe(
             block = {

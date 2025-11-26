@@ -22,6 +22,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment.Companion.ADDITION_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment.Companion.SELECT_ADDITION_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.ADDITION_GROUP_KEY
@@ -45,7 +46,7 @@ class EditAdditionGroupForMenuProductFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(
-            EditAdditionGroupForMenu.Action.Init(
+            Init(
                 additionGroupForMenuUuid =
                     editAdditionGroupForMenuProductFragmentArgs
                         .additionGroupForMenuUuid,
@@ -179,6 +180,11 @@ class EditAdditionGroupForMenuProductFragment :
             }
 
             EditAdditionGroupForMenu.Event.SaveAndBack -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(
+                        R.string.msg_update_edit_addition_group_for_menu_product,
+                    ),
+                )
                 setFragmentResult(
                     requestKey = EDIT_ADDITION_GROUP,
                     result = bundleOf(EDIT_ADDITION_GROUP_KEY to true),
@@ -205,7 +211,7 @@ class EditAdditionGroupForMenuProductFragment :
                             menuProductUuid = event.menuProductUuid,
                             additionGroupForMenuName = event.additionGroupName,
                             editedAdditionListUuid =
-                                event.editedAdditionListUuid.toTypedArray(),
+                                event.editedAdditionListUuid?.toTypedArray(),
                         ),
                 )
             }
