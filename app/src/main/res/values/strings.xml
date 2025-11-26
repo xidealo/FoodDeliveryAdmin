@@ -324,7 +324,7 @@
     <string name="msg_update_edit_addition_group_for_menu_product">Группа успешно изменена</string>
 
 
-    <!-- Edit Create Group For Menu Product -->
+    <!-- Create Addition Group For Menu Product -->
     <string name="title_create_addition_group_for_menu_product">Добавление группы</string>
     <string name="title_create_addition_group_for_menu_product_group">Группа</string>
     <string name="title_create_addition_group_for_menu_product_addition">Добавки</string>
@@ -338,6 +338,7 @@
     <string name="title_select_addition_group">Выбор группы</string>
     <string name="title_select_addition_group_position_visible">Видимые позиции</string>
     <string name="title_select_addition_group_position_hidden">Скрытые позиции</string>
+    <string name="title_select_addition_group_empty_list">Нет доступных групп</string>
     <string name="msg_select_addition_group_selected">Выбрана группа %s</string>
 
     <!--Select Addition List-->
