@@ -19,14 +19,16 @@ suspend fun <T, R> ApiResult<T>.getNullableResult(
         }
     }
 
-suspend fun <T> ApiResult<T>.onSuccess(block: (suspend (T) -> Unit)) {
+suspend inline fun <T> ApiResult<T>.onSuccess(block: (suspend (T) -> Unit)): ApiResult<T> {
     if (this is ApiResult.Success) {
         block(this.data)
     }
+    return this
 }
 
-suspend fun <T> ApiResult<T>.onError(block: suspend (ApiError) -> Unit) {
+suspend inline fun <T> ApiResult<T>.onError(block: suspend (ApiError) -> Unit): ApiResult<T> {
     if (this is ApiResult.Error) {
         block(this.apiError)
     }
+    return this
 }

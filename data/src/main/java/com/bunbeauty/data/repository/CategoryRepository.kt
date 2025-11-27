@@ -1,6 +1,7 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
+import com.bunbeauty.common.extension.onError
 import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
@@ -13,6 +14,7 @@ import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.CreateCategory
 import com.bunbeauty.domain.feature.menu.common.model.UpdateCategory
 import com.bunbeauty.domain.repo.CategoryRepo
+import java.lang.Exception
 
 class CategoryRepository(
     private val networkConnector: FoodDeliveryApi,
@@ -132,6 +134,8 @@ class CategoryRepository(
                         categoryServer = categoryMapper.categoryMapper(category),
                     )
                 }
+            }.onError { apiError ->
+                throw Exception(apiError.message)
             }
     }
 
