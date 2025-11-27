@@ -289,7 +289,7 @@ class GetSelectedAdditionListUseCaseTest {
                 getSelectedAdditionListUseCase(
                     selectedGroupAdditionUuid = "group1",
                     menuProductUuid = "product1",
-                    editedAdditionListUuid = emptyList(),
+                    editedAdditionListUuid = null,
                 )
 
             // Then

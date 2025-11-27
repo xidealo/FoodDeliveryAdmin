@@ -321,6 +321,8 @@
     <string name="title_edit_addition_group_for_menu_product_addition">Добавки</string>
     <string name="title_edit_addition_group_for_menu_product_visible">Показать в меню</string>
     <string name="action_edit_addition_group_for_menu_product_save">Сохранить</string>
+    <string name="msg_update_edit_addition_group_for_menu_product">Группа успешно изменена</string>
+
 
     <!-- Create Addition Group For Menu Product -->
     <string name="title_create_addition_group_for_menu_product">Добавление группы</string>
@@ -330,6 +332,7 @@
     <string name="action_create_addition_group_for_menu_product_save">Сохранить</string>
     <string name="error_create_addition_group_for_menu_product_group">Выберите группу</string>
     <string name="error_create_addition_group_for_menu_product_addition">Выберите добавки</string>
+    <string name="msg_update_create_addition_group_for_menu_product_addition">Группа успешно добавлена</string>
 
     <!--Select Addition Group-->
     <string name="title_select_addition_group">Выбор группы</string>

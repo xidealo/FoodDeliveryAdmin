@@ -73,8 +73,7 @@ class SelectAdditionListFragment :
                 additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
                 additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName,
                 editedAdditionListUuid =
-                    selectAdditionFragmentArgs.editedAdditionListUuid?.toList()
-                        ?: emptyList(),
+                    selectAdditionFragmentArgs.editedAdditionListUuid?.toList(),
             ),
         )
     }
@@ -219,8 +218,7 @@ class SelectAdditionListFragment :
                                     additionGroupUuid = selectAdditionFragmentArgs.additionGroupUuid,
                                     additionGroupName = selectAdditionFragmentArgs.additionGroupForMenuName,
                                     editedAdditionListUuid =
-                                        selectAdditionFragmentArgs.editedAdditionListUuid?.toList()
-                                            ?: emptyList(),
+                                        selectAdditionFragmentArgs.editedAdditionListUuid?.toList(),
                                 ),
                             )
                         },
