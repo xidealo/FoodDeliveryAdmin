@@ -12,11 +12,12 @@ android {
         minSdk = AndroidSdk.min
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-        freeCompilerArgs = listOf("-Xstring-concat=inline")
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.add("-Xstring-concat=inline")
+        }
     }
 }

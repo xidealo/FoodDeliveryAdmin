@@ -5,37 +5,45 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 interface MenuProductRepo {
+    // CREATE
+    suspend fun saveMenuProduct(
+        token: String,
+        menuProductPost: MenuProductPost,
+    ): MenuProduct?
 
-    suspend fun saveMenuProduct(token: String, menuProductPost: MenuProductPost): MenuProduct?
+    suspend fun createMenuProductAdditions(
+        menuProductUuid: String,
+        additionGroupUuid: String,
+        additionList: List<String>,
+    )
 
-    /*GET*/
+    // GET
     suspend fun getMenuProductList(
         companyUuid: String,
-        takeRemote: Boolean = true
+        takeRemote: Boolean = true,
     ): List<MenuProduct>?
 
     suspend fun getMenuProduct(
         menuProductUuid: String,
-        companyUuid: String
+        companyUuid: String,
     ): MenuProduct?
 
-    /*UPDATE*/
+    // UPDATE
     suspend fun updateMenuProduct(
         menuProductUuid: String,
         updateMenuProduct: UpdateMenuProduct,
-        token: String
+        token: String,
     ): MenuProduct?
 
-    /*UPDATE*/
     suspend fun updateMenuProductAdditions(
         menuProductToAdditionGroupUuid: String,
         additionGroupUuid: String?,
-        additionList: List<String>?
+        additionList: List<String>?,
     )
 
-    /*DELETE*/
+    // DELETE
     fun clearCache()
 
-    /*OTHER*/
+    // OTHER
     suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): String
 }

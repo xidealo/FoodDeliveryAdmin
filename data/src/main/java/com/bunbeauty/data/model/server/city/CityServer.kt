@@ -7,5 +7,5 @@ data class CityServer(
     val uuid: String,
     val name: String,
     val timeZone: String,
-    val isVisible: Boolean
+    val isVisible: Boolean,
 )

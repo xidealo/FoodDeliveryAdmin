@@ -23,52 +23,68 @@ import kotlinx.coroutines.flow.onCompletion
 
 class OrderRepository(
     private val networkConnector: FoodDeliveryApi,
-    private val serverOrderMapper: IServerOrderMapper
+    private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
-
     private var cachedOrderList: List<Order>? = null
     private var cachedOrderAvailability: OrderAvailability? = null
 
-    override suspend fun updateStatus(token: String, orderUuid: String, status: OrderStatus) {
+    override suspend fun updateStatus(
+        token: String,
+        orderUuid: String,
+        status: OrderStatus,
+    ) {
         networkConnector.updateOrderStatus(token, orderUuid, status)
     }
 
-    override suspend fun getOrderListFlow(token: String, cafeUuid: String): Flow<List<Order>> {
-        val orderList = getOrderListByCafeUuid(
-            token = token,
-            cafeUuid = cafeUuid
-        )
+    override suspend fun getOrderListFlow(
+        token: String,
+        cafeUuid: String,
+    ): Flow<List<Order>> {
+        val orderList =
+            getOrderListByCafeUuid(
+                token = token,
+                cafeUuid = cafeUuid,
+            )
         cachedOrderList = orderList
-        val updatedOrderListFlow = networkConnector.getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-            .filterIsInstance<ApiResult.Success<OrderServer>>()
-            .map { successApiResult ->
-                val order = serverOrderMapper.mapOrder(successApiResult.data)
-                val updatedOrderList = updateOrderList(
-                    orderList = cachedOrderList.orEmpty(),
-                    newOrder = order
-                )
-                cachedOrderList = updatedOrderList
-                updatedOrderList
-            }.onCompletion {
-                networkConnector.unsubscribeOnOrderList("onCompletion")
-            }
+        val updatedOrderListFlow =
+            networkConnector
+                .getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
+                .filterIsInstance<ApiResult.Success<OrderServer>>()
+                .map { successApiResult ->
+                    val order = serverOrderMapper.mapOrder(successApiResult.data)
+                    val updatedOrderList =
+                        updateOrderList(
+                            orderList = cachedOrderList.orEmpty(),
+                            newOrder = order,
+                        )
+                    cachedOrderList = updatedOrderList
+                    updatedOrderList
+                }.onCompletion {
+                    networkConnector.unsubscribeOnOrderList("onCompletion")
+                }
 
         return merge(
             flowOf(orderList),
-            updatedOrderListFlow
+            updatedOrderListFlow,
         )
     }
 
-    override suspend fun getOrderErrorFlow(token: String, cafeUuid: String): Flow<OrderError> {
-        return networkConnector.getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
+    override suspend fun getOrderErrorFlow(
+        token: String,
+        cafeUuid: String,
+    ): Flow<OrderError> =
+        networkConnector
+            .getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
             .filterIsInstance<ApiResult.Error<OrderServer>>()
             .map { errorApiResult ->
                 OrderError(errorApiResult.apiError.message)
             }
-    }
 
-    private suspend fun getOrderListByCafeUuid(token: String, cafeUuid: String): List<Order> {
-        return when (val result = networkConnector.getOrderListByCafeUuid(token, cafeUuid)) {
+    private suspend fun getOrderListByCafeUuid(
+        token: String,
+        cafeUuid: String,
+    ): List<Order> =
+        when (val result = networkConnector.getOrderListByCafeUuid(token, cafeUuid)) {
             is ApiResult.Success -> {
                 result.data
                     .results
@@ -78,15 +94,17 @@ class OrderRepository(
             is ApiResult.Error -> {
                 Log.e(
                     ORDER_TAG,
-                    "getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}"
+                    "getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}",
                 )
                 throw ServerConnectionException()
             }
         }
-    }
 
-    override suspend fun loadOrderByUuid(token: String, orderUuid: String): OrderDetails? {
-        return when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
+    override suspend fun loadOrderByUuid(
+        token: String,
+        orderUuid: String,
+    ): OrderDetails? =
+        when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
             is ApiResult.Success -> {
                 serverOrderMapper.mapOrderDetails(result.data)
             }
@@ -94,12 +112,11 @@ class OrderRepository(
             is ApiResult.Error -> {
                 Log.e(
                     ORDER_TAG,
-                    "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}"
+                    "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}",
                 )
                 null
             }
         }
-    }
 
     override suspend fun getOrderAvailability(companyUuid: String): OrderAvailability? {
         if (cachedOrderAvailability != null) {
@@ -119,7 +136,7 @@ class OrderRepository(
             is ApiResult.Error -> {
                 Log.e(
                     ORDER_TAG,
-                    "getOrderAvailability ${result.apiError.message} ${result.apiError.code}"
+                    "getOrderAvailability ${result.apiError.message} ${result.apiError.code}",
                 )
                 null
             }
@@ -131,10 +148,14 @@ class OrderRepository(
         cachedOrderAvailability = null
     }
 
-    private fun updateOrderList(orderList: List<Order>, newOrder: Order): List<Order> {
-        val isExisted = orderList.any { order ->
-            order.uuid == newOrder.uuid
-        }
+    private fun updateOrderList(
+        orderList: List<Order>,
+        newOrder: Order,
+    ): List<Order> {
+        val isExisted =
+            orderList.any { order ->
+                order.uuid == newOrder.uuid
+            }
         return if (isExisted) {
             orderList.map { order ->
                 if (order.uuid == newOrder.uuid) {

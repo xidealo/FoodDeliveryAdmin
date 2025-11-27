@@ -8,19 +8,19 @@ import com.bunbeauty.domain.util.GetNewUuidUseCase
 
 data class SeparatedAdditionList(
     val visibleList: List<GroupedAdditionList>,
-    val hiddenList: List<GroupedAdditionList>
+    val hiddenList: List<GroupedAdditionList>,
 )
 
 data class GroupedAdditionList(
     val uuid: String,
     val title: String?,
-    val additionList: List<Addition>
+    val additionList: List<Addition>,
 )
 
 class GetSeparatedAdditionListUseCase(
     private val additionRepo: AdditionRepo,
     private val dataStoreRepo: DataStoreRepo,
-    private val getNewUuidUseCase: GetNewUuidUseCase
+    private val getNewUuidUseCase: GetNewUuidUseCase,
 ) {
     suspend operator fun invoke(refreshing: Boolean): SeparatedAdditionList {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -28,56 +28,57 @@ class GetSeparatedAdditionListUseCase(
         val additionList = additionRepo.getAdditionList(token = token, refreshing = refreshing)
 
         return SeparatedAdditionList(
-            visibleList = additionList
-                .filter { addition ->
-                    addition.isVisible
-                }
-                .groupBy { addition ->
-                    addition.tag
-                }.map { mapOfTagAndAdditionList ->
-                    GroupedAdditionList(
-                        uuid = getNewUuidUseCase(),
-                        title = mapOfTagAndAdditionList.key,
-                        additionList = getSortedAdditionList(
-                            additionList = mapOfTagAndAdditionList.value
+            visibleList =
+                additionList
+                    .filter { addition ->
+                        addition.isVisible
+                    }.groupBy { addition ->
+                        addition.tag
+                    }.map { mapOfTagAndAdditionList ->
+                        GroupedAdditionList(
+                            uuid = getNewUuidUseCase(),
+                            title = mapOfTagAndAdditionList.key,
+                            additionList =
+                                getSortedAdditionList(
+                                    additionList = mapOfTagAndAdditionList.value,
+                                ),
                         )
-                    )
-                } // set elements with title == null to the end of list
-                .sortedWith(
-                    compareBy<GroupedAdditionList> { groupedAdditionList ->
-                        groupedAdditionList.title == null
-                    }.thenBy { groupedAdditionList ->
-                        groupedAdditionList.title
-                    }
-                ),
-            hiddenList = additionList
-                .filterNot { addition ->
-                    addition.isVisible
-                }
-                .groupBy { addition ->
-                    addition.tag
-                }.map { mapOfTagAndAdditionList ->
-                    GroupedAdditionList(
-                        uuid = getNewUuidUseCase(),
-                        title = mapOfTagAndAdditionList.key,
-                        additionList = getSortedAdditionList(
-                            additionList = mapOfTagAndAdditionList.value
+                    } // set elements with title == null to the end of list
+                    .sortedWith(
+                        compareBy<GroupedAdditionList> { groupedAdditionList ->
+                            groupedAdditionList.title == null
+                        }.thenBy { groupedAdditionList ->
+                            groupedAdditionList.title
+                        },
+                    ),
+            hiddenList =
+                additionList
+                    .filterNot { addition ->
+                        addition.isVisible
+                    }.groupBy { addition ->
+                        addition.tag
+                    }.map { mapOfTagAndAdditionList ->
+                        GroupedAdditionList(
+                            uuid = getNewUuidUseCase(),
+                            title = mapOfTagAndAdditionList.key,
+                            additionList =
+                                getSortedAdditionList(
+                                    additionList = mapOfTagAndAdditionList.value,
+                                ),
                         )
-                    )
-                } // set elements with title == null to the end of list
-                .sortedWith(
-                    compareBy<GroupedAdditionList> { groupedAdditionList ->
-                        groupedAdditionList.title == null
-                    }.thenBy { groupedAdditionList ->
-                        groupedAdditionList.title
-                    }
-                )
+                    } // set elements with title == null to the end of list
+                    .sortedWith(
+                        compareBy<GroupedAdditionList> { groupedAdditionList ->
+                            groupedAdditionList.title == null
+                        }.thenBy { groupedAdditionList ->
+                            groupedAdditionList.title
+                        },
+                    ),
         )
     }
 
-    private fun getSortedAdditionList(additionList: List<Addition>): List<Addition> {
-        return additionList.sortedBy { addition ->
+    private fun getSortedAdditionList(additionList: List<Addition>): List<Addition> =
+        additionList.sortedBy { addition ->
             addition.name
         }
-    }
 }

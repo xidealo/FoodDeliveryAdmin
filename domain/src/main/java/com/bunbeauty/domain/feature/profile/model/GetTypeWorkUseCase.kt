@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class GetTypeWorkUseCase(
     private val workInfoRepository: CafeRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(): Cafe {
         val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull() ?: throw NoCafeUuidException()
         return workInfoRepository.getCafeByUuid(
-            uuid = cafeUuid
+            uuid = cafeUuid,
         ) ?: throw NotFoundWorkInfoException()
     }
 }
