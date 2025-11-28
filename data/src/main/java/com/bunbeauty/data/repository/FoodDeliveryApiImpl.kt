@@ -12,6 +12,7 @@ import com.bunbeauty.data.model.server.addition.AdditionServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
+import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
@@ -24,6 +25,7 @@ import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
 import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
@@ -79,9 +81,8 @@ import java.net.SocketException
 
 class FoodDeliveryApiImpl(
     private val client: HttpClient,
-    private val json: Json
+    private val json: Json,
 ) : FoodDeliveryApi {
-
     private var webSocketSession: DefaultClientWebSocketSession? = null
 
     private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<OrderServer>>()
@@ -90,153 +91,147 @@ class FoodDeliveryApiImpl(
 
     private var webSocketSessionOpened = false
 
-    override suspend fun login(
-        userAuthorizationRequest: UserAuthorizationRequest
-    ): ApiResult<UserAuthorizationResponse> {
-        return post(
+    override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> =
+        post(
             path = "user/login",
-            body = userAuthorizationRequest
+            body = userAuthorizationRequest,
         )
-    }
 
-    override suspend fun getUser(token: String): ApiResult<UserResponse> {
-        return get(
+    override suspend fun getUser(token: String): ApiResult<UserResponse> =
+        get(
             path = "user",
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun putNotificationToken(
         updateNotificationTokenRequest: UpdateNotificationTokenRequest,
-        token: String
-    ): ApiResult<Unit> {
-        return put(
+        token: String,
+    ): ApiResult<Unit> =
+        put(
             path = "user/notification_token",
             body = updateNotificationTokenRequest,
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun deleteNotificationToken(token: String): ApiResult<Unit> {
-        return delete(
+    override suspend fun deleteNotificationToken(token: String): ApiResult<Unit> =
+        delete(
             path = "user/notification_token",
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun putUnlimitedNotification(
         updateUnlimitedNotificationRequest: UpdateUnlimitedNotificationRequest,
-        token: String
-    ): ApiResult<Unit> {
-        return put(
+        token: String,
+    ): ApiResult<Unit> =
+        put(
             path = "user/unlimited_notification",
             body = updateUnlimitedNotificationRequest,
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>> {
-        return get(
+    override suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>> =
+        get(
             path = "cafe",
-            parameters = listOf("cityUuid" to cityUuid)
+            parameters = listOf("cityUuid" to cityUuid),
         )
-    }
 
-    override suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer> {
-        return get(
+    override suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer> =
+        get(
             path = "v2/cafe",
-            parameters = listOf("cafeUuid" to cafeUuid)
+            parameters = listOf("cafeUuid" to cafeUuid),
         )
-    }
 
     override suspend fun patchCafe(
         cafeUuid: String,
         patchCafe: PatchCafeServer,
-        token: String
-    ): ApiResult<CafeServer> {
-        return patch(
+        token: String,
+    ): ApiResult<CafeServer> =
+        patch(
             path = "cafe",
             parameters = listOf("cafeUuid" to cafeUuid),
             body = patchCafe,
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>> {
-        return get(
+    override suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>> =
+        get(
             path = "city",
-            parameters = listOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid),
         )
-    }
 
-    override suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>> {
-        return get(
+    override suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>> =
+        get(
             path = "menu_product",
-            parameters = listOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid),
         )
-    }
 
-    override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> {
-        return ApiResult.Success(":")
-    }
+    override suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String> = ApiResult.Success(":")
 
     override suspend fun patchMenuProduct(
         menuProductUuid: String,
         menuProductPatchServer: MenuProductPatchServer,
-        token: String
-    ): ApiResult<MenuProductServer> {
-        return patch(
+        token: String,
+    ): ApiResult<MenuProductServer> =
+        patch(
             path = "menu_product",
             body = menuProductPatchServer,
             parameters = listOf("uuid" to menuProductUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun patchMenuProductAdditions(
         token: String,
         menuProductToAdditionGroupUuid: String,
-        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer
-    ): ApiResult<Unit> {
-        return patch(
+        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer,
+    ): ApiResult<Unit> =
+        patch(
             path = "menu_product/addition_group_with_additions",
             body = menuProductAdditionsPatchServer,
             parameters = listOf("uuid" to menuProductToAdditionGroupUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun postMenuProduct(
         token: String,
-        menuProductPostServer: MenuProductPostServer
-    ): ApiResult<MenuProductServer> {
-        return post<MenuProductServer>(
+        menuProductPostServer: MenuProductPostServer,
+    ): ApiResult<MenuProductServer> =
+        post<MenuProductServer>(
             path = "menu_product",
             body = menuProductPostServer,
-            token = token
+            token = token,
         )
-    }
+
+    override suspend fun postMenuProductAdditions(
+        token: String,
+        menuProductAdditionsPostServer: MenuProductAdditionsPostServer,
+    ): ApiResult<List<MenuProductServer>> =
+        post<List<MenuProductServer>>(
+            path = "addition_group_to_menu_products",
+            body = menuProductAdditionsPostServer,
+            token = token,
+        )
 
     override suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String
+        period: String,
     ): List<StatisticServer> {
         // TODO refactor
-        return client.get {
-            url {
-                path("statistic")
-            }
-            parameter("cafeUuid", cafeUuid)
-            parameter("period", period)
+        return client
+            .get {
+                url {
+                    path("statistic")
+                }
+                parameter("cafeUuid", cafeUuid)
+                parameter("period", period)
 
-            header("Authorization", "Bearer $token")
-        }.body()
+                header("Authorization", "Bearer $token")
+            }.body()
     }
 
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
-        cafeUuid: String
+        cafeUuid: String,
     ): Flow<ApiResult<OrderServer>> {
         mutex.withLock {
             if (!webSocketSessionOpened) {
@@ -246,7 +241,10 @@ class FoodDeliveryApiImpl(
         return mutableUpdatedOrderFlow.asSharedFlow()
     }
 
-    private fun subscribeOnOrderUpdates(token: String, cafeUuid: String) {
+    private fun subscribeOnOrderUpdates(
+        token: String,
+        cafeUuid: String,
+    ) {
         CoroutineScope(Job() + IO).launch {
             try {
                 webSocketSessionOpened = true
@@ -257,7 +255,7 @@ class FoodDeliveryApiImpl(
                     request = {
                         header("Authorization", "Bearer $token")
                         parameter("cafeUuid", cafeUuid)
-                    }
+                    },
                 ) {
                     Log.d(WEB_SOCKET_TAG, "WebSocket connected")
                     webSocketSession = this
@@ -279,9 +277,10 @@ class FoodDeliveryApiImpl(
                 Log.d(WEB_SOCKET_TAG, "ClosedReceiveChannelException: ${exception.message}")
                 // Nothing
             } catch (exception: Exception) {
-                val stackTrace = exception.stackTrace.joinToString("\n") {
-                    "${it.className} ${it.methodName} ${it.lineNumber}"
-                }
+                val stackTrace =
+                    exception.stackTrace.joinToString("\n") {
+                        "${it.className} ${it.methodName} ${it.lineNumber}"
+                    }
                 Log.e(WEB_SOCKET_TAG, "Exception: $exception \n$stackTrace")
                 mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
             } finally {
@@ -301,322 +300,304 @@ class FoodDeliveryApiImpl(
 
     override suspend fun getOrderListByCafeUuid(
         token: String,
-        cafeUuid: String
-    ): ApiResult<ServerList<OrderServer>> {
-        return get(
+        cafeUuid: String,
+    ): ApiResult<ServerList<OrderServer>> =
+        get(
             path = "order",
             parameters = listOf("cafeUuid" to cafeUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun getOrderByUuid(
         token: String,
-        orderUuid: String
-    ): ApiResult<OrderDetailsServer> {
-        return get(
+        orderUuid: String,
+    ): ApiResult<OrderDetailsServer> =
+        get(
             path = "v2/order/details",
             parameters = listOf("uuid" to orderUuid),
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer> {
-        return get(
+    override suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer> =
+        get(
             path = "order_availability",
-            parameters = listOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid),
         )
-    }
 
     override suspend fun updateOrderStatus(
         token: String,
         orderUuid: String,
-        status: OrderStatus
-    ): ApiResult<OrderDetailsServer> {
-        return patch(
+        status: OrderStatus,
+    ): ApiResult<OrderDetailsServer> =
+        patch(
             path = "order",
             body = mapOf("status" to status.toString()),
             parameters = listOf("uuid" to orderUuid),
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getWorkInfo(
-        companyUuid: String
-    ): ApiResult<WorkInfoData> {
-        return get(
+    override suspend fun getWorkInfo(companyUuid: String): ApiResult<WorkInfoData> =
+        get(
             path = "work_info",
-            parameters = listOf("companyUuid" to companyUuid)
+            parameters = listOf("companyUuid" to companyUuid),
         )
-    }
 
     override suspend fun patchCompany(
         token: String,
         companyPatch: CompanyPatchServer,
-        companyUuid: String
-    ): ApiResult<Unit> {
-        return patch(
+        companyUuid: String,
+    ): ApiResult<Unit> =
+        patch(
             path = "company",
             body = companyPatch,
             parameters = listOf("companyUuid" to companyUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun getCategoriesByCompanyUuid(
         token: String,
-        companyUuid: String
-    ): ApiResult<ServerList<CategoryServer>> {
-        return get(
+        companyUuid: String,
+    ): ApiResult<ServerList<CategoryServer>> =
+        get(
             path = "category",
             parameters = listOf("companyUuid" to companyUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun postCategory(
         token: String,
-        categoryServerPost: CreateCategoryPostServer
-    ): ApiResult<CategoryServer> {
-        return post(
+        categoryServerPost: CreateCategoryPostServer,
+    ): ApiResult<CategoryServer> =
+        post(
             path = "category",
             body = categoryServerPost,
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun patchCategory(
         token: String,
         uuid: String,
-        patchCategory: CategoryPatchServer
-    ): ApiResult<CategoryServer> {
-        return patch(
+        patchCategory: CategoryPatchServer,
+    ): ApiResult<CategoryServer> =
+        patch(
             path = "category",
             body = patchCategory,
             parameters = listOf("uuid" to uuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun patchCategoryPriority(
         token: String,
-        patchCategoryItem: PatchCategoryList
-    ): ApiResult<Unit> {
-        return patch(
+        patchCategoryItem: PatchCategoryList,
+    ): ApiResult<Unit> =
+        patch(
             path = "category/list",
             body = patchCategoryItem,
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>> {
-        return get(
+    override suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>> =
+        get(
             path = "non_working_day",
-            parameters = listOf("cafeUuid" to cafeUuid)
+            parameters = listOf("cafeUuid" to cafeUuid),
         )
-    }
 
     override suspend fun postNonWorkingDay(
         token: String,
-        postNonWorkingDay: PostNonWorkingDayServer
-    ): ApiResult<NonWorkingDayServer> {
-        return post(
+        postNonWorkingDay: PostNonWorkingDayServer,
+    ): ApiResult<NonWorkingDayServer> =
+        post(
             path = "non_working_day",
             body = postNonWorkingDay,
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun patchNonWorkingDay(
         token: String,
         uuid: String,
-        patchNonWorkingDay: PatchNonWorkingDayServer
-    ): ApiResult<NonWorkingDayServer> {
-        return patch(
+        patchNonWorkingDay: PatchNonWorkingDayServer,
+    ): ApiResult<NonWorkingDayServer> =
+        patch(
             path = "non_working_day",
             body = patchNonWorkingDay,
             parameters = listOf("uuid" to uuid),
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>> {
-        return get(
+    override suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>> =
+        get(
             path = "addition",
-            token = token
+            token = token,
         )
-    }
 
-    override suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>> {
-        return get(
+    override suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>> =
+        get(
             path = "addition_group",
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun patchAddition(
         additionUuid: String,
         additionPatchServer: AdditionPatchServer,
-        token: String
-    ): ApiResult<AdditionServer> {
-        return patch(
+        token: String,
+    ): ApiResult<AdditionServer> =
+        patch(
             path = "addition",
             body = additionPatchServer,
             parameters = listOf("uuid" to additionUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun postAddition(
         additionPostServer: AdditionPostServer,
-        token: String
-    ): ApiResult<AdditionServer> {
-        return post(
+        token: String,
+    ): ApiResult<AdditionServer> =
+        post(
             path = "addition",
             body = additionPostServer,
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun patchAdditionGroup(
         additionGroupUuid: String,
         additionGroupPatchServer: AdditionGroupPatchServer,
-        token: String
-    ): ApiResult<AdditionGroupServer> {
-        return patch(
+        token: String,
+    ): ApiResult<AdditionGroupServer> =
+        patch(
             path = "addition_group",
             body = additionGroupPatchServer,
             parameters = listOf("uuid" to additionGroupUuid),
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun postAdditionGroup(
         token: String,
-        additionGroupServerPost: AdditionGroupPostServer
-    ): ApiResult<AdditionGroupServer> {
-        return post(
+        additionGroupServerPost: AdditionGroupPostServer,
+    ): ApiResult<AdditionGroupServer> =
+        post(
             path = "addition_group",
             body = additionGroupServerPost,
-            token = token
+            token = token,
         )
-    }
 
     override suspend fun getMenuProductToAdditionGroup(
         token: String,
-        uuid: String
-    ): ApiResult<MenuProductToAdditionGroupServer> {
-        return get(
+        uuid: String,
+    ): ApiResult<MenuProductToAdditionGroupServer> =
+        get(
             path = "menu_product_to_addition_group",
             token = token,
-            parameters = listOf("uuid" to uuid)
+            parameters = listOf("uuid" to uuid),
         )
-    }
 
     override suspend fun getMenuProductToAdditionGroupToAdditionList(
         token: String,
-        uuidList: List<String>
-    ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>> {
-        return get(
+        uuidList: List<String>,
+    ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>> =
+        get(
             path = "menu_product_to_addition_group_to_addition",
             token = token,
-            parameters = uuidList.map { uuid -> "uuidList" to uuid }
+            parameters = uuidList.map { uuid -> "uuidList" to uuid },
         )
-    }
+
+    override suspend fun patchMenuProductToAdditionGroupPriorityUuid(
+        token: String,
+        additionGroupListUuid: PatchMenuProductToAdditionGroupPriorityUuid,
+    ): ApiResult<Unit> =
+        patch(
+            path = "menu_product_to_addition_group/priority_list",
+            token = token,
+            body = additionGroupListUuid,
+        )
 
     private suspend inline fun <reified T> get(
         path: String,
         parameters: List<Pair<String, String?>> = listOf(),
-        token: String? = null
-    ): ApiResult<T> {
-        return safeCall {
+        token: String? = null,
+    ): ApiResult<T> =
+        safeCall {
             client.get {
                 buildRequest(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    token = token
+                    token = token,
                 )
             }
         }
-    }
 
     private suspend inline fun <reified T> post(
         path: String,
         body: Any,
         parameters: List<Pair<String, String?>> = listOf(),
-        token: String? = null
-    ): ApiResult<T> {
-        return safeCall {
+        token: String? = null,
+    ): ApiResult<T> =
+        safeCall {
             client.post {
                 buildRequest(
                     path = path,
                     body = body,
                     parameters = parameters,
-                    token = token
+                    token = token,
                 )
             }
         }
-    }
 
     private suspend inline fun <reified T> put(
         path: String,
         body: Any,
         parameters: List<Pair<String, String?>> = listOf(),
-        token: String? = null
-    ): ApiResult<T> {
-        return safeCall {
+        token: String? = null,
+    ): ApiResult<T> =
+        safeCall {
             client.put {
                 buildRequest(
                     path = path,
                     body = body,
                     parameters = parameters,
-                    token = token
+                    token = token,
                 )
             }
         }
-    }
 
     private suspend inline fun <reified T> patch(
         path: String,
         body: Any,
         parameters: List<Pair<String, String?>> = listOf(),
-        token: String? = null
-    ): ApiResult<T> {
-        return safeCall {
+        token: String? = null,
+    ): ApiResult<T> =
+        safeCall {
             client.patch {
                 buildRequest(
                     path = path,
                     body = body,
                     parameters = parameters,
-                    token = token
+                    token = token,
                 )
             }
         }
-    }
 
     private suspend inline fun <reified T> delete(
         path: String,
         parameters: List<Pair<String, String?>> = listOf(),
-        token: String? = null
-    ): ApiResult<T> {
-        return safeCall {
+        token: String? = null,
+    ): ApiResult<T> =
+        safeCall {
             client.delete {
                 buildRequest(
                     path = path,
                     body = null,
                     parameters = parameters,
-                    token = token
+                    token = token,
                 )
             }
         }
-    }
 
     private fun HttpRequestBuilder.buildRequest(
         path: String,
         body: Any?,
         parameters: List<Pair<String, String?>> = listOf(),
-        token: String? = null
+        token: String? = null,
     ) {
         if (body != null) {
             setBody(body)
@@ -630,10 +611,8 @@ class FoodDeliveryApiImpl(
         header(Authorization, "Bearer $token")
     }
 
-    private suspend inline fun <reified R> safeCall(
-        crossinline networkCall: suspend () -> HttpResponse
-    ): ApiResult<R> {
-        return try {
+    private suspend inline fun <reified R> safeCall(crossinline networkCall: suspend () -> HttpResponse): ApiResult<R> =
+        try {
             withContext(IO) {
                 ApiResult.Success(networkCall().body())
             }
@@ -642,5 +621,4 @@ class FoodDeliveryApiImpl(
         } catch (exception: Throwable) {
             ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }
-    }
 }

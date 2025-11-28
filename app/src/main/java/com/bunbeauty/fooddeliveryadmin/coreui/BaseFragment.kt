@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
-
     private var mutableBinding: B? = null
     protected val binding
         get() = checkNotNull(mutableBinding)
@@ -24,7 +23,7 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         mutableBinding = createBindingInstance(inflater, container)
         return mutableBinding?.root
@@ -36,22 +35,26 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    protected open fun createBindingInstance(inflater: LayoutInflater, container: ViewGroup?): B {
+    protected open fun createBindingInstance(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): B {
         val viewBindingClass =
             (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<B>
-        val method = viewBindingClass.getMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
-        )
+        val method =
+            viewBindingClass.getMethod(
+                "inflate",
+                LayoutInflater::class.java,
+                ViewGroup::class.java,
+                Boolean::class.java,
+            )
 
         return method.invoke(null, inflater, container, false) as B
     }
 
     fun <T> Flow<T>.collectWithLifecycle(
         lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
-        block: (T) -> Unit
+        block: (T) -> Unit,
     ) {
         lifecycleScope.launch {
             flowWithLifecycle(lifecycle, lifecycleState).collect {

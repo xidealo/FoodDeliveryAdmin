@@ -16,5 +16,24 @@ data class UpdateCafe(
     val additionalUtensils: Boolean? = null,
     val cityUuid: String? = null,
     val workload: WorkLoad? = null,
-    val workType: WorkType? = null
-)
+    val workType: WorkType? = null,
+) {
+    companion object {
+        val mock =
+            UpdateCafe(
+                uuid = null,
+                address = null,
+                latitude = null,
+                longitude = null,
+                fromTime = null,
+                toTime = null,
+                offset = null,
+                phone = null,
+                visible = null,
+                additionalUtensils = null,
+                cityUuid = null,
+                workload = null,
+                workType = null,
+            )
+    }
+}

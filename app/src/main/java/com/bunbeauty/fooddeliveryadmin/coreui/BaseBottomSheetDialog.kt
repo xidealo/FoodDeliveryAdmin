@@ -15,7 +15,6 @@ import java.lang.reflect.ParameterizedType
 
 @Deprecated("use compose BS")
 abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragment() {
-
     private var mutableBinding: B? = null
     protected val binding
         get() = checkNotNull(mutableBinding)
@@ -31,13 +30,16 @@ abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragmen
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         mutableBinding = createBindingInstance(inflater, container)
         return mutableBinding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         (dialog as? BottomSheetDialog)?.behavior?.apply {
@@ -51,15 +53,19 @@ abstract class BaseBottomSheetDialog<B : ViewBinding> : BottomSheetDialogFragmen
     }
 
     @Suppress("UNCHECKED_CAST")
-    protected open fun createBindingInstance(inflater: LayoutInflater, container: ViewGroup?): B {
+    protected open fun createBindingInstance(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): B {
         val viewBindingClass =
             (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<B>
-        val method = viewBindingClass.getMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
-        )
+        val method =
+            viewBindingClass.getMethod(
+                "inflate",
+                LayoutInflater::class.java,
+                ViewGroup::class.java,
+                Boolean::class.java,
+            )
 
         return method.invoke(null, inflater, container, false) as B
     }

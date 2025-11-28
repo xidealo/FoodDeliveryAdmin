@@ -9,36 +9,40 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class MainViewModel(
-    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase
+    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,
 ) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
-    initState = Main.ViewDataState(
-        connectionLost = false,
-        nonWorkingDay = false,
-        navigationBarOptions = Main.NavigationBarOptions.Hidden
-    )
-) {
-
+        initState =
+            Main.ViewDataState(
+                connectionLost = false,
+                nonWorkingDay = false,
+                navigationBarOptions = Main.NavigationBarOptions.Hidden,
+            ),
+    ) {
     init {
         viewModelScope.launchSafe(
             block = {
-                getIsNonWorkingDayFlow().onEach { isNonWorkingDay ->
-                    setState {
-                        copy(nonWorkingDay = isNonWorkingDay)
-                    }
-                }.launchIn(viewModelScope)
+                getIsNonWorkingDayFlow()
+                    .onEach { isNonWorkingDay ->
+                        setState {
+                            copy(nonWorkingDay = isNonWorkingDay)
+                        }
+                    }.launchIn(viewModelScope)
             },
             onError = {
                 // todo log error
-            }
+            },
         )
     }
 
-    override fun reduce(action: Main.Action, dataState: Main.ViewDataState) {
+    override fun reduce(
+        action: Main.Action,
+        dataState: Main.ViewDataState,
+    ) {
         when (action) {
             is Main.Action.UpdateNavDestination -> {
                 updateNavDestination(
                     navigationBarItem = action.navigationBarItem,
-                    navController = action.navController
+                    navController = action.navController,
                 )
             }
 
@@ -54,27 +58,32 @@ class MainViewModel(
 
     private fun updateNavDestination(
         navigationBarItem: Main.NavigationBarItem?,
-        navController: NavController
+        navController: NavController,
     ) {
-        val navigationBarOptions = navigationBarItem?.let {
-            Main.NavigationBarOptions.Visible(
-                selectedItem = navigationBarItem,
-                navController = navController
-            )
-        } ?: Main.NavigationBarOptions.Hidden
+        val navigationBarOptions =
+            navigationBarItem?.let {
+                Main.NavigationBarOptions.Visible(
+                    selectedItem = navigationBarItem,
+                    navController = navController,
+                )
+            } ?: Main.NavigationBarOptions.Hidden
 
         setState {
             copy(navigationBarOptions = navigationBarOptions)
         }
     }
 
-    private fun showMessage(text: String, type: Main.Message.Type) {
+    private fun showMessage(
+        text: String,
+        type: Main.Message.Type,
+    ) {
         sendEvent {
             Main.Event.ShowMessageEvent(
-                message = Main.Message(
-                    type = type,
-                    text = text
-                )
+                message =
+                    Main.Message(
+                        type = type,
+                        text = text,
+                    ),
             )
         }
     }

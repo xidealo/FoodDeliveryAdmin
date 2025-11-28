@@ -32,206 +32,207 @@ import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.product.ProductUtil
 import org.koin.dsl.module
 
-fun useCaseModule() = module {
-    factory {
-        GetCafeUseCase(
-            dataStoreRepo = get(),
-            cafeRepository = get()
-        )
-    }
+fun useCaseModule() =
+    module {
+        factory {
+            GetCafeUseCase(
+                dataStoreRepo = get(),
+                cafeRepository = get(),
+            )
+        }
 
-    factory {
-        GetNonWorkingDayYearRangeUseCase()
-    }
+        factory {
+            GetNonWorkingDayYearRangeUseCase()
+        }
 
-    factory {
-        GetCategoryListUseCase(
-            dataStoreRepo = get(),
-            categoryRepo = get()
-        )
-    }
+        factory {
+            GetCategoryListUseCase(
+                dataStoreRepo = get(),
+                categoryRepo = get(),
+            )
+        }
 
-    factory {
-        SaveCategoryListUseCase(
-            dataStoreRepo = get(),
-            categoryRepo = get()
-        )
-    }
+        factory {
+            SaveCategoryListUseCase(
+                dataStoreRepo = get(),
+                categoryRepo = get(),
+            )
+        }
 
-    factory {
-        GetSelectableCategoryListUseCase(
-            getCategoryListUseCase = get()
-        )
-    }
+        factory {
+            GetSelectableCategoryListUseCase(
+                getCategoryListUseCase = get(),
+            )
+        }
 
-    factory {
-        CreateCategoryUseCase(
-            dataStoreRepo = get(),
-            categoryRepo = get()
-        )
-    }
+        factory {
+            CreateCategoryUseCase(
+                dataStoreRepo = get(),
+                categoryRepo = get(),
+            )
+        }
 
-    factory {
-        GetCategoryUseCase(
-            dataStoreRepo = get(),
-            categoryRepo = get()
-        )
-    }
+        factory {
+            GetCategoryUseCase(
+                dataStoreRepo = get(),
+                categoryRepo = get(),
+            )
+        }
 
-    factory {
-        EditCategoryUseCase(
-            dataStoreRepo = get(),
-            categoryRepo = get()
-        )
-    }
+        factory {
+            EditCategoryUseCase(
+                dataStoreRepo = get(),
+                categoryRepo = get(),
+            )
+        }
 
-    factory {
-        DeletePhotoUseCase(
-            photoRepo = get()
-        )
-    }
+        factory {
+            DeletePhotoUseCase(
+                photoRepo = get(),
+            )
+        }
 
-    factory {
-        UploadPhotoUseCase(
-            photoRepo = get(),
-            getUsernameUseCase = get()
-        )
-    }
+        factory {
+            UploadPhotoUseCase(
+                photoRepo = get(),
+                getUsernameUseCase = get(),
+            )
+        }
 
-    factory {
-        ValidateMenuProductCategoriesUseCase()
-    }
+        factory {
+            ValidateMenuProductCategoriesUseCase()
+        }
 
-    factory {
-        ValidateMenuProductDescriptionUseCase()
-    }
+        factory {
+            ValidateMenuProductDescriptionUseCase()
+        }
 
-    factory {
-        ValidateMenuProductNameUseCase()
-    }
+        factory {
+            ValidateMenuProductNameUseCase()
+        }
 
-    factory {
-        ValidateMenuProductNewPriceUseCase()
-    }
+        factory {
+            ValidateMenuProductNewPriceUseCase()
+        }
 
-    factory {
-        ValidateMenuProductNutritionUseCase()
-    }
+        factory {
+            ValidateMenuProductNutritionUseCase()
+        }
 
-    factory {
-        ValidateMenuProductOldPriceUseCase()
-    }
+        factory {
+            ValidateMenuProductOldPriceUseCase()
+        }
 
-    factory {
-        CreateMenuProductUseCase(
-            validateMenuProductNameUseCase = get(),
-            validateMenuProductNutritionUseCase = get(),
-            validateMenuProductDescriptionUseCase = get(),
-            validateMenuProductCategoriesUseCase = get(),
-            validateMenuProductNewPriceUseCase = get(),
-            validateMenuProductOldPriceUseCase = get(),
-            dataStoreRepo = get(),
-            menuProductRepo = get(),
-            uploadPhotoUseCase = get()
-        )
-    }
+        factory {
+            CreateMenuProductUseCase(
+                validateMenuProductNameUseCase = get(),
+                validateMenuProductNutritionUseCase = get(),
+                validateMenuProductDescriptionUseCase = get(),
+                validateMenuProductCategoriesUseCase = get(),
+                validateMenuProductNewPriceUseCase = get(),
+                validateMenuProductOldPriceUseCase = get(),
+                dataStoreRepo = get(),
+                menuProductRepo = get(),
+                uploadPhotoUseCase = get(),
+            )
+        }
 
-    factory {
-        UpdateMenuProductUseCase(
-            validateMenuProductNameUseCase = get(),
-            validateMenuProductNutritionUseCase = get(),
-            validateMenuProductDescriptionUseCase = get(),
-            validateMenuProductCategoriesUseCase = get(),
-            validateMenuProductNewPriceUseCase = get(),
-            validateMenuProductOldPriceUseCase = get(),
-            dataStoreRepo = get(),
-            menuProductRepo = get(),
-            uploadPhotoUseCase = get(),
-            deletePhotoUseCase = get()
-        )
-    }
+        factory {
+            UpdateMenuProductUseCase(
+                validateMenuProductNameUseCase = get(),
+                validateMenuProductNutritionUseCase = get(),
+                validateMenuProductDescriptionUseCase = get(),
+                validateMenuProductCategoriesUseCase = get(),
+                validateMenuProductNewPriceUseCase = get(),
+                validateMenuProductOldPriceUseCase = get(),
+                dataStoreRepo = get(),
+                menuProductRepo = get(),
+                uploadPhotoUseCase = get(),
+                deletePhotoUseCase = get(),
+            )
+        }
 
-    factory {
-        SaveEditAdditionGroupWithAdditionsUseCase(
-            menuProductRepo = get()
-        )
-    }
+        factory {
+            SaveEditAdditionGroupWithAdditionsUseCase(
+                menuProductRepo = get(),
+            )
+        }
 
-    factory {
-        GetMenuProductUseCase(
-            dataStoreRepo = get(),
-            menuProductRepo = get()
-        )
-    }
+        factory {
+            GetMenuProductUseCase(
+                dataStoreRepo = get(),
+                menuProductRepo = get(),
+            )
+        }
 
-    factory {
-        LoadOrderDetailsUseCase(
-            dataStoreRepo = get(),
-            orderRepo = get()
-        )
-    }
+        factory {
+            LoadOrderDetailsUseCase(
+                dataStoreRepo = get(),
+                orderRepo = get(),
+            )
+        }
 
-    factory {
-        UpdateOrderStatusUseCase(
-            dataStoreRepo = get(),
-            orderRepo = get()
-        )
-    }
+        factory {
+            UpdateOrderStatusUseCase(
+                dataStoreRepo = get(),
+                orderRepo = get(),
+            )
+        }
 
-    factory {
-        CreateAdditionGroupUseCase(
-            additionGroupRepo = get(),
-            dataStoreRepo = get()
-        )
-    }
+        factory {
+            CreateAdditionGroupUseCase(
+                additionGroupRepo = get(),
+                dataStoreRepo = get(),
+            )
+        }
 
-    factory {
-        GetSeparatedMenuProductListUseCase(
-            dataStoreRepo = get(),
-            menuProductRepo = get()
-        )
-    }
+        factory {
+            GetSeparatedMenuProductListUseCase(
+                dataStoreRepo = get(),
+                menuProductRepo = get(),
+            )
+        }
 
-    factory {
-        GetStatisticUseCase(
-            dataStoreRepo = get(),
-            statisticRepo = get()
-        )
-    }
+        factory {
+            GetStatisticUseCase(
+                dataStoreRepo = get(),
+                statisticRepo = get(),
+            )
+        }
 
-    factory {
-        LogoutUseCase(
-            dataStoreRepo = get(),
-            additionRepo = get(),
-            additionGroupRepo = get(),
-            cafeRepo = get(),
-            userAuthorizationRepo = get(),
-            nonWorkingDayRepo = get(),
-            cityRepo = get(),
-            menuProductRepo = get(),
-            orderRepo = get(),
-            photoRepo = get(),
-            categoryRepo = get(),
-            menuProductToAdditionGroupRepository = get()
-        )
-    }
+        factory {
+            LogoutUseCase(
+                dataStoreRepo = get(),
+                additionRepo = get(),
+                additionGroupRepo = get(),
+                cafeRepo = get(),
+                userAuthorizationRepo = get(),
+                nonWorkingDayRepo = get(),
+                cityRepo = get(),
+                menuProductRepo = get(),
+                orderRepo = get(),
+                photoRepo = get(),
+                categoryRepo = get(),
+                menuProductToAdditionGroupRepository = get(),
+            )
+        }
 
-    factory {
-        UpdateVisibleMenuProductUseCase(
-            dataStoreRepo = get(),
-            menuProductRepo = get()
-        )
-    }
+        factory {
+            UpdateVisibleMenuProductUseCase(
+                dataStoreRepo = get(),
+                menuProductRepo = get(),
+            )
+        }
 
-    factory {
-        GetNewUuidUseCase()
-    }
+        factory {
+            GetNewUuidUseCase()
+        }
 
-    factory {
-        DateTimeUtil()
-    }
+        factory {
+            DateTimeUtil()
+        }
 
-    factory {
-        ProductUtil()
+        factory {
+            ProductUtil()
+        }
     }
-}

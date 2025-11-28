@@ -12,34 +12,35 @@ import com.bunbeauty.data.mapper.statistic.StatisticMapper
 import com.bunbeauty.data.repository.AdditionRepository
 import org.koin.dsl.module
 
-fun mapperModule() = module {
-    single<IServerOrderMapper> {
-        ServerOrderMapper(
-            oderProductMapper = get()
-        )
+fun mapperModule() =
+    module {
+        single<IServerOrderMapper> {
+            ServerOrderMapper(
+                oderProductMapper = get(),
+            )
+        }
+
+        single { CafeMapper() }
+
+        single { NonWorkingDayMapper() }
+
+        single { CategoryMapper() }
+
+        single { MenuProductMapper() }
+
+        single { OderProductMapper() }
+
+        single { CityMapper() }
+
+        single {
+            StatisticMapper(
+                dateTimeUtil = get(),
+            )
+        }
+
+        single {
+            AdditionRepository(
+                networkConnector = get(),
+            )
+        }
     }
-
-    single { CafeMapper() }
-
-    single { NonWorkingDayMapper() }
-
-    single { CategoryMapper() }
-
-    single { MenuProductMapper() }
-
-    single { OderProductMapper() }
-
-    single { CityMapper() }
-
-    single {
-        StatisticMapper(
-            dateTimeUtil = get()
-        )
-    }
-
-    single {
-        AdditionRepository(
-            networkConnector = get()
-        )
-    }
-}
