@@ -151,7 +151,7 @@
         android:label="profileFragment">
         <action
             android:id="@+id/to_cafeListFragment"
-            app:destination="@id/cafeLisFragment" />
+            app:destination="@id/cafeListFragment" />
         <action
             android:id="@+id/to_settingsFragment"
             app:destination="@id/settingsFragment" />
@@ -165,9 +165,9 @@
         android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
         android:label="settingsFragment" />
     <fragment
-        android:id="@+id/cafeLisFragment"
+        android:id="@+id/cafeListFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragment"
-        android:label="cafeLisFragment">
+        android:label="cafeListFragment">
         <action
             android:id="@+id/to_editCafeFragment"
             app:destination="@id/editCafeFragment" />

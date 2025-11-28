@@ -26,3 +26,6 @@
 -dontwarn org.junit.jupiter.api.extension.ParameterResolver
 -dontwarn org.junit.jupiter.api.extension.TestInstancePostProcessor
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+-keep class * extends androidx.viewbinding.ViewBinding { *; }
+
