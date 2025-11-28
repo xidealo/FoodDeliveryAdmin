@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class GetCategoryUseCase(
     private val categoryRepo: CategoryRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(categoryUuid: String): Category {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
@@ -17,7 +17,7 @@ class GetCategoryUseCase(
         return categoryRepo.getCategory(
             companyUuid = companyUuid,
             categoryUuid = categoryUuid,
-            token = token,
+            token = token
         ) ?: throw NotFoundCategoryException()
     }
 }

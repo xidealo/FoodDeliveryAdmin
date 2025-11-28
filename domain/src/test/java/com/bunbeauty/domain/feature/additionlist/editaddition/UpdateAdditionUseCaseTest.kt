@@ -33,116 +33,107 @@ class UpdateAdditionUseCaseTest {
 
     @BeforeTest
     fun setup() {
-        updateAdditionUseCase =
-            UpdateAdditionUseCase(
-                additionRepo = additionRepo,
-                dataStoreRepo = dataStoreRepo,
-                uploadPhotoUseCase = uploadPhotoUseCase,
-                deletePhotoUseCase = deletePhotoUseCase,
-            )
+        updateAdditionUseCase = UpdateAdditionUseCase(
+            additionRepo = additionRepo,
+            dataStoreRepo = dataStoreRepo,
+            uploadPhotoUseCase = uploadPhotoUseCase,
+            deletePhotoUseCase = deletePhotoUseCase
+        )
     }
 
     @Test
-    fun `invoke successfully update addition`() =
-        runTest {
-            // Given
-            val token = "valid_token"
-            val additionUuidMock = "uuid"
-            val updateAddition =
-                updateAdditionMock.copy(
-                    name = "Бекон",
-                    priority = 1,
-                    price = 10,
-                    photoLink = null,
-                    newImageUri = null,
-                )
-            coEvery { dataStoreRepo.getToken() } returns token
-            coEvery {
-                additionRepo.updateAddition(
-                    updateAddition = updateAddition,
-                    token = token,
-                    additionUuid = additionUuidMock,
-                )
-            } returns Unit
+    fun `invoke successfully update addition`() = runTest {
+        // Given
+        val token = "valid_token"
+        val additionUuidMock = "uuid"
+        val updateAddition = updateAdditionMock.copy(
+            name = "Бекон",
+            priority = 1,
+            price = 10,
+            photoLink = null,
+            newImageUri = null
+        )
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery {
+            additionRepo.updateAddition(
+                updateAddition = updateAddition,
+                token = token,
+                additionUuid = additionUuidMock
+            )
+        } returns Unit
 
-            // When
+        // When
+        updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
+
+        // Then
+        coVerify { additionRepo.updateAddition(updateAddition, token, additionUuidMock) }
+        coVerify { dataStoreRepo.getToken() }
+    }
+
+    @Test
+    fun `invoke should throw NoTokenException when token is null`() = runTest {
+        // Given
+        val additionUuidMock = "uuid"
+        val updateAddition = updateAdditionMock.copy(
+            name = "Бекон",
+            priority = 1,
+            price = 10
+        )
+        coEvery { dataStoreRepo.getToken() } returns null
+
+        // When & Then
+        assertFailsWith<NoTokenException> {
             updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
-
-            // Then
-            coVerify { additionRepo.updateAddition(updateAddition, token, additionUuidMock) }
-            coVerify { dataStoreRepo.getToken() }
         }
+    }
 
     @Test
-    fun `invoke should throw NoTokenException when token is null`() =
-        runTest {
-            // Given
-            val additionUuidMock = "uuid"
-            val updateAddition =
-                updateAdditionMock.copy(
-                    name = "Бекон",
-                    priority = 1,
-                    price = 10,
-                )
-            coEvery { dataStoreRepo.getToken() } returns null
+    fun `invoke should throw AdditionNameException when name isNullOrBlank`() = runTest {
+        // Given
+        val token = "valid_token"
+        val additionUuidMock = "uuid"
+        val updateAddition = updateAdditionMock.copy(
+            name = "",
+            priority = 1,
+            price = 10
+        )
+        coEvery { dataStoreRepo.getToken() } returns token
 
-            // When & Then
-            assertFailsWith<NoTokenException> {
-                updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
-            }
-        }
-
-    @Test
-    fun `invoke should throw AdditionNameException when name isNullOrBlank`() =
-        runTest {
-            // Given
-            val token = "valid_token"
-            val additionUuidMock = "uuid"
-            val updateAddition =
-                updateAdditionMock.copy(
-                    name = "",
-                    priority = 1,
-                    price = 10,
-                )
-            coEvery { dataStoreRepo.getToken() } returns token
-
-            // When & Then
-            assertFailsWith<AdditionNameException> {
-                updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
-            }
-        }
-
-    @Test
-    fun `invoke should call UploadPhotoUseCase when newImageUri not null`() =
-        runTest {
-            // Given
-            val token = "valid_token"
-            val additionUuidMock = "uuid"
-            val updateAddition =
-                updateAdditionMock.copy(
-                    name = "Бекон",
-                    priority = 1,
-                    price = 10,
-                    photoLink = "some url",
-                    newImageUri = "some url",
-                )
-            coEvery { dataStoreRepo.getToken() } returns token
-            coEvery { uploadPhotoUseCase("some url", 240, 240) } returns Photo("some url")
-            coEvery {
-                additionRepo.updateAddition(
-                    updateAddition = updateAddition,
-                    token = token,
-                    additionUuid = additionUuidMock,
-                )
-            } returns Unit
-            every { Log.e(any(), any()) } returns 0
-
-            // When
+        // When & Then
+        assertFailsWith<AdditionNameException> {
             updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
-
-            // Then
-            coVerify { uploadPhotoUseCase("some url", 240, 240) }
         }
+    }
+
+    @Test
+    fun `invoke should call UploadPhotoUseCase when newImageUri not null`() = runTest {
+        // Given
+        val token = "valid_token"
+        val additionUuidMock = "uuid"
+        val updateAddition = updateAdditionMock.copy(
+            name = "Бекон",
+            priority = 1,
+            price = 10,
+            photoLink = "some url",
+            newImageUri = "some url"
+        )
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { uploadPhotoUseCase("some url", 240, 240) } returns Photo("some url")
+        coEvery {
+            additionRepo.updateAddition(
+                updateAddition = updateAddition,
+                token = token,
+                additionUuid = additionUuidMock
+            )
+        } returns Unit
+        every { Log.e(any(), any()) } returns 0
+
+        // When
+        updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
+
+        // Then
+        coVerify { uploadPhotoUseCase("some url", 240, 240) }
+    }
 
     @Test
     fun `invoke should call DeletePhotoUseCase when has photoLink and newImageUri not null`() =
@@ -150,21 +141,20 @@ class UpdateAdditionUseCaseTest {
             // Given
             val token = "valid_token"
             val additionUuidMock = "uuid"
-            val updateAddition =
-                updateAdditionMock.copy(
-                    name = "Бекон",
-                    priority = 1,
-                    price = 10,
-                    photoLink = "some url",
-                    newImageUri = "some url",
-                )
+            val updateAddition = updateAdditionMock.copy(
+                name = "Бекон",
+                priority = 1,
+                price = 10,
+                photoLink = "some url",
+                newImageUri = "some url"
+            )
             coEvery { dataStoreRepo.getToken() } returns token
             coEvery { uploadPhotoUseCase("some url", 240, 240) } returns Photo("some url")
             coEvery {
                 additionRepo.updateAddition(
                     updateAddition = updateAddition,
                     token = token,
-                    additionUuid = additionUuidMock,
+                    additionUuid = additionUuidMock
                 )
             } returns Unit
             every { Log.e(any(), any()) } returns 0
@@ -176,14 +166,13 @@ class UpdateAdditionUseCaseTest {
             coVerify { deletePhotoUseCase("some url") }
         }
 
-    private val updateAdditionMock =
-        UpdateAddition(
-            name = "",
-            priority = 0,
-            fullName = "",
-            price = 0,
-            photoLink = "",
-            isVisible = false,
-            newImageUri = "",
-        )
+    private val updateAdditionMock = UpdateAddition(
+        name = "",
+        priority = 0,
+        fullName = "",
+        price = 0,
+        photoLink = "",
+        isVisible = false,
+        newImageUri = ""
+    )
 }

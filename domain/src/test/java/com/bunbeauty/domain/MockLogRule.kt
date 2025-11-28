@@ -8,11 +8,9 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 class MockLogRule : TestRule {
-    override fun apply(
-        base: Statement,
-        description: Description,
-    ): Statement =
-        object : Statement() {
+
+    override fun apply(base: Statement, description: Description): Statement {
+        return object : Statement() {
             override fun evaluate() {
                 mockkStatic(Log::class)
                 every { Log.e(any(), any()) } returns 0
@@ -27,4 +25,5 @@ class MockLogRule : TestRule {
                 }
             }
         }
+    }
 }

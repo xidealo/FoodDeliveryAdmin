@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.element.rememberMultipleEventsCutter
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
@@ -27,10 +26,10 @@ fun MainButton(
     text: String? = null,
     colors: ButtonColors = AdminButtonDefaults.mainButtonColors,
     elevated: Boolean = true,
-    isEnabled: Boolean = true,
+    isEnabled: Boolean = true
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentSize provides 0.dp,
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         val multipleEventsCutter = rememberMultipleEventsCutter()
         Button(
@@ -41,16 +40,15 @@ fun MainButton(
             colors = colors,
             shape = AdminButtonDefaults.buttonShape,
             elevation = AdminButtonDefaults.getButtonElevation(elevated),
-            enabled = isEnabled,
+            enabled = isEnabled
         ) {
-            val buttonText =
-                text ?: textStringId?.let {
-                    stringResource(it)
-                } ?: ""
+            val buttonText = text ?: textStringId?.let {
+                stringResource(it)
+            } ?: ""
             Text(
                 text = buttonText,
                 style = AdminTheme.typography.labelLarge.medium,
-                color = AdminTheme.colors.main.onPrimary,
+                color = AdminTheme.colors.main.onPrimary
             )
         }
     }
@@ -62,7 +60,7 @@ private fun MainButtonPreview() {
     AdminTheme {
         MainButton(
             textStringId = R.string.action_retry,
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -74,7 +72,7 @@ private fun MainButtonDisabledPreview() {
         MainButton(
             textStringId = R.string.action_retry,
             isEnabled = false,
-            onClick = {},
+            onClick = {}
         )
     }
 }

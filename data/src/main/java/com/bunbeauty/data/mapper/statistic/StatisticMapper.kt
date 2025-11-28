@@ -7,18 +7,19 @@ import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 
 class StatisticMapper(
-    private val dateTimeUtil: DateTimeUtil,
+    private val dateTimeUtil: DateTimeUtil
 ) {
-    fun toModel(statisticServer: StatisticServer): Statistic =
-        Statistic(
-            period =
-                dateTimeUtil.formatDateTime(
-                    statisticServer.startPeriodTime,
-                    PATTERN_DD_MMMM_HH_MM,
-                ),
+
+    fun toModel(statisticServer: StatisticServer): Statistic {
+        return Statistic(
+            period = dateTimeUtil.formatDateTime(
+                statisticServer.startPeriodTime,
+                PATTERN_DD_MMMM_HH_MM
+            ),
             startPeriodTime = statisticServer.startPeriodTime,
             orderCount = statisticServer.orderCount,
             proceeds = statisticServer.proceeds,
-            currency = RUBLE_CURRENCY,
+            currency = RUBLE_CURRENCY
         )
+    }
 }

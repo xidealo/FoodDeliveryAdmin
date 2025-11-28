@@ -18,5 +18,5 @@ data class AdditionPostServer(
     @SerialName("fullName")
     val fullName: String?,
     @SerialName("price")
-    val price: Int?,
+    val price: Int?
 )

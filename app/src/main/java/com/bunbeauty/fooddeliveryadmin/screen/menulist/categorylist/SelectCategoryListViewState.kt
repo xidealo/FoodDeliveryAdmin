@@ -6,12 +6,12 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class SelectCategoryListViewState(
-    val selectableCategoryList: ImmutableList<SelectCategoryItem>,
+    val selectableCategoryList: ImmutableList<SelectCategoryItem>
 ) : BaseViewState {
     @Immutable
     data class SelectCategoryItem(
         val uuid: String,
         val name: String,
-        val selected: Boolean,
+        val selected: Boolean
     )
 }

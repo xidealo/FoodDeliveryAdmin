@@ -20,5 +20,5 @@ data class AdditionServer(
     @SerialName("isVisible")
     val isVisible: Boolean,
     @SerialName("tag")
-    val tag: String? = null,
+    val tag: String? = null
 )

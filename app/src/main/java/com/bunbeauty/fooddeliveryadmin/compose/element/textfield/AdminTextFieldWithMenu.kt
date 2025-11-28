@@ -30,7 +30,7 @@ fun AdminTextFieldWithMenu(
     errorText: String? = null,
     suggestionsList: List<Suggestion> = emptyList(),
     onSuggestionClick: (suggestion: Suggestion) -> Unit,
-    enabled: Boolean = true,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         ExposedDropdownMenuBox(
@@ -39,7 +39,7 @@ fun AdminTextFieldWithMenu(
                 if (enabled) {
                     onExpandedChange(it)
                 }
-            },
+            }
         ) {
             AdminBaseTextField(
                 modifier = Modifier.menuAnchor(),
@@ -52,30 +52,28 @@ fun AdminTextFieldWithMenu(
                 trailingIcon = {
                     Icon(
                         modifier = modifier.size(8.dp),
-                        painter =
-                            painterResource(
-                                if (expanded) {
-                                    R.drawable.ic_collapse_arrow
-                                } else {
-                                    R.drawable.ic_expand_arrow
-                                },
-                            ),
+                        painter = painterResource(
+                            if (expanded) {
+                                R.drawable.ic_collapse_arrow
+                            } else {
+                                R.drawable.ic_expand_arrow
+                            }
+                        ),
                         tint = AdminTheme.colors.main.onSurfaceVariant,
-                        contentDescription = null,
+                        contentDescription = null
                     )
-                },
+                }
             )
 
             if (suggestionsList.isNotEmpty()) {
                 ExposedDropdownMenu(
-                    modifier =
-                        Modifier
-                            .background(AdminTheme.colors.main.surface)
-                            .exposedDropdownSize(),
+                    modifier = Modifier
+                        .background(AdminTheme.colors.main.surface)
+                        .exposedDropdownSize(),
                     expanded = expanded,
                     onDismissRequest = {
                         onExpandedChange(false)
-                    },
+                    }
                 ) {
                     suggestionsList.forEach { suggestion ->
                         DropdownMenuItem(
@@ -83,12 +81,12 @@ fun AdminTextFieldWithMenu(
                                 Text(
                                     text = suggestion.value,
                                     color = AdminTheme.colors.main.onSurface,
-                                    style = AdminTheme.typography.bodyMedium,
+                                    style = AdminTheme.typography.bodyMedium
                                 )
                             },
                             onClick = {
                                 onSuggestionClick(suggestion)
-                            },
+                            }
                         )
                     }
                 }
@@ -97,13 +95,12 @@ fun AdminTextFieldWithMenu(
         if (isError) {
             errorText?.let { text ->
                 Text(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, top = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 4.dp),
                     text = text,
                     style = AdminTheme.typography.bodySmall,
-                    color = AdminTheme.colors.main.error,
+                    color = AdminTheme.colors.main.error
                 )
             }
         }

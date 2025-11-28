@@ -11,21 +11,18 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 class ProfileViewModel(
     private val getUsernameUseCase: GetUsernameUseCase,
     private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
-    private val logoutUseCase: LogoutUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
-        initState =
-            Profile.DataState(
-                state = Profile.DataState.State.LOADING,
-                user = null,
-                acceptOrders = true,
-                showAcceptOrdersConfirmation = false,
-                logoutLoading = false,
-            ),
-    ) {
-    override fun reduce(
-        action: Profile.Action,
-        dataState: Profile.DataState,
-    ) {
+    initState = Profile.DataState(
+        state = Profile.DataState.State.LOADING,
+        user = null,
+        acceptOrders = true,
+        showAcceptOrdersConfirmation = false,
+        logoutLoading = false
+    )
+) {
+
+    override fun reduce(action: Profile.Action, dataState: Profile.DataState) {
         when (action) {
             Profile.Action.UpdateData -> handleUpdateData()
             Profile.Action.CafeClick -> handleCafeClick()
@@ -42,15 +39,13 @@ class ProfileViewModel(
                 setState {
                     copy(
                         state = Profile.DataState.State.SUCCESS,
-                        user =
-                            Profile.DataState.User(
-                                role = UserRole.MANAGER,
-                                userName =
-                                    getUsernameUseCase().lowercase().replaceFirstChar { char ->
-                                        char.uppercase()
-                                    },
-                            ),
-                        acceptOrders = isOrderAvailableUseCase(),
+                        user = Profile.DataState.User(
+                            role = UserRole.MANAGER,
+                            userName = getUsernameUseCase().lowercase().replaceFirstChar { char ->
+                                char.uppercase()
+                            }
+                        ),
+                        acceptOrders = isOrderAvailableUseCase()
                     )
                 }
             },
@@ -58,7 +53,7 @@ class ProfileViewModel(
                 setState {
                     copy(state = Profile.DataState.State.ERROR)
                 }
-            },
+            }
         )
     }
 
@@ -92,7 +87,7 @@ class ProfileViewModel(
                 block = {
                     setState {
                         copy(
-                            logoutLoading = true,
+                            logoutLoading = true
                         )
                     }
                     logoutUseCase()
@@ -103,10 +98,10 @@ class ProfileViewModel(
                 onError = {
                     setState {
                         copy(
-                            logoutLoading = false,
+                            logoutLoading = false
                         )
                     }
-                },
+                }
             )
         }
     }

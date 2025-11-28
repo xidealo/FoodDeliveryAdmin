@@ -25,7 +25,7 @@ fun AdminNavigationBar(options: Main.NavigationBarOptions) {
     if (options is Main.NavigationBarOptions.Visible) {
         NavigationBar(
             modifier = Modifier.shadow(AdminTheme.dimensions.surfaceElevation),
-            containerColor = AdminTheme.colors.main.surface,
+            containerColor = AdminTheme.colors.main.surface
         ) {
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == Main.NavigationBarItem.ORDERS,
@@ -33,7 +33,7 @@ fun AdminNavigationBar(options: Main.NavigationBarOptions) {
                 labelId = R.string.title_bottom_navigation_orders,
                 onClick = {
                     options.navController.navigateSafe(R.id.global_to_ordersFragment)
-                },
+                }
             )
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == Main.NavigationBarItem.MENU,
@@ -41,7 +41,7 @@ fun AdminNavigationBar(options: Main.NavigationBarOptions) {
                 labelId = R.string.title_bottom_navigation_menu,
                 onClick = {
                     options.navController.navigateSafe(R.id.global_to_menuFragment)
-                },
+                }
             )
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == Main.NavigationBarItem.PROFILE,
@@ -49,7 +49,7 @@ fun AdminNavigationBar(options: Main.NavigationBarOptions) {
                 labelId = R.string.title_bottom_navigation_profile,
                 onClick = {
                     options.navController.navigateSafe(R.id.global_to_profileFragment)
-                },
+                }
             )
         }
     }
@@ -60,7 +60,7 @@ private fun RowScope.FoodDeliveryBottomItem(
     selected: Boolean,
     @DrawableRes iconId: Int,
     @StringRes labelId: Int,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     NavigationBarItem(
         selected = selected,
@@ -72,16 +72,16 @@ private fun RowScope.FoodDeliveryBottomItem(
         label = {
             Text(
                 text = stringResource(labelId),
-                style = AdminTheme.typography.labelMedium.medium,
+                style = AdminTheme.typography.labelMedium.medium
             )
         },
         icon = {
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(iconId),
-                contentDescription = null,
+                contentDescription = null
             )
         },
-        colors = FoodDeliveryNavigationBarDefaults.navigationBarItemColors(),
+        colors = FoodDeliveryNavigationBarDefaults.navigationBarItemColors()
     )
 }

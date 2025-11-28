@@ -6,17 +6,16 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable
 data class CreateCategoryViewState(
-    val state: State,
+    val state: State
 ) : BaseViewState {
+
     @Immutable
     sealed interface State {
         data object Loading : State
-
         data object Error : State
-
         data class Success(
             val isLoading: Boolean,
-            val nameField: TextFieldUi,
+            val nameField: TextFieldUi
         ) : State
     }
 }

@@ -16,5 +16,5 @@ data class MenuProductToAdditionGroupToAdditionServer(
     @SerialName("additionUuid")
     val additionUuid: String,
     @SerialName("priority")
-    val priority: Int?,
+    val priority: Int?
 )

@@ -6,5 +6,5 @@ import androidx.compose.ui.graphics.Color
 data class AdminTopBarAction(
     @DrawableRes val iconId: Int,
     val onClick: () -> Unit,
-    val color: Color,
+    val color: Color
 )

@@ -28,36 +28,44 @@ import com.bunbeauty.presentation.R
 class StringUtil(
     private val resourcesProvider: ResourcesProvider,
     private val resources: Resources,
-    private val dateTimeUtil: DateTimeUtil,
+    private val dateTimeUtil: DateTimeUtil
 ) : IStringUtil {
-    override fun getDeferredTimeString(deferred: Long?): String =
-        if (deferred == null) {
+
+    override fun getDeferredTimeString(deferred: Long?): String {
+        return if (deferred == null) {
             ""
         } else {
             resourcesProvider.getString(R.string.msg_order_deferred_date_time) +
                 dateTimeUtil.formatDateTime(deferred, PATTERN_HH_MM)
         }
+    }
 
-    override fun getCostString(cost: Int?): String =
-        if (cost == null) {
+    override fun getCostString(cost: Int?): String {
+        return if (cost == null) {
             ""
         } else {
             cost.toString() + resourcesProvider.getString(R.string.msg_ruble)
         }
+    }
 
-    override fun getOrderCodeString(orderCode: String): String = resourcesProvider.getString(R.string.msg_order) + orderCode
+    override fun getOrderCodeString(orderCode: String): String {
+        return resourcesProvider.getString(R.string.msg_order) + orderCode
+    }
 
-    override fun getReceiveMethodString(isDelivery: Boolean): String =
-        if (isDelivery) {
+    override fun getReceiveMethodString(isDelivery: Boolean): String {
+        return if (isDelivery) {
             resourcesProvider.getString(R.string.msg_order_delivery)
         } else {
             resourcesProvider.getString(R.string.msg_order_pickup)
         }
+    }
 
-    override fun getProductCountString(count: Int): String = resourcesProvider.getString(R.string.msg_pieces) + count
+    override fun getProductCountString(count: Int): String {
+        return resourcesProvider.getString(R.string.msg_pieces) + count
+    }
 
-    override fun getOrderStatusString(orderStatus: OrderStatus): String =
-        when (orderStatus) {
+    override fun getOrderStatusString(orderStatus: OrderStatus): String {
+        return when (orderStatus) {
             NOT_ACCEPTED -> resourcesProvider.getString(R.string.msg_status_not_accepted)
             ACCEPTED -> resourcesProvider.getString(R.string.msg_status_accepted)
             PREPARING -> resourcesProvider.getString(R.string.msg_status_preparing)
@@ -66,9 +74,10 @@ class StringUtil(
             DONE -> resourcesProvider.getString(R.string.msg_status_ready)
             CANCELED -> resourcesProvider.getString(R.string.msg_status_canceled)
         }
+    }
 
-    override fun getOrderStatusByString(orderStatus: String?): OrderStatus =
-        when (orderStatus) {
+    override fun getOrderStatusByString(orderStatus: String?): OrderStatus {
+        return when (orderStatus) {
             resourcesProvider.getString(R.string.msg_status_not_accepted) -> NOT_ACCEPTED
             resourcesProvider.getString(R.string.msg_status_accepted) -> ACCEPTED
             resourcesProvider.getString(R.string.msg_status_preparing) -> PREPARING
@@ -78,61 +87,56 @@ class StringUtil(
             resourcesProvider.getString(R.string.msg_status_canceled) -> CANCELED
             else -> NOT_ACCEPTED
         }
+    }
 
-    override fun getOrderAddressString(address: OrderAddress): String =
-        address.description ?: (
+    override fun getOrderAddressString(address: OrderAddress): String {
+        return address.description ?: (
             address.street +
                 getAddressPart(
-                    part =
-                        ADDRESS_DIVIDER +
-                            resources.getString(
-                                R.string.msg_address_house,
-                                address.house,
-                            ),
-                    data = address.house,
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_house,
+                        address.house
+                    ),
+                    data = address.house
                 ) +
                 getAddressPart(
-                    part =
-                        ADDRESS_DIVIDER +
-                            resources.getString(
-                                R.string.msg_address_flat,
-                                address.flat,
-                            ),
-                    data = address.flat,
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_flat,
+                        address.flat
+                    ),
+                    data = address.flat
                 ) +
                 getAddressPart(
-                    part =
-                        ADDRESS_DIVIDER +
-                            resources.getString(
-                                R.string.msg_address_entrance,
-                                address.entrance,
-                            ),
-                    data = address.entrance,
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_entrance,
+                        address.entrance
+                    ),
+                    data = address.entrance
                 ) +
                 getAddressPart(
-                    part =
-                        ADDRESS_DIVIDER +
-                            resources.getString(
-                                R.string.msg_address_floor,
-                                address.floor,
-                            ),
-                    data = address.floor,
+                    part = ADDRESS_DIVIDER + resources.getString(
+                        R.string.msg_address_floor,
+                        address.floor
+                    ),
+                    data = address.floor
                 ) +
                 getAddressPart(
                     part = ADDRESS_DIVIDER + address.comment,
-                    data = address.comment,
+                    data = address.comment
                 )
-        )
+            )
+    }
 
-    override fun getDeliveryString(deliveryCost: Int): String =
-        if (deliveryCost == 0) {
+    override fun getDeliveryString(deliveryCost: Int): String {
+        return if (deliveryCost == 0) {
             resourcesProvider.getString(R.string.msg_order_delivery_free)
         } else {
             getCostString(deliveryCost)
         }
+    }
 
-    override fun getProductCodeString(productCode: ProductCode): String =
-        when (productCode) {
+    override fun getProductCodeString(productCode: ProductCode): String {
+        return when (productCode) {
             COMBO -> resourcesProvider.getString(R.string.msg_product_code_combo)
             PIZZA -> resourcesProvider.getString(R.string.msg_product_code_pizza)
             BARBECUE -> resourcesProvider.getString(R.string.msg_product_code_barbecue)
@@ -144,9 +148,10 @@ class StringUtil(
             OVEN -> resourcesProvider.getString(R.string.msg_product_code_oven)
             else -> ""
         }
+    }
 
-    override fun getProductCode(productCode: String): ProductCode? =
-        when (productCode) {
+    override fun getProductCode(productCode: String): ProductCode? {
+        return when (productCode) {
             resourcesProvider.getString(R.string.msg_product_code_combo) -> COMBO
             resourcesProvider.getString(R.string.msg_product_code_pizza) -> PIZZA
             resourcesProvider.getString(R.string.msg_product_code_barbecue) -> BARBECUE
@@ -158,21 +163,21 @@ class StringUtil(
             resourcesProvider.getString(R.string.msg_product_code_oven) -> OVEN
             else -> null
         }
+    }
 
-    override fun getBonusString(bonusCount: Int?): String =
-        if (bonusCount == null) {
+    override fun getBonusString(bonusCount: Int?): String {
+        return if (bonusCount == null) {
             ""
         } else {
             "-" + getCostString(bonusCount)
         }
+    }
 
-    fun getAddressPart(
-        part: String,
-        data: String?,
-    ): String =
-        if (data.isNullOrEmpty()) {
+    fun getAddressPart(part: String, data: String?): String {
+        return if (data.isNullOrEmpty()) {
             ""
         } else {
             part
         }
+    }
 }

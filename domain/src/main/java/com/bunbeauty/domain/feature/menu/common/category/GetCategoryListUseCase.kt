@@ -9,19 +9,19 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class GetCategoryListUseCase(
     private val categoryRepo: CategoryRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(refreshing: Boolean): List<Category> =
-        categoryRepo
-            .getCategoryList(
-                token = dataStoreRepo.getToken() ?: throw NoTokenException(),
-                companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
-                refreshing = refreshing,
-            ).filter { category ->
-                !isHits(category = category)
-            }.sortedBy { category ->
-                category.priority
-            }
+    suspend operator fun invoke(refreshing: Boolean): List<Category> {
+        return categoryRepo.getCategoryList(
+            token = dataStoreRepo.getToken() ?: throw NoTokenException(),
+            companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException(),
+            refreshing = refreshing
+        ).filter { category ->
+            !isHits(category = category)
+        }.sortedBy { category ->
+            category.priority
+        }
+    }
 
     private fun isHits(category: Category) = category.uuid.isEmpty()
 }

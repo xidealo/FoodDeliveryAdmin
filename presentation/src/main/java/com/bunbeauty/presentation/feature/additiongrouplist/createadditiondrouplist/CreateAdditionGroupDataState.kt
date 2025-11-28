@@ -12,42 +12,32 @@ interface CreateAdditionGroupDataState {
         val nameField: TextFieldData,
         val isShowMenuVisible: Boolean,
         val singleChoice: Boolean,
-        val nameStateError: NameStateError,
+        val nameStateError: NameStateError
     ) : BaseDataState {
+
         enum class NameStateError {
             EMPTY_NAME,
             DUPLICATE_NAME,
-            NO_ERROR,
+            NO_ERROR
         }
 
         enum class State {
             SUCCESS,
             ERROR,
-            LOADING,
+            LOADING
         }
     }
-
     sealed interface Action : BaseAction {
         data object OnBackClick : Action
-
         data object OnErrorStateClicked : Action
-
-        data class CreateNameAdditionGroupChanged(
-            val nameGroup: String,
-        ) : Action
-
+        data class CreateNameAdditionGroupChanged(val nameGroup: String) : Action
         data object OnVisibleClick : Action
-
         data object OnOneAdditionVisibleClick : Action
-
         data object OnSaveAdditionGroupClick : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
-
-        data class ShowUpdateAdditionGroupSuccess(
-            val additionGroupName: String,
-        ) : Event
+        data class ShowUpdateAdditionGroupSuccess(val additionGroupName: String) : Event
     }
 }

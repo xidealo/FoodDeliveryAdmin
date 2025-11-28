@@ -6,17 +6,17 @@ import com.bunbeauty.domain.repo.UserAuthorizationRepo
 
 class LoginUseCase(
     private val userAuthorizationRepo: UserAuthorizationRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
+
     suspend operator fun invoke(
         username: String,
-        password: String,
+        password: String
     ) {
-        val (token, cafeUuid, companyUuid) =
-            userAuthorizationRepo.login(
-                username = username,
-                password = password,
-            ) ?: throw LoginException()
+        val (token, cafeUuid, companyUuid) = userAuthorizationRepo.login(
+            username = username,
+            password = password
+        ) ?: throw LoginException()
 
         with(dataStoreRepo) {
             saveToken(token)

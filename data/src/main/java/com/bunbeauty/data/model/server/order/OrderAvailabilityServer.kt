@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class OrderAvailabilityServer(
-    val isAvailable: Boolean,
+    val isAvailable: Boolean
 )

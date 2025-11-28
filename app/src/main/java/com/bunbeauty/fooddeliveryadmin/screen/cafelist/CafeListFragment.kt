@@ -31,14 +31,12 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
+
     private val cafeStateMapper: CafeStateMapper by inject()
 
     override val viewModel: CafeListViewModel by viewModel()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.updateCafeList()
@@ -54,10 +52,10 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
                     findNavController().navigateSafe(
                         toEditCafeFragment(
                             cafeUuid = cafeUiItem.uuid,
-                            cafeAddress = cafeUiItem.address,
-                        ),
+                            cafeAddress = cafeUiItem.address
+                        )
                     )
-                },
+                }
             )
         }
     }
@@ -67,25 +65,24 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
         uiState: CafeListUiState,
         backActionClick: () -> Unit,
         onRetryClicked: () -> Unit,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_cafe_list),
-            backActionClick = backActionClick,
+            backActionClick = backActionClick
         ) {
             when (uiState) {
                 CafeListUiState.Loading -> LoadingScreen()
-                CafeListUiState.Error ->
-                    ErrorScreen(
-                        mainTextId = R.string.title_common_can_not_load_data,
-                        extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = onRetryClicked,
-                    )
+                CafeListUiState.Error -> ErrorScreen(
+                    mainTextId = R.string.title_common_can_not_load_data,
+                    extraTextId = R.string.msg_common_check_connection_and_retry,
+                    onClick = onRetryClicked
+                )
 
                 is CafeListUiState.Success -> {
                     CafeListSuccessScreen(
                         cafeItemList = uiState.cafeItemList,
-                        onCafeClicked = onCafeClicked,
+                        onCafeClicked = onCafeClicked
                     )
                 }
             }
@@ -95,16 +92,16 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
     @Composable
     private fun CafeListSuccessScreen(
         cafeItemList: List<CafeUiItem>,
-        onCafeClicked: (CafeUiItem) -> Unit,
+        onCafeClicked: (CafeUiItem) -> Unit
     ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(cafeItemList) { cafeItem ->
                 CafeItem(
                     cafeItem = cafeItem,
-                    onClick = onCafeClicked,
+                    onClick = onCafeClicked
                 )
             }
         }
@@ -115,35 +112,34 @@ class CafeListFragment : BaseFragment<LayoutComposeBinding>() {
     private fun CafeListScreenPreview() {
         AdminTheme {
             CafeListScreen(
-                uiState =
-                    CafeListUiState.Success(
-                        listOf(
-                            CafeUiItem(
-                                uuid = "",
-                                address = "улица Чапаева, д. 22а",
-                                workingHours = "10:00-22:00",
-                                cafeStatusText = "Открыто",
-                                cafeStatus = CafeStatus.Open,
-                            ),
-                            CafeUiItem(
-                                uuid = "",
-                                address = "улица Чапаева, д. 22а",
-                                workingHours = "10:00-20:00",
-                                cafeStatusText = "Закрыто",
-                                cafeStatus = CafeStatus.Closed,
-                            ),
-                            CafeUiItem(
-                                uuid = "",
-                                address = "улица Чапаева, д. 22а",
-                                workingHours = "10:00-21:00",
-                                cafeStatusText = "Открыто. Закроется через 30 мин",
-                                cafeStatus = CafeStatus.CloseSoon(30),
-                            ),
+                uiState = CafeListUiState.Success(
+                    listOf(
+                        CafeUiItem(
+                            uuid = "",
+                            address = "улица Чапаева, д. 22а",
+                            workingHours = "10:00-22:00",
+                            cafeStatusText = "Открыто",
+                            cafeStatus = CafeStatus.Open
                         ),
-                    ),
+                        CafeUiItem(
+                            uuid = "",
+                            address = "улица Чапаева, д. 22а",
+                            workingHours = "10:00-20:00",
+                            cafeStatusText = "Закрыто",
+                            cafeStatus = CafeStatus.Closed
+                        ),
+                        CafeUiItem(
+                            uuid = "",
+                            address = "улица Чапаева, д. 22а",
+                            workingHours = "10:00-21:00",
+                            cafeStatusText = "Открыто. Закроется через 30 мин",
+                            cafeStatus = CafeStatus.CloseSoon(30)
+                        )
+                    )
+                ),
                 backActionClick = {},
                 onRetryClicked = {},
-                onCafeClicked = {},
+                onCafeClicked = {}
             )
         }
     }

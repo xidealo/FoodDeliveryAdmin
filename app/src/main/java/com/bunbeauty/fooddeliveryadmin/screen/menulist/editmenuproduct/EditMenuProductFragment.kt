@@ -36,10 +36,10 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
+import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.NavigationTextCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.card.SwitcherCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
-import com.bunbeauty.fooddeliveryadmin.compose.element.surface.AdminSurface
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.RubleSymbol
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
@@ -66,6 +66,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditMenuProductFragment :
     BaseComposeFragment<EditMenuProduct.DataState, EditMenuProductViewState, EditMenuProduct.Action, EditMenuProduct.Event>() {
+
     override val viewModel: EditMenuProductViewModel by viewModel()
 
     private val editMenuProductFragmentArgs: EditMenuProductFragmentArgs by navArgs()
@@ -74,16 +75,15 @@ class EditMenuProductFragment :
         super.onCreate(savedInstanceState)
         viewModel.onAction(
             EditMenuProduct.Action.LoadData(
-                productUuid = editMenuProductFragmentArgs.menuProductUuid,
-            ),
+                productUuid = editMenuProductFragmentArgs.menuProductUuid
+            )
         )
         setFragmentResultListener(CATEGORY_LIST_REQUEST_KEY) { _, bundle ->
             viewModel.onAction(
                 EditMenuProduct.Action.SelectCategories(
-                    categoryUuidList =
-                        bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
-                            ?: emptyList(),
-                ),
+                    categoryUuidList = bundle.getStringArrayList(CATEGORY_LIST_KEY)?.toList()
+                        ?: emptyList()
+                )
             )
         }
         setFragmentResultListener(CROP_IMAGE_REQUEST_KEY) { _, bundle ->
@@ -91,10 +91,9 @@ class EditMenuProductFragment :
                 bundle.parcelable<Uri>(CROPPED_IMAGE_URI_KEY) ?: return@setFragmentResultListener
 
             viewModel.onAction(
-                action =
-                    EditMenuProduct.Action.SetImage(
-                        croppedImageUri = croppedImageUri.toString(),
-                    ),
+                action = EditMenuProduct.Action.SetImage(
+                    croppedImageUri = croppedImageUri.toString()
+                )
             )
         }
     }
@@ -102,7 +101,7 @@ class EditMenuProductFragment :
     @Composable
     override fun Screen(
         state: EditMenuProductViewState,
-        onAction: (EditMenuProduct.Action) -> Unit,
+        onAction: (EditMenuProduct.Action) -> Unit
     ) {
         val galleryLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -120,9 +119,9 @@ class EditMenuProductFragment :
                     onAddPhotoClick = {
                         galleryLauncher.launch(IMAGE)
                     },
-                    onAction = onAction,
+                    onAction = onAction
                 )
-            },
+            }
         ) {
             when (state.state) {
                 EditMenuProductViewState.State.Error -> {
@@ -130,10 +129,10 @@ class EditMenuProductFragment :
                         onClick = {
                             onAction(
                                 EditMenuProduct.Action.LoadData(
-                                    productUuid = editMenuProductFragmentArgs.menuProductUuid,
-                                ),
+                                    productUuid = editMenuProductFragmentArgs.menuProductUuid
+                                )
                             )
-                        },
+                        }
                     )
                 }
 
@@ -144,7 +143,7 @@ class EditMenuProductFragment :
                 is EditMenuProductViewState.State.Success -> {
                     EditMenuProductSuccessScreen(
                         state = state.state,
-                        onAction = onAction,
+                        onAction = onAction
                     )
                 }
             }
@@ -152,7 +151,9 @@ class EditMenuProductFragment :
     }
 
     @Composable
-    override fun mapState(state: EditMenuProduct.DataState): EditMenuProductViewState = state.toEditMenuProductViewState()
+    override fun mapState(state: EditMenuProduct.DataState): EditMenuProductViewState {
+        return state.toEditMenuProductViewState()
+    }
 
     override fun handleEvent(event: EditMenuProduct.Event) {
         when (event) {
@@ -162,45 +163,43 @@ class EditMenuProductFragment :
 
             is EditMenuProduct.Event.NavigateToCategoryList -> {
                 findNavController().navigate(
-                    directions =
-                        EditMenuProductFragmentDirections.toSelectCategoryListFragment(
-                            selectedCategoryUuidList = event.selectedCategoryList.toTypedArray(),
-                        ),
+                    directions = EditMenuProductFragmentDirections.toSelectCategoryListFragment(
+                        selectedCategoryUuidList = event.selectedCategoryList.toTypedArray()
+                    )
                 )
             }
 
             is EditMenuProduct.Event.NavigateToAdditionList -> {
                 findNavController().navigate(
-                    directions =
-                        EditMenuProductFragmentDirections
-                            .toAdditionGroupForMenuProductListFragment(
-                                menuProductUuid = event.menuProductUuid,
-                            ),
+                    directions = EditMenuProductFragmentDirections
+                        .toAdditionGroupForMenuProductListFragment(
+                            menuProductUuid = event.menuProductUuid
+                        )
                 )
             }
 
             is EditMenuProduct.Event.ShowImageUploadingFailed -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_common_menu_product_image_uploading),
+                    resources.getString(R.string.error_common_menu_product_image_uploading)
                 )
             }
 
             is EditMenuProduct.Event.ShowSomethingWentWrong -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(R.string.error_common_something_went_wrong),
+                    resources.getString(R.string.error_common_something_went_wrong)
                 )
             }
 
             is EditMenuProduct.Event.ShowUpdateProductSuccess -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_edit_menu_product_updated, event.productName),
+                    resources.getString(R.string.msg_edit_menu_product_updated, event.productName)
                 )
                 findNavController().popBackStack()
             }
 
             is EditMenuProduct.Event.ShowEmptyPhoto -> {
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.error_common_menu_product_empty_photo),
+                    resources.getString(R.string.error_common_menu_product_empty_photo)
                 )
             }
         }
@@ -211,37 +210,35 @@ class EditMenuProductFragment :
         modifier: Modifier = Modifier,
         state: EditMenuProductViewState.State,
         onAddPhotoClick: () -> Unit,
-        onAction: (EditMenuProduct.Action) -> Unit,
+        onAction: (EditMenuProduct.Action) -> Unit
     ) {
         Column(
             modifier = modifier.padding(horizontal = 16.dp),
-            verticalArrangement = spacedBy(8.dp),
+            verticalArrangement = spacedBy(8.dp)
         ) {
             if (state is EditMenuProductViewState.State.Success) {
                 SecondaryButton(
-                    textStringId =
-                        if (state.imageField.isSelected) {
-                            R.string.action_common_replace_photo
-                        } else {
-                            R.string.action_common_add_photo
-                        },
+                    textStringId = if (state.imageField.isSelected) {
+                        R.string.action_common_replace_photo
+                    } else {
+                        R.string.action_common_add_photo
+                    },
                     onClick = onAddPhotoClick,
                     isError = state.imageField.isError,
-                    borderColor =
-                        if (state.imageField.isError) {
-                            AdminTheme.colors.main.error
-                        } else {
-                            AdminTheme.colors.main.primary
-                        },
+                    borderColor = if (state.imageField.isError) {
+                        AdminTheme.colors.main.error
+                    } else {
+                        AdminTheme.colors.main.primary
+                    },
                     buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
-                    elevated = false,
+                    elevated = false
                 )
                 LoadingButton(
                     text = stringResource(R.string.action_order_details_save),
                     isLoading = state.sendingToServer,
                     onClick = {
                         onAction(EditMenuProduct.Action.SaveMenuProductClick)
-                    },
+                    }
                 )
             }
         }
@@ -250,19 +247,18 @@ class EditMenuProductFragment :
     @Composable
     private fun EditMenuProductSuccessScreen(
         state: EditMenuProductViewState.State.Success,
-        onAction: (EditMenuProduct.Action) -> Unit,
+        onAction: (EditMenuProduct.Action) -> Unit
     ) {
         Column(
-            modifier =
-                Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 16.dp),
-            verticalArrangement = spacedBy(8.dp),
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp),
+            verticalArrangement = spacedBy(8.dp)
         ) {
             TextFieldsCard(
                 state = state,
-                onAction = onAction,
+                onAction = onAction
             )
             NavigationTextCard(
                 labelText = stringResource(state.categoriesField.labelResId),
@@ -271,28 +267,28 @@ class EditMenuProductFragment :
                 errorText = stringResource(state.categoriesField.errorResId),
                 onClick = {
                     onAction(EditMenuProduct.Action.CategoriesClick)
-                },
+                }
             )
-
-            NavigationTextCard(
+            // TODO расскоментировать в следующем релизе
+           /* NavigationTextCard(
                 labelText = stringResource(state.additionListField.labelResId),
                 valueText = state.additionListField.value,
                 isError = state.additionListField.isError,
                 errorText = stringResource(state.additionListField.errorResId),
                 onClick = {
                     onAction(EditMenuProduct.Action.AdditionListClick)
-                },
-            )
+                }
+            )*/
 
             SwitcherCard(
                 text = stringResource(R.string.action_common_menu_product_show_in_menu),
                 checked = state.isVisibleInMenu,
                 onCheckChanged = {
                     onAction(
-                        EditMenuProduct.Action.ToggleVisibilityInMenu,
+                        EditMenuProduct.Action.ToggleVisibilityInMenu
                     )
                 },
-                enabled = !state.sendingToServer,
+                enabled = !state.sendingToServer
             )
             SwitcherCard(
                 checked = state.isVisibleInRecommendation,
@@ -300,16 +296,15 @@ class EditMenuProductFragment :
                     onAction(EditMenuProduct.Action.ToggleVisibilityInRecommendations)
                 },
                 text = stringResource(R.string.action_common_menu_product_recommend),
-                enabled = !state.sendingToServer,
+                enabled = !state.sendingToServer
             )
             state.imageField.value?.let { imageData ->
                 AdminAsyncImage(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp)),
                     imageData = imageData,
-                    contentDescription = R.string.description_product,
+                    contentDescription = R.string.description_product
                 )
             }
 
@@ -320,16 +315,16 @@ class EditMenuProductFragment :
     @Composable
     fun TextFieldsCard(
         state: EditMenuProductViewState.State.Success,
-        onAction: (EditMenuProduct.Action) -> Unit,
+        onAction: (EditMenuProduct.Action) -> Unit
     ) {
-        AdminSurface {
+        AdminCard(clickable = false) {
             Column(
-                modifier =
-                    Modifier
-                        .padding(
-                            top = 8.dp,
-                            bottom = 16.dp,
-                        ).padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .padding(
+                        top = 8.dp,
+                        bottom = 16.dp
+                    )
+                    .padding(horizontal = 16.dp)
             ) {
                 AdminTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -337,12 +332,12 @@ class EditMenuProductFragment :
                     value = state.nameField.value,
                     onValueChange = { name ->
                         onAction(
-                            EditMenuProduct.Action.ChangeNameText(name = name),
+                            EditMenuProduct.Action.ChangeNameText(name = name)
                         )
                     },
                     isError = state.nameField.isError,
                     errorText = stringResource(state.nameField.errorResId),
-                    enabled = !state.sendingToServer,
+                    enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
@@ -351,19 +346,18 @@ class EditMenuProductFragment :
                     value = state.newPriceField.value,
                     onValueChange = { newPrice ->
                         onAction(
-                            EditMenuProduct.Action.ChangeNewPriceText(newPrice = newPrice),
+                            EditMenuProduct.Action.ChangeNewPriceText(newPrice = newPrice)
                         )
                     },
-                    keyboardOptions =
-                        keyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                        ),
+                    keyboardOptions = keyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
                     isError = state.newPriceField.isError,
                     errorText = stringResource(state.newPriceField.errorResId),
                     enabled = !state.sendingToServer,
                     trailingIcon = {
                         RubleSymbol()
-                    },
+                    }
                 )
 
                 AdminTextField(
@@ -372,23 +366,22 @@ class EditMenuProductFragment :
                     value = state.oldPriceField.value,
                     onValueChange = { oldPrice ->
                         onAction(
-                            EditMenuProduct.Action.ChangeOldPriceText(oldPrice = oldPrice),
+                            EditMenuProduct.Action.ChangeOldPriceText(oldPrice = oldPrice)
                         )
                     },
-                    keyboardOptions =
-                        keyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                        ),
+                    keyboardOptions = keyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
                     isError = state.oldPriceField.isError,
                     errorText = stringResource(state.oldPriceField.errorResId),
                     enabled = !state.sendingToServer,
                     trailingIcon = {
                         RubleSymbol()
-                    },
+                    }
                 )
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     AdminTextField(
                         modifier = Modifier.weight(0.6f),
@@ -396,16 +389,15 @@ class EditMenuProductFragment :
                         value = state.nutritionField.value,
                         onValueChange = { nutrition ->
                             onAction(
-                                EditMenuProduct.Action.ChangeNutritionText(nutrition = nutrition),
+                                EditMenuProduct.Action.ChangeNutritionText(nutrition = nutrition)
                             )
                         },
-                        keyboardOptions =
-                            keyboardOptions(
-                                keyboardType = KeyboardType.Number,
-                            ),
+                        keyboardOptions = keyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
                         errorText = stringResource(state.nutritionField.errorResId),
                         isError = state.nutritionField.isError,
-                        enabled = !state.sendingToServer,
+                        enabled = !state.sendingToServer
                     )
 
                     var expanded by remember {
@@ -413,31 +405,29 @@ class EditMenuProductFragment :
                     }
 
                     AdminTextFieldWithMenu(
-                        modifier =
-                            Modifier
-                                .weight(0.4f)
-                                .padding(start = 8.dp),
+                        modifier = Modifier
+                            .weight(0.4f)
+                            .padding(start = 8.dp),
                         expanded = expanded,
                         onExpandedChange = { value ->
                             expanded = value
                         },
                         labelText = stringResource(R.string.hint_common_menu_product_units),
                         value = state.utils,
-                        suggestionsList =
-                            stringArrayResource(id = R.array.array_common_menu_product_units)
-                                .mapIndexed { index, util ->
-                                    Suggestion(
-                                        id = index.toString(),
-                                        value = util,
-                                    )
-                                },
+                        suggestionsList = stringArrayResource(id = R.array.array_common_menu_product_units)
+                            .mapIndexed { index, util ->
+                                Suggestion(
+                                    id = index.toString(),
+                                    value = util
+                                )
+                            },
                         onSuggestionClick = { suggestion ->
                             expanded = false
                             onAction(
-                                EditMenuProduct.Action.ChangeUtilsText(units = suggestion.value),
+                                EditMenuProduct.Action.ChangeUtilsText(units = suggestion.value)
                             )
                         },
-                        enabled = !state.sendingToServer,
+                        enabled = !state.sendingToServer
                     )
                 }
 
@@ -447,17 +437,16 @@ class EditMenuProductFragment :
                     value = state.descriptionField.value,
                     onValueChange = { description ->
                         onAction(
-                            EditMenuProduct.Action.ChangeDescriptionText(description = description),
+                            EditMenuProduct.Action.ChangeDescriptionText(description = description)
                         )
                     },
-                    keyboardOptions =
-                        keyboardOptions(
-                            imeAction = ImeAction.None,
-                        ),
+                    keyboardOptions = keyboardOptions(
+                        imeAction = ImeAction.None
+                    ),
                     maxLines = 20,
                     isError = state.descriptionField.isError,
                     errorText = stringResource(state.descriptionField.errorResId),
-                    enabled = !state.sendingToServer,
+                    enabled = !state.sendingToServer
                 )
 
                 AdminTextField(
@@ -466,15 +455,14 @@ class EditMenuProductFragment :
                     value = state.comboDescription,
                     onValueChange = { comboDescription ->
                         onAction(
-                            EditMenuProduct.Action.ChangeComboDescriptionText(comboDescription = comboDescription),
+                            EditMenuProduct.Action.ChangeComboDescriptionText(comboDescription = comboDescription)
                         )
                     },
-                    keyboardOptions =
-                        keyboardOptions(
-                            imeAction = ImeAction.None,
-                        ),
+                    keyboardOptions = keyboardOptions(
+                        imeAction = ImeAction.None
+                    ),
                     maxLines = 20,
-                    enabled = !state.sendingToServer,
+                    enabled = !state.sendingToServer
                 )
             }
         }
@@ -485,7 +473,7 @@ class EditMenuProductFragment :
         ErrorScreen(
             mainTextId = R.string.title_common_can_not_load_data,
             extraTextId = R.string.msg_common_check_connection_and_retry,
-            onClick = onClick,
+            onClick = onClick
         )
     }
 
@@ -494,11 +482,10 @@ class EditMenuProductFragment :
 
         findNavController()
             .navigate(
-                directions =
-                    EditMenuProductFragmentDirections.toCropImageFragment(
-                        uri = uri,
-                        launchMode = CropImageLaunchMode.MENU_PRODUCT,
-                    ),
+                directions = EditMenuProductFragmentDirections.toCropImageFragment(
+                    uri = uri,
+                    launchMode = CropImageLaunchMode.MENU_PRODUCT
+                )
             )
     }
 
@@ -507,48 +494,42 @@ class EditMenuProductFragment :
     private fun EditMenuProductSuccessScreenPreview() {
         AdminTheme {
             Screen(
-                state =
-                    EditMenuProductViewState(
-                        title = "Бургер",
-                        state =
-                            EditMenuProductViewState.State.Success(
-                                nameField = TextFieldUi.empty,
-                                newPriceField = TextFieldUi.empty,
-                                oldPriceField = TextFieldUi.empty,
-                                nutritionField = TextFieldUi.empty,
-                                utils = "",
-                                descriptionField =
-                                    TextFieldUi(
-                                        value = "",
-                                        isError = false,
-                                        errorResId = 0,
-                                    ),
-                                comboDescription = "",
-                                categoriesField =
-                                    CardFieldUi(
-                                        labelResId = R.string.hint_common_menu_product_categories,
-                                        value = "Категория 1 • Категория 2",
-                                        isError = false,
-                                        errorResId = 0,
-                                    ),
-                                isVisibleInMenu = true,
-                                isVisibleInRecommendation = false,
-                                imageField =
-                                    ImageFieldUi(
-                                        value = null,
-                                        isError = false,
-                                    ),
-                                sendingToServer = false,
-                                additionListField =
-                                    CardFieldUi(
-                                        labelResId = R.string.hint_common_menu_product_additions,
-                                        value = "Группа 1 • Группа 2 • Группа 3",
-                                        isError = false,
-                                        errorResId = 0,
-                                    ),
-                            ),
-                    ),
-                onAction = {},
+                state = EditMenuProductViewState(
+                    title = "Бургер",
+                    state = EditMenuProductViewState.State.Success(
+                        nameField = TextFieldUi.empty,
+                        newPriceField = TextFieldUi.empty,
+                        oldPriceField = TextFieldUi.empty,
+                        nutritionField = TextFieldUi.empty,
+                        utils = "",
+                        descriptionField = TextFieldUi(
+                            value = "",
+                            isError = false,
+                            errorResId = 0
+                        ),
+                        comboDescription = "",
+                        categoriesField = CardFieldUi(
+                            labelResId = R.string.hint_common_menu_product_categories,
+                            value = "Категория 1 • Категория 2",
+                            isError = false,
+                            errorResId = 0
+                        ),
+                        isVisibleInMenu = true,
+                        isVisibleInRecommendation = false,
+                        imageField = ImageFieldUi(
+                            value = null,
+                            isError = false
+                        ),
+                        sendingToServer = false,
+                        additionListField = CardFieldUi(
+                            labelResId = R.string.hint_common_menu_product_additions,
+                            value = "Группа 1 • Группа 2 • Группа 3",
+                            isError = false,
+                            errorResId = 0
+                        )
+                    )
+                ),
+                onAction = {}
             )
         }
     }
@@ -558,12 +539,11 @@ class EditMenuProductFragment :
     private fun EditMenuProductErrorScreenPreview() {
         AdminTheme {
             Screen(
-                state =
-                    EditMenuProductViewState(
-                        title = "title",
-                        state = EditMenuProductViewState.State.Error,
-                    ),
-                onAction = {},
+                state = EditMenuProductViewState(
+                    title = "title",
+                    state = EditMenuProductViewState.State.Error
+                ),
+                onAction = {}
             )
         }
     }

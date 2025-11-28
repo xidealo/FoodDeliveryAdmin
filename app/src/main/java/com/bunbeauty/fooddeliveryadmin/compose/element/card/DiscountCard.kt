@@ -15,13 +15,13 @@ fun DiscountCard(discount: String) {
         colors = AdminCardDefaults.cardPositiveColors,
         shape = RoundedCornerShape(4.dp),
         elevated = false,
-        clickable = false,
+        clickable = false
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 4.dp),
             text = discount,
             style = AdminTheme.typography.bodyMedium,
-            color = AdminTheme.colors.status.onStatus,
+            color = AdminTheme.colors.status.onStatus
         )
     }
 }

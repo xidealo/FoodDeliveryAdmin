@@ -15,6 +15,7 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class EditCategoryUseCaseTest {
+
     private val categoryRepo: CategoryRepo = mockk(relaxed = true)
     private val dataStoreRepo: DataStoreRepo = mockk()
     private lateinit var editCategoryUseCase: EditCategoryUseCase
@@ -25,104 +26,99 @@ class EditCategoryUseCaseTest {
     }
 
     @Test
-    fun `invoke throws NoTokenException when token is null`() =
-        runTest {
-            coEvery { dataStoreRepo.getToken() } returns null
-            coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
+    fun `invoke throws NoTokenException when token is null`() = runTest {
+        coEvery { dataStoreRepo.getToken() } returns null
+        coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
 
-            assertFailsWith<NoTokenException> {
-                editCategoryUseCase(
-                    "category_uuid",
-                    UpdateCategory.mock.copy(name = "Updated Name", priority = 0),
-                )
-            }
-        }
-
-    @Test
-    fun `invoke throws DuplicateCategoryNameException when name already exists`() =
-        runTest {
-            val token = "token"
-            val companyUuid = "companyUuid"
-            val existingCategory = Category.mock.copy(uuid = "1", name = "Duplicate", priority = 1)
-            val editingCategory = Category.mock.copy(uuid = "2", name = "Old Name", priority = 1)
-
-            coEvery { dataStoreRepo.getToken() } returns token
-            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-            coEvery {
-                categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
-            } returns listOf(existingCategory, editingCategory)
-
-            assertFailsWith<DuplicateCategoryNameException> {
-                editCategoryUseCase(
-                    "2",
-                    UpdateCategory.mock.copy(name = "Duplicate", priority = 0),
-                )
-            }
-        }
-
-    @Test
-    fun `invoke throws CategoryNameException when category name is blank`() =
-        runTest {
-            coEvery { dataStoreRepo.getToken() } returns "test_token"
-            coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
-            coEvery {
-                categoryRepo.getCategoryList(any(), any())
-            } returns listOf(Category.mock.copy(uuid = "1", name = "Old Name", priority = 1))
-
-            assertFailsWith<CategoryNameException> {
-                editCategoryUseCase(
-                    "1",
-                    UpdateCategory.mock.copy(name = "", priority = 0),
-                )
-            }
-        }
-
-    @Test
-    fun `invoke does nothing when name is unchanged`() =
-        runTest {
-            val token = "test_token"
-            val companyUuid = "test_company_uuid"
-            val category = Category.mock.copy(uuid = "category_uuid", name = "Old Name", priority = 1)
-
-            coEvery { dataStoreRepo.getToken() } returns token
-            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-            coEvery {
-                categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
-            } returns listOf(category)
-
+        assertFailsWith<NoTokenException> {
             editCategoryUseCase(
-                categoryUuid = category.uuid,
-                updateCategory = UpdateCategory.mock.copy(name = "Old Name", priority = 1),
+                "category_uuid",
+                UpdateCategory(name = "Updated Name", priority = 0)
             )
-
-            coVerify(exactly = 0) {
-                categoryRepo.updateCategory(any(), any(), any())
-            }
         }
+    }
 
     @Test
-    fun `invoke successfully updates category`() =
-        runTest {
-            val token = "test_token"
-            val companyUuid = "test_company_uuid"
-            val updateCategory = UpdateCategory.mock.copy(name = "Updated Name", priority = 0)
-            val categoryUuid = "category_uuid"
-            val oldCategory = Category.mock.copy(uuid = categoryUuid, name = "Old Name", priority = 1)
+    fun `invoke throws DuplicateCategoryNameException when name already exists`() = runTest {
+        val token = "token"
+        val companyUuid = "companyUuid"
+        val existingCategory = Category(uuid = "1", name = "Duplicate", priority = 1)
+        val editingCategory = Category(uuid = "2", name = "Old Name", priority = 1)
 
-            coEvery { dataStoreRepo.getToken() } returns token
-            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-            coEvery {
-                categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
-            } returns listOf(oldCategory)
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery {
+            categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
+        } returns listOf(existingCategory, editingCategory)
 
-            editCategoryUseCase(categoryUuid, updateCategory)
-
-            coVerify(exactly = 1) {
-                categoryRepo.updateCategory(
-                    categoryUuid = categoryUuid,
-                    updateCategory = updateCategory,
-                    token = token,
-                )
-            }
+        assertFailsWith<DuplicateCategoryNameException> {
+            editCategoryUseCase(
+                "2",
+                UpdateCategory(name = "Duplicate", priority = 0)
+            )
         }
+    }
+
+    @Test
+    fun `invoke throws CategoryNameException when category name is blank`() = runTest {
+        coEvery { dataStoreRepo.getToken() } returns "test_token"
+        coEvery { dataStoreRepo.companyUuid } returns flowOf("test_company_uuid")
+        coEvery {
+            categoryRepo.getCategoryList(any(), any())
+        } returns listOf(Category(uuid = "1", name = "Old Name", priority = 1))
+
+        assertFailsWith<CategoryNameException> {
+            editCategoryUseCase(
+                "1",
+                UpdateCategory(name = "", priority = 0)
+            )
+        }
+    }
+
+    @Test
+    fun `invoke does nothing when name is unchanged`() = runTest {
+        val token = "test_token"
+        val companyUuid = "test_company_uuid"
+        val category = Category(uuid = "category_uuid", name = "Old Name", priority = 1)
+
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery {
+            categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
+        } returns listOf(category)
+
+        editCategoryUseCase(
+            categoryUuid = category.uuid,
+            updateCategory = UpdateCategory(name = "Old Name", priority = 1)
+        )
+
+        coVerify(exactly = 0) {
+            categoryRepo.updateCategory(any(), any(), any())
+        }
+    }
+
+    @Test
+    fun `invoke successfully updates category`() = runTest {
+        val token = "test_token"
+        val companyUuid = "test_company_uuid"
+        val updateCategory = UpdateCategory(name = "Updated Name", priority = 0)
+        val categoryUuid = "category_uuid"
+        val oldCategory = Category(uuid = categoryUuid, name = "Old Name", priority = 1)
+
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery {
+            categoryRepo.getCategoryList(token = token, companyUuid = companyUuid)
+        } returns listOf(oldCategory)
+
+        editCategoryUseCase(categoryUuid, updateCategory)
+
+        coVerify(exactly = 1) {
+            categoryRepo.updateCategory(
+                categoryUuid = categoryUuid,
+                updateCategory = updateCategory,
+                token = token
+            )
+        }
+    }
 }

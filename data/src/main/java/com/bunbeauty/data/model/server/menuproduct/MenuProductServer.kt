@@ -19,8 +19,10 @@ data class MenuProductServer(
     val barcode: Int,
     val isVisible: Boolean,
     val isRecommended: Boolean,
+
     @SerialName("categories")
     val categories: List<CategoryServer>,
+
     @SerialName("additionGroups")
-    val additionGroupServers: List<AdditionGroupWithAdditionsServer>,
+    val additionGroupServers: List<AdditionGroupWithAdditionsServer>
 )

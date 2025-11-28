@@ -8,20 +8,20 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class AdditionGroupListViewModel(
     private val getSeparatedAdditionGroupListUseCase: GetSeparatedAdditionGroupListUseCase,
-    private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupListUseCase,
+    private val updateVisibleAdditionGroupListUseCase: UpdateVisibleAdditionGroupListUseCase
 ) : BaseStateViewModel<AdditionGroupList.DataState, AdditionGroupList.Action, AdditionGroupList.Event>(
-        initState =
-            AdditionGroupList.DataState(
-                visibleAdditionGroups = listOf(),
-                hiddenAdditionGroups = listOf(),
-                isLoading = true,
-                isRefreshing = false,
-                error = null,
-            ),
-    ) {
+    initState = AdditionGroupList.DataState(
+        visibleAdditionGroups = listOf(),
+        hiddenAdditionGroups = listOf(),
+        isLoading = true,
+        isRefreshing = false,
+        error = null
+    )
+) {
+
     override fun reduce(
         action: AdditionGroupList.Action,
-        dataState: AdditionGroupList.DataState,
+        dataState: AdditionGroupList.DataState
     ) {
         when (action) {
             AdditionGroupList.Action.OnBackClick -> {
@@ -30,11 +30,10 @@ class AdditionGroupListViewModel(
 
             is AdditionGroupList.Action.OnAdditionClick -> additionGroupClick(action.additionUuid)
 
-            is AdditionGroupList.Action.OnVisibleClick ->
-                updateVisible(
-                    uuid = action.uuid,
-                    isVisible = action.isVisible,
-                )
+            is AdditionGroupList.Action.OnVisibleClick -> updateVisible(
+                uuid = action.uuid,
+                isVisible = action.isVisible
+            )
 
             AdditionGroupList.Action.Init -> loadData()
 
@@ -51,39 +50,36 @@ class AdditionGroupListViewModel(
                         visibleAdditionGroups = separatedAdditionList.visibleList,
                         hiddenAdditionGroups = separatedAdditionList.hiddenList,
                         isLoading = false,
-                        isRefreshing = false,
+                        isRefreshing = false
                     )
                 }
             },
             onError = { throwable ->
                 setState {
                     copy(
-                        error = throwable,
+                        error = throwable
                     )
                 }
-            },
+            }
         )
     }
 
-    private fun updateVisible(
-        uuid: String,
-        isVisible: Boolean,
-    ) {
+    private fun updateVisible(uuid: String, isVisible: Boolean) {
         viewModelScope.launchSafe(
             block = {
                 updateVisibleAdditionGroupListUseCase(
                     additionUuidGroup = uuid,
-                    isVisible = !isVisible,
+                    isVisible = !isVisible
                 )
                 loadData()
             },
             onError = { throwable ->
                 setState {
                     copy(
-                        error = throwable,
+                        error = throwable
                     )
                 }
-            },
+            }
         )
     }
 
@@ -93,7 +89,7 @@ class AdditionGroupListViewModel(
                 setState {
                     copy(
                         isRefreshing = true,
-                        error = null,
+                        error = null
                     )
                 }
 
@@ -105,17 +101,17 @@ class AdditionGroupListViewModel(
                         hiddenAdditionGroups = separatedAdditionGroupList.hiddenList,
                         isLoading = false,
                         isRefreshing = false,
-                        error = null,
+                        error = null
                     )
                 }
             },
             onError = { throwable ->
                 setState {
                     copy(
-                        error = throwable,
+                        error = throwable
                     )
                 }
-            },
+            }
         )
     }
 

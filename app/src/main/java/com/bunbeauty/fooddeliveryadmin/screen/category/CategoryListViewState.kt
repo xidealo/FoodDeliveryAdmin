@@ -9,20 +9,19 @@ import kotlinx.collections.immutable.ImmutableList
 data class CategoryListViewState(
     val state: State,
     val isRefreshing: Boolean,
-    val categoryList: ImmutableList<Category>,
+    val isEditPriority: Boolean,
+    val categoryList: ImmutableList<Category>
 ) : BaseViewState {
+
     @Immutable
     sealed interface State {
         data object Loading : State
-
         data object Error : State
-
         data class Success(
-            val categoryList: ImmutableList<CategoriesViewItem>,
+            val categoryList: ImmutableList<CategoriesViewItem>
         ) : State
-
         data class SuccessDragDrop(
-            val categoryList: ImmutableList<Category>,
+            val categoryList: ImmutableList<Category>
         ) : State
     }
 
@@ -30,6 +29,6 @@ data class CategoryListViewState(
     data class CategoriesViewItem(
         val uuid: String,
         val name: String,
-        val priority: Int,
+        val priority: Int
     )
 }

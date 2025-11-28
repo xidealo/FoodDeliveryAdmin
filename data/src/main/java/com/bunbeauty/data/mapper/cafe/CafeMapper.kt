@@ -8,8 +8,9 @@ import com.bunbeauty.domain.model.settings.WorkLoad
 import com.bunbeauty.domain.model.settings.WorkType
 
 class CafeMapper {
-    fun toCafe(cafeServer: CafeServer): Cafe =
-        cafeServer.run {
+
+    fun toCafe(cafeServer: CafeServer): Cafe {
+        return cafeServer.run {
             Cafe(
                 uuid = uuid,
                 address = address,
@@ -23,12 +24,13 @@ class CafeMapper {
                 cityUuid = cityUuid,
                 workload = WorkLoad.valueOf(workload),
                 workType = WorkType.valueOf(workType),
-                additional = additionalUtensils,
+                additional = additionalUtensils
             )
         }
+    }
 
-    fun toPatchCafeServer(cafe: Cafe): PatchCafeServer =
-        cafe.run {
+    fun toPatchCafeServer(cafe: Cafe): PatchCafeServer {
+        return cafe.run {
             PatchCafeServer(
                 address = address,
                 latitude = latitude,
@@ -39,12 +41,13 @@ class CafeMapper {
                 isVisible = visible,
                 workload = workload.name,
                 workType = workType.name,
-                additionalUtensils = additional,
+                additionalUtensils = additional
             )
         }
+    }
 
-    fun toPatchCafe(updateCafe: UpdateCafe): PatchCafeServer =
-        with(updateCafe) {
+    fun toPatchCafe(updateCafe: UpdateCafe): PatchCafeServer {
+        return with(updateCafe) {
             PatchCafeServer(
                 fromTime = fromTime,
                 toTime = toTime,
@@ -55,7 +58,8 @@ class CafeMapper {
                 isVisible = visible,
                 workload = workload?.name,
                 workType = workType?.name,
-                additionalUtensils = additionalUtensils,
+                additionalUtensils = additionalUtensils
             )
         }
+    }
 }

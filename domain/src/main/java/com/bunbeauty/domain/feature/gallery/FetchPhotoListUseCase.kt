@@ -6,7 +6,9 @@ import com.bunbeauty.domain.repo.PhotoRepo
 
 class FetchPhotoListUseCase(
     private val photoRepo: PhotoRepo,
-    private val getUsernameUseCase: GetUsernameUseCase,
+    private val getUsernameUseCase: GetUsernameUseCase
 ) {
-    suspend operator fun invoke(): List<Photo> = photoRepo.fetchPhotoList(username = getUsernameUseCase().lowercase())
+    suspend operator fun invoke(): List<Photo> {
+        return photoRepo.fetchPhotoList(username = getUsernameUseCase().lowercase())
+    }
 }

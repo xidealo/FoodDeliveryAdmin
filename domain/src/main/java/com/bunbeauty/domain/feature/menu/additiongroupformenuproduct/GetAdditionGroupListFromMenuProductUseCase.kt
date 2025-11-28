@@ -11,20 +11,18 @@ import kotlinx.coroutines.flow.firstOrNull
 class GetAdditionGroupListFromMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
     private val dataStoreRepo: DataStoreRepo,
-    private val getFilteredAdditionGroupWithAdditionsForMenuProductUseCase: GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase,
+    private val getFilteredAdditionGroupWithAdditionsForMenuProductUseCase: GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 ) {
     suspend operator fun invoke(menuProductUuid: String): List<AdditionGroupWithAdditions> {
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
-        return menuProductRepo
-            .getMenuProduct(
+        return menuProductRepo.getMenuProduct(
+            menuProductUuid = menuProductUuid,
+            companyUuid = companyUuid
+        )?.additionGroups?.map { additionGroupWithAdditions ->
+            getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
                 menuProductUuid = menuProductUuid,
-                companyUuid = companyUuid,
-            )?.additionGroups
-            ?.map { additionGroupWithAdditions ->
-                getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
-                    menuProductUuid = menuProductUuid,
-                    additionGroupForMenuUuid = additionGroupWithAdditions.additionGroup.uuid,
-                )
-            } ?: emptyList()
+                additionGroupForMenuUuid = additionGroupWithAdditions.additionGroup.uuid
+            )
+        } ?: emptyList()
     }
 }

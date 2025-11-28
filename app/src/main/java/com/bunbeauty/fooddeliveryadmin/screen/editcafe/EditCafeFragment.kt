@@ -64,30 +64,25 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event>() {
+
     override val viewModel: EditCafeViewModel by viewModel()
 
     private val editCafeFragmentArgs: EditCafeFragmentArgs by navArgs()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(
             EditCafeState.Action.Init(
                 cafeUuid = editCafeFragmentArgs.cafeUuid,
-                cafeAddress = editCafeFragmentArgs.cafeAddress,
-            ),
+                cafeAddress = editCafeFragmentArgs.cafeAddress
+            )
         )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun Screen(
-        state: EditCafeState.ViewDataState,
-        onAction: (EditCafeState.Action) -> Unit,
-    ) {
+    override fun Screen(state: EditCafeState.ViewDataState, onAction: (EditCafeState.Action) -> Unit) {
         val dateDialogState = rememberMaterialDialogState()
         val deleteConfirmBottomSheetState = rememberModalBottomSheetState()
 
@@ -105,11 +100,11 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                         textStringId = R.string.action_edit_cafe_add,
                         onClick = {
                             dateDialogState.show()
-                        },
+                        }
                     )
                 }
             },
-            actionButtonPosition = FabPosition.End,
+            actionButtonPosition = FabPosition.End
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 val fromTimeDialogState = rememberMaterialDialogState()
@@ -120,12 +115,12 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                     valueText = state.cafeWorkingHours.fromTimeText,
                     onClick = {
                         fromTimeDialogState.show()
-                    },
+                    }
                 )
                 FromTimePickerDialog(
                     dialogState = fromTimeDialogState,
                     initialTime = state.cafeWorkingHours.fromTime,
-                    onAction = onAction,
+                    onAction = onAction
                 )
 
                 NavigationTextCard(
@@ -134,31 +129,30 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                     valueText = state.cafeWorkingHours.toTimeText,
                     onClick = {
                         toTimeDialogState.show()
-                    },
+                    }
                 )
                 ToTimePickerDialog(
                     dialogState = toTimeDialogState,
                     initialTime = state.cafeWorkingHours.toTime,
-                    onAction = onAction,
+                    onAction = onAction
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
                     text = stringResource(R.string.title_edit_cafe_non_working_days),
                     style = AdminTheme.typography.titleMedium.bold,
-                    color = AdminTheme.colors.main.onBackground,
+                    color = AdminTheme.colors.main.onBackground
                 )
                 Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     when (val nonWorkingDays = state.nonWorkingDays) {
                         EditCafeState.ViewDataState.NonWorkingDays.Loading -> {
                             CircularProgressIndicator(
-                                color = AdminTheme.colors.main.primary,
+                                color = AdminTheme.colors.main.primary
                             )
                         }
 
@@ -167,20 +161,20 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                                 text = stringResource(R.string.msg_edit_cafe_empty_non_working_days),
                                 style = AdminTheme.typography.bodyMedium,
                                 color = AdminTheme.colors.main.onSurfaceVariant,
-                                textAlign = TextAlign.Center,
+                                textAlign = TextAlign.Center
                             )
                         }
 
                         is EditCafeState.ViewDataState.NonWorkingDays.Success -> {
                             Column(
                                 modifier = Modifier.padding(top = 8.dp),
-                                verticalArrangement = spacedBy(8.dp),
+                                verticalArrangement = spacedBy(8.dp)
                             ) {
                                 nonWorkingDays.days.forEach { day ->
                                     NonWorkingDayItem(
                                         day = day,
                                         onAction = onAction,
-                                        deleteConfirmBottomSheetState = deleteConfirmBottomSheetState,
+                                        deleteConfirmBottomSheetState = deleteConfirmBottomSheetState
                                     )
                                 }
                             }
@@ -194,7 +188,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                         minDate = state.minNonWorkingDayDate,
                         onDateSelected = { date ->
                             onAction(EditCafeState.Action.AddNonWorkingDay(date))
-                        },
+                        }
                     )
                 }
             }
@@ -228,7 +222,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                     ConfirmDeletionBottomSheet.show(parentFragmentManager)?.let { confirmed ->
                         if (confirmed) {
                             viewModel.onAction(
-                                EditCafeState.Action.ConfirmDeleteNonWorkingDay(uuid = event.uuid),
+                                EditCafeState.Action.ConfirmDeleteNonWorkingDay(uuid = event.uuid)
                             )
                         }
                     }
@@ -242,44 +236,41 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
     private fun NonWorkingDayItem(
         day: FormattedNonWorkingDay,
         onAction: (EditCafeState.Action) -> Unit,
-        deleteConfirmBottomSheetState: SheetState,
+        deleteConfirmBottomSheetState: SheetState
     ) {
         Row {
             AdminCard(
-                modifier =
-                    Modifier
-                        .height(48.dp)
-                        .weight(1f),
-                clickable = false,
+                modifier = Modifier
+                    .height(48.dp)
+                    .weight(1f),
+                clickable = false
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                     text = day.date,
                     style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
             }
             AdminCard(
-                modifier =
-                    Modifier
-                        .padding(start = 8.dp)
-                        .size(48.dp),
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .size(48.dp),
                 colors = AdminCardDefaults.cardNegativeColors,
                 onClick = {
                     onAction(EditCafeState.Action.DeleteNonWorkingDay(day.uuid))
                     lifecycleScope.launch {
                         deleteConfirmBottomSheetState.show()
                     }
-                },
+                }
             ) {
                 Icon(
-                    modifier =
-                        Modifier
-                            .padding(12.dp)
-                            .size(24.dp),
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .size(24.dp),
                     painter = painterResource(R.drawable.ic_delete),
                     tint = AdminTheme.colors.status.onStatus,
-                    contentDescription = null,
+                    contentDescription = null
                 )
             }
         }
@@ -289,7 +280,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
     private fun FromTimePickerDialog(
         dialogState: MaterialDialogState,
         initialTime: LocalTime,
-        onAction: (EditCafeState.Action) -> Unit,
+        onAction: (EditCafeState.Action) -> Unit
     ) {
         TimePickerDialog(
             dialogState = dialogState,
@@ -297,7 +288,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
             initialTime = initialTime,
             onTimeSelected = { time ->
                 onAction(EditCafeState.Action.UpdateFromTime(time))
-            },
+            }
         )
     }
 
@@ -305,7 +296,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
     private fun ToTimePickerDialog(
         dialogState: MaterialDialogState,
         initialTime: LocalTime,
-        onAction: (EditCafeState.Action) -> Unit,
+        onAction: (EditCafeState.Action) -> Unit
     ) {
         TimePickerDialog(
             dialogState = dialogState,
@@ -313,7 +304,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
             initialTime = initialTime,
             onTimeSelected = { time ->
                 onAction(EditCafeState.Action.UpdateToTime(time))
-            },
+            }
         )
     }
 
@@ -322,21 +313,21 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
         dialogState: MaterialDialogState,
         @StringRes titleStringId: Int,
         initialTime: LocalTime,
-        onTimeSelected: (LocalTime) -> Unit,
+        onTimeSelected: (LocalTime) -> Unit
     ) {
         var pickedTime by remember {
             mutableStateOf(initialTime)
         }
         MaterialDialog(
             dialogState = dialogState,
-            backgroundColor = AdminTheme.colors.main.surface,
+            backgroundColor = AdminTheme.colors.main.surface
         ) {
             timepicker(
                 title = stringResource(titleStringId),
                 colors = AdminTimePickerDefaults.timePickerColors,
                 is24HourClock = true,
                 initialTime = initialTime,
-                waitForPositiveButton = false,
+                waitForPositiveButton = false
             ) { time ->
                 pickedTime = time
             }
@@ -348,7 +339,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                     Text(
                         text = stringResource(R.string.action_common_cancel),
                         style = AdminTheme.typography.labelLarge.medium,
-                        color = AdminTheme.colors.main.disabled,
+                        color = AdminTheme.colors.main.disabled
                     )
                 }
                 TextButton(
@@ -356,12 +347,12 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                     onClick = {
                         onTimeSelected(pickedTime)
                         dialogState.hide()
-                    },
+                    }
                 ) {
                     Text(
                         text = stringResource(R.string.action_common_ok),
                         style = AdminTheme.typography.labelLarge.medium,
-                        color = AdminTheme.colors.main.primary,
+                        color = AdminTheme.colors.main.primary
                     )
                 }
             }
@@ -374,14 +365,14 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
         initialDate: LocalDate,
         yearRange: IntRange,
         minDate: LocalDate,
-        onDateSelected: (LocalDate) -> Unit,
+        onDateSelected: (LocalDate) -> Unit
     ) {
         var pickedDate by remember {
             mutableStateOf(initialDate)
         }
         MaterialDialog(
             dialogState = dialogState,
-            backgroundColor = AdminTheme.colors.main.surface,
+            backgroundColor = AdminTheme.colors.main.surface
         ) {
             datepicker(
                 initialDate = initialDate,
@@ -391,7 +382,7 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                 waitForPositiveButton = false,
                 allowedDateValidator = { date ->
                     date >= minDate
-                },
+                }
             ) { date ->
                 pickedDate = date
             }
@@ -400,12 +391,12 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                 TextButton(
                     onClick = {
                         dialogState.hide()
-                    },
+                    }
                 ) {
                     Text(
                         text = stringResource(R.string.action_common_cancel),
                         style = AdminTheme.typography.labelLarge.medium,
-                        color = AdminTheme.colors.main.disabled,
+                        color = AdminTheme.colors.main.disabled
                     )
                 }
                 TextButton(
@@ -413,12 +404,12 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
                     onClick = {
                         onDateSelected(pickedDate)
                         dialogState.hide()
-                    },
+                    }
                 ) {
                     Text(
                         text = stringResource(R.string.action_common_ok),
                         style = AdminTheme.typography.labelLarge.medium,
-                        color = AdminTheme.colors.main.primary,
+                        color = AdminTheme.colors.main.primary
                     )
                 }
             }
@@ -429,42 +420,39 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
     @Composable
     private fun SuccessEditCafeScreenPreview() {
         Screen(
-            state =
-                EditCafeState.ViewDataState(
-                    cafeUuid = null,
-                    cafeAddress = "Дубна, ул. Университетская, д. 111",
-                    cafeWorkingHours =
-                        CafeWorkingHours(
-                            fromTimeText = "10:30",
-                            fromTime = LocalTime.of(10, 30),
-                            toTimeText = "20:00",
-                            toTime = LocalTime.of(20, 0),
-                        ),
-                    nonWorkingDays =
-                        EditCafeState.ViewDataState.NonWorkingDays.Success(
-                            listOf(
-                                FormattedNonWorkingDay(
-                                    uuid = "1",
-                                    date = "12 август (суббота)",
-                                    cafeUuid = "cafeUuid",
-                                ),
-                                FormattedNonWorkingDay(
-                                    uuid = "2",
-                                    date = "13 август (воскресенье)",
-                                    cafeUuid = "cafeUuid",
-                                ),
-                                FormattedNonWorkingDay(
-                                    uuid = "3",
-                                    date = "14 август (понедельник)",
-                                    cafeUuid = "cafeUuid",
-                                ),
-                            ),
-                        ),
-                    initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
-                    yearRange = IntRange(2023, 2023),
-                    minNonWorkingDayDate = LocalDate.of(2023, 10, 28),
+            state = EditCafeState.ViewDataState(
+                cafeUuid = null,
+                cafeAddress = "Дубна, ул. Университетская, д. 111",
+                cafeWorkingHours = CafeWorkingHours(
+                    fromTimeText = "10:30",
+                    fromTime = LocalTime.of(10, 30),
+                    toTimeText = "20:00",
+                    toTime = LocalTime.of(20, 0)
                 ),
-            onAction = {},
+                nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Success(
+                    listOf(
+                        FormattedNonWorkingDay(
+                            uuid = "1",
+                            date = "12 август (суббота)",
+                            cafeUuid = "cafeUuid"
+                        ),
+                        FormattedNonWorkingDay(
+                            uuid = "2",
+                            date = "13 август (воскресенье)",
+                            cafeUuid = "cafeUuid"
+                        ),
+                        FormattedNonWorkingDay(
+                            uuid = "3",
+                            date = "14 август (понедельник)",
+                            cafeUuid = "cafeUuid"
+                        )
+                    )
+                ),
+                initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
+                yearRange = IntRange(2023, 2023),
+                minNonWorkingDayDate = LocalDate.of(2023, 10, 28)
+            ),
+            onAction = {}
         )
     }
 
@@ -472,23 +460,21 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
     @Composable
     private fun EmptyEditCafeScreenPreview() {
         Screen(
-            state =
-                EditCafeState.ViewDataState(
-                    cafeUuid = null,
-                    cafeAddress = "Дубна, ул. Университетская, д. 111",
-                    cafeWorkingHours =
-                        CafeWorkingHours(
-                            fromTimeText = "10:30",
-                            fromTime = LocalTime.of(10, 30),
-                            toTimeText = "20:00",
-                            toTime = LocalTime.of(20, 0),
-                        ),
-                    nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Empty,
-                    initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
-                    yearRange = IntRange(2023, 2023),
-                    minNonWorkingDayDate = LocalDate.of(2023, 10, 28),
+            state = EditCafeState.ViewDataState(
+                cafeUuid = null,
+                cafeAddress = "Дубна, ул. Университетская, д. 111",
+                cafeWorkingHours = CafeWorkingHours(
+                    fromTimeText = "10:30",
+                    fromTime = LocalTime.of(10, 30),
+                    toTimeText = "20:00",
+                    toTime = LocalTime.of(20, 0)
                 ),
-            onAction = {},
+                nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Empty,
+                initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
+                yearRange = IntRange(2023, 2023),
+                minNonWorkingDayDate = LocalDate.of(2023, 10, 28)
+            ),
+            onAction = {}
         )
     }
 
@@ -498,23 +484,21 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
     private fun LoadingEditCafeScreenPreview() {
         AdminTheme {
             Screen(
-                state =
-                    EditCafeState.ViewDataState(
-                        cafeUuid = null,
-                        cafeAddress = "Дубна, ул. Университетская, д. 111",
-                        cafeWorkingHours =
-                            CafeWorkingHours(
-                                fromTimeText = "10:30",
-                                fromTime = LocalTime.of(10, 30),
-                                toTimeText = "20:00",
-                                toTime = LocalTime.of(20, 0),
-                            ),
-                        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Loading,
-                        initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
-                        yearRange = IntRange(2023, 2023),
-                        minNonWorkingDayDate = LocalDate.of(2023, 10, 28),
+                state = EditCafeState.ViewDataState(
+                    cafeUuid = null,
+                    cafeAddress = "Дубна, ул. Университетская, д. 111",
+                    cafeWorkingHours = CafeWorkingHours(
+                        fromTimeText = "10:30",
+                        fromTime = LocalTime.of(10, 30),
+                        toTimeText = "20:00",
+                        toTime = LocalTime.of(20, 0)
                     ),
-                onAction = {},
+                    nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Loading,
+                    initialNonWorkingDayDate = LocalDate.of(2023, 10, 29),
+                    yearRange = IntRange(2023, 2023),
+                    minNonWorkingDayDate = LocalDate.of(2023, 10, 28)
+                ),
+                onAction = {}
             )
         }
     }

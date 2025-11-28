@@ -6,5 +6,5 @@ import androidx.compose.runtime.Immutable
 data class SelectableItem(
     val uuid: String,
     val title: String,
-    val isSelected: Boolean,
+    val isSelected: Boolean
 )

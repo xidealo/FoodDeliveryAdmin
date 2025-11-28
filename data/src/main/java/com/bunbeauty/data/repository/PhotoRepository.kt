@@ -21,45 +21,41 @@ import java.util.UUID
 private const val DEFAULT_BYTE_SIZE = 100 * 1024
 
 class PhotoRepository(
-    private val context: Context,
+    private val context: Context
 ) : PhotoRepo {
+
     private var photoListCache: List<Photo>? = null
 
-    override suspend fun getPhotoList(username: String): List<Photo> =
-        coroutineScope {
-            photoListCache ?: fetchPhotoList(username = username)
-        }
+    override suspend fun getPhotoList(username: String): List<Photo> = coroutineScope {
+        photoListCache ?: fetchPhotoList(username = username)
+    }
 
-    override suspend fun fetchPhotoList(username: String): List<Photo> =
-        coroutineScope {
-            val imagesRef = FirebaseStorage.getInstance().reference.child(username)
+    override suspend fun fetchPhotoList(username: String): List<Photo> = coroutineScope {
+        val imagesRef = FirebaseStorage.getInstance().reference.child(username)
 
-            val referenceListResult = imagesRef.listAll().await()
+        val referenceListResult = imagesRef.listAll().await()
 
-            val photoList =
-                referenceListResult.items
-                    .map { reference ->
-                        async {
-                            Photo(url = reference.downloadUrl.await().toString())
-                        }
-                    }.awaitAll()
-            photoListCache = photoList
-            photoList
-        }
+        val photoList = referenceListResult.items.map { reference ->
+            async {
+                Photo(url = reference.downloadUrl.await().toString())
+            }
+        }.awaitAll()
+        photoListCache = photoList
+        photoList
+    }
 
     override suspend fun uploadPhoto(
         uri: String,
         username: String,
         width: Int,
-        height: Int,
+        height: Int
     ): Photo? {
         return withContext(Dispatchers.IO) {
-            val data =
-                compressPhoto(
-                    uri = uri,
-                    width = width,
-                    height = height,
-                ) ?: return@withContext null
+            val data = compressPhoto(
+                uri = uri,
+                width = width,
+                height = height
+            ) ?: return@withContext null
             val uuid = UUID.randomUUID()
             val uploadReference =
                 FirebaseStorage.getInstance().reference.child("$username/$uuid.webp")
@@ -82,17 +78,16 @@ class PhotoRepository(
     private fun compressPhoto(
         uri: String,
         width: Int,
-        height: Int,
+        height: Int
     ): ByteArray? {
         val photoUri = uri.toUri()
         val bitmap = photoUri.toBitmap() ?: return null
-        val scaledBitmap =
-            Bitmap.createScaledBitmap(
-                bitmap,
-                width,
-                height,
-                true,
-            )
+        val scaledBitmap = Bitmap.createScaledBitmap(
+            bitmap,
+            width,
+            height,
+            true
+        )
 
         var quality = 100
         var resultByteArray: ByteArray
@@ -108,15 +103,17 @@ class PhotoRepository(
         return resultByteArray
     }
 
-    private fun Uri.toBitmap(): Bitmap? =
-        context.contentResolver.openInputStream(this).use { inputStream ->
+    private fun Uri.toBitmap(): Bitmap? {
+        return context.contentResolver.openInputStream(this).use { inputStream ->
             BitmapFactory.decodeStream(inputStream)
         }
+    }
 
-    private fun getCompressFormat(): Bitmap.CompressFormat =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    private fun getCompressFormat(): Bitmap.CompressFormat {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Bitmap.CompressFormat.WEBP_LOSSY
         } else {
             Bitmap.CompressFormat.WEBP
         }
+    }
 }

@@ -9,33 +9,32 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class GetIsUnlimitedNotificationUseCaseTest {
+
     private val settingsRepo: SettingsRepo = mockk()
 
     private val getIsUnlimitedNotificationUseCase = GetIsUnlimitedNotificationUseCase(settingsRepo)
 
     @Test
-    fun `invoke should return true when isUnlimitedNotification returns true`() =
-        runTest {
-            // Given
-            coEvery { settingsRepo.isUnlimitedNotification() } returns true
+    fun `invoke should return true when isUnlimitedNotification returns true`() = runTest {
+        // Given
+        coEvery { settingsRepo.isUnlimitedNotification() } returns true
 
-            // When
-            val result = getIsUnlimitedNotificationUseCase()
+        // When
+        val result = getIsUnlimitedNotificationUseCase()
 
-            // Then
-            assertEquals(true, result)
-        }
+        // Then
+        assertEquals(true, result)
+    }
 
     @Test
-    fun `invoke should return false when isUnlimitedNotification returns false`() =
-        runTest {
-            // Given
-            coEvery { settingsRepo.isUnlimitedNotification() } returns false
+    fun `invoke should return false when isUnlimitedNotification returns false`() = runTest {
+        // Given
+        coEvery { settingsRepo.isUnlimitedNotification() } returns false
 
-            // When
-            val result = getIsUnlimitedNotificationUseCase()
+        // When
+        val result = getIsUnlimitedNotificationUseCase()
 
-            // Then
-            assertEquals(false, result)
-        }
+        // Then
+        assertEquals(false, result)
+    }
 }

@@ -24,24 +24,24 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 @Deprecated(
     "Use AdminModalBottomSheet",
     ReplaceWith(
-        "AdminModalBottomSheet",
-    ),
+        "AdminModalBottomSheet"
+    )
 )
 @Composable
 fun AdminBottomSheet(
     @StringRes titleStringId: Int,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     AdminBottomSheet(
         title = stringResource(id = titleStringId),
-        content = content,
+        content = content
     )
 }
 
 @Composable
 fun AdminBottomSheet(
     title: String,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     AdminBottomSheet(
         title = {
@@ -50,36 +50,35 @@ fun AdminBottomSheet(
                 text = title,
                 style = AdminTheme.typography.titleMedium.bold,
                 color = AdminTheme.colors.main.onSurface,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         },
-        content = content,
+        content = content
     )
 }
 
 @Composable
 private fun AdminBottomSheet(
     title: @Composable () -> Unit,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(AdminBottomSheetDefaults.shape)
-                .background(AdminTheme.colors.main.surface)
-                .padding(horizontal = AdminTheme.dimensions.screenContentSpace)
-                .padding(bottom = AdminTheme.dimensions.screenContentSpace, top = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(AdminBottomSheetDefaults.shape)
+            .background(AdminTheme.colors.main.surface)
+            .padding(horizontal = AdminTheme.dimensions.screenContentSpace)
+            .padding(bottom = AdminTheme.dimensions.screenContentSpace, top = 8.dp)
     ) {
         Spacer(
-            modifier =
-                Modifier
-                    .width(32.dp)
-                    .height(4.dp)
-                    .background(
-                        color = AdminTheme.colors.main.onSurfaceVariant,
-                        shape = RoundedCornerShape(2.dp),
-                    ).align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .width(32.dp)
+                .height(4.dp)
+                .background(
+                    color = AdminTheme.colors.main.onSurfaceVariant,
+                    shape = RoundedCornerShape(2.dp)
+                )
+                .align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(16.dp))
         title()

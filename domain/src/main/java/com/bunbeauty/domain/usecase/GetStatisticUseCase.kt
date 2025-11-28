@@ -7,17 +7,17 @@ import com.bunbeauty.domain.repo.StatisticRepo
 
 class GetStatisticUseCase(
     private val statisticRepo: StatisticRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(
         cafeUuid: String?,
-        period: String,
+        period: String
     ): List<Statistic> {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         return statisticRepo.getStatistic(
             token = token,
             cafeUuid = cafeUuid,
-            period = period,
+            period = period
         )
     }
 }

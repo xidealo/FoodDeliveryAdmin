@@ -7,41 +7,46 @@ import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
 import com.bunbeauty.domain.model.nonworkingday.NonWorkingDay
 
 class NonWorkingDayMapper {
-    fun toNonWorkingDay(nonWorkingDayServer: NonWorkingDayServer): NonWorkingDay =
-        nonWorkingDayServer.run {
+
+    fun toNonWorkingDay(nonWorkingDayServer: NonWorkingDayServer): NonWorkingDay {
+        return nonWorkingDayServer.run {
             NonWorkingDay(
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
+    }
 
-    fun toNonWorkingDay(nonWorkingDayEntity: NonWorkingDayEntity): NonWorkingDay =
-        nonWorkingDayEntity.run {
+    fun toNonWorkingDay(nonWorkingDayEntity: NonWorkingDayEntity): NonWorkingDay {
+        return nonWorkingDayEntity.run {
             NonWorkingDay(
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
+    }
 
-    fun toNonWorkingDayEntity(nonWorkingDay: NonWorkingDay): NonWorkingDayEntity =
-        nonWorkingDay.run {
+    fun toNonWorkingDayEntity(nonWorkingDay: NonWorkingDay): NonWorkingDayEntity {
+        return nonWorkingDay.run {
             NonWorkingDayEntity(
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
+    }
 
-    fun toPostNonWorkingDayServer(newNonWorkingDay: NewNonWorkingDay): PostNonWorkingDayServer =
-        newNonWorkingDay.run {
+    fun toPostNonWorkingDayServer(newNonWorkingDay: NewNonWorkingDay): PostNonWorkingDayServer {
+        return newNonWorkingDay.run {
             PostNonWorkingDayServer(
                 timestamp = timestamp,
-                cafeUuid = cafeUuid,
+                cafeUuid = cafeUuid
             )
         }
+    }
 }

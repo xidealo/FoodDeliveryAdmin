@@ -10,7 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -31,10 +31,10 @@ fun FloatingButton(
     @DrawableRes iconId: Int,
     @StringRes textStringId: Int? = null,
     text: String? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentSize provides 0.dp,
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         FloatingActionButton(
             modifier = modifier.height(40.dp),
@@ -42,26 +42,25 @@ fun FloatingButton(
             shape = AdminButtonDefaults.buttonShape,
             containerColor = AdminTheme.colors.main.primary,
             contentColor = AdminTheme.colors.main.onPrimary,
-            elevation = FloatingActionButtonDefaults.elevation(2.dp),
+            elevation = FloatingActionButtonDefaults.elevation(2.dp)
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(iconId),
-                    contentDescription = null,
+                    contentDescription = null
                 )
 
-                val buttonText =
-                    text ?: textStringId?.let {
-                        stringResource(it)
-                    } ?: ""
+                val buttonText = text ?: textStringId?.let {
+                    stringResource(it)
+                } ?: ""
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
                     text = buttonText,
-                    style = AdminTheme.typography.labelLarge.medium,
+                    style = AdminTheme.typography.labelLarge.medium
                 )
             }
         }
@@ -74,7 +73,7 @@ private fun FloatingButtonPreview() {
     AdminTheme {
         FloatingButton(
             iconId = R.drawable.ic_plus,
-            textStringId = R.string.action_edit_cafe_add,
+            textStringId = R.string.action_edit_cafe_add
         ) {}
     }
 }

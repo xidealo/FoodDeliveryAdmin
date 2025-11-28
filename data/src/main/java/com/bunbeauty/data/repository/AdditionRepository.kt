@@ -13,37 +13,34 @@ import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
 
 class AdditionRepository(
-    private val networkConnector: FoodDeliveryApi,
+    private val networkConnector: FoodDeliveryApi
 ) : AdditionRepo {
+
     private var additionListCache: List<Addition>? = null
 
-    override suspend fun getAdditionList(
-        token: String,
-        refreshing: Boolean,
-    ): List<Addition> =
-        if (refreshing) {
+    override suspend fun getAdditionList(token: String, refreshing: Boolean): List<Addition> {
+        return if (refreshing) {
             fetchAdditionList(token = token)
         } else {
             additionListCache ?: fetchAdditionList(token = token)
         }
+    }
 
-    override suspend fun getAddition(
-        additionUuid: String,
-        token: String,
-    ): Addition? {
-        val addition =
-            additionListCache?.find { addition ->
-                addition.uuid == additionUuid
-            }
+    override suspend fun getAddition(additionUuid: String, token: String): Addition? {
+        val addition = additionListCache?.find { addition ->
+            addition.uuid == additionUuid
+        }
         return addition ?: fetchAdditionList(
-            token = token,
+            token = token
         ).find { foundAddition ->
             foundAddition.uuid == additionUuid
         }
     }
 
-    private suspend fun fetchAdditionList(token: String): List<Addition> =
-        when (val result = networkConnector.getAdditionList(token = token)) {
+    private suspend fun fetchAdditionList(
+        token: String
+    ): List<Addition> {
+        return when (val result = networkConnector.getAdditionList(token = token)) {
             is ApiResult.Error -> {
                 throw result.apiError
             }
@@ -54,39 +51,38 @@ class AdditionRepository(
                 additionList
             }
         }
+    }
 
     override suspend fun updateAddition(
         updateAddition: UpdateAddition,
         token: String,
-        additionUuid: String,
+        additionUuid: String
     ) {
-        networkConnector
-            .patchAddition(
-                additionUuid = additionUuid,
-                additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
-                token = token,
-            ).onSuccess { additionServer ->
-                updateLocalCache(
-                    uuid = additionUuid,
-                    additionServer = additionServer,
-                )
-            }
+        networkConnector.patchAddition(
+            additionUuid = additionUuid,
+            additionPatchServer = updateAddition.mapUpdateAdditionServerToPatchAddition(),
+            token = token
+        ).onSuccess { additionServer ->
+            updateLocalCache(
+                uuid = additionUuid,
+                additionServer = additionServer
+            )
+        }
     }
 
     override suspend fun createAddition(
         token: String,
-        createAdditionModel: CreateAdditionModel,
+        createAdditionModel: CreateAdditionModel
     ) {
-        networkConnector
-            .postAddition(
-                additionPostServer = createAdditionModel.mapCreateAdditionToAdditionPostServer(),
-                token = token,
-            ).onSuccess { additionServer ->
-                addToLocalCache(
-                    uuid = additionServer.uuid,
-                    additionServer = additionServer,
-                )
-            }
+        networkConnector.postAddition(
+            additionPostServer = createAdditionModel.mapCreateAdditionToAdditionPostServer(),
+            token = token
+        ).onSuccess { additionServer ->
+            addToLocalCache(
+                uuid = additionServer.uuid,
+                additionServer = additionServer
+            )
+        }
     }
 
     override fun clearCache() {
@@ -95,25 +91,23 @@ class AdditionRepository(
 
     private fun updateLocalCache(
         uuid: String,
-        additionServer: AdditionServer,
+        additionServer: AdditionServer
     ) {
-        additionListCache =
-            additionListCache?.map { addition ->
-                if (uuid == addition.uuid) {
-                    additionServer.mapAdditionServerToAddition()
-                } else {
-                    addition
-                }
+        additionListCache = additionListCache?.map { addition ->
+            if (uuid == addition.uuid) {
+                additionServer.mapAdditionServerToAddition()
+            } else {
+                addition
             }
+        }
     }
 
     private fun addToLocalCache(
         uuid: String,
-        additionServer: AdditionServer,
+        additionServer: AdditionServer
     ) {
-        additionListCache =
-            additionListCache?.toMutableList()?.apply {
-                add(additionServer.mapAdditionServerToAddition())
-            }
+        additionListCache = additionListCache?.toMutableList()?.apply {
+            add(additionServer.mapAdditionServerToAddition())
+        }
     }
 }

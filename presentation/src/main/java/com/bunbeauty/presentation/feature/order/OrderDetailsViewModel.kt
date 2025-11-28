@@ -12,26 +12,23 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class OrderDetailsViewModel(
     private val loadOrderDetails: LoadOrderDetailsUseCase,
-    private val updateOrderStatus: UpdateOrderStatusUseCase,
+    private val updateOrderStatus: UpdateOrderStatusUseCase
 ) : BaseStateViewModel<OrderDetailsState.DataState, OrderDetailsState.Action, OrderDetailsState.Event>(
-        initState =
-            OrderDetailsState.DataState(
-                state = OrderDetailsState.DataState.State.LOADING,
-                code = "",
-                orderDetails = null,
-                saving = false,
-                showStatusList = false,
-            ),
-    ) {
-    override fun reduce(
-        action: OrderDetailsState.Action,
-        dataState: OrderDetailsState.DataState,
-    ) {
+    initState = OrderDetailsState.DataState(
+        state = OrderDetailsState.DataState.State.LOADING,
+        code = "",
+        orderDetails = null,
+        saving = false,
+        showStatusList = false
+    )
+) {
+
+    override fun reduce(action: OrderDetailsState.Action, dataState: OrderDetailsState.DataState) {
         when (action) {
             is OrderDetailsState.Action.Init -> {
                 setupOrder(
                     orderUuid = action.orderUuid,
-                    orderCode = action.orderCode,
+                    orderCode = action.orderCode
                 )
             }
 
@@ -49,14 +46,11 @@ class OrderDetailsViewModel(
         }
     }
 
-    private fun setupOrder(
-        orderUuid: String,
-        orderCode: String,
-    ) {
+    private fun setupOrder(orderUuid: String, orderCode: String) {
         setState {
             copy(
                 state = OrderDetailsState.DataState.State.LOADING,
-                code = orderCode,
+                code = orderCode
             )
         }
         viewModelScope.launchSafe(
@@ -68,7 +62,7 @@ class OrderDetailsViewModel(
                 setState {
                     copy(state = OrderDetailsState.DataState.State.ERROR)
                 }
-            },
+            }
         )
     }
 
@@ -77,7 +71,7 @@ class OrderDetailsViewModel(
         if (!availableStatusList.isNullOrEmpty()) {
             setState {
                 copy(
-                    showStatusList = true,
+                    showStatusList = true
                 )
             }
         }
@@ -86,7 +80,7 @@ class OrderDetailsViewModel(
     private fun closeStatusBottomSheet() {
         setState {
             copy(
-                showStatusList = false,
+                showStatusList = false
             )
         }
     }
@@ -94,11 +88,10 @@ class OrderDetailsViewModel(
     private fun onStatusSelected(orderStatus: OrderStatus) {
         setState {
             copy(
-                orderDetails =
-                    orderDetails?.copy(
-                        status = orderStatus,
-                    ),
-                showStatusList = false,
+                orderDetails = orderDetails?.copy(
+                    status = orderStatus
+                ),
+                showStatusList = false
             )
         }
     }
@@ -119,7 +112,7 @@ class OrderDetailsViewModel(
             updateStatus(
                 orderUuid = orderDetails.uuid,
                 status = orderDetails.status,
-                orderCode = orderDetails.code,
+                orderCode = orderDetails.code
             )
         }
     }
@@ -130,7 +123,7 @@ class OrderDetailsViewModel(
         updateStatus(
             orderUuid = orderDetails.uuid,
             status = OrderStatus.CANCELED,
-            orderCode = orderDetails.code,
+            orderCode = orderDetails.code
         )
     }
 
@@ -146,16 +139,12 @@ class OrderDetailsViewModel(
         setState {
             copy(
                 state = OrderDetailsState.DataState.State.SUCCESS,
-                orderDetails = orderDetails,
+                orderDetails = orderDetails
             )
         }
     }
 
-    private fun updateStatus(
-        orderUuid: String,
-        status: OrderStatus,
-        orderCode: String,
-    ) {
+    private fun updateStatus(orderUuid: String, status: OrderStatus, orderCode: String) {
         viewModelScope.launchSafe(
             block = {
                 setState {
@@ -163,7 +152,7 @@ class OrderDetailsViewModel(
                 }
                 updateOrderStatus(
                     orderUuid = orderUuid,
-                    status = status,
+                    status = status
                 )
                 sendEvent {
                     OrderDetailsState.Event.SavedEvent(orderCode = orderCode)
@@ -173,7 +162,7 @@ class OrderDetailsViewModel(
                 sendEvent {
                     OrderDetailsState.Event.ShowErrorMessage(messageId = R.string.error_order_details_can_not_save)
                 }
-            },
+            }
         )
     }
 }

@@ -20,7 +20,7 @@ val mapAdditionServerToAddition: AdditionServer.() -> Addition = {
         uuid = uuid,
         fullName = fullName,
         priority = priority,
-        tag = tag,
+        tag = tag
     )
 }
 
@@ -30,7 +30,7 @@ val mapAdditionGroupServerToAddition: AdditionGroupServer.() -> AdditionGroup = 
         name = name,
         priority = priority,
         singleChoice = singleChoice,
-        isVisible = isVisible,
+        isVisible = isVisible
     )
 }
 
@@ -42,7 +42,7 @@ val mapUpdateAdditionServerToPatchAddition: UpdateAddition.() -> AdditionPatchSe
         price = price,
         fullName = fullName,
         priority = priority,
-        tag = tag,
+        tag = tag
     )
 }
 
@@ -54,7 +54,7 @@ val mapCreateAdditionToAdditionPostServer: CreateAdditionModel.() -> AdditionPos
         price = price,
         fullName = fullName,
         priority = priority ?: 0,
-        tag = tag,
+        tag = tag
     )
 }
 
@@ -64,6 +64,6 @@ val mapUpdateAdditionGroupServerToPatchAdditionGroup: UpdateAdditionGroup.() -> 
             name = name,
             priority = priority,
             singleChoice = singleChoice,
-            isVisible = isVisible,
+            isVisible = isVisible
         )
     }

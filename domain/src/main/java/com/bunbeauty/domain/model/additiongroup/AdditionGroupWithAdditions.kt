@@ -4,13 +4,5 @@ import com.bunbeauty.domain.model.addition.Addition
 
 data class AdditionGroupWithAdditions(
     val additionGroup: AdditionGroup,
-    val additionList: List<Addition>,
-) {
-    companion object {
-        val mock =
-            AdditionGroupWithAdditions(
-                additionGroup = AdditionGroup.mock,
-                additionList = emptyList(),
-            )
-    }
-}
+    val additionList: List<Addition>
+)

@@ -5,30 +5,27 @@ import com.bunbeauty.domain.model.addition.CreateAdditionModel
 import com.bunbeauty.domain.model.addition.UpdateAddition
 
 interface AdditionRepo {
-    // GET
+    /*GET*/
     suspend fun getAdditionList(
         token: String,
-        refreshing: Boolean = false,
+        refreshing: Boolean = false
     ): List<Addition>
 
-    suspend fun getAddition(
-        additionUuid: String,
-        token: String,
-    ): Addition?
+    suspend fun getAddition(additionUuid: String, token: String): Addition?
 
-    // UPDATE
+    /*UPDATE*/
     suspend fun updateAddition(
         updateAddition: UpdateAddition,
         token: String,
-        additionUuid: String,
+        additionUuid: String
     )
 
-    // CREATE
+    /*CREATE*/
     suspend fun createAddition(
         token: String,
-        createAdditionModel: CreateAdditionModel,
+        createAdditionModel: CreateAdditionModel
     )
 
-    // DELETE
+    /*DELETE*/
     fun clearCache()
 }

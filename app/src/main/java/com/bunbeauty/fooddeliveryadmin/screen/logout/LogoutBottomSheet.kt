@@ -17,6 +17,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
+
     @Composable
     override fun Content() {
         AdminBottomSheet(titleStringId = R.string.title_logout) {
@@ -27,7 +28,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
                     onClick = {
                         callback?.onResult(true)
                         dismiss()
-                    },
+                    }
                 )
                 SecondaryButton(
                     elevated = false,
@@ -35,7 +36,7 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
                     onClick = {
                         callback?.onResult(false)
                         dismiss()
-                    },
+                    }
                 )
             }
         }
@@ -52,17 +53,17 @@ class LogoutBottomSheet : ComposeBottomSheet<Boolean>() {
     companion object {
         private const val TAG = "LogoutBottomSheet"
 
-        suspend fun show(fragmentManager: FragmentManager) =
-            suspendCoroutine { continuation ->
-                LogoutBottomSheet().apply {
-                    callback =
-                        object : Callback<Boolean> {
-                            override fun onResult(result: Boolean?) {
-                                continuation.resume(result)
-                            }
-                        }
-                    show(fragmentManager, TAG)
+        suspend fun show(
+            fragmentManager: FragmentManager
+        ) = suspendCoroutine { continuation ->
+            LogoutBottomSheet().apply {
+                callback = object : Callback<Boolean> {
+                    override fun onResult(result: Boolean?) {
+                        continuation.resume(result)
+                    }
                 }
+                show(fragmentManager, TAG)
             }
+        }
     }
 }

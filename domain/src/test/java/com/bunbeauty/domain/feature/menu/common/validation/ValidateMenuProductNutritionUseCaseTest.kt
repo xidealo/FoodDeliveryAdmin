@@ -8,6 +8,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 
 class ValidateMenuProductNutritionUseCaseTest {
+
     private lateinit var validateMenuProductNutritionUseCase: ValidateMenuProductNutritionUseCase
 
     @BeforeTest

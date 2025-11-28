@@ -9,13 +9,12 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 @Immutable
 data class EditMenuProductViewState(
     val title: String,
-    val state: State,
+    val state: State
 ) : BaseViewState {
+
     sealed interface State {
         data object Loading : State
-
         data object Error : State
-
         data class Success(
             val nameField: TextFieldUi,
             val newPriceField: TextFieldUi,
@@ -29,7 +28,7 @@ data class EditMenuProductViewState(
             val isVisibleInMenu: Boolean,
             val isVisibleInRecommendation: Boolean,
             val imageField: ImageFieldUi,
-            val sendingToServer: Boolean,
+            val sendingToServer: Boolean
         ) : State
     }
 }

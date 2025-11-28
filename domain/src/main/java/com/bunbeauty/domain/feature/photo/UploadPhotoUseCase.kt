@@ -10,17 +10,19 @@ private const val DEFAULT_HEIGHT = 667
 
 class UploadPhotoUseCase(
     private val photoRepo: PhotoRepo,
-    private val getUsernameUseCase: GetUsernameUseCase,
+    private val getUsernameUseCase: GetUsernameUseCase
 ) {
+
     suspend operator fun invoke(
         imageUri: String,
         width: Int = DEFAULT_WIDTH,
-        height: Int = DEFAULT_HEIGHT,
-    ): Photo =
-        photoRepo.uploadPhoto(
+        height: Int = DEFAULT_HEIGHT
+    ): Photo {
+        return photoRepo.uploadPhoto(
             uri = imageUri,
             username = getUsernameUseCase(),
             width = width,
-            height = height,
+            height = height
         ) ?: throw MenuProductUploadingImageException()
+    }
 }

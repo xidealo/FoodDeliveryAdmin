@@ -17,5 +17,5 @@ data class AdditionGroupWithAdditionsServer(
     @SerialName("isVisible")
     val isVisible: Boolean,
     @SerialName("additions")
-    val additionServerList: List<AdditionServer>,
+    val additionServerList: List<AdditionServer>
 )

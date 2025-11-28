@@ -14,5 +14,5 @@ data class StatisticServer(
     @SerialName("orderCount")
     val orderCount: Int,
     @SerialName("orderProceeds")
-    val proceeds: Int,
+    val proceeds: Int
 )

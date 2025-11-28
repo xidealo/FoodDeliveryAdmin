@@ -19,41 +19,39 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 fun CafeItem(
     modifier: Modifier = Modifier,
     cafeItem: CafeUiItem,
-    onClick: (CafeUiItem) -> Unit,
+    onClick: (CafeUiItem) -> Unit
 ) {
     AdminCard(
         modifier = modifier.fillMaxWidth(),
         onClick = {
             onClick(cafeItem)
-        },
+        }
     ) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(vertical = 12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 12.dp)
         ) {
             Text(
                 text = cafeItem.address,
                 modifier = Modifier.fillMaxWidth(),
                 style = AdminTheme.typography.bodyMedium,
-                color = AdminTheme.colors.main.onSurface,
+                color = AdminTheme.colors.main.onSurface
             )
             Row(modifier = Modifier.padding(top = AdminTheme.dimensions.smallSpace)) {
                 Text(
                     text = cafeItem.workingHours,
                     style = AdminTheme.typography.labelMedium.medium,
-                    color = AdminTheme.colors.main.onSurfaceVariant,
+                    color = AdminTheme.colors.main.onSurfaceVariant
                 )
 
                 Text(
-                    modifier =
-                        Modifier
-                            .padding(start = AdminTheme.dimensions.smallSpace),
+                    modifier = Modifier
+                        .padding(start = AdminTheme.dimensions.smallSpace),
                     text = cafeItem.cafeStatusText,
                     style = AdminTheme.typography.labelMedium.medium,
-                    color = getCafeStatusColor(cafeItem.cafeStatus),
+                    color = getCafeStatusColor(cafeItem.cafeStatus)
                 )
             }
         }
@@ -61,27 +59,27 @@ fun CafeItem(
 }
 
 @Composable
-private fun getCafeStatusColor(cafeStatus: CafeStatus): Color =
-    when (cafeStatus) {
+private fun getCafeStatusColor(cafeStatus: CafeStatus): Color {
+    return when (cafeStatus) {
         CafeStatus.Open -> AdminTheme.colors.status.positive
         CafeStatus.Closed -> AdminTheme.colors.status.negative
         is CafeStatus.CloseSoon -> AdminTheme.colors.status.warning
     }
+}
 
 @Preview
 @Composable
 private fun CafeItemOpenPreview() {
     AdminTheme {
         CafeItem(
-            cafeItem =
-                CafeUiItem(
-                    uuid = "",
-                    address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
-                    workingHours = "9:00 - 22:00",
-                    cafeStatusText = "Open",
-                    cafeStatus = CafeStatus.Open,
-                ),
-            onClick = {},
+            cafeItem = CafeUiItem(
+                uuid = "",
+                address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
+                workingHours = "9:00 - 22:00",
+                cafeStatusText = "Open",
+                cafeStatus = CafeStatus.Open
+            ),
+            onClick = {}
         )
     }
 }
@@ -91,15 +89,14 @@ private fun CafeItemOpenPreview() {
 private fun CafeItemCloseSoonPreview() {
     AdminTheme {
         CafeItem(
-            cafeItem =
-                CafeUiItem(
-                    uuid = "",
-                    address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
-                    workingHours = "9:00 - 22:00",
-                    cafeStatusText = "Closed soon 30 min",
-                    cafeStatus = CafeStatus.CloseSoon(30),
-                ),
-            onClick = {},
+            cafeItem = CafeUiItem(
+                uuid = "",
+                address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
+                workingHours = "9:00 - 22:00",
+                cafeStatusText = "Closed soon 30 min",
+                cafeStatus = CafeStatus.CloseSoon(30)
+            ),
+            onClick = {}
         )
     }
 }
@@ -109,15 +106,14 @@ private fun CafeItemCloseSoonPreview() {
 private fun CafeItemClosedPreview() {
     AdminTheme {
         CafeItem(
-            cafeItem =
-                CafeUiItem(
-                    uuid = "",
-                    address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
-                    workingHours = "9:00 - 22:00",
-                    cafeStatusText = "Closed",
-                    cafeStatus = CafeStatus.Closed,
-                ),
-            onClick = {},
+            cafeItem = CafeUiItem(
+                uuid = "",
+                address = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж",
+                workingHours = "9:00 - 22:00",
+                cafeStatusText = "Closed",
+                cafeStatus = CafeStatus.Closed
+            ),
+            onClick = {}
         )
     }
 }

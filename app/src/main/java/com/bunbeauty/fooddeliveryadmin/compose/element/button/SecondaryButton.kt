@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +35,10 @@ fun SecondaryButton(
     isError: Boolean = false,
     @DrawableRes icon: Int? = null,
     borderColor: Color = AdminTheme.colors.main.onSecondary,
-    buttonColors: ButtonColors = AdminButtonDefaults.neutralSecondaryButtonColors,
+    buttonColors: ButtonColors = AdminButtonDefaults.neutralSecondaryButtonColors
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentSize provides 0.dp,
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         val multipleEventsCutter = rememberMultipleEventsCutter()
         OutlinedButton(
@@ -46,38 +46,34 @@ fun SecondaryButton(
             onClick = {
                 multipleEventsCutter.processEvent(onClick)
             },
-            colors =
-                if (isError) {
-                    AdminButtonDefaults.errorSecondaryButtonColors
+            colors = if (isError) {
+                AdminButtonDefaults.errorSecondaryButtonColors
+            } else {
+                buttonColors
+            },
+            border = BorderStroke(
+                width = 2.dp,
+                color = if (isError) {
+                    AdminTheme.colors.main.error
                 } else {
-                    buttonColors
-                },
-            border =
-                BorderStroke(
-                    width = 2.dp,
-                    color =
-                        if (isError) {
-                            AdminTheme.colors.main.error
-                        } else {
-                            borderColor
-                        },
-                ),
+                    borderColor
+                }
+            ),
             shape = AdminButtonDefaults.buttonShape,
             elevation = AdminButtonDefaults.getButtonElevation(elevated),
-            enabled = isEnabled,
+            enabled = isEnabled
         ) {
             icon?.let { icon ->
                 Icon(
-                    modifier =
-                        Modifier
-                            .padding(end = 8.dp),
+                    modifier = Modifier
+                        .padding(end = 8.dp),
                     painter = painterResource(icon),
-                    contentDescription = null,
+                    contentDescription = null
                 )
             }
             Text(
                 text = stringResource(textStringId),
-                style = AdminTheme.typography.labelLarge.medium,
+                style = AdminTheme.typography.labelLarge.medium
             )
         }
     }
@@ -89,7 +85,7 @@ private fun SecondaryButtonPreview() {
     AdminTheme {
         SecondaryButton(
             textStringId = R.string.action_common_cancel,
-            onClick = { },
+            onClick = { }
         )
     }
 }
@@ -103,7 +99,7 @@ private fun SecondaryButtonWithIconPreview() {
             onClick = { },
             icon = R.drawable.ic_add_photo,
             borderColor = AdminTheme.colors.main.primary,
-            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
+            buttonColors = AdminButtonDefaults.accentSecondaryButtonColors
         )
     }
 }

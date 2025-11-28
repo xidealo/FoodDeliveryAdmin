@@ -45,7 +45,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
 
-class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
+class OrderListFragment :
+    BaseComposeListFragment<OrderList.DataState, OrderListViewState, OrderList.Action, OrderList.Event>() {
+
     private val notificationManagerCompat: NotificationManagerCompat by inject()
 
     override val viewModel: OrderListViewModel by viewModel()
@@ -66,14 +68,14 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
     override fun Screen(
         state: OrderListViewState,
         lazyListState: LazyListState,
-        onAction: (OrderList.Action) -> Unit,
+        onAction: (OrderList.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_orders),
             pullRefreshEnabled = state.state is OrderListViewState.State.Success,
             onRefresh = {
                 onAction(OrderList.Action.RefreshSwipe)
-            },
+            }
         ) {
             when (state.state) {
                 OrderListViewState.State.Loading -> {
@@ -84,7 +86,7 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
                     OrderListSuccessScreen(
                         state = state.state,
                         lazyListState = lazyListState,
-                        onAction = onAction,
+                        onAction = onAction
                     )
                 }
             }
@@ -92,37 +94,35 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
     }
 
     @Composable
-    override fun mapState(state: OrderList.DataState): OrderListViewState =
-        OrderListViewState(
-            state =
-                when (state.orderListState) {
-                    OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
-                    OrderList.DataState.State.SUCCESS ->
-                        OrderListViewState.State.Success(
-                            cafeAddress = state.cafe?.address.orEmpty(),
-                            orderList = state.orderList.map(orderMapper::map).toPersistentList(),
-                            connectionError = state.hasConnectionError,
-                            refreshing = state.refreshing,
-                            loadingOrderList = state.loadingOrderList,
-                        )
-                },
+    override fun mapState(state: OrderList.DataState): OrderListViewState {
+        return OrderListViewState(
+            state = when (state.orderListState) {
+                OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
+                OrderList.DataState.State.SUCCESS -> OrderListViewState.State.Success(
+                    cafeAddress = state.cafe?.address.orEmpty(),
+                    orderList = state.orderList.map(orderMapper::map).toPersistentList(),
+                    connectionError = state.hasConnectionError,
+                    refreshing = state.refreshing,
+                    loadingOrderList = state.loadingOrderList
+                )
+            }
         )
+    }
 
     override fun handleEvent(
         event: OrderList.Event,
         lazyListState: LazyListState,
-        coroutineScope: CoroutineScope,
+        coroutineScope: CoroutineScope
     ) {
         when (event) {
             is OrderList.Event.CancelNotification -> {
                 notificationManagerCompat.cancel(event.notificationId)
             }
 
-            is OrderList.Event.OpenOrderDetailsEvent ->
-                openOrderDetails(
-                    event.orderUuid,
-                    event.orderCode,
-                )
+            is OrderList.Event.OpenOrderDetailsEvent -> openOrderDetails(
+                event.orderUuid,
+                event.orderCode
+            )
 
             OrderList.Event.ScrollToTop -> {
                 coroutineScope.launch {
@@ -136,20 +136,19 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
     @Composable
     private fun ConnectionError() {
         Box(
-            modifier =
-                Modifier
-                    .background(AdminTheme.colors.status.negative)
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
+            modifier = Modifier
+                .background(AdminTheme.colors.status.negative)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp
+                )
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.error_order_list_connection),
                 style = AdminTheme.typography.bodySmall,
                 color = AdminTheme.colors.status.onStatus,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -158,7 +157,7 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
     private fun OrderListSuccessScreen(
         state: OrderListViewState.State.Success,
         lazyListState: LazyListState,
-        onAction: (OrderList.Action) -> Unit,
+        onAction: (OrderList.Action) -> Unit
     ) {
         Column {
             if (state.connectionError) {
@@ -168,7 +167,7 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
             if (state.loadingOrderList) {
                 LinearProgressIndicator(
                     modifier = Modifier.fillMaxWidth(),
-                    color = AdminTheme.colors.main.primary,
+                    color = AdminTheme.colors.main.primary
                 )
             }
 
@@ -176,19 +175,19 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
                 modifier = Modifier.fillMaxSize(),
                 state = lazyListState,
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item(key = CAFE_ADDRESS_KEY) {
                     TextWithHintCard(
                         hint = stringResource(R.string.msg_common_cafe),
-                        label = state.cafeAddress,
+                        label = state.cafeAddress
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
 
                 items(
                     items = state.orderList,
-                    key = { orderItem -> orderItem.uuid },
+                    key = { orderItem -> orderItem.uuid }
                 ) { orderItem ->
                     OrderItem(
                         orderItem = orderItem,
@@ -196,20 +195,17 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
                             onAction(
                                 OrderList.Action.OrderClick(
                                     orderCode = orderItem.code,
-                                    orderUuid = orderItem.uuid,
-                                ),
+                                    orderUuid = orderItem.uuid
+                                )
                             )
-                        },
+                        }
                     )
                 }
             }
         }
     }
 
-    private fun openOrderDetails(
-        orderUuid: String,
-        orderCode: String,
-    ) {
+    private fun openOrderDetails(orderUuid: String, orderCode: String) {
         findNavController().navigateSafe(toOrdersDetailsFragment(orderUuid, orderCode))
     }
 
@@ -218,26 +214,24 @@ class OrderListFragment : BaseComposeListFragment<OrderList.DataState, OrderList
     private fun OrderListSuccessScreenPreview() {
         AdminTheme {
             OrderListSuccessScreen(
-                state =
-                    OrderListViewState.State.Success(
-                        cafeAddress = "Кафе сатаны",
-                        orderList =
-                            persistentListOf(
-                                OrderListViewState.OrderItem(
-                                    uuid = "1",
-                                    status = OrderStatus.ACCEPTED,
-                                    statusString = "Принят",
-                                    code = "22",
-                                    deferredTime = "",
-                                    dateTime = "12/9/2024",
-                                ),
-                            ),
-                        connectionError = false,
-                        refreshing = false,
-                        loadingOrderList = false,
+                state = OrderListViewState.State.Success(
+                    cafeAddress = "Кафе сатаны",
+                    orderList = persistentListOf(
+                        OrderListViewState.OrderItem(
+                            uuid = "1",
+                            status = OrderStatus.ACCEPTED,
+                            statusString = "Принят",
+                            code = "22",
+                            deferredTime = "",
+                            dateTime = "12/9/2024"
+                        )
                     ),
+                    connectionError = false,
+                    refreshing = false,
+                    loadingOrderList = false
+                ),
                 lazyListState = LazyListState(),
-                onAction = {},
+                onAction = {}
             )
         }
     }

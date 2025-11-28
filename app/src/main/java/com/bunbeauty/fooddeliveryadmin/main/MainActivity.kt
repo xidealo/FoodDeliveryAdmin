@@ -50,9 +50,8 @@ import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity :
-    AppCompatActivity(R.layout.layout_compose),
-    MessageHost {
+class MainActivity : AppCompatActivity(R.layout.layout_compose), MessageHost {
+
     val viewModel: MainViewModel by viewModel()
 
     private val viewBinding: LayoutComposeBinding by viewBinding(LayoutComposeBinding::bind)
@@ -62,13 +61,9 @@ class MainActivity :
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, window.decorView).apply {
-            isAppearanceLightStatusBars = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-        } else {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
+            isAppearanceLightStatusBars = true
         }
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -79,14 +74,14 @@ class MainActivity :
 
             MainScreen(
                 mainState = mainState,
-                snackbarHostState = snackbarHostState,
+                snackbarHostState = snackbarHostState
             )
 
             val events by viewModel.events.collectAsStateWithLifecycle()
             LaunchedEffect(events) {
                 handleEventList(
                     events = events,
-                    snackbarHostState = snackbarHostState,
+                    snackbarHostState = snackbarHostState
                 )
             }
         }
@@ -103,27 +98,23 @@ class MainActivity :
     }
 
     @Composable
-    private fun MainScreen(
-        mainState: Main.ViewDataState,
-        snackbarHostState: SnackbarHostState,
-    ) {
+    private fun MainScreen(mainState: Main.ViewDataState, snackbarHostState: SnackbarHostState) {
         Scaffold(
             modifier = Modifier.navigationBarsPadding(),
             snackbarHost = {
                 AdminSnackbarHost(
                     snackbarHostState = snackbarHostState,
-                    paddingBottom = AdminTheme.dimensions.snackBarPadding,
+                    paddingBottom = AdminTheme.dimensions.snackBarPadding
                 )
             },
             bottomBar = {
                 AdminNavigationBar(options = mainState.navigationBarOptions)
-            },
+            }
         ) { padding ->
             Column(
-                modifier =
-                    Modifier
-                        .padding(padding)
-                        .imePadding(),
+                modifier = Modifier
+                    .padding(padding)
+                    .imePadding()
             ) {
                 ConnectionErrorMessage(visible = mainState.connectionLost)
                 NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
@@ -139,20 +130,19 @@ class MainActivity :
         AnimatedVisibility(
             visible = visible,
             enter = fadeIn(tween(300)),
-            exit = fadeOut(tween(300)),
+            exit = fadeOut(tween(300))
         ) {
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(AdminTheme.colors.status.negative)
-                        .padding(8.dp),
-                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(AdminTheme.colors.status.negative)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = resources.getString(R.string.error_common_no_internet),
                     style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.status.onStatus,
+                    color = AdminTheme.colors.status.onStatus
                 )
             }
         }
@@ -163,20 +153,19 @@ class MainActivity :
         AnimatedVisibility(
             visible = visible,
             enter = fadeIn(tween(300)),
-            exit = fadeOut(tween(300)),
+            exit = fadeOut(tween(300))
         ) {
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(AdminTheme.colors.status.warning)
-                        .padding(8.dp),
-                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(AdminTheme.colors.status.warning)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = resources.getString(R.string.msg_common_non_working_day),
                     style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.status.onStatus,
+                    color = AdminTheme.colors.status.onStatus
                 )
             }
         }
@@ -185,29 +174,26 @@ class MainActivity :
     @Composable
     private fun AdminSnackbarHost(
         snackbarHostState: SnackbarHostState,
-        paddingBottom: Dp,
+        paddingBottom: Dp
     ) {
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier =
-                Modifier
-                    .padding(bottom = paddingBottom),
+            modifier = Modifier
+                .padding(bottom = paddingBottom)
         ) { snackbarData ->
             (snackbarData.visuals as? AdminSnackbarVisuals)?.let { visuals ->
-                val containerColor =
-                    when (visuals.adminMessage.type) {
-                        Main.Message.Type.INFO -> AdminTheme.colors.main.primary
-                        Main.Message.Type.ERROR -> AdminTheme.colors.main.error
-                    }
-                val contentColor =
-                    when (visuals.adminMessage.type) {
-                        Main.Message.Type.INFO -> AdminTheme.colors.main.onPrimary
-                        Main.Message.Type.ERROR -> AdminTheme.colors.main.onError
-                    }
+                val containerColor = when (visuals.adminMessage.type) {
+                    Main.Message.Type.INFO -> AdminTheme.colors.main.primary
+                    Main.Message.Type.ERROR -> AdminTheme.colors.main.error
+                }
+                val contentColor = when (visuals.adminMessage.type) {
+                    Main.Message.Type.INFO -> AdminTheme.colors.main.onPrimary
+                    Main.Message.Type.ERROR -> AdminTheme.colors.main.onError
+                }
                 Snackbar(
                     snackbarData = snackbarData,
                     containerColor = containerColor,
-                    contentColor = contentColor,
+                    contentColor = contentColor
                 )
             }
         }
@@ -215,14 +201,14 @@ class MainActivity :
 
     private fun handleEventList(
         events: List<Main.Event>,
-        snackbarHostState: SnackbarHostState,
+        snackbarHostState: SnackbarHostState
     ) {
         events.forEach { event ->
             when (event) {
                 is Main.Event.ShowMessageEvent -> {
                     lifecycleScope.launch {
                         snackbarHostState.showSnackbar(
-                            AdminSnackbarVisuals(event.message),
+                            AdminSnackbarVisuals(event.message)
                         )
                     }
                 }
@@ -243,7 +229,7 @@ class MainActivity :
     private fun fragmentContainerFactory(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        attachToParent: Boolean,
+        attachToParent: Boolean
     ): FragmentContainerBinding =
         FragmentContainerBinding.inflate(inflater, parent, attachToParent).also {
             setupNavigationListener()
@@ -255,13 +241,12 @@ class MainActivity :
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { controller, destination, _ ->
             if (destination !is FloatingWindow) {
-                val navigationBarItem =
-                    when (destination.id) {
-                        R.id.ordersFragment -> Main.NavigationBarItem.ORDERS
-                        R.id.menuFragment -> Main.NavigationBarItem.MENU
-                        R.id.profileFragment -> Main.NavigationBarItem.PROFILE
-                        else -> null
-                    }
+                val navigationBarItem = when (destination.id) {
+                    R.id.ordersFragment -> Main.NavigationBarItem.ORDERS
+                    R.id.menuFragment -> Main.NavigationBarItem.MENU
+                    R.id.profileFragment -> Main.NavigationBarItem.PROFILE
+                    else -> null
+                }
                 viewModel.onAction(Main.Action.UpdateNavDestination(navigationBarItem, controller))
             }
         }

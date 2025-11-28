@@ -8,22 +8,17 @@ interface SelectPhoto {
     data class DataState(
         val photoUrl: String?,
         val isLoading: Boolean,
-        val hasError: Boolean,
+        val hasError: Boolean
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
         data object Init : Action
-
         data object OnSavePhotoClick : Action
-
         data object Back : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-
-        data class Saved(
-            val photoUrl: String,
-        ) : Event
+        data class Saved(val photoUrl: String) : Event
     }
 }

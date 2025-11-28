@@ -11,6 +11,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.applyIfNotNull
@@ -32,16 +33,15 @@ fun AdminTextField(
     isError: Boolean = false,
     errorText: String? = null,
     enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null
 ) {
     Column(modifier = modifier) {
         AdminBaseTextField(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .applyIfNotNull(focusRequester) {
-                        focusRequester(it)
-                    },
+            modifier = Modifier
+                .fillMaxWidth()
+                .applyIfNotNull(focusRequester) {
+                    focusRequester(it)
+                },
             value = value,
             labelText = labelText,
             onValueChange = onValueChange,
@@ -51,11 +51,52 @@ fun AdminTextField(
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
-            trailingIcon = trailingIcon,
+            trailingIcon = trailingIcon
         )
         ErrorText(
             isError = isError,
-            errorText = errorText,
+            errorText = errorText
+        )
+    }
+}
+
+@Composable
+fun AdminTextField(
+    value: TextFieldValue,
+    labelText: String,
+    onValueChange: (value: TextFieldValue) -> Unit,
+    modifier: Modifier = Modifier,
+    focusRequester: FocusRequester? = null,
+    keyboardOptions: KeyboardOptions = keyboardOptions(),
+    keyboardActions: KeyboardActions = keyboardActions(),
+    maxSymbols: Int = Int.MAX_VALUE,
+    maxLines: Int = 1,
+    isError: Boolean = false,
+    errorText: String? = null,
+    enabled: Boolean = true,
+    trailingIcon: (@Composable () -> Unit)? = null
+) {
+    Column(modifier = modifier) {
+        AdminBaseTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .applyIfNotNull(focusRequester) {
+                    focusRequester(it)
+                },
+            value = value,
+            labelText = labelText,
+            onValueChange = onValueChange,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            maxSymbols = maxSymbols,
+            maxLines = maxLines,
+            isError = isError,
+            enabled = enabled,
+            trailingIcon = trailingIcon
+        )
+        ErrorText(
+            isError = isError,
+            errorText = errorText
         )
     }
 }
@@ -63,17 +104,16 @@ fun AdminTextField(
 @Composable
 private fun ErrorText(
     isError: Boolean,
-    errorText: String?,
+    errorText: String?
 ) {
     if (isError && errorText != null) {
         Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, top = 4.dp),
             text = errorText,
             style = AdminTheme.typography.bodySmall,
-            color = AdminTheme.colors.main.error,
+            color = AdminTheme.colors.main.error
         )
     }
 }
@@ -86,22 +126,7 @@ private fun FoodDeliveryTextFieldPreview() {
         AdminTextField(
             labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
-            onValueChange = {},
-        )
-    }
-}
-
-@ExperimentalComposeUiApi
-@Preview
-@Composable
-private fun FoodDeliveryTextFieldWithErrorPreview() {
-    AdminTheme {
-        AdminTextField(
-            labelText = "Комментарий",
-            value = "Нужно больше еды \n ...",
-            onValueChange = {},
-            errorText = "Какая-то ошибка",
-            isError = true,
+            onValueChange = {}
         )
     }
 }

@@ -24,7 +24,7 @@ class CreateMenuProductUseCase(
     private val validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     data class Params(
         val name: String,
@@ -37,22 +37,20 @@ class CreateMenuProductUseCase(
         val selectedCategories: List<SelectableCategory>,
         val isVisible: Boolean,
         val isRecommended: Boolean,
-        val newImageUri: String?,
+        val newImageUri: String?
     )
 
     suspend operator fun invoke(params: Params) {
         val name = validateMenuProductNameUseCase(name = params.name)
         val newPrice = validateMenuProductNewPriceUseCase(newPrice = params.newPrice)
-        val oldPrice =
-            validateMenuProductOldPriceUseCase(
-                oldPrice = params.oldPrice,
-                newPrice = newPrice,
-            )
-        val nutrition =
-            validateMenuProductNutritionUseCase(
-                nutrition = params.nutrition,
-                units = params.units,
-            )
+        val oldPrice = validateMenuProductOldPriceUseCase(
+            oldPrice = params.oldPrice,
+            newPrice = newPrice
+        )
+        val nutrition = validateMenuProductNutritionUseCase(
+            nutrition = params.nutrition,
+            units = params.units
+        )
         val description = validateMenuProductDescriptionUseCase(description = params.description)
         val selectableCategories = validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
         val newImageUri = params.newImageUri ?: throw MenuProductImageException()
@@ -61,24 +59,22 @@ class CreateMenuProductUseCase(
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         menuProductRepo.saveMenuProduct(
             token = token,
-            menuProductPost =
-                MenuProductPost(
-                    name = name,
-                    newPrice = newPrice,
-                    oldPrice = oldPrice,
-                    nutrition = nutrition,
-                    utils = params.units,
-                    description = description,
-                    comboDescription = params.comboDescription.trim(),
-                    photoLink = photoLink,
-                    barcode = 0,
-                    isVisible = params.isVisible,
-                    isRecommended = params.isRecommended,
-                    categories =
-                        selectableCategories.map { category ->
-                            category.category.uuid
-                        },
-                ),
+            menuProductPost = MenuProductPost(
+                name = name,
+                newPrice = newPrice,
+                oldPrice = oldPrice,
+                nutrition = nutrition,
+                utils = params.units,
+                description = description,
+                comboDescription = params.comboDescription.trim(),
+                photoLink = photoLink,
+                barcode = 0,
+                isVisible = params.isVisible,
+                isRecommended = params.isRecommended,
+                categories = selectableCategories.map { category ->
+                    category.category.uuid
+                }
+            )
         ) ?: throw MenuProductNotCreatedException()
     }
 }

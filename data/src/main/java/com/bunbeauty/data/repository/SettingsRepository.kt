@@ -11,23 +11,24 @@ private const val IS_UNLIMITED_NOTIFICATION_DEFAULT = true
 
 class SettingsRepository(
     private val dataStoreRepo: DataStoreRepo,
-    private val foodDeliveryApi: FoodDeliveryApi,
+    private val foodDeliveryApi: FoodDeliveryApi
 ) : SettingsRepo {
+
     private var isUnlimitedNotificationCache: Boolean? = null
 
-    override suspend fun isUnlimitedNotification(): Boolean =
-        isUnlimitedNotificationCache
+    override suspend fun isUnlimitedNotification(): Boolean {
+        return isUnlimitedNotificationCache
             ?: fetchUnlimitedNotification()
             ?: IS_UNLIMITED_NOTIFICATION_DEFAULT
+    }
 
     override suspend fun updateUnlimitedNotification(isEnabled: Boolean) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         foodDeliveryApi.putUnlimitedNotification(
-            updateUnlimitedNotificationRequest =
-                UpdateUnlimitedNotificationRequest(
-                    isEnabled = isEnabled,
-                ),
-            token = token,
+            updateUnlimitedNotificationRequest = UpdateUnlimitedNotificationRequest(
+                isEnabled = isEnabled
+            ),
+            token = token
         )
         isUnlimitedNotificationCache = isEnabled
     }

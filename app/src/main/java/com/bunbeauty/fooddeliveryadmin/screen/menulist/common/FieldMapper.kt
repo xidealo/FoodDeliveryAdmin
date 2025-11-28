@@ -7,39 +7,38 @@ import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListField
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 
-fun TextFieldData.toTextFieldUi(
-    @StringRes errorResId: Int,
-): TextFieldUi =
-    TextFieldUi(
+fun TextFieldData.toTextFieldUi(@StringRes errorResId: Int): TextFieldUi {
+    return TextFieldUi(
         value = value,
         isError = isError,
-        errorResId = errorResId,
+        errorResId = errorResId
     )
+}
 
-fun CategoriesFieldData.toCardFieldUi(): CardFieldUi =
-    CardFieldUi(
+fun CategoriesFieldData.toCardFieldUi(): CardFieldUi {
+    return CardFieldUi(
         labelResId = R.string.hint_common_menu_product_categories,
-        value =
-            selectedCategoryList
-                .takeIf { list ->
-                    list.isNotEmpty()
-                }?.joinToString(" ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
-                    selectableCategory.category.name
-                },
+        value = selectedCategoryList
+            .takeIf { list ->
+                list.isNotEmpty()
+            }?.joinToString(" ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
+                selectableCategory.category.name
+            },
         isError = isError,
-        errorResId = R.string.error_common_menu_product_categories,
+        errorResId = R.string.error_common_menu_product_categories
     )
+}
 
-fun AdditionGroupListFieldData.toCardFieldUi(): CardFieldUi =
-    CardFieldUi(
+fun AdditionGroupListFieldData.toCardFieldUi(): CardFieldUi {
+    return CardFieldUi(
         labelResId = R.string.hint_common_menu_product_additions,
-        value =
-            value
-                .takeIf { list ->
-                    list.isNotEmpty()
-                }?.joinToString(" ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
-                    selectableCategory.name
-                },
+        value = value
+            .takeIf { list ->
+                list.isNotEmpty()
+            }?.joinToString(" ${Constants.BULLET_SYMBOL} ") { selectableCategory ->
+                selectableCategory.name
+            },
         isError = isError,
-        errorResId = R.string.error_common_menu_product_addition_groups,
+        errorResId = R.string.error_common_menu_product_addition_groups
     )
+}

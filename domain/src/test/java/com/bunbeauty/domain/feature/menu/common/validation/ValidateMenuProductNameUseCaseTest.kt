@@ -7,6 +7,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class ValidateMenuProductNameUseCaseTest {
+
     private lateinit var validateMenuProductNameUseCase: ValidateMenuProductNameUseCase
 
     @BeforeTest

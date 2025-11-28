@@ -5,11 +5,11 @@ import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 object AdminSurfaceDefaults {
+
     @Composable
-    fun getSurfaceElevation(elevated: Boolean) =
-        if (elevated) {
-            AdminTheme.dimensions.surfaceElevation
-        } else {
-            0.dp
-        }
+    fun getSurfaceElevation(elevated: Boolean) = if (elevated) {
+        AdminTheme.dimensions.surfaceElevation
+    } else {
+        0.dp
+    }
 }

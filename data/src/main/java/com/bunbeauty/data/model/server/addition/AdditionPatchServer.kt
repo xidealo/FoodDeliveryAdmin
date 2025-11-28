@@ -18,5 +18,5 @@ data class AdditionPatchServer(
     @SerialName("isVisible")
     val isVisible: Boolean?,
     @SerialName("tag")
-    val tag: String?,
+    val tag: String?
 )

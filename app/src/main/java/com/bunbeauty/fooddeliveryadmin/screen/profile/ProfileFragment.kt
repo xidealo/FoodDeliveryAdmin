@@ -37,20 +37,21 @@ import com.bunbeauty.presentation.feature.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
+class ProfileFragment :
+    BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
+
     override val viewModel: ProfileViewModel by viewModel()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(Profile.Action.UpdateData)
     }
 
     @Composable
-    override fun mapState(state: Profile.DataState): ProfileViewState = state.toViewState()
+    override fun mapState(state: Profile.DataState): ProfileViewState {
+        return state.toViewState()
+    }
 
     override fun handleEvent(event: Profile.Event) {
         when (event) {
@@ -83,7 +84,7 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
     @Composable
     override fun Screen(
         state: ProfileViewState,
-        onAction: (Profile.Action) -> Unit,
+        onAction: (Profile.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_profile),
@@ -95,10 +96,10 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                         onClick = {
                             onAction(Profile.Action.LogoutClick)
                         },
-                        isLoading = state.state.logoutLoading,
+                        isLoading = state.state.logoutLoading
                     )
                 }
-            },
+            }
         ) {
             when (state.state) {
                 ProfileViewState.State.Loading -> {
@@ -111,14 +112,14 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
                             onAction(Profile.Action.UpdateData)
-                        },
+                        }
                     )
                 }
 
                 is ProfileViewState.State.Success -> {
                     SuccessProfileScreen(
                         state = state.state,
-                        onAction = onAction,
+                        onAction = onAction
                     )
                 }
             }
@@ -128,18 +129,17 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
     @Composable
     private fun SuccessProfileScreen(
         state: ProfileViewState.State.Success,
-        onAction: (Profile.Action) -> Unit,
+        onAction: (Profile.Action) -> Unit
     ) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TextWithHintCard(
                 hint = state.role,
-                label = state.userName,
+                label = state.userName
             )
             // TODO("Обновить логику и сделать привязку к одному кафе")
 //            NavigationIconCard(
@@ -154,28 +154,26 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                 labelStringId = R.string.action_profile_settings,
                 onClick = {
                     onAction(Profile.Action.SettingsClick)
-                },
+                }
             )
             NavigationIconCard(
                 iconId = R.drawable.ic_statistic,
                 labelStringId = R.string.action_profile_statistic,
                 onClick = {
                     onAction(Profile.Action.StatisticClick)
-                },
+                }
             )
         }
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = resources.getString(R.string.version_app, BuildConfig.VERSION_NAME),
-                modifier =
-                    Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 72.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 72.dp)
             )
         }
     }
@@ -185,16 +183,14 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
     private fun ProfileScreenPreview() {
         AdminTheme {
             Screen(
-                state =
-                    ProfileViewState(
-                        state =
-                            ProfileViewState.State.Success(
-                                role = "Менеджер",
-                                userName = "UserName",
-                                logoutLoading = false,
-                            ),
-                    ),
-                onAction = {},
+                state = ProfileViewState(
+                    state = ProfileViewState.State.Success(
+                        role = "Менеджер",
+                        userName = "UserName",
+                        logoutLoading = false
+                    )
+                ),
+                onAction = {}
             )
         }
     }

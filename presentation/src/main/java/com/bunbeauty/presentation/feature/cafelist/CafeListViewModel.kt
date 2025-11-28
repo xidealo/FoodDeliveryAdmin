@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class CafeListViewModel(
-    private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursFlowUseCase,
+    private val getCafeWithWorkingHoursListFlow: GetCafeWithWorkingHoursFlowUseCase
 ) : BaseViewModel() {
-    private val mutableDataState =
-        MutableStateFlow(
-            CafeListDataState(
-                state = CafeListDataState.State.LOADING,
-            ),
+
+    private val mutableDataState = MutableStateFlow(
+        CafeListDataState(
+            state = CafeListDataState.State.LOADING
         )
+    )
     val dataState = mutableDataState.asStateFlow()
 
     init {
@@ -38,11 +38,11 @@ class CafeListViewModel(
                     mutableDataState.update { state ->
                         state.copy(
                             state = CafeListDataState.State.SUCCESS,
-                            cafeList = listOf(cafe),
+                            cafeList = listOf(cafe)
                         )
                     }
                 }
-            },
+            }
         )
     }
 }

@@ -8,36 +8,31 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class AdditionListViewModel(
     private val getSeparatedAdditionListUseCase: GetSeparatedAdditionListUseCase,
-    private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase,
+    private val updateVisibleAdditionUseCase: UpdateVisibleAdditionUseCase
 ) : BaseStateViewModel<AdditionList.DataState, AdditionList.Action, AdditionList.Event>(
-        initState =
-            AdditionList.DataState(
-                visibleAdditions = listOf(),
-                hiddenAdditions = listOf(),
-                isLoading = true,
-                isRefreshing = false,
-                hasError = false,
-            ),
-    ) {
-    override fun reduce(
-        action: AdditionList.Action,
-        dataState: AdditionList.DataState,
-    ) {
+    initState = AdditionList.DataState(
+        visibleAdditions = listOf(),
+        hiddenAdditions = listOf(),
+        isLoading = true,
+        isRefreshing = false,
+        hasError = false
+    )
+) {
+
+    override fun reduce(action: AdditionList.Action, dataState: AdditionList.DataState) {
         when (action) {
             AdditionList.Action.OnBackClick -> sendEvent { AdditionList.Event.Back }
 
-            is AdditionList.Action.OnAdditionClick ->
-                sendEvent {
-                    AdditionList.Event.OnAdditionClick(
-                        additionUuid = action.additionUuid,
-                    )
-                }
-
-            is AdditionList.Action.OnVisibleClick ->
-                updateVisible(
-                    uuid = action.uuid,
-                    isVisible = action.isVisible,
+            is AdditionList.Action.OnAdditionClick -> sendEvent {
+                AdditionList.Event.OnAdditionClick(
+                    additionUuid = action.additionUuid
                 )
+            }
+
+            is AdditionList.Action.OnVisibleClick -> updateVisible(
+                uuid = action.uuid,
+                isVisible = action.isVisible
+            )
 
             AdditionList.Action.Init -> loadData()
 
@@ -45,21 +40,18 @@ class AdditionListViewModel(
         }
     }
 
-    private fun updateVisible(
-        uuid: String,
-        isVisible: Boolean,
-    ) {
+    private fun updateVisible(uuid: String, isVisible: Boolean) {
         viewModelScope.launchSafe(
             block = {
                 updateVisibleAdditionUseCase(
                     additionUuid = uuid,
-                    isVisible = !isVisible,
+                    isVisible = !isVisible
                 )
                 loadData()
             },
             onError = {
                 showErrorState()
-            },
+            }
         )
     }
 
@@ -69,32 +61,30 @@ class AdditionListViewModel(
                 setState {
                     copy(
                         isRefreshing = true,
-                        hasError = false,
+                        hasError = false
                     )
                 }
 
                 val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = true)
                 setState {
                     copy(
-                        visibleAdditions =
-                            separatedAdditionList.visibleList
-                                .flatMap { groupedAdditionList ->
-                                    groupedAdditionList.toAdditionFeedItemList()
-                                },
-                        hiddenAdditions =
-                            separatedAdditionList.hiddenList
-                                .flatMap { groupedAdditionList ->
-                                    groupedAdditionList.toAdditionFeedItemList()
-                                },
+                        visibleAdditions = separatedAdditionList.visibleList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
+                        hiddenAdditions = separatedAdditionList.hiddenList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
                         isLoading = false,
                         isRefreshing = false,
-                        hasError = false,
+                        hasError = false
                     )
                 }
             },
             onError = {
                 showErrorState()
-            },
+            }
         )
     }
 
@@ -104,25 +94,23 @@ class AdditionListViewModel(
                 val separatedAdditionList = getSeparatedAdditionListUseCase(refreshing = false)
                 setState {
                     copy(
-                        visibleAdditions =
-                            separatedAdditionList.visibleList
-                                .flatMap { groupedAdditionList ->
-                                    groupedAdditionList.toAdditionFeedItemList()
-                                },
-                        hiddenAdditions =
-                            separatedAdditionList.hiddenList
-                                .flatMap { groupedAdditionList ->
-                                    groupedAdditionList.toAdditionFeedItemList()
-                                },
+                        visibleAdditions = separatedAdditionList.visibleList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
+                        hiddenAdditions = separatedAdditionList.hiddenList
+                            .flatMap { groupedAdditionList ->
+                                groupedAdditionList.toAdditionFeedItemList()
+                            },
                         isLoading = false,
                         isRefreshing = false,
-                        hasError = false,
+                        hasError = false
                     )
                 }
             },
             onError = {
                 showErrorState()
-            },
+            }
         )
     }
 
@@ -131,7 +119,7 @@ class AdditionListViewModel(
             copy(
                 hasError = true,
                 isRefreshing = false,
-                isLoading = false,
+                isLoading = false
             )
         }
     }

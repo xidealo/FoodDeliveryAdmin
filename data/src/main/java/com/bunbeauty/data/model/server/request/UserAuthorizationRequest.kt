@@ -5,8 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserAuthorizationRequest(
+
     @SerialName("username")
     val username: String = "",
+
     @SerialName("password")
-    val password: String = "",
+    val password: String = ""
 )

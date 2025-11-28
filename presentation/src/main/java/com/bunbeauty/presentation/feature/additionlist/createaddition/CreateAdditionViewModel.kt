@@ -9,34 +9,33 @@ import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class CreateAdditionViewModel(
-    private val createAdditionUseCase: CreateAdditionUseCase,
-) : BaseStateViewModel<CreateAddition.DataState, CreateAddition.Action, CreateAddition.Event>(
-        initState =
-            CreateAddition.DataState(
-                uuid = "",
-                name = "",
-                price = "",
-                isLoading = false,
-                isVisible = false,
-                fullName = "",
-                hasEditNameError = false,
-                tag = "",
-                imageField =
-                    ImageFieldData(
-                        value = null,
-                        isError = false,
-                    ),
-            ),
+    private val createAdditionUseCase: CreateAdditionUseCase
+) :
+    BaseStateViewModel<CreateAddition.DataState, CreateAddition.Action, CreateAddition.Event>(
+        initState = CreateAddition.DataState(
+            uuid = "",
+            name = "",
+            price = "",
+            isLoading = false,
+            isVisible = false,
+            fullName = "",
+            hasEditNameError = false,
+            tag = "",
+            imageField = ImageFieldData(
+                value = null,
+                isError = false
+            )
+        )
     ) {
+
     override fun reduce(
         action: CreateAddition.Action,
-        dataState: CreateAddition.DataState,
+        dataState: CreateAddition.DataState
     ) {
         when (action) {
-            is CreateAddition.Action.EditFullNameAddition ->
-                editFullNameAddition(
-                    fullName = action.fullName,
-                )
+            is CreateAddition.Action.EditFullNameAddition -> editFullNameAddition(
+                fullName = action.fullName
+            )
 
             is CreateAddition.Action.EditNameAddition -> editNameAddition(name = action.name)
             is CreateAddition.Action.EditPriceAddition -> editPriceAddition(price = action.price)
@@ -52,7 +51,7 @@ class CreateAdditionViewModel(
     private fun editOnVisible(isVisible: Boolean) {
         setState {
             copy(
-                isVisible = isVisible,
+                isVisible = isVisible
             )
         }
     }
@@ -64,7 +63,7 @@ class CreateAdditionViewModel(
     private fun editFullNameAddition(fullName: String) {
         setState {
             copy(
-                fullName = fullName,
+                fullName = fullName
             )
         }
     }
@@ -72,7 +71,7 @@ class CreateAdditionViewModel(
     private fun editNameAddition(name: String) {
         setState {
             copy(
-                name = name,
+                name = name
             )
         }
     }
@@ -80,7 +79,7 @@ class CreateAdditionViewModel(
     private fun editPriceAddition(price: String) {
         setState {
             copy(
-                price = price,
+                price = price
             )
         }
     }
@@ -88,7 +87,7 @@ class CreateAdditionViewModel(
     private fun editTagAddition(tag: String) {
         setState {
             copy(
-                tag = tag,
+                tag = tag
             )
         }
     }
@@ -96,11 +95,10 @@ class CreateAdditionViewModel(
     private fun setImage(croppedImageUri: String) {
         setState {
             copy(
-                imageField =
-                    imageField.copy(
-                        value = croppedImageUri,
-                        isError = false,
-                    ),
+                imageField = imageField.copy(
+                    value = croppedImageUri,
+                    isError = false
+                )
             )
         }
     }
@@ -109,35 +107,32 @@ class CreateAdditionViewModel(
         setState {
             copy(
                 isLoading = true,
-                hasEditNameError = false,
+                hasEditNameError = false
             )
         }
         viewModelScope.launchSafe(
             block = {
                 createAdditionUseCase(
-                    params =
-                        state.value.run {
-                            CreateAdditionUseCase.Params(
-                                name = name.trim(),
-                                fullName =
-                                    fullName
-                                        .takeIf {
-                                            fullName.isNotBlank()
-                                        }?.trim(),
-                                price = price.toIntOrNull(),
-                                isVisible = isVisible,
-                                tag = tag.trim(),
-                                newImageUri = imageField.value,
-                                priority = null,
-                            )
-                        },
+                    params = state.value.run {
+                        CreateAdditionUseCase.Params(
+                            name = name.trim(),
+                            fullName = fullName.takeIf {
+                                fullName.isNotBlank()
+                            }?.trim(),
+                            price = price.toIntOrNull(),
+                            isVisible = isVisible,
+                            tag = tag.trim(),
+                            newImageUri = imageField.value,
+                            priority = null
+                        )
+                    }
                 )
                 setState {
                     copy(isLoading = false)
                 }
                 sendEvent {
                     CreateAddition.Event.ShowCreatedAdditionSuccess(
-                        additionName = state.value.name,
+                        additionName = state.value.name
                     )
                 }
             },
@@ -151,17 +146,16 @@ class CreateAdditionViewModel(
                         is AdditionPhotoException -> {
                             copy(
                                 isLoading = false,
-                                imageField =
-                                    imageField.copy(
-                                        isError = true,
-                                    ),
+                                imageField = imageField.copy(
+                                    isError = true
+                                )
                             )
                         }
 
                         else -> copy(isLoading = false)
                     }
                 }
-            },
+            }
         )
     }
 }

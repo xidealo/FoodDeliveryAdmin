@@ -10,30 +10,30 @@ import com.bunbeauty.domain.repo.MenuProductToAdditionGroupToAdditionRepository
 
 class MenuProductToAdditionGroupToAdditionRepositoryImpl(
     private val foodDeliveryApi: FoodDeliveryApi,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) : MenuProductToAdditionGroupToAdditionRepository {
     private val cache: MutableSet<MenuProductToAdditionGroupToAddition> = mutableSetOf()
 
     // todo add handle error
-    override suspend fun getMenuProductToAdditionGroupToAdditionList(uuidList: List<String>): List<MenuProductToAdditionGroupToAddition> =
-        foodDeliveryApi
-            .getMenuProductToAdditionGroupToAdditionList(
-                uuidList = uuidList,
-                token = dataStoreRepo.getToken() ?: throw NoTokenException(),
-            ).dataOrNull()
-            ?.map { menuProductToAdditionGroupToAdditionServer ->
-                menuProductToAdditionGroupToAdditionServer.toMenuProductToAdditionGroupToAddition()
-            } ?: emptyList()
+    override suspend fun getMenuProductToAdditionGroupToAdditionList(uuidList: List<String>): List<MenuProductToAdditionGroupToAddition> {
+        return foodDeliveryApi.getMenuProductToAdditionGroupToAdditionList(
+            uuidList = uuidList,
+            token = dataStoreRepo.getToken() ?: throw NoTokenException()
+        ).dataOrNull()?.map { menuProductToAdditionGroupToAdditionServer ->
+            menuProductToAdditionGroupToAdditionServer.toMenuProductToAdditionGroupToAddition()
+        } ?: emptyList()
+    }
 
-    private fun MenuProductToAdditionGroupToAdditionServer.toMenuProductToAdditionGroupToAddition(): MenuProductToAdditionGroupToAddition =
-        MenuProductToAdditionGroupToAddition(
+    private fun MenuProductToAdditionGroupToAdditionServer.toMenuProductToAdditionGroupToAddition(): MenuProductToAdditionGroupToAddition {
+        return MenuProductToAdditionGroupToAddition(
             uuid = uuid,
             isSelected = isSelected,
             isVisible = isVisible,
             menuProductToAdditionGroupUuid = menuProductToAdditionGroupUuid,
             additionUuid = additionUuid,
-            priority = priority,
+            priority = priority
         )
+    }
 
     override fun clearCache() {
         cache.clear()

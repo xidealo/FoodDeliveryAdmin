@@ -9,32 +9,31 @@ import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class CreateCategoryViewModel(
-    private val createCategoryUseCase: CreateCategoryUseCase,
-) : BaseStateViewModel<CreateCategoryState.DataState, CreateCategoryState.Action, CreateCategoryState.Event>(
-        initState =
-            CreateCategoryState.DataState(
-                state = CreateCategoryState.DataState.State.SUCCESS,
-                isLoading = false,
-                nameField = TextFieldData.empty,
-                CreateCategoryState.DataState.NameStateError.NO_ERROR,
-            ),
+    private val createCategoryUseCase: CreateCategoryUseCase
+) :
+    BaseStateViewModel<CreateCategoryState.DataState, CreateCategoryState.Action, CreateCategoryState.Event>(
+        initState = CreateCategoryState.DataState(
+            state = CreateCategoryState.DataState.State.SUCCESS,
+            isLoading = false,
+            nameField = TextFieldData.empty,
+            CreateCategoryState.DataState.NameStateError.NO_ERROR
+        )
     ) {
+
     override fun reduce(
         action: CreateCategoryState.Action,
-        dataState: CreateCategoryState.DataState,
+        dataState: CreateCategoryState.DataState
     ) {
         when (action) {
-            is CreateCategoryState.Action.CreateNameCategoryChanged ->
-                createNameCategoryChanged(
-                    action.nameCategory,
-                )
+            is CreateCategoryState.Action.CreateNameCategoryChanged -> createNameCategoryChanged(
+                action.nameCategory
+            )
 
             CreateCategoryState.Action.OnBackClicked -> onBackClicked()
 
-            CreateCategoryState.Action.OnSaveCreateCategoryClick ->
-                saveCreateCategory(
-                    categoryName = dataState.nameField.value,
-                )
+            CreateCategoryState.Action.OnSaveCreateCategoryClick -> saveCreateCategory(
+                categoryName = dataState.nameField.value
+            )
 
             CreateCategoryState.Action.OnErrorStateClicked -> onErrorState()
         }
@@ -43,11 +42,10 @@ class CreateCategoryViewModel(
     private fun createNameCategoryChanged(nameCategory: String) {
         setState {
             copy(
-                nameField =
-                    nameField.copy(
-                        value = nameCategory,
-                        isError = false,
-                    ),
+                nameField = nameField.copy(
+                    value = nameCategory,
+                    isError = false
+                )
             )
         }
     }
@@ -55,7 +53,7 @@ class CreateCategoryViewModel(
     private fun onErrorState() {
         setState {
             copy(
-                state = CreateCategoryState.DataState.State.SUCCESS,
+                state = CreateCategoryState.DataState.State.SUCCESS
             )
         }
     }
@@ -69,62 +67,56 @@ class CreateCategoryViewModel(
     private fun saveCreateCategory(categoryName: String) {
         setState {
             copy(
-                nameField = nameField.copy(isError = false),
+                nameField = nameField.copy(isError = false)
             )
         }
         viewModelScope.launchSafe(
             block = {
                 createCategoryUseCase(
-                    categoryName = categoryName,
+                    categoryName = categoryName
                 )
 
                 setState { copy(isLoading = false) }
                 sendEvent {
                     CreateCategoryState.Event.ShowUpdateCategorySuccess(
-                        categoryName = categoryName,
+                        categoryName = categoryName
                     )
                 }
             },
             onError =
-                { throwable ->
-                    setState {
-                        when (throwable) {
-                            is CategoryNameException -> {
-                                copy(
-                                    nameStateError =
-                                        CreateCategoryState
-                                            .DataState.NameStateError.EMPTY_NAME,
-                                    nameField =
-                                        nameField.copy(
-                                            isError = true,
-                                        ),
-                                    isLoading = false,
-                                )
-                            }
-
-                            is DuplicateCategoryNameException -> {
-                                copy(
-                                    nameStateError =
-                                        CreateCategoryState
-                                            .DataState.NameStateError.DUPLICATE_NAME,
-                                    nameField =
-                                        nameField.copy(
-                                            isError = true,
-                                        ),
-                                    isLoading = false,
-                                )
-                            }
-
-                            else ->
-                                copy(
-                                    isLoading = false,
-                                    nameStateError =
-                                        CreateCategoryState
-                                            .DataState.NameStateError.NO_ERROR,
-                                )
+            { throwable ->
+                setState {
+                    when (throwable) {
+                        is CategoryNameException -> {
+                            copy(
+                                nameStateError = CreateCategoryState
+                                    .DataState.NameStateError.EMPTY_NAME,
+                                nameField = nameField.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
+                            )
                         }
+
+                        is DuplicateCategoryNameException -> {
+                            copy(
+                                nameStateError = CreateCategoryState
+                                    .DataState.NameStateError.DUPLICATE_NAME,
+                                nameField = nameField.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
+                            )
+                        }
+
+                        else -> copy(
+                            isLoading = false,
+                            nameStateError = CreateCategoryState
+                                .DataState.NameStateError.NO_ERROR
+                        )
                     }
-                },
+                }
+            }
         )
     }
 }
