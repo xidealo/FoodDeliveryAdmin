@@ -56,39 +56,39 @@ private const val PHONE_LINK = "tel:"
 
 class OrderDetailsFragment :
     BaseComposeFragment<OrderDetailsState.DataState, OrderDetailsViewState, OrderDetailsState.Action, OrderDetailsState.Event>() {
-
     private val orderDetailsFragmentArgs: OrderDetailsFragmentArgs by navArgs()
 
     override val viewModel: OrderDetailsViewModel by viewModel()
 
     private val orderDetailsStateMapper: OrderDetailsStateMapper by inject()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(
             OrderDetailsState.Action.Init(
                 orderUuid = orderDetailsFragmentArgs.orderUuid,
-                orderCode = orderDetailsFragmentArgs.orderCode
-            )
+                orderCode = orderDetailsFragmentArgs.orderCode,
+            ),
         )
     }
 
     @Composable
     override fun Screen(
         state: OrderDetailsViewState,
-        onAction: (OrderDetailsState.Action) -> Unit
+        onAction: (OrderDetailsState.Action) -> Unit,
     ) {
         OrderDetailsScreen(
             state = state,
-            onAction = onAction
+            onAction = onAction,
         )
     }
 
     @Composable
-    override fun mapState(state: OrderDetailsState.DataState): OrderDetailsViewState {
-        return orderDetailsStateMapper.map(state)
-    }
+    override fun mapState(state: OrderDetailsState.DataState): OrderDetailsViewState = orderDetailsStateMapper.map(state)
 
     override fun handleEvent(event: OrderDetailsState.Event) {
         when (event) {
@@ -98,7 +98,7 @@ class OrderDetailsFragment :
 
             is OrderDetailsState.Event.ShowErrorMessage -> {
                 (activity as? MessageHost)?.showErrorMessage(
-                    resources.getString(event.messageId)
+                    resources.getString(event.messageId),
                 )
             }
 
@@ -110,8 +110,8 @@ class OrderDetailsFragment :
                 (activity as? MessageHost)?.showInfoMessage(
                     getString(
                         R.string.msg_order_details_saved,
-                        event.orderCode
-                    )
+                        event.orderCode,
+                    ),
                 )
                 findNavController().navigateUp()
             }
@@ -121,13 +121,13 @@ class OrderDetailsFragment :
     @Composable
     private fun OrderDetailsScreen(
         state: OrderDetailsViewState,
-        onAction: (OrderDetailsState.Action) -> Unit
+        onAction: (OrderDetailsState.Action) -> Unit,
     ) {
         AdminScaffold(
             title = state.title,
             backActionClick = {
                 onAction(OrderDetailsState.Action.OnBackClicked)
-            }
+            },
         ) {
             when (state.state) {
                 OrderDetailsViewState.State.Loading -> {
@@ -138,14 +138,14 @@ class OrderDetailsFragment :
                     ErrorScreen(
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
-                        onClick = {}
+                        onClick = {},
                     )
                 }
 
                 is OrderDetailsViewState.State.Success -> {
                     SuccessOrderDetailsScreen(
                         state = state.state,
-                        onAction = onAction
+                        onAction = onAction,
                     )
                 }
             }
@@ -155,20 +155,21 @@ class OrderDetailsFragment :
     @Composable
     private fun SuccessOrderDetailsScreen(
         state: OrderDetailsViewState.State.Success,
-        onAction: (OrderDetailsState.Action) -> Unit
+        onAction: (OrderDetailsState.Action) -> Unit,
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace)
+                    contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace),
                 ) {
                     item {
                         OrderInfoCard(stateSuccess = state)
@@ -180,7 +181,7 @@ class OrderDetailsFragment :
                             onClick = {
                                 onAction(OrderDetailsState.Action.OnStatusClicked)
                             },
-                            statusColor = state.statusColor
+                            statusColor = state.statusColor,
                         )
                     }
                     item {
@@ -191,7 +192,7 @@ class OrderDetailsFragment :
                                 val uri = Uri.parse(PHONE_LINK + state.phoneNumber)
                                 val intent = Intent(Intent.ACTION_DIAL, uri)
                                 startActivity(intent)
-                            }
+                            },
                         )
                     }
 
@@ -202,7 +203,7 @@ class OrderDetailsFragment :
             }
             BottomAmountBar(
                 stateSuccess = state,
-                onAction = onAction
+                onAction = onAction,
             )
             StatusListBottomSheet(state = state, onAction = onAction)
         }
@@ -211,67 +212,70 @@ class OrderDetailsFragment :
     @Composable
     private fun StatusListBottomSheet(
         state: OrderDetailsViewState.State.Success,
-        onAction: (OrderDetailsState.Action) -> Unit
+        onAction: (OrderDetailsState.Action) -> Unit,
     ) {
         AdminModalBottomSheet(
             title = stringResource(R.string.title_order_status),
             isShown = state.statusListUI.isShown,
             onDismissRequest = {
                 onAction(OrderDetailsState.Action.OnCloseStatusClicked)
-            }
-        ) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                state.statusListUI.statusList.forEach { status ->
-                    SelectableItem(
-                        title = status.status,
-                        clickable = true,
-                        elevated = false,
-                        onClick = {
-                            onAction(
-                                OrderDetailsState.Action.OnSelectStatusClicked(
-                                    status = status.orderStatus
+            },
+            content = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                ) {
+                    state.statusListUI.statusList.forEach { status ->
+                        SelectableItem(
+                            title = status.status,
+                            clickable = true,
+                            elevated = false,
+                            onClick = {
+                                onAction(
+                                    OrderDetailsState.Action.OnSelectStatusClicked(
+                                        status = status.orderStatus,
+                                    ),
                                 )
-                            )
-                        }
-                    )
+                            },
+                        )
+                    }
                 }
-            }
-        }
+            },
+        )
     }
 
     @Composable
     private fun OrderInfoCard(
         modifier: Modifier = Modifier,
-        stateSuccess: OrderDetailsViewState.State.Success
+        stateSuccess: OrderDetailsViewState.State.Success,
     ) {
         AdminCard(
             modifier = modifier,
             clickable = false,
-            elevated = false
+            elevated = false,
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     OrderInfoTextColumn(
                         modifier = Modifier.weight(1f),
                         hint = stringResource(R.string.msg_order_details_order_time),
-                        info = stateSuccess.dateTime
+                        info = stateSuccess.dateTime,
                     )
                     stateSuccess.deferredTime?.let { deferredTime ->
                         OrderInfoTextColumn(
-                            modifier = Modifier
-                                .padding(start = 16.dp)
-                                .weight(1f),
+                            modifier =
+                                Modifier
+                                    .padding(start = 16.dp)
+                                    .weight(1f),
                             hint = deferredTime.hint,
-                            info = deferredTime.value
+                            info = deferredTime.value,
                         )
                     }
                 }
@@ -279,26 +283,27 @@ class OrderDetailsFragment :
                     OrderInfoTextColumn(
                         modifier = Modifier.weight(1f),
                         hint = stringResource(R.string.msg_order_details_pickup_method),
-                        info = stateSuccess.receiptMethod
+                        info = stateSuccess.receiptMethod,
                     )
                     stateSuccess.paymentMethod?.let { paymentMethod ->
                         OrderInfoTextColumn(
-                            modifier = Modifier
-                                .padding(start = 16.dp)
-                                .weight(1f),
+                            modifier =
+                                Modifier
+                                    .padding(start = 16.dp)
+                                    .weight(1f),
                             hint = stringResource(R.string.msg_order_details_payment_method),
-                            info = paymentMethod
+                            info = paymentMethod,
                         )
                     }
                 }
                 OrderInfoTextColumn(
                     hint = stringResource(R.string.msg_order_details_address),
-                    info = stateSuccess.address
+                    info = stateSuccess.address,
                 )
                 stateSuccess.comment?.let { comment ->
                     OrderInfoTextColumn(
                         hint = stringResource(R.string.msg_order_details_comment),
-                        info = comment
+                        info = comment,
                     )
                 }
             }
@@ -309,18 +314,18 @@ class OrderDetailsFragment :
     private fun OrderInfoTextColumn(
         modifier: Modifier = Modifier,
         hint: String,
-        info: String
+        info: String,
     ) {
         Column(modifier = modifier) {
             Text(
                 text = hint,
                 style = AdminTheme.typography.labelSmall.medium,
-                color = AdminTheme.colors.main.onSurfaceVariant
+                color = AdminTheme.colors.main.onSurfaceVariant,
             )
             Text(
                 text = info,
                 style = AdminTheme.typography.bodyMedium,
-                color = AdminTheme.colors.main.onSurface
+                color = AdminTheme.colors.main.onSurface,
             )
         }
     }
@@ -328,23 +333,24 @@ class OrderDetailsFragment :
     @Composable
     private fun BottomAmountBar(
         stateSuccess: OrderDetailsViewState.State.Success,
-        onAction: (OrderDetailsState.Action) -> Unit
+        onAction: (OrderDetailsState.Action) -> Unit,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(AdminTheme.colors.main.surface)
-                .padding(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(AdminTheme.colors.main.surface)
+                    .padding(16.dp),
         ) {
             Column(
-                verticalArrangement = spacedBy(8.dp)
+                verticalArrangement = spacedBy(8.dp),
             ) {
                 stateSuccess.percentDiscount?.let { discount ->
                     Row {
                         Text(
                             text = stringResource(R.string.msg_order_details_discount_cost),
                             style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.main.onSurface
+                            color = AdminTheme.colors.main.onSurface,
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -356,7 +362,7 @@ class OrderDetailsFragment :
                         Text(
                             text = stringResource(R.string.msg_order_details_delivery_cost),
                             style = AdminTheme.typography.bodyMedium,
-                            color = AdminTheme.colors.main.onSurface
+                            color = AdminTheme.colors.main.onSurface,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
@@ -364,7 +370,7 @@ class OrderDetailsFragment :
                             text = deliveryCost,
                             style = AdminTheme.typography.bodyMedium,
                             color = AdminTheme.colors.main.onSurface,
-                            textAlign = TextAlign.End
+                            textAlign = TextAlign.End,
                         )
                     }
                 }
@@ -372,13 +378,13 @@ class OrderDetailsFragment :
                     Text(
                         text = stringResource(R.string.msg_order_details_order_cost),
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.main.onSurface
+                        color = AdminTheme.colors.main.onSurface,
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = stateSuccess.finalCost,
                         style = AdminTheme.typography.bodyMedium.bold,
-                        color = AdminTheme.colors.main.onSurface
+                        color = AdminTheme.colors.main.onSurface,
                     )
                 }
             }
@@ -389,14 +395,14 @@ class OrderDetailsFragment :
                 isLoading = stateSuccess.saving,
                 onClick = {
                     onAction(OrderDetailsState.Action.OnSaveClicked)
-                }
+                },
             )
             SecondaryButton(
                 modifier = Modifier.padding(top = 8.dp),
                 textStringId = R.string.action_order_details_do_not_save,
                 onClick = {
                     onAction(OrderDetailsState.Action.OnBackClicked)
-                }
+                },
             )
         }
     }
@@ -407,8 +413,7 @@ class OrderDetailsFragment :
             .setMessage(R.string.msg_order_details_alert)
             .setPositiveButton(R.string.action_order_details_yes) { _, _ ->
                 viewModel.onCancellationConfirmed()
-            }
-            .setNegativeButton(R.string.action_order_details_no) { _, _ -> }
+            }.setNegativeButton(R.string.action_order_details_no) { _, _ -> }
             .show()
     }
 
@@ -417,49 +422,54 @@ class OrderDetailsFragment :
     private fun OrderDetailsScreenPreview() {
         AdminTheme {
             OrderDetailsScreen(
-                state = OrderDetailsViewState(
-                    title = "Заказ «А-10»",
-                    state = OrderDetailsViewState.State.Success(
-                        dateTime = "21 января 19:20",
-                        deferredTime = OrderDetailsViewState.HintWithValue(
-                            hint = "Время доставки",
-                            value = "18:30"
-                        ),
-                        paymentMethod = "Картой",
-                        receiptMethod = "Доставка",
-                        address = "улица Чапаева, д 22А, кв 15",
-                        comment = "Не забудте привезти еду",
-                        status = "Обрабатывается",
-                        phoneNumber = "+ 7 (900) 900-90-90",
-                        productList = persistentListOf(
-                            OrderDetailsViewState.Product(
-                                title = "Хот-дог французский с куриной колбаской с супер пупер длинной строкой в названии",
-                                price = "99 ₽",
-                                count = "× 2",
-                                cost = "198 ₽",
-                                description = "Необычный лаваш • Добавка 1 • Добавка 2"
+                state =
+                    OrderDetailsViewState(
+                        title = "Заказ «А-10»",
+                        state =
+                            OrderDetailsViewState.State.Success(
+                                dateTime = "21 января 19:20",
+                                deferredTime =
+                                    OrderDetailsViewState.HintWithValue(
+                                        hint = "Время доставки",
+                                        value = "18:30",
+                                    ),
+                                paymentMethod = "Картой",
+                                receiptMethod = "Доставка",
+                                address = "улица Чапаева, д 22А, кв 15",
+                                comment = "Не забудте привезти еду",
+                                status = "Обрабатывается",
+                                phoneNumber = "+ 7 (900) 900-90-90",
+                                productList =
+                                    persistentListOf(
+                                        OrderDetailsViewState.Product(
+                                            title = "Хот-дог французский с куриной колбаской с супер пупер длинной строкой в названии",
+                                            price = "99 ₽",
+                                            count = "× 2",
+                                            cost = "198 ₽",
+                                            description = "Необычный лаваш • Добавка 1 • Добавка 2",
+                                        ),
+                                        OrderDetailsViewState.Product(
+                                            title = "Хот-дог французский с куриной колбаской",
+                                            price = "99 ₽",
+                                            count = "× 2 + 200 ₽",
+                                            cost = "198 ₽",
+                                            description = null,
+                                        ),
+                                    ),
+                                deliveryCost = "100 ₽",
+                                percentDiscount = "10%",
+                                finalCost = "480 ₽",
+                                statusColor = AdminTheme.colors.order.notAccepted,
+                                saving = false,
+                                statusListUI =
+                                    OrderDetailsViewState.State.Success.StatusListUI(
+                                        isShown = false,
+                                        statusList = persistentListOf(),
+                                    ),
                             ),
-                            OrderDetailsViewState.Product(
-                                title = "Хот-дог французский с куриной колбаской",
-                                price = "99 ₽",
-                                count = "× 2 + 200 ₽",
-                                cost = "198 ₽",
-                                description = null
-                            )
-                        ),
-                        deliveryCost = "100 ₽",
-                        percentDiscount = "10%",
-                        finalCost = "480 ₽",
-                        statusColor = AdminTheme.colors.order.notAccepted,
-                        saving = false,
-                        statusListUI = OrderDetailsViewState.State.Success.StatusListUI(
-                            isShown = false,
-                            statusList = persistentListOf()
-                        )
-                    )
-                ),
+                    ),
                 onAction = {
-                }
+                },
             )
         }
     }

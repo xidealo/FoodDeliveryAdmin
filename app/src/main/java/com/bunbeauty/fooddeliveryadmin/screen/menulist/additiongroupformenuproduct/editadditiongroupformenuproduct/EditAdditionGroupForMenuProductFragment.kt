@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editaditiongroupformenuproduct
+package com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct
 
 import android.os.Bundle
 import androidx.compose.foundation.layout.Column
@@ -22,17 +22,19 @@ import com.bunbeauty.fooddeliveryadmin.compose.screen.ErrorScreen
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.main.MessageHost
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment.Companion.ADDITION_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectaddition.SelectAdditionListFragment.Companion.SELECT_ADDITION_LIST_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.ADDITION_GROUP_KEY
 import com.bunbeauty.fooddeliveryadmin.screen.menulist.additiongroupformenuproduct.selectadditiongroup.SelectAdditionGroupFragment.Companion.SELECT_ADDITION_GROUP_KEY
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu.Action.Init
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenu.Action.OnBackClick
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.EditAdditionGroupForMenuProductViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditAdditionGroupForMenuProductFragment :
     SingleStateComposeFragment<EditAdditionGroupForMenu.DataState, EditAdditionGroupForMenu.Action, EditAdditionGroupForMenu.Event>() {
-
     override val viewModel: EditAdditionGroupForMenuProductViewModel by viewModel()
     private val editAdditionGroupForMenuProductFragmentArgs: EditAdditionGroupForMenuProductFragmentArgs by navArgs()
 
@@ -44,27 +46,29 @@ class EditAdditionGroupForMenuProductFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.onAction(
-            EditAdditionGroupForMenu.Action.Init(
-                additionGroupForMenuUuid = editAdditionGroupForMenuProductFragmentArgs
-                    .additionGroupForMenuUuid,
-                menuProductUuid = editAdditionGroupForMenuProductFragmentArgs.menuProductUuid
-            )
+            Init(
+                additionGroupForMenuUuid =
+                    editAdditionGroupForMenuProductFragmentArgs
+                        .additionGroupForMenuUuid,
+                menuProductUuid = editAdditionGroupForMenuProductFragmentArgs.menuProductUuid,
+            ),
         )
 
         setFragmentResultListener(SELECT_ADDITION_GROUP_KEY) { _, bundle ->
             viewModel.onAction(
                 EditAdditionGroupForMenu.Action.SelectAdditionGroup(
-                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty()
-                )
+                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty(),
+                ),
             )
         }
 
         setFragmentResultListener(SELECT_ADDITION_LIST_KEY) { _, bundle ->
             viewModel.onAction(
                 EditAdditionGroupForMenu.Action.SelectAdditionList(
-                    additionListUuid = bundle.getStringArrayList(ADDITION_LIST_KEY)
-                        ?: emptyList()
-                )
+                    additionListUuid =
+                        bundle.getStringArrayList(ADDITION_LIST_KEY)
+                            ?: emptyList(),
+                ),
             )
         }
     }
@@ -72,7 +76,7 @@ class EditAdditionGroupForMenuProductFragment :
     @Composable
     override fun Screen(
         state: EditAdditionGroupForMenu.DataState,
-        onAction: (EditAdditionGroupForMenu.Action) -> Unit
+        onAction: (EditAdditionGroupForMenu.Action) -> Unit,
     ) {
         EditAdditionGroupForMenuProductScreen(state = state, onAction = onAction)
     }
@@ -80,14 +84,14 @@ class EditAdditionGroupForMenuProductFragment :
     @Composable
     fun EditAdditionGroupForMenuProductScreen(
         state: EditAdditionGroupForMenu.DataState,
-        onAction: (EditAdditionGroupForMenu.Action) -> Unit
+        onAction: (EditAdditionGroupForMenu.Action) -> Unit,
     ) {
         AdminScaffold(
-            title = state.groupName ?: stringResource(R.string.title_common_loading),
+            title = stringResource(R.string.title_edit_addition_group_for_menu_product),
             backActionClick = {
-                onAction(EditAdditionGroupForMenu.Action.OnBackClick)
+                onAction(OnBackClick)
             },
-            backgroundColor = AdminTheme.colors.main.surface
+            backgroundColor = AdminTheme.colors.main.surface,
         ) {
             when (state.state) {
                 EditAdditionGroupForMenu.DataState.State.LOADING -> LoadingScreen()
@@ -96,16 +100,23 @@ class EditAdditionGroupForMenuProductFragment :
                         mainTextId = R.string.title_common_can_not_load_data,
                         extraTextId = R.string.msg_common_check_connection_and_retry,
                         onClick = {
-                            // todo refresh data
-                            // onAction(OrderList.Action.RetryClick)
-                        }
+                            viewModel.onAction(
+                                Init(
+                                    additionGroupForMenuUuid =
+                                        editAdditionGroupForMenuProductFragmentArgs
+                                            .additionGroupForMenuUuid,
+                                    menuProductUuid = editAdditionGroupForMenuProductFragmentArgs.menuProductUuid,
+                                ),
+                            )
+                        },
                     )
                 }
 
-                EditAdditionGroupForMenu.DataState.State.SUCCESS -> EditAdditionGroupForMenuProductSuccessScreen(
-                    state = state,
-                    onAction = onAction
-                )
+                EditAdditionGroupForMenu.DataState.State.SUCCESS ->
+                    EditAdditionGroupForMenuProductSuccessScreen(
+                        state = state,
+                        onAction = onAction,
+                    )
             }
         }
     }
@@ -113,7 +124,7 @@ class EditAdditionGroupForMenuProductFragment :
     @Composable
     fun EditAdditionGroupForMenuProductSuccessScreen(
         state: EditAdditionGroupForMenu.DataState,
-        onAction: (EditAdditionGroupForMenu.Action) -> Unit
+        onAction: (EditAdditionGroupForMenu.Action) -> Unit,
     ) {
         Column {
             NavigationTextCard(
@@ -121,15 +132,16 @@ class EditAdditionGroupForMenuProductFragment :
                 onClick = {
                     onAction(
                         EditAdditionGroupForMenu.Action.OnAdditionGroupClick(
-                            uuid = state.additionGroupForMenuProductUuid
-                        )
+                            uuid = state.additionGroupForMenuProductUuid,
+                        ),
                     )
                 },
                 elevated = false,
-                labelText = stringResource(
-                    id = R.string.title_edit_addition_group_for_menu_product_group
-                ),
-                hasDivider = true
+                labelText =
+                    stringResource(
+                        id = R.string.title_edit_addition_group_for_menu_product_group,
+                    ),
+                hasDivider = true,
             )
 
             NavigationTextCard(
@@ -137,26 +149,26 @@ class EditAdditionGroupForMenuProductFragment :
                 onClick = {
                     onAction(
                         EditAdditionGroupForMenu.Action.OnAdditionListClick(
-                            uuid = state.additionGroupForMenuProductUuid
-                        )
+                            uuid = state.additionGroupForMenuProductUuid,
+                        ),
                     )
                 },
                 elevated = false,
-                labelText = stringResource(
-                    id = R.string.title_edit_addition_group_for_menu_product_addition
-                ),
-                hasDivider = true
+                labelText =
+                    stringResource(
+                        id = R.string.title_edit_addition_group_for_menu_product_addition,
+                    ),
+                hasDivider = true,
             )
 
             Spacer(modifier = Modifier.weight(1f))
-
             LoadingButton(
                 modifier = Modifier.padding(16.dp),
                 text = stringResource(R.string.action_edit_addition_group_for_menu_product_save),
                 isLoading = state.state == EditAdditionGroupForMenu.DataState.State.LOADING,
                 onClick = {
                     onAction(EditAdditionGroupForMenu.Action.OnSaveClick)
-                }
+                },
             )
         }
     }
@@ -168,43 +180,55 @@ class EditAdditionGroupForMenuProductFragment :
             }
 
             EditAdditionGroupForMenu.Event.SaveAndBack -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(
+                        R.string.msg_update_edit_addition_group_for_menu_product,
+                    ),
+                )
                 setFragmentResult(
                     requestKey = EDIT_ADDITION_GROUP,
-                    result = bundleOf(EDIT_ADDITION_GROUP_KEY to true)
+                    result = bundleOf(EDIT_ADDITION_GROUP_KEY to true),
                 )
                 findNavController().popBackStack()
             }
 
             is EditAdditionGroupForMenu.Event.OnAdditionGroupClick -> {
                 findNavController().navigate(
-                    directions = EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
-                        additionGroupUuid = event.uuid
-                    )
+                    directions =
+                        EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionGroupFragment(
+                            additionGroupUuid = event.editedAdditionGroupUuid,
+                            menuProductUuid = event.menuProductUuid,
+                            mainEditedAdditionGroupUuid = event.mainEditedAdditionGroupUuid,
+                        ),
                 )
             }
 
             is EditAdditionGroupForMenu.Event.OnAdditionListClick -> {
                 findNavController().navigate(
-                    directions = EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
-                        additionGroupUuid = event.additionGroupUuid,
-                        menuProductUuid = event.menuProductUuid,
-                        additionGroupForMenuName = event.additionGroupName
-                    )
+                    directions =
+                        EditAdditionGroupForMenuProductFragmentDirections.toSelectAdditionListFragment(
+                            additionGroupUuid = event.additionGroupUuid,
+                            menuProductUuid = event.menuProductUuid,
+                            additionGroupForMenuName = event.additionGroupName,
+                            editedAdditionListUuid =
+                                event.editedAdditionListUuid?.toTypedArray(),
+                        ),
                 )
             }
         }
     }
 
-    val editAdditionGroupForMenuProductViewState = EditAdditionGroupForMenu.DataState(
-        state = EditAdditionGroupForMenu.DataState.State.SUCCESS,
-        groupName = "Вкусняхи",
-        additionNameList = "Бекон * Страпон * Бурбон",
-        isVisible = true,
-        additionGroupForMenuProductUuid = "",
-        menuProductUuid = "",
-        editedAdditionGroupUuid = "",
-        editedAdditionListUuid = null
-    )
+    val editAdditionGroupForMenuProductViewState =
+        EditAdditionGroupForMenu.DataState(
+            state = EditAdditionGroupForMenu.DataState.State.SUCCESS,
+            groupName = "Вкусняхи",
+            additionNameList = "Бекон * Страпон * Бурбон",
+            isVisible = true,
+            additionGroupForMenuProductUuid = "",
+            menuProductUuid = "",
+            editedAdditionGroupUuid = "",
+            editedAdditionListUuid = null,
+        )
 
     @Composable
     @Preview
@@ -212,7 +236,7 @@ class EditAdditionGroupForMenuProductFragment :
         AdminTheme {
             EditAdditionGroupForMenuProductScreen(
                 state = editAdditionGroupForMenuProductViewState,
-                onAction = {}
+                onAction = {},
             )
         }
     }

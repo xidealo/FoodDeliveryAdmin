@@ -6,5 +6,17 @@ data class MenuProductToAdditionGroupToAddition(
     val isVisible: Boolean,
     val menuProductToAdditionGroupUuid: String,
     val additionUuid: String,
-    val priority: Int?
-)
+    val priority: Int?,
+) {
+    companion object {
+        val mock =
+            MenuProductToAdditionGroupToAddition(
+                uuid = "",
+                isSelected = false,
+                isVisible = false,
+                menuProductToAdditionGroupUuid = "",
+                additionUuid = "",
+                priority = null,
+            )
+    }
+}

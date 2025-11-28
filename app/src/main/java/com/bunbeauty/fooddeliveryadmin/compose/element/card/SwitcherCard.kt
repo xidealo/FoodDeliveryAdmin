@@ -23,40 +23,42 @@ fun SwitcherCard(
     hint: String? = null,
     elevated: Boolean = true,
     enabled: Boolean = true,
-    onCheckChanged: (Boolean) -> Unit
+    onCheckChanged: (Boolean) -> Unit,
 ) {
     AdminCard(
         modifier = modifier,
         onClick = {
             onCheckChanged(!checked)
         },
-        elevated = elevated
+        elevated = elevated,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp,
+                    ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
-                modifier = Modifier
-                    .padding(end = AdminTheme.dimensions.mediumSpace)
-                    .weight(1f),
-                verticalArrangement = spacedBy(4.dp)
+                modifier =
+                    Modifier
+                        .padding(end = AdminTheme.dimensions.mediumSpace)
+                        .weight(1f),
+                verticalArrangement = spacedBy(4.dp),
             ) {
                 Text(
                     text = text,
                     style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface
+                    color = AdminTheme.colors.main.onSurface,
                 )
                 hint?.let {
                     Text(
                         text = hint,
                         style = AdminTheme.typography.bodySmall,
-                        color = AdminTheme.colors.main.onSurfaceVariant
+                        color = AdminTheme.colors.main.onSurfaceVariant,
                     )
                 }
             }
@@ -64,7 +66,7 @@ fun SwitcherCard(
                 checked = checked,
                 onCheckedChange = onCheckChanged,
                 colors = AdminSwitchDefaults.switchColors,
-                enabled = enabled
+                enabled = enabled,
             )
         }
     }
@@ -78,7 +80,7 @@ private fun SelectedSelectableCard() {
             text = "Текст",
             hint = "Длинное динное динное динное динное динное описание карточки",
             checked = true,
-            onCheckChanged = {}
+            onCheckChanged = {},
         )
     }
 }
@@ -90,7 +92,7 @@ private fun UnselectedSelectableCard() {
         SwitcherCard(
             text = "Текст",
             checked = false,
-            onCheckChanged = {}
+            onCheckChanged = {},
         )
     }
 }

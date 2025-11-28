@@ -11,9 +11,8 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 
 class MenuProductMapper {
-
-    fun toModel(menuProductServer: MenuProductServer): MenuProduct {
-        return menuProductServer.run {
+    fun toModel(menuProductServer: MenuProductServer): MenuProduct =
+        menuProductServer.run {
             MenuProduct(
                 uuid = uuid,
                 name = name,
@@ -27,38 +26,41 @@ class MenuProductMapper {
                 barcode = barcode,
                 isVisible = isVisible,
                 isRecommended = isRecommended,
-                categoryUuids = categories.map { category ->
-                    category.uuid
-                },
-                additionGroups = menuProductServer.additionGroupServers.map { additionGroupServer ->
-                    AdditionGroupWithAdditions(
-                        additionList = additionGroupServer.additionServerList.map { additionServer ->
-                            Addition(
-                                isVisible = additionServer.isVisible,
-                                name = additionServer.name,
-                                photoLink = additionServer.photoLink,
-                                price = additionServer.price,
-                                uuid = additionServer.uuid,
-                                fullName = additionServer.fullName,
-                                priority = additionServer.priority,
-                                tag = additionServer.tag
-                            )
-                        },
-                        additionGroup = AdditionGroup(
-                            isVisible = additionGroupServer.isVisible,
-                            name = additionGroupServer.name,
-                            singleChoice = additionGroupServer.singleChoice,
-                            uuid = additionGroupServer.uuid,
-                            priority = additionGroupServer.priority
+                categoryUuids =
+                    categories.map { category ->
+                        category.uuid
+                    },
+                additionGroups =
+                    menuProductServer.additionGroupServers.map { additionGroupServer ->
+                        AdditionGroupWithAdditions(
+                            additionList =
+                                additionGroupServer.additionServerList.map { additionServer ->
+                                    Addition(
+                                        isVisible = additionServer.isVisible,
+                                        name = additionServer.name,
+                                        photoLink = additionServer.photoLink,
+                                        price = additionServer.price,
+                                        uuid = additionServer.uuid,
+                                        fullName = additionServer.fullName,
+                                        priority = additionServer.priority,
+                                        tag = additionServer.tag,
+                                    )
+                                },
+                            additionGroup =
+                                AdditionGroup(
+                                    isVisible = additionGroupServer.isVisible,
+                                    name = additionGroupServer.name,
+                                    singleChoice = additionGroupServer.singleChoice,
+                                    uuid = additionGroupServer.uuid,
+                                    priority = additionGroupServer.priority,
+                                ),
                         )
-                    )
-                }
+                    },
             )
         }
-    }
 
-    fun toPatchServer(updateMenuProduct: UpdateMenuProduct): MenuProductPatchServer {
-        return with(updateMenuProduct) {
+    fun toPatchServer(updateMenuProduct: UpdateMenuProduct): MenuProductPatchServer =
+        with(updateMenuProduct) {
             MenuProductPatchServer(
                 name = name,
                 newPrice = newPrice,
@@ -70,10 +72,9 @@ class MenuProductMapper {
                 photoLink = photoLink,
                 isVisible = isVisible,
                 isRecommended = isRecommended,
-                categoryUuids = categories
+                categoryUuids = categories,
             )
         }
-    }
 }
 
 val toMenuProductPostServer: MenuProductPost.() -> MenuProductPostServer = {
@@ -89,6 +90,6 @@ val toMenuProductPostServer: MenuProductPost.() -> MenuProductPostServer = {
         barcode = barcode,
         categories = categories,
         isVisible = isVisible,
-        isRecommended = isRecommended
+        isRecommended = isRecommended,
     )
 }

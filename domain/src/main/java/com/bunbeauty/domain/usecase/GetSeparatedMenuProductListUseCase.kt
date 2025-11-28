@@ -8,35 +8,37 @@ import kotlinx.coroutines.flow.firstOrNull
 
 data class SeparatedMenuProductList(
     val visibleList: List<MenuProduct>,
-    val hiddenList: List<MenuProduct>
+    val hiddenList: List<MenuProduct>,
 )
 
 class GetSeparatedMenuProductListUseCase(
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo
+    private val dataStoreRepo: DataStoreRepo,
 ) {
     suspend operator fun invoke(takeRemote: Boolean): SeparatedMenuProductList {
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
-        val menuProductList = menuProductRepo.getMenuProductList(
-            companyUuid = companyUuid,
-            takeRemote = takeRemote
-        ).orEmpty()
+        val menuProductList =
+            menuProductRepo
+                .getMenuProductList(
+                    companyUuid = companyUuid,
+                    takeRemote = takeRemote,
+                ).orEmpty()
 
         return SeparatedMenuProductList(
-            visibleList = menuProductList
-                .filter { menuProduct ->
-                    menuProduct.isVisible
-                }
-                .sortedBy { menuProduct ->
-                    menuProduct.name
-                },
-            hiddenList = menuProductList
-                .filterNot { menuProduct ->
-                    menuProduct.isVisible
-                }
-                .sortedBy { menuProduct ->
-                    menuProduct.name
-                }
+            visibleList =
+                menuProductList
+                    .filter { menuProduct ->
+                        menuProduct.isVisible
+                    }.sortedBy { menuProduct ->
+                        menuProduct.name
+                    },
+            hiddenList =
+                menuProductList
+                    .filterNot { menuProduct ->
+                        menuProduct.isVisible
+                    }.sortedBy { menuProduct ->
+                        menuProduct.name
+                    },
         )
     }
 }

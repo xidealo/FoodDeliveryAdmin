@@ -9,5 +9,5 @@ enum class ProductCode {
     POTATO,
     SPICE,
     BAKERY,
-    OVEN
+    OVEN,
 }

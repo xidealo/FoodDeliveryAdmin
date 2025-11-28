@@ -6,6 +6,6 @@ import com.bunbeauty.domain.model.settings.WorkType
 val mapWorkInfoToCompanyPatchServer: (WorkType) -> CompanyPatchServer =
     { workInfoData ->
         CompanyPatchServer(
-            workType = workInfoData.name
+            workType = workInfoData.name,
         )
     }

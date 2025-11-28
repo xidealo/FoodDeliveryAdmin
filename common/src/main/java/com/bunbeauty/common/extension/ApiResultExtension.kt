@@ -5,31 +5,30 @@ import com.bunbeauty.common.ApiResult
 
 suspend fun <T, R> ApiResult<T>.getNullableResult(
     onError: (suspend (ApiError) -> R?)? = null,
-    onSuccess: (suspend (T) -> R?)
-): R? = when (this) {
-    is ApiResult.Success -> {
-        data?.let {
-            onSuccess(data)
-        } ?: onError?.invoke(ApiError.DATA_IS_NULL)
+    onSuccess: (suspend (T) -> R?),
+): R? =
+    when (this) {
+        is ApiResult.Success -> {
+            data?.let {
+                onSuccess(data)
+            } ?: onError?.invoke(ApiError.DATA_IS_NULL)
+        }
+
+        is ApiResult.Error -> {
+            onError?.invoke(apiError)
+        }
     }
 
-    is ApiResult.Error -> {
-        onError?.invoke(apiError)
-    }
-}
-
-suspend fun <T> ApiResult<T>.onSuccess(
-    block: (suspend (T) -> Unit)
-) {
+suspend inline fun <T> ApiResult<T>.onSuccess(block: (suspend (T) -> Unit)): ApiResult<T> {
     if (this is ApiResult.Success) {
         block(this.data)
     }
+    return this
 }
 
-suspend fun <T> ApiResult<T>.onError(
-    block: suspend (ApiError) -> Unit
-) {
+suspend inline fun <T> ApiResult<T>.onError(block: suspend (ApiError) -> Unit): ApiResult<T> {
     if (this is ApiResult.Error) {
         block(this.apiError)
     }
+    return this
 }

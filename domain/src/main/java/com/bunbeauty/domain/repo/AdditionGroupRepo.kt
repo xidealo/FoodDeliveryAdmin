@@ -5,24 +5,30 @@ import com.bunbeauty.domain.model.additiongroup.CreateAdditionGroup
 import com.bunbeauty.domain.model.additiongroup.UpdateAdditionGroup
 
 interface AdditionGroupRepo {
-    /*GET*/
+    // GET
     suspend fun getAdditionGroupList(
         token: String,
-        refreshing: Boolean = false
+        refreshing: Boolean = false,
     ): List<AdditionGroup>
 
-    suspend fun getAdditionGroup(additionUuid: String, token: String): AdditionGroup?
+    suspend fun getAdditionGroup(
+        additionUuid: String,
+        token: String,
+    ): AdditionGroup?
 
-    /*UPDATE*/
+    // UPDATE
     suspend fun updateAdditionGroup(
         updateAdditionGroup: UpdateAdditionGroup,
         token: String,
-        additionGroupUuid: String
+        additionGroupUuid: String,
     )
 
-    /*POST*/
-    suspend fun postAdditionGroup(token: String, createAdditionGroup: CreateAdditionGroup): AdditionGroup
+    // POST
+    suspend fun postAdditionGroup(
+        token: String,
+        createAdditionGroup: CreateAdditionGroup,
+    ): AdditionGroup
 
-    /*DELETE*/
+    // DELETE
     fun clearCache()
 }
