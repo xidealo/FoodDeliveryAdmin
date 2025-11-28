@@ -10,19 +10,19 @@ import kotlin.collections.toMutableList
 
 class CategoryListViewModel(
     private val getCategoryListUseCase: GetCategoryListUseCase,
-    private val saveCategoryListUseCase: SaveCategoryListUseCase,
+    private val saveCategoryListUseCase: SaveCategoryListUseCase
 ) : BaseStateViewModel<CategoryListState.DataState, CategoryListState.Action, CategoryListState.Event>(
-        initState =
-            CategoryListState.DataState(
-                state = CategoryListState.DataState.State.LOADING,
-                categoryList = listOf(),
-                isLoading = true,
-                isRefreshing = false,
-            ),
-    ) {
+    initState = CategoryListState.DataState(
+        state = CategoryListState.DataState.State.LOADING,
+        categoryList = listOf(),
+        isLoading = true,
+        isRefreshing = false,
+        isEditPriority = false
+    )
+) {
     override fun reduce(
         action: CategoryListState.Action,
-        dataState: CategoryListState.DataState,
+        dataState: CategoryListState.DataState
     ) {
         when (action) {
             CategoryListState.Action.Init -> loadData()
@@ -47,7 +47,7 @@ class CategoryListViewModel(
                 putInItem(
                     categoryList = dataState.categoryList,
                     fromIndex = action.fromIndex,
-                    toIndex = action.toIndex,
+                    toIndex = action.toIndex
                 )
             }
         }
@@ -62,15 +62,14 @@ class CategoryListViewModel(
     private fun putInItem(
         categoryList: List<Category>,
         fromIndex: Int,
-        toIndex: Int,
+        toIndex: Int
     ) {
         if (fromIndex == toIndex) return
 
-        val updatedList =
-            categoryList.toMutableList().apply {
-                val item = removeAt(fromIndex)
-                add(toIndex, item)
-            }
+        val updatedList = categoryList.toMutableList().apply {
+            val item = removeAt(fromIndex)
+            add(toIndex, item)
+        }
 
         setState {
             copy(categoryList = updatedList)
@@ -82,7 +81,7 @@ class CategoryListViewModel(
             block = {
                 setState {
                     copy(
-                        isRefreshing = true,
+                        isRefreshing = true
                     )
                 }
                 setState {
@@ -90,17 +89,17 @@ class CategoryListViewModel(
                         categoryList = getCategoryListUseCase(refreshing = true),
                         state = CategoryListState.DataState.State.SUCCESS,
                         isLoading = false,
-                        isRefreshing = false,
+                        isRefreshing = false
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = CategoryListState.DataState.State.ERROR,
+                        state = CategoryListState.DataState.State.ERROR
                     )
                 }
-            },
+            }
         )
     }
 
@@ -110,17 +109,18 @@ class CategoryListViewModel(
                 setState {
                     copy(
                         isLoading = true,
-                        state = CategoryListState.DataState.State.LOADING,
+                        state = CategoryListState.DataState.State.LOADING
                     )
                 }
                 val updatedList = updatedPrioritiesItem(category)
                 saveCategoryListUseCase(
-                    categoryList = updatedList,
+                    categoryList = updatedList
                 )
                 setState {
                     copy(
                         isLoading = false,
-                        state = CategoryListState.DataState.State.SUCCESS,
+                        isEditPriority = false,
+                        state = CategoryListState.DataState.State.SUCCESS
                     )
                 }
                 sendEvent { CategoryListState.Event.ShowUpdateCategoryListSuccess }
@@ -129,10 +129,10 @@ class CategoryListViewModel(
             onError = {
                 setState {
                     copy(
-                        state = CategoryListState.DataState.State.ERROR,
+                        state = CategoryListState.DataState.State.ERROR
                     )
                 }
-            },
+            }
         )
     }
 
@@ -144,23 +144,24 @@ class CategoryListViewModel(
                         categoryList = getCategoryListUseCase(refreshing = false),
                         state = CategoryListState.DataState.State.SUCCESS,
                         isLoading = false,
+                        isRefreshing = false
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = CategoryListState.DataState.State.ERROR,
+                        state = CategoryListState.DataState.State.ERROR
                     )
                 }
-            },
+            }
         )
     }
 
     private fun cancelEditPriority() {
         setState {
             copy(
-                state = CategoryListState.DataState.State.SUCCESS,
+                isEditPriority = false
             )
         }
     }
@@ -174,7 +175,7 @@ class CategoryListViewModel(
     private fun onEditPriorityClicked() {
         setState {
             copy(
-                state = CategoryListState.DataState.State.DRAG_DROP_SUCCESS,
+                isEditPriority = true
             )
         }
     }
@@ -185,8 +186,9 @@ class CategoryListViewModel(
         }
     }
 
-    private fun updatedPrioritiesItem(category: List<Category>): List<Category> =
-        category.mapIndexed { index, category ->
+    private fun updatedPrioritiesItem(category: List<Category>): List<Category> {
+        return category.mapIndexed { index, category ->
             category.copy(priority = index + 1)
         }
+    }
 }

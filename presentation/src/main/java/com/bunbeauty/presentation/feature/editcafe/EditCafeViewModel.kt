@@ -27,35 +27,31 @@ class EditCafeViewModel(
     private val dateTimeUtil: DateTimeUtil,
     getInitialNonWorkingDayDate: GetInitialNonWorkingDayDateUseCase,
     getNonWorkingDayYearRange: GetNonWorkingDayYearRangeUseCase,
-    getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase,
-) : BaseStateViewModel<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event>(
-        initState =
-            EditCafeState.ViewDataState(
-                cafeUuid = null,
-                cafeAddress = "",
-                cafeWorkingHours =
-                    CafeWorkingHours(
-                        fromTimeText = "",
-                        fromTime = LocalTime.MIN,
-                        toTimeText = "",
-                        toTime = LocalTime.MAX,
-                    ),
-                nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Loading,
-                initialNonWorkingDayDate = getInitialNonWorkingDayDate(),
-                yearRange = getNonWorkingDayYearRange(),
-                minNonWorkingDayDate = getMinNonWorkingDayDate(),
-            ),
-    ) {
-    override fun reduce(
-        action: EditCafeState.Action,
-        dataState: EditCafeState.ViewDataState,
-    ) {
+    getMinNonWorkingDayDate: GetMinNonWorkingDayDateUseCase
+) : BaseStateViewModel<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event> (
+    initState = EditCafeState.ViewDataState(
+        cafeUuid = null,
+        cafeAddress = "",
+        cafeWorkingHours = CafeWorkingHours(
+            fromTimeText = "",
+            fromTime = LocalTime.MIN,
+            toTimeText = "",
+            toTime = LocalTime.MAX
+        ),
+        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Loading,
+        initialNonWorkingDayDate = getInitialNonWorkingDayDate(),
+        yearRange = getNonWorkingDayYearRange(),
+        minNonWorkingDayDate = getMinNonWorkingDayDate()
+    )
+) {
+
+    override fun reduce(action: EditCafeState.Action, dataState: EditCafeState.ViewDataState) {
         when (action) {
             is EditCafeState.Action.Init -> {
                 setState {
                     copy(
                         cafeUuid = action.cafeUuid,
-                        cafeAddress = action.cafeAddress,
+                        cafeAddress = action.cafeAddress
                     )
                 }
                 fetchCafeData(action.cafeUuid)
@@ -97,27 +93,26 @@ class EditCafeViewModel(
                 setState {
                     copy(
                         cafeWorkingHours = cafeWorkingHours,
-                        nonWorkingDays =
-                            if (nonWorkingDayList.isEmpty()) {
-                                EditCafeState.ViewDataState.NonWorkingDays.Empty
-                            } else {
-                                EditCafeState.ViewDataState.NonWorkingDays.Success(
-                                    days = nonWorkingDayList,
-                                )
-                            },
+                        nonWorkingDays = if (nonWorkingDayList.isEmpty()) {
+                            EditCafeState.ViewDataState.NonWorkingDays.Empty
+                        } else {
+                            EditCafeState.ViewDataState.NonWorkingDays.Success(
+                                days = nonWorkingDayList
+                            )
+                        }
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Empty,
+                        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Empty
                     )
                 }
                 sendEvent {
                     EditCafeState.Event.ShowFetchDataError
                 }
-            },
+            }
         )
     }
 
@@ -128,11 +123,10 @@ class EditCafeViewModel(
                 updateCafeFromTime(cafeUuid, time)
                 setState {
                     copy(
-                        cafeWorkingHours =
-                            state.value.cafeWorkingHours.copy(
-                                fromTimeText = dateTimeUtil.getTimeHHMM(time),
-                                fromTime = time,
-                            ),
+                        cafeWorkingHours = state.value.cafeWorkingHours.copy(
+                            fromTimeText = dateTimeUtil.getTimeHHMM(time),
+                            fromTime = time
+                        )
                     )
                 }
             },
@@ -140,7 +134,7 @@ class EditCafeViewModel(
                 sendEvent {
                     EditCafeState.Event.ShowUpdateDataError
                 }
-            },
+            }
         )
     }
 
@@ -151,11 +145,10 @@ class EditCafeViewModel(
                 updateCafeToTime(cafeUuid, time)
                 setState {
                     copy(
-                        cafeWorkingHours =
-                            cafeWorkingHours.copy(
-                                toTimeText = dateTimeUtil.getTimeHHMM(time),
-                                toTime = time,
-                            ),
+                        cafeWorkingHours = cafeWorkingHours.copy(
+                            toTimeText = dateTimeUtil.getTimeHHMM(time),
+                            toTime = time
+                        )
                     )
                 }
             },
@@ -163,7 +156,7 @@ class EditCafeViewModel(
                 sendEvent {
                     EditCafeState.Event.ShowUpdateDataError
                 }
-            },
+            }
         )
     }
 
@@ -174,15 +167,14 @@ class EditCafeViewModel(
             block = {
                 createCafeNonWorkingDay(
                     date = date,
-                    cafeUuid = cafeUuid,
+                    cafeUuid = cafeUuid
                 )
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
                 setState {
                     copy(
-                        nonWorkingDays =
-                            EditCafeState.ViewDataState.NonWorkingDays.Success(
-                                days = nonWorkingDayList,
-                            ),
+                        nonWorkingDays = EditCafeState.ViewDataState.NonWorkingDays.Success(
+                            days = nonWorkingDayList
+                        )
                     )
                 }
             },
@@ -190,7 +182,7 @@ class EditCafeViewModel(
                 sendEvent {
                     EditCafeState.Event.ShowSaveDataError
                 }
-            },
+            }
         )
     }
 
@@ -208,14 +200,13 @@ class EditCafeViewModel(
                 val nonWorkingDayList = getNonWorkingDayListByCafeUuid(cafeUuid)
                 setState {
                     copy(
-                        nonWorkingDays =
-                            if (nonWorkingDayList.isEmpty()) {
-                                EditCafeState.ViewDataState.NonWorkingDays.Empty
-                            } else {
-                                EditCafeState.ViewDataState.NonWorkingDays.Success(
-                                    days = nonWorkingDayList,
-                                )
-                            },
+                        nonWorkingDays = if (nonWorkingDayList.isEmpty()) {
+                            EditCafeState.ViewDataState.NonWorkingDays.Empty
+                        } else {
+                            EditCafeState.ViewDataState.NonWorkingDays.Success(
+                                days = nonWorkingDayList
+                            )
+                        }
                     )
                 }
             },
@@ -223,7 +214,7 @@ class EditCafeViewModel(
                 sendEvent {
                     EditCafeState.Event.ShowDeleteDataError
                 }
-            },
+            }
         )
     }
 }

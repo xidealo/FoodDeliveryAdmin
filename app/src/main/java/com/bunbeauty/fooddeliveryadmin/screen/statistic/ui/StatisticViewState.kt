@@ -7,20 +7,19 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class StatisticViewState(
-    val state: State,
+    val state: State
 ) : BaseViewState {
+
     @Immutable
     sealed interface State {
         data object Loading : State
-
         data object Error : State
-
         data class Success(
             val statisticList: ImmutableList<StatisticItemModel>,
             val period: String,
             val timeIntervalListUI: TimeIntervalListUI,
             val cafeAddress: String,
-            val loadingStatistic: Boolean,
+            val loadingStatistic: Boolean
         ) : State {
             @Immutable
             data class StatisticItemModel(
@@ -28,7 +27,7 @@ data class StatisticViewState(
                 val period: String,
                 val count: String,
                 val proceeds: String,
-                val date: String,
+                val date: String
             )
         }
     }
@@ -36,12 +35,12 @@ data class StatisticViewState(
     @Immutable
     data class TimeIntervalListUI(
         val isShown: Boolean,
-        val timeIntervalList: ImmutableList<TimeIntervalItem>,
+        val timeIntervalList: ImmutableList<TimeIntervalItem>
     ) {
         @Immutable
         data class TimeIntervalItem(
             val timeInterval: String,
-            val timeIntervalType: TimeIntervalCode,
+            val timeIntervalType: TimeIntervalCode
         )
     }
 }

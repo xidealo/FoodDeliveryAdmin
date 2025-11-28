@@ -13,57 +13,55 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class UpdateVisibleAdditionUseCaseTest {
+
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val additionRepo: AdditionRepo = mockk()
     private lateinit var useCase: UpdateVisibleAdditionUseCase
 
     @BeforeTest
     fun setup() {
-        useCase =
-            UpdateVisibleAdditionUseCase(
-                additionRepo = additionRepo,
-                dataStoreRepo = dataStoreRepo,
-            )
+        useCase = UpdateVisibleAdditionUseCase(
+            additionRepo = additionRepo,
+            dataStoreRepo = dataStoreRepo
+        )
     }
 
     @Test
-    fun `should throw NoTokenException when token is null`() =
-        runTest {
-            coEvery { dataStoreRepo.getToken() } returns null
+    fun `should throw NoTokenException when token is null`() = runTest {
+        coEvery { dataStoreRepo.getToken() } returns null
 
-            assertFailsWith(
-                exceptionClass = NoTokenException::class,
-                block = { useCase(additionUuid = "", isVisible = true) },
-            )
-        }
+        assertFailsWith(
+            exceptionClass = NoTokenException::class,
+            block = { useCase(additionUuid = "", isVisible = true) }
+        )
+    }
 
     @Test
-    fun `should call updateAddition function when token non null`() =
-        runTest {
-            // Given
-            val token = "token"
-            val additionUuidMock = ""
-            val isVisible = true
-            val updateAdditionMock = UpdateAddition(isVisible = isVisible)
-            coEvery { dataStoreRepo.getToken() } returns token
-            coEvery {
-                additionRepo.updateAddition(
-                    updateAddition = updateAdditionMock,
-                    token = token,
-                    additionUuid = additionUuidMock,
-                )
-            } returns Unit
+    fun `should call updateAddition function when token non null`() = runTest {
+        // Given
+        val token = "token"
+        val additionUuidMock = ""
+        val isVisible = true
+        val updateAdditionMock = UpdateAddition(isVisible = isVisible)
+        coEvery { dataStoreRepo.getToken() } returns token
+        coEvery {
+            additionRepo.updateAddition(
+                updateAddition = updateAdditionMock,
+                token = token,
+                additionUuid = additionUuidMock
+            )
+        } returns Unit
 
-            // When
-            useCase(additionUuid = additionUuidMock, isVisible = isVisible)
+        // When
+        useCase(additionUuid = additionUuidMock, isVisible = isVisible)
 
-            // Then
-            coVerify {
-                additionRepo.updateAddition(
-                    updateAddition = updateAdditionMock,
-                    token = token,
-                    additionUuid = additionUuidMock,
-                )
-            }
+        // Then
+        coVerify {
+            additionRepo.updateAddition(
+                updateAddition = updateAdditionMock,
+                token = token,
+                additionUuid = additionUuidMock
+            )
         }
+    }
 }

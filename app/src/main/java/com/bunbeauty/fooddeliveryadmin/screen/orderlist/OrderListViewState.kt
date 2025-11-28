@@ -7,18 +7,18 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class OrderListViewState(
-    val state: State,
+    val state: State
 ) : BaseViewState {
+
     @Immutable
     sealed interface State {
         data object Loading : State
-
         data class Success(
             val cafeAddress: String,
             val orderList: ImmutableList<OrderItem>,
             val connectionError: Boolean,
             val refreshing: Boolean,
-            val loadingOrderList: Boolean,
+            val loadingOrderList: Boolean
         ) : State
     }
 
@@ -29,6 +29,6 @@ data class OrderListViewState(
         val statusString: String,
         val code: String,
         val deferredTime: String,
-        val dateTime: String,
+        val dateTime: String
     )
 }

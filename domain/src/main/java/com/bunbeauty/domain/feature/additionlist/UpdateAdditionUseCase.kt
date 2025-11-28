@@ -17,11 +17,11 @@ class UpdateAdditionUseCase(
     private val additionRepo: AdditionRepo,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val deletePhotoUseCase: DeletePhotoUseCase,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(
         additionUuid: String,
-        updateAddition: UpdateAddition,
+        updateAddition: UpdateAddition
     ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
@@ -33,16 +33,15 @@ class UpdateAdditionUseCase(
 
         removeOldPhotoIfContains(
             photoLink = updateAddition.photoLink,
-            newImageUri = updateAddition.newImageUri,
+            newImageUri = updateAddition.newImageUri
         )
 
         additionRepo.updateAddition(
             additionUuid = additionUuid,
             token = token,
-            updateAddition =
-                updateAddition.copy(
-                    photoLink = newPhotoLink,
-                ),
+            updateAddition = updateAddition.copy(
+                photoLink = newPhotoLink
+            )
         )
     }
 
@@ -52,13 +51,13 @@ class UpdateAdditionUseCase(
         return uploadPhotoUseCase(
             imageUri = newImageUri,
             width = ADDITION_WIDTH,
-            height = ADDITION_HEIGHT,
+            height = ADDITION_HEIGHT
         ).url
     }
 
     private suspend fun removeOldPhotoIfContains(
         photoLink: String?,
-        newImageUri: String?,
+        newImageUri: String?
     ) {
         if (photoLink != null && newImageUri != null) {
             runCatching {

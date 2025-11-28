@@ -7,6 +7,9 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 abstract class SingleStateComposeFragment<VDS : BaseViewDataState, A : BaseAction, E : BaseEvent> :
     BaseComposeFragment<VDS, VDS, A, E>() {
+
     @Composable
-    override fun mapState(state: VDS): VDS = state
+    override fun mapState(state: VDS): VDS {
+        return state
+    }
 }

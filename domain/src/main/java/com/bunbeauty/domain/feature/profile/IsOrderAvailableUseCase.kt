@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class IsOrderAvailableUseCase(
     private val dataStoreRepo: DataStoreRepo,
-    private val orderRepo: OrderRepo,
+    private val orderRepo: OrderRepo
 ) {
+
     suspend operator fun invoke(): Boolean {
         val companyUuid = dataStoreRepo.companyUuid.firstOrNull() ?: throw NoCompanyUuidException()
         return orderRepo.getOrderAvailability(companyUuid = companyUuid)?.isAvailable ?: true

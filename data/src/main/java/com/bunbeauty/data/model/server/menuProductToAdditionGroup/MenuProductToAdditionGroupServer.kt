@@ -10,5 +10,5 @@ data class MenuProductToAdditionGroupServer(
     @SerialName("additionGroupUuid")
     val additionGroupUuid: String,
     @SerialName("uuid")
-    val uuid: String,
+    val uuid: String
 )

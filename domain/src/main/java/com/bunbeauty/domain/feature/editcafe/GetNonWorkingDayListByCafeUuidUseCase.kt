@@ -12,28 +12,28 @@ class GetNonWorkingDayListByCafeUuidUseCase(
     private val cafeRepo: CafeRepo,
     private val nonWorkingDayRepo: NonWorkingDayRepo,
     private val dateTimeUtil: IDateTimeUtil,
-    private val timeService: TimeService,
+    private val timeService: TimeService
 ) {
+
     suspend operator fun invoke(cafeUuid: String): List<FormattedNonWorkingDay> {
         val cafe = cafeRepo.getCafeByUuid(cafeUuid) ?: throw DataNotFoundException()
         val currentDayStartMillis = timeService.getCurrentDayStartMillis(cafe.offset)
-        return nonWorkingDayRepo
-            .getNonWorkingDayListByCafeUuid(cafeUuid)
+        return nonWorkingDayRepo.getNonWorkingDayListByCafeUuid(cafeUuid)
             .filter { nonWorkingDay ->
                 (nonWorkingDay.timestamp >= currentDayStartMillis) &&
                     nonWorkingDay.isVisible
-            }.sortedBy { nonWorkingDay ->
+            }
+            .sortedBy { nonWorkingDay ->
                 nonWorkingDay.timestamp
             }.map { nonWorkingDay ->
                 FormattedNonWorkingDay(
                     uuid = nonWorkingDay.uuid,
-                    date =
-                        dateTimeUtil.formatDateTime(
-                            millis = nonWorkingDay.timestamp,
-                            pattern = PATTERN_DD_MMMM,
-                            offset = cafe.offset,
-                        ),
-                    cafeUuid = nonWorkingDay.cafeUuid,
+                    date = dateTimeUtil.formatDateTime(
+                        millis = nonWorkingDay.timestamp,
+                        pattern = PATTERN_DD_MMMM,
+                        offset = cafe.offset
+                    ),
+                    cafeUuid = nonWorkingDay.cafeUuid
                 )
             }
     }

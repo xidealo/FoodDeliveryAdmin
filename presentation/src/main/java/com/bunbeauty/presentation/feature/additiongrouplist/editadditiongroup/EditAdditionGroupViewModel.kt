@@ -17,43 +17,41 @@ private const val PRIORITY_ADDITION_GROUP = 1
 class EditAdditionGroupViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
-    private val saveEditAdditionGroupUseCase: EditAdditionGroupUseCase,
-) : BaseStateViewModel<EditAdditionGroupDataState.DataState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>(
-        initState =
-            EditAdditionGroupDataState.DataState(
-                uuid = "",
-                name = TextFieldData.empty,
-                isLoading = false,
-                state = EditAdditionGroupDataState.DataState.State.SUCCESS,
-                nameStateError = EditAdditionGroupDataState.DataState.NameStateError.NO_ERROR,
-                isVisible = true,
-                isSingleChoice = true,
-            ),
+    private val saveEditAdditionGroupUseCase: EditAdditionGroupUseCase
+
+) :
+    BaseStateViewModel<EditAdditionGroupDataState.DataState, EditAdditionGroupDataState.Action, EditAdditionGroupDataState.Event>(
+        initState = EditAdditionGroupDataState.DataState(
+            uuid = "",
+            name = TextFieldData.empty,
+            isLoading = false,
+            state = EditAdditionGroupDataState.DataState.State.SUCCESS,
+            nameStateError = EditAdditionGroupDataState.DataState.NameStateError.NO_ERROR,
+            isVisible = true,
+            isSingleChoice = true
+        )
     ) {
     override fun reduce(
         action: EditAdditionGroupDataState.Action,
-        dataState: EditAdditionGroupDataState.DataState,
+        dataState: EditAdditionGroupDataState.DataState
     ) {
         when (action) {
             EditAdditionGroupDataState.Action.Init -> loadData()
             EditAdditionGroupDataState.Action.OnBackClicked -> onBackClicked()
-            is EditAdditionGroupDataState.Action.EditNameAdditionGroup ->
-                editNameAddition(
-                    nameEditAddition = action.nameEditAdditionGroup,
-                )
+            is EditAdditionGroupDataState.Action.EditNameAdditionGroup -> editNameAddition(
+                nameEditAddition = action.nameEditAdditionGroup
+            )
 
-            EditAdditionGroupDataState.Action.OnSaveEditAdditionGroupClick ->
-                saveEditCategory(
-                    additionGroupUuid = dataState.uuid,
-                    additionGroupName = dataState.name.value,
-                    isVisible = dataState.isVisible,
-                    isVisibleSingleChoice = dataState.isSingleChoice,
-                )
+            EditAdditionGroupDataState.Action.OnSaveEditAdditionGroupClick -> saveEditCategory(
+                additionGroupUuid = dataState.uuid,
+                additionGroupName = dataState.name.value,
+                isVisible = dataState.isVisible,
+                isVisibleSingleChoice = dataState.isSingleChoice
+            )
             is EditAdditionGroupDataState.Action.OnVisibleMenu -> onVisibleMenu(action = action)
-            is EditAdditionGroupDataState.Action.OnVisibleSingleChoice ->
-                onVisibleSingleChoice(
-                    action = action,
-                )
+            is EditAdditionGroupDataState.Action.OnVisibleSingleChoice -> onVisibleSingleChoice(
+                action = action
+            )
         }
     }
 
@@ -66,11 +64,10 @@ class EditAdditionGroupViewModel(
     private fun editNameAddition(nameEditAddition: String) {
         setState {
             copy(
-                name =
-                    name.copy(
-                        value = nameEditAddition,
-                        isError = false,
-                    ),
+                name = name.copy(
+                    value = nameEditAddition,
+                    isError = false
+                )
             )
         }
     }
@@ -99,21 +96,20 @@ class EditAdditionGroupViewModel(
                         uuid = additionGroup.uuid,
                         isSingleChoice = additionGroup.singleChoice,
                         isVisible = additionGroup.isVisible,
-                        name =
-                            name.copy(
-                                value = additionGroup.name,
-                                isError = false,
-                            ),
+                        name = name.copy(
+                            value = additionGroup.name,
+                            isError = false
+                        )
                     )
                 }
             },
             onError = {
                 setState {
                     copy(
-                        state = EditAdditionGroupDataState.DataState.State.ERROR,
+                        state = EditAdditionGroupDataState.DataState.State.ERROR
                     )
                 }
-            },
+            }
         )
     }
 
@@ -121,21 +117,20 @@ class EditAdditionGroupViewModel(
         additionGroupUuid: String,
         additionGroupName: String,
         isVisible: Boolean,
-        isVisibleSingleChoice: Boolean,
+        isVisibleSingleChoice: Boolean
     ) {
         viewModelScope.launchSafe(
             block = {
                 saveEditAdditionGroupUseCase(
                     additionGroupUuid = additionGroupUuid,
-                    updateAdditionGroup =
-                        state.value.run {
-                            UpdateAdditionGroup(
-                                name = additionGroupName.trim(),
-                                isVisible = isVisible,
-                                singleChoice = isVisibleSingleChoice,
-                                priority = PRIORITY_ADDITION_GROUP,
-                            )
-                        },
+                    updateAdditionGroup = state.value.run {
+                        UpdateAdditionGroup(
+                            name = additionGroupName.trim(),
+                            isVisible = isVisible,
+                            singleChoice = isVisibleSingleChoice,
+                            priority = PRIORITY_ADDITION_GROUP
+                        )
+                    }
                 )
                 setState {
                     copy(isLoading = false)
@@ -143,7 +138,8 @@ class EditAdditionGroupViewModel(
 
                 sendEvent {
                     EditAdditionGroupDataState.Event.ShowUpdateAdditionGroupSuccess(
-                        additionGroupName = additionGroupName,
+                        additionGroupName = additionGroupName
+
                     )
                 }
             },
@@ -152,40 +148,34 @@ class EditAdditionGroupViewModel(
                     when (throwable) {
                         is AdditionGroupNameException -> {
                             copy(
-                                nameStateError =
-                                    EditAdditionGroupDataState
-                                        .DataState.NameStateError.EMPTY_NAME,
-                                name =
-                                    name.copy(
-                                        isError = true,
-                                    ),
-                                isLoading = false,
+                                nameStateError = EditAdditionGroupDataState
+                                    .DataState.NameStateError.EMPTY_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
                             )
                         }
 
                         is DuplicateAdditionGroupNameException -> {
                             copy(
-                                nameStateError =
-                                    EditAdditionGroupDataState
-                                        .DataState.NameStateError.DUPLICATE_NAME,
-                                name =
-                                    name.copy(
-                                        isError = true,
-                                    ),
-                                isLoading = false,
+                                nameStateError = EditAdditionGroupDataState
+                                    .DataState.NameStateError.DUPLICATE_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
                             )
                         }
 
-                        else ->
-                            copy(
-                                isLoading = false,
-                                nameStateError =
-                                    EditAdditionGroupDataState
-                                        .DataState.NameStateError.NO_ERROR,
-                            )
+                        else -> copy(
+                            isLoading = false,
+                            nameStateError = EditAdditionGroupDataState
+                                .DataState.NameStateError.NO_ERROR
+                        )
                     }
                 }
-            },
+            }
         )
     }
 }

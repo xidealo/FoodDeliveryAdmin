@@ -52,29 +52,20 @@ private const val LIST_ANIMATION_DURATION = 500
 
 class AdditionListFragment :
     BaseComposeFragment<AdditionList.DataState, AdditionListViewState, AdditionList.Action, AdditionList.Event>() {
-    override val viewModel: AdditionListViewModel by viewModel()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override val viewModel: AdditionListViewModel by viewModel()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onAction(AdditionList.Action.Init)
     }
 
     @Composable
-    override fun Screen(
-        state: AdditionListViewState,
-        onAction: (AdditionList.Action) -> Unit,
-    ) {
+    override fun Screen(state: AdditionListViewState, onAction: (AdditionList.Action) -> Unit) {
         AdditionListScreen(state = state, onAction = onAction)
     }
 
     @Composable
-    fun AdditionListScreen(
-        state: AdditionListViewState,
-        onAction: (AdditionList.Action) -> Unit,
-    ) {
+    fun AdditionListScreen(state: AdditionListViewState, onAction: (AdditionList.Action) -> Unit) {
         AdminScaffold(
             title = stringResource(R.string.title_addition_list),
             pullRefreshEnabled = true,
@@ -93,19 +84,19 @@ class AdditionListFragment :
                         onClick = {
                             findNavController().navigateSafe(
                                 AdditionListFragmentDirections
-                                    .actionAdditionListFragmentToCreateAdditionFragment(),
+                                    .actionAdditionListFragmentToCreateAdditionFragment()
                             )
-                        },
+                        }
                     )
                 }
             },
-            actionButtonPosition = FabPosition.End,
+            actionButtonPosition = FabPosition.End
         ) {
             when {
                 state.hasError -> {
                     ErrorScreen(
                         mainTextId = R.string.error_common_loading_failed,
-                        isLoading = state.isLoading,
+                        isLoading = state.isLoading
                     ) {
                         onAction(AdditionList.Action.Init)
                     }
@@ -121,113 +112,102 @@ class AdditionListFragment :
     @Composable
     private fun AdditionListSuccessScreen(
         state: AdditionListViewState,
-        onAction: (AdditionList.Action) -> Unit,
+        onAction: (AdditionList.Action) -> Unit
     ) {
         LazyColumn(
-            contentPadding =
-                PaddingValues(
-                    top = 16.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
-                ),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(
+                top = 16.dp,
+                start = 16.dp,
+                end = 16.dp,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace
+            ),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (state.visibleAdditionItems.isNotEmpty()) {
                 item(
-                    key = TITLE_POSITION_VISIBLE_KEY,
+                    key = TITLE_POSITION_VISIBLE_KEY
                 ) {
                     Text(
-                        modifier =
-                            Modifier
-                                .animateItem()
-                                .animateContentSize(
-                                    animationSpec = tween(LIST_ANIMATION_DURATION),
-                                ),
+                        modifier = Modifier
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         text = stringResource(id = R.string.title_menu_list_position_visible),
-                        style = AdminTheme.typography.titleMedium.bold,
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
                 items(
                     items = state.visibleAdditionItems,
                     key = { additionItem ->
                         additionItem.key
-                    },
+                    }
                 ) { visibleAddition ->
                     when (visibleAddition) {
-                        is AdditionListViewState.AdditionFeedViewItem.AdditionItem ->
-                            AdditionCard(
-                                modifier =
-                                    Modifier
-                                        .animateItem()
-                                        .animateContentSize(
-                                            animationSpec = tween(LIST_ANIMATION_DURATION),
-                                        ),
-                                additionItem = visibleAddition.addition,
-                                onAction = onAction,
-                            )
+                        is AdditionListViewState.AdditionFeedViewItem.AdditionItem -> AdditionCard(
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
+                            additionItem = visibleAddition.addition,
+                            onAction = onAction
+                        )
 
-                        is AdditionListViewState.AdditionFeedViewItem.Title ->
-                            Text(
-                                modifier =
-                                    Modifier
-                                        .animateItem()
-                                        .animateContentSize(
-                                            animationSpec = tween(LIST_ANIMATION_DURATION),
-                                        ),
-                                text = visibleAddition.title,
-                                style = AdminTheme.typography.titleSmall.bold,
-                            )
+                        is AdditionListViewState.AdditionFeedViewItem.Title -> Text(
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
+                            text = visibleAddition.title,
+                            style = AdminTheme.typography.titleSmall.bold
+                        )
                     }
                 }
             }
 
             if (state.hiddenAdditionItems.isNotEmpty()) {
                 item(
-                    key = TITLE_POSITION_HIDDEN_KEY,
+                    key = TITLE_POSITION_HIDDEN_KEY
                 ) {
                     Text(
-                        modifier =
-                            Modifier
-                                .padding(top = 8.dp)
-                                .animateItem()
-                                .animateContentSize(
-                                    animationSpec = tween(LIST_ANIMATION_DURATION),
-                                ),
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .animateItem()
+                            .animateContentSize(
+                                animationSpec = tween(LIST_ANIMATION_DURATION)
+                            ),
                         text = stringResource(id = R.string.title_menu_list_position_hidden),
-                        style = AdminTheme.typography.titleMedium.bold,
+                        style = AdminTheme.typography.titleMedium.bold
                     )
                 }
                 items(
                     items = state.hiddenAdditionItems,
                     key = { additionGroupItem ->
                         additionGroupItem.key
-                    },
+                    }
                 ) { hiddenAddition ->
                     when (hiddenAddition) {
-                        is AdditionListViewState.AdditionFeedViewItem.AdditionItem ->
-                            AdditionCard(
-                                modifier =
-                                    Modifier
-                                        .animateItem()
-                                        .animateContentSize(
-                                            animationSpec = tween(LIST_ANIMATION_DURATION),
-                                        ),
-                                additionItem = hiddenAddition.addition,
-                                onAction = onAction,
-                            )
+                        is AdditionListViewState.AdditionFeedViewItem.AdditionItem -> AdditionCard(
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
+                            additionItem = hiddenAddition.addition,
+                            onAction = onAction
+                        )
 
-                        is AdditionListViewState.AdditionFeedViewItem.Title ->
-                            Text(
-                                modifier =
-                                    Modifier
-                                        .animateItem()
-                                        .animateContentSize(
-                                            animationSpec = tween(LIST_ANIMATION_DURATION),
-                                        ),
-                                text = hiddenAddition.title,
-                                style = AdminTheme.typography.titleSmall.bold,
-                            )
+                        is AdditionListViewState.AdditionFeedViewItem.Title -> Text(
+                            modifier = Modifier
+                                .animateItem()
+                                .animateContentSize(
+                                    animationSpec = tween(LIST_ANIMATION_DURATION)
+                                ),
+                            text = hiddenAddition.title,
+                            style = AdminTheme.typography.titleSmall.bold
+                        )
                     }
                 }
             }
@@ -238,61 +218,56 @@ class AdditionListFragment :
     private fun AdditionCard(
         modifier: Modifier,
         additionItem: AdditionListViewState.AdditionViewItem,
-        onAction: (AdditionList.Action) -> Unit,
+        onAction: (AdditionList.Action) -> Unit
     ) {
         AdminCard(
             modifier = modifier.fillMaxWidth(),
             onClick = {
                 onAction(AdditionList.Action.OnAdditionClick(additionUuid = additionItem.uuid))
             },
-            elevated = false,
+            elevated = false
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 AsyncImage(
-                    modifier =
-                        Modifier
-                            .width(AdminTheme.dimensions.productImageSmallWidth)
-                            .height(AdminTheme.dimensions.productImageSmallHeight),
-                    model =
-                        ImageRequest
-                            .Builder(LocalContext.current)
-                            .data(additionItem.photoLink)
-                            .crossfade(true)
-                            .build(),
+                    modifier = Modifier
+                        .width(AdminTheme.dimensions.productImageSmallWidth)
+                        .height(AdminTheme.dimensions.productImageSmallHeight),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(additionItem.photoLink)
+                        .crossfade(true)
+                        .build(),
                     placeholder = painterResource(R.drawable.default_product),
                     contentDescription = stringResource(R.string.description_product),
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillWidth
                 )
 
                 Text(
                     text = additionItem.name,
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .padding(top = AdminTheme.dimensions.smallSpace)
-                            .padding(horizontal = AdminTheme.dimensions.smallSpace),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = AdminTheme.dimensions.smallSpace)
+                        .padding(horizontal = AdminTheme.dimensions.smallSpace)
                 )
 
                 IconButton(
-                    modifier =
-                        Modifier
-                            .align(Alignment.CenterVertically)
-                            .padding(end = AdminTheme.dimensions.smallSpace),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(end = AdminTheme.dimensions.smallSpace),
                     onClick = {
                         onAction(
                             AdditionList.Action.OnVisibleClick(
                                 isVisible = additionItem.isVisible,
-                                uuid = additionItem.uuid,
-                            ),
+                                uuid = additionItem.uuid
+                            )
                         )
-                    },
+                    }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_visible),
                         contentDescription = null,
-                        tint = additionItem.iconColor,
+                        tint = additionItem.iconColor
                     )
                 }
             }
@@ -300,22 +275,19 @@ class AdditionListFragment :
     }
 
     @Composable
-    override fun mapState(state: AdditionList.DataState): AdditionListViewState =
-        AdditionListViewState(
-            visibleAdditionItems =
-                state.visibleAdditions
-                    .map { additionFeedItem ->
-                        additionFeedItem.toItem()
-                    }.toPersistentList(),
-            hiddenAdditionItems =
-                state.hiddenAdditions
-                    .map { additionFeedItem ->
-                        additionFeedItem.toItem()
-                    }.toPersistentList(),
+    override fun mapState(state: AdditionList.DataState): AdditionListViewState {
+        return AdditionListViewState(
+            visibleAdditionItems = state.visibleAdditions.map { additionFeedItem ->
+                additionFeedItem.toItem()
+            }.toPersistentList(),
+            hiddenAdditionItems = state.hiddenAdditions.map { additionFeedItem ->
+                additionFeedItem.toItem()
+            }.toPersistentList(),
             isRefreshing = state.isRefreshing,
             isLoading = state.isLoading,
-            hasError = state.hasError,
+            hasError = state.hasError
         )
+    }
 
     override fun handleEvent(event: AdditionList.Event) {
         when (event) {
@@ -326,8 +298,8 @@ class AdditionListFragment :
             is AdditionList.Event.OnAdditionClick -> {
                 findNavController().navigate(
                     AdditionListFragmentDirections.toEditAdditionFragment(
-                        event.additionUuid,
-                    ),
+                        event.additionUuid
+                    )
                 )
             }
         }
@@ -338,53 +310,50 @@ class AdditionListFragment :
     fun AdditionListScreenPreview() {
         AdminTheme {
             AdditionListScreen(
-                state =
-                    AdditionListViewState(
-                        visibleAdditionItems =
-                            persistentListOf(
-                                AdditionListViewState
-                                    .AdditionFeedViewItem
-                                    .Title(key = "1", "Заголовок"),
-                                AdditionListViewState
-                                    .AdditionFeedViewItem
-                                    .AdditionItem(
-                                        key = "2",
-                                        AdditionListViewState.AdditionViewItem(
-                                            uuid = "1",
-                                            name = "additio1",
-                                            photoLink = "",
-                                            iconColor = AdminTheme.colors.main.primary,
-                                            isVisible = true,
-                                        ),
-                                    ),
-                            ),
-                        hiddenAdditionItems =
-                            persistentListOf(
-                                AdditionListViewState
-                                    .AdditionFeedViewItem
-                                    .Title(
-                                        key = "3",
-                                        title = "Заголовок",
-                                    ),
-                                AdditionListViewState
-                                    .AdditionFeedViewItem
-                                    .AdditionItem(
-                                        key = "4",
-                                        AdditionListViewState.AdditionViewItem(
-                                            uuid = "2",
-                                            name = "additio2",
-                                            photoLink = "",
-                                            iconColor = AdminTheme.colors.main.primary,
-                                            isVisible = false,
-                                        ),
-                                    ),
-                            ),
-                        isRefreshing = false,
-                        isLoading = false,
-                        hasError = false,
+                state = AdditionListViewState(
+                    visibleAdditionItems = persistentListOf(
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .Title(key = "1", "Заголовок"),
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .AdditionItem(
+                                key = "2",
+                                AdditionListViewState.AdditionViewItem(
+                                    uuid = "1",
+                                    name = "additio1",
+                                    photoLink = "",
+                                    iconColor = AdminTheme.colors.main.primary,
+                                    isVisible = true
+                                )
+                            )
                     ),
+                    hiddenAdditionItems = persistentListOf(
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .Title(
+                                key = "3",
+                                title = "Заголовок"
+                            ),
+                        AdditionListViewState
+                            .AdditionFeedViewItem
+                            .AdditionItem(
+                                key = "4",
+                                AdditionListViewState.AdditionViewItem(
+                                    uuid = "2",
+                                    name = "additio2",
+                                    photoLink = "",
+                                    iconColor = AdminTheme.colors.main.primary,
+                                    isVisible = false
+                                )
+                            )
+                    ),
+                    isRefreshing = false,
+                    isLoading = false,
+                    hasError = false
+                ),
                 onAction = {
-                },
+                }
             )
         }
     }

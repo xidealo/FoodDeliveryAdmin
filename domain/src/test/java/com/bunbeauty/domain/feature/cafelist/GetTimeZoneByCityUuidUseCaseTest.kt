@@ -13,6 +13,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class GetTimeZoneByCityUuidUseCaseTest {
+
     private val dataStoreRepo: DataStoreRepo = mockk()
     private val cityRepo: CityRepo = mockk()
     private lateinit var getTimeZoneByCityUuid: GetTimeZoneByCityUuidUseCase
@@ -22,58 +23,53 @@ class GetTimeZoneByCityUuidUseCaseTest {
 
     @BeforeTest
     fun setup() {
-        getTimeZoneByCityUuid =
-            GetTimeZoneByCityUuidUseCase(
-                dataStoreRepo = dataStoreRepo,
-                cityRepo = cityRepo,
-            )
+        getTimeZoneByCityUuid = GetTimeZoneByCityUuidUseCase(
+            dataStoreRepo = dataStoreRepo,
+            cityRepo = cityRepo
+        )
     }
 
     @Test
-    fun `return default value when no company uuid`() =
-        runTest {
-            // Given
-            coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
+    fun `return default value when no company uuid`() = runTest {
+        // Given
+        coEvery { dataStoreRepo.companyUuid } returns emptyFlow()
 
-            // When
-            val result = getTimeZoneByCityUuid(cityUuid)
+        // When
+        val result = getTimeZoneByCityUuid(cityUuid)
 
-            // Then
-            assertEquals(defaultTimeZone, result)
-        }
-
-    @Test
-    fun `return default value when city not found`() =
-        runTest {
-            // Given
-            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-            coEvery { cityRepo.getCityByUuid(companyUuid, cityUuid) } returns null
-
-            // When
-            val result = getTimeZoneByCityUuid(cityUuid)
-
-            // Then
-            assertEquals(defaultTimeZone, result)
-        }
+        // Then
+        assertEquals(defaultTimeZone, result)
+    }
 
     @Test
-    fun `return city time zone when city found`() =
-        runTest {
-            // Given
-            val timeZone = "UTC-4"
-            coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
-            coEvery { cityRepo.getCityByUuid(companyUuid, cityUuid) } returns
-                City(
-                    uuid = "uuid",
-                    name = "name",
-                    timeZone = timeZone,
-                    isVisible = true,
-                )
+    fun `return default value when city not found`() = runTest {
+        // Given
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery { cityRepo.getCityByUuid(companyUuid, cityUuid) } returns null
 
-            // When
-            val result = getTimeZoneByCityUuid(cityUuid)
+        // When
+        val result = getTimeZoneByCityUuid(cityUuid)
 
-            // Then
-            assertEquals(timeZone, result)
-        }
+        // Then
+        assertEquals(defaultTimeZone, result)
+    }
+
+    @Test
+    fun `return city time zone when city found`() = runTest {
+        // Given
+        val timeZone = "UTC-4"
+        coEvery { dataStoreRepo.companyUuid } returns flowOf(companyUuid)
+        coEvery { cityRepo.getCityByUuid(companyUuid, cityUuid) } returns City(
+            uuid = "uuid",
+            name = "name",
+            timeZone = timeZone,
+            isVisible = true
+        )
+
+        // When
+        val result = getTimeZoneByCityUuid(cityUuid)
+
+        // Then
+        assertEquals(timeZone, result)
+    }
 }

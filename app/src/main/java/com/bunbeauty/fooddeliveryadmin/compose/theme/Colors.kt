@@ -3,6 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.compose.theme
 import androidx.compose.ui.graphics.Color
 
 object Colors {
+
     val White = Color(0xFFFFFFFF)
     val Black1 = Color(0xFF000000)
     val Black2 = Color(0xFF161617)

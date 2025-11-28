@@ -5,7 +5,9 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 
 class GetUsernameUseCase(
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(): String = dataStoreRepo.username.firstOrNull() ?: throw DataNotFoundException()
+    suspend operator fun invoke(): String {
+        return dataStoreRepo.username.firstOrNull() ?: throw DataNotFoundException()
+    }
 }

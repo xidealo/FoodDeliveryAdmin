@@ -7,14 +7,15 @@ import com.bunbeauty.domain.repo.StatisticRepo
 
 class StatisticRepository(
     private val networkConnector: FoodDeliveryApi,
-    private val statisticMapper: StatisticMapper,
+    private val statisticMapper: StatisticMapper
 ) : StatisticRepo {
     override suspend fun getStatistic(
         token: String,
         cafeUuid: String?,
-        period: String,
-    ): List<Statistic> =
-        networkConnector
+        period: String
+    ): List<Statistic> {
+        return networkConnector
             .getStatistic(token, cafeUuid, period)
             .map(statisticMapper::toModel)
+    }
 }

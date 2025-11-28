@@ -22,31 +22,25 @@ fun TextView.strikeOutText() {
     this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 }
 
-fun ImageView.getBitmap(): Bitmap = (this.drawable as BitmapDrawable).bitmap
-
-fun View.setLinearLayoutMargins(
-    left: Int = 0,
-    top: Int = 0,
-    right: Int = 0,
-    bottom: Int = 0,
-) {
-    layoutParams =
-        (layoutParams as LinearLayout.LayoutParams).apply {
-            setMargins(left, top, right, bottom)
-        }
+fun ImageView.getBitmap(): Bitmap {
+    return (this.drawable as BitmapDrawable).bitmap
 }
 
-fun RecyclerView.addSpaceItemDecorator(
-    @DimenRes spaceId: Int,
-) {
+fun View.setLinearLayoutMargins(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0) {
+    layoutParams = (layoutParams as LinearLayout.LayoutParams).apply {
+        setMargins(left, top, right, bottom)
+    }
+}
+
+fun RecyclerView.addSpaceItemDecorator(@DimenRes spaceId: Int) {
     addItemDecoration(
         object : DividerItemDecoration(context, LinearLayout.VERTICAL) {
+
             init {
-                val space =
-                    ShapeDrawable().apply {
-                        intrinsicHeight = resources.getDimensionPixelOffset(spaceId)
-                        paint.color = Color.TRANSPARENT
-                    }
+                val space = ShapeDrawable().apply {
+                    intrinsicHeight = resources.getDimensionPixelOffset(spaceId)
+                    paint.color = Color.TRANSPARENT
+                }
                 setDrawable(space)
             }
 
@@ -54,7 +48,7 @@ fun RecyclerView.addSpaceItemDecorator(
                 outRect: Rect,
                 view: View,
                 parent: RecyclerView,
-                state: RecyclerView.State,
+                state: RecyclerView.State
             ) {
                 val position = parent.getChildAdapterPosition(view)
                 if (position == state.itemCount - 1) {
@@ -63,7 +57,7 @@ fun RecyclerView.addSpaceItemDecorator(
                     super.getItemOffsets(outRect, view, parent, state)
                 }
             }
-        },
+        }
     )
 }
 

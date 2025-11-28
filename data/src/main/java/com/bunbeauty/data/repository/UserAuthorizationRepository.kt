@@ -16,53 +16,48 @@ import com.bunbeauty.domain.repo.UserAuthorizationRepo
 class UserAuthorizationRepository(
     private val networkConnector: FoodDeliveryApi,
     private val dataStoreRepo: DataStoreRepo,
-    private val context: Context,
+    private val context: Context
 ) : UserAuthorizationRepo {
+
     override suspend fun login(
         username: String,
-        password: String,
-    ): LoginUser? =
-        when (
-            val result =
-                networkConnector.login(
-                    UserAuthorizationRequest(
-                        username = username,
-                        password = password,
-                    ),
+        password: String
+    ): LoginUser? {
+        return when (
+            val result = networkConnector.login(
+                UserAuthorizationRequest(
+                    username = username,
+                    password = password
                 )
+            )
         ) {
             is ApiResult.Success -> {
                 LoginUser(
                     token = result.data.token,
                     cafeUuid = result.data.cafeUuid,
-                    companyUuid = result.data.companyUuid,
+                    companyUuid = result.data.companyUuid
                 )
             }
 
             is ApiResult.Error -> null
         }
+    }
 
     override fun updateNotificationToken() {
-        val workRequest =
-            OneTimeWorkRequestBuilder<UpdateNotificationTokenWorker>()
-                .build()
-        WorkManager
-            .getInstance(context)
+        val workRequest = OneTimeWorkRequestBuilder<UpdateNotificationTokenWorker>()
+            .build()
+        WorkManager.getInstance(context)
             .enqueue(workRequest)
     }
 
     override fun updateNotificationToken(notificationToken: String) {
-        val data =
-            Data
-                .Builder()
-                .putString(UpdateNotificationTokenWorker.NOTIFICATION_TOKEN_KEY, notificationToken)
-                .build()
-        val workRequest =
-            OneTimeWorkRequestBuilder<UpdateNotificationTokenWorker>()
-                .setInputData(inputData = data)
-                .build()
-        WorkManager
-            .getInstance(context)
+        val data = Data.Builder()
+            .putString(UpdateNotificationTokenWorker.NOTIFICATION_TOKEN_KEY, notificationToken)
+            .build()
+        val workRequest = OneTimeWorkRequestBuilder<UpdateNotificationTokenWorker>()
+            .setInputData(inputData = data)
+            .build()
+        WorkManager.getInstance(context)
             .enqueue(workRequest)
     }
 

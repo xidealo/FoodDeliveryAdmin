@@ -7,14 +7,14 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 
 class SaveCategoryListUseCase(
     private val categoryRepo: CategoryRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
     suspend operator fun invoke(categoryList: List<Category>) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
         categoryRepo.saveCategoryPriority(
             token = token,
-            category = categoryList,
+            category = categoryList
         )
     }
 }

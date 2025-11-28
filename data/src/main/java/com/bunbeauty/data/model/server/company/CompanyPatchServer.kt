@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 class CompanyPatchServer(
     @SerialName("workType")
-    val workType: String,
+    val workType: String
 )

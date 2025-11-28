@@ -1,6 +1,5 @@
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import com.github.triplet.gradle.play.PlayPublisherExtension
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -66,7 +65,7 @@ android {
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
 
@@ -77,21 +76,19 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_21
-            targetCompatibility = JavaVersion.VERSION_21
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
         }
-        kotlin {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_21)
-                freeCompilerArgs.add("-Xstring-concat=inline")
-            }
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_11.toString()
+            freeCompilerArgs = listOf("-Xstring-concat=inline")
         }
         composeOptions {
             kotlinCompilerExtensionVersion = "1.5.0"
         }
         playConfigs {
             register("release") {
-                commonPlayConfig(this)
+                commonPlayConfig(this, this@Build_gradle)
             }
         }
     }
@@ -119,8 +116,8 @@ dependencies {
 
     // Firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging)
-    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
 
     // Work manager
     implementation(libs.work.runtime.ktx)
@@ -162,12 +159,15 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 }
 
-fun commonPlayConfig(playPublisherExtension: PlayPublisherExtension) {
+fun commonPlayConfig(
+    playPublisherExtension: PlayPublisherExtension,
+    buildGradle: Build_gradle
+) {
     with(playPublisherExtension) {
         track.set("production")
         defaultToAppBundles.set(true)
         userFraction.set(0.99)
-        serviceAccountCredentials.set(file("google-play-api-key.json"))
+        serviceAccountCredentials.set(buildGradle.file("google-play-api-key.json"))
         releaseStatus.set(ReleaseStatus.IN_PROGRESS)
     }
 }

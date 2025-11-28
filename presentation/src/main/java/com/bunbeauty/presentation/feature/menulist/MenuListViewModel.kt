@@ -17,32 +17,30 @@ import kotlinx.coroutines.launch
 
 class MenuListViewModel(
     private val getSeparatedMenuProductListUseCase: GetSeparatedMenuProductListUseCase,
-    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase,
+    private val updateVisibleMenuProductUseCase: UpdateVisibleMenuProductUseCase
 ) : BaseViewModel() {
-    private val mutableState = MutableStateFlow(MenuListDataState())
-    val menuState =
-        mutableState.mapToStateFlow(viewModelScope) { state ->
-            mapState(state)
-        }
 
-    private val exceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
-            mutableState.update { oldState ->
-                oldState.copy(state = MenuListDataState.State.ERROR, throwable = throwable)
-            }
+    private val mutableState = MutableStateFlow(MenuListDataState())
+    val menuState = mutableState.mapToStateFlow(viewModelScope) { state ->
+        mapState(state)
+    }
+
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        mutableState.update { oldState ->
+            oldState.copy(state = MenuListDataState.State.ERROR, throwable = throwable)
         }
+    }
 
     fun loadData() {
         viewModelScope.launch(exceptionHandler) {
             mutableState.update { oldState ->
                 oldState.copy(
-                    state =
-                        if (oldState.isEmptyMenuProductListSize) {
-                            MenuListDataState.State.LOADING
-                        } else {
-                            MenuListDataState.State.SUCCESS
-                        },
-                    throwable = null,
+                    state = if (oldState.isEmptyMenuProductListSize) {
+                        MenuListDataState.State.LOADING
+                    } else {
+                        MenuListDataState.State.SUCCESS
+                    },
+                    throwable = null
                 )
             }
 
@@ -54,7 +52,7 @@ class MenuListViewModel(
                     visibleMenuProductItems = items.visibleList.map(::toItemModel),
                     hiddenMenuProductItems = items.hiddenList.map(::toItemModel),
                     state = MenuListDataState.State.SUCCESS,
-                    isRefreshing = false,
+                    isRefreshing = false
                 )
             }
         }
@@ -65,7 +63,7 @@ class MenuListViewModel(
             mutableState.update { oldState ->
                 oldState.copy(
                     isRefreshing = true,
-                    throwable = null,
+                    throwable = null
                 )
             }
 
@@ -75,7 +73,7 @@ class MenuListViewModel(
                 oldState.copy(
                     visibleMenuProductItems = items.visibleList.map(::toItemModel),
                     hiddenMenuProductItems = items.hiddenList.map(::toItemModel),
-                    isRefreshing = false,
+                    isRefreshing = false
                 )
             }
         }
@@ -85,7 +83,7 @@ class MenuListViewModel(
         viewModelScope.launch(exceptionHandler) {
             updateVisibleMenuProductUseCase(
                 menuProductUuid = menuProductItem.uuid,
-                isVisible = !menuProductItem.visible,
+                isVisible = !menuProductItem.visible
             )
             loadData()
         }
@@ -93,38 +91,38 @@ class MenuListViewModel(
 
     fun goToEditMenuProduct(menuProductItemUuid: String) {
         mutableState.update { oldState ->
-            oldState +
-                MenuListEvent.GoToEditMenuProductList(
-                    menuProductItemUuid,
-                )
+            oldState + MenuListEvent.GoToEditMenuProductList(
+                menuProductItemUuid
+            )
         }
     }
 
-    private fun toItemModel(menuProduct: MenuProduct): MenuProductItem =
-        MenuProductItem(
+    private fun toItemModel(menuProduct: MenuProduct): MenuProductItem {
+        return MenuProductItem(
             uuid = menuProduct.uuid,
             name = menuProduct.name,
             photoLink = menuProduct.photoLink,
-            visible = menuProduct.isVisible,
+            visible = menuProduct.isVisible
         )
+    }
 
-    private fun mapState(dataState: MenuListDataState): MenuListViewState =
-        MenuListViewState(
-            state =
-                when (dataState.state) {
-                    MenuListDataState.State.SUCCESS -> {
-                        MenuListViewState.State.Success(
-                            visibleMenuProductItems = dataState.visibleMenuProductItems,
-                            hiddenMenuProductItems = dataState.hiddenMenuProductItems,
-                        )
-                    }
+    private fun mapState(dataState: MenuListDataState): MenuListViewState {
+        return MenuListViewState(
+            state = when (dataState.state) {
+                MenuListDataState.State.SUCCESS -> {
+                    MenuListViewState.State.Success(
+                        visibleMenuProductItems = dataState.visibleMenuProductItems,
+                        hiddenMenuProductItems = dataState.hiddenMenuProductItems
+                    )
+                }
 
-                    MenuListDataState.State.LOADING -> MenuListViewState.State.Loading
-                    MenuListDataState.State.ERROR -> MenuListViewState.State.Error(dataState.throwable)
-                },
+                MenuListDataState.State.LOADING -> MenuListViewState.State.Loading
+                MenuListDataState.State.ERROR -> MenuListViewState.State.Error(dataState.throwable)
+            },
             eventList = dataState.eventList,
-            isRefreshing = dataState.isRefreshing,
+            isRefreshing = dataState.isRefreshing
         )
+    }
 
     fun consumeEvents(events: List<MenuListEvent>) {
         mutableState.update { dataState ->

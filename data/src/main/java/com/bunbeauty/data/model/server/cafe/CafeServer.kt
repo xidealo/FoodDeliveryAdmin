@@ -16,5 +16,5 @@ data class CafeServer(
     val isVisible: Boolean,
     val additionalUtensils: Boolean,
     val workType: String,
-    val workload: String,
+    val workload: String
 )

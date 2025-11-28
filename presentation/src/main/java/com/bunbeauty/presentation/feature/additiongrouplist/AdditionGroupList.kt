@@ -11,31 +11,20 @@ interface AdditionGroupList {
         val hiddenAdditionGroups: List<AdditionGroup>,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
-        val error: Throwable?,
+        val error: Throwable?
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
+
         data object Init : Action
-
         data object RefreshData : Action
-
-        data class OnAdditionClick(
-            val additionUuid: String,
-        ) : Action
-
-        data class OnVisibleClick(
-            val isVisible: Boolean,
-            val uuid: String,
-        ) : Action
-
+        data class OnAdditionClick(val additionUuid: String) : Action
+        data class OnVisibleClick(val isVisible: Boolean, val uuid: String) : Action
         data object OnBackClick : Action
     }
 
     sealed interface Event : BaseEvent {
-        data class OnAdditionGroupClick(
-            val additionUuid: String,
-        ) : Event
-
+        data class OnAdditionGroupClick(val additionUuid: String) : Event
         data object Back : Event
     }
 }

@@ -27,51 +27,47 @@ fun NavigationIconCard(
     @StringRes labelStringId: Int? = null,
     label: String = "",
     elevated: Boolean = true,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
-        elevated = elevated,
+        elevated = elevated
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 12.dp,
-                    ),
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(iconId),
                 tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription =
-                    iconDescriptionStringId?.let { stringId ->
-                        stringResource(stringId)
-                    },
+                contentDescription = iconDescriptionStringId?.let { stringId ->
+                    stringResource(stringId)
+                }
             )
-            val labelText =
-                labelStringId?.let { id ->
-                    stringResource(id)
-                } ?: label
+            val labelText = labelStringId?.let { id ->
+                stringResource(id)
+            } ?: label
             Text(
-                modifier =
-                    Modifier
-                        .padding(horizontal = AdminTheme.dimensions.mediumSpace)
-                        .weight(1f),
+                modifier = Modifier
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                    .weight(1f),
                 text = labelText,
                 style = AdminTheme.typography.bodyLarge,
                 color = AdminTheme.colors.main.onSurface,
-                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.Ellipsis
             )
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(R.drawable.ic_right_arrow),
                 tint = AdminTheme.colors.main.onSurfaceVariant,
-                contentDescription = stringResource(R.string.description_common_navigate),
+                contentDescription = stringResource(R.string.description_common_navigate)
             )
         }
     }
@@ -84,7 +80,7 @@ private fun NavigationIconCardPreview() {
         NavigationIconCard(
             iconId = R.drawable.ic_menu,
             label = "Текст",
-            onClick = {},
+            onClick = {}
         )
     }
 }

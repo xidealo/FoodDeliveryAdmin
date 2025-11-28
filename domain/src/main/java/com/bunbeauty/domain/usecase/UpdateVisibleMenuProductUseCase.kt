@@ -8,18 +8,15 @@ import com.bunbeauty.domain.repo.MenuProductRepo
 
 class UpdateVisibleMenuProductUseCase(
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
-    suspend operator fun invoke(
-        menuProductUuid: String,
-        isVisible: Boolean,
-    ) {
+    suspend operator fun invoke(menuProductUuid: String, isVisible: Boolean) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
         menuProductRepo.updateMenuProduct(
             menuProductUuid = menuProductUuid,
             updateMenuProduct = UpdateMenuProduct(isVisible = isVisible),
-            token = token,
+            token = token
         ) ?: throw MenuProductNotUpdatedException()
     }
 }

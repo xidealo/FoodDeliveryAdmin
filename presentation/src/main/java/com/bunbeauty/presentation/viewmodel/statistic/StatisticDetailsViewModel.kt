@@ -10,8 +10,9 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
 
 class StatisticDetailsViewModel(
     private val stringUtil: IStringUtil,
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
+
     private val statistic: Statistic by savedStateHandle.navArg(STATISTIC_ARGS_KEY)
 
     val period: String = statistic.period

@@ -9,14 +9,12 @@ import kotlinx.collections.immutable.ImmutableList
 @Immutable
 data class OrderDetailsViewState(
     val title: String,
-    val state: State,
+    val state: State
 ) : BaseViewState {
     @Immutable
     sealed interface State {
         data object Loading : State
-
         data object Error : State
-
         data class Success(
             val dateTime: String,
             val deferredTime: HintWithValue?,
@@ -32,17 +30,17 @@ data class OrderDetailsViewState(
             val deliveryCost: String?,
             val finalCost: String,
             val saving: Boolean,
-            val statusListUI: StatusListUI,
+            val statusListUI: StatusListUI
         ) : State {
             @Immutable
             data class StatusListUI(
                 val isShown: Boolean,
-                val statusList: ImmutableList<StatusItem>,
+                val statusList: ImmutableList<StatusItem>
             ) {
                 @Immutable
                 data class StatusItem(
                     val orderStatus: OrderStatus,
-                    val status: String,
+                    val status: String
                 )
             }
         }
@@ -51,7 +49,7 @@ data class OrderDetailsViewState(
     @Immutable
     data class HintWithValue(
         val hint: String,
-        val value: String,
+        val value: String
     )
 
     @Immutable
@@ -60,6 +58,6 @@ data class OrderDetailsViewState(
         val price: String,
         val count: String,
         val cost: String,
-        val description: String?,
+        val description: String?
     )
 }

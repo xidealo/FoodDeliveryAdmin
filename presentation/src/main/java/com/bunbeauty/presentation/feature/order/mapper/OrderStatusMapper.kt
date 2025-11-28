@@ -5,10 +5,10 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.presentation.R
 
 class OrderStatusMapper(
-    private val resources: Resources,
+    private val resources: Resources
 ) {
-    fun map(orderStatus: OrderStatus): String =
-        when (orderStatus) {
+    fun map(orderStatus: OrderStatus): String {
+        return when (orderStatus) {
             OrderStatus.NOT_ACCEPTED -> resources.getString(R.string.msg_status_not_accepted)
             OrderStatus.ACCEPTED -> resources.getString(R.string.msg_status_accepted)
             OrderStatus.PREPARING -> resources.getString(R.string.msg_status_preparing)
@@ -17,4 +17,5 @@ class OrderStatusMapper(
             OrderStatus.DONE -> resources.getString(R.string.msg_status_ready)
             OrderStatus.CANCELED -> resources.getString(R.string.msg_status_canceled)
         }
+    }
 }

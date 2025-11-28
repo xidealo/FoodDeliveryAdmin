@@ -9,39 +9,30 @@ interface SelectAdditionGroup {
     data class DataState(
         val visibleSelectableAdditionGroupList: List<SelectableAdditionGroup>,
         val hiddenSelectableAdditionGroupList: List<SelectableAdditionGroup>,
-        val state: State,
+        val state: State
     ) : BaseViewDataState {
-        val hasNoAvailableAdditionGroups =
-            (visibleSelectableAdditionGroupList + hiddenSelectableAdditionGroupList).isEmpty()
 
         enum class State {
             LOADING,
             ERROR,
-            SUCCESS,
+            SUCCESS
         }
     }
 
     sealed interface Action : BaseAction {
         data class Init(
-            val selectedAdditionGroupUuid: String?,
-            val menuProductUuid: String,
-            val mainEditedAdditionGroupUuid: String?,
+            val selectedAdditionGroupUuid: String?
         ) : Action
 
         data object OnBackClick : Action
-
-        data class SelectAdditionGroupClick(
-            val uuid: String,
-            val name: String,
-        ) : Action
+        data class SelectAdditionGroupClick(val uuid: String, val name: String) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
-
         data class SelectAdditionGroupClicked(
             val additionGroupUuid: String,
-            val additionGroupName: String,
+            val additionGroupName: String
         ) : Event
     }
 }

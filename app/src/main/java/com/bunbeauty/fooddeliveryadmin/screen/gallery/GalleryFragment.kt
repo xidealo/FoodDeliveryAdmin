@@ -27,30 +27,26 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GalleryFragment : BaseComposeFragment<Gallery.DataState, GalleryViewState, Gallery.Action, Gallery.Event>() {
+class GalleryFragment :
+    BaseComposeFragment<Gallery.DataState, GalleryViewState, Gallery.Action, Gallery.Event>() {
+
     override val viewModel: GalleryViewModel by viewModel()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onAction(Gallery.Action.Init)
     }
 
     @Composable
-    override fun Screen(
-        state: GalleryViewState,
-        onAction: (Gallery.Action) -> Unit,
-    ) {
+    override fun Screen(state: GalleryViewState, onAction: (Gallery.Action) -> Unit) {
         GalleryScreen(state = state, onAction = onAction)
     }
 
     @Composable
     fun GalleryScreen(
         state: GalleryViewState,
-        onAction: (Gallery.Action) -> Unit,
+        onAction: (Gallery.Action) -> Unit
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_gallery),
@@ -61,7 +57,7 @@ class GalleryFragment : BaseComposeFragment<Gallery.DataState, GalleryViewState,
             },
             backActionClick = {
                 onAction(Gallery.Action.Back)
-            },
+            }
         ) {
             when {
                 state.isLoading -> {
@@ -73,21 +69,21 @@ class GalleryFragment : BaseComposeFragment<Gallery.DataState, GalleryViewState,
                         columns = GridCells.Fixed(count = 2),
                         contentPadding = PaddingValues(all = 16.dp),
                         horizontalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp),
-                        verticalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp),
+                        verticalArrangement = Arrangement.Absolute.spacedBy(space = 8.dp)
                     ) {
                         items(
-                            state.photos,
+                            state.photos
                         ) { photoUrl ->
                             AdminCard(
                                 elevated = false,
                                 shape = RoundedCornerShape(0.dp),
                                 onClick = {
                                     onAction(Gallery.Action.OnSelectedPhotoClick(photoUrl = photoUrl))
-                                },
+                                }
                             ) {
                                 AdminAsyncImage(
                                     imageData = ImageData.HttpUrl(photoUrl),
-                                    contentDescription = R.string.description_product,
+                                    contentDescription = R.string.description_product
                                 )
                             }
                         }
@@ -102,29 +98,28 @@ class GalleryFragment : BaseComposeFragment<Gallery.DataState, GalleryViewState,
     fun GalleryScreenPreview() {
         AdminTheme {
             GalleryScreen(
-                state =
-                    GalleryViewState(
-                        photos = persistentListOf("", "", "", ""),
-                        isLoading = false,
-                        isRefreshing = false,
-                        hasError = false,
-                    ),
-                onAction = {},
+                state = GalleryViewState(
+                    photos = persistentListOf("", "", "", ""),
+                    isLoading = false,
+                    isRefreshing = false,
+                    hasError = false
+                ),
+                onAction = {}
             )
         }
     }
 
     @Composable
-    override fun mapState(state: Gallery.DataState): GalleryViewState =
-        GalleryViewState(
-            photos =
-                state.photoList
-                    .map { photo -> photo.url }
-                    .toPersistentList(),
+    override fun mapState(state: Gallery.DataState): GalleryViewState {
+        return GalleryViewState(
+            photos = state.photoList
+                .map { photo -> photo.url }
+                .toPersistentList(),
             isLoading = state.isLoading,
             hasError = state.hasError,
-            isRefreshing = state.isRefreshing,
+            isRefreshing = state.isRefreshing
         )
+    }
 
     override fun handleEvent(event: Gallery.Event) {
         when (event) {

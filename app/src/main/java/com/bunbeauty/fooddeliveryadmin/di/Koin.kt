@@ -21,33 +21,32 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
-    startKoin {
-        appDeclaration()
-        workManagerFactory()
-        modules(
-            appModule(),
-            uiMapperModule(),
-            domainModule(),
-            useCaseModule(),
-            editCafeModule(),
-            additionGroupListModule(),
-            additionModule(),
-            galleryModule(),
-            loginModule(),
-            mainModule(),
-            orderListModule(),
-            profileModule(),
-            timeUseCaseModule(),
-            viewModelModule(),
-            workManagerModule(),
-            timeModule(),
-            presentationModule(),
-            presentationMapperModule(),
-            presentationViewModelModule(),
-            repositoryModule(),
-            mapperModule(),
-            dataSourceModule(),
-            cafeListModule(),
-        )
-    }
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
+    appDeclaration()
+    workManagerFactory()
+    modules(
+        appModule(),
+        uiMapperModule(),
+        domainModule(),
+        useCaseModule(),
+        editCafeModule(),
+        additionGroupListModule(),
+        additionModule(),
+        galleryModule(),
+        loginModule(),
+        mainModule(),
+        orderListModule(),
+        profileModule(),
+        timeUseCaseModule(),
+        viewModelModule(),
+        workManagerModule(),
+        timeModule(),
+        presentationModule(),
+        presentationMapperModule(),
+        presentationViewModelModule(),
+        repositoryModule(),
+        mapperModule(),
+        dataSourceModule(),
+        cafeListModule()
+    )
+}

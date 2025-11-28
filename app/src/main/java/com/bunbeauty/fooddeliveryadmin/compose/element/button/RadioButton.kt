@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 fun RadioButton(
     selected: Boolean,
     colors: RadioButtonColors = RadioButtonDefaults.radioButtonColors,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     RadioButton(
         selected = selected,
         onClick = onClick,
-        colors = colors,
+        colors = colors
     )
 }

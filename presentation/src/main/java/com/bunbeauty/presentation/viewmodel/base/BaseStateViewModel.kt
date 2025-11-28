@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEvent>(
-    initState: DS,
+    initState: DS
 ) : ViewModel() {
+
     protected val mutableDataState = MutableStateFlow(initState)
     val state = mutableDataState.asStateFlow()
 
@@ -18,10 +19,7 @@ abstract class BaseStateViewModel<DS : BaseDataState, A : BaseAction, E : BaseEv
         reduce(action, mutableDataState.value)
     }
 
-    protected abstract fun reduce(
-        action: A,
-        dataState: DS,
-    )
+    protected abstract fun reduce(action: A, dataState: DS)
 
     fun consumeEvents(events: List<E>) {
         mutableEvents.update { list ->

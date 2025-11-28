@@ -26,48 +26,44 @@ fun SelectableItemView(
     isClickable: Boolean,
     elevated: Boolean,
     hasDivider: Boolean = false,
-    onClick: (() -> Unit),
+    onClick: (() -> Unit)
 ) {
     AdminCard(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick,
         clickable = isClickable,
-        elevated = elevated,
+        elevated = elevated
     ) {
         Column {
             Row(
-                modifier =
-                    Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(vertical = 12.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 12.dp)
             ) {
                 Text(
-                    modifier =
-                        Modifier
-                            .weight(1f),
+                    modifier = Modifier
+                        .weight(1f),
                     text = selectableItem.title,
                     style = AdminTheme.typography.bodyLarge,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
                 if (selectableItem.isSelected) {
                     Icon(
-                        modifier =
-                            Modifier
-                                .padding(start = AdminTheme.dimensions.smallSpace)
-                                .icon16()
-                                .align(Alignment.CenterVertically),
+                        modifier = Modifier
+                            .padding(start = AdminTheme.dimensions.smallSpace)
+                            .icon16()
+                            .align(Alignment.CenterVertically),
                         painter = painterResource(R.drawable.ic_check),
                         tint = AdminTheme.colors.main.onSurfaceVariant,
-                        contentDescription = stringResource(R.string.description_ic_checked),
+                        contentDescription = stringResource(R.string.description_ic_checked)
                     )
                 }
             }
             if (hasDivider) {
                 AdminHorizontalDivider(
-                    modifier =
-                        Modifier.padding(
-                            horizontal = 16.dp,
-                        ),
+                    modifier = Modifier.padding(
+                        horizontal = 16.dp
+                    )
                 )
             }
         }
@@ -79,15 +75,14 @@ fun SelectableItemView(
 private fun SelectableItemPreview() {
     AdminTheme {
         SelectableItemView(
-            selectableItem =
-                SelectableItem(
-                    uuid = "1",
-                    title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
-                    isSelected = false,
-                ),
+            selectableItem = SelectableItem(
+                uuid = "1",
+                title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
+                isSelected = false
+            ),
             isClickable = false,
             elevated = false,
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -97,15 +92,14 @@ private fun SelectableItemPreview() {
 private fun SelectableItemSelectedPreview() {
     AdminTheme {
         SelectableItemView(
-            selectableItem =
-                SelectableItem(
-                    uuid = "1",
-                    title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
-                    isSelected = false,
-                ),
+            selectableItem = SelectableItem(
+                uuid = "1",
+                title = "улица Чапаева, д. 22аб кв. 55, 1 подъезд, 1 этаж, код домофона 555",
+                isSelected = false
+            ),
             isClickable = false,
             elevated = false,
-            onClick = {},
+            onClick = {}
         )
     }
 }

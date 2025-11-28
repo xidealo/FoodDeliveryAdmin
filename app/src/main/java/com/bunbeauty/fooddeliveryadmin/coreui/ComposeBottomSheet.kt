@@ -13,18 +13,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 @Deprecated("Use compose on screen BS like on Statisitc screen")
-abstract class ComposeBottomSheet<T : Any> : BottomSheetDialogFragment(R.layout.bottom_sheet_compose) {
+abstract class ComposeBottomSheet<T : Any> :
+    BottomSheetDialogFragment(R.layout.bottom_sheet_compose) {
+
     protected var callback: Callback<T>? = null
 
     protected val binding by viewBinding(BottomSheetComposeBinding::bind)
     protected val behavior by lazy { (dialog as BottomSheetDialog).behavior }
 
-    override fun getTheme(): Int = R.style.BottomSheetDialogStyle
+    override fun getTheme(): Int {
+        return R.style.BottomSheetDialogStyle
+    }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         behavior.state = BottomSheetBehavior.STATE_EXPANDED

@@ -1,32 +1,32 @@
 [versions]
-gradle = "8.13.0"
-kotlin = "2.2.21"
-googleServices = "4.4.4"
-navigation = "2.9.6"
-ktor = "3.3.2"
-coil = "3.3.0"
-datastorePreferences = "1.1.7"
-koin = "4.1.1"
-kotlinxDatetime = "0.7.1"
-crashlytics = "3.0.6"
-publisher = "3.12.2"
-joda = "2.14.0"
-ktLint = "14.0.1"
-tripletPlay = "3.12.2"
-room = "2.8.3"
-lifecycle = "2.9.4"
-lifecycleRuntimeCompose = "2.9.4"
-material = "1.13.0"
-viewBindingDelegate = "1.5.9"
-composeBom = "2025.11.01"
+gradle = "8.6.1"
+kotlin = "2.0.20"
+googleServices = "4.4.2"
+navigation = "2.7.0"
+ktor = "2.3.2"
+coil = "3.1.0"
+datastorePreferences = "1.0.0"
+koin = "4.0.0"
+kotlinxDatetime = "0.4.0"
+crashlytics = "2.9.2"
+publisher = "3.11.0"
+joda = "2.12.5"
+ktLint = "11.5.1"
+tripletPlay = "3.12.1"
+room = "2.6.0-alpha02"
+lifecycle = "2.6.1"
+lifecycleRuntimeCompose = "2.6.1"
+material = "1.9.0"
+viewBindingDelegate = "1.5.3"
+composeBom = "2024.05.00"
 datetime = "0.9.0"
-firebase = "34.6.0"
-mockk = "1.14.6"
-kotlinCoroutines = "1.10.2"
+firebase = "32.2.0"
+mockk = "1.12.5"
+kotlinCoroutines = "1.8.1"
 imageCpropper = "4.6.0"
-turbine = "1.2.1"
-collectionsImmutable = "0.4.0"
-work = "2.11.0"
+turbine = "1.1.0"
+collectionsImmutable = "0.3.7"
+work = "2.10.0"
 
 
 [libraries]
@@ -98,12 +98,13 @@ work-runtime-ktx = {module ="androidx.work:work-runtime-ktx", version.ref ="work
 
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
 
 # Testing
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockk" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinCoroutines" }
@@ -141,6 +142,7 @@ compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 [bundles]
 mockk = [
     "mockk",
+    "mockk-common"
 ]
 
 navigation = [

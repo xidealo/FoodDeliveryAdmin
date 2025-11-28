@@ -16,42 +16,38 @@ private const val CATEGORY_UUID = "categoryUuid"
 class EditCategoryViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getCategoryUseCase: GetCategoryUseCase,
-    private val saveEditCategoryUseCase: EditCategoryUseCase,
-) : BaseStateViewModel<EditCategoryState.DataState, EditCategoryState.Action, EditCategoryState.Event>(
-        initState =
-            EditCategoryState.DataState(
-                uuid = "",
-                name = TextFieldData.empty,
-                isLoading = false,
-                state = EditCategoryState.DataState.State.SUCCESS,
-                nameStateError = EditCategoryState.DataState.NameStateError.NO_ERROR,
-            ),
+    private val saveEditCategoryUseCase: EditCategoryUseCase
+) :
+    BaseStateViewModel<EditCategoryState.DataState, EditCategoryState.Action, EditCategoryState.Event>(
+        initState = EditCategoryState.DataState(
+            uuid = "",
+            name = TextFieldData.empty,
+            isLoading = false,
+            state = EditCategoryState.DataState.State.SUCCESS,
+            nameStateError = EditCategoryState.DataState.NameStateError.NO_ERROR
+        )
     ) {
-    override fun reduce(
-        action: EditCategoryState.Action,
-        dataState: EditCategoryState.DataState,
-    ) {
+
+    override fun reduce(action: EditCategoryState.Action, dataState: EditCategoryState.DataState) {
         when (action) {
             is EditCategoryState.Action.EditNameCategory -> editNameCategory(action.nameEditCategory)
 
             EditCategoryState.Action.Init -> loadData()
             EditCategoryState.Action.OnBackClicked -> onBackClicked()
-            EditCategoryState.Action.OnSaveEditCategoryClick ->
-                saveEditCategory(
-                    dataState.uuid,
-                    dataState.name.value,
-                )
+            EditCategoryState.Action.OnSaveEditCategoryClick -> saveEditCategory(
+                dataState.uuid,
+                dataState.name.value
+            )
         }
     }
 
     private fun editNameCategory(nameEditCategory: String) {
         setState {
             copy(
-                name =
-                    name.copy(
-                        value = nameEditCategory,
-                        isError = false,
-                    ),
+                name = name.copy(
+                    value = nameEditCategory,
+                    isError = false
+                )
             )
         }
     }
@@ -71,35 +67,33 @@ class EditCategoryViewModel(
                 setState {
                     copy(
                         uuid = category.uuid,
-                        name =
-                            name.copy(
-                                value = category.name,
-                                isError = false,
-                            ),
+                        name = name.copy(
+                            value = category.name,
+                            isError = false
+                        )
                     )
                 }
             },
             onError = {
                 // No errors
-            },
+            }
         )
     }
 
     private fun saveEditCategory(
         categoryUuid: String,
-        categoryName: String,
+        categoryName: String
     ) {
         viewModelScope.launchSafe(
             block = {
                 saveEditCategoryUseCase(
                     categoryUuid = categoryUuid,
-                    updateCategory =
-                        state.value.run {
-                            UpdateCategory(
-                                name = categoryName.trim(),
-                                priority = null,
-                            )
-                        },
+                    updateCategory = state.value.run {
+                        UpdateCategory(
+                            name = categoryName.trim(),
+                            priority = null
+                        )
+                    }
                 )
                 setState {
                     copy(isLoading = false)
@@ -107,7 +101,8 @@ class EditCategoryViewModel(
 
                 sendEvent {
                     EditCategoryState.Event.ShowUpdateCategorySuccess(
-                        categoryName = categoryName,
+                        categoryName = categoryName
+
                     )
                 }
             },
@@ -116,40 +111,34 @@ class EditCategoryViewModel(
                     when (throwable) {
                         is CategoryNameException -> {
                             copy(
-                                nameStateError =
-                                    EditCategoryState
-                                        .DataState.NameStateError.EMPTY_NAME,
-                                name =
-                                    name.copy(
-                                        isError = true,
-                                    ),
-                                isLoading = false,
+                                nameStateError = EditCategoryState
+                                    .DataState.NameStateError.EMPTY_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
                             )
                         }
 
                         is DuplicateCategoryNameException -> {
                             copy(
-                                nameStateError =
-                                    EditCategoryState
-                                        .DataState.NameStateError.DUPLICATE_NAME,
-                                name =
-                                    name.copy(
-                                        isError = true,
-                                    ),
-                                isLoading = false,
+                                nameStateError = EditCategoryState
+                                    .DataState.NameStateError.DUPLICATE_NAME,
+                                name = name.copy(
+                                    isError = true
+                                ),
+                                isLoading = false
                             )
                         }
 
-                        else ->
-                            copy(
-                                isLoading = false,
-                                nameStateError =
-                                    EditCategoryState
-                                        .DataState.NameStateError.NO_ERROR,
-                            )
+                        else -> copy(
+                            isLoading = false,
+                            nameStateError = EditCategoryState
+                                .DataState.NameStateError.NO_ERROR
+                        )
                     }
                 }
-            },
+            }
         )
     }
 }

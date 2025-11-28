@@ -8,5 +8,5 @@ class OrderServer(
     val status: String,
     val time: Long,
     val timeZone: String,
-    val deferredTime: Long?,
+    val deferredTime: Long?
 )

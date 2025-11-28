@@ -15,24 +15,23 @@ class UpdateNotificationTokenWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val dataStoreRepo: DataStoreRepo,
-    private val foodDeliveryApi: FoodDeliveryApi,
+    private val foodDeliveryApi: FoodDeliveryApi
 ) : CoroutineWorker(appContext, workerParams) {
+
     override suspend fun doWork(): Result {
         try {
             val notificationToken = inputData.getString(NOTIFICATION_TOKEN_KEY) ?: getNotificationToken()
             Log.d(NOTIFICATION_TAG, "UpdateNotificationTokenWorker: token=$notificationToken")
 
-            val token =
-                dataStoreRepo.getToken() ?: run {
-                    Log.e(NOTIFICATION_TAG, "UpdateNotificationTokenWorker: no token")
-                    return Result.failure()
-                }
+            val token = dataStoreRepo.getToken() ?: run {
+                Log.e(NOTIFICATION_TAG, "UpdateNotificationTokenWorker: no token")
+                return Result.failure()
+            }
             foodDeliveryApi.putNotificationToken(
-                updateNotificationTokenRequest =
-                    UpdateNotificationTokenRequest(
-                        token = notificationToken,
-                    ),
-                token = token,
+                updateNotificationTokenRequest = UpdateNotificationTokenRequest(
+                    token = notificationToken
+                ),
+                token = token
             )
 
             Log.d(NOTIFICATION_TAG, "UpdateNotificationTokenWorker: success")
@@ -43,11 +42,11 @@ class UpdateNotificationTokenWorker(
         }
     }
 
-    private suspend fun getNotificationToken(): String =
-        FirebaseMessaging
-            .getInstance()
+    private suspend fun getNotificationToken(): String {
+        return FirebaseMessaging.getInstance()
             .token
             .await()
+    }
 
     companion object {
         const val NOTIFICATION_TOKEN_KEY = "notification token"

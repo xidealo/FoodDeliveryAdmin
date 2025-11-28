@@ -8,17 +8,5 @@ data class Order(
     val time: Long,
     val deferredTime: Long?,
     val timeZone: String,
-    val orderStatus: OrderStatus,
-) {
-    companion object {
-        val mock =
-            Order(
-                uuid = "",
-                code = "",
-                time = 0,
-                deferredTime = null,
-                timeZone = "",
-                orderStatus = OrderStatus.NOT_ACCEPTED,
-            )
-    }
-}
+    val orderStatus: OrderStatus
+)

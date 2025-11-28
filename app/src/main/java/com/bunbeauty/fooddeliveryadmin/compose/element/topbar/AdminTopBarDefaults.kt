@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 object AdminTopBarDefaults {
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun topAppBarColors(
@@ -14,12 +15,12 @@ object AdminTopBarDefaults {
         scrolledContainerColor: Color = AdminTheme.colors.main.surface,
         navigationIconContentColor: Color = AdminTheme.colors.main.onSurface,
         titleContentColor: Color = AdminTheme.colors.main.onSurface,
-        actionIconContentColor: Color = AdminTheme.colors.main.onSurface,
+        actionIconContentColor: Color = AdminTheme.colors.main.onSurface
     ) = TopAppBarDefaults.topAppBarColors(
         containerColor = containerColor,
         scrolledContainerColor = scrolledContainerColor,
         navigationIconContentColor = navigationIconContentColor,
         titleContentColor = titleContentColor,
-        actionIconContentColor = actionIconContentColor,
+        actionIconContentColor = actionIconContentColor
     )
 }

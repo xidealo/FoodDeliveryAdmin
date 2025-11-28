@@ -4,16 +4,26 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 
-class ResourcesProvider(
-    private val context: Context,
-) : IResourcesProvider {
-    override fun getString(stringId: Int): String = context.resources.getString(stringId)
+class ResourcesProvider(private val context: Context) :
+    IResourcesProvider {
 
-    override fun getDrawable(drawableId: Int): Drawable? = ContextCompat.getDrawable(context, drawableId)
+    override fun getString(stringId: Int): String {
+        return context.resources.getString(stringId)
+    }
 
-    override fun getColor(colorId: Int): Int = ContextCompat.getColor(context, colorId)
+    override fun getDrawable(drawableId: Int): Drawable? {
+        return ContextCompat.getDrawable(context, drawableId)
+    }
 
-    override fun getDimension(dimensionId: Int): Int = context.resources.getDimensionPixelSize(dimensionId)
+    override fun getColor(colorId: Int): Int {
+        return ContextCompat.getColor(context, colorId)
+    }
 
-    override fun getDimensionFloat(dimensionId: Int): Float = getDimension(dimensionId).toFloat()
+    override fun getDimension(dimensionId: Int): Int {
+        return context.resources.getDimensionPixelSize(dimensionId)
+    }
+
+    override fun getDimensionFloat(dimensionId: Int): Float {
+        return getDimension(dimensionId).toFloat()
+    }
 }

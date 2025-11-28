@@ -13,46 +13,33 @@ interface EditAdditionGroupDataState {
         val isLoading: Boolean,
         val isVisible: Boolean,
         val isSingleChoice: Boolean,
-        val nameStateError: NameStateError,
+        val nameStateError: NameStateError
     ) : BaseDataState {
+
         enum class NameStateError {
             EMPTY_NAME,
             DUPLICATE_NAME,
-            NO_ERROR,
+            NO_ERROR
         }
 
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR,
+            ERROR
         }
     }
 
     sealed interface Action : BaseAction {
-        data class EditNameAdditionGroup(
-            val nameEditAdditionGroup: String,
-        ) : Action
-
+        data class EditNameAdditionGroup(val nameEditAdditionGroup: String) : Action
         data object OnBackClicked : Action
-
         data object Init : Action
-
         data object OnSaveEditAdditionGroupClick : Action
-
-        data class OnVisibleMenu(
-            val isVisible: Boolean,
-        ) : Action
-
-        data class OnVisibleSingleChoice(
-            val isVisibleSingleChoice: Boolean,
-        ) : Action
+        data class OnVisibleMenu(val isVisible: Boolean) : Action
+        data class OnVisibleSingleChoice(val isVisibleSingleChoice: Boolean) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
-
-        data class ShowUpdateAdditionGroupSuccess(
-            val additionGroupName: String,
-        ) : Event
+        data class ShowUpdateAdditionGroupSuccess(val additionGroupName: String) : Event
     }
 }

@@ -13,5 +13,5 @@ data class PatchCafeServer(
     val isVisible: Boolean?,
     val additionalUtensils: Boolean?,
     val workload: String?,
-    val workType: String?,
+    val workType: String?
 )

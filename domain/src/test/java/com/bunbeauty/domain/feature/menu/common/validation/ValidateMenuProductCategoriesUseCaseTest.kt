@@ -9,6 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class ValidateMenuProductCategoriesUseCaseTest {
+
     private lateinit var validateMenuProductCategoriesUseCase: ValidateMenuProductCategoriesUseCase
 
     @BeforeTest
@@ -25,18 +26,16 @@ class ValidateMenuProductCategoriesUseCaseTest {
 
     @Test
     fun `return categories when they are not empty`() {
-        val categories =
-            listOf(
-                SelectableCategory(
-                    category =
-                        Category(
-                            uuid = "uuid",
-                            name = "category",
-                            priority = 1,
-                        ),
-                    selected = true,
+        val categories = listOf(
+            SelectableCategory(
+                category = Category(
+                    uuid = "uuid",
+                    name = "category",
+                    priority = 1
                 ),
+                selected = true
             )
+        )
 
         val result = validateMenuProductCategoriesUseCase(categories = categories)
 

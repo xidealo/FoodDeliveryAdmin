@@ -13,7 +13,8 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 class CreateAdditionUseCase(
     private val additionRepo: AdditionRepo,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
+
 ) {
     data class Params(
         val name: String,
@@ -22,10 +23,12 @@ class CreateAdditionUseCase(
         val price: Int?,
         val fullName: String?,
         val priority: Int?,
-        val tag: String?,
+        val tag: String?
     )
 
-    suspend operator fun invoke(params: Params) {
+    suspend operator fun invoke(
+        params: Params
+    ) {
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
 
         when {
@@ -33,25 +36,23 @@ class CreateAdditionUseCase(
             params.newImageUri.isNullOrBlank() -> throw AdditionPhotoException()
         }
 
-        val newPhotoLink: String =
-            uploadPhotoUseCase(
-                imageUri = params.newImageUri,
-                width = ADDITION_WIDTH,
-                height = ADDITION_HEIGHT,
-            ).url
+        val newPhotoLink: String = uploadPhotoUseCase(
+            imageUri = params.newImageUri,
+            width = ADDITION_WIDTH,
+            height = ADDITION_HEIGHT
+        ).url
 
         additionRepo.createAddition(
             token = token,
-            createAdditionModel =
-                CreateAdditionModel(
-                    name = params.name,
-                    isVisible = params.isVisible,
-                    price = params.price,
-                    photoLink = newPhotoLink,
-                    fullName = params.fullName,
-                    priority = params.priority,
-                    tag = params.tag,
-                ),
+            createAdditionModel = CreateAdditionModel(
+                name = params.name,
+                isVisible = params.isVisible,
+                price = params.price,
+                photoLink = newPhotoLink,
+                fullName = params.fullName,
+                priority = params.priority,
+                tag = params.tag
+            )
         )
     }
 }

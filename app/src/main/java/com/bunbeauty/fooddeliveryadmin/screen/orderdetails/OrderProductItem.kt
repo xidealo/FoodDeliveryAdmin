@@ -16,22 +16,21 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 @Composable
 fun OrderProductItem(
     product: OrderDetailsViewState.Product,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     AdminCard(
         modifier = modifier,
-        clickable = false,
+        clickable = false
     ) {
         Column(
-            modifier =
-                Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(vertical = 8.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
         ) {
             Text(
                 text = product.title,
                 style = AdminTheme.typography.titleSmall.bold,
-                color = AdminTheme.colors.main.onSurface,
+                color = AdminTheme.colors.main.onSurface
             )
 
             product.description?.let { additions ->
@@ -39,28 +38,28 @@ fun OrderProductItem(
                     modifier = Modifier.padding(top = 4.dp),
                     text = additions,
                     style = AdminTheme.typography.bodySmall,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
             }
             Row(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 8.dp)
             ) {
                 Text(
                     text = product.price,
                     style = AdminTheme.typography.bodySmall.bold,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
                     text = product.count,
                     style = AdminTheme.typography.bodySmall,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = product.cost,
                     style = AdminTheme.typography.bodySmall.bold,
-                    color = AdminTheme.colors.main.onSurface,
+                    color = AdminTheme.colors.main.onSurface
                 )
             }
         }
@@ -71,13 +70,12 @@ fun OrderProductItem(
 @Composable
 private fun OrderProductItemPreview() {
     OrderProductItem(
-        product =
-            OrderDetailsViewState.Product(
-                title = "Хот-дог французский с куриной колбаской",
-                price = "99 ₽",
-                count = "× 2",
-                cost = "198 ₽",
-                description = "Необычный лаваш • Добавка 1 • Добавка 2",
-            ),
+        product = OrderDetailsViewState.Product(
+            title = "Хот-дог французский с куриной колбаской",
+            price = "99 ₽",
+            count = "× 2",
+            cost = "198 ₽",
+            description = "Необычный лаваш • Добавка 1 • Добавка 2"
+        )
     )
 }

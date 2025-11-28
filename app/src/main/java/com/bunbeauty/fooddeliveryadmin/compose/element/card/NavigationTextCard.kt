@@ -30,92 +30,84 @@ fun NavigationTextCard(
     clickable: Boolean = true,
     elevated: Boolean = true,
     hasDivider: Boolean = false,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Column {
         AdminCard(
             modifier = modifier,
             clickable = clickable,
-            border =
-                if (isError) {
-                    BorderStroke(
-                        width = 2.dp,
-                        color = AdminTheme.colors.main.error,
-                    )
-                } else {
-                    null
-                },
+            border = if (isError) {
+                BorderStroke(
+                    width = 2.dp,
+                    color = AdminTheme.colors.main.error
+                )
+            } else {
+                null
+            },
             onClick = onClick,
-            elevated = elevated,
+            elevated = elevated
         ) {
             Row(
-                modifier =
-                    Modifier.padding(
-                        horizontal = 16.dp,
-                        vertical =
-                            if (valueText == null) {
-                                16.dp
-                            } else {
-                                12.dp
-                            },
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = if (valueText == null) {
+                        16.dp
+                    } else {
+                        12.dp
+                    }
+                ),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = labelText,
-                        style =
-                            if (valueText == null) {
-                                AdminTheme.typography.bodyLarge
-                            } else {
-                                AdminTheme.typography.labelSmall.medium
-                            },
-                        color =
-                            if (valueText == null) {
-                                AdminTheme.colors.main.onSurface
-                            } else {
-                                AdminTheme.colors.main.onSurfaceVariant
-                            },
+                        style = if (valueText == null) {
+                            AdminTheme.typography.bodyLarge
+                        } else {
+                            AdminTheme.typography.labelSmall.medium
+                        },
+                        color = if (valueText == null) {
+                            AdminTheme.colors.main.onSurface
+                        } else {
+                            AdminTheme.colors.main.onSurfaceVariant
+                        }
                     )
                     valueText?.let { text ->
                         Text(
                             text = text,
                             style = AdminTheme.typography.bodyLarge,
-                            color = AdminTheme.colors.main.onSurface,
+                            color = AdminTheme.colors.main.onSurface
                         )
                     }
                 }
                 Icon(
-                    modifier =
-                        Modifier
-                            .size(16.dp)
-                            .padding(start = 4.dp),
+                    modifier = Modifier
+                        .size(16.dp)
+                        .padding(start = 4.dp),
                     painter = painterResource(R.drawable.ic_right_arrow),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
-                    contentDescription = stringResource(R.string.description_common_navigate),
+                    contentDescription = stringResource(R.string.description_common_navigate)
                 )
             }
         }
         if (isError) {
             errorText?.let {
                 Text(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, top = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 4.dp),
                     text = errorText,
                     style = AdminTheme.typography.bodySmall,
-                    color = AdminTheme.colors.main.error,
+                    color = AdminTheme.colors.main.error
                 )
             }
         }
 
         if (hasDivider) {
             AdminHorizontalDivider(
-                modifier =
-                    Modifier.padding(
-                        horizontal = 16.dp,
-                    ),
+                modifier = Modifier.padding(
+                    horizontal = 16.dp
+                )
             )
         }
     }
@@ -129,7 +121,7 @@ private fun TextNavigationCardPreview() {
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
             labelText = "Способ оплаты",
             valueText = "Наличными",
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -142,7 +134,7 @@ private fun TextNavigationCardNoHintPreview() {
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
             labelText = "Способ оплаты",
             valueText = null,
-            onClick = {},
+            onClick = {}
         )
     }
 }

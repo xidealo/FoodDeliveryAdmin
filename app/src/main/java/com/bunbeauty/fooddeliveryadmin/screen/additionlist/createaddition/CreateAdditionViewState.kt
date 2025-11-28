@@ -13,5 +13,5 @@ data class CreateAdditionViewState(
     val tag: String,
     val isVisible: Boolean,
     val isLoading: Boolean,
-    val imageFieldUi: ImageFieldUi,
+    val imageFieldUi: ImageFieldUi
 ) : BaseViewState

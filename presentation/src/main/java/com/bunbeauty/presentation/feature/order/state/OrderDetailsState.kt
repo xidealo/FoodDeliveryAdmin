@@ -13,45 +13,28 @@ interface OrderDetailsState {
         val code: String,
         val orderDetails: OrderDetails?,
         val saving: Boolean,
-        val showStatusList: Boolean,
+        val showStatusList: Boolean
     ) : BaseDataState {
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR,
+            ERROR
         }
     }
 
     sealed interface Action : BaseAction {
-        data class Init(
-            val orderUuid: String,
-            val orderCode: String,
-        ) : Action
-
+        data class Init(val orderUuid: String, val orderCode: String) : Action
         data object OnStatusClicked : Action
-
         data object OnCloseStatusClicked : Action
-
-        data class OnSelectStatusClicked(
-            val status: OrderStatus,
-        ) : Action
-
+        data class OnSelectStatusClicked(val status: OrderStatus) : Action
         data object OnSaveClicked : Action
-
         data object OnBackClicked : Action
     }
 
     sealed interface Event : BaseEvent {
         data object OpenWarningDialogEvent : Event
-
-        data class ShowErrorMessage(
-            @StringRes val messageId: Int,
-        ) : Event
-
+        data class ShowErrorMessage(@StringRes val messageId: Int) : Event
         data object GoBackEvent : Event
-
-        data class SavedEvent(
-            val orderCode: String,
-        ) : Event
+        data class SavedEvent(val orderCode: String) : Event
     }
 }

@@ -14,59 +14,56 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class UploadPhotoUseCaseTest {
+
     private val imageUri = "uri"
     private val username = "username"
     private val width = 1000
     private val height = 667
 
     private val photoRepo: PhotoRepo = mockk()
-    private val getUsernameUseCase: GetUsernameUseCase =
-        mockk {
-            coEvery { this@mockk.invoke() } returns username
-        }
+    private val getUsernameUseCase: GetUsernameUseCase = mockk {
+        coEvery { this@mockk.invoke() } returns username
+    }
     private lateinit var uploadPhotoUseCase: UploadPhotoUseCase
 
     @BeforeTest
     fun setup() {
-        uploadPhotoUseCase =
-            UploadPhotoUseCase(
-                photoRepo = photoRepo,
-                getUsernameUseCase = getUsernameUseCase,
-            )
+        uploadPhotoUseCase = UploadPhotoUseCase(
+            photoRepo = photoRepo,
+            getUsernameUseCase = getUsernameUseCase
+        )
     }
 
     @Test
-    fun `throws MenuProductUploadingImageException when uploading failed`() =
-        runTest {
-            coEvery {
-                photoRepo.uploadPhoto(
-                    uri = imageUri,
-                    username = username,
-                    width = width,
-                    height = height,
-                )
-            } returns null
+    fun `throws MenuProductUploadingImageException when uploading failed`() = runTest {
+        coEvery {
+            photoRepo.uploadPhoto(
+                uri = imageUri,
+                username = username,
+                width = width,
+                height = height
+            )
+        } returns null
 
-            assertFailsWith<MenuProductUploadingImageException> {
-                uploadPhotoUseCase(imageUri = imageUri)
-            }
+        assertFailsWith<MenuProductUploadingImageException> {
+            uploadPhotoUseCase(imageUri = imageUri)
         }
+    }
 
     @Test
-    fun `return photo when photo successfully uploaded`() =
-        runTest {
-            val photo = Photo.mock.copy(url = "url")
-            coEvery {
-                photoRepo.uploadPhoto(
-                    uri = imageUri,
-                    username = username,
-                    width = width,
-                    height = height,
-                )
-            } returns photo
+    fun `return photo when photo successfully uploaded`() = runTest {
+        val photo = Photo(url = "url")
+        coEvery {
+            photoRepo.uploadPhoto(
+                uri = imageUri,
+                username = username,
+                width = width,
+                height = height
+            )
+        } returns photo
 
-            val result = uploadPhotoUseCase(imageUri = imageUri)
+        val result = uploadPhotoUseCase(imageUri = imageUri)
 
-            assertEquals(photo, result)
-        }
+        assertEquals(photo, result)
+    }
 }

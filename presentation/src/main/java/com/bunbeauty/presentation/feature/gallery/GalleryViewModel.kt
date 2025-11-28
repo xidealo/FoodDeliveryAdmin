@@ -8,20 +8,17 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class GalleryViewModel(
     private val getPhotoListUseCase: GetPhotoListUseCase,
-    private val fetchPhotoListUseCase: FetchPhotoListUseCase,
+    private val fetchPhotoListUseCase: FetchPhotoListUseCase
 ) : BaseStateViewModel<Gallery.DataState, Gallery.Action, Gallery.Event>(
-        initState =
-            Gallery.DataState(
-                photoList = listOf(),
-                isLoading = true,
-                hasError = false,
-                isRefreshing = false,
-            ),
-    ) {
-    override fun reduce(
-        action: Gallery.Action,
-        dataState: Gallery.DataState,
-    ) {
+    initState = Gallery.DataState(
+        photoList = listOf(),
+        isLoading = true,
+        hasError = false,
+        isRefreshing = false
+    )
+) {
+
+    override fun reduce(action: Gallery.Action, dataState: Gallery.DataState) {
         when (action) {
             Gallery.Action.Init -> loadData()
             Gallery.Action.Refresh -> refreshData()
@@ -39,7 +36,7 @@ class GalleryViewModel(
                     copy(
                         photoList = getPhotoListUseCase(),
                         isLoading = false,
-                        hasError = false,
+                        hasError = false
                     )
                 }
             },
@@ -47,17 +44,17 @@ class GalleryViewModel(
                 setState {
                     copy(
                         hasError = true,
-                        isLoading = false,
+                        isLoading = false
                     )
                 }
-            },
+            }
         )
     }
 
     private fun refreshData() {
         setState {
             copy(
-                isRefreshing = true,
+                isRefreshing = true
             )
         }
         viewModelScope.launchSafe(
@@ -67,7 +64,7 @@ class GalleryViewModel(
                         photoList = fetchPhotoListUseCase(),
                         isLoading = false,
                         isRefreshing = false,
-                        hasError = false,
+                        hasError = false
                     )
                 }
             },
@@ -75,10 +72,10 @@ class GalleryViewModel(
                 setState {
                     copy(
                         hasError = true,
-                        isRefreshing = false,
+                        isRefreshing = false
                     )
                 }
-            },
+            }
         )
     }
 }

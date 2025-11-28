@@ -12,11 +12,11 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 fun AdminHorizontalDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = 1.dp,
-    color: Color = AdminTheme.colors.main.stroke,
+    color: Color = AdminTheme.colors.main.stroke
 ) {
     HorizontalDivider(
         modifier = modifier,
         thickness = thickness,
-        color = color,
+        color = color
     )
 }

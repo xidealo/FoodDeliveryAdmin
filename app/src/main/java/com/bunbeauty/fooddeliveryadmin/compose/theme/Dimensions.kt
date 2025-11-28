@@ -19,14 +19,19 @@ data class AdminDimensions(
     val productImageSmallWidth: Dp = 108.dp,
     val blurHeight: Dp = 16.dp,
     val smallProgressBarSize: Dp = 24.dp,
+
     // new
     val cardElevation: Dp = 2.dp,
     val surfaceElevation: Dp = 4.dp,
+
     val buttonRadius: Dp = 20.dp,
     val cardRadius: Dp = 8.dp,
     val bottomSheetRadius: Dp = 16.dp,
+
     val screenContentSpace: Dp = 16.dp,
+
     val codeWidth: Dp = 56.dp,
+
     val scrollScreenBottomSpace: Dp = ButtonDefaults.MinHeight + 32.dp,
-    val snackBarPadding: Dp = ButtonDefaults.MinHeight + 12.dp,
+    val snackBarPadding: Dp = ButtonDefaults.MinHeight + 12.dp
 )

@@ -12,27 +12,25 @@ import androidx.compose.runtime.remember
 @Composable
 fun AdminTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
-    val colors =
-        if (isDarkTheme) {
-            LightAdminColors
-        } else {
-            LightAdminColors
-        }
-    val rememberedColors =
-        remember {
-            colors.copy()
-        }.apply {
-            update(colors)
-        }
+    val colors = if (isDarkTheme) {
+        LightAdminColors
+    } else {
+        LightAdminColors
+    }
+    val rememberedColors = remember {
+        colors.copy()
+    }.apply {
+        update(colors)
+    }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null,
         LocalAdminColors provides rememberedColors,
         LocalAdminDimensions provides AdminDimensions(),
         LocalAdminTypography provides AdminTypography(),
-        content = content,
+        content = content
     )
 }
 

@@ -28,5 +28,5 @@ data class MenuProductPostServer(
     @SerialName("isVisible")
     val isVisible: Boolean,
     @SerialName("isRecommended")
-    val isRecommended: Boolean,
+    val isRecommended: Boolean
 )

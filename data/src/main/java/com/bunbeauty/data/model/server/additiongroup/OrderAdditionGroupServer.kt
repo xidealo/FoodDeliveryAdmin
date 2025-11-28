@@ -10,5 +10,5 @@ data class OrderAdditionGroupServer(
     @SerialName("name")
     val name: String,
     @SerialName("priority")
-    val priority: Int,
+    val priority: Int
 )

@@ -15,9 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
-
-private const val MAX_TITLE_LINES = 1
+import com.bunbeauty.fooddeliveryadmin.compose.theme.bold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,29 +23,29 @@ fun AdminTopBar(
     title: String?,
     backActionClick: (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior,
-    actions: List<AdminTopBarAction> = emptyList(),
+    actions: List<AdminTopBarAction> = emptyList()
 ) {
     Box {
         TopAppBar(
             colors = AdminTopBarDefaults.topAppBarColors(),
             title = {
                 Text(
-                    text = title.orEmpty(),
-                    maxLines = MAX_TITLE_LINES,
-                    style = AdminTheme.typography.titleMedium.medium,
-                    overflow = TextOverflow.Ellipsis,
+                    text = title ?: "",
+                    maxLines = 1,
+                    style = AdminTheme.typography.titleMedium.bold,
+                    overflow = TextOverflow.Ellipsis
                 )
             },
             navigationIcon = {
                 backActionClick?.let {
                     IconButton(
-                        onClick = backActionClick,
+                        onClick = backActionClick
                     ) {
                         Icon(
                             modifier = Modifier.size(16.dp),
                             painter = painterResource(id = R.drawable.ic_arrow_left),
                             tint = AdminTheme.colors.main.onSurface,
-                            contentDescription = null,
+                            contentDescription = null
                         )
                     }
                 }
@@ -57,7 +55,7 @@ fun AdminTopBar(
                     AdminAction(action)
                 }
             },
-            scrollBehavior = scrollBehavior,
+            scrollBehavior = scrollBehavior
         )
     }
 }
@@ -65,13 +63,13 @@ fun AdminTopBar(
 @Composable
 private fun AdminAction(action: AdminTopBarAction) {
     IconButton(
-        onClick = action.onClick,
+        onClick = action.onClick
     ) {
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(16.dp),
             painter = painterResource(id = action.iconId),
-            tint = AdminTheme.colors.main.onSurface,
-            contentDescription = null,
+            tint = AdminTheme.colors.main.onSurfaceVariant,
+            contentDescription = null
         )
     }
 }

@@ -29,8 +29,9 @@ class UpdateMenuProductUseCase(
     private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val deletePhotoUseCase: DeletePhotoUseCase,
     private val menuProductRepo: MenuProductRepo,
-    private val dataStoreRepo: DataStoreRepo,
+    private val dataStoreRepo: DataStoreRepo
 ) {
+
     data class Params(
         val uuid: String,
         val name: String,
@@ -44,22 +45,20 @@ class UpdateMenuProductUseCase(
         val isVisible: Boolean,
         val isRecommended: Boolean,
         val photoLink: String?,
-        val newImageUri: String?,
+        val newImageUri: String?
     )
 
     suspend operator fun invoke(params: Params) {
         val name = validateMenuProductNameUseCase(name = params.name)
         val newPrice = validateMenuProductNewPriceUseCase(newPrice = params.newPrice)
-        val oldPrice =
-            validateMenuProductOldPriceUseCase(
-                oldPrice = params.oldPrice,
-                newPrice = newPrice,
-            ) ?: 0
-        val nutrition =
-            validateMenuProductNutritionUseCase(
-                nutrition = params.nutrition,
-                units = params.units,
-            ) ?: 0
+        val oldPrice = validateMenuProductOldPriceUseCase(
+            oldPrice = params.oldPrice,
+            newPrice = newPrice
+        ) ?: 0
+        val nutrition = validateMenuProductNutritionUseCase(
+            nutrition = params.nutrition,
+            units = params.units
+        ) ?: 0
         val description = validateMenuProductDescriptionUseCase(description = params.description)
         val selectableCategories =
             validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
@@ -82,24 +81,22 @@ class UpdateMenuProductUseCase(
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         menuProductRepo.updateMenuProduct(
             menuProductUuid = params.uuid,
-            updateMenuProduct =
-                UpdateMenuProduct(
-                    name = name,
-                    newPrice = newPrice,
-                    oldPrice = oldPrice,
-                    nutrition = nutrition,
-                    utils = params.units,
-                    description = description,
-                    comboDescription = params.comboDescription.trim(),
-                    photoLink = newPhotoLink,
-                    isVisible = params.isVisible,
-                    isRecommended = params.isRecommended,
-                    categories =
-                        selectableCategories.map { category ->
-                            category.category.uuid
-                        },
-                ),
-            token = token,
+            updateMenuProduct = UpdateMenuProduct(
+                name = name,
+                newPrice = newPrice,
+                oldPrice = oldPrice,
+                nutrition = nutrition,
+                utils = params.units,
+                description = description,
+                comboDescription = params.comboDescription.trim(),
+                photoLink = newPhotoLink,
+                isVisible = params.isVisible,
+                isRecommended = params.isRecommended,
+                categories = selectableCategories.map { category ->
+                    category.category.uuid
+                }
+            ),
+            token = token
         ) ?: throw MenuProductNotUpdatedException()
     }
 }

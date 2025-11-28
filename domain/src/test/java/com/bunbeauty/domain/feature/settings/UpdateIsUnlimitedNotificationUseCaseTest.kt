@@ -13,18 +13,16 @@ class UpdateIsUnlimitedNotificationUseCaseTest {
     private val updateIsUnlimitedNotificationUseCase = UpdateIsUnlimitedNotificationUseCase(settingsRepo)
 
     @Test
-    fun `invoke should call updateUnlimitedNotification with true`() =
-        runTest {
-            updateIsUnlimitedNotificationUseCase.invoke(isEnabled = true)
+    fun `invoke should call updateUnlimitedNotification with true`() = runTest {
+        updateIsUnlimitedNotificationUseCase.invoke(isEnabled = true)
 
-            coVerify { settingsRepo.updateUnlimitedNotification(isEnabled = true) }
-        }
+        coVerify { settingsRepo.updateUnlimitedNotification(isEnabled = true) }
+    }
 
     @Test
-    fun `invoke should call updateUnlimitedNotification with false`() =
-        runTest {
-            updateIsUnlimitedNotificationUseCase.invoke(isEnabled = false)
+    fun `invoke should call updateUnlimitedNotification with false`() = runTest {
+        updateIsUnlimitedNotificationUseCase.invoke(isEnabled = false)
 
-            coVerify { settingsRepo.updateUnlimitedNotification(isEnabled = false) }
-        }
+        coVerify { settingsRepo.updateUnlimitedNotification(isEnabled = false) }
+    }
 }
