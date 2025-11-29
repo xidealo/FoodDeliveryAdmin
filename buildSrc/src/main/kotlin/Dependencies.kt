@@ -1,11 +1,11 @@
 object Application {
     const val versionMajor = 2
     const val versionMinor = 0
-    const val versionPatch = 0
+    const val versionPatch = 3
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
-    const val versionCode = 200
+    const val versionCode = 203
 }
 
 object Namespace {
