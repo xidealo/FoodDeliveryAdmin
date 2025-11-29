@@ -86,9 +86,6 @@ android {
                 freeCompilerArgs.add("-Xstring-concat=inline")
             }
         }
-        composeOptions {
-            kotlinCompilerExtensionVersion = "1.5.0"
-        }
         playConfigs {
             register("release") {
                 commonPlayConfig(this)
