@@ -38,12 +38,12 @@ gradlePlugin {
         register("androidFeature") {
             id = "com.bunbeauty.android.feature"
             version = "1.0"
-            implementationClass = "AndroidFeatureConventionPlugin"
+            implementationClass = "com.bunbeauty.conventions.AndroidFeatureConventionPlugin"
         }
         register("androidApplication") {
             id = "com.bunbeauty.android.application"
             version = "1.0"
-            implementationClass = "AndroidApplicationConventionPlugin"
+            implementationClass = "com.bunbeauty.conventions.AndroidApplicationConventionPlugin"
         }
     }
 }
