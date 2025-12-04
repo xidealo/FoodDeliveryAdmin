@@ -1,4 +1,7 @@
+package com.bunbeauty.conventions
+
 import com.android.build.api.dsl.ApplicationExtension
+import com.bunbeauty.AndroidSdk
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,11 +18,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                compileSdk = AndroidSdk.compile
-                defaultConfig.targetSdk = AndroidSdk.target
+                compileSdk = AndroidSdk.COMPILE
+                defaultConfig.targetSdk = AndroidSdk.TARGET
 
                 defaultConfig {
-                    minSdk = AndroidSdk.min
+                    minSdk = AndroidSdk.MIN
                 }
 
                 compileOptions {

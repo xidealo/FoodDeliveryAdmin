@@ -1,4 +1,4 @@
-package ru.wb.wms
+package com.bunbeauty
 
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import org.gradle.api.Project

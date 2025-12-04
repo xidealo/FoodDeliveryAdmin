@@ -1,12 +1,15 @@
+package com.bunbeauty.conventions
+
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
+import com.bunbeauty.AndroidSdk
+import com.bunbeauty.configureKotlinAndroid
+import com.bunbeauty.disableUnnecessaryAndroidTests
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
-import ru.wb.wms.configureKotlinAndroid
-import ru.wb.wms.disableUnnecessaryAndroidTests
 
 class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -19,7 +22,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = AndroidSdk.target
+                defaultConfig.targetSdk = AndroidSdk.TARGET
             }
             extensions.configure<LibraryAndroidComponentsExtension> {
                 disableUnnecessaryAndroidTests(target)
