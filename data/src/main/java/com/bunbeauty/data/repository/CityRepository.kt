@@ -2,14 +2,12 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.extension.getNullableResult
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.dao.CityDao
 import com.bunbeauty.data.mapper.city.CityMapper
 import com.bunbeauty.domain.model.city.City
 import com.bunbeauty.domain.repo.CityRepo
 
 class CityRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
-    private val cityDao: CityDao,
     private val cityMapper: CityMapper,
 ) : CityRepo {
     var cityListCache: List<City>? = null
@@ -31,9 +29,8 @@ class CityRepository(
         return if (cache == null) {
             val cityList = getRemoteCityList(companyUuid)
             if (cityList == null) {
-                getLocalCityList()
+                emptyList()
             } else {
-                saveCityListLocally(cityList)
                 cityListCache = cityList
                 cityList
             }
@@ -48,12 +45,4 @@ class CityRepository(
             .getNullableResult { cityServerList ->
                 cityServerList.results.map(cityMapper::map)
             }
-
-    suspend fun getLocalCityList(): List<City> = cityDao.getCityList().map(cityMapper::map)
-
-    suspend fun saveCityListLocally(cityList: List<City>) {
-        cityDao.insertAll(
-            cityList.map(cityMapper::map),
-        )
-    }
 }

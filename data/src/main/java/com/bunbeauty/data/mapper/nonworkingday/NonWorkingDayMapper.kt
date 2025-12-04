@@ -1,6 +1,5 @@
 package com.bunbeauty.data.mapper.nonworkingday
 
-import com.bunbeauty.data.model.entity.NonWorkingDayEntity
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.domain.model.nonworkingday.NewNonWorkingDay
@@ -10,26 +9,6 @@ class NonWorkingDayMapper {
     fun toNonWorkingDay(nonWorkingDayServer: NonWorkingDayServer): NonWorkingDay =
         nonWorkingDayServer.run {
             NonWorkingDay(
-                uuid = uuid,
-                timestamp = timestamp,
-                cafeUuid = cafeUuid,
-                isVisible = isVisible,
-            )
-        }
-
-    fun toNonWorkingDay(nonWorkingDayEntity: NonWorkingDayEntity): NonWorkingDay =
-        nonWorkingDayEntity.run {
-            NonWorkingDay(
-                uuid = uuid,
-                timestamp = timestamp,
-                cafeUuid = cafeUuid,
-                isVisible = isVisible,
-            )
-        }
-
-    fun toNonWorkingDayEntity(nonWorkingDay: NonWorkingDay): NonWorkingDayEntity =
-        nonWorkingDay.run {
-            NonWorkingDayEntity(
                 uuid = uuid,
                 timestamp = timestamp,
                 cafeUuid = cafeUuid,

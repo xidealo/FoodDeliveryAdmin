@@ -1,14 +1,11 @@
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import com.github.triplet.gradle.play.PlayPublisherExtension
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.admin.android.application)
     alias(libs.plugins.compose)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.firebase)
@@ -19,11 +16,8 @@ plugins {
 android {
     namespace = Namespace.app
 
-    compileSdk = AndroidSdk.compile
     defaultConfig {
         applicationId = Application.applicationId
-        minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
         versionCode = Application.versionCode
         versionName = Application.versionName
         signingConfig = signingConfigs.getByName("debug")
@@ -76,19 +70,6 @@ android {
             buildConfig = true
         }
 
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_21
-            targetCompatibility = JavaVersion.VERSION_21
-        }
-        kotlin {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_21)
-                freeCompilerArgs.add("-Xstring-concat=inline")
-            }
-        }
-        composeOptions {
-            kotlinCompilerExtensionVersion = "1.5.0"
-        }
         playConfigs {
             register("release") {
                 commonPlayConfig(this)

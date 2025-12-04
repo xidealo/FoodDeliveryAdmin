@@ -15,9 +15,3 @@ object Namespace {
     const val data = "com.bunbeauty.data"
     const val common = "com.bunbeauty.common"
 }
-
-object AndroidSdk {
-    const val min = 26
-    const val compile = 36
-    const val target = compile
-}

@@ -1,8 +1,6 @@
 package com.bunbeauty.data.di
 
 import android.util.Log
-import androidx.room.Room
-import com.bunbeauty.data.LocalDatabase
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
@@ -18,22 +16,11 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import io.ktor.client.plugins.logging.Logger as KtorLogger
 
 fun dataSourceModule() =
     module {
-        single {
-            Room
-                .databaseBuilder(
-                    androidContext(),
-                    LocalDatabase::class.java,
-                    "EldDatabase",
-                ).fallbackToDestructiveMigration()
-                .build()
-        }
-
         single {
             Json {
                 isLenient = false
@@ -76,14 +63,5 @@ fun dataSourceModule() =
                     }
                 }
             }
-        }
-
-        // DAO
-
-        single {
-            get<LocalDatabase>().cityDao()
-        }
-        single {
-            get<LocalDatabase>().nonWorkingDayDao()
         }
     }
