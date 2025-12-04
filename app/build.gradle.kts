@@ -7,7 +7,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.admin.android.application)
     alias(libs.plugins.compose)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.firebase)
@@ -72,16 +71,6 @@ android {
             buildConfig = true
         }
 
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_21
-            targetCompatibility = JavaVersion.VERSION_21
-        }
-        kotlin {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_21)
-                freeCompilerArgs.add("-Xstring-concat=inline")
-            }
-        }
         playConfigs {
             register("release") {
                 commonPlayConfig(this)

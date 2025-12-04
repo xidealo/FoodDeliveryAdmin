@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.admin.android.feature)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
 }
 

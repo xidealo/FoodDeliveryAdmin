@@ -3,7 +3,8 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -14,30 +15,23 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                compileSdk = 36
-                defaultConfig.targetSdk = 36
+                compileSdk = AndroidSdk.compile
+                defaultConfig.targetSdk = AndroidSdk.target
 
                 defaultConfig {
-                    minSdk = 26
+                    minSdk = AndroidSdk.min
                 }
-
-//                buildTypes {
-//                    create("stage") {
-//                        initWith(getByName("debug"))
-//                        isMinifyEnabled = false
-//                    }
-//                }
 
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_21
                     targetCompatibility = JavaVersion.VERSION_21
                 }
-            }
 
-            // configureKotlin()
-
-            dependencies {
-                //  add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
+                tasks.withType<KotlinCompile>().configureEach {
+                    compilerOptions {
+                        freeCompilerArgs.add("-Xstring-concat=inline")
+                    }
+                }
             }
         }
     }
