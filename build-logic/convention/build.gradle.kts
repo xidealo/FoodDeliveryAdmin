@@ -12,6 +12,7 @@ java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
+
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_21.toString()
@@ -23,7 +24,6 @@ dependencies {
     compileOnly(libs.gradle)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.plugin)
-    //implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 tasks {
@@ -35,7 +35,7 @@ tasks {
 
 gradlePlugin {
     plugins {
-        register("androidApplicationFeature") {
+        register("androidFeature") {
             id = "com.bunbeauty.android.feature"
             version = "1.0"
             implementationClass = "AndroidFeatureConventionPlugin"

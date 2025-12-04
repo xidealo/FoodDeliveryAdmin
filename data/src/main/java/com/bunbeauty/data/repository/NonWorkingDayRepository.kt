@@ -1,7 +1,6 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.data.FoodDeliveryApi
-import com.bunbeauty.data.dao.NonWorkingDayDao
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.extensions.map
 import com.bunbeauty.data.mapper.nonworkingday.NonWorkingDayMapper
@@ -12,7 +11,6 @@ import com.bunbeauty.domain.repo.NonWorkingDayRepo
 
 class NonWorkingDayRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
-    private val nonWorkingDayDao: NonWorkingDayDao,
     private val nonWorkingDayMapper: NonWorkingDayMapper,
 ) : NonWorkingDayRepo {
     private var nonWorkingDayMapCache: MutableMap<String, List<NonWorkingDay>> = mutableMapOf()
@@ -22,9 +20,8 @@ class NonWorkingDayRepository(
         return if (cache == null) {
             val nonWorkingDayList = getRemoteNonWorkingDayList(cafeUuid)
             if (nonWorkingDayList == null) {
-                getLocalNonWorkingDayList(cafeUuid)
+                emptyList()
             } else {
-                saveNonWorkingDayListLocally(nonWorkingDayList)
                 nonWorkingDayMapCache[cafeUuid] = nonWorkingDayList
                 nonWorkingDayList
             }
@@ -44,7 +41,6 @@ class NonWorkingDayRepository(
             ).dataOrNull()
             ?.let { nonWorkingDayServer ->
                 val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
-                nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
                 nonWorkingDayMapCache[nonWorkingDay.cafeUuid] =
                     nonWorkingDayMapCache[nonWorkingDay.cafeUuid].orEmpty() + nonWorkingDay
 
@@ -64,7 +60,6 @@ class NonWorkingDayRepository(
             ).dataOrNull()
             ?.let { nonWorkingDayServer ->
                 val nonWorkingDay = nonWorkingDayMapper.toNonWorkingDay(nonWorkingDayServer)
-                nonWorkingDayDao.insert(nonWorkingDayMapper.toNonWorkingDayEntity(nonWorkingDay))
                 nonWorkingDayMapCache[nonWorkingDay.cafeUuid] = getUpdatedCache(nonWorkingDay)
 
                 nonWorkingDay
@@ -89,13 +84,4 @@ class NonWorkingDayRepository(
             .getNonWorkingDaysByCafeUuid(cafeUuid)
             .dataOrNull()
             ?.map(nonWorkingDayMapper::toNonWorkingDay)
-
-    private suspend fun getLocalNonWorkingDayList(cafeUuid: String): List<NonWorkingDay> =
-        nonWorkingDayDao.getNonWorkingDayListByCafeUuid(cafeUuid).map(nonWorkingDayMapper::toNonWorkingDay)
-
-    private suspend fun saveNonWorkingDayListLocally(nonWorkingDayList: List<NonWorkingDay>) {
-        nonWorkingDayDao.insertAll(
-            nonWorkingDayList.map(nonWorkingDayMapper::toNonWorkingDayEntity),
-        )
-    }
 }

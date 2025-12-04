@@ -5,8 +5,7 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.admin.android.application)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation)
@@ -19,11 +18,8 @@ plugins {
 android {
     namespace = Namespace.app
 
-    compileSdk = AndroidSdk.compile
     defaultConfig {
         applicationId = Application.applicationId
-        minSdk = AndroidSdk.min
-        targetSdk = AndroidSdk.target
         versionCode = Application.versionCode
         versionName = Application.versionName
         signingConfig = signingConfigs.getByName("debug")

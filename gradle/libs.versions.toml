@@ -14,7 +14,6 @@ publisher = "3.12.2"
 joda = "2.14.0"
 ktLint = "14.0.1"
 tripletPlay = "3.12.2"
-room = "2.8.3"
 lifecycle = "2.9.4"
 lifecycleRuntimeCompose = "2.9.4"
 material = "1.13.0"
@@ -68,11 +67,6 @@ koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "k
 # Date & Time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 joda-time = { module = "joda-time:joda-time", version.ref = "joda" }
-
-# Room Database
-room-database-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-room-database-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-room-database-kapt = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 # Lifecycle
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
@@ -174,11 +168,6 @@ ktor = [
 coil = [
     "coil-compose",
     "coil-network-okhttp"
-]
-
-room = [
-    "room-database-runtime",
-    "room-database-ktx",
 ]
 
 compose = [

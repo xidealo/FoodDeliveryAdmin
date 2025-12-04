@@ -1,10 +1,9 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import ru.wb.wms.configureKotlinAndroid
-import ru.wb.wms.configurePrintApksTask
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -15,13 +14,31 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
+                compileSdk = 36
                 defaultConfig.targetSdk = 36
+
+                defaultConfig {
+                    minSdk = 26
+                }
+
+//                buildTypes {
+//                    create("stage") {
+//                        initWith(getByName("debug"))
+//                        isMinifyEnabled = false
+//                    }
+//                }
+
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_21
+                    targetCompatibility = JavaVersion.VERSION_21
+                }
             }
-            extensions.configure<ApplicationAndroidComponentsExtension> {
-                configurePrintApksTask(this)
+
+            // configureKotlin()
+
+            dependencies {
+                //  add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
             }
         }
     }
-
 }
