@@ -28,7 +28,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 disableUnnecessaryAndroidTests(target)
             }
             dependencies {
-                add(configurationName = "testImplementation", dependencyNotation = kotlin("test"))
+                add(configurationName = "testImplementation", dependencyNotation = kotlin("test-junit5"))
             }
         }
     }

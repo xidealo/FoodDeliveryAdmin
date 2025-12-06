@@ -5,10 +5,6 @@ plugins {
 
 android {
     namespace = Namespace.domain
-
-    testOptions {
-        unitTests.isReturnDefaultValues = true
-    }
 }
 
 dependencies {
@@ -24,7 +20,4 @@ dependencies {
 
     // Coroutine
     testImplementation(libs.kotlinx.coroutines.test)
-
-    // Test
-    testImplementation(libs.kotlin.test)
 }

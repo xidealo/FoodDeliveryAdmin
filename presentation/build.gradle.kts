@@ -24,7 +24,5 @@ dependencies {
     // Coroutine
     implementation(libs.kotlinx.coroutines.test)
 
-    // Test
-    testImplementation(libs.kotlin.test)
     testImplementation(libs.turbine)
 }

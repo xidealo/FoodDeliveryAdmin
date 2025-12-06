@@ -62,7 +62,6 @@ koin-android-workmanager = { module = "io.insert-koin:koin-androidx-workmanager"
 
 # Koin
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 
 # Date & Time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
@@ -105,7 +104,6 @@ kotlinx-coroutines-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutin
 
 # Image Cropping
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "imageCpropper" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collectionsImmutable" }
 

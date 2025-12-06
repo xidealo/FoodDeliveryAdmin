@@ -126,7 +126,6 @@ dependencies {
     implementation(libs.bundles.di)
     implementation(libs.koin.android.workmanager)
     implementation(libs.koin.test)
-    implementation(libs.koin.test.junit)
 
     // Coil
     implementation(libs.bundles.coil)

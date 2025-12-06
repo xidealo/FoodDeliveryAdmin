@@ -1,7 +1,6 @@
 package com.bunbeauty.domain.feature.additionlist.editaddition
 
 import android.util.Log
-import com.bunbeauty.domain.MockLogRule
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
@@ -16,7 +15,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
@@ -27,9 +25,6 @@ class UpdateAdditionUseCaseTest {
     private val uploadPhotoUseCase: UploadPhotoUseCase = mockk()
     private val deletePhotoUseCase: DeletePhotoUseCase = mockk()
     private lateinit var updateAdditionUseCase: UpdateAdditionUseCase
-
-    @get:Rule
-    val mockLogRule = MockLogRule()
 
     @BeforeTest
     fun setup() {

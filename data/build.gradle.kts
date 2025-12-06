@@ -33,7 +33,6 @@ dependencies {
     implementation(libs.bundles.ktor)
 
     // Testing
-    testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.bundles.mockk)
 }
