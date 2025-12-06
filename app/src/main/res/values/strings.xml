@@ -348,4 +348,6 @@
     <string name="action_select_addition_list_title_additions">Добавки</string>
     <string name="action_select_addition_list_title_selected">Изменены добавки</string>
     <string name="msg_update_select_addition_list_priority_list">Список обновлен</string>
+    <string name="msg_update_select_addition_list_added">Добавлено %s</string>
+    <string name="msg_update_select_addition_list_removed">Удалено %s</string>
 </resources>

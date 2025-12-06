@@ -105,9 +105,13 @@ class GetSelectedAdditionListUseCase(
     ): List<Addition> =
         commonAdditionList.filter { addition ->
             addition.uuid in
-                additionListFromMenuProduct.map { menuProductToAdditionGroupToAddition ->
-                    menuProductToAdditionGroupToAddition.additionUuid
-                }
+                    additionListFromMenuProduct.map { menuProductToAdditionGroupToAddition ->
+                        menuProductToAdditionGroupToAddition.additionUuid
+                    }
+        }.sortedBy { addition ->
+            additionListFromMenuProduct.find { menuProductToAdditionGroupToAddition ->
+                menuProductToAdditionGroupToAddition.additionUuid == addition.uuid
+            }?.priority
         }
 
     private fun getAdditionNotContainedInMenuProduct(
@@ -116,8 +120,10 @@ class GetSelectedAdditionListUseCase(
     ): List<Addition> =
         commonAdditionList.filterNot { addition ->
             addition.uuid in
-                additionListFromMenuProduct.map { menuProductToAdditionGroupToAddition ->
-                    menuProductToAdditionGroupToAddition.additionUuid
-                }
+                    additionListFromMenuProduct.map { menuProductToAdditionGroupToAddition ->
+                        menuProductToAdditionGroupToAddition.additionUuid
+                    }
+        }.sortedBy { addition ->
+            addition.name
         }
 }

@@ -281,7 +281,9 @@ class GetSelectedAdditionListUseCaseTest {
                 )
             } returns additionGroupWithAdditions
             coEvery {
-                menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(uuidList)
+                menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
+                    uuidList
+                )
             } returns menuProductAdditions
 
             // When
@@ -305,7 +307,9 @@ class GetSelectedAdditionListUseCaseTest {
                     menuProductUuid = "product1",
                     additionGroupForMenuUuid = "group1",
                 )
-                menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(uuidList)
+                menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
+                    uuidList
+                )
             }
             confirmVerified(
                 dataStoreRepo,
@@ -313,6 +317,69 @@ class GetSelectedAdditionListUseCaseTest {
                 menuProductToAdditionGroupToAdditionRepository,
                 getFilteredAdditionGroupWithAdditionsForMenuProductUseCase,
             )
+        }
+
+    /*
+    * сортируется по приоритету отношения MenuProductToAdditionGroupToAddition
+    */
+    @Test
+    fun `return sorted additions when menu product has additions`() =
+        runTest {
+            // Given
+            val token = "token"
+            val commonAdditions =
+                listOf(
+                    Addition.mock.copy(uuid = "add1", name = "Addition 1"),
+                    Addition.mock.copy(uuid = "add2", name = "Addition 2"),
+                    Addition.mock.copy(uuid = "add3", name = "Addition 3"),
+                    Addition.mock.copy(uuid = "add4", name = "Addition 4"),
+                )
+
+            val menuProductAdditions =
+                listOf(
+                    MenuProductToAdditionGroupToAddition.mock.copy(
+                        additionUuid = "add1",
+                        priority = 4
+                    ),
+                    MenuProductToAdditionGroupToAddition.mock.copy(
+                        additionUuid = "add3",
+                        priority = 1
+                    ),
+                )
+
+            val filteredAdditions =
+                listOf(
+                    Addition.mock.copy(uuid = "add1", name = "Addition 1"),
+                    Addition.mock.copy(uuid = "add3", name = "Addition 3"),
+                )
+            val uuidList = listOf("add1", "add3")
+
+            val additionGroupWithAdditions =
+                AdditionGroupWithAdditions.mock.copy(additionList = filteredAdditions)
+
+            coEvery { dataStoreRepo.getToken() } returns token
+            coEvery { additionRepo.getAdditionList(token) } returns commonAdditions
+            coEvery {
+                getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(
+                    menuProductUuid = "product1",
+                    additionGroupForMenuUuid = "group1",
+                )
+            } returns additionGroupWithAdditions
+            coEvery {
+                menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
+                    uuidList
+                )
+            } returns menuProductAdditions
+
+            // When
+            val result = getSelectedAdditionListUseCase(
+                selectedGroupAdditionUuid = "group1",
+                menuProductUuid = "product1",
+                editedAdditionListUuid = null,
+            )
+
+            // Then
+            assertEquals(listOf("add3", "add1"), result.selectedAdditionList.map { it.uuid })
         }
 
     @Test
