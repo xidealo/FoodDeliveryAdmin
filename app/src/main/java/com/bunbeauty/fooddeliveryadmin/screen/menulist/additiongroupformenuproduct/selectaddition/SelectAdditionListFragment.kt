@@ -115,7 +115,7 @@ class SelectAdditionListFragment :
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(
                         R.string.msg_update_select_addition_list_added,
-                        event.name
+                        event.name,
                     ),
                 )
             }
@@ -124,7 +124,7 @@ class SelectAdditionListFragment :
                 (activity as? MessageHost)?.showErrorMessage(
                     resources.getString(
                         R.string.msg_update_select_addition_list_removed,
-                        event.name
+                        event.name,
                     ),
                 )
             }
@@ -141,7 +141,7 @@ class SelectAdditionListFragment :
                 when (state.state) {
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
-                        -> null
+                    -> null
 
                     SelectAdditionList.DataState.State.SUCCESS ->
                         stringResource(
@@ -157,7 +157,7 @@ class SelectAdditionListFragment :
                 when (state.state) {
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
-                        -> Unit
+                    -> Unit
 
                     SelectAdditionList.DataState.State.SUCCESS -> onAction(SelectAdditionList.Action.OnBackClick)
                     SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP ->
@@ -171,7 +171,7 @@ class SelectAdditionListFragment :
                 when (state.state) {
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
-                        -> Unit
+                    -> Unit
 
                     SelectAdditionList.DataState.State.SUCCESS -> {
                         LoadingButton(
@@ -193,7 +193,7 @@ class SelectAdditionListFragment :
                 when (state.state) {
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
-                        -> emptyList()
+                    -> emptyList()
 
                     SelectAdditionList.DataState.State.SUCCESS -> {
                         if (state.emptySelectedList) {
@@ -284,8 +284,7 @@ class SelectAdditionListFragment :
                             .padding(
                                 start = 16.dp,
                                 bottom = 16.dp,
-                            )
-                            .fillMaxWidth()
+                            ).fillMaxWidth()
                             .animateItem()
                             .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION),
@@ -325,8 +324,7 @@ class SelectAdditionListFragment :
                         Modifier
                             .padding(
                                 all = 16.dp,
-                            )
-                            .fillMaxWidth()
+                            ).fillMaxWidth()
                             .animateItem()
                             .animateContentSize(
                                 animationSpec = tween(LIST_ANIMATION_DURATION),

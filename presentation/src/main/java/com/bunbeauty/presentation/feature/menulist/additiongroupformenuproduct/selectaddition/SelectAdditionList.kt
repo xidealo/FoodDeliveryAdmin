@@ -67,7 +67,12 @@ interface SelectAdditionList {
 
         data object ShowUpdateSelectAdditionListSuccess : Event
 
-        data class AddedAddition(val name: String) : Event
-        data class RemovedAddition(val name: String) : Event
+        data class AddedAddition(
+            val name: String,
+        ) : Event
+
+        data class RemovedAddition(
+            val name: String,
+        ) : Event
     }
 }

@@ -282,7 +282,7 @@ class GetSelectedAdditionListUseCaseTest {
             } returns additionGroupWithAdditions
             coEvery {
                 menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
-                    uuidList
+                    uuidList,
                 )
             } returns menuProductAdditions
 
@@ -308,7 +308,7 @@ class GetSelectedAdditionListUseCaseTest {
                     additionGroupForMenuUuid = "group1",
                 )
                 menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
-                    uuidList
+                    uuidList,
                 )
             }
             confirmVerified(
@@ -320,8 +320,8 @@ class GetSelectedAdditionListUseCaseTest {
         }
 
     /*
-    * сортируется по приоритету отношения MenuProductToAdditionGroupToAddition
-    */
+     * сортируется по приоритету отношения MenuProductToAdditionGroupToAddition
+     */
     @Test
     fun `return sorted additions when menu product has additions`() =
         runTest {
@@ -339,11 +339,11 @@ class GetSelectedAdditionListUseCaseTest {
                 listOf(
                     MenuProductToAdditionGroupToAddition.mock.copy(
                         additionUuid = "add1",
-                        priority = 4
+                        priority = 4,
                     ),
                     MenuProductToAdditionGroupToAddition.mock.copy(
                         additionUuid = "add3",
-                        priority = 1
+                        priority = 1,
                     ),
                 )
 
@@ -367,16 +367,17 @@ class GetSelectedAdditionListUseCaseTest {
             } returns additionGroupWithAdditions
             coEvery {
                 menuProductToAdditionGroupToAdditionRepository.getMenuProductToAdditionGroupToAdditionList(
-                    uuidList
+                    uuidList,
                 )
             } returns menuProductAdditions
 
             // When
-            val result = getSelectedAdditionListUseCase(
-                selectedGroupAdditionUuid = "group1",
-                menuProductUuid = "product1",
-                editedAdditionListUuid = null,
-            )
+            val result =
+                getSelectedAdditionListUseCase(
+                    selectedGroupAdditionUuid = "group1",
+                    menuProductUuid = "product1",
+                    editedAdditionListUuid = null,
+                )
 
             // Then
             assertEquals(listOf("add3", "add1"), result.selectedAdditionList.map { it.uuid })

@@ -9,16 +9,16 @@ import kotlin.String
 class SelectAdditionListViewModel(
     val getSelectedAdditionListUseCase: GetSelectedAdditionListUseCase,
 ) : BaseStateViewModel<SelectAdditionList.DataState, SelectAdditionList.Action, SelectAdditionList.Event>(
-    initState =
-        SelectAdditionList.DataState(
-            state = SelectAdditionList.DataState.State.LOADING,
-            groupName = "",
-            selectedAdditionList = emptyList(),
-            notSelectedAdditionList = emptyList(),
-            emptySelectedList = true,
-            editedAdditionListUuid = emptyList(),
-        ),
-) {
+        initState =
+            SelectAdditionList.DataState(
+                state = SelectAdditionList.DataState.State.LOADING,
+                groupName = "",
+                selectedAdditionList = emptyList(),
+                notSelectedAdditionList = emptyList(),
+                emptySelectedList = true,
+                editedAdditionListUuid = emptyList(),
+            ),
+    ) {
     override fun reduce(
         action: SelectAdditionList.Action,
         dataState: SelectAdditionList.DataState,
@@ -33,15 +33,17 @@ class SelectAdditionListViewModel(
                 )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
-            is SelectAdditionList.Action.SelectAdditionClick -> selectAddition(
-                uuid = action.uuid,
-                dataState = dataState
-            )
+            is SelectAdditionList.Action.SelectAdditionClick ->
+                selectAddition(
+                    uuid = action.uuid,
+                    dataState = dataState,
+                )
 
-            is SelectAdditionList.Action.RemoveAdditionClick -> removeAddition(
-                uuid = action.uuid,
-                dataState = dataState
-            )
+            is SelectAdditionList.Action.RemoveAdditionClick ->
+                removeAddition(
+                    uuid = action.uuid,
+                    dataState = dataState,
+                )
 
             SelectAdditionList.Action.SelectAdditionListClick ->
                 selectAdditionListClick(
@@ -80,7 +82,10 @@ class SelectAdditionListViewModel(
         }
     }
 
-    fun selectAddition(uuid: String, dataState: SelectAdditionList.DataState) {
+    fun selectAddition(
+        uuid: String,
+        dataState: SelectAdditionList.DataState,
+    ) {
         val commonList = dataState.notSelectedAdditionList + dataState.selectedAdditionList
         val addition =
             commonList.find { additionItem ->
@@ -108,7 +113,10 @@ class SelectAdditionListViewModel(
         }
     }
 
-    fun removeAddition(uuid: String, dataState: SelectAdditionList.DataState) {
+    fun removeAddition(
+        uuid: String,
+        dataState: SelectAdditionList.DataState,
+    ) {
         val commonList = dataState.notSelectedAdditionList + dataState.selectedAdditionList
         val addition =
             commonList.find { additionItem ->
