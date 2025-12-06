@@ -110,6 +110,24 @@ class SelectAdditionListFragment :
                     resources.getString(R.string.msg_update_select_addition_list_priority_list),
                 )
             }
+
+            is SelectAdditionList.Event.AddedAddition -> {
+                (activity as? MessageHost)?.showInfoMessage(
+                    resources.getString(
+                        R.string.msg_update_select_addition_list_added,
+                        event.name,
+                    ),
+                )
+            }
+
+            is SelectAdditionList.Event.RemovedAddition -> {
+                (activity as? MessageHost)?.showErrorMessage(
+                    resources.getString(
+                        R.string.msg_update_select_addition_list_removed,
+                        event.name,
+                    ),
+                )
+            }
         }
     }
 
@@ -140,6 +158,7 @@ class SelectAdditionListFragment :
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
                     -> Unit
+
                     SelectAdditionList.DataState.State.SUCCESS -> onAction(SelectAdditionList.Action.OnBackClick)
                     SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP ->
                         onAction(
@@ -153,6 +172,7 @@ class SelectAdditionListFragment :
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
                     -> Unit
+
                     SelectAdditionList.DataState.State.SUCCESS -> {
                         LoadingButton(
                             text = stringResource(R.string.action_order_details_save),
@@ -174,6 +194,7 @@ class SelectAdditionListFragment :
                     SelectAdditionList.DataState.State.LOADING,
                     SelectAdditionList.DataState.State.ERROR,
                     -> emptyList()
+
                     SelectAdditionList.DataState.State.SUCCESS -> {
                         if (state.emptySelectedList) {
                             emptyList()

@@ -33,8 +33,18 @@ class SelectAdditionListViewModel(
                 )
 
             SelectAdditionList.Action.OnBackClick -> backClick()
-            is SelectAdditionList.Action.SelectAdditionClick -> selectAddition(uuid = action.uuid)
-            is SelectAdditionList.Action.RemoveAdditionClick -> removeAddition(uuid = action.uuid)
+            is SelectAdditionList.Action.SelectAdditionClick ->
+                selectAddition(
+                    uuid = action.uuid,
+                    dataState = dataState,
+                )
+
+            is SelectAdditionList.Action.RemoveAdditionClick ->
+                removeAddition(
+                    uuid = action.uuid,
+                    dataState = dataState,
+                )
+
             SelectAdditionList.Action.SelectAdditionListClick ->
                 selectAdditionListClick(
                     additionUuidList =
@@ -72,52 +82,66 @@ class SelectAdditionListViewModel(
         }
     }
 
-    fun selectAddition(uuid: String) {
-        setState {
-            val commonList = notSelectedAdditionList + selectedAdditionList
-            val addition =
-                commonList.find { additionItem ->
-                    additionItem.uuid == uuid
-                } ?: return
-            val newNotSelectedList =
-                notSelectedAdditionList.toMutableList().apply {
-                    remove(element = addition)
-                }
-            val newSelectedList =
-                selectedAdditionList.toMutableList().apply {
-                    add(addition)
-                }
+    fun selectAddition(
+        uuid: String,
+        dataState: SelectAdditionList.DataState,
+    ) {
+        val commonList = dataState.notSelectedAdditionList + dataState.selectedAdditionList
+        val addition =
+            commonList.find { additionItem ->
+                additionItem.uuid == uuid
+            } ?: return
+        val newNotSelectedList =
+            dataState.notSelectedAdditionList.toMutableList().apply {
+                remove(element = addition)
+            }
+        val newSelectedList =
+            dataState.selectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
 
+        setState {
             copy(
                 notSelectedAdditionList = newNotSelectedList,
                 selectedAdditionList = newSelectedList,
                 emptySelectedList = newSelectedList.isEmpty(),
             )
         }
+
+        sendEvent {
+            SelectAdditionList.Event.AddedAddition(name = addition.name)
+        }
     }
 
-    fun removeAddition(uuid: String) {
+    fun removeAddition(
+        uuid: String,
+        dataState: SelectAdditionList.DataState,
+    ) {
+        val commonList = dataState.notSelectedAdditionList + dataState.selectedAdditionList
+        val addition =
+            commonList.find { additionItem ->
+                additionItem.uuid == uuid
+            } ?: return
+
+        val newNotSelectedList =
+            dataState.notSelectedAdditionList.toMutableList().apply {
+                add(addition)
+            }
+        val newSelectedList =
+            dataState.selectedAdditionList.toMutableList().apply {
+                remove(addition)
+            }
+
         setState {
-            val commonList = notSelectedAdditionList + selectedAdditionList
-            val addition =
-                commonList.find { additionItem ->
-                    additionItem.uuid == uuid
-                } ?: return
-
-            val newNotSelectedList =
-                notSelectedAdditionList.toMutableList().apply {
-                    add(addition)
-                }
-            val newSelectedList =
-                selectedAdditionList.toMutableList().apply {
-                    remove(addition)
-                }
-
             copy(
                 notSelectedAdditionList = newNotSelectedList,
                 selectedAdditionList = newSelectedList,
                 emptySelectedList = newSelectedList.isEmpty(),
             )
+        }
+
+        sendEvent {
+            SelectAdditionList.Event.RemovedAddition(name = addition.name)
         }
     }
 
