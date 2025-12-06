@@ -24,6 +24,7 @@ dependencies {
     compileOnly(libs.gradle)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.plugin)
+    implementation(kotlin("test"))
 }
 
 tasks {
