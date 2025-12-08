@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.additionlist.editaddition
 
-import android.util.Log
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
@@ -12,7 +11,6 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -130,7 +128,6 @@ class UpdateAdditionUseCaseTest {
                     additionUuid = additionUuidMock,
                 )
             } returns Unit
-            every { Log.e(any(), any()) } returns 0
 
             // When
             updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
@@ -162,7 +159,6 @@ class UpdateAdditionUseCaseTest {
                     additionUuid = additionUuidMock,
                 )
             } returns Unit
-            every { Log.e(any(), any()) } returns 0
 
             // When
             updateAdditionUseCase.invoke(additionUuidMock, updateAddition)
