@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThrows
-import org.junit.Before
+import org.junit.jupiter.api.Assertions.assertThrows
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertNotNull
 
 class UpdateTypeWorkUseCaseTest {
     private val workInfoRepository: CompanyRepo = mockk()
@@ -25,7 +25,7 @@ class UpdateTypeWorkUseCaseTest {
 
     private lateinit var updateTypeWorkUseCase: UpdateTypeWorkUseCase
 
-    @Before
+    @BeforeTest
     fun setUp() {
         updateTypeWorkUseCase =
             UpdateTypeWorkUseCase(

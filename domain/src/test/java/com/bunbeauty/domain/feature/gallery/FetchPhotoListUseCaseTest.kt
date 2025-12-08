@@ -6,10 +6,10 @@ import com.bunbeauty.domain.repo.PhotoRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class FetchPhotoListUseCaseTest {
     private val photoRepo: PhotoRepo = mockk()
