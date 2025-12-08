@@ -14,8 +14,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GetCafeWithWorkingHoursFlowUseCaseTest {

@@ -7,12 +7,12 @@ import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class GetCategoryUseCaseTest {

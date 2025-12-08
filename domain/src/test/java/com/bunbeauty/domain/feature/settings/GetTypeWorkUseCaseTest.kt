@@ -10,14 +10,14 @@ import com.bunbeauty.domain.repo.DataStoreRepo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertThrows
-import org.junit.Before
+import org.junit.jupiter.api.Assertions.assertThrows
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class GetTypeWorkUseCaseTest {
     private val workInfoRepository: CafeRepo = mockk()
@@ -42,7 +42,7 @@ class GetTypeWorkUseCaseTest {
             additional = false,
         )
 
-    @Before
+    @BeforeTest
     fun setUp() {
         getTypeWorkUseCase =
             GetTypeWorkUseCase(

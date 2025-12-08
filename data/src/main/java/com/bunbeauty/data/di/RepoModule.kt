@@ -89,7 +89,6 @@ fun repositoryModule() =
         }
         single<CityRepo> {
             CityRepository(
-                cityDao = get(),
                 cityMapper = get(),
                 foodDeliveryApi = get(),
             )
@@ -97,7 +96,6 @@ fun repositoryModule() =
         single<NonWorkingDayRepo> {
             NonWorkingDayRepository(
                 foodDeliveryApi = get(),
-                nonWorkingDayDao = get(),
                 nonWorkingDayMapper = get(),
             )
         }
