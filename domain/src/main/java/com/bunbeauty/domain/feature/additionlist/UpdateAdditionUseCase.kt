@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.additionlist
 
-import android.util.Log
 import com.bunbeauty.common.Constants.ADDITION_HEIGHT
 import com.bunbeauty.common.Constants.ADDITION_WIDTH
 import com.bunbeauty.domain.exception.NoTokenException
@@ -64,7 +63,7 @@ class UpdateAdditionUseCase(
             runCatching {
                 deletePhotoUseCase(photoLink = photoLink)
             }.onFailure {
-                Log.e(UPDATE_ADDITION_TAG, "Photo deletion failed ${it.message}")
+                println("Photo deletion failed ${it.message}")
             }
         }
     }

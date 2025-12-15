@@ -12,10 +12,10 @@ import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
 import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class GetSeparatedSelectableAdditionGroupListUseCaseTest {
     private lateinit var useCase: GetSeparatedSelectableAdditionGroupListUseCase
@@ -23,7 +23,7 @@ class GetSeparatedSelectableAdditionGroupListUseCaseTest {
     private val menuProductToAdditionGroupRepository: MenuProductToAdditionGroupRepository = mockk()
     private val getMenuProductUseCase: GetMenuProductUseCase = mockk()
 
-    @Before
+    @BeforeTest
     fun setUp() {
         useCase =
             GetSeparatedSelectableAdditionGroupListUseCase(
