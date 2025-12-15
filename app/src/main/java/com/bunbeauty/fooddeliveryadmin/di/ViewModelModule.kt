@@ -14,6 +14,7 @@ import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryView
 import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
+import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
 import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateAdditionGroupForMenuProductViewModel
@@ -262,6 +263,13 @@ fun viewModelModule() =
                 savedStateHandle = get(),
                 getAdditionGroupUseCase = get(),
                 saveEditAdditionGroupUseCase = get(),
+            )
+        }
+
+        viewModel {
+            MapDeliveryAreaViewModel(
+                getPolygonsDeliveryZoneUseCase = get(),
+                getCafeUseCase = get(),
             )
         }
     }

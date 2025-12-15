@@ -4,6 +4,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.GetSeparatedAdditionGroupL
 import com.bunbeauty.domain.feature.additiongrouplist.UpdateVisibleAdditionGroupListUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.EditAdditionGroupUseCase
 import com.bunbeauty.domain.feature.additiongrouplist.editadditiongroup.GetAdditionGroupUseCase
+import com.bunbeauty.domain.feature.mapzonedelivery.GetPolygonsDeliveryZoneUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.GetAdditionGroupListFromMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
@@ -80,6 +81,13 @@ fun additionGroupListModule() =
                 getSeparatedAdditionGroupListUseCase = get(),
                 menuProductToAdditionGroupRepository = get(),
                 getMenuProductUseCase = get(),
+            )
+        }
+
+        factory {
+            GetPolygonsDeliveryZoneUseCase(
+                dataStoreRepo = get(),
+                cafeRepo = get(),
             )
         }
     }

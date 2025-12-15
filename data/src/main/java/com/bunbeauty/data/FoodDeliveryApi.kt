@@ -10,6 +10,7 @@ import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
 import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
 import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.cafe.GetDeliveryZoneResponse
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.category.CategoryPatchServer
 import com.bunbeauty.data.model.server.category.CategoryServer
@@ -68,6 +69,11 @@ interface FoodDeliveryApi {
         patchCafe: PatchCafeServer,
         token: String,
     ): ApiResult<CafeServer>
+
+    suspend fun getDeliveryZone(
+        cafeUuid: String,
+        token: String,
+    ): ApiResult<GetDeliveryZoneResponse>
 
     // CITY
     suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>

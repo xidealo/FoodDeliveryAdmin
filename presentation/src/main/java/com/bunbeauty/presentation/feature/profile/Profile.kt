@@ -36,6 +36,8 @@ interface Profile {
 
         data object LogoutClick : Action
 
+        data object MapClick : Action
+
         data class LogoutConfirm(
             val confirmed: Boolean,
         ) : Action
@@ -51,5 +53,7 @@ interface Profile {
         data object OpenLogout : Event
 
         data object OpenLogin : Event
+
+        data object OpenMap : Event
     }
 }

@@ -158,6 +158,9 @@
         <action
             android:id="@+id/to_statisticFragment"
             app:destination="@id/statisticFragment" />
+        <action
+            android:id="@+id/to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 
     <fragment
@@ -371,6 +374,12 @@
             android:name="editedAdditionListUuid"
             app:argType="string[]"
             app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.map.MapDeliveryAreaFragment"
+        android:label="MapFragment">
     </fragment>
 
 

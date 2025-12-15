@@ -2,11 +2,14 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.getNullableResult
+import com.bunbeauty.common.extension.onError
+import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.CafeDeliveryZone
 import com.bunbeauty.domain.model.cafe.UpdateCafe
 import com.bunbeauty.domain.repo.CafeRepo
 
@@ -70,6 +73,21 @@ class CafeRepository(
         is ApiResult.Error -> {
             throw result.apiError
         }
+    }
+
+    override suspend fun getPositionDeliveryZone(
+        cafeUuid: String,
+        token: String,
+    ): List<List<CafeDeliveryZone>> {
+        var pointsList: List<List<CafeDeliveryZone>> = emptyList()
+        foodDeliveryApi
+            .getDeliveryZone(cafeUuid, token)
+            .onSuccess { response ->
+                pointsList = cafeMapper.getDeliveryZonePoints(response)
+            }.onError { error ->
+                error.message
+            }
+        return pointsList
     }
 
     override fun clearCache() {

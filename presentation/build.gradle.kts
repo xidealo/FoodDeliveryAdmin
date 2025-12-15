@@ -45,6 +45,8 @@ dependencies {
     // Coroutine
     implementation(libs.kotlinx.coroutines.test)
 
+    implementation("org.maplibre.compose:maplibre-compose:0.12.1")
+
     // Test
     testImplementation(libs.kotlin.test)
     testImplementation(libs.turbine)

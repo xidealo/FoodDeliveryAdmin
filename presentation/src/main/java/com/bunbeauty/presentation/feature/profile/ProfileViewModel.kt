@@ -33,6 +33,7 @@ class ProfileViewModel(
             Profile.Action.StatisticClick -> handleStatisticClick()
             Profile.Action.LogoutClick -> handleLogoutClick()
             is Profile.Action.LogoutConfirm -> handleLogoutConfirm(confirmed = action.confirmed)
+            Profile.Action.MapClick -> handleMapClick()
         }
     }
 
@@ -83,6 +84,12 @@ class ProfileViewModel(
     private fun handleLogoutClick() {
         sendEvent {
             Profile.Event.OpenLogout
+        }
+    }
+
+    private fun handleMapClick() {
+        sendEvent {
+            Profile.Event.OpenMap
         }
     }
 
