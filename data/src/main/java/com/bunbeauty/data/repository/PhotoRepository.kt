@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import androidx.core.graphics.scale
 import androidx.core.net.toUri
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
@@ -60,6 +61,7 @@ class PhotoRepository(
                     width = width,
                     height = height,
                 ) ?: return@withContext null
+
             val uuid = UUID.randomUUID()
             val uploadReference =
                 FirebaseStorage.getInstance().reference.child("$username/$uuid.webp")
@@ -86,13 +88,7 @@ class PhotoRepository(
     ): ByteArray? {
         val photoUri = uri.toUri()
         val bitmap = photoUri.toBitmap() ?: return null
-        val scaledBitmap =
-            Bitmap.createScaledBitmap(
-                bitmap,
-                width,
-                height,
-                true,
-            )
+        val scaledBitmap = bitmap.scale(width, height)
 
         var quality = 100
         var resultByteArray: ByteArray
@@ -103,7 +99,7 @@ class PhotoRepository(
             resultByteArray = byteArrayOutputStream.toByteArray()
 
             quality -= 3
-        } while (resultByteArray.size > DEFAULT_BYTE_SIZE && quality > 0)
+        } while (resultByteArray.size > DEFAULT_BYTE_SIZE && quality > 5)
 
         return resultByteArray
     }

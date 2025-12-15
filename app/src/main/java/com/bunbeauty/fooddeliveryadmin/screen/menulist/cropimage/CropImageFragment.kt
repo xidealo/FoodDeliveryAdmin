@@ -185,8 +185,8 @@ class CropImageFragment : BaseComposeFragment<CropImage.DataState, CropImageView
             CropImage.Event.CropImage -> {
                 cropImageView?.croppedImageAsync(
                     saveCompressQuality = ORIGINAL_QUALITY,
-                    reqWidth = 320,
-                    reqHeight = 320,
+                    reqWidth = 1000,
+                    reqHeight = 1000,
                 )
             }
         }
