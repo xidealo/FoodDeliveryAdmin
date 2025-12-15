@@ -11,6 +11,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.maplibre.compose.camera.CameraPosition
@@ -21,8 +23,12 @@ import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.sources.GeoJsonData
 import org.maplibre.compose.sources.rememberGeoJsonSource
 import org.maplibre.compose.style.BaseStyle
+import org.maplibre.compose.util.ClickResult
+import org.maplibre.compose.util.FeaturesClickHandler
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.FeatureId
+import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import kotlin.getValue
@@ -107,6 +113,7 @@ fun SimpleMapScreen(state: MapDeliveryAreaViewState) {
                                 Feature(
                                     geometry = Polygon(listOf(coordinates)),
                                     properties = buildJsonObject { },
+                                    id = JsonPrimitive("$index")
                                 ),
                             ),
                     )
@@ -120,6 +127,12 @@ fun SimpleMapScreen(state: MapDeliveryAreaViewState) {
                     source = source,
                     color = const(colors[index]),
                     opacity = const(0.5f),
+                    onClick = object : FeaturesClickHandler {
+                        override fun invoke(p1: List<Feature<Geometry, JsonObject?>>): ClickResult {
+                            println(p1)
+                            return ClickResult.Consume
+                        }
+                    }
                 )
             }
         }
