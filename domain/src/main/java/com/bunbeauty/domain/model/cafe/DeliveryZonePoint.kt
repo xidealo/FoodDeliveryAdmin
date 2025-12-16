@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.model.cafe
 
-data class CafeDeliveryZone(
+data class DeliveryZonePoint(
     val longitude: Double,
     val latitude: Double,
 )

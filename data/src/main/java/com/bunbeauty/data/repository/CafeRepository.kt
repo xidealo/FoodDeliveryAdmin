@@ -9,7 +9,7 @@ import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.domain.model.cafe.CafeDeliveryZone
+import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.domain.model.cafe.UpdateCafe
 import com.bunbeauty.domain.repo.CafeRepo
 
@@ -78,8 +78,8 @@ class CafeRepository(
     override suspend fun getPositionDeliveryZone(
         cafeUuid: String,
         token: String,
-    ): List<List<CafeDeliveryZone>> {
-        var pointsList: List<List<CafeDeliveryZone>> = emptyList()
+    ): List<List<DeliveryZonePoint>> {
+        var pointsList: List<List<DeliveryZonePoint>> = emptyList()
         foodDeliveryApi
             .getDeliveryZone(cafeUuid, token)
             .onSuccess { response ->

@@ -8,9 +8,20 @@ import org.maplibre.spatialk.geojson.Position
 interface MapDeliveryArea {
     data class DataState(
         //  val isLoading: Boolean,
+        // список зон (который в себе содержит данные: цена, мин и тд)
         val listPolygons: List<List<Position>>,
         val positionCafe: Position?,
-    ) : BaseDataState
+    ) : BaseDataState{
+
+        // добавить объкт для БС
+//        data class ZoneBottomSheet(
+//            val isShown: Boolean,
+//            val данные, цена, мин и тд
+//            val данные, цена, мин и тд
+//            val данные, цена, мин и тд
+//        )
+    }
+
 
     sealed interface Action : BaseAction {
         data object OnBackClick : Action

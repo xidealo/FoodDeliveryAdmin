@@ -34,6 +34,7 @@ import org.maplibre.spatialk.geojson.Position
 import kotlin.getValue
 import kotlin.random.Random
 
+//удалить вью стейт
 class MapDeliveryAreaFragment :
     BaseComposeFragment<MapDeliveryArea.DataState, MapDeliveryAreaViewState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
     override val viewModel: MapDeliveryAreaViewModel by viewModel()

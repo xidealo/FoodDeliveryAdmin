@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.mapzonedelivery.GetPolygonsDeliveryZoneUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.domain.model.cafe.CafeDeliveryZone
+import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import org.maplibre.spatialk.geojson.Position
@@ -54,8 +54,8 @@ class MapDeliveryAreaViewModel(
         )
     }
 
-    private fun mapToPositionList(cafeDeliveryZones: List<List<CafeDeliveryZone>>): List<List<Position>> =
-        cafeDeliveryZones.map { polygon ->
+    private fun mapToPositionList(deliveryZonePoints: List<List<DeliveryZonePoint>>): List<List<Position>> =
+        deliveryZonePoints.map { polygon ->
             val positions =
                 polygon.map { cafeZone ->
                     Position(cafeZone.longitude, cafeZone.latitude)
