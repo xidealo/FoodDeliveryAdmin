@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.mapzonedelivery.GetPolygonsDeliveryZoneUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
+import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import org.maplibre.spatialk.geojson.Position
@@ -18,6 +18,7 @@ class MapDeliveryAreaViewModel(
                 // isLoading = true,
                 listPolygons = emptyList(),
                 positionCafe = null,
+                listDeliveryAreaZone = emptyList(),
             ),
     ) {
     override fun reduce(
@@ -29,6 +30,8 @@ class MapDeliveryAreaViewModel(
                 backClick()
 
             MapDeliveryArea.Action.LoadAllData -> loadAllData()
+            MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked -> closeZoneBottomSheet()
+            is MapDeliveryArea.Action.OnDeliveryZoneClicked -> showZoneBottomSheet(action.zoneIndex)
         }
     }
 
@@ -41,12 +44,25 @@ class MapDeliveryAreaViewModel(
             block = {
                 val cafe = getCafeUseCase()
                 val cafePosition = mapToPositionCafe(cafe)
-                val cafeDeliveryZones = getPolygonsDeliveryZoneUseCase()
-                val mapPolygons = mapToPositionList(cafeDeliveryZones)
+                val deliveryZones = getPolygonsDeliveryZoneUseCase()
+                val zoneData =
+                    deliveryZones.map { zone ->
+                        MapDeliveryArea.DataState.ZoneData(
+                            minOrderCost = zone.minOrderCost,
+                            normalDeliveryCost = zone.normalDeliveryCost,
+                            forLowDeliveryCost = zone.forLowDeliveryCost,
+                        )
+                    }
+
+                val mapPolygons = mapToPositionList(deliveryZones)
+
                 setState {
                     copy(
                         positionCafe = cafePosition,
                         listPolygons = mapPolygons,
+                        listDeliveryAreaZone = zoneData,
+                        selectedZoneIndex = null,
+                        isZoneBottomSheetVisible = false,
                     )
                 }
             },
@@ -54,11 +70,28 @@ class MapDeliveryAreaViewModel(
         )
     }
 
-    private fun mapToPositionList(deliveryZonePoints: List<List<DeliveryZonePoint>>): List<List<Position>> =
-        deliveryZonePoints.map { polygon ->
+    private fun showZoneBottomSheet(zoneIndex: Int) {
+        setState {
+            copy(
+                selectedZoneIndex = zoneIndex,
+                isZoneBottomSheetVisible = true,
+            )
+        }
+    }
+
+    private fun closeZoneBottomSheet() {
+        setState {
+            copy(
+                isZoneBottomSheetVisible = false,
+            )
+        }
+    }
+
+    private fun mapToPositionList(deliveryZones: List<DeliveryZone>): List<List<Position>> =
+        deliveryZones.map { deliveryZone ->
             val positions =
-                polygon.map { cafeZone ->
-                    Position(cafeZone.longitude, cafeZone.latitude)
+                deliveryZone.deliveryZonePoint.map { point ->
+                    Position(point.longitude, point.latitude)
                 }
 
             if (positions.isNotEmpty() && positions.first() != positions.last()) {
@@ -69,5 +102,9 @@ class MapDeliveryAreaViewModel(
         }
 
     private fun mapToPositionCafe(cafeDelivery: Cafe): Position =
-        Position(longitude = cafeDelivery.longitude, latitude = cafeDelivery.latitude, altitude = 0.0)
+        Position(
+            longitude = cafeDelivery.longitude,
+            latitude = cafeDelivery.latitude,
+            altitude = 0.0,
+        )
 }

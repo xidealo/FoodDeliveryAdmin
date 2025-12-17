@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.model.cafe.Cafe
-import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
+import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.UpdateCafe
 
 interface CafeRepo {
@@ -28,7 +28,7 @@ interface CafeRepo {
     suspend fun getPositionDeliveryZone(
         cafeUuid: String,
         token: String,
-    ): List<List<DeliveryZonePoint>>
+    ): List<DeliveryZone>
 
     fun clearCache()
 }

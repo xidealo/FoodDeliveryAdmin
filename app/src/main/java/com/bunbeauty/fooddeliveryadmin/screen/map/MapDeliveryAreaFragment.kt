@@ -1,14 +1,23 @@
 package com.bunbeauty.fooddeliveryadmin.screen.map
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
+import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
+import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
 import kotlinx.serialization.json.JsonObject
@@ -27,25 +36,25 @@ import org.maplibre.compose.util.ClickResult
 import org.maplibre.compose.util.FeaturesClickHandler
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
-import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import kotlin.getValue
 import kotlin.random.Random
 
-//удалить вью стейт
-class MapDeliveryAreaFragment :
-    BaseComposeFragment<MapDeliveryArea.DataState, MapDeliveryAreaViewState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
+class MapDeliveryAreaFragment : SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
     override val viewModel: MapDeliveryAreaViewModel by viewModel()
 
     @Composable
-    override fun mapState(state: MapDeliveryArea.DataState): MapDeliveryAreaViewState =
-        MapDeliveryAreaViewState(
-            //  isLoading = state.isLoading,
-            listPolygons = state.listPolygons,
-            positionCafe = state.positionCafe,
-        )
+    override fun Screen(
+        state: MapDeliveryArea.DataState,
+        onAction: (MapDeliveryArea.Action) -> Unit,
+    ) {
+        LaunchedEffect(Unit) {
+            onAction(MapDeliveryArea.Action.LoadAllData)
+        }
+        MapScreen(state = state, onAction = onAction)
+    }
 
     override fun handleEvent(event: MapDeliveryArea.Event) {
         when (event) {
@@ -56,35 +65,45 @@ class MapDeliveryAreaFragment :
     }
 
     @Composable
-    override fun Screen(
-        state: MapDeliveryAreaViewState,
-        onAction: (MapDeliveryArea.Action) -> Unit,
-    ) {
-        LaunchedEffect(Unit) {
-            onAction(MapDeliveryArea.Action.LoadAllData)
-        }
-        MapScreen(state = state, onAction = onAction)
-    }
-
-    @Composable
     fun MapScreen(
-        state: MapDeliveryAreaViewState,
+        state: MapDeliveryArea.DataState,
         onAction: (MapDeliveryArea.Action) -> Unit,
     ) {
         AdminScaffold(
             title = "Зона обслуживания",
             backActionClick = { onAction(MapDeliveryArea.Action.OnBackClick) },
         ) {
-            SimpleMapScreen(state)
+            Box(modifier = Modifier.fillMaxSize()) {
+                SimpleMapScreen(state, onAction)
+
+                if (state.isZoneBottomSheetVisible && state.selectedZoneIndex != null) {
+                    val zoneIndex = state.selectedZoneIndex!!
+                    val zoneData = state.listDeliveryAreaZone.getOrNull(zoneIndex)
+                    zoneData?.let {
+                        DeliveryZoneBottomSheet(
+                            zoneData = it,
+                            onClose = {
+                                onAction(MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked)
+                            },
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
 @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")
 @Composable
-fun SimpleMapScreen(state: MapDeliveryAreaViewState) {
+fun SimpleMapScreen(
+    state: MapDeliveryArea.DataState,
+    onAction: (MapDeliveryArea.Action) -> Unit,
+) {
     Box(modifier = Modifier.fillMaxSize()) {
-        val colors = state.listPolygons.indices.map { generateRandomColor() }
+        val colors =
+            remember(state.listPolygons.size) {
+                state.listPolygons.indices.map { generateRandomColor() }
+            }
         val cameraState =
             rememberCameraState(
                 firstPosition =
@@ -113,8 +132,10 @@ fun SimpleMapScreen(state: MapDeliveryAreaViewState) {
                             listOf(
                                 Feature(
                                     geometry = Polygon(listOf(coordinates)),
-                                    properties = buildJsonObject { },
-                                    id = JsonPrimitive("$index")
+                                    properties =
+                                        buildJsonObject {
+                                        },
+                                    id = JsonPrimitive("$index"),
                                 ),
                             ),
                     )
@@ -128,15 +149,87 @@ fun SimpleMapScreen(state: MapDeliveryAreaViewState) {
                     source = source,
                     color = const(colors[index]),
                     opacity = const(0.5f),
-                    onClick = object : FeaturesClickHandler {
-                        override fun invoke(p1: List<Feature<Geometry, JsonObject?>>): ClickResult {
-                            println(p1)
-                            return ClickResult.Consume
+                    onClick =
+                        object : FeaturesClickHandler {
+                            override fun invoke(features: List<Feature<Geometry, JsonObject?>>): ClickResult {
+                                features.firstOrNull()?.let { feature ->
+                                    val zoneIndex = feature.id?.content?.toIntOrNull()
+                                    zoneIndex?.let { index ->
+                                        onAction(MapDeliveryArea.Action.OnDeliveryZoneClicked(zoneIndex = index))
+                                    }
+                                }
+                                return ClickResult.Consume
+                            }
                         }
-                    }
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun DeliveryZoneBottomSheet(
+    zoneData: MapDeliveryArea.DataState.ZoneData,
+    onClose: () -> Unit,
+) {
+    AdminModalBottomSheet(
+        title = "Зона доставки",
+        isShown = true,
+        onDismissRequest = onClose,
+        content = {
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+            ) {
+                InfoRow(
+                    title = "Минимальная стоимость заказа:",
+                    value = zoneData.minOrderCost?.let { "$it ₽" } ?: "Не установлена",
+                )
+
+                AdminHorizontalDivider(
+                    modifier =
+                        Modifier.padding(
+                            horizontal = 16.dp,
+                        ),
+                )
+
+                InfoRow(
+                    title = "Стоимость доставки:",
+                    value = "${zoneData.normalDeliveryCost} ₽",
+                )
+
+                AdminHorizontalDivider(
+                    modifier =
+                        Modifier.padding(
+                            horizontal = 16.dp,
+                        ),
+                )
+
+                InfoRow(
+                    title = "Бесплатная доставка от:",
+                    value = zoneData.forLowDeliveryCost?.let { "$it ₽" } ?: "Не установлена",
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun InfoRow(
+    title: String,
+    value: String,
+) {
+    Column {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+        )
+        Text(
+            text = value,
+            fontSize = 16.sp,
+        )
     }
 }
 

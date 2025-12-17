@@ -4,6 +4,7 @@ import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.GetDeliveryZoneResponse
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.domain.model.cafe.UpdateCafe
 import com.bunbeauty.domain.model.settings.WorkLoad
@@ -61,14 +62,22 @@ class CafeMapper {
             )
         }
 
-    fun getDeliveryZonePoints(getDeliveryZoneResponse: GetDeliveryZoneResponse): List<List<DeliveryZonePoint>> =
+    fun getDeliveryZonePoints(getDeliveryZoneResponse: GetDeliveryZoneResponse): List<DeliveryZone> =
         getDeliveryZoneResponse.results.map { deliveryZoneServer ->
             val sortedPoints = deliveryZoneServer.points.sortedBy { it.order }
-            sortedPoints.map { point ->
-                DeliveryZonePoint(
-                    longitude = point.longitude,
-                    latitude = point.latitude,
-                )
-            }
+            val deliveryZonePoints =
+                sortedPoints.map { point ->
+                    DeliveryZonePoint(
+                        longitude = point.longitude,
+                        latitude = point.latitude,
+                    )
+                }
+
+            DeliveryZone(
+                deliveryZonePoint = deliveryZonePoints,
+                minOrderCost = deliveryZoneServer.minOrderCost,
+                normalDeliveryCost = deliveryZoneServer.normalDeliveryCost,
+                forLowDeliveryCost = deliveryZoneServer.forLowDeliveryCost,
+            )
         }
 }
