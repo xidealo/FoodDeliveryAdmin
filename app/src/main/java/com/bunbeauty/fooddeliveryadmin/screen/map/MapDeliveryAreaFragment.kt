@@ -2,10 +2,8 @@ package com.bunbeauty.fooddeliveryadmin.screen.map
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,10 +15,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.fragment.findNavController
+import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
+import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.fooddeliveryadmin.compose.theme.Colors
+import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
@@ -45,7 +47,27 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import kotlin.getValue
 
-class MapDeliveryAreaFragment : SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
+
+object MapConstants {
+    const val BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
+    const val POLYGON_LAYER_PREFIX = "polygon-layer-"
+}
+
+object MapColors {
+    val polygonColors =
+        listOf(
+            Colors.Red,
+            Colors.Purple,
+            Colors.LightOrange,
+            Colors.Blue1,
+            Colors.Green,
+        )
+
+    fun generatePolygonColor(index: Int): Color = polygonColors[index % polygonColors.size]
+}
+
+class MapDeliveryAreaFragment :
+    SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
     override val viewModel: MapDeliveryAreaViewModel by viewModel()
 
     @Composable
@@ -180,47 +202,34 @@ private fun DeliveryZoneBottomSheet(
     onClose: () -> Unit,
 ) {
     AdminModalBottomSheet(
-        title = stringResource(R.string.title_bottom_sheet_map_delivery_area),
+        title = stringResource(R.string.title_bottom_sheet_map_delivery_area, zoneData.nameZona),
         isShown = true,
         onDismissRequest = onClose,
         content = {
             Column(
                 modifier =
                     Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                        .fillMaxWidth(),
             ) {
                 InfoRow(
                     title = stringResource(R.string.title_bottom_sheet_min_orders_cost),
                     value =
-                        zoneData.minOrderCost?.let { minOrder -> "$minOrder ₽" }
+                        zoneData.minOrderCost?.let { minOrder -> "$minOrder $RUBLE_CURRENCY" }
                             ?: stringResource(R.string.error_bottom_sheet_min_orders_cost),
-                )
-
-                AdminHorizontalDivider(
-                    modifier =
-                        Modifier.padding(
-                            horizontal = 16.dp,
-                        ),
                 )
 
                 InfoRow(
                     title = stringResource(R.string.title_bottom_sheet_orders_cost),
-                    value = "${zoneData.normalDeliveryCost} ₽",
-                )
-
-                AdminHorizontalDivider(
-                    modifier =
-                        Modifier.padding(
-                            horizontal = 16.dp,
-                        ),
+                    value = "${zoneData.normalDeliveryCost} $RUBLE_CURRENCY",
+                    modifier = Modifier.padding(top = 16.dp),
                 )
 
                 InfoRow(
                     title = stringResource(R.string.title_bottom_sheet_free_orders_cost),
                     value =
-                        zoneData.forLowDeliveryCost?.let { cost -> "$cost ₽" }
+                        zoneData.forLowDeliveryCost?.let { cost -> "$cost $RUBLE_CURRENCY" }
                             ?: stringResource(R.string.error_bottom_sheet_free_orders_cost),
+                    modifier = Modifier.padding(top = 16.dp),
                 )
             }
         },
@@ -231,35 +240,22 @@ private fun DeliveryZoneBottomSheet(
 private fun InfoRow(
     title: String,
     value: String,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
         Text(
             text = title,
             fontSize = 14.sp,
+            style = AdminTheme.typography.labelMedium.medium,
+            color = AdminTheme.colors.main.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = value,
             fontSize = 16.sp,
+            style = AdminTheme.typography.bodyMedium,
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        AdminHorizontalDivider(Modifier.padding(top = 8.dp))
     }
-}
-
-object MapConstants {
-    const val BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
-    const val POLYGON_LAYER_PREFIX = "polygon-layer-"
-}
-
-object MapColors {
-    val polygonColors =
-        listOf(
-            Color(0xFF4CAF50),
-            Color(0xFF2196F3),
-            Color(0xFFFF9800),
-            Color(0xFF9C27B0),
-            Color(0xFFF44336),
-        )
-
-    fun generatePolygonColor(index: Int): Color = polygonColors[index % polygonColors.size]
 }

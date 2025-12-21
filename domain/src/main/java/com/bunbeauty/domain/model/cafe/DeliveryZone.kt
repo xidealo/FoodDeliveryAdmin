@@ -5,4 +5,5 @@ data class DeliveryZone(
     val minOrderCost: Int?,
     val normalDeliveryCost: Int,
     val forLowDeliveryCost: Int?,
+    val nameZone: String,
 )

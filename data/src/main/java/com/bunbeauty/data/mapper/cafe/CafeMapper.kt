@@ -78,6 +78,7 @@ class CafeMapper {
                 minOrderCost = deliveryZoneServer.minOrderCost,
                 normalDeliveryCost = deliveryZoneServer.normalDeliveryCost,
                 forLowDeliveryCost = deliveryZoneServer.forLowDeliveryCost,
+                nameZone = deliveryZoneServer.name,
             )
         }
 }

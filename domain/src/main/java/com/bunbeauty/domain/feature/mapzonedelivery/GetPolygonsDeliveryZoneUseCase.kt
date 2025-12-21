@@ -15,7 +15,6 @@ class GetPolygonsDeliveryZoneUseCase(
         val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull() ?: throw NoCafeException()
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val get = cafeRepo.getPositionDeliveryZone(cafeUuid = cafeUuid, token = token)
-        println("получаем $get")
         return get
     }
 }

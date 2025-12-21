@@ -51,6 +51,7 @@ class MapDeliveryAreaViewModel(
                             minOrderCost = zone.minOrderCost,
                             normalDeliveryCost = zone.normalDeliveryCost,
                             forLowDeliveryCost = zone.forLowDeliveryCost,
+                            nameZona = zone.nameZone,
                         )
                     }
 

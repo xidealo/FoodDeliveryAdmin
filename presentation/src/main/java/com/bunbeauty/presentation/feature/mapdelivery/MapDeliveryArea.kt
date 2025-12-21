@@ -14,6 +14,7 @@ interface MapDeliveryArea {
         val isZoneBottomSheetVisible: Boolean = false,
     ) : BaseViewDataState {
         data class ZoneData(
+            val nameZona: String,
             val minOrderCost: Int?,
             val normalDeliveryCost: Int,
             val forLowDeliveryCost: Int?,
