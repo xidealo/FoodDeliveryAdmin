@@ -12,6 +12,7 @@ interface MapDeliveryArea {
         val positionCafe: Position?,
         val selectedZoneIndex: Int? = null,
         val isZoneBottomSheetVisible: Boolean = false,
+        val loadingMap: Boolean,
     ) : BaseViewDataState {
         data class ZoneData(
             val nameZona: String,
@@ -31,9 +32,13 @@ interface MapDeliveryArea {
         ) : Action
 
         data object LoadAllData : Action
+
+        data object OnEditInfoDeliveryZone : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
+
+        data object EditInfoDeliveryZoneEvent : Event
     }
 }

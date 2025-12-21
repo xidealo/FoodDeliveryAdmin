@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.map
+package com.bunbeauty.fooddeliveryadmin.screen.mapdelivery
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,11 +19,13 @@ import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
+import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.compose.theme.Colors
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
 import kotlinx.serialization.json.JsonObject
@@ -47,7 +49,6 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import kotlin.getValue
 
-
 object MapConstants {
     const val BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
     const val POLYGON_LAYER_PREFIX = "polygon-layer-"
@@ -66,8 +67,7 @@ object MapColors {
     fun generatePolygonColor(index: Int): Color = polygonColors[index % polygonColors.size]
 }
 
-class MapDeliveryAreaFragment :
-    SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
+class MapDeliveryAreaFragment : SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
     override val viewModel: MapDeliveryAreaViewModel by viewModel()
 
     @Composable
@@ -85,6 +85,10 @@ class MapDeliveryAreaFragment :
         when (event) {
             is MapDeliveryArea.Event.Back -> {
                 findNavController().navigateUp()
+            }
+
+            MapDeliveryArea.Event.EditInfoDeliveryZoneEvent -> {
+                findNavController().navigateSafe(directions = MapDeliveryAreaFragmentDirections.toEditDeliveryZoneFragment())
             }
         }
     }
@@ -106,9 +110,11 @@ class MapDeliveryAreaFragment :
                     if (state.isZoneBottomSheetVisible && zoneData != null) {
                         DeliveryZoneBottomSheet(
                             zoneData = zoneData,
+                            zoneState = state,
                             onClose = {
                                 onAction(MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked)
                             },
+                            onAction = onAction,
                         )
                     }
                 }
@@ -198,8 +204,10 @@ fun SimpleMapScreen(
 
 @Composable
 private fun DeliveryZoneBottomSheet(
+    zoneState: MapDeliveryArea.DataState,
     zoneData: MapDeliveryArea.DataState.ZoneData,
     onClose: () -> Unit,
+    onAction: (MapDeliveryArea.Action) -> Unit,
 ) {
     AdminModalBottomSheet(
         title = stringResource(R.string.title_bottom_sheet_map_delivery_area, zoneData.nameZona),
@@ -230,6 +238,15 @@ private fun DeliveryZoneBottomSheet(
                         zoneData.forLowDeliveryCost?.let { cost -> "$cost $RUBLE_CURRENCY" }
                             ?: stringResource(R.string.error_bottom_sheet_free_orders_cost),
                     modifier = Modifier.padding(top = 16.dp),
+                )
+
+                LoadingButton(
+                    // modifier = Modifier.padding(horizontal = 16.dp),
+                    text = stringResource(R.string.action_bottom_sheet_edit),
+                    isLoading = zoneState.loadingMap,
+                    onClick = {
+                        onAction(MapDeliveryArea.Action.OnEditInfoDeliveryZone)
+                    },
                 )
             }
         },

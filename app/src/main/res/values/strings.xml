@@ -360,5 +360,10 @@
     <string name="title_bottom_sheet_free_orders_cost">Бесплатная доставка от: </string>
     <string name="error_bottom_sheet_min_orders_cost">Не установлена</string>
     <string name="error_bottom_sheet_free_orders_cost">Не установлена</string>
+    <string name="action_bottom_sheet_edit">Редактировать</string>
+
+    <!--Edit Info Delivery Zone-->
+    <string name="title_edit_info_delivery_zone">Редактирование зоны доставки</string>
+    <string name="title_edit_info_delivery_zone">Редактирование зоны доставки</string>
 
 </resources>

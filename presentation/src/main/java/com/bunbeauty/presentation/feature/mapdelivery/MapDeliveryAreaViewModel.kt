@@ -2,7 +2,7 @@ package com.bunbeauty.presentation.feature.mapdelivery
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
-import com.bunbeauty.domain.feature.mapzonedelivery.GetPolygonsDeliveryZoneUseCase
+import com.bunbeauty.domain.feature.mapzonedelivery.GetDeliveryZoneUseCase
 import com.bunbeauty.domain.model.cafe.Cafe
 import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.presentation.extension.launchSafe
@@ -11,7 +11,7 @@ import org.maplibre.spatialk.geojson.Position
 
 class MapDeliveryAreaViewModel(
     private val getCafeUseCase: GetCafeUseCase,
-    private val getPolygonsDeliveryZoneUseCase: GetPolygonsDeliveryZoneUseCase,
+    private val getDeliveryZoneUseCase: GetDeliveryZoneUseCase,
 ) : BaseStateViewModel<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>(
         initState =
             MapDeliveryArea.DataState(
@@ -19,6 +19,7 @@ class MapDeliveryAreaViewModel(
                 listPolygons = emptyList(),
                 positionCafe = null,
                 listDeliveryAreaZone = emptyList(),
+                loadingMap = false,
             ),
     ) {
     override fun reduce(
@@ -32,6 +33,7 @@ class MapDeliveryAreaViewModel(
             MapDeliveryArea.Action.LoadAllData -> loadAllData()
             MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked -> closeZoneBottomSheet()
             is MapDeliveryArea.Action.OnDeliveryZoneClicked -> showZoneBottomSheet(action.zoneIndex)
+            MapDeliveryArea.Action.OnEditInfoDeliveryZone -> editInfoDeliveryZone()
         }
     }
 
@@ -44,7 +46,7 @@ class MapDeliveryAreaViewModel(
             block = {
                 val cafe = getCafeUseCase()
                 val cafePosition = mapToPositionCafe(cafe)
-                val deliveryZones = getPolygonsDeliveryZoneUseCase()
+                val deliveryZones = getDeliveryZoneUseCase()
                 val zoneData =
                     deliveryZones.map { zone ->
                         MapDeliveryArea.DataState.ZoneData(
@@ -64,6 +66,7 @@ class MapDeliveryAreaViewModel(
                         listDeliveryAreaZone = zoneData,
                         selectedZoneIndex = null,
                         isZoneBottomSheetVisible = false,
+                        loadingMap = false,
                     )
                 }
             },
@@ -85,6 +88,12 @@ class MapDeliveryAreaViewModel(
             copy(
                 isZoneBottomSheetVisible = false,
             )
+        }
+    }
+
+    private fun editInfoDeliveryZone() {
+        sendEvent {
+            MapDeliveryArea.Event.EditInfoDeliveryZoneEvent
         }
     }
 

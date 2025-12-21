@@ -7,7 +7,7 @@ import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.firstOrNull
 
-class GetPolygonsDeliveryZoneUseCase(
+class GetDeliveryZoneUseCase(
     private val dataStoreRepo: DataStoreRepo,
     private val cafeRepo: CafeRepo,
 ) {

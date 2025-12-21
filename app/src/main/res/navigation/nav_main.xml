@@ -378,8 +378,17 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.map.MapDeliveryAreaFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.MapDeliveryAreaFragment"
         android:label="MapFragment">
+        <action
+            android:id="@+id/to_editDeliveryZoneFragment"
+            app:destination="@id/editDeliveryZoneFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editDeliveryZoneFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.editinfodeliveryzone.EditDeliveryZoneFragment"
+        android:label="EditDeliveryZoneFragment">
     </fragment>
 
 
