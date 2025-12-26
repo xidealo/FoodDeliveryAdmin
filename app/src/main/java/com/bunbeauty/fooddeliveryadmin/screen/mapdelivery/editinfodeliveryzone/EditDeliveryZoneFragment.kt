@@ -21,6 +21,7 @@ import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.EditI
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+// Переименовать EditDeliveryZoneInfo
 class EditDeliveryZoneFragment :
     SingleStateComposeFragment<EditInfoDeliveryZone.DataState, EditInfoDeliveryZone.Action, EditInfoDeliveryZone.Event>() {
     override val viewModel: EditInfoDeliveryZoneViewModel by viewModel()
@@ -37,6 +38,13 @@ class EditDeliveryZoneFragment :
             }
 
             is EditInfoDeliveryZone.Event.SaveInfoZoneSuccess -> {
+
+                /*setFragmentResult(
+                    requestKey = SELECT_ADDITION_LIST_KEY,
+                    положить ююид зоны которую обновил
+                    result = bundleOf(ADDITION_LIST_KEY to event.additionUuidList),
+                )*/
+
                 (activity as? MessageHost)?.showInfoMessage(
                     resources.getString(R.string.msg_edit_info_delivery_zone_updated, event.zoneName),
                 )

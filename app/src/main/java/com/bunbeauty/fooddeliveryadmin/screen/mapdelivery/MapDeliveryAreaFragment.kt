@@ -1,5 +1,7 @@
 package com.bunbeauty.fooddeliveryadmin.screen.mapdelivery
 
+import android.os.Bundle
+import android.view.View
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.R
@@ -26,6 +29,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.Colors
 import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
+import com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.MapConstants.MAP_ZOOM
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
 import kotlinx.serialization.json.JsonObject
@@ -52,6 +56,7 @@ import kotlin.getValue
 object MapConstants {
     const val BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
     const val POLYGON_LAYER_PREFIX = "polygon-layer-"
+    const val MAP_ZOOM = 10.5
 }
 
 object MapColors {
@@ -67,9 +72,22 @@ object MapColors {
     fun generatePolygonColor(index: Int): Color = polygonColors[index % polygonColors.size]
 }
 
-class MapDeliveryAreaFragment : SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
+class MapDeliveryAreaFragment :
+    SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
     override val viewModel: MapDeliveryAreaViewModel by viewModel()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        setFragmentResultListener(SELECT_ADDITION_GROUP_KEY) { _, bundle ->
+//            Вызвать экшн который обновляет selectedDeliveryZone
+//            viewModel.onAction(
+//                EditAdditionGroupForMenu.Action.SelectAdditionGroup(
+//                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty(),
+//                ),
+//            )
+//        }
+    }
     @Composable
     override fun Screen(
         state: MapDeliveryArea.DataState,
@@ -110,18 +128,15 @@ class MapDeliveryAreaFragment : SingleStateComposeFragment<MapDeliveryArea.DataS
             Box(modifier = Modifier.fillMaxSize()) {
                 SimpleMapScreen(state, onAction)
 
-                state.selectedZoneIndex?.let { zoneIndex ->
-                    val zoneData = state.listDeliveryAreaZone.getOrNull(zoneIndex)
-                    if (state.isZoneBottomSheetVisible && zoneData != null) {
-                        DeliveryZoneBottomSheet(
-                            zoneData = zoneData,
-                            zoneState = state,
-                            onClose = {
-                                onAction(MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked)
-                            },
-                            onAction = onAction,
-                        )
-                    }
+                state.selectedZoneData?.let { zoneData ->
+                    DeliveryZoneBottomSheet(
+                        zoneData = zoneData,
+                        zoneState = state,
+                        onClose = {
+                            onAction(MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked)
+                        },
+                        onAction = onAction,
+                    )
                 }
             }
         }
@@ -135,72 +150,75 @@ fun SimpleMapScreen(
     onAction: (MapDeliveryArea.Action) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        val colors =
-            remember(state.listPolygons.size) {
-                state.listPolygons.indices.map { MapColors.generatePolygonColor(it) }
-            }
+        val colors = remember(state.listDeliveryAreaZone.size) {
+            state.listDeliveryAreaZone.indices.map { MapColors.generatePolygonColor(it) }
+        }
 
         val cameraState =
             rememberCameraState(
                 firstPosition =
                     CameraPosition(
-                        target = Position(0.0, 0.0),
-                        zoom = 10.5,
+                        target = Position(longitude = 0.0, latitude = 0.0),
+                        zoom = MAP_ZOOM,
                     ),
             )
+
         LaunchedEffect(state.positionCafe) {
             state.positionCafe?.let { cafePosition ->
-                cameraState.position =
-                    CameraPosition(
-                        target = cafePosition,
-                        zoom = 10.5,
-                    )
+                cameraState.position = CameraPosition(
+                    target = Position(
+                        longitude = cafePosition.longitude,
+                        latitude = cafePosition.latitude
+                    ),
+                    zoom = MAP_ZOOM,
+                )
             }
         }
+
         MaplibreMap(
             baseStyle = BaseStyle.Uri(uri = MapConstants.BASE_STYLE_URL),
             cameraState = cameraState,
         ) {
-            state.listPolygons.forEachIndexed { index, coordinates ->
-                val featureCollection =
-                    FeatureCollection(
-                        features =
-                            listOf(
-                                Feature(
-                                    geometry = Polygon(listOf(coordinates)),
-                                    properties =
-                                        buildJsonObject {
-                                        },
-                                    id = JsonPrimitive("$index"),
-                                ),
+            state.listDeliveryAreaZone.forEachIndexed { index, zone ->
+                val featureCollection = FeatureCollection(
+                    features =
+                        listOf(
+                            Feature(
+                                geometry = Polygon(zone.deliveryZonePoint.map { point ->
+                                    Position(
+                                        longitude = point.longitude,
+                                        latitude = point.latitude
+                                    )
+                                }),
+                                properties = buildJsonObject {},
+                                id = JsonPrimitive(zone.uuid),
                             ),
-                    )
-                val source =
-                    rememberGeoJsonSource(
-                        data = GeoJsonData.Features(featureCollection),
-                    )
+                        ),
+                )
+                val source = rememberGeoJsonSource(
+                    data = GeoJsonData.Features(featureCollection),
+                )
 
                 FillLayer(
-                    id = "${MapConstants.POLYGON_LAYER_PREFIX}$index",
+                    id = "${MapConstants.POLYGON_LAYER_PREFIX}${zone.uuid}",
                     source = source,
                     color = const(colors[index]),
                     opacity = const(0.5f),
-                    onClick =
-                        object : FeaturesClickHandler {
-                            override fun invoke(features: List<Feature<Geometry, JsonObject?>>): ClickResult {
-                                features.firstOrNull()?.let { feature ->
-                                    val zoneIndex = feature.id?.content?.toIntOrNull()
-                                    zoneIndex?.let { index ->
-                                        onAction(
-                                            MapDeliveryArea.Action.OnDeliveryZoneClicked(
-                                                zoneIndex = index,
-                                            ),
-                                        )
-                                    }
+                    onClick = object : FeaturesClickHandler {
+                        override fun invoke(features: List<Feature<Geometry, JsonObject?>>): ClickResult {
+                            features.firstOrNull()?.let { feature ->
+                                val zoneUuid = feature.id?.content
+                                zoneUuid?.let { zoneUuid ->
+                                    onAction(
+                                        MapDeliveryArea.Action.OnDeliveryZoneClicked(
+                                            zoneUuid = zoneUuid,
+                                        ),
+                                    )
                                 }
-                                return ClickResult.Consume
                             }
-                        },
+                            return ClickResult.Consume
+                        }
+                    },
                 )
             }
         }
@@ -216,7 +234,7 @@ private fun DeliveryZoneBottomSheet(
 ) {
     AdminModalBottomSheet(
         title = stringResource(R.string.title_bottom_sheet_map_delivery_area, zoneData.nameZona),
-        isShown = zoneState.showBottomSheet,
+        isShown = zoneState.isZoneBottomSheetVisible,
         onDismissRequest = onClose,
         content = {
             Column(

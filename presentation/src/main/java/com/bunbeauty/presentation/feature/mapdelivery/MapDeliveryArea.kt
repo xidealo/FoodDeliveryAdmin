@@ -1,19 +1,17 @@
 package com.bunbeauty.presentation.feature.mapdelivery
 
+import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
-import org.maplibre.spatialk.geojson.Position
 
 interface MapDeliveryArea {
     data class DataState(
         val listDeliveryAreaZone: List<ZoneData>,
-        val listPolygons: List<List<Position>>,
-        val positionCafe: Position?,
-        val selectedZoneIndex: Int? = null,
-        val isZoneBottomSheetVisible: Boolean = false,
+        val positionCafe: CafeCoordinate?,
+        val selectedZoneData: ZoneData? = null,
+        val isZoneBottomSheetVisible: Boolean,
         val loadingMap: Boolean,
-        val showBottomSheet: Boolean,
     ) : BaseViewDataState {
         data class ZoneData(
             val uuid: String,
@@ -21,6 +19,12 @@ interface MapDeliveryArea {
             val minOrderCost: Int?,
             val normalDeliveryCost: Int,
             val forLowDeliveryCost: Int?,
+            val deliveryZonePoint: List<DeliveryZonePoint>,
+        )
+
+        data class CafeCoordinate(
+            val latitude: Double,
+            val longitude: Double
         )
     }
 
@@ -30,7 +34,7 @@ interface MapDeliveryArea {
         data object OnCloseBottomSheetDeliveryZoneClicked : Action
 
         data class OnDeliveryZoneClicked(
-            val zoneIndex: Int,
+            val zoneUuid: String,
         ) : Action
 
         data object LoadAllData : Action
