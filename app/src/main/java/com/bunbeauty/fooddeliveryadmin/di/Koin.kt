@@ -11,6 +11,7 @@ import com.bunbeauty.domain.feature.editcafe.di.editCafeModule
 import com.bunbeauty.domain.feature.gallery.di.galleryModule
 import com.bunbeauty.domain.feature.login.di.loginModule
 import com.bunbeauty.domain.feature.main.di.mainModule
+import com.bunbeauty.domain.feature.mapzonedelivery.di.mapDeliveryArea
 import com.bunbeauty.domain.feature.orderlist.di.orderListModule
 import com.bunbeauty.domain.feature.profile.di.profileModule
 import com.bunbeauty.domain.feature.time.di.timeUseCaseModule
@@ -49,5 +50,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             mapperModule(),
             dataSourceModule(),
             cafeListModule(),
+            mapDeliveryArea(),
         )
     }

@@ -87,8 +87,13 @@ class MapDeliveryAreaFragment : SingleStateComposeFragment<MapDeliveryArea.DataS
                 findNavController().navigateUp()
             }
 
-            MapDeliveryArea.Event.EditInfoDeliveryZoneEvent -> {
-                findNavController().navigateSafe(directions = MapDeliveryAreaFragmentDirections.toEditDeliveryZoneFragment())
+            is MapDeliveryArea.Event.EditInfoDeliveryZoneEvent -> {
+                findNavController().navigateSafe(
+                    directions =
+                        MapDeliveryAreaFragmentDirections.toEditDeliveryZoneFragment(
+                            event.zoneUuid,
+                        ),
+                )
             }
         }
     }
@@ -211,7 +216,7 @@ private fun DeliveryZoneBottomSheet(
 ) {
     AdminModalBottomSheet(
         title = stringResource(R.string.title_bottom_sheet_map_delivery_area, zoneData.nameZona),
-        isShown = true,
+        isShown = zoneState.showBottomSheet,
         onDismissRequest = onClose,
         content = {
             Column(
@@ -241,11 +246,15 @@ private fun DeliveryZoneBottomSheet(
                 )
 
                 LoadingButton(
-                    // modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp),
                     text = stringResource(R.string.action_bottom_sheet_edit),
                     isLoading = zoneState.loadingMap,
                     onClick = {
-                        onAction(MapDeliveryArea.Action.OnEditInfoDeliveryZone)
+                        onAction(
+                            MapDeliveryArea.Action.OnEditInfoDeliveryZone(
+                                zoneUuid = zoneData.uuid,
+                            ),
+                        )
                     },
                 )
             }

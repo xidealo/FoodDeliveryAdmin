@@ -13,8 +13,10 @@ interface MapDeliveryArea {
         val selectedZoneIndex: Int? = null,
         val isZoneBottomSheetVisible: Boolean = false,
         val loadingMap: Boolean,
+        val showBottomSheet: Boolean,
     ) : BaseViewDataState {
         data class ZoneData(
+            val uuid: String,
             val nameZona: String,
             val minOrderCost: Int?,
             val normalDeliveryCost: Int,
@@ -33,12 +35,16 @@ interface MapDeliveryArea {
 
         data object LoadAllData : Action
 
-        data object OnEditInfoDeliveryZone : Action
+        data class OnEditInfoDeliveryZone(
+            val zoneUuid: String,
+        ) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object Back : Event
 
-        data object EditInfoDeliveryZoneEvent : Event
+        data class EditInfoDeliveryZoneEvent(
+            val zoneUuid: String,
+        ) : Event
     }
 }

@@ -274,5 +274,11 @@ fun viewModelModule() =
             )
         }
 
-        viewModel { EditInfoDeliveryZoneViewModel() }
+        viewModel {
+            EditInfoDeliveryZoneViewModel(
+                savedStateHandle = get(),
+                getZoneUseCase = get(),
+                saveInfoZoneUseCase = get(),
+            )
+        }
     }

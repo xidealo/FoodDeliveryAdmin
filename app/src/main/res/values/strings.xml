@@ -364,6 +364,10 @@
 
     <!--Edit Info Delivery Zone-->
     <string name="title_edit_info_delivery_zone">Редактирование зоны доставки</string>
-    <string name="title_edit_info_delivery_zone">Редактирование зоны доставки</string>
+    <string name="hint_edit_name_info_delivery_zone">Наименование зоны</string>
+    <string name="hint_edit_min_order_cost_info_delivery_zone">Минимальная стоимость доставки</string>
+    <string name="hint_edit_normal_cost_info_delivery_zone">Стоимость доставки</string>
+    <string name="hint_edit_for_low_cost_info_delivery_zone">Бесплатная доставка</string>
+    <string name="msg_edit_info_delivery_zone_updated">%s обновлён</string>
 
 </resources>

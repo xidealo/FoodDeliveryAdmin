@@ -389,6 +389,9 @@
         android:id="@+id/editDeliveryZoneFragment"
         android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.editinfodeliveryzone.EditDeliveryZoneFragment"
         android:label="EditDeliveryZoneFragment">
+        <argument
+            android:name="zoneUuid"
+            app:argType="string" />
     </fragment>
 
 

@@ -20,6 +20,7 @@ class MapDeliveryAreaViewModel(
                 positionCafe = null,
                 listDeliveryAreaZone = emptyList(),
                 loadingMap = false,
+                showBottomSheet = false,
             ),
     ) {
     override fun reduce(
@@ -33,7 +34,7 @@ class MapDeliveryAreaViewModel(
             MapDeliveryArea.Action.LoadAllData -> loadAllData()
             MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked -> closeZoneBottomSheet()
             is MapDeliveryArea.Action.OnDeliveryZoneClicked -> showZoneBottomSheet(action.zoneIndex)
-            MapDeliveryArea.Action.OnEditInfoDeliveryZone -> editInfoDeliveryZone()
+            is MapDeliveryArea.Action.OnEditInfoDeliveryZone -> editInfoDeliveryZone(zoneUuid = action.zoneUuid)
         }
     }
 
@@ -54,6 +55,7 @@ class MapDeliveryAreaViewModel(
                             normalDeliveryCost = zone.normalDeliveryCost,
                             forLowDeliveryCost = zone.forLowDeliveryCost,
                             nameZona = zone.nameZone,
+                            uuid = zone.uuid,
                         )
                     }
 
@@ -77,6 +79,7 @@ class MapDeliveryAreaViewModel(
     private fun showZoneBottomSheet(zoneIndex: Int) {
         setState {
             copy(
+                showBottomSheet = true,
                 selectedZoneIndex = zoneIndex,
                 isZoneBottomSheetVisible = true,
             )
@@ -86,14 +89,22 @@ class MapDeliveryAreaViewModel(
     private fun closeZoneBottomSheet() {
         setState {
             copy(
+                showBottomSheet = false,
                 isZoneBottomSheetVisible = false,
             )
         }
     }
 
-    private fun editInfoDeliveryZone() {
+    private fun editInfoDeliveryZone(zoneUuid: String) {
+        setState {
+            copy(
+                showBottomSheet = true,
+            )
+        }
         sendEvent {
-            MapDeliveryArea.Event.EditInfoDeliveryZoneEvent
+            MapDeliveryArea.Event.EditInfoDeliveryZoneEvent(
+                zoneUuid = zoneUuid,
+            )
         }
     }
 
