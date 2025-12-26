@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.R
@@ -88,6 +87,7 @@ class MapDeliveryAreaFragment :
 //            )
 //        }
     }
+
     @Composable
     override fun Screen(
         state: MapDeliveryArea.DataState,
@@ -166,10 +166,7 @@ fun SimpleMapScreen(
         LaunchedEffect(state.positionCafe) {
             state.positionCafe?.let { cafePosition ->
                 cameraState.position = CameraPosition(
-                    target = Position(
-                        longitude = cafePosition.longitude,
-                        latitude = cafePosition.latitude
-                    ),
+                    target = cafePosition,
                     zoom = MAP_ZOOM,
                 )
             }
@@ -184,12 +181,7 @@ fun SimpleMapScreen(
                     features =
                         listOf(
                             Feature(
-                                geometry = Polygon(zone.deliveryZonePoint.map { point ->
-                                    Position(
-                                        longitude = point.longitude,
-                                        latitude = point.latitude
-                                    )
-                                }),
+                                geometry = Polygon(zone.deliveryZonePoint),
                                 properties = buildJsonObject {},
                                 id = JsonPrimitive(zone.uuid),
                             ),

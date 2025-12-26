@@ -6,8 +6,8 @@ import com.bunbeauty.domain.feature.mapzonedelivery.GetDeliveryZoneUseCase
 import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea.DataState.CafeCoordinate
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import org.maplibre.spatialk.geojson.Position
 
 class MapDeliveryAreaViewModel(
     private val getCafeUseCase: GetCafeUseCase,
@@ -58,13 +58,19 @@ class MapDeliveryAreaViewModel(
                         forLowDeliveryCost = zone.forLowDeliveryCost,
                         nameZona = zone.nameZone,
                         uuid = zone.uuid,
-                        deliveryZonePoint = mapToPositionList(deliveryZone = zone)
+                        deliveryZonePoint = getFullDeliveryZonePointListUseCase(deliveryZone = zone)
+                            .map {
+                                Position(
+                                    latitude = it.latitude,
+                                    longitude = it.longitude
+                                )
+                            }
                     )
                 }
 
                 setState {
                     copy(
-                        positionCafe = CafeCoordinate(
+                        positionCafe = Position(
                             longitude = cafe.longitude,
                             latitude = cafe.latitude,
                         ),
@@ -115,7 +121,7 @@ class MapDeliveryAreaViewModel(
     }
 
     // вынести в юзкейс и написать тест
-    private fun mapToPositionList(deliveryZone: DeliveryZone): List<DeliveryZonePoint> {
+    private fun getFullDeliveryZonePointListUseCase(deliveryZone: DeliveryZone): List<DeliveryZonePoint> {
         val positions = deliveryZone.deliveryZonePoint
         return if (positions.isNotEmpty() && positions.first() != positions.last()) {
             positions.plusElement(positions.first())

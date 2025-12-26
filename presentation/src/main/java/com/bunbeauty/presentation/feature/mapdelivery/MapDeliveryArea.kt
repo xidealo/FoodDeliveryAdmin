@@ -1,14 +1,14 @@
 package com.bunbeauty.presentation.feature.mapdelivery
 
-import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
+import org.maplibre.spatialk.geojson.Position
 
 interface MapDeliveryArea {
     data class DataState(
         val listDeliveryAreaZone: List<ZoneData>,
-        val positionCafe: CafeCoordinate?,
+        val positionCafe: Position?,
         val selectedZoneData: ZoneData? = null,
         val isZoneBottomSheetVisible: Boolean,
         val loadingMap: Boolean,
@@ -19,12 +19,7 @@ interface MapDeliveryArea {
             val minOrderCost: Int?,
             val normalDeliveryCost: Int,
             val forLowDeliveryCost: Int?,
-            val deliveryZonePoint: List<DeliveryZonePoint>,
-        )
-
-        data class CafeCoordinate(
-            val latitude: Double,
-            val longitude: Double
+            val deliveryZonePoint: List<Position>,
         )
     }
 
