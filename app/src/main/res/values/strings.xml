@@ -351,4 +351,23 @@
     <string name="msg_update_select_addition_list_priority_list">Список обновлен</string>
     <string name="msg_update_select_addition_list_added">Добавлено %s</string>
     <string name="msg_update_select_addition_list_removed">Удалено %s</string>
+
+    <!--Map Delivery Area-->
+    <string name="title_map_delivery_area">Зона обслуживания</string>
+    <string name="title_bottom_sheet_map_delivery_area">Зона доставки: %s</string>
+    <string name="title_bottom_sheet_min_orders_cost">Минимальная стоимость заказа: </string>
+    <string name="title_bottom_sheet_orders_cost">Стоимость доставки: </string>
+    <string name="title_bottom_sheet_free_orders_cost">Бесплатная доставка от: </string>
+    <string name="error_bottom_sheet_min_orders_cost">Не установлена</string>
+    <string name="error_bottom_sheet_free_orders_cost">Не установлена</string>
+    <string name="action_bottom_sheet_edit">Редактировать</string>
+
+    <!--Edit Info Delivery Zone-->
+    <string name="title_edit_info_delivery_zone">Редактирование зоны доставки</string>
+    <string name="hint_edit_name_info_delivery_zone">Наименование зоны</string>
+    <string name="hint_edit_min_order_cost_info_delivery_zone">Минимальная стоимость доставки</string>
+    <string name="hint_edit_normal_cost_info_delivery_zone">Стоимость доставки</string>
+    <string name="hint_edit_for_low_cost_info_delivery_zone">Бесплатная доставка</string>
+    <string name="msg_edit_info_delivery_zone_updated">%s обновлён</string>
+
 </resources>

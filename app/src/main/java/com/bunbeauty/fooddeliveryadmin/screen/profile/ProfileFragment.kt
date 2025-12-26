@@ -34,7 +34,6 @@ import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toSettingsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toStatisticFragment
 import com.bunbeauty.presentation.feature.profile.Profile
-import com.bunbeauty.presentation.feature.profile.Profile.Action.*
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -71,7 +70,7 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
             Profile.Event.OpenLogout -> {
                 lifecycleScope.launch {
                     LogoutBottomSheet.show(parentFragmentManager)?.let { isConfirmed ->
-                        viewModel.onAction(LogoutConfirm(confirmed = isConfirmed))
+                        viewModel.onAction(Profile.Action.LogoutConfirm(confirmed = isConfirmed))
                     }
                 }
             }

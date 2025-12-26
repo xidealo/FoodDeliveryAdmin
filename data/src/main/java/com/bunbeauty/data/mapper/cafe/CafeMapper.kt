@@ -3,9 +3,12 @@ package com.bunbeauty.data.mapper.cafe
 import com.bunbeauty.data.model.server.cafe.CafeServer
 import com.bunbeauty.data.model.server.cafe.GetDeliveryZoneResponse
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.cafe.PatchDeliveryZone
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.domain.model.cafe.UpdateCafe
+import com.bunbeauty.domain.model.cafe.UpdateInfoDeliveryZone
 import com.bunbeauty.domain.model.settings.WorkLoad
 import com.bunbeauty.domain.model.settings.WorkType
 
@@ -61,14 +64,35 @@ class CafeMapper {
             )
         }
 
-    fun getDeliveryZonePoints(getDeliveryZoneResponse: GetDeliveryZoneResponse): List<List<DeliveryZonePoint>> =
+    fun getDeliveryZonePoints(getDeliveryZoneResponse: GetDeliveryZoneResponse): List<DeliveryZone> =
         getDeliveryZoneResponse.results.map { deliveryZoneServer ->
             val sortedPoints = deliveryZoneServer.points.sortedBy { it.order }
-            sortedPoints.map { point ->
-                DeliveryZonePoint(
-                    longitude = point.longitude,
-                    latitude = point.latitude,
-                )
-            }
+            val deliveryZonePoints =
+                sortedPoints.map { point ->
+                    DeliveryZonePoint(
+                        longitude = point.longitude,
+                        latitude = point.latitude,
+                    )
+                }
+
+            DeliveryZone(
+                deliveryZonePoint = deliveryZonePoints,
+                minOrderCost = deliveryZoneServer.minOrderCost,
+                normalDeliveryCost = deliveryZoneServer.normalDeliveryCost,
+                forLowDeliveryCost = deliveryZoneServer.forLowDeliveryCost,
+                nameZone = deliveryZoneServer.name,
+                uuid = deliveryZoneServer.uuid,
+            )
         }
+
+    fun toPatchDeliveryZone(updateInfoDeliveryZone: UpdateInfoDeliveryZone): PatchDeliveryZone =
+        PatchDeliveryZone(
+            name = updateInfoDeliveryZone.name,
+            minOrderCost = updateInfoDeliveryZone.minOrderCost,
+            normalDeliveryCost = updateInfoDeliveryZone.normalDeliveryCost,
+            forLowDeliveryCost = updateInfoDeliveryZone.forLowDeliveryCost,
+            lowDeliveryCost = updateInfoDeliveryZone.lowDeliveryCost,
+            isVisible = null,
+            cafeUuid = null,
+        )
 }
