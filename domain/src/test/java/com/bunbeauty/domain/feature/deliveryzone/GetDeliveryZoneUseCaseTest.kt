@@ -35,6 +35,8 @@ class GetDeliveryZoneUseCaseTest {
     @Test
     fun `invoke throws NoTokenException when token is null`() =
         runTest {
+            val cafeUuid = "cafe_uuid"
+            every { dataStoreRepo.cafeUuid } returns flowOf(cafeUuid)
             coEvery { dataStoreRepo.getToken() } returns null
 
             assertFailsWith<NoTokenException> {
