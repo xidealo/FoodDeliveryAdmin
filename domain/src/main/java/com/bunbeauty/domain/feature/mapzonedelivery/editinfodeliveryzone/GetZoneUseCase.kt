@@ -1,5 +1,6 @@
 package com.bunbeauty.domain.feature.mapzonedelivery.editinfodeliveryzone
 
+import com.bunbeauty.domain.exception.GetZoneException
 import com.bunbeauty.domain.exception.NoCafeException
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.cafe.DeliveryZone
@@ -18,6 +19,6 @@ class GetZoneUseCase(
             cafeUuid = cafeUuid,
             zoneUuid = zoneUuid,
             token = token,
-        ) ?: throw Exception()
+        ) ?: throw GetZoneException()
     }
 }

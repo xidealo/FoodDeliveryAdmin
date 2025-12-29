@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.feature.mapzonedelivery.di
 
 import com.bunbeauty.domain.feature.mapzonedelivery.GetDeliveryZoneUseCase
+import com.bunbeauty.domain.feature.mapzonedelivery.editinfodeliveryzone.GetFullDeliveryZonePointListUseCase
 import com.bunbeauty.domain.feature.mapzonedelivery.editinfodeliveryzone.GetZoneUseCase
 import com.bunbeauty.domain.feature.mapzonedelivery.editinfodeliveryzone.SaveInfoZoneUseCase
 import org.koin.dsl.module
@@ -26,5 +27,9 @@ fun mapDeliveryArea() =
                 dataStoreRepo = get(),
                 cafeRepo = get(),
             )
+        }
+
+        factory {
+            GetFullDeliveryZonePointListUseCase()
         }
     }

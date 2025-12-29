@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.editinfodeliveryzone
+package com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.editdeliveryzoneinfo
 
 import android.os.Bundle
 import androidx.compose.foundation.layout.Column
@@ -6,47 +6,56 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.LoadingButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextField
+import com.bunbeauty.fooddeliveryadmin.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.fooddeliveryadmin.main.MessageHost
-import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.EditInfoDeliveryZone
-import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.EditInfoDeliveryZoneViewModel
+import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.EditDeliveryZoneInfo
+import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.EditDeliveryZoneInfoViewModel
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// Переименовать EditDeliveryZoneInfo
-class EditDeliveryZoneFragment :
-    SingleStateComposeFragment<EditInfoDeliveryZone.DataState, EditInfoDeliveryZone.Action, EditInfoDeliveryZone.Event>() {
-    override val viewModel: EditInfoDeliveryZoneViewModel by viewModel()
+class EditDeliveryZoneInfoFragment :
+    SingleStateComposeFragment<EditDeliveryZoneInfo.DataState, EditDeliveryZoneInfo.Action, EditDeliveryZoneInfo.Event>() {
+    override val viewModel: EditDeliveryZoneInfoViewModel by viewModel()
+
+    companion object {
+        const val SELECT_ZONE_KEY = "SELECT_ZONE_KEY"
+        const val UUID_ZONE_KEY = "UUID_ZONE_KEY"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.onAction(EditInfoDeliveryZone.Action.InitZone)
+        viewModel.onAction(EditDeliveryZoneInfo.Action.InitZone)
     }
 
-    override fun handleEvent(event: EditInfoDeliveryZone.Event) {
+    override fun handleEvent(event: EditDeliveryZoneInfo.Event) {
         when (event) {
-            is EditInfoDeliveryZone.Event.Back -> {
+            is EditDeliveryZoneInfo.Event.Back -> {
                 findNavController().navigateUp()
             }
 
-            is EditInfoDeliveryZone.Event.SaveInfoZoneSuccess -> {
-
-                /*setFragmentResult(
-                    requestKey = SELECT_ADDITION_LIST_KEY,
-                    положить ююид зоны которую обновил
-                    result = bundleOf(ADDITION_LIST_KEY to event.additionUuidList),
-                )*/
+            is EditDeliveryZoneInfo.Event.SaveInfoZoneSuccess -> {
+                setFragmentResult(
+                    requestKey = SELECT_ZONE_KEY,
+                    result = bundleOf(UUID_ZONE_KEY to event.uuid),
+                )
 
                 (activity as? MessageHost)?.showInfoMessage(
-                    resources.getString(R.string.msg_edit_info_delivery_zone_updated, event.zoneName),
+                    resources.getString(
+                        R.string.msg_edit_info_delivery_zone_updated,
+                        event.zoneName,
+                    ),
                 )
                 findNavController().popBackStack()
             }
@@ -55,8 +64,8 @@ class EditDeliveryZoneFragment :
 
     @Composable
     override fun Screen(
-        state: EditInfoDeliveryZone.DataState,
-        onAction: (EditInfoDeliveryZone.Action) -> Unit,
+        state: EditDeliveryZoneInfo.DataState,
+        onAction: (EditDeliveryZoneInfo.Action) -> Unit,
     ) {
         EditInfoDeliveryZoneScreen(
             state = state,
@@ -67,18 +76,18 @@ class EditDeliveryZoneFragment :
 
 @Composable
 private fun EditInfoDeliveryZoneScreen(
-    state: EditInfoDeliveryZone.DataState,
-    onAction: (EditInfoDeliveryZone.Action) -> Unit,
+    state: EditDeliveryZoneInfo.DataState,
+    onAction: (EditDeliveryZoneInfo.Action) -> Unit,
 ) {
     AdminScaffold(
         title = stringResource(R.string.title_edit_info_delivery_zone),
-        backActionClick = { onAction(EditInfoDeliveryZone.Action.OnBackClick) },
+        backActionClick = { onAction(EditDeliveryZoneInfo.Action.OnBackClick) },
         backgroundColor = AdminTheme.colors.main.surface,
         actionButton = {
             LoadingButton(
                 text = stringResource(R.string.action_order_details_save),
                 isLoading = false,
-                onClick = { onAction(EditInfoDeliveryZone.Action.SaveDeliveryZone) },
+                onClick = { onAction(EditDeliveryZoneInfo.Action.SaveDeliveryZone) },
                 modifier =
                     Modifier
                         .padding(horizontal = AdminTheme.dimensions.mediumSpace),
@@ -89,12 +98,11 @@ private fun EditInfoDeliveryZoneScreen(
             modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             AdminTextField(
-                modifier = Modifier.padding(top = 16.dp),
                 labelText = stringResource(R.string.hint_edit_name_info_delivery_zone),
                 value = state.nameZona.value,
                 onValueChange = { name ->
                     onAction(
-                        EditInfoDeliveryZone.Action.EditNameDeliveryZone(nameDeliveryZone = name),
+                        EditDeliveryZoneInfo.Action.EditNameDeliveryZone(nameDeliveryZone = name),
                     )
                 },
                 isError = state.hasEditNameError,
@@ -106,9 +114,13 @@ private fun EditInfoDeliveryZoneScreen(
                 value = state.minOrderCost.value,
                 onValueChange = { minOrderCost ->
                     onAction(
-                        EditInfoDeliveryZone.Action.EditMinOrderCostDeliveryZone(minOrderCost = minOrderCost),
+                        EditDeliveryZoneInfo.Action.EditMinOrderCostDeliveryZone(minOrderCost = minOrderCost),
                     )
                 },
+                keyboardOptions =
+                    keyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                    ),
                 isError = state.nameZona.isError,
                 enabled = !state.isLoading,
             )
@@ -118,9 +130,15 @@ private fun EditInfoDeliveryZoneScreen(
                 value = state.normalDeliveryCost.value,
                 onValueChange = { normalCost ->
                     onAction(
-                        EditInfoDeliveryZone.Action.EditNormalDeliveryCostDeliveryZone(normalDeliveryCost = normalCost),
+                        EditDeliveryZoneInfo.Action.EditNormalDeliveryCostDeliveryZone(
+                            normalDeliveryCost = normalCost,
+                        ),
                     )
                 },
+                keyboardOptions =
+                    keyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                    ),
                 isError = state.nameZona.isError,
                 enabled = !state.isLoading,
             )
@@ -130,9 +148,15 @@ private fun EditInfoDeliveryZoneScreen(
                 value = state.forLowDeliveryCost.value,
                 onValueChange = { freeCost ->
                     onAction(
-                        EditInfoDeliveryZone.Action.EditForLowDeliveryCostDeliveryZone(forLowDeliveryCost = freeCost),
+                        EditDeliveryZoneInfo.Action.EditForLowDeliveryCostDeliveryZone(
+                            forLowDeliveryCost = freeCost,
+                        ),
                     )
                 },
+                keyboardOptions =
+                    keyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                    ),
                 isError = state.nameZona.isError,
                 enabled = !state.isLoading,
             )
@@ -146,8 +170,8 @@ private fun EditInfoDeliveryZonePreviewScreen() {
     AdminTheme {
         EditInfoDeliveryZoneScreen(
             state =
-                EditInfoDeliveryZone.DataState(
-                    state = EditInfoDeliveryZone.DataState.State.SUCCESS,
+                EditDeliveryZoneInfo.DataState(
+                    state = EditDeliveryZoneInfo.DataState.State.SUCCESS,
                     uuid = "",
                     isLoading = true,
                     nameZona =

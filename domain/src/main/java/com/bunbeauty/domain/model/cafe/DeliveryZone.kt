@@ -7,4 +7,16 @@ data class DeliveryZone(
     val normalDeliveryCost: Int,
     val forLowDeliveryCost: Int?,
     val nameZone: String,
-)
+) {
+    companion object {
+        val mock =
+            DeliveryZone(
+                uuid = "123",
+                deliveryZonePoint = emptyList(),
+                minOrderCost = null,
+                normalDeliveryCost = 100,
+                forLowDeliveryCost = 150,
+                nameZone = "Test_Zone",
+            )
+    }
+}

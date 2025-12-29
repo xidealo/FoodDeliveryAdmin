@@ -5,8 +5,9 @@ import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 import org.maplibre.spatialk.geojson.Position
 
-interface MapDeliveryArea {
+interface MapDeliveryZone {
     data class DataState(
+        val state: State,
         val listDeliveryAreaZone: List<ZoneData>,
         val positionCafe: Position?,
         val selectedZoneData: ZoneData? = null,
@@ -23,6 +24,11 @@ interface MapDeliveryArea {
         )
     }
 
+    enum class State {
+        SUCCESS,
+        ERROR,
+    }
+
     sealed interface Action : BaseAction {
         data object OnBackClick : Action
 
@@ -33,6 +39,10 @@ interface MapDeliveryArea {
         ) : Action
 
         data object LoadAllData : Action
+
+        data class UpdateDeliveryZone(
+            val zoneUuid: String,
+        ) : Action
 
         data class OnEditInfoDeliveryZone(
             val zoneUuid: String,

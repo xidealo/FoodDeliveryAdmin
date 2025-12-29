@@ -169,7 +169,7 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                 },
             )
             NavigationIconCard(
-                iconId = R.drawable.ic_statistic,
+                iconId = R.drawable.ic_point,
                 labelStringId = R.string.action_profile_map,
                 onClick = {
                     onAction(Profile.Action.MapClick)

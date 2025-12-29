@@ -14,14 +14,14 @@ import kotlin.text.orEmpty
 
 private const val ZONE_UUID = "zoneUuid"
 
-class EditInfoDeliveryZoneViewModel(
+class EditDeliveryZoneInfoViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getZoneUseCase: GetZoneUseCase,
     private val saveInfoZoneUseCase: SaveInfoZoneUseCase,
-) : BaseStateViewModel<EditInfoDeliveryZone.DataState, EditInfoDeliveryZone.Action, EditInfoDeliveryZone.Event>(
+) : BaseStateViewModel<EditDeliveryZoneInfo.DataState, EditDeliveryZoneInfo.Action, EditDeliveryZoneInfo.Event>(
         initState =
-            EditInfoDeliveryZone.DataState(
-                state = EditInfoDeliveryZone.DataState.State.LOADING,
+            EditDeliveryZoneInfo.DataState(
+                state = EditDeliveryZoneInfo.DataState.State.LOADING,
                 uuid = "",
                 isLoading = false,
                 nameZona = TextFieldData.empty,
@@ -32,30 +32,30 @@ class EditInfoDeliveryZoneViewModel(
             ),
     ) {
     override fun reduce(
-        action: EditInfoDeliveryZone.Action,
-        dataState: EditInfoDeliveryZone.DataState,
+        action: EditDeliveryZoneInfo.Action,
+        dataState: EditDeliveryZoneInfo.DataState,
     ) {
         when (action) {
-            EditInfoDeliveryZone.Action.OnBackClick -> backClick()
-            EditInfoDeliveryZone.Action.InitZone -> loadData()
-            EditInfoDeliveryZone.Action.SaveDeliveryZone -> saveInfoDeliveryZone()
+            EditDeliveryZoneInfo.Action.OnBackClick -> backClick()
+            EditDeliveryZoneInfo.Action.InitZone -> loadData()
+            EditDeliveryZoneInfo.Action.SaveDeliveryZone -> saveInfoDeliveryZone()
 
-            is EditInfoDeliveryZone.Action.EditNameDeliveryZone ->
+            is EditDeliveryZoneInfo.Action.EditNameDeliveryZone ->
                 editNameZona(
                     nameEditZona = action.nameDeliveryZone,
                 )
 
-            is EditInfoDeliveryZone.Action.EditMinOrderCostDeliveryZone ->
+            is EditDeliveryZoneInfo.Action.EditMinOrderCostDeliveryZone ->
                 editMinOrderCost(
                     minOrder = action.minOrderCost,
                 )
 
-            is EditInfoDeliveryZone.Action.EditForLowDeliveryCostDeliveryZone ->
+            is EditDeliveryZoneInfo.Action.EditForLowDeliveryCostDeliveryZone ->
                 editForLowDeliveryCost(
                     freeCast = action.forLowDeliveryCost,
                 )
 
-            is EditInfoDeliveryZone.Action.EditNormalDeliveryCostDeliveryZone ->
+            is EditDeliveryZoneInfo.Action.EditNormalDeliveryCostDeliveryZone ->
                 editNormalDeliveryCost(
                     normalCast = action.normalDeliveryCost,
                 )
@@ -70,7 +70,7 @@ class EditInfoDeliveryZoneViewModel(
                         savedStateHandle.get<String>(ZONE_UUID).orEmpty()
                     val zone = getZoneUseCase(zoneUuid = zoneUuidNavigation)
                     copy(
-                        state = EditInfoDeliveryZone.DataState.State.SUCCESS,
+                        state = EditDeliveryZoneInfo.DataState.State.SUCCESS,
                         uuid = zoneUuidNavigation,
                         nameZona =
                             TextFieldData(
@@ -97,7 +97,7 @@ class EditInfoDeliveryZoneViewModel(
             },
             onError = {
                 setState {
-                    copy(state = EditInfoDeliveryZone.DataState.State.ERROR)
+                    copy(state = EditDeliveryZoneInfo.DataState.State.ERROR)
                 }
             },
         )
@@ -119,8 +119,9 @@ class EditInfoDeliveryZoneViewModel(
                         },
                 )
                 sendEvent { dataState ->
-                    EditInfoDeliveryZone.Event.SaveInfoZoneSuccess(
+                    EditDeliveryZoneInfo.Event.SaveInfoZoneSuccess(
                         zoneName = dataState.nameZona.value,
+                        uuid = state.value.uuid,
                     )
                 }
             },
@@ -142,7 +143,7 @@ class EditInfoDeliveryZoneViewModel(
     }
 
     private fun backClick() {
-        sendEvent { EditInfoDeliveryZone.Event.Back }
+        sendEvent { EditDeliveryZoneInfo.Event.Back }
     }
 
     private fun editNameZona(nameEditZona: String) {

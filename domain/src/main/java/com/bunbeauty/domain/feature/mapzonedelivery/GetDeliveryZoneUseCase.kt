@@ -14,8 +14,7 @@ class GetDeliveryZoneUseCase(
     suspend operator fun invoke(): List<DeliveryZone> {
         val cafeUuid = dataStoreRepo.cafeUuid.firstOrNull() ?: throw NoCafeException()
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        // переименовать
-        val get = cafeRepo.getPositionDeliveryZone(cafeUuid = cafeUuid, token = token)
-        return get
+        val deliveryZone = cafeRepo.getPositionDeliveryZone(cafeUuid = cafeUuid, token = token)
+        return deliveryZone
     }
 }

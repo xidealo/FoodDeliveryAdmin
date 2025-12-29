@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.R
@@ -29,8 +30,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.medium
 import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.MapConstants.MAP_ZOOM
-import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryArea
-import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryAreaViewModel
+import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZone
+import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZoneViewModel
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -71,44 +72,50 @@ object MapColors {
     fun generatePolygonColor(index: Int): Color = polygonColors[index % polygonColors.size]
 }
 
-class MapDeliveryAreaFragment :
-    SingleStateComposeFragment<MapDeliveryArea.DataState, MapDeliveryArea.Action, MapDeliveryArea.Event>() {
-    override val viewModel: MapDeliveryAreaViewModel by viewModel()
+class MapDeliveryZoneFragment : SingleStateComposeFragment<MapDeliveryZone.DataState, MapDeliveryZone.Action, MapDeliveryZone.Event>() {
+    override val viewModel: MapDeliveryZoneViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    companion object {
+        const val SELECT_ZONE_KEY = "SELECT_ZONE_KEY"
+        const val UUID_ZONE_KEY = "UUID_ZONE_KEY"
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
-//        setFragmentResultListener(SELECT_ADDITION_GROUP_KEY) { _, bundle ->
-//            Вызвать экшн который обновляет selectedDeliveryZone
-//            viewModel.onAction(
-//                EditAdditionGroupForMenu.Action.SelectAdditionGroup(
-//                    additionGroupUuid = bundle.getString(ADDITION_GROUP_KEY).orEmpty(),
-//                ),
-//            )
-//        }
+        setFragmentResultListener(SELECT_ZONE_KEY) { _, bundle ->
+            viewModel.onAction(
+                MapDeliveryZone.Action.UpdateDeliveryZone(
+                    zoneUuid = bundle.getString(UUID_ZONE_KEY).orEmpty(),
+                ),
+            )
+        }
     }
 
     @Composable
     override fun Screen(
-        state: MapDeliveryArea.DataState,
-        onAction: (MapDeliveryArea.Action) -> Unit,
+        state: MapDeliveryZone.DataState,
+        onAction: (MapDeliveryZone.Action) -> Unit,
     ) {
         LaunchedEffect(Unit) {
-            onAction(MapDeliveryArea.Action.LoadAllData)
+            onAction(MapDeliveryZone.Action.LoadAllData)
         }
         MapScreen(state = state, onAction = onAction)
     }
 
-    override fun handleEvent(event: MapDeliveryArea.Event) {
+    override fun handleEvent(event: MapDeliveryZone.Event) {
         when (event) {
-            is MapDeliveryArea.Event.Back -> {
+            is MapDeliveryZone.Event.Back -> {
                 findNavController().navigateUp()
             }
 
-            is MapDeliveryArea.Event.EditInfoDeliveryZoneEvent -> {
+            is MapDeliveryZone.Event.EditInfoDeliveryZoneEvent -> {
                 findNavController().navigateSafe(
                     directions =
-                        MapDeliveryAreaFragmentDirections.toEditDeliveryZoneFragment(
+                        MapDeliveryZoneFragmentDirections.toEditDeliveryZoneFragment(
                             event.zoneUuid,
                         ),
                 )
@@ -118,12 +125,12 @@ class MapDeliveryAreaFragment :
 
     @Composable
     fun MapScreen(
-        state: MapDeliveryArea.DataState,
-        onAction: (MapDeliveryArea.Action) -> Unit,
+        state: MapDeliveryZone.DataState,
+        onAction: (MapDeliveryZone.Action) -> Unit,
     ) {
         AdminScaffold(
             title = stringResource(R.string.title_map_delivery_area),
-            backActionClick = { onAction(MapDeliveryArea.Action.OnBackClick) },
+            backActionClick = { onAction(MapDeliveryZone.Action.OnBackClick) },
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 SimpleMapScreen(state, onAction)
@@ -133,7 +140,7 @@ class MapDeliveryAreaFragment :
                         zoneData = zoneData,
                         zoneState = state,
                         onClose = {
-                            onAction(MapDeliveryArea.Action.OnCloseBottomSheetDeliveryZoneClicked)
+                            onAction(MapDeliveryZone.Action.OnCloseBottomSheetDeliveryZoneClicked)
                         },
                         onAction = onAction,
                     )
@@ -146,13 +153,14 @@ class MapDeliveryAreaFragment :
 @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")
 @Composable
 fun SimpleMapScreen(
-    state: MapDeliveryArea.DataState,
-    onAction: (MapDeliveryArea.Action) -> Unit,
+    state: MapDeliveryZone.DataState,
+    onAction: (MapDeliveryZone.Action) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        val colors = remember(state.listDeliveryAreaZone.size) {
-            state.listDeliveryAreaZone.indices.map { MapColors.generatePolygonColor(it) }
-        }
+        val colors =
+            remember(state.listDeliveryAreaZone.size) {
+                state.listDeliveryAreaZone.indices.map { MapColors.generatePolygonColor(it) }
+            }
 
         val cameraState =
             rememberCameraState(
@@ -165,10 +173,11 @@ fun SimpleMapScreen(
 
         LaunchedEffect(state.positionCafe) {
             state.positionCafe?.let { cafePosition ->
-                cameraState.position = CameraPosition(
-                    target = cafePosition,
-                    zoom = MAP_ZOOM,
-                )
+                cameraState.position =
+                    CameraPosition(
+                        target = cafePosition,
+                        zoom = MAP_ZOOM,
+                    )
             }
         }
 
@@ -177,40 +186,43 @@ fun SimpleMapScreen(
             cameraState = cameraState,
         ) {
             state.listDeliveryAreaZone.forEachIndexed { index, zone ->
-                val featureCollection = FeatureCollection(
-                    features =
-                        listOf(
-                            Feature(
-                                geometry = Polygon(zone.deliveryZonePoint),
-                                properties = buildJsonObject {},
-                                id = JsonPrimitive(zone.uuid),
+                val featureCollection =
+                    FeatureCollection(
+                        features =
+                            listOf(
+                                Feature(
+                                    geometry = Polygon(zone.deliveryZonePoint),
+                                    properties = buildJsonObject {},
+                                    id = JsonPrimitive(zone.uuid),
+                                ),
                             ),
-                        ),
-                )
-                val source = rememberGeoJsonSource(
-                    data = GeoJsonData.Features(featureCollection),
-                )
+                    )
+                val source =
+                    rememberGeoJsonSource(
+                        data = GeoJsonData.Features(featureCollection),
+                    )
 
                 FillLayer(
                     id = "${MapConstants.POLYGON_LAYER_PREFIX}${zone.uuid}",
                     source = source,
                     color = const(colors[index]),
                     opacity = const(0.5f),
-                    onClick = object : FeaturesClickHandler {
-                        override fun invoke(features: List<Feature<Geometry, JsonObject?>>): ClickResult {
-                            features.firstOrNull()?.let { feature ->
-                                val zoneUuid = feature.id?.content
-                                zoneUuid?.let { zoneUuid ->
-                                    onAction(
-                                        MapDeliveryArea.Action.OnDeliveryZoneClicked(
-                                            zoneUuid = zoneUuid,
-                                        ),
-                                    )
+                    onClick =
+                        object : FeaturesClickHandler {
+                            override fun invoke(features: List<Feature<Geometry, JsonObject?>>): ClickResult {
+                                features.firstOrNull()?.let { feature ->
+                                    val zoneUuid = feature.id?.content
+                                    zoneUuid?.let { zoneUuid ->
+                                        onAction(
+                                            MapDeliveryZone.Action.OnDeliveryZoneClicked(
+                                                zoneUuid = zoneUuid,
+                                            ),
+                                        )
+                                    }
                                 }
+                                return ClickResult.Consume
                             }
-                            return ClickResult.Consume
-                        }
-                    },
+                        },
                 )
             }
         }
@@ -219,10 +231,10 @@ fun SimpleMapScreen(
 
 @Composable
 private fun DeliveryZoneBottomSheet(
-    zoneState: MapDeliveryArea.DataState,
-    zoneData: MapDeliveryArea.DataState.ZoneData,
+    zoneState: MapDeliveryZone.DataState,
+    zoneData: MapDeliveryZone.DataState.ZoneData,
     onClose: () -> Unit,
-    onAction: (MapDeliveryArea.Action) -> Unit,
+    onAction: (MapDeliveryZone.Action) -> Unit,
 ) {
     AdminModalBottomSheet(
         title = stringResource(R.string.title_bottom_sheet_map_delivery_area, zoneData.nameZona),
@@ -261,7 +273,7 @@ private fun DeliveryZoneBottomSheet(
                     isLoading = zoneState.loadingMap,
                     onClick = {
                         onAction(
-                            MapDeliveryArea.Action.OnEditInfoDeliveryZone(
+                            MapDeliveryZone.Action.OnEditInfoDeliveryZone(
                                 zoneUuid = zoneData.uuid,
                             ),
                         )

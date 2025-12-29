@@ -378,7 +378,7 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.MapDeliveryAreaFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.MapDeliveryZoneFragment"
         android:label="MapFragment">
         <action
             android:id="@+id/to_editDeliveryZoneFragment"
@@ -387,7 +387,7 @@
 
     <fragment
         android:id="@+id/editDeliveryZoneFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.editinfodeliveryzone.EditDeliveryZoneFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.editdeliveryzoneinfo.EditDeliveryZoneInfoFragment"
         android:label="EditDeliveryZoneFragment">
         <argument
             android:name="zoneUuid"

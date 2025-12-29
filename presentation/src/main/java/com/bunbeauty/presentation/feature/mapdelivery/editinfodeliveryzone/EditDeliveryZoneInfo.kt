@@ -5,7 +5,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
-interface EditInfoDeliveryZone {
+interface EditDeliveryZoneInfo {
     data class DataState(
         val state: State,
         val uuid: String,
@@ -56,6 +56,7 @@ interface EditInfoDeliveryZone {
 
         data class SaveInfoZoneSuccess(
             val zoneName: String,
+            val uuid: String,
         ) : Event
 
         // data object SaveInfoZone : Event
