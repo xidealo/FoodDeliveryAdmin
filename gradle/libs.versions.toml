@@ -27,6 +27,7 @@ imageCpropper = "4.6.0"
 turbine = "1.2.1"
 collectionsImmutable = "0.4.0"
 work = "2.11.0"
+maplibreCompose = "0.12.1"
 
 
 [libraries]
@@ -116,6 +117,9 @@ kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", v
 navigation-services = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "crashlytics" }
 play-publisher = { module = "com.github.triplet.gradle:play-publisher", version.ref = "publisher" }
+
+#map
+maplibre-compose = {module = "org.maplibre.compose:maplibre-compose", version.ref = "maplibreCompose"}
 
 [plugins]
 

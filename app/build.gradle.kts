@@ -141,7 +141,8 @@ dependencies {
     // Time
     implementation(libs.kotlinx.datetime)
 
-    implementation("org.maplibre.compose:maplibre-compose:0.12.1")
+    // Map
+    implementation(libs.maplibre.compose)
 }
 
 fun commonPlayConfig(playPublisherExtension: PlayPublisherExtension) {
