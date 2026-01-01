@@ -27,15 +27,13 @@ fun ConfirmDeletionBottomSheet(
                 textStringId = R.string.action_common_delete,
                 colors = AdminButtonDefaults.negativeButtonColors,
                 onClick = {
-                    // callback?.onResult(true)
-                    //   dismiss()
+                    // todo
                 },
             )
             SecondaryButton(
                 textStringId = R.string.action_common_cancel,
                 onClick = {
-                    //callback?.onResult(false)
-                    // dismiss()
+                    // todo
                 },
             )
         }

@@ -1,10 +1,10 @@
-package com.bunbeauty.fooddeliveryadmin.screen.login
+package com.bunbeauty.presentation.feature.login
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.login.CheckAuthorizationUseCase
 import com.bunbeauty.domain.feature.login.LoginUseCase
 import com.bunbeauty.presentation.extension.launchSafe
-import com.bunbeauty.presentation.viewmodel.base.BaseViewModel
+import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,33 +12,54 @@ import kotlinx.coroutines.flow.update
 class LoginViewModel(
     private val checkAuthorizationUseCase: CheckAuthorizationUseCase,
     private val loginUseCase: LoginUseCase,
-) : BaseViewModel() {
-    private val mutableLoginViewState = MutableStateFlow(LoginViewState())
-    val loginViewState = mutableLoginViewState.asStateFlow()
+) : BaseStateViewModel<Login.DataState, Login.Action, Login.Event>(
+    initState = Login.DataState(
+        state = Login.DataState.State.LOADING,
+        password = "",
+        username = ""
+    )
+) {
 
     init {
         checkAuthorization()
+    }
+
+    override fun reduce(
+        action: Login.Action,
+        dataState: Login.DataState
+    ) {
+        when (action) {
+            is Login.Action.LoginClick -> {
+                login(
+                    username = dataState.username,
+                    password = dataState.password
+                )
+            }
+
+            is Login.Action.ChangeLogin -> TODO()
+            is Login.Action.ChangePassword -> TODO()
+        }
     }
 
     fun login(
         username: String,
         password: String,
     ) {
-        mutableLoginViewState.update { oldState ->
-            oldState.copy(isLoading = true)
+        setState {
+            copy(state = Login.DataState.State.LOADING)
         }
 
         val processedUsername = username.lowercase().trim()
         val processedPassword = password.lowercase().trim()
         if (!isCorrectUsername(processedUsername)) {
-            mutableLoginViewState.update { oldState ->
-                oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
+            sendEvent {
+                Login.Event.ShowWrongCredentialError
             }
             return
         }
         if (!isCorrectPassword(processedPassword)) {
-            mutableLoginViewState.update { oldState ->
-                oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
+            sendEvent {
+                Login.Event.ShowWrongCredentialError
             }
             return
         }
@@ -49,13 +70,13 @@ class LoginViewModel(
                     username = processedUsername,
                     password = processedPassword,
                 )
-                mutableLoginViewState.update { oldState ->
-                    oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+                sendEvent {
+                    Login.Event.OpenOrderListEvent
                 }
             },
             onError = {
-                mutableLoginViewState.update { oldState ->
-                    oldState.copy(isLoading = false) + LoginViewState.Event.ShowWrongCredentialError
+                sendEvent {
+                    Login.Event.ShowWrongCredentialError
                 }
             },
         )
@@ -65,12 +86,12 @@ class LoginViewModel(
         viewModelScope.launchSafe(
             block = {
                 if (checkAuthorizationUseCase()) {
-                    mutableLoginViewState.update { oldState ->
-                        oldState.copy(eventList = oldState.eventList + LoginViewState.Event.OpenOrderListEvent)
+                    sendEvent {
+                        Login.Event.OpenOrderListEvent
                     }
                 } else {
-                    mutableLoginViewState.update { oldState ->
-                        oldState.copy(isLoading = false)
+                    setState {
+                        copy(state = Login.DataState.State.SUCCESS)
                     }
                 }
             },
@@ -83,12 +104,4 @@ class LoginViewModel(
     private fun isCorrectUsername(username: String): Boolean = username.isNotEmpty()
 
     private fun isCorrectPassword(password: String): Boolean = password.isNotEmpty()
-
-    fun consumeEvents(events: List<LoginViewState.Event>) {
-        mutableLoginViewState.update { loginState ->
-            loginState.copy(
-                eventList = loginState.eventList - events.toSet(),
-            )
-        }
-    }
 }

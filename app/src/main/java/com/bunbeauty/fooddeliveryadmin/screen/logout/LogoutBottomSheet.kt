@@ -35,7 +35,6 @@ fun LogoutBottomSheet(
                 textStringId = R.string.action_common_logout,
                 colors = AdminButtonDefaults.negativeButtonColors,
                 onClick = {
-                    // callback?.onResult(true)
                     onAction(Profile.Action.LogoutConfirm)
                 },
             )

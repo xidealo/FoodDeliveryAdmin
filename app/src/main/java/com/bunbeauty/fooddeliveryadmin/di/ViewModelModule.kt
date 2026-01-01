@@ -1,6 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
-import com.bunbeauty.fooddeliveryadmin.screen.login.LoginViewModel
+import com.bunbeauty.presentation.feature.login.LoginViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.EditAdditionGroupViewModel
