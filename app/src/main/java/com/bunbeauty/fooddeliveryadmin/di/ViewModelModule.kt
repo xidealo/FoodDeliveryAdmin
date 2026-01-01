@@ -29,8 +29,8 @@ import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
 import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
+import com.bunbeauty.presentation.feature.statisticdetails.StatisticDetailsViewModel
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
-import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -238,15 +238,12 @@ fun viewModelModule() =
         }
 
         viewModel {
-            MainViewModel(
-                getIsNonWorkingDayFlow = get(),
-            )
+            StatisticDetailsViewModel()
         }
 
         viewModel {
-            StatisticDetailsViewModel(
-                savedStateHandle = get(),
-                stringUtil = get(),
+            MainViewModel(
+                getIsNonWorkingDayFlow = get(),
             )
         }
 

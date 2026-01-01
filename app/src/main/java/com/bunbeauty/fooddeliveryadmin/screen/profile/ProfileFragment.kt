@@ -37,7 +37,8 @@ import com.bunbeauty.presentation.feature.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
+class ProfileFragment :
+    BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
     override val viewModel: ProfileViewModel by viewModel()
 
     override fun onViewCreated(
@@ -64,14 +65,6 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
 
             Profile.Event.OpenStatistic -> {
                 findNavController().navigateSafe(toStatisticFragment())
-            }
-
-            Profile.Event.OpenLogout -> {
-                lifecycleScope.launch {
-                    LogoutBottomSheet.show(parentFragmentManager)?.let { isConfirmed ->
-                        viewModel.onAction(Profile.Action.LogoutConfirm(confirmed = isConfirmed))
-                    }
-                }
             }
 
             Profile.Event.OpenLogin -> {
@@ -119,6 +112,11 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                     SuccessProfileScreen(
                         state = state.state,
                         onAction = onAction,
+                    )
+
+                    LogoutBottomSheet(
+                        isShown = state.state.isShowLogoutBottomSheet,
+                        onAction = onAction
                     )
                 }
             }
@@ -192,6 +190,7 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                                 role = "Менеджер",
                                 userName = "UserName",
                                 logoutLoading = false,
+                                isShowLogoutBottomSheet = false
                             ),
                     ),
                 onAction = {},

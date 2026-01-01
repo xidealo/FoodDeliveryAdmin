@@ -63,7 +63,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
-class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event>() {
+class EditCafeFragment :
+    SingleStateComposeFragment<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event>() {
     override val viewModel: EditCafeViewModel by viewModel()
 
     private val editCafeFragmentArgs: EditCafeFragmentArgs by navArgs()
@@ -225,13 +226,8 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
 
             is EditCafeState.Event.ShowConfirmDeletion -> {
                 lifecycleScope.launch {
-                    ConfirmDeletionBottomSheet.show(parentFragmentManager)?.let { confirmed ->
-                        if (confirmed) {
-                            viewModel.onAction(
-                                EditCafeState.Action.ConfirmDeleteNonWorkingDay(uuid = event.uuid),
-                            )
-                        }
-                    }
+                    // todo move to state
+                    // ConfirmDeletionBottomSheet()
                 }
             }
         }

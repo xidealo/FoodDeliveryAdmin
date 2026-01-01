@@ -122,8 +122,7 @@ class MainActivity :
             Column(
                 modifier =
                     Modifier
-                        .padding(padding)
-                        .imePadding(),
+                        .padding(padding),
             ) {
                 ConnectionErrorMessage(visible = mainState.connectionLost)
                 NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)

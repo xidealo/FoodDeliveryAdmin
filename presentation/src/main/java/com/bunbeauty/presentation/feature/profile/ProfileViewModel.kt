@@ -13,15 +13,16 @@ class ProfileViewModel(
     private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
-        initState =
-            Profile.DataState(
-                state = Profile.DataState.State.LOADING,
-                user = null,
-                acceptOrders = true,
-                showAcceptOrdersConfirmation = false,
-                logoutLoading = false,
-            ),
-    ) {
+    initState =
+        Profile.DataState(
+            state = Profile.DataState.State.LOADING,
+            user = null,
+            acceptOrders = true,
+            showAcceptOrdersConfirmation = false,
+            logoutLoading = false,
+            isShowLogoutBottomSheet = false
+        ),
+) {
     override fun reduce(
         action: Profile.Action,
         dataState: Profile.DataState,
@@ -32,7 +33,8 @@ class ProfileViewModel(
             Profile.Action.SettingsClick -> handleSettingsClick()
             Profile.Action.StatisticClick -> handleStatisticClick()
             Profile.Action.LogoutClick -> handleLogoutClick()
-            is Profile.Action.LogoutConfirm -> handleLogoutConfirm(confirmed = action.confirmed)
+            Profile.Action.LogoutConfirm -> handleLogoutConfirm()
+            Profile.Action.LogoutCancel -> handleLogoutCancel()
         }
     }
 
@@ -81,32 +83,40 @@ class ProfileViewModel(
     }
 
     private fun handleLogoutClick() {
-        sendEvent {
-            Profile.Event.OpenLogout
+        setState {
+            copy(
+                isShowLogoutBottomSheet = true,
+            )
         }
     }
 
-    private fun handleLogoutConfirm(confirmed: Boolean) {
-        if (confirmed) {
-            viewModelScope.launchSafe(
-                block = {
-                    setState {
-                        copy(
-                            logoutLoading = true,
-                        )
-                    }
-                    logoutUseCase()
-                    sendEvent {
-                        Profile.Event.OpenLogin
-                    }
-                },
-                onError = {
-                    setState {
-                        copy(
-                            logoutLoading = false,
-                        )
-                    }
-                },
+    private fun handleLogoutConfirm() {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(
+                        logoutLoading = true,
+                    )
+                }
+                logoutUseCase()
+                sendEvent {
+                    Profile.Event.OpenLogin
+                }
+            },
+            onError = {
+                setState {
+                    copy(
+                        logoutLoading = false,
+                    )
+                }
+            },
+        )
+    }
+
+    private fun handleLogoutCancel() {
+        setState {
+            copy(
+                isShowLogoutBottomSheet = false,
             )
         }
     }
