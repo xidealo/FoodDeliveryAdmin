@@ -63,8 +63,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
-class EditCafeFragment :
-    SingleStateComposeFragment<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event>() {
+class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState, EditCafeState.Action, EditCafeState.Event>() {
     override val viewModel: EditCafeViewModel by viewModel()
 
     private val editCafeFragmentArgs: EditCafeFragmentArgs by navArgs()

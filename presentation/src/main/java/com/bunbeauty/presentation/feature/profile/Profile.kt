@@ -12,7 +12,7 @@ interface Profile {
         val acceptOrders: Boolean,
         val showAcceptOrdersConfirmation: Boolean,
         val logoutLoading: Boolean,
-        val isShowLogoutBottomSheet: Boolean
+        val isShowLogoutBottomSheet: Boolean,
     ) : BaseDataState {
         data class User(
             val role: UserRole,
@@ -36,6 +36,7 @@ interface Profile {
         data object StatisticClick : Action
 
         data object LogoutClick : Action
+
         data object LogoutCancel : Action
 
         data object LogoutConfirm : Action

@@ -11,7 +11,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StatisticDetailsFragment :
     SingleStateComposeFragment<StatisticDetails.DataState, StatisticDetails.Action, StatisticDetails.Event>() {
-
     override val viewModel: StatisticDetailsViewModel by viewModel()
 
     override fun onViewCreated(
@@ -35,9 +34,8 @@ class StatisticDetailsFragment :
     @Composable
     override fun Screen(
         state: StatisticDetails.DataState,
-        onAction: (StatisticDetails.Action) -> Unit
+        onAction: (StatisticDetails.Action) -> Unit,
     ) {
         TODO("Not yet implemented")
     }
-
 }

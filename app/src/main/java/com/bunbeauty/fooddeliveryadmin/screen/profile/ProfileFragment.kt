@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.BuildConfig
 import com.bunbeauty.fooddeliveryadmin.R
@@ -34,11 +33,9 @@ import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toStatisticFragment
 import com.bunbeauty.presentation.feature.profile.Profile
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment :
-    BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
+class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState, Profile.Action, Profile.Event>() {
     override val viewModel: ProfileViewModel by viewModel()
 
     override fun onViewCreated(
@@ -116,7 +113,7 @@ class ProfileFragment :
 
                     LogoutBottomSheet(
                         isShown = state.state.isShowLogoutBottomSheet,
-                        onAction = onAction
+                        onAction = onAction,
                     )
                 }
             }
@@ -190,7 +187,7 @@ class ProfileFragment :
                                 role = "Менеджер",
                                 userName = "UserName",
                                 logoutLoading = false,
-                                isShowLogoutBottomSheet = false
+                                isShowLogoutBottomSheet = false,
                             ),
                     ),
                 onAction = {},

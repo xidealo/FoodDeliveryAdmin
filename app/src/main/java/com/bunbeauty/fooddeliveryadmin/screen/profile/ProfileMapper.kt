@@ -22,7 +22,7 @@ internal fun Profile.DataState.toViewState(): ProfileViewState =
                             role = stringResource(id = userRoleStringId),
                             userName = user.userName,
                             logoutLoading = logoutLoading,
-                            isShowLogoutBottomSheet = isShowLogoutBottomSheet
+                            isShowLogoutBottomSheet = isShowLogoutBottomSheet,
                         )
                     } ?: ProfileViewState.State.Error
                 }

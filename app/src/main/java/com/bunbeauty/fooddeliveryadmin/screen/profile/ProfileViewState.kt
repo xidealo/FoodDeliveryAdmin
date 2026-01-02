@@ -14,7 +14,7 @@ data class ProfileViewState(
             val role: String,
             val userName: String,
             val logoutLoading: Boolean,
-            val isShowLogoutBottomSheet: Boolean
+            val isShowLogoutBottomSheet: Boolean,
         ) : State
     }
 }

@@ -9,11 +9,12 @@ class StatisticDetailsViewModel :
                 state = StatisticDetails.DataState.State.LOADING,
             ),
     ) {
-
-    override fun reduce(action: StatisticDetails.Action, dataState: StatisticDetails.DataState) {
+    override fun reduce(
+        action: StatisticDetails.Action,
+        dataState: StatisticDetails.DataState,
+    ) {
         when (action) {
             StatisticDetails.Action.Init -> {
-
             }
         }
     }

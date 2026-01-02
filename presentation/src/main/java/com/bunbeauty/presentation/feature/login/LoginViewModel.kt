@@ -5,39 +5,39 @@ import com.bunbeauty.domain.feature.login.CheckAuthorizationUseCase
 import com.bunbeauty.domain.feature.login.LoginUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 class LoginViewModel(
     private val checkAuthorizationUseCase: CheckAuthorizationUseCase,
     private val loginUseCase: LoginUseCase,
 ) : BaseStateViewModel<Login.DataState, Login.Action, Login.Event>(
-    initState = Login.DataState(
-        state = Login.DataState.State.LOADING,
-        password = "",
-        username = ""
-    )
-) {
-
+        initState =
+            Login.DataState(
+                state = Login.DataState.State.LOADING,
+                password = "",
+                username = "",
+                isPasswordVisible = false,
+                startLoginLoading = false,
+            ),
+    ) {
     init {
         checkAuthorization()
     }
 
     override fun reduce(
         action: Login.Action,
-        dataState: Login.DataState
+        dataState: Login.DataState,
     ) {
         when (action) {
             is Login.Action.LoginClick -> {
                 login(
                     username = dataState.username,
-                    password = dataState.password
+                    password = dataState.password,
                 )
             }
 
-            is Login.Action.ChangeLogin -> TODO()
-            is Login.Action.ChangePassword -> TODO()
+            is Login.Action.ChangeUsername -> changeUsername(username = action.username)
+            is Login.Action.ChangePassword -> changePassword(password = action.password)
+            is Login.Action.ChangeVisiblePassword -> changeVisiblePassword()
         }
     }
 
@@ -46,7 +46,7 @@ class LoginViewModel(
         password: String,
     ) {
         setState {
-            copy(state = Login.DataState.State.LOADING)
+            copy(startLoginLoading = true)
         }
 
         val processedUsername = username.lowercase().trim()
@@ -55,11 +55,17 @@ class LoginViewModel(
             sendEvent {
                 Login.Event.ShowWrongCredentialError
             }
+            setState {
+                copy(startLoginLoading = false)
+            }
             return
         }
         if (!isCorrectPassword(processedPassword)) {
             sendEvent {
                 Login.Event.ShowWrongCredentialError
+            }
+            setState {
+                copy(startLoginLoading = false)
             }
             return
         }
@@ -75,8 +81,11 @@ class LoginViewModel(
                 }
             },
             onError = {
+                setState {
+                    copy(startLoginLoading = false)
+                }
                 sendEvent {
-                    Login.Event.ShowWrongCredentialError
+                    Login.Event.ShowWrongLoginError
                 }
             },
         )
@@ -99,6 +108,30 @@ class LoginViewModel(
                 // No errors
             },
         )
+    }
+
+    private fun changeUsername(username: String) {
+        setState {
+            copy(
+                username = username,
+            )
+        }
+    }
+
+    private fun changePassword(password: String) {
+        setState {
+            copy(
+                password = password,
+            )
+        }
+    }
+
+    private fun changeVisiblePassword() {
+        setState {
+            copy(
+                isPasswordVisible = !isPasswordVisible,
+            )
+        }
     }
 
     private fun isCorrectUsername(username: String): Boolean = username.isNotEmpty()

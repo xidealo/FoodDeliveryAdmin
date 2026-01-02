@@ -14,6 +14,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,8 @@ fun AdminBaseTextField(
     isError: Boolean = false,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     CompositionLocalProvider(
@@ -46,6 +49,7 @@ fun AdminBaseTextField(
                     changedValue.take(maxSymbols),
                 )
             },
+            visualTransformation = visualTransformation,
             textStyle = AdminTheme.typography.bodyLarge,
             label = {
                 Text(
@@ -54,6 +58,7 @@ fun AdminBaseTextField(
                     overflow = TextOverflow.Ellipsis,
                 )
             },
+            leadingIcon = leadingIcon,
             trailingIcon = {
                 if (trailingIcon == null) {
                     if (value.isNotEmpty()) {

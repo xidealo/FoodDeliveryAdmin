@@ -8,20 +8,28 @@ interface Login {
     data class DataState(
         val state: State,
         val username: String,
-        val password: String
+        val password: String,
+        val isPasswordVisible: Boolean,
+        val startLoginLoading: Boolean,
     ) : BaseViewDataState {
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR,
         }
     }
 
     sealed interface Action : BaseAction {
-
         data object LoginClick : Action
-        data class ChangeLogin(val login: String) : Action
-        data class ChangePassword(val password: String) : Action
+
+        data class ChangeUsername(
+            val username: String,
+        ) : Action
+
+        data class ChangePassword(
+            val password: String,
+        ) : Action
+
+        data object ChangeVisiblePassword : Action
     }
 
     sealed interface Event : BaseEvent {
@@ -29,7 +37,8 @@ interface Login {
 
         data object ShowWrongCredentialError : Event
 
-        data object ShowConnectionError : Event
+        data object ShowWrongLoginError : Event
 
+        data object ShowConnectionError : Event
     }
 }

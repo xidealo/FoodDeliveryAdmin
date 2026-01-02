@@ -14,9 +14,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 
 @Composable
-fun ConfirmDeletionBottomSheet(
-    isShown: Boolean
-) {
+fun ConfirmDeletionBottomSheet(isShown: Boolean) {
     AdminModalBottomSheet(
         title = stringResource(R.string.title_edit_cafe_delete_now_working_day),
         isShown = isShown,
@@ -45,8 +43,7 @@ fun ConfirmDeletionBottomSheet(
 private fun ConfirmDeletionBottomSheetPreview() {
     AdminTheme {
         ConfirmDeletionBottomSheet(
-            isShown = true
+            isShown = true,
         )
     }
 }
-

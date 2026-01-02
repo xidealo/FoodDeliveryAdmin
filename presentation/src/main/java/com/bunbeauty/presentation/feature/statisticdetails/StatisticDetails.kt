@@ -4,7 +4,6 @@ import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
-
 interface StatisticDetails {
     data class DataState(
         val state: State,
@@ -18,7 +17,6 @@ interface StatisticDetails {
 
     sealed interface Action : BaseAction {
         data object Init : Action
-
     }
 
     sealed interface Event : BaseEvent {
