@@ -3,12 +3,24 @@ package com.bunbeauty.fooddeliveryadmin.compose.element.image
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -21,6 +33,10 @@ sealed interface ImageData {
 
     data class LocalUri(
         val uri: Uri,
+    ) : ImageData
+
+    data class LocalId(
+        val id: Int,
     ) : ImageData
 }
 
@@ -40,6 +56,7 @@ fun AdminAsyncImage(
                     when (imageData) {
                         is ImageData.HttpUrl -> imageData.url
                         is ImageData.LocalUri -> imageData.uri
+                        is ImageData.LocalId -> imageData.id
                     },
                 ).crossfade(true)
                 .build(),
@@ -47,4 +64,47 @@ fun AdminAsyncImage(
         contentDescription = stringResource(contentDescription),
         contentScale = ContentScale.FillWidth,
     )
+}
+
+@Composable
+fun Modifier.haloGlowAnimated(
+    color: Color,
+    glowSize: Dp = 28.dp,
+): Modifier {
+    val transition = rememberInfiniteTransition(label = "halo")
+
+    val alpha by transition.animateFloat(
+        initialValue = 0.25f,
+        targetValue = 0.85f,
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    tween(
+                        durationMillis = 4000,
+                        easing = FastOutSlowInEasing,
+                    ),
+                repeatMode = RepeatMode.Reverse,
+            ),
+        label = "alpha",
+    )
+
+    return this.drawBehind {
+        val glowPx = glowSize.toPx()
+
+        drawCircle(
+            brush =
+                Brush.radialGradient(
+                    colors =
+                        listOf(
+                            color.copy(alpha = alpha),
+                            color.copy(alpha = alpha * 0.4f),
+                            Color.Transparent,
+                        ),
+                    center = center,
+                    radius = size.maxDimension / 2 + glowPx,
+                ),
+            center = center,
+            radius = size.maxDimension / 2 + glowPx,
+        )
+    }
 }

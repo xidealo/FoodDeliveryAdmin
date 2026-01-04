@@ -1,6 +1,5 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
-import com.bunbeauty.fooddeliveryadmin.screen.login.LoginViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.AdditionGroupListViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.EditAdditionGroupViewModel
@@ -14,6 +13,7 @@ import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryView
 import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
+import com.bunbeauty.presentation.feature.login.LoginViewModel
 import com.bunbeauty.presentation.feature.menulist.MenuListViewModel
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateAdditionGroupForMenuProductViewModel
@@ -29,8 +29,8 @@ import com.bunbeauty.presentation.feature.orderlist.OrderListViewModel
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
 import com.bunbeauty.presentation.feature.settings.SettingsViewModel
 import com.bunbeauty.presentation.feature.statistic.StatisticViewModel
+import com.bunbeauty.presentation.feature.statisticdetails.StatisticDetailsViewModel
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
-import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -238,15 +238,12 @@ fun viewModelModule() =
         }
 
         viewModel {
-            MainViewModel(
-                getIsNonWorkingDayFlow = get(),
-            )
+            StatisticDetailsViewModel()
         }
 
         viewModel {
-            StatisticDetailsViewModel(
-                savedStateHandle = get(),
-                stringUtil = get(),
+            MainViewModel(
+                getIsNonWorkingDayFlow = get(),
             )
         }
 

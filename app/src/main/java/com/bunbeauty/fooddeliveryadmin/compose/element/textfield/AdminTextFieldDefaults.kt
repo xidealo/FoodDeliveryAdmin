@@ -89,7 +89,7 @@ object AdminTextFieldDefaults {
     ): KeyboardOptions =
         KeyboardOptions(
             capitalization = capitalization,
-            autoCorrect = autoCorrect,
+            autoCorrectEnabled = autoCorrect,
             keyboardType = keyboardType,
             imeAction = imeAction,
         )
