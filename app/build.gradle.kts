@@ -140,6 +140,9 @@ dependencies {
 
     // Time
     implementation(libs.kotlinx.datetime)
+
+    // Map
+    implementation(libs.maplibre.compose)
 }
 
 fun commonPlayConfig(playPublisherExtension: PlayPublisherExtension) {

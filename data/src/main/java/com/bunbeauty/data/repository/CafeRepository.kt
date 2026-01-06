@@ -2,12 +2,16 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.common.ApiResult
 import com.bunbeauty.common.extension.getNullableResult
+import com.bunbeauty.common.extension.onError
+import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.UpdateCafe
+import com.bunbeauty.domain.model.cafe.UpdateInfoDeliveryZone
 import com.bunbeauty.domain.repo.CafeRepo
 
 class CafeRepository(
@@ -15,6 +19,7 @@ class CafeRepository(
     private val cafeMapper: CafeMapper,
 ) : CafeRepo {
     private var cafeCache: Cafe? = null
+    private var deliveryZoneListCache: List<DeliveryZone>? = null
 
     override suspend fun getCafeByUuid(uuid: String): Cafe? =
         cafeCache ?: foodDeliveryApi.getCafeByUuid(uuid).getNullableResult { cafeServer ->
@@ -72,8 +77,86 @@ class CafeRepository(
         }
     }
 
+    override suspend fun getPositionDeliveryZone(
+        cafeUuid: String,
+        token: String,
+    ): List<DeliveryZone> {
+        deliveryZoneListCache?.let { cachedZones ->
+            if (cachedZones.isNotEmpty()) {
+                return cachedZones
+            }
+        }
+        val result = foodDeliveryApi.getDeliveryZone(cafeUuid, token)
+        var deliveryZones: List<DeliveryZone> = emptyList()
+
+        result
+            .onSuccess { response ->
+                deliveryZones = cafeMapper.getDeliveryZonePoints(response)
+                deliveryZoneListCache = deliveryZones
+            }.onError { error ->
+                error.message
+            }
+
+        return deliveryZones
+    }
+
+    override suspend fun getDeliveryZone(
+        cafeUuid: String,
+        zoneUuid: String,
+        token: String,
+    ): DeliveryZone? {
+        val zone =
+            deliveryZoneListCache?.find { zoneDelivery ->
+                zoneDelivery.uuid == zoneUuid
+            }
+        return zone ?: getPositionDeliveryZone(
+            cafeUuid = cafeUuid,
+            token = token,
+        ).find { foundZone ->
+            foundZone.uuid == zoneUuid
+        }
+    }
+
+    override suspend fun updateInfoDeliveryZone(
+        cafeUuid: String,
+        zoneUuid: String,
+        token: String,
+        updateInfoZone: UpdateInfoDeliveryZone,
+    ) {
+        val patchZone = cafeMapper.toPatchDeliveryZone(updateInfoZone)
+
+        foodDeliveryApi
+            .patchDeliveryZone(
+                zoneUuid = zoneUuid,
+                cafeUuid = cafeUuid,
+                token = token,
+                patchZone = patchZone,
+            ).onSuccess {
+                deliveryZoneListCache =
+                    deliveryZoneListCache?.map { zone ->
+                        if (zone.uuid == zoneUuid) {
+                            zone.copy(
+                                nameZone = updateInfoZone.name ?: zone.nameZone,
+                                minOrderCost = updateInfoZone.minOrderCost ?: zone.minOrderCost,
+                                normalDeliveryCost =
+                                    updateInfoZone.normalDeliveryCost
+                                        ?: zone.normalDeliveryCost,
+                                forLowDeliveryCost =
+                                    updateInfoZone.forLowDeliveryCost
+                                        ?: zone.forLowDeliveryCost,
+                            )
+                        } else {
+                            zone
+                        }
+                    }
+            }.onError { error ->
+                error.message
+            }
+    }
+
     override fun clearCache() {
         cafeCache = null
+        deliveryZoneListCache = null
     }
 
     private suspend fun updateCafe(

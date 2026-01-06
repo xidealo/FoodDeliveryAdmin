@@ -24,5 +24,8 @@ dependencies {
     // Coroutine
     implementation(libs.kotlinx.coroutines.test)
 
+    // Map
+    implementation(libs.maplibre.compose)
+
     testImplementation(libs.turbine)
 }

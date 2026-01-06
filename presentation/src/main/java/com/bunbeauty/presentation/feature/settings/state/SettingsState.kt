@@ -58,7 +58,7 @@ interface SettingsState {
         data object ShowSaveSettingEvent : Event
 
         data class ShowErrorMessage(
-            @StringRes val messageId: Int,
+            @param:StringRes val messageId: Int,
         ) : Event
     }
 }

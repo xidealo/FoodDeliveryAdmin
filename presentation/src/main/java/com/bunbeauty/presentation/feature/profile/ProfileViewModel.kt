@@ -35,6 +35,7 @@ class ProfileViewModel(
             Profile.Action.LogoutClick -> handleLogoutClick()
             Profile.Action.LogoutConfirm -> handleLogoutConfirm()
             Profile.Action.LogoutCancel -> handleLogoutCancel()
+            Profile.Action.MapClick -> handleMapClick()
         }
     }
 
@@ -87,6 +88,12 @@ class ProfileViewModel(
             copy(
                 isShowLogoutBottomSheet = true,
             )
+        }
+    }
+
+    private fun handleMapClick() {
+        sendEvent {
+            Profile.Event.OpenMap
         }
     }
 

@@ -37,6 +37,8 @@ interface Profile {
 
         data object LogoutClick : Action
 
+        data object MapClick : Action
+
         data object LogoutCancel : Action
 
         data object LogoutConfirm : Action
@@ -50,5 +52,7 @@ interface Profile {
         data object OpenStatistic : Event
 
         data object OpenLogin : Event
+
+        data object OpenMap : Event
     }
 }
