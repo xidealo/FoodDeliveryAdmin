@@ -225,13 +225,8 @@ class EditCafeFragment : SingleStateComposeFragment<EditCafeState.ViewDataState,
 
             is EditCafeState.Event.ShowConfirmDeletion -> {
                 lifecycleScope.launch {
-                    ConfirmDeletionBottomSheet.show(parentFragmentManager)?.let { confirmed ->
-                        if (confirmed) {
-                            viewModel.onAction(
-                                EditCafeState.Action.ConfirmDeleteNonWorkingDay(uuid = event.uuid),
-                            )
-                        }
-                    }
+                    // todo move to state
+                    // ConfirmDeletionBottomSheet()
                 }
             }
         }

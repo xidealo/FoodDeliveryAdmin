@@ -11,6 +11,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.compose.applyIfNotNull
@@ -32,6 +33,8 @@ fun AdminTextField(
     isError: Boolean = false,
     errorText: String? = null,
     enabled: Boolean = true,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
@@ -51,7 +54,9 @@ fun AdminTextField(
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
+            visualTransformation = visualTransformation,
             trailingIcon = trailingIcon,
+            leadingIcon = leadingIcon,
         )
         ErrorText(
             isError = isError,

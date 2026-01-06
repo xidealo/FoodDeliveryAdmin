@@ -15,7 +15,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -122,8 +121,7 @@ class MainActivity :
             Column(
                 modifier =
                     Modifier
-                        .padding(padding)
-                        .imePadding(),
+                        .padding(padding),
             ) {
                 ConnectionErrorMessage(visible = mainState.connectionLost)
                 NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)

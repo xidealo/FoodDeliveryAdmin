@@ -58,8 +58,8 @@ fun AdminModalBottomSheet(
     contentColor: Color = contentColorFor(containerColor),
     dragHandle: @Composable (() -> Unit)? = { AdminBottomSheetDefaults.DragHandle() },
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
-    content: @Composable ColumnScope.() -> Unit,
     density: Density = LocalDensity.current,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     var isVisible by remember {
         mutableStateOf(false)

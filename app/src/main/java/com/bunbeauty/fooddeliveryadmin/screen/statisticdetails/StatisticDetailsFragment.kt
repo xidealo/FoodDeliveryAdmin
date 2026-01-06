@@ -2,12 +2,15 @@ package com.bunbeauty.fooddeliveryadmin.screen.statisticdetails
 
 import android.os.Bundle
 import android.view.View
-import com.bunbeauty.fooddeliveryadmin.coreui.BaseFragment
-import com.bunbeauty.fooddeliveryadmin.databinding.FragmentStatisticDetailsBinding
-import com.bunbeauty.presentation.viewmodel.statistic.StatisticDetailsViewModel
+import androidx.compose.runtime.Composable
+import androidx.navigation.fragment.findNavController
+import com.bunbeauty.fooddeliveryadmin.coreui.SingleStateComposeFragment
+import com.bunbeauty.presentation.feature.statisticdetails.StatisticDetails
+import com.bunbeauty.presentation.feature.statisticdetails.StatisticDetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>() {
+class StatisticDetailsFragment :
+    SingleStateComposeFragment<StatisticDetails.DataState, StatisticDetails.Action, StatisticDetails.Event>() {
     override val viewModel: StatisticDetailsViewModel by viewModel()
 
     override fun onViewCreated(
@@ -15,14 +18,24 @@ class StatisticDetailsFragment : BaseFragment<FragmentStatisticDetailsBinding>()
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.onAction(
+            StatisticDetails.Action.Init,
+        )
+    }
 
-        binding.run {
-            fragmentStatisticDetailsBtnBack.setOnClickListener {
+    override fun handleEvent(event: StatisticDetails.Event) {
+        when (event) {
+            is StatisticDetails.Event.GoBack -> {
+                findNavController().navigateUp()
             }
-            fragmentStatisticDetailsTvPeriod.text = viewModel.period
-            fragmentStatisticDetailsTvTotalProceedsValue.text = viewModel.proceeds
-            fragmentStatisticDetailsTvTotalCountValue.text = viewModel.orderCount
-            fragmentStatisticDetailsTvTotalAverageCheckValue.text = viewModel.averageCheck
         }
+    }
+
+    @Composable
+    override fun Screen(
+        state: StatisticDetails.DataState,
+        onAction: (StatisticDetails.Action) -> Unit,
+    ) {
+        TODO("Not yet implemented")
     }
 }

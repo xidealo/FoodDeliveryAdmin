@@ -12,6 +12,7 @@ interface Profile {
         val acceptOrders: Boolean,
         val showAcceptOrdersConfirmation: Boolean,
         val logoutLoading: Boolean,
+        val isShowLogoutBottomSheet: Boolean,
     ) : BaseDataState {
         data class User(
             val role: UserRole,
@@ -38,9 +39,9 @@ interface Profile {
 
         data object MapClick : Action
 
-        data class LogoutConfirm(
-            val confirmed: Boolean,
-        ) : Action
+        data object LogoutCancel : Action
+
+        data object LogoutConfirm : Action
     }
 
     sealed interface Event : BaseEvent {
@@ -49,8 +50,6 @@ interface Profile {
         data object OpenCafeList : Event
 
         data object OpenStatistic : Event
-
-        data object OpenLogout : Event
 
         data object OpenLogin : Event
 

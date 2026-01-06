@@ -25,6 +25,7 @@
     <string name="description_ic_checked">Иконка выбрано</string>
     <string name="description_common_navigate">Перейти</string>
     <string name="description_common_selected">Выбран</string>
+    <string name="description_logo">Логотип</string>
     <string name="action_retry">Повторить попытку</string>
     <string name="action_common_cancel">Отмена</string>
     <string name="action_common_ok">Ок</string>
@@ -45,6 +46,7 @@
     <string name="action_login_enter">Войти</string>
     <string name="msg_login_version">Версия приложения %s</string>
     <string name="error_login_wrong_data">Неверный логин или пароль</string>
+    <string name="error_login_wrong_login">Ошибка при входе</string>
 
     <!-- NOTIFICATION -->
     <string name="title_messaging_new_order">Новый заказ</string>
