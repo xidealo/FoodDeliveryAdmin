@@ -6,8 +6,6 @@ import com.bunbeauty.data.di.repositoryModule
 import com.bunbeauty.domain.di.domainModule
 import com.bunbeauty.domain.feature.additiongrouplist.di.additionGroupListModule
 import com.bunbeauty.domain.feature.additionlist.di.additionModule
-import com.bunbeauty.domain.feature.cafelist.di.cafeListModule
-import com.bunbeauty.domain.feature.editcafe.di.editCafeModule
 import com.bunbeauty.domain.feature.gallery.di.galleryModule
 import com.bunbeauty.domain.feature.login.di.loginModule
 import com.bunbeauty.domain.feature.main.di.mainModule
@@ -31,7 +29,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             uiMapperModule(),
             domainModule(),
             useCaseModule(),
-            editCafeModule(),
             additionGroupListModule(),
             additionModule(),
             galleryModule(),
@@ -49,7 +46,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             repositoryModule(),
             mapperModule(),
             dataSourceModule(),
-            cafeListModule(),
             mapDeliveryArea(),
         )
     }
