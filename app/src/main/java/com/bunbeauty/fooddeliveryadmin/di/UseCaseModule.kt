@@ -2,7 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
-import com.bunbeauty.domain.feature.editcafe.GetNonWorkingDayYearRangeUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.SaveEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
 import com.bunbeauty.domain.feature.menu.common.category.EditCategoryUseCase
@@ -39,10 +38,6 @@ fun useCaseModule() =
                 dataStoreRepo = get(),
                 cafeRepository = get(),
             )
-        }
-
-        factory {
-            GetNonWorkingDayYearRangeUseCase()
         }
 
         factory {

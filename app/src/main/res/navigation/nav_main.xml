@@ -150,30 +150,11 @@
         android:name="com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragment"
         android:label="profileFragment">
         <action
-            android:id="@+id/to_cafeListFragment"
-            app:destination="@id/cafeListFragment" />
-        <action
-            android:id="@+id/to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
             android:id="@+id/to_statisticFragment"
             app:destination="@id/statisticFragment" />
         <action
             android:id="@+id/to_mapFragment"
             app:destination="@id/mapFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
-        android:label="settingsFragment" />
-    <fragment
-        android:id="@+id/cafeListFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.cafelist.CafeListFragment"
-        android:label="cafeListFragment">
-        <action
-            android:id="@+id/to_editCafeFragment"
-            app:destination="@id/editCafeFragment" />
     </fragment>
 
     <fragment
@@ -262,18 +243,6 @@
         android:label="EditCategoryListFragment">
         <argument
             android:name="categoryUuid"
-            app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/editCafeFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.editcafe.EditCafeFragment"
-        android:label="editCafeFragment">
-        <argument
-            android:name="cafeUuid"
-            app:argType="string" />
-        <argument
-            android:name="cafeAddress"
             app:argType="string" />
     </fragment>
 

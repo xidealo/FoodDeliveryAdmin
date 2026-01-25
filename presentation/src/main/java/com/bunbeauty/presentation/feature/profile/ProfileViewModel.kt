@@ -29,8 +29,6 @@ class ProfileViewModel(
     ) {
         when (action) {
             Profile.Action.UpdateData -> handleUpdateData()
-            Profile.Action.CafeClick -> handleCafeClick()
-            Profile.Action.SettingsClick -> handleSettingsClick()
             Profile.Action.StatisticClick -> handleStatisticClick()
             Profile.Action.LogoutClick -> handleLogoutClick()
             Profile.Action.LogoutConfirm -> handleLogoutConfirm()
@@ -63,18 +61,6 @@ class ProfileViewModel(
                 }
             },
         )
-    }
-
-    private fun handleCafeClick() {
-        sendEvent {
-            Profile.Event.OpenCafeList
-        }
-    }
-
-    private fun handleSettingsClick() {
-        sendEvent {
-            Profile.Event.OpenSettings
-        }
     }
 
     private fun handleStatisticClick() {

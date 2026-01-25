@@ -27,10 +27,8 @@ import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.logout.LogoutBottomSheet
-import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toCafeListFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toMapFragment
-import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toSettingsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toStatisticFragment
 import com.bunbeauty.presentation.feature.profile.Profile
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
@@ -53,14 +51,6 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
 
     override fun handleEvent(event: Profile.Event) {
         when (event) {
-            Profile.Event.OpenSettings -> {
-                findNavController().navigateSafe(toSettingsFragment())
-            }
-
-            Profile.Event.OpenCafeList -> {
-                findNavController().navigateSafe(toCafeListFragment())
-            }
-
             Profile.Event.OpenStatistic -> {
                 findNavController().navigateSafe(toStatisticFragment())
             }
@@ -140,21 +130,6 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
             TextWithHintCard(
                 hint = state.role,
                 label = state.userName,
-            )
-            // TODO("Обновить логику и сделать привязку к одному кафе")
-//            NavigationIconCard(
-//                iconId = R.drawable.ic_cafe,
-//                labelStringId = R.string.action_profile_cafes,
-//                onClick = {
-//                    onAction(Profile.Action.CafeClick)
-//                }
-//            )
-            NavigationIconCard(
-                iconId = R.drawable.ic_settings,
-                labelStringId = R.string.action_profile_settings,
-                onClick = {
-                    onAction(Profile.Action.SettingsClick)
-                },
             )
             NavigationIconCard(
                 iconId = R.drawable.ic_statistic,
