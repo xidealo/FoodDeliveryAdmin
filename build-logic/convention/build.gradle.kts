@@ -46,5 +46,10 @@ gradlePlugin {
             version = "1.0"
             implementationClass = "com.bunbeauty.conventions.AndroidApplicationConventionPlugin"
         }
+        register("multiplatformFeature") {
+            id = "com.bunbeauty.multiplatform.feature"
+            version = "1.0"
+            implementationClass = "com.bunbeauty.conventions.MultiplatformFeatureConventionPlugin"
+        }
     }
 }
