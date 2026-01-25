@@ -2,9 +2,6 @@ package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.bunbeauty.common.Constants
-import com.bunbeauty.common.Constants.PERCENT
-import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
@@ -14,6 +11,9 @@ import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.getOrderColor
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
+import common.Constants
+import common.Constants.PERCENT
+import common.Constants.RUBLE_CURRENCY
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 

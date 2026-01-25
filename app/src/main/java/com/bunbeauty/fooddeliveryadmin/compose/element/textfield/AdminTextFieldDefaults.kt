@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import common.Constants.RUBLE_CURRENCY
 
 object AdminTextFieldDefaults {
     val textFieldColors: TextFieldColors
