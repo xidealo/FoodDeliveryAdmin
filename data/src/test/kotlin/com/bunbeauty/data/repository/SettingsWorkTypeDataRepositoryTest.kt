@@ -1,11 +1,11 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.ApiError
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.repo.DataStoreRepo
+import common.ApiError
+import common.ApiResult
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
