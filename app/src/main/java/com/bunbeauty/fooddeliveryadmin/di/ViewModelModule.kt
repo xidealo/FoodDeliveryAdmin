@@ -6,11 +6,9 @@ import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.Ed
 import com.bunbeauty.presentation.feature.additionlist.AdditionListViewModel
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAdditionViewModel
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionViewModel
-import com.bunbeauty.presentation.feature.cafelist.CafeListViewModel
 import com.bunbeauty.presentation.feature.category.CategoryListViewModel
 import com.bunbeauty.presentation.feature.category.createcategory.CreateCategoryViewModel
 import com.bunbeauty.presentation.feature.category.editcategory.EditCategoryViewModel
-import com.bunbeauty.presentation.feature.editcafe.EditCafeViewModel
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel
 import com.bunbeauty.presentation.feature.gallery.selectphoto.SelectPhotoViewModel
 import com.bunbeauty.presentation.feature.login.LoginViewModel
@@ -68,27 +66,6 @@ fun viewModelModule() =
         viewModel {
             CreateAdditionGroupViewModel(
                 createAdditionGroupUseCase = get(),
-            )
-        }
-
-        viewModel {
-            CafeListViewModel(
-                getCafeWithWorkingHoursListFlow = get(),
-            )
-        }
-
-        viewModel {
-            EditCafeViewModel(
-                createCafeNonWorkingDay = get(),
-                dateTimeUtil = get(),
-                deleteCafeNonWorkingDay = get(),
-                getNonWorkingDayListByCafeUuid = get(),
-                getMinNonWorkingDayDate = get(),
-                getCafeWorkingHoursByUuid = get(),
-                getNonWorkingDayYearRange = get(),
-                getInitialNonWorkingDayDate = get(),
-                updateCafeToTime = get(),
-                updateCafeFromTime = get(),
             )
         }
 

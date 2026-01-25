@@ -29,10 +29,6 @@ interface Profile {
     sealed interface Action : BaseAction {
         data object UpdateData : Action
 
-        data object CafeClick : Action
-
-        data object SettingsClick : Action
-
         data object StatisticClick : Action
 
         data object LogoutClick : Action
@@ -45,10 +41,6 @@ interface Profile {
     }
 
     sealed interface Event : BaseEvent {
-        data object OpenSettings : Event
-
-        data object OpenCafeList : Event
-
         data object OpenStatistic : Event
 
         data object OpenLogin : Event
