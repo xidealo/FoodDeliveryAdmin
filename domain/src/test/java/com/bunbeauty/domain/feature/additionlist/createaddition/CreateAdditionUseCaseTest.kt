@@ -1,7 +1,5 @@
 package com.bunbeauty.domain.feature.additionlist.createaddition
 
-import com.bunbeauty.common.Constants.ADDITION_HEIGHT
-import com.bunbeauty.common.Constants.ADDITION_WIDTH
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.exception.updateaddition.AdditionPhotoException
@@ -11,6 +9,8 @@ import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.model.addition.CreateAdditionModel
 import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.DataStoreRepo
+import common.Constants.ADDITION_HEIGHT
+import common.Constants.ADDITION_WIDTH
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
