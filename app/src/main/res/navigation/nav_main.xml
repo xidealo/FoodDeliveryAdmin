@@ -150,12 +150,21 @@
         android:name="com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragment"
         android:label="profileFragment">
         <action
+            android:id="@+id/to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
             android:id="@+id/to_statisticFragment"
             app:destination="@id/statisticFragment" />
         <action
             android:id="@+id/to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.bunbeauty.fooddeliveryadmin.screen.settings.SettingsFragment"
+        android:label="settingsFragment" />
+
 
     <fragment
         android:id="@+id/menuFragment"
@@ -322,7 +331,7 @@
             app:nullable="true" />
         <argument
             android:name="menuProductUuid"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 
     <fragment
