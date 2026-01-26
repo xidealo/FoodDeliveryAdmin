@@ -1,10 +1,10 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.extension.getNullableResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.city.CityMapper
 import com.bunbeauty.domain.model.city.City
 import com.bunbeauty.domain.repo.CityRepo
+import common.extension.getNullableResult
 
 class CityRepository(
     private val foodDeliveryApi: FoodDeliveryApi,

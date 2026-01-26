@@ -12,13 +12,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.bunbeauty.common.Constants.CHANNEL_ID
-import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import common.Constants.CHANNEL_ID
+import common.Constants.NOTIFICATION_TAG
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 

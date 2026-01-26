@@ -1,9 +1,9 @@
 package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 
-import com.bunbeauty.common.Constants.BULLET_SYMBOL
-import com.bunbeauty.common.Constants.RUBLE_CURRENCY
-import com.bunbeauty.common.Constants.X_SYMBOL
 import com.bunbeauty.domain.model.cartproduct.OrderProduct
+import common.Constants.BULLET_SYMBOL
+import common.Constants.RUBLE_CURRENCY
+import common.Constants.X_SYMBOL
 
 class OrderProductMapper {
     fun map(orderProduct: OrderProduct): OrderDetailsViewState.Product =

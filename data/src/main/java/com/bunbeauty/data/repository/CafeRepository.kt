@@ -1,9 +1,5 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.ApiResult
-import com.bunbeauty.common.extension.getNullableResult
-import com.bunbeauty.common.extension.onError
-import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.cafe.CafeMapper
@@ -13,6 +9,10 @@ import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.UpdateCafe
 import com.bunbeauty.domain.model.cafe.UpdateInfoDeliveryZone
 import com.bunbeauty.domain.repo.CafeRepo
+import common.ApiResult
+import common.extension.getNullableResult
+import common.extension.onError
+import common.extension.onSuccess
 
 class CafeRepository(
     private val foodDeliveryApi: FoodDeliveryApi,

@@ -1,4 +1,4 @@
-package com.bunbeauty.common
+package common
 
 sealed class ApiResult<T> {
     data class Success<T>(

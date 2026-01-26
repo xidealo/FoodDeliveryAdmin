@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.utils
 
 import android.content.res.Resources
-import com.bunbeauty.common.Constants.ADDRESS_DIVIDER
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.ACCEPTED
 import com.bunbeauty.domain.enums.OrderStatus.CANCELED
@@ -24,6 +23,7 @@ import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
+import common.Constants.ADDRESS_DIVIDER
 
 class StringUtil(
     private val resourcesProvider: ResourcesProvider,

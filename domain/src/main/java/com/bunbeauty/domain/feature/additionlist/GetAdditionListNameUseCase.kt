@@ -1,7 +1,7 @@
 package com.bunbeauty.domain.feature.additionlist
 
-import com.bunbeauty.common.Constants
 import com.bunbeauty.domain.model.addition.Addition
+import common.Constants
 
 class GetAdditionListNameUseCase {
     operator fun invoke(additionList: List<Addition>): String? =

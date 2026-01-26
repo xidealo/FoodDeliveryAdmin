@@ -31,6 +31,8 @@ interface Profile {
 
         data object StatisticClick : Action
 
+        data object SettingsClick : Action
+
         data object LogoutClick : Action
 
         data object MapClick : Action
@@ -41,6 +43,8 @@ interface Profile {
     }
 
     sealed interface Event : BaseEvent {
+        data object OpenSettings : Event
+
         data object OpenStatistic : Event
 
         data object OpenLogin : Event

@@ -1,7 +1,7 @@
-package com.bunbeauty.common.extension
+package common.extension
 
-import com.bunbeauty.common.ApiError
-import com.bunbeauty.common.ApiResult
+import common.ApiError
+import common.ApiResult
 
 suspend fun <T, R> ApiResult<T>.getNullableResult(
     onError: (suspend (ApiError) -> R?)? = null,

@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.bunbeauty.common.Constants.NOTIFICATION_TAG
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.google.firebase.messaging.FirebaseMessaging
+import common.Constants.NOTIFICATION_TAG
 import kotlinx.coroutines.tasks.await
 
 class UpdateNotificationTokenWorker(

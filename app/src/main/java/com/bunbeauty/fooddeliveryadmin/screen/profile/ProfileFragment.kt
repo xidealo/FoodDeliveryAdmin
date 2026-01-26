@@ -29,6 +29,7 @@ import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.logout.LogoutBottomSheet
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toLoginFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toMapFragment
+import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toSettingsFragment
 import com.bunbeauty.fooddeliveryadmin.screen.profile.ProfileFragmentDirections.Companion.toStatisticFragment
 import com.bunbeauty.presentation.feature.profile.Profile
 import com.bunbeauty.presentation.feature.profile.ProfileViewModel
@@ -51,6 +52,10 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
 
     override fun handleEvent(event: Profile.Event) {
         when (event) {
+            Profile.Event.OpenSettings -> {
+                findNavController().navigateSafe(toSettingsFragment())
+            }
+
             Profile.Event.OpenStatistic -> {
                 findNavController().navigateSafe(toStatisticFragment())
             }
@@ -143,6 +148,13 @@ class ProfileFragment : BaseComposeFragment<Profile.DataState, ProfileViewState,
                 labelStringId = R.string.action_profile_map,
                 onClick = {
                     onAction(Profile.Action.MapClick)
+                },
+            )
+            NavigationIconCard(
+                iconId = R.drawable.ic_settings,
+                labelStringId = R.string.action_profile_settings,
+                onClick = {
+                    onAction(Profile.Action.SettingsClick)
                 },
             )
         }
