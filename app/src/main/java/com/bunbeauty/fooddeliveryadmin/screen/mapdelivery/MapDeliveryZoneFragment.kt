@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.bunbeauty.common.Constants.RUBLE_CURRENCY
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
 import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBottomSheet
@@ -32,6 +31,7 @@ import com.bunbeauty.fooddeliveryadmin.navigation.navigateSafe
 import com.bunbeauty.fooddeliveryadmin.screen.mapdelivery.MapConstants.MAP_ZOOM
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZone
 import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZoneViewModel
+import common.Constants.RUBLE_CURRENCY
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -51,7 +51,6 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import kotlin.getValue
 
 object MapConstants {
     const val BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"

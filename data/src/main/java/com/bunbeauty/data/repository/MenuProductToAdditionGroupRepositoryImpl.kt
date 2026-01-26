@@ -1,6 +1,5 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.extension.onError
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
@@ -9,6 +8,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.menuprocuttoadditiongroup.MenuProductToAdditionGroup
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
+import common.extension.onError
 
 class MenuProductToAdditionGroupRepositoryImpl(
     private val foodDeliveryApi: FoodDeliveryApi,

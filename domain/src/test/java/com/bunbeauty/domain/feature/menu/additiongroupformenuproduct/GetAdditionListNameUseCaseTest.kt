@@ -1,8 +1,8 @@
 package com.bunbeauty.domain.feature.menu.additiongroupformenuproduct
 
-import com.bunbeauty.common.Constants
 import com.bunbeauty.domain.feature.additionlist.GetAdditionListNameUseCase
 import com.bunbeauty.domain.model.addition.Addition
+import common.Constants
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

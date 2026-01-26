@@ -1,10 +1,10 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.company.mapWorkInfoToCompanyPatchServer
 import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.domain.repo.CompanyRepo
+import common.ApiResult
 
 class CompanyRepository(
     private val networkConnector: FoodDeliveryApi,

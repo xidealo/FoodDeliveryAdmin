@@ -1,7 +1,5 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.ApiResult
-import com.bunbeauty.common.extension.onSuccess
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.addition.mapAdditionServerToAddition
 import com.bunbeauty.data.mapper.addition.mapCreateAdditionToAdditionPostServer
@@ -11,6 +9,8 @@ import com.bunbeauty.domain.model.addition.Addition
 import com.bunbeauty.domain.model.addition.CreateAdditionModel
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.repo.AdditionRepo
+import common.ApiResult
+import common.extension.onSuccess
 
 class AdditionRepository(
     private val networkConnector: FoodDeliveryApi,

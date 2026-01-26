@@ -1,6 +1,5 @@
 package com.bunbeauty.data.repository
 
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.extensions.dataOrNull
 import com.bunbeauty.data.mapper.MenuProductMapper
@@ -13,7 +12,7 @@ import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import java.lang.Exception
+import common.ApiResult
 
 class MenuProductRepository(
     private val networkConnector: FoodDeliveryApi,

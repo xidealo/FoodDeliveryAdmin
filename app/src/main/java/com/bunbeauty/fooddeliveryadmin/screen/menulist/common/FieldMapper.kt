@@ -1,11 +1,11 @@
 package com.bunbeauty.fooddeliveryadmin.screen.menulist.common
 
 import androidx.annotation.StringRes
-import com.bunbeauty.common.Constants
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
+import common.Constants
 
 fun TextFieldData.toTextFieldUi(
     @StringRes errorResId: Int,

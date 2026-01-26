@@ -1,6 +1,5 @@
 package com.bunbeauty.data
 
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionPostServer
@@ -40,6 +39,7 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
+import common.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface FoodDeliveryApi {

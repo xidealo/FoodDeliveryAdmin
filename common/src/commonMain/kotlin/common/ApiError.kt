@@ -1,4 +1,4 @@
-package com.bunbeauty.common
+package common
 
 data class ApiError(
     val code: Int = -1,

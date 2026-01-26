@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.bunbeauty.common.ApiResult
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.work.UpdateNotificationTokenWorker
@@ -12,6 +11,7 @@ import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.user.LoginUser
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
+import common.ApiResult
 
 class UserAuthorizationRepository(
     private val networkConnector: FoodDeliveryApi,

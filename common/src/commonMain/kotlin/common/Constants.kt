@@ -1,17 +1,9 @@
-package com.bunbeauty.common
+package common
 
 object Constants {
     // NOTIFICATION
 
     const val CHANNEL_ID = "1"
-
-    // ARGS_KEY
-
-    const val STATISTIC_ARGS_KEY = "statistic"
-
-    // PATH
-
-    const val IMAGES_FOLDER = "image/*"
 
     // API
     const val WEB_SOCKET_TAG = "webSocketTag"
