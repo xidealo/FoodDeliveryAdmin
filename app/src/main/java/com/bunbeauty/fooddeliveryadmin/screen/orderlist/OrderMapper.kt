@@ -1,8 +1,8 @@
 package com.bunbeauty.fooddeliveryadmin.screen.orderlist
 
+import DateTimeUtil
 import android.content.res.Resources
 import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R

@@ -1,5 +1,6 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
+import DateTimeUtil
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.SaveEditAdditionGroupWithAdditionsUseCase
@@ -27,7 +28,6 @@ import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.domain.usecase.UpdateVisibleMenuProductUseCase
 import com.bunbeauty.domain.util.GetNewUuidUseCase
-import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.product.ProductUtil
 import org.koin.dsl.module
 

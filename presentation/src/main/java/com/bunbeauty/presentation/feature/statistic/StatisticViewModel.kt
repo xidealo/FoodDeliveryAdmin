@@ -1,9 +1,9 @@
 package com.bunbeauty.presentation.feature.statistic
 
+import DateTimeUtil
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
-import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
 import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
 import com.bunbeauty.presentation.extension.launchSafe

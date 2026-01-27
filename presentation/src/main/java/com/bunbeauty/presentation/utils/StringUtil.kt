@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.utils
 
+import DateTimeUtil
 import android.content.res.Resources
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.enums.OrderStatus.ACCEPTED
@@ -20,7 +21,6 @@ import com.bunbeauty.domain.enums.ProductCode.PIZZA
 import com.bunbeauty.domain.enums.ProductCode.POTATO
 import com.bunbeauty.domain.enums.ProductCode.SPICE
 import com.bunbeauty.domain.model.order.details.OrderAddress
-import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.R
 import common.Constants.ADDRESS_DIVIDER

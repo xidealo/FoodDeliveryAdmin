@@ -9,6 +9,7 @@ coil = "3.3.0"
 datastorePreferences = "1.1.7"
 koin = "4.1.1"
 kotlinxDatetime = "0.7.1"
+kotlinxSerialization = "1.9.0"
 crashlytics = "3.0.6"
 publisher = "3.12.2"
 joda = "2.14.0"
@@ -134,7 +135,6 @@ crashlytics-firebase = { id = "com.google.firebase.crashlytics", version.ref = "
 ktLint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktLint" }
 triplet-play = { id = "com.github.triplet.play", version.ref = "tripletPlay" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 
 # Plugins defined by this project
 admin-android-feature = { id = "com.bunbeauty.android.feature", version = "1.0" }
