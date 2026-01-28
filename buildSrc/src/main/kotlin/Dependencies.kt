@@ -14,4 +14,6 @@ object Namespace {
     const val domain = "com.bunbeauty.domain"
     const val data = "com.bunbeauty.data"
     const val common = "com.bunbeauty.common"
+
+    const val core = "com.bunbeauty.core"
 }
