@@ -12,9 +12,9 @@ data class CafeWorkingHours(
         val mock =
             CafeWorkingHours(
                 fromTimeText = "",
-                fromTime = LocalTime(0,0,0),
+                fromTime = LocalTime(0, 0, 0),
                 toTimeText = "",
-                toTime = LocalTime(0,0,0),
+                toTime = LocalTime(0, 0, 0),
             )
     }
 }

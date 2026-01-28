@@ -11,4 +11,3 @@ actual fun platformModule() =
             UuidGenerator()
         }
     }
-

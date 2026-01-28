@@ -48,6 +48,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             mapperModule(),
             dataSourceModule(),
             mapDeliveryArea(),
-            platformModule()
+            platformModule(),
         )
     }

@@ -46,7 +46,6 @@ fun additionGroupListModule() =
             )
         }
 
-
         factory {
             GetSelectedAdditionListUseCase(
                 additionRepo = get(),

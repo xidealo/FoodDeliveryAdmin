@@ -221,7 +221,7 @@ fun useCaseModule() =
 
         factory {
             GetNewUuidUseCase(
-                platformUuid = get()
+                platformUuid = get(),
             )
         }
 
