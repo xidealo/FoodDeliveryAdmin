@@ -4,10 +4,9 @@ import com.bunbeauty.domain.model.cartproduct.OrderProduct
 
 class ProductUtil : IProductUtil {
     override fun getNewTotalCost(orderProductList: List<OrderProduct>): Int =
-        orderProductList
-            .map { cartProduct ->
-                getCartProductNewCost(cartProduct)
-            }.sum()
+        orderProductList.sumOf { cartProduct ->
+            getCartProductNewCost(cartProduct)
+        }
 
     override fun getOldTotalCost(orderProductList: List<OrderProduct>): Int? {
         val hasSomeDiscounts =
@@ -16,10 +15,9 @@ class ProductUtil : IProductUtil {
             }
 
         return if (hasSomeDiscounts) {
-            orderProductList
-                .map { cartProduct ->
-                    getCartProductOldCost(cartProduct) ?: getCartProductNewCost(cartProduct)
-                }.sum()
+            orderProductList.sumOf { cartProduct ->
+                getCartProductOldCost(cartProduct) ?: getCartProductNewCost(cartProduct)
+            }
         } else {
             null
         }

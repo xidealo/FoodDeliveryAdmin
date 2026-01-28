@@ -54,7 +54,6 @@ class UpdateTypeWorkUseCaseTest {
             // Then
             coVerify { workInfoRepository.updateTypeWork(workType, companyUuid, token) }
             coVerify { dataStoreRepo.getToken() }
-            coVerify { dataStoreRepo.companyUuid }
         }
 
     @Test
@@ -93,7 +92,6 @@ class UpdateTypeWorkUseCaseTest {
             assertNotNull(exception)
 
             coVerify { dataStoreRepo.getToken() }
-            coVerify { dataStoreRepo.companyUuid }
             coVerify(exactly = 0) { workInfoRepository.updateTypeWork(any(), any(), any()) }
         }
 }

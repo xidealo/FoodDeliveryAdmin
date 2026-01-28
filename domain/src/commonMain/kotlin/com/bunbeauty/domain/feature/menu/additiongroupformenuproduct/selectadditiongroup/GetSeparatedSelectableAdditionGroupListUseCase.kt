@@ -80,7 +80,7 @@ class GetSeparatedSelectableAdditionGroupListUseCase(
         getMenuProductUseCase(
             menuProductUuid = menuProductUuid,
         ).additionGroups
-            .mapNotNull { (additionGroup, additionList) ->
+            .mapNotNull { (additionGroup) ->
                 menuProductToAdditionGroupRepository.getMenuProductToAdditionGroup(
                     uuid = additionGroup.uuid,
                 )

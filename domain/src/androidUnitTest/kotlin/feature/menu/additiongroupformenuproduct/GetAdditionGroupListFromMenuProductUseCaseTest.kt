@@ -141,25 +141,4 @@ class GetAdditionGroupListFromMenuProductUseCaseTest {
             categoryUuids = emptyList(),
             additionGroups = emptyList(),
         )
-
-    private val additionMock =
-        Addition(
-            uuid = "",
-            name = "",
-            priority = 1,
-            fullName = "",
-            price = 1,
-            photoLink = "",
-            isVisible = true,
-            tag = "",
-        )
-
-    private val additionGroupMock =
-        AdditionGroup(
-            uuid = "123",
-            name = "Name",
-            priority = 1,
-            singleChoice = false,
-            isVisible = true,
-        )
 }

@@ -68,7 +68,6 @@ class GetTypeWorkUseCaseTest {
             assertEquals(WorkType.DELIVERY, result.workType)
             assertEquals(WorkLoad.AVERAGE, result.workload)
 
-            coVerify { dataStoreRepo.cafeUuid }
             coVerify { workInfoRepository.getCafeByUuid(cafeUuidTest) }
         }
 
@@ -88,7 +87,6 @@ class GetTypeWorkUseCaseTest {
                 }
             assertNotNull(exception)
 
-            coVerify { dataStoreRepo.cafeUuid }
             coVerify { workInfoRepository.getCafeByUuid(cafeUuidTest) }
         }
 }

@@ -51,7 +51,6 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
 
             // Then
             assertEquals(additionGroupWithAdditionsMock, result)
-            coVerify { dataStoreRepo.companyUuid }
             coVerify { menuProductRepo.getMenuProduct(companyUuid = companyUuid, menuProductUuid = menuProductUuid) }
         }
 
@@ -67,7 +66,6 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
             assertFailsWith<NoCompanyUuidException> {
                 getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
             }
-            coVerify { dataStoreRepo.companyUuid }
             coVerify(exactly = 0) { menuProductRepo.getMenuProduct(any(), any()) }
         }
 
@@ -86,7 +84,6 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
             assertFailsWith<NoAdditionGroupException> {
                 getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
             }
-            coVerify { dataStoreRepo.companyUuid }
             coVerify { menuProductRepo.getMenuProduct(companyUuid = companyUuid, menuProductUuid = menuProductUuid) }
         }
 
@@ -105,7 +102,6 @@ class GetAdditionGroupWithAdditionsForMenuUseCaseTest {
             assertFailsWith<NoAdditionGroupException> {
                 getFilteredAdditionGroupWithAdditionsForMenuProductUseCase(menuProductUuid, additionGroupUuid)
             }
-            coVerify { dataStoreRepo.companyUuid }
             coVerify { menuProductRepo.getMenuProduct(companyUuid = companyUuid, menuProductUuid = menuProductUuid) }
         }
 

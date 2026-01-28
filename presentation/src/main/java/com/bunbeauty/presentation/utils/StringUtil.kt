@@ -142,7 +142,6 @@ class StringUtil(
             SPICE -> resourcesProvider.getString(R.string.msg_product_code_spice)
             BAKERY -> resourcesProvider.getString(R.string.msg_product_code_bakery)
             OVEN -> resourcesProvider.getString(R.string.msg_product_code_oven)
-            else -> ""
         }
 
     override fun getProductCode(productCode: String): ProductCode? =

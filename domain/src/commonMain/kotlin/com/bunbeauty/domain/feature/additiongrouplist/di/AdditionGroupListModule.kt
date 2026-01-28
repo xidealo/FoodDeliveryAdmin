@@ -8,7 +8,6 @@ import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.GetAddition
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.GetFilteredAdditionGroupWithAdditionsForMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListUseCase
-import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectaddition.GetSelectedAdditionListsUeCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.GetSeparatedSelectableAdditionGroupListUseCase
 import org.koin.dsl.module
 
@@ -47,11 +46,6 @@ fun additionGroupListModule() =
             )
         }
 
-        factory {
-            GetSelectedAdditionListsUeCase(
-                menuProductRepo = get(),
-            )
-        }
 
         factory {
             GetSelectedAdditionListUseCase(
