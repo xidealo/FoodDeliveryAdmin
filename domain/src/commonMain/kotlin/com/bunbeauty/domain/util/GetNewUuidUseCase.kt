@@ -1,7 +1,10 @@
 package com.bunbeauty.domain.util
 
-import java.util.UUID
+import com.bunbeauty.domain.platform.UuidGenerator
 
-class GetNewUuidUseCase {
-    operator fun invoke(): String = UUID.randomUUID().toString()
+class GetNewUuidUseCase(
+    private val platformUuid: UuidGenerator
+) {
+    operator fun invoke(): String = platformUuid.generateUuid()
+
 }

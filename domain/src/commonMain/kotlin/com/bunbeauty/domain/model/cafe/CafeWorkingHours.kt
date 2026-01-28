@@ -1,6 +1,6 @@
 package com.bunbeauty.domain.model.cafe
 
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
 
 data class CafeWorkingHours(
     val fromTimeText: String,
@@ -12,9 +12,9 @@ data class CafeWorkingHours(
         val mock =
             CafeWorkingHours(
                 fromTimeText = "",
-                fromTime = LocalTime.MIN,
+                fromTime = LocalTime(0,0,0),
                 toTimeText = "",
-                toTime = LocalTime.MIN,
+                toTime = LocalTime(0,0,0),
             )
     }
 }

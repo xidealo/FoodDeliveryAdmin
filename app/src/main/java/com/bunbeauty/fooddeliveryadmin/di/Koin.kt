@@ -4,6 +4,7 @@ import com.bunbeauty.data.di.dataSourceModule
 import com.bunbeauty.data.di.mapperModule
 import com.bunbeauty.data.di.repositoryModule
 import com.bunbeauty.domain.di.domainModule
+import com.bunbeauty.domain.di.platformModule
 import com.bunbeauty.domain.feature.additiongrouplist.di.additionGroupListModule
 import com.bunbeauty.domain.feature.additionlist.di.additionModule
 import com.bunbeauty.domain.feature.gallery.di.galleryModule
@@ -47,5 +48,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             mapperModule(),
             dataSourceModule(),
             mapDeliveryArea(),
+            platformModule()
         )
     }
