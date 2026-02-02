@@ -2,6 +2,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 
 import com.bunbeauty.data.di.dataSourceModule
 import com.bunbeauty.data.di.mapperModule
+import com.bunbeauty.data.di.platformDataModule
 import com.bunbeauty.data.di.repositoryModule
 import com.bunbeauty.domain.di.domainModule
 import com.bunbeauty.domain.di.platformModule
@@ -49,5 +50,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             dataSourceModule(),
             mapDeliveryArea(),
             platformModule(),
+            platformDataModule(),
         )
     }

@@ -17,6 +17,7 @@ class MultiplatformFeatureConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.multiplatform")
                 apply("com.android.library")
                 apply("org.jlleitschuh.gradle.ktlint")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             extensions.configure<KotlinMultiplatformExtension> {

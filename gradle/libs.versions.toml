@@ -177,7 +177,6 @@ ktor = [
     "ktor-client-serialization",
     "ktor-client-logging",
     "ktor-client-auth",
-    "ktor-client-okhttp",
 ]
 
 coil = [

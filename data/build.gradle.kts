@@ -1,38 +1,60 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
-    alias(libs.plugins.admin.android.feature)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.admin.multiplatform.feature)
 }
 
 android {
     namespace = Namespace.data
 }
 
-dependencies {
-    implementation(project(":domain"))
-    implementation(project(":common"))
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":domain"))
+                implementation(project(":common"))
+                implementation(project(":core"))
 
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.storage)
+                // Koin
+                implementation(libs.koin.core)
 
-    // Work manager
-    implementation(libs.work.runtime.ktx)
+                // Coroutines
+                implementation(libs.kotlinx.coroutines.core)
 
-    // Coroutine
-    implementation(libs.kotlinx.coroutines.services)
+                // Ktor
+                implementation(libs.bundles.ktor)
+            }
+        }
 
-    // Koin
-    implementation(libs.bundles.di)
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
 
-    // DataStore
-    implementation(libs.datastore.preferences)
+                // Firebase
+                implementation(project.dependencies.platform(libs.firebase.bom))
+                implementation(libs.firebase.storage)
+                implementation(libs.firebase.messaging)
 
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging)
+                // Work manager
+                implementation(libs.work.runtime.ktx)
+                implementation(libs.koin.android.workmanager)
 
-    implementation(libs.bundles.ktor)
+                // DataStore
+                implementation(libs.datastore.preferences)
 
-    // Testing
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.bundles.mockk)
+                // Koin
+                implementation(libs.bundles.di)
+            }
+        }
+
+        val androidUnitTest by getting {
+            dependencies {
+                // Testing
+                implementation(kotlin("test"))
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.bundles.mockk)
+            }
+        }
+    }
 }

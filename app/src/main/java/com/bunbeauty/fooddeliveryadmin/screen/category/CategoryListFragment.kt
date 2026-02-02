@@ -89,7 +89,7 @@ class CategoryListFragment :
             backActionClick =
                 {
                     when (state.state) {
-                        CategoryListViewState.State.Error -> Unit
+                        CategoryListViewState.State.Error -> onAction(CategoryListState.Action.OnBackClicked)
                         CategoryListViewState.State.Loading -> Unit
                         is CategoryListViewState.State.Success -> onAction(CategoryListState.Action.OnBackClicked)
                         is CategoryListViewState.State.SuccessDragDrop -> onAction(CategoryListState.Action.OnCancelClicked)

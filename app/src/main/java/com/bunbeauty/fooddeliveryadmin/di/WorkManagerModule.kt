@@ -1,15 +1,12 @@
 package com.bunbeauty.fooddeliveryadmin.di
 
-import com.bunbeauty.data.work.UpdateNotificationTokenWorker
-import org.koin.androidx.workmanager.dsl.worker
+import com.bunbeauty.data.work.UpdateNotificationTokenInteractor
 import org.koin.dsl.module
 
 fun workManagerModule() =
     module {
-        worker {
-            UpdateNotificationTokenWorker(
-                appContext = get(),
-                workerParams = get(),
+        single {
+            UpdateNotificationTokenInteractor(
                 dataStoreRepo = get(),
                 foodDeliveryApi = get(),
             )
