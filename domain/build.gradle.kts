@@ -1,23 +1,35 @@
 
 plugins {
-    alias(libs.plugins.admin.android.feature)
+    alias(libs.plugins.admin.multiplatform.feature)
 }
 
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":common"))
+
+                // Time
+                implementation(libs.kotlinx.datetime)
+
+                // Koin
+                implementation(libs.koin.core)
+
+                // Coroutines
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                // Mocks for testing
+                implementation(libs.bundles.mockk)
+                // Coroutine
+                implementation(libs.kotlinx.coroutines.test)
+            }
+        }
+    }
+}
 android {
     namespace = Namespace.domain
-}
-
-dependencies {
-    implementation(project(":common"))
-
-    implementation(libs.joda.time)
-
-    // Koin
-    implementation(libs.bundles.di)
-
-    // Mocks for testing
-    testImplementation(libs.bundles.mockk)
-
-    // Coroutine
-    testImplementation(libs.kotlinx.coroutines.test)
 }

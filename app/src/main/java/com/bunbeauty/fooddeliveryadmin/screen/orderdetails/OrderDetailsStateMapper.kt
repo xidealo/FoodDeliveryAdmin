@@ -1,10 +1,10 @@
 package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
 
+import DateTimeUtil
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
-import com.bunbeauty.domain.util.datetime.DateTimeUtil
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.getOrderColor

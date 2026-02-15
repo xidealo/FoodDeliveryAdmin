@@ -14,3 +14,4 @@ include(":domain")
 include(":data")
 include(":app")
 rootProject.name = "FoodDeliveryAdmin"
+include(":core")
