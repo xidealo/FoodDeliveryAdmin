@@ -54,7 +54,7 @@ fun dataSourceModule() =
                     requestTimeoutMillis = 10000
                 }
                 install(DefaultRequest) {
-                    host = "food-delivery-api-bunbeauty.herokuapp.com"
+                    host = "fooddelivery-xidealo.amvera.io"
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
                     contentType(ContentType.Application.Json)
 
