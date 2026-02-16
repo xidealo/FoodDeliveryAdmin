@@ -43,11 +43,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 LoginViewState.Event.OpenOrderListEvent -> {
                     findNavController().navigateSafe(LoginFragmentDirections.toOrdersFragment())
                 }
+
                 LoginViewState.Event.ShowWrongCredentialError -> {
                     (activity as? MessageHost)?.showErrorMessage(
                         resources.getString(R.string.error_login_wrong_data),
                     )
                 }
+
                 LoginViewState.Event.ShowConnectionError -> {
                     (activity as? MessageHost)?.showErrorMessage(
                         resources.getString(R.string.msg_common_check_connection_and_retry),
