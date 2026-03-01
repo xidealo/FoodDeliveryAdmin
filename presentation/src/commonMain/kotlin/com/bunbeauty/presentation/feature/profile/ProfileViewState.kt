@@ -1,10 +1,29 @@
-package com.bunbeauty.fooddeliveryadmin.screen.profile
+package com.bunbeauty.presentation.feature.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.feature.profile.model.UserRole
-import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.presentation.feature.profile.Profile
+import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.hint_profile_admin
+import fooddeliveryadmin.presentation.generated.resources.hint_profile_manager
+
+data class ProfileViewState(
+    val state: State,
+) : BaseViewState {
+    sealed interface State {
+        data object Loading : State
+
+        data object Error : State
+
+        data class Success(
+            val role: String,
+            val userName: String,
+            val logoutLoading: Boolean,
+            val isShowLogoutBottomSheet: Boolean,
+        ) : State
+    }
+}
 
 @Composable
 internal fun Profile.DataState.toViewState(): ProfileViewState =
@@ -13,13 +32,13 @@ internal fun Profile.DataState.toViewState(): ProfileViewState =
             when (state) {
                 Profile.DataState.State.SUCCESS -> {
                     user?.let { user ->
-                        val userRoleStringId =
+                        val roleStringId =
                             when (user.role) {
-                                UserRole.MANAGER -> R.string.hint_profile_manager
-                                UserRole.ADMIN -> R.string.hint_profile_admin
+                                UserRole.MANAGER -> Res.string.hint_profile_manager
+                                UserRole.ADMIN -> Res.string.hint_profile_admin
                             }
                         ProfileViewState.State.Success(
-                            role = stringResource(id = userRoleStringId),
+                            role = stringResource(roleStringId),
                             userName = user.userName,
                             logoutLoading = logoutLoading,
                             isShowLogoutBottomSheet = isShowLogoutBottomSheet,
