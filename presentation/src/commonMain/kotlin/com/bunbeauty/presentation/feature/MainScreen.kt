@@ -32,7 +32,7 @@ import fooddeliveryadmin.presentation.generated.resources.msg_common_non_working
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-private fun MainScreen(
+fun MainScreen(
     mainState: Main.ViewDataState,
     snackbarHostState: SnackbarHostState,
 ) {

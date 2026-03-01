@@ -1,24 +1,25 @@
 package com.bunbeauty.presentation.designsystem.compose.element.card
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.medium
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.hint_login_login
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TextWithHintCard(
     label: String?,
     modifier: Modifier = Modifier,
-    @StringRes hintStringId: Int? = null,
+    hintStringId: StringResource? = null,
     hint: String = "",
 ) {
     AdminCard(
@@ -57,7 +58,7 @@ private fun TextNavigationCardPreview() {
     AdminTheme {
         TextWithHintCard(
             modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
-            hintStringId = R.string.hint_login_login,
+            hintStringId = Res.string.hint_login_login,
             label = "+7 999 000-00-00",
         )
     }

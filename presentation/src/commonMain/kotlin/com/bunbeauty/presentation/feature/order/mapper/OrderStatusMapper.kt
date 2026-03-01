@@ -1,20 +1,19 @@
 package com.bunbeauty.presentation.feature.order.mapper
 
-import android.content.res.Resources
+import androidx.compose.runtime.Composable
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.presentation.R
+import fooddeliveryadmin.presentation.generated.resources.Res
+import org.jetbrains.compose.resources.stringResource
 
-class OrderStatusMapper(
-    private val resources: Resources,
-) {
-    fun map(orderStatus: OrderStatus): String =
-        when (orderStatus) {
-            OrderStatus.NOT_ACCEPTED -> resources.getString(R.string.msg_status_not_accepted)
-            OrderStatus.ACCEPTED -> resources.getString(R.string.msg_status_accepted)
-            OrderStatus.PREPARING -> resources.getString(R.string.msg_status_preparing)
-            OrderStatus.SENT_OUT -> resources.getString(R.string.msg_status_sent_out)
-            OrderStatus.DELIVERED -> resources.getString(R.string.msg_status_delivered)
-            OrderStatus.DONE -> resources.getString(R.string.msg_status_ready)
-            OrderStatus.CANCELED -> resources.getString(R.string.msg_status_canceled)
-        }
-}
+
+@Composable
+fun map(orderStatus: OrderStatus): String =
+    when (orderStatus) {
+        OrderStatus.NOT_ACCEPTED -> stringResource(Res.string.msg_status_not_accepted)
+        OrderStatus.ACCEPTED -> stringResource(Res.string.msg_status_accepted)
+        OrderStatus.PREPARING -> stringResource(Res.string.msg_status_preparing)
+        OrderStatus.SENT_OUT -> stringResource(Res.string.msg_status_sent_out)
+        OrderStatus.DELIVERED -> stringResource(Res.string.msg_status_delivered)
+        OrderStatus.DONE -> stringResource(Res.string.msg_status_ready)
+        OrderStatus.CANCELED -> stringResource(Res.string.msg_status_canceled)
+    }

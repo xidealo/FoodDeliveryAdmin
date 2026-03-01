@@ -45,7 +45,7 @@ interface OrderDetailsState {
         data object OpenWarningDialogEvent : Event
 
         data class ShowErrorMessage(
-            @param:StringRes val messageId: Int,
+            val messageId: Int,
         ) : Event
 
         data object GoBackEvent : Event
