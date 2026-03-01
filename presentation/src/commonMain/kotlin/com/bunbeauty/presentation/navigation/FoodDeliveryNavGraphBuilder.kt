@@ -12,6 +12,7 @@ import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRout
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
 import com.bunbeauty.presentation.feature.settings.navigation.settingsScreenRoute
+import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
 
 internal val emptyNavOptions = navOptions { }
 
@@ -88,7 +89,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.navigateToSettingsScreen(emptyNavOptions)
         },
         goToStatisticScreen = {
-            //navigate to statistic
+            navController.navigateToStatisticScreen(emptyNavOptions)
         },
         goToMapScreen = {
             //navigate to map
@@ -98,6 +99,11 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
     settingsScreenRoute(
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    statisticScreenRoute(
         goBack = {
             navController.popBackStack()
         },

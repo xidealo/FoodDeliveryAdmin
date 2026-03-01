@@ -33,7 +33,6 @@ import fooddeliveryadmin.presentation.generated.resources.msg_common_check_conne
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_profile
 import fooddeliveryadmin.presentation.generated.resources.version_app
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel

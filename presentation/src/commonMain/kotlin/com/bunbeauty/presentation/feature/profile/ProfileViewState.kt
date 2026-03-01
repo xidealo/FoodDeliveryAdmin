@@ -1,12 +1,12 @@
 package com.bunbeauty.presentation.feature.profile
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.hint_profile_admin
 import fooddeliveryadmin.presentation.generated.resources.hint_profile_manager
+import org.jetbrains.compose.resources.stringResource
 
 data class ProfileViewState(
     val state: State,
