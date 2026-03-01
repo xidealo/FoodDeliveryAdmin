@@ -1,7 +1,5 @@
 package com.bunbeauty.presentation.designsystem.compose.element.button
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,25 +13,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.element.rememberMultipleEventsCutter
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.medium
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.action_common_cancel
+import fooddeliveryadmin.presentation.generated.resources.ic_add_photo
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondaryButton(
     modifier: Modifier = Modifier,
-    @StringRes textStringId: Int,
+     textStringId: StringResource,
     onClick: () -> Unit,
     elevated: Boolean = true,
     isEnabled: Boolean = true,
     isError: Boolean = false,
-    @DrawableRes icon: Int? = null,
+    icon: DrawableResource? = null,
     borderColor: Color = AdminTheme.colors.main.onSecondary,
     buttonColors: ButtonColors = AdminButtonDefaults.neutralSecondaryButtonColors,
 ) {
@@ -88,7 +90,7 @@ fun SecondaryButton(
 private fun SecondaryButtonPreview() {
     AdminTheme {
         SecondaryButton(
-            textStringId = R.string.action_common_cancel,
+            textStringId = Res.string.action_common_cancel,
             onClick = { },
         )
     }
@@ -99,9 +101,9 @@ private fun SecondaryButtonPreview() {
 private fun SecondaryButtonWithIconPreview() {
     AdminTheme {
         SecondaryButton(
-            textStringId = R.string.action_common_cancel,
+            textStringId = Res.string.action_common_cancel,
             onClick = { },
-            icon = R.drawable.ic_add_photo,
+            icon = Res.drawable.ic_add_photo,
             borderColor = AdminTheme.colors.main.primary,
             buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
         )

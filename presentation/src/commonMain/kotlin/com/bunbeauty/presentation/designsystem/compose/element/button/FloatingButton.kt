@@ -1,7 +1,5 @@
 package com.bunbeauty.presentation.designsystem.compose.element.button
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,20 +14,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.medium
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.action_edit_cafe_add
+import fooddeliveryadmin.presentation.generated.resources.ic_plus
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FloatingButton(
     modifier: Modifier = Modifier,
-    @DrawableRes iconId: Int,
-    @StringRes textStringId: Int? = null,
+    iconId: DrawableResource,
+    textStringId: StringResource? = null,
     text: String? = null,
     onClick: () -> Unit,
 ) {
@@ -73,8 +75,8 @@ fun FloatingButton(
 private fun FloatingButtonPreview() {
     AdminTheme {
         FloatingButton(
-            iconId = R.drawable.ic_plus,
-            textStringId = R.string.action_edit_cafe_add,
+            iconId = Res.drawable.ic_plus,
+            textStringId = Res.string.action_edit_cafe_add,
         ) {}
     }
 }

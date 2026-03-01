@@ -13,15 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.ic_check
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SelectableCard(
     modifier: Modifier = Modifier,
-    @StringRes labelStringId: Int? = null,
+    labelStringId: StringResource? = null,
     label: String = "",
     selected: Boolean,
     elevated: Boolean = false,
@@ -57,7 +62,7 @@ fun SelectableCard(
             if (selected) {
                 Icon(
                     modifier = Modifier.size(16.dp),
-                    painter = painterResource(R.drawable.ic_check),
+                    painter = painterResource(Res.drawable.ic_check),
                     tint = AdminTheme.colors.main.onSurfaceVariant,
                     contentDescription = stringResource(R.string.description_common_selected),
                 )

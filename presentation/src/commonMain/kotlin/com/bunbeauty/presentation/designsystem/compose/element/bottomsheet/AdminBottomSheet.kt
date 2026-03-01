@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.designsystem.compose.element.bottomsheet
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -15,11 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.bold
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Deprecated(
     "Use AdminModalBottomSheet",
@@ -29,11 +29,11 @@ import com.bunbeauty.presentation.designsystem.compose.theme.bold
 )
 @Composable
 fun AdminBottomSheet(
-    @StringRes titleStringId: Int,
+    titleStringId: StringResource,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     AdminBottomSheet(
-        title = stringResource(id = titleStringId),
+        title = stringResource(resource = titleStringId),
         content = content,
     )
 }

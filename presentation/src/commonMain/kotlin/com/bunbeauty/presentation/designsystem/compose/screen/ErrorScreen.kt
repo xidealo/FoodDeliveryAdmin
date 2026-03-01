@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.designsystem.compose.screen
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,21 +14,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.bold
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.action_retry
+import fooddeliveryadmin.presentation.generated.resources.ic_error
+import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ErrorScreen(
-    @StringRes mainTextId: Int,
+    mainTextId: StringResource,
     isLoading: Boolean = false,
-    @StringRes extraTextId: Int? = null,
+    extraTextId: StringResource? = null,
     onClick: () -> Unit,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -44,7 +48,7 @@ fun ErrorScreen(
         ) {
             Icon(
                 modifier = Modifier.size(64.dp),
-                painter = painterResource(R.drawable.ic_error),
+                painter = painterResource(Res.drawable.ic_error),
                 tint = AdminTheme.colors.main.onError,
                 contentDescription = null,
             )
@@ -55,7 +59,7 @@ fun ErrorScreen(
                     .fillMaxWidth()
                     .padding(top = 32.dp)
                     .padding(horizontal = AdminTheme.dimensions.mediumSpace),
-            text = stringResource(id = mainTextId),
+            text = stringResource(resource = mainTextId),
             style = AdminTheme.typography.titleMedium.bold,
             color = AdminTheme.colors.main.onSurface,
             textAlign = TextAlign.Center,
@@ -67,7 +71,7 @@ fun ErrorScreen(
                         .fillMaxWidth()
                         .padding(top = AdminTheme.dimensions.smallSpace)
                         .padding(horizontal = AdminTheme.dimensions.mediumSpace),
-                text = stringResource(id = extraTextId),
+                text = stringResource(resource = extraTextId),
                 style = AdminTheme.typography.bodyLarge,
                 color = AdminTheme.colors.main.onSurface,
                 textAlign = TextAlign.Center,
@@ -80,20 +84,20 @@ fun ErrorScreen(
                 Modifier
                     .padding(bottom = AdminTheme.dimensions.mediumSpace)
                     .padding(horizontal = AdminTheme.dimensions.mediumSpace),
-            text = stringResource(R.string.action_retry),
+            text = stringResource(Res.string.action_retry),
             isLoading = isLoading,
             onClick = onClick,
         )
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview()
 @Composable
 private fun ErrorScreenPreview() {
     AdminTheme {
         ErrorScreen(
-            mainTextId = R.string.title_common_can_not_load_data,
-            extraTextId = R.string.msg_common_check_connection_and_retry,
+            mainTextId = Res.string.title_common_can_not_load_data,
+            extraTextId = Res.string.msg_common_check_connection_and_retry,
             onClick = {},
         )
     }
