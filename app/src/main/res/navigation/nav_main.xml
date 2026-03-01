@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderListFragment"
+        android:name="com.bunbeauty.presentation.feature.orderlist.OrderListFragment"
         android:label="OrdersFragment">
         <action
             android:id="@+id/to_ordersDetailsFragment"

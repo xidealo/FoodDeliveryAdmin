@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.di
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderDetailsStateMapper
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.OrderProductMapper
 import com.bunbeauty.fooddeliveryadmin.screen.orderdetails.PaymentMethodMapper
-import com.bunbeauty.fooddeliveryadmin.screen.orderlist.OrderMapper
+import com.bunbeauty.presentation.feature.orderlist.state.OrderMapper
 import org.koin.dsl.module
 
 fun uiMapperModule() =
@@ -21,7 +21,6 @@ fun uiMapperModule() =
             OrderMapper(
                 orderStatusMapper = get(),
                 dateTimeUtil = get(),
-                resources = get(),
             )
         }
 

@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose
+package com.bunbeauty.presentation.feature.orderlist.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

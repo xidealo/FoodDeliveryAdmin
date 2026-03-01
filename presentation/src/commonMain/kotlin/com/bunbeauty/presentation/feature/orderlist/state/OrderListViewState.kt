@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.orderlist
+package com.bunbeauty.presentation.feature.orderlist.state
 
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.domain.enums.OrderStatus
