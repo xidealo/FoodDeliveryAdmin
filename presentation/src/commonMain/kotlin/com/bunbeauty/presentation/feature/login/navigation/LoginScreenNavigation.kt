@@ -1,0 +1,25 @@
+package com.bunbeauty.presentation.feature.login.navigation
+
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
+import com.bunbeauty.presentation.feature.login.LoginRouteScreen
+import kotlinx.serialization.Serializable
+
+@Serializable
+data object LoginScreenDestination
+
+fun NavController.navigateToLoginScreen(navOptions: NavOptions) = navigate(route = LoginScreenDestination, navOptions)
+
+fun NavGraphBuilder.loginScreenRoute(
+    showErrorMessage: (String) -> Unit,
+    goToOrderListScreen: () -> Unit,
+) {
+    composable<LoginScreenDestination> {
+        LoginRouteScreen(
+            showErrorMessage = showErrorMessage,
+            goToOrderListScreen = goToOrderListScreen,
+        )
+    }
+}

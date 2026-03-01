@@ -11,7 +11,7 @@ import com.bunbeauty.fooddeliveryadmin.compose.element.bottomsheet.AdminModalBot
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.MainButton
 import com.bunbeauty.fooddeliveryadmin.compose.element.button.SecondaryButton
-import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.profile.Profile
 
 @Composable

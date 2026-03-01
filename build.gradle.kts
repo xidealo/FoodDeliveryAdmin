@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.compose) apply false
+    alias(libs.plugins.compose.plugin) apply false
     alias(libs.plugins.navigation) apply false
     alias(libs.plugins.crashlytics.firebase) apply false
     alias(libs.plugins.ktLint) apply false

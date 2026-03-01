@@ -42,9 +42,10 @@ import androidx.navigation.fragment.NavHostFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
 import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
+import com.bunbeauty.presentation.designsystem.compose.AdminSnackbarVisuals
 import com.bunbeauty.presentation.viewmodel.main.Main
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import kotlinx.coroutines.launch
@@ -101,119 +102,7 @@ class MainActivity :
     override fun showErrorMessage(text: String) {
         viewModel.onAction(Main.Action.ShowErrorMessage(text))
     }
-
-    @Composable
-    private fun MainScreen(
-        mainState: Main.ViewDataState,
-        snackbarHostState: SnackbarHostState,
-    ) {
-        Scaffold(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .imePadding(),
-            snackbarHost = {
-                AdminSnackbarHost(
-                    snackbarHostState = snackbarHostState,
-                    paddingBottom = AdminTheme.dimensions.snackBarPadding,
-                )
-            },
-            bottomBar = {
-                AdminNavigationBar(options = mainState.navigationBarOptions)
-            },
-        ) { padding ->
-            Column(
-                modifier =
-                    Modifier
-                        .padding(padding),
-            ) {
-                ConnectionErrorMessage(visible = mainState.connectionLost)
-                NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
-                Box(modifier = Modifier.weight(1f)) {
-                    AndroidViewBinding(factory = ::fragmentContainerFactory)
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun ConnectionErrorMessage(visible: Boolean) {
-        AnimatedVisibility(
-            visible = visible,
-            enter = fadeIn(tween(300)),
-            exit = fadeOut(tween(300)),
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(AdminTheme.colors.status.negative)
-                        .padding(8.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = resources.getString(R.string.error_common_no_internet),
-                    style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.status.onStatus,
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun NonWorkingDayWarningMessage(visible: Boolean) {
-        AnimatedVisibility(
-            visible = visible,
-            enter = fadeIn(tween(300)),
-            exit = fadeOut(tween(300)),
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(AdminTheme.colors.status.warning)
-                        .padding(8.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = resources.getString(R.string.msg_common_non_working_day),
-                    style = AdminTheme.typography.bodyMedium,
-                    color = AdminTheme.colors.status.onStatus,
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun AdminSnackbarHost(
-        snackbarHostState: SnackbarHostState,
-        paddingBottom: Dp,
-    ) {
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier =
-                Modifier
-                    .padding(bottom = paddingBottom),
-        ) { snackbarData ->
-            (snackbarData.visuals as? AdminSnackbarVisuals)?.let { visuals ->
-                val containerColor =
-                    when (visuals.adminMessage.type) {
-                        Main.Message.Type.INFO -> AdminTheme.colors.main.primary
-                        Main.Message.Type.ERROR -> AdminTheme.colors.main.error
-                    }
-                val contentColor =
-                    when (visuals.adminMessage.type) {
-                        Main.Message.Type.INFO -> AdminTheme.colors.main.onPrimary
-                        Main.Message.Type.ERROR -> AdminTheme.colors.main.onError
-                    }
-                Snackbar(
-                    snackbarData = snackbarData,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                )
-            }
-        }
-    }
-
+    
     private fun handleEventList(
         events: List<Main.Event>,
         snackbarHostState: SnackbarHostState,

@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.fooddeliveryadmin.compose.AdminScaffold
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCard
+import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.AdminAsyncImage
 import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
 import com.bunbeauty.fooddeliveryadmin.compose.screen.LoadingScreen
-import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.fooddeliveryadmin.coreui.BaseComposeFragment
 import com.bunbeauty.presentation.feature.gallery.Gallery
 import com.bunbeauty.presentation.feature.gallery.GalleryViewModel

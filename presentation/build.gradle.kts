@@ -1,31 +1,53 @@
 plugins {
-    alias(libs.plugins.admin.android.feature)
+    alias(libs.plugins.admin.multiplatform.feature)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.compose.plugin)
 }
 
 android {
     namespace = Namespace.presentation
 }
 
-dependencies {
-    implementation(project(":domain"))
-    implementation(project(":common"))
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":domain"))
+                implementation(project(":common"))
 
-    implementation(libs.lifecycle.viewmodel.ktx)
+                // Koin
+                implementation(libs.bundles.di)
 
-    // Navigation
-    implementation(libs.navigation.runtime.ktx)
+                // Coroutine
+                implementation(libs.kotlinx.coroutines.test)
 
-    // Koin
-    implementation(libs.bundles.di)
+                // Map
+                implementation(libs.maplibre.compose)
 
-    // Mocks for testing
-    testImplementation(libs.bundles.mockk)
+                implementation(libs.bundles.navigation.new)
 
-    // Coroutine
-    implementation(libs.kotlinx.coroutines.test)
-
-    // Map
-    implementation(libs.maplibre.compose)
-
-    testImplementation(libs.turbine)
+                implementation(compose.components.resources)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.animation)
+                implementation(compose.animationGraphics)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.bundles.coil)
+            }
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                // Mocks for testing
+                implementation(libs.bundles.mockk)
+                // Coroutine
+                implementation(libs.kotlinx.coroutines.test)
+            }
+        }
+    }
+}
+android {
+    namespace = Namespace.domain
 }

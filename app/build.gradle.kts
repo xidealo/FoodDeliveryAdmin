@@ -6,6 +6,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.admin.android.application)
     alias(libs.plugins.compose)
+    alias(libs.plugins.compose.plugin)
     alias(libs.plugins.navigation)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.firebase)

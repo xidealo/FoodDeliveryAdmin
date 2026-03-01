@@ -3,7 +3,7 @@ package com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 
 @Composable
 fun getOrderColor(orderStatus: OrderStatus): Color =
