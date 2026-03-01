@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.designsystem.compose.theme
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -28,7 +27,6 @@ fun AdminTheme(
         }
 
     CompositionLocalProvider(
-        LocalOverscrollConfiguration provides null,
         LocalAdminColors provides rememberedColors,
         LocalAdminDimensions provides AdminDimensions(),
         LocalAdminTypography provides AdminTypography(),
