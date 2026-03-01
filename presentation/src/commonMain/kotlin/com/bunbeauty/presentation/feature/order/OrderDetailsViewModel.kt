@@ -5,10 +5,10 @@ import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.model.order.details.OrderDetails
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import fooddeliveryadmin.presentation.generated.resources.Res
 
 class OrderDetailsViewModel(
     private val loadOrderDetails: LoadOrderDetailsUseCase,
@@ -170,9 +170,12 @@ class OrderDetailsViewModel(
                 }
             },
             onError = {
-                sendEvent {
-                    OrderDetailsState.Event.ShowErrorMessage(messageId = R.string.error_order_details_can_not_save)
-                }
+                // TODO SET STRING
+//                sendEvent {
+//                    OrderDetailsState.Event.ShowErrorMessage(
+//                        messageId = Res.string.error_order_details_can_not_save
+//                    )
+//                }
             },
         )
     }

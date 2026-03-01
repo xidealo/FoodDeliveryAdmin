@@ -3,49 +3,21 @@ package com.bunbeauty.fooddeliveryadmin.main
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.FloatingWindow
-import androidx.navigation.fragment.NavHostFragment
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.fooddeliveryadmin.compose.setContentWithTheme
-import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.fooddeliveryadmin.databinding.FragmentContainerBinding
-import com.bunbeauty.fooddeliveryadmin.databinding.LayoutComposeBinding
 import com.bunbeauty.presentation.designsystem.compose.AdminSnackbarVisuals
+import com.bunbeauty.presentation.feature.MainScreen
 import com.bunbeauty.presentation.viewmodel.main.Main
 import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import kotlinx.coroutines.launch
@@ -55,8 +27,6 @@ class MainActivity :
     AppCompatActivity(R.layout.layout_compose),
     MessageHost {
     val viewModel: MainViewModel by viewModel()
-
-    private val viewBinding: LayoutComposeBinding by viewBinding(LayoutComposeBinding::bind)
 
     private val requestPermissionLauncher by lazy {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
@@ -74,7 +44,7 @@ class MainActivity :
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
-        viewBinding.root.setContentWithTheme {
+        setContent {
             val mainState by viewModel.state.collectAsStateWithLifecycle()
             val snackbarHostState = remember { SnackbarHostState() }
 
@@ -126,33 +96,6 @@ class MainActivity :
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-
-    private fun fragmentContainerFactory(
-        inflater: LayoutInflater,
-        parent: ViewGroup,
-        attachToParent: Boolean,
-    ): FragmentContainerBinding =
-        FragmentContainerBinding.inflate(inflater, parent, attachToParent).also {
-            setupNavigationListener()
-        }
-
-    private fun setupNavigationListener() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.containerFcv) as NavHostFragment
-        val navController = navHostFragment.navController
-        navController.addOnDestinationChangedListener { controller, destination, _ ->
-            if (destination !is FloatingWindow) {
-                val navigationBarItem =
-                    when (destination.id) {
-                        R.id.ordersFragment -> Main.NavigationBarItem.ORDERS
-                        R.id.menuFragment -> Main.NavigationBarItem.MENU
-                        R.id.profileFragment -> Main.NavigationBarItem.PROFILE
-                        else -> null
-                    }
-                viewModel.onAction(Main.Action.UpdateNavDestination(navigationBarItem, controller))
             }
         }
     }
