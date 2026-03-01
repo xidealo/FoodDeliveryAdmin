@@ -26,15 +26,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
-import com.bunbeauty.fooddeliveryadmin.compose.element.card.AdminCardDefaults.noCornerCardShape
+import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCardDefaults.noCornerCardShape
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.bold
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.ic_drad_handle
+import org.jetbrains.compose.resources.painterResource
 import kotlin.math.roundToInt
 
 @Composable
@@ -174,7 +175,7 @@ private fun DraggableListItem(
             )
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_drad_handle),
+                painter = painterResource(resource = Res.drawable.ic_drad_handle),
                 contentDescription = null,
                 modifier =
                     Modifier

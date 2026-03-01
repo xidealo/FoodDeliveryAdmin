@@ -16,6 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.medium
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.ic_arrow_left
+import org.jetbrains.compose.resources.painterResource
 
 private const val MAX_TITLE_LINES = 1
 
@@ -45,7 +48,7 @@ fun AdminTopBar(
                     ) {
                         Icon(
                             modifier = Modifier.size(16.dp),
-                            painter = painterResource(id = R.drawable.ic_arrow_left),
+                            painter = painterResource(resource = Res.drawable.ic_arrow_left),
                             tint = AdminTheme.colors.main.onSurface,
                             contentDescription = null,
                         )
@@ -69,7 +72,7 @@ private fun AdminAction(action: AdminTopBarAction) {
     ) {
         Icon(
             modifier = Modifier.size(20.dp),
-            painter = painterResource(id = action.iconId),
+            painter = painterResource(resource = action.iconId),
             tint = AdminTheme.colors.main.onSurface,
             contentDescription = null,
         )

@@ -12,11 +12,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.domain.model.Suggestion
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.ic_collapse_arrow
+import fooddeliveryadmin.presentation.generated.resources.ic_expand_arrow
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,9 +57,9 @@ fun AdminTextFieldWithMenu(
                         painter =
                             painterResource(
                                 if (expanded) {
-                                    R.drawable.ic_collapse_arrow
+                                    Res.drawable.ic_collapse_arrow
                                 } else {
-                                    R.drawable.ic_expand_arrow
+                                    Res.drawable.ic_expand_arrow
                                 },
                             ),
                         tint = AdminTheme.colors.main.onSurfaceVariant,

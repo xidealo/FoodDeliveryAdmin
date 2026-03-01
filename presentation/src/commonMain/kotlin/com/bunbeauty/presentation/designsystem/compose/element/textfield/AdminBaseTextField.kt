@@ -12,14 +12,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.ic_clear
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AdminBaseTextField(
@@ -71,7 +72,7 @@ fun AdminBaseTextField(
                                             onValueChange("")
                                         },
                                     ),
-                            painter = painterResource(R.drawable.ic_clear),
+                            painter = painterResource(Res.drawable.ic_clear),
                             tint = AdminTheme.colors.main.onSurfaceVariant,
                             contentDescription = null,
                         )
@@ -139,7 +140,7 @@ fun AdminBaseTextField(
                                             onValueChange(TextFieldValue(""))
                                         },
                                     ),
-                            painter = painterResource(R.drawable.ic_clear),
+                            painter = painterResource(Res.drawable.ic_clear),
                             tint = AdminTheme.colors.main.onSurfaceVariant,
                             contentDescription = null,
                         )
@@ -195,7 +196,7 @@ private fun AdminBaseTextFieldWithTrailingIconPreview() {
             trailingIcon = {
                 Icon(
                     modifier = Modifier.size(24.dp),
-                    painter = painterResource(R.drawable.ic_clear),
+                    painter = painterResource(Res.drawable.ic_clear),
                     contentDescription = null,
                 )
             },

@@ -47,7 +47,12 @@ private fun MainScreen(
             )
         },
         bottomBar = {
-            AdminNavigationBar(options = mainState.navigationBarOptions)
+            AdminNavigationBar(
+                options = mainState.navigationBarOptions,
+                goToOrderList = {},
+                goToMenu = {},
+                goToProfile = {},
+            )
         },
     ) { padding ->
         Column(
@@ -64,7 +69,10 @@ private fun MainScreen(
                     },
                     showErrorMessage = {
 
-                    }
+                    },
+                    goToOrderList = {},
+                    goToMenu = {},
+                    goToProfile = {},
                 )
             }
         }

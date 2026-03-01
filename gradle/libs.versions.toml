@@ -59,7 +59,7 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 
 # Image Loading Libraries
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 # Data Storage
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }

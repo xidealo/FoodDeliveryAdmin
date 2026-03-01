@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.designsystem.compose
 
 import android.content.res.Configuration
-import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview(showSystemUi = true, group = "ScreenPreview")
 annotation class ScreenPreview

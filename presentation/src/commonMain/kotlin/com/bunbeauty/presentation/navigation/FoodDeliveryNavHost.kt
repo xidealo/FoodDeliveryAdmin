@@ -15,6 +15,9 @@ import com.bunbeauty.shared.ui.navigation.splash.SplashScreenDestination
 fun FoodDeliveryNavHost(
     showInfoMessage: (String, Int) -> Unit,
     showErrorMessage: (String) -> Unit,
+    goToOrderList: () -> Unit,
+    goToMenu: () -> Unit,
+    goToProfile: () -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
