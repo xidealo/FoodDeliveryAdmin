@@ -3,18 +3,19 @@ package com.bunbeauty.presentation.feature.profile.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.presentation.designsystem.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.presentation.designsystem.compose.element.button.MainButton
 import com.bunbeauty.presentation.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.profile.Profile
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_cancel
 import fooddeliveryadmin.presentation.generated.resources.action_common_logout
 import fooddeliveryadmin.presentation.generated.resources.title_logout
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LogoutBottomSheet(
