@@ -29,13 +29,11 @@ data class AdditionGroupListViewState(
 @Composable
 internal fun AdditionGroupList.toViewState(): AdditionGroupListViewState =
     AdditionGroupListViewState(
-        visibleAdditionItems =
-            visibleAdditionGroups
-                .map { additionGroup ->
-                    additionGroup.toItem()
-                }.toImmutableList(),
-        hiddenAdditionItems =
-            hiddenAdditionGroups
+        visibleAdditionItems = visibleAdditionGroups
+            .map { additionGroup ->
+                additionGroup.toItem()
+            }.toImmutableList(),
+        hiddenAdditionItems = hiddenAdditionGroups
                 .map { additionGroup ->
                     additionGroup.toItem()
                 }.toImmutableList(),

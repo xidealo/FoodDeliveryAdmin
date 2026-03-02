@@ -3,6 +3,13 @@ package com.bunbeauty.presentation.feature.order.mapper
 import androidx.compose.runtime.Composable
 import com.bunbeauty.domain.enums.OrderStatus
 import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.msg_status_accepted
+import fooddeliveryadmin.presentation.generated.resources.msg_status_canceled
+import fooddeliveryadmin.presentation.generated.resources.msg_status_delivered
+import fooddeliveryadmin.presentation.generated.resources.msg_status_not_accepted
+import fooddeliveryadmin.presentation.generated.resources.msg_status_preparing
+import fooddeliveryadmin.presentation.generated.resources.msg_status_ready
+import fooddeliveryadmin.presentation.generated.resources.msg_status_sent_out
 import org.jetbrains.compose.resources.stringResource
 
 

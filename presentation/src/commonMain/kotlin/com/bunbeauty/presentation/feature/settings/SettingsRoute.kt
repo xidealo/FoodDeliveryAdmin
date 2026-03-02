@@ -34,10 +34,12 @@ import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHoriz
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.designsystem.compose.theme.bold
 import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_cancel
 import fooddeliveryadmin.presentation.generated.resources.action_edit_addition_save
+import fooddeliveryadmin.presentation.generated.resources.action_settings_disable
 import fooddeliveryadmin.presentation.generated.resources.ic_cellular_average
 import fooddeliveryadmin.presentation.generated.resources.ic_cellular_high
 import fooddeliveryadmin.presentation.generated.resources.ic_cellular_low
@@ -61,6 +63,9 @@ import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_l
 import fooddeliveryadmin.presentation.generated.resources.title_settings
 import fooddeliveryadmin.presentation.generated.resources.title_settings_disable_orders
 import fooddeliveryadmin.presentation.generated.resources.action_work_load_cafe_disable
+import fooddeliveryadmin.presentation.generated.resources.msg_settings_disable_orders
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -98,7 +103,7 @@ fun SettingsRouteScreen(
     )
 
     SettingsScreen(
-        state = remember(viewState) { viewState.toViewState() },
+        state = viewState.toViewState(),
         onAction = onAction,
         goBack = goBack,
     )
@@ -119,6 +124,10 @@ private fun SettingsEffect(
 
                 SettingsState.Event.ShowSaveSettingEvent -> {
                     goBack()
+                }
+
+                is SettingsState.Event.ShowErrorMessage -> {
+
                 }
             }
         }
@@ -401,8 +410,8 @@ private fun WorkLoadScreen(
 
 @Composable
 private fun SettingsTypeRow(
-    iconId: Any,
-    textStringId: Any,
+    iconId: DrawableResource,
+    textStringId: StringResource,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -435,11 +444,7 @@ private fun SettingsTypeRow(
                     Modifier
                         .weight(1f)
                         .padding(start = 16.dp),
-                text =
-                    when (textStringId) {
-                        is String -> textStringId
-                        else -> stringResource(textStringId)
-                    },
+                text = stringResource(textStringId),
                 style = AdminTheme.typography.bodyLarge,
                 color = AdminTheme.colors.main.onSurface,
             )
@@ -451,7 +456,7 @@ private fun SettingsTypeRow(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview()
 @Composable
 private fun SettingsScreenPreview() {
     AdminTheme {

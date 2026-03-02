@@ -38,6 +38,7 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.bundles.coil)
                 implementation(libs.kotlinx.collections.immutable)
+
             }
         }
         val androidUnitTest by getting {

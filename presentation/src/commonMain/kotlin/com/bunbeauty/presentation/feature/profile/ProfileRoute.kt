@@ -21,6 +21,7 @@ import com.bunbeauty.presentation.designsystem.compose.element.card.TextWithHint
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.profile.component.LogoutBottomSheet
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_logout
 import fooddeliveryadmin.presentation.generated.resources.action_profile_map
@@ -117,7 +118,7 @@ private fun ProfileScreen(
     state: Profile.DataState,
     onAction: (Profile.Action) -> Unit,
 ) {
-    val viewState = remember(state) { state.toViewState() }
+    val viewState =  state.toViewState()
 
     AdminScaffold(
         title = stringResource(Res.string.title_profile),

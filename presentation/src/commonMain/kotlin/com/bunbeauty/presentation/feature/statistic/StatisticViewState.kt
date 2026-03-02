@@ -55,7 +55,6 @@ data class StatisticViewState(
     }
 }
 
-@Immutable
 @Composable
 internal fun Statistic.DataState.toViewState(): StatisticViewState =
     StatisticViewState(
