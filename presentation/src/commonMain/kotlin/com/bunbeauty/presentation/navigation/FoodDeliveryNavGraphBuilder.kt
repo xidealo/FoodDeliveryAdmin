@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navOptions
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
+import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 
 internal val emptyNavOptions = navOptions { }
 
@@ -13,12 +14,20 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     navController: NavController,
     showInfoMessage: (String, Int) -> Unit,
     showErrorMessage: (String) -> Unit,
+    cancelNotification: (Int) -> Unit,
+    openOrderDetails: (String, String) -> Unit,
 ) {
     loginScreenRoute(
         showErrorMessage = showErrorMessage,
         goToOrderListScreen = {
             //navigate to order list
         },
+    )
+
+    orderListScreenRoute(
+        cancelNotification = cancelNotification,
+        openOrderDetails =
+            openOrderDetails
     )
 
 }

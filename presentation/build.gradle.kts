@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.admin.multiplatform.feature)
     alias(libs.plugins.compose)
@@ -35,6 +37,7 @@ kotlin {
                 implementation(compose.animationGraphics)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.bundles.coil)
+                implementation(libs.kotlinx.collections.immutable)
             }
         }
         val androidUnitTest by getting {
