@@ -19,7 +19,6 @@ fun uiMapperModule() =
 
         factory {
             OrderMapper(
-                orderStatusMapper = get(),
                 dateTimeUtil = get(),
             )
         }

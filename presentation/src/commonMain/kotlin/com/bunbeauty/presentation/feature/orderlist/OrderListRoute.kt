@@ -60,6 +60,7 @@ fun OrderList.DataState.mapStateOrderList(
                     OrderListViewState.State.Success(
                         cafeAddress = cafe?.address.orEmpty(),
                         orderList = orderList.map(orderMapper::map).toPersistentList(),
+                      //  orderList = orderList.map(orderMapper::map).toPersistentList(),
                         connectionError = hasConnectionError,
                         refreshing = refreshing,
                         loadingOrderList = loadingOrderList,

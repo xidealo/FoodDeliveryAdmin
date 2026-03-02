@@ -7,7 +7,7 @@ import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
-fun map(orderStatus: OrderStatus): String =
+fun orderStatusMap(orderStatus: OrderStatus): String =
     when (orderStatus) {
         OrderStatus.NOT_ACCEPTED -> stringResource(Res.string.msg_status_not_accepted)
         OrderStatus.ACCEPTED -> stringResource(Res.string.msg_status_accepted)

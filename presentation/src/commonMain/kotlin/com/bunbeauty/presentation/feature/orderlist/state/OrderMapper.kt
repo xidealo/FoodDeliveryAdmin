@@ -1,12 +1,10 @@
 package com.bunbeauty.presentation.feature.orderlist.state
 
 import DateTimeUtil
-import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
-import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import fooddeliveryadmin.presentation.generated.resources.Res
 import org.jetbrains.compose.resources.stringResource
