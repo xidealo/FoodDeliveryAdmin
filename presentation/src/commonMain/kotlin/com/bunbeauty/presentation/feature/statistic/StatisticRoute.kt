@@ -34,12 +34,14 @@ import com.bunbeauty.presentation.designsystem.compose.theme.bold
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_product_statistic_load
 import fooddeliveryadmin.presentation.generated.resources.msg_common_cafe
+import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.presentation.generated.resources.msg_common_period
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_statistic
 import fooddeliveryadmin.presentation.generated.resources.title_statistic_select_time_interval
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -74,7 +76,7 @@ fun StatisticRouteScreen(
     )
 
     StatisticScreen(
-        state = remember(viewState) { viewState.toViewState() },
+        state = viewState.toViewState(),
         onAction = onAction,
         goBack = goBack,
     )
@@ -98,7 +100,6 @@ private fun StatisticEffect(
     }
 }
 
-@Suppress("NonSkippableComposable")
 @Composable
 private fun StatisticScreen(
     state: StatisticViewState,
@@ -291,7 +292,7 @@ private fun StatisticItem(statisticItemModel: StatisticViewState.State.Success.S
 }
 
 @Suppress("NonSkippableComposable")
-@Preview(showSystemUi = true)
+@Preview()
 @Composable
 private fun StatisticScreenPreview() {
     AdminTheme {
@@ -301,7 +302,7 @@ private fun StatisticScreenPreview() {
                     state =
                         StatisticViewState.State.Success(
                             statisticList =
-                                kotlinx.collections.immutable.persistentListOf(
+                                persistentListOf(
                                     StatisticViewState.State.Success.StatisticItemModel(
                                         startMillis = 3064,
                                         period = "апрель",
@@ -321,7 +322,7 @@ private fun StatisticScreenPreview() {
                             timeIntervalListUI =
                                 StatisticViewState.TimeIntervalListUI(
                                     isShown = false,
-                                    timeIntervalList = kotlinx.collections.immutable.persistentListOf(),
+                                    timeIntervalList = persistentListOf(),
                                 ),
                             loadingStatistic = false,
                             cafeAddress = "Кимры чупки 22 в",

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.domain.model.settings.WorkLoad
 import com.bunbeauty.domain.model.settings.WorkType
+import com.bunbeauty.presentation.feature.settings.state.SettingsState
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_settings_disable
