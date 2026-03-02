@@ -44,13 +44,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
 
 @Composable
 fun OrderList.DataState.mapStateOrderList(
-    orderMapper: OrderMapper = koinViewModel(),
+    orderMapper: OrderMapper = koinInject()
 ): OrderListViewState =
     OrderListViewState(
         state =
@@ -59,8 +60,9 @@ fun OrderList.DataState.mapStateOrderList(
                 OrderList.DataState.State.SUCCESS ->
                     OrderListViewState.State.Success(
                         cafeAddress = cafe?.address.orEmpty(),
-                        orderList = orderList.map(orderMapper::map).toPersistentList(),
-                      //  orderList = orderList.map(orderMapper::map).toPersistentList(),
+                        orderList = orderList.map { order ->
+                            orderMapper.map(order)
+                        }.toPersistentList(),
                         connectionError = hasConnectionError,
                         refreshing = refreshing,
                         loadingOrderList = loadingOrderList,

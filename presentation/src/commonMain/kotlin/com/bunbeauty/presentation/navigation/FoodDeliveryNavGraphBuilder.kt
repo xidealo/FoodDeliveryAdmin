@@ -12,7 +12,9 @@ import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRo
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
+import com.bunbeauty.presentation.feature.settings.navigation.navigateToSettingsScreen
 import com.bunbeauty.presentation.feature.settings.navigation.settingsScreenRoute
+import com.bunbeauty.presentation.feature.statistic.navigation.navigateToStatisticScreen
 import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
 
 internal val emptyNavOptions = navOptions { }
