@@ -1,15 +1,16 @@
-package com.bunbeauty.fooddeliveryadmin.screen.additionlist
+package com.bunbeauty.presentation.feature.additionlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import com.bunbeauty.domain.model.addition.Addition
-import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.additionlist.AdditionList
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.title_addition_other_additions
+import org.jetbrains.compose.resources.stringResource
 
 @Immutable
 data class AdditionListViewState(
@@ -46,8 +47,27 @@ data class AdditionListViewState(
     )
 }
 
+@Immutable
 @Composable
-fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.AdditionFeedViewItem =
+internal fun AdditionList.DataState.toViewState(): AdditionListViewState =
+    AdditionListViewState(
+        visibleAdditionItems =
+            visibleAdditions
+                .map { additionFeedItem ->
+                    additionFeedItem.toItem()
+                }.toImmutableList(),
+        hiddenAdditionItems =
+            hiddenAdditions
+                .map { additionFeedItem ->
+                    additionFeedItem.toItem()
+                }.toImmutableList(),
+        isRefreshing = isRefreshing,
+        isLoading = isLoading,
+        hasError = hasError,
+    )
+
+@Composable
+private fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.AdditionFeedViewItem =
     when (this) {
         is AdditionList.DataState.AdditionFeedItem.AdditionItem ->
             AdditionListViewState
@@ -62,12 +82,12 @@ fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.Addi
                 .AdditionFeedViewItem
                 .Title(
                     key = key,
-                    title = title ?: stringResource(R.string.title_addition_other_additions),
+                    title = title ?: stringResource(Res.string.title_addition_other_additions),
                 )
     }
 
 @Composable
-fun Addition.toItem(): AdditionListViewState.AdditionViewItem =
+private fun Addition.toItem(): AdditionListViewState.AdditionViewItem =
     AdditionListViewState.AdditionViewItem(
         name = name,
         photoLink = photoLink,

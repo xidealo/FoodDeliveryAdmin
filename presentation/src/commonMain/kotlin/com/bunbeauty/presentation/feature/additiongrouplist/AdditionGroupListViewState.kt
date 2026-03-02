@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.additiongrouplist
+package com.bunbeauty.presentation.feature.additiongrouplist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -7,6 +7,7 @@ import com.bunbeauty.domain.model.additiongroup.AdditionGroup
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Immutable
 data class AdditionGroupListViewState(
@@ -24,8 +25,26 @@ data class AdditionGroupListViewState(
     )
 }
 
+@Immutable
 @Composable
-fun AdditionGroup.toItem(): AdditionGroupListViewState.AdditionGroupItem =
+internal fun AdditionGroupList.toViewState(): AdditionGroupListViewState =
+    AdditionGroupListViewState(
+        visibleAdditionItems =
+            visibleAdditionGroups
+                .map { additionGroup ->
+                    additionGroup.toItem()
+                }.toImmutableList(),
+        hiddenAdditionItems =
+            hiddenAdditionGroups
+                .map { additionGroup ->
+                    additionGroup.toItem()
+                }.toImmutableList(),
+        isRefreshing = isRefreshing,
+        isLoading = isLoading,
+    )
+
+@Composable
+private fun AdditionGroup.toItem(): AdditionGroupListViewState.AdditionGroupItem =
     AdditionGroupListViewState.AdditionGroupItem(
         name = name,
         uuid = uuid,

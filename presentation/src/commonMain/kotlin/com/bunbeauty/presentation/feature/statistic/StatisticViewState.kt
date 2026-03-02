@@ -1,12 +1,61 @@
-package com.bunbeauty.fooddeliveryadmin.screen.statistic.ui
+package com.bunbeauty.presentation.feature.statistic
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.presentation.feature.statistic.Statistic
+import androidx.compose.runtime.Immutable
 import com.bunbeauty.presentation.feature.statistic.TimeIntervalCode
+import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.msg_statistic_day_interval
+import fooddeliveryadmin.presentation.generated.resources.msg_statistic_month_interval
+import fooddeliveryadmin.presentation.generated.resources.msg_statistic_orders
+import fooddeliveryadmin.presentation.generated.resources.msg_statistic_week_interval
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
+@Immutable
+data class StatisticViewState(
+    val state: State,
+) : BaseViewState {
+    @Immutable
+    sealed interface State {
+        data object Loading : State
+
+        data object Error : State
+
+        data class Success(
+            val statisticList: ImmutableList<StatisticItemModel>,
+            val period: String,
+            val timeIntervalListUI: TimeIntervalListUI,
+            val cafeAddress: String,
+            val loadingStatistic: Boolean,
+        ) : State {
+            @Immutable
+            data class StatisticItemModel(
+                val startMillis: Long,
+                val period: String,
+                val count: String,
+                val proceeds: String,
+                val date: String,
+            )
+        }
+    }
+
+    @Immutable
+    data class TimeIntervalListUI(
+        val isShown: Boolean,
+        val timeIntervalList: ImmutableList<TimeIntervalItem>,
+    ) {
+        @Immutable
+        data class TimeIntervalItem(
+            val timeInterval: String,
+            val timeIntervalType: TimeIntervalCode,
+        )
+    }
+}
+
+@Immutable
 @Composable
 internal fun Statistic.DataState.toViewState(): StatisticViewState =
     StatisticViewState(
@@ -50,7 +99,7 @@ fun Statistic.DataState.StatisticItemModel.toStatisticItemModelView(): Statistic
         period = period,
         count =
             stringResource(
-                R.string.msg_statistic_orders,
+                Res.string.msg_statistic_orders,
                 count,
             ),
         proceeds = proceeds,
@@ -62,19 +111,19 @@ internal fun getTimeIntervalName(timeInterval: TimeIntervalCode): StatisticViewS
     when (timeInterval) {
         TimeIntervalCode.DAY ->
             StatisticViewState.TimeIntervalListUI.TimeIntervalItem(
-                stringResource(R.string.msg_statistic_day_interval),
+                stringResource(Res.string.msg_statistic_day_interval),
                 timeIntervalType = TimeIntervalCode.DAY,
             )
 
         TimeIntervalCode.WEEK ->
             StatisticViewState.TimeIntervalListUI.TimeIntervalItem(
-                stringResource(R.string.msg_statistic_week_interval),
+                stringResource(Res.string.msg_statistic_week_interval),
                 timeIntervalType = TimeIntervalCode.WEEK,
             )
 
         TimeIntervalCode.MONTH ->
             StatisticViewState.TimeIntervalListUI.TimeIntervalItem(
-                stringResource(R.string.msg_statistic_month_interval),
+                stringResource(Res.string.msg_statistic_month_interval),
                 timeIntervalType = TimeIntervalCode.MONTH,
             )
     }
