@@ -7,7 +7,7 @@ import com.bunbeauty.domain.model.order.details.OrderAddress
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
-import com.bunbeauty.fooddeliveryadmin.screen.orderlist.compose.getOrderColor
+import com.bunbeauty.presentation.feature.orderlist.compose.getOrderColor
 import com.bunbeauty.presentation.R
 import com.bunbeauty.presentation.feature.order.mapper.OrderStatusMapper
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
