@@ -4,6 +4,10 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navOptions
+import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.navigation.createAdditionGroupScreenRoute
+import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.navigation.navigateToCreateAdditionGroupScreen
+import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.editAdditionGroupScreenRoute
+import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.navigateToEditAdditionGroupScreen
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.createCategoryScreenRoute
@@ -11,7 +15,11 @@ import com.bunbeauty.presentation.feature.category.createcategory.navigation.nav
 import com.bunbeauty.presentation.feature.category.editcategory.navigation.editCategoryScreenRoute
 import com.bunbeauty.presentation.feature.category.editcategory.navigation.navigateToEditCategoryScreen
 import com.bunbeauty.presentation.feature.category.navigation.categoryListScreenRoute
+import com.bunbeauty.presentation.feature.gallery.navigation.galleryScreenRoute
+import com.bunbeauty.presentation.feature.gallery.navigation.navigateToGalleryScreen
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
+import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
+import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
@@ -64,10 +72,13 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             //navigate back
         },
         goToCreateAdditionGroupScreen = {
-            //navigate to create addition group
+            navController.navigateToCreateAdditionGroupScreen(emptyNavOptions)
         },
         goToEditAdditionGroupScreen = { uuid ->
-            //navigate to edit addition group
+            navController.navigateToEditAdditionGroupScreen(
+                additionGroupUuid = uuid,
+                navOptions = emptyNavOptions,
+            )
         },
     )
     additionListScreenRoute(
@@ -103,6 +114,29 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     editCategoryScreenRoute(
         showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    createAdditionGroupScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    editAdditionGroupScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    editDeliveryZoneInfoScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    galleryScreenRoute(
         goBack = {
             navController.popBackStack()
         },
