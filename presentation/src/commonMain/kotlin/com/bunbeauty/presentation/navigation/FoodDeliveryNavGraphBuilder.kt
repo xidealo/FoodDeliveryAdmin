@@ -28,6 +28,12 @@ import com.bunbeauty.presentation.feature.settings.navigation.navigateToSettings
 import com.bunbeauty.presentation.feature.settings.navigation.settingsScreenRoute
 import com.bunbeauty.presentation.feature.statistic.navigation.navigateToStatisticScreen
 import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
+import com.bunbeauty.presentation.feature.statisticdetails.navigation.navigateToStatisticDetailsScreen
+import com.bunbeauty.presentation.feature.statisticdetails.navigation.statisticDetailsScreenRoute
+import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.navigateToSelectCategoryListScreen
+import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
+import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.navigateToCropImageScreen
 
 internal val emptyNavOptions = navOptions { }
 
@@ -137,6 +143,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
     galleryScreenRoute(
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    statisticDetailsScreenRoute(
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    selectCategoryListScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    cropImageScreenRoute(
         goBack = {
             navController.popBackStack()
         },
