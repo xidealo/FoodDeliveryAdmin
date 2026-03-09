@@ -78,8 +78,8 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
     categoryListScreenRoute(
-        showInfoMessage = { message, duration ->
-            showInfoMessage(message, duration)
+        goBack = {
+            navController.popBackStack()
         },
         goToCreateCategoryScreen = {
             //navigate to create category
