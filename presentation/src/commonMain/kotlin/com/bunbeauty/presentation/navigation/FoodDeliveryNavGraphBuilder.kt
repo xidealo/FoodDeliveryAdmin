@@ -6,6 +6,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navOptions
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
+import com.bunbeauty.presentation.feature.category.createcategory.navigation.createCategoryScreenRoute
+import com.bunbeauty.presentation.feature.category.createcategory.navigation.navigateToCreateCategoryScreen
+import com.bunbeauty.presentation.feature.category.editcategory.navigation.editCategoryScreenRoute
+import com.bunbeauty.presentation.feature.category.editcategory.navigation.navigateToEditCategoryScreen
 import com.bunbeauty.presentation.feature.category.navigation.categoryListScreenRoute
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
@@ -22,7 +26,7 @@ internal val emptyNavOptions = navOptions { }
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     navController: NavController,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String) -> Unit,
     showErrorMessage: (String) -> Unit,
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
@@ -82,10 +86,25 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.popBackStack()
         },
         goToCreateCategoryScreen = {
-            //navigate to create category
+            navController.navigateToCreateCategoryScreen(emptyNavOptions)
         },
         goToEditCategoryScreen = { categoryUuid ->
-            //navigate to edit category
+            navController.navigateToEditCategoryScreen(
+                categoryUuid = categoryUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    createCategoryScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+    )
+    editCategoryScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
         },
     )
     profileScreenRoute(
