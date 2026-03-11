@@ -22,6 +22,10 @@ import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.navigation.additionGroupForMenuProductListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.navigateToSelectAdditionListScreen
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.selectAdditionListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.navigateToSelectAdditionGroupScreen
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.selectAdditionGroupScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.navigateToEditAdditionGroupForMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
@@ -186,11 +190,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goBack = {
             navController.popBackStack()
         },
-        goToSelectAdditionGroup = { uuid, menuProductUuid, _ ->
-            //navigate to select addition group
+        goToSelectAdditionGroup = { uuid, menuProductUuid, mainEditedAdditionGroupUuid ->
+            navController.navigateToSelectAdditionGroupScreen(
+                additionGroupUuid = uuid,
+                menuProductUuid = menuProductUuid,
+                mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
+                navOptions = emptyNavOptions,
+            )
         },
-        goToSelectAdditionList = { _, menuProductUuid, groupName, addListUuid ->
-            //navigate to select addition list
+        goToSelectAdditionList = { additionGroupUuid, menuProductUuid, groupName, addListUuid ->
+            navController.navigateToSelectAdditionListScreen(
+                menuProductUuid = menuProductUuid,
+                additionGroupUuid = additionGroupUuid,
+                additionGroupName = groupName,
+                editedAdditionListUuid = addListUuid,
+                navOptions = emptyNavOptions,
+            )
         },
     )
     editAdditionGroupForMenuProductScreenRoute(
@@ -198,11 +213,41 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goBack = {
             navController.popBackStack()
         },
-        goToSelectAdditionGroup = { _, _, _ ->
-            //navigate to select addition group
+        goToSelectAdditionGroup = { editedAdditionGroupUuid, menuProductUuid, mainEditedAdditionGroupUuid ->
+            navController.navigateToSelectAdditionGroupScreen(
+                additionGroupUuid = editedAdditionGroupUuid,
+                menuProductUuid = menuProductUuid,
+                mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
+                navOptions = emptyNavOptions,
+            )
         },
-        goToSelectAdditionList = { _, _, _, _ ->
-            //navigate to select addition list
+        goToSelectAdditionList = { additionGroupUuid, menuProductUuid, additionGroupName, editedAdditionListUuid ->
+            navController.navigateToSelectAdditionListScreen(
+                menuProductUuid = menuProductUuid,
+                additionGroupUuid = additionGroupUuid,
+                additionGroupName = additionGroupName,
+                editedAdditionListUuid = editedAdditionListUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    selectAdditionGroupScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        onAdditionGroupSelected = { additionGroupUuid, additionGroupName ->
+            // Result handled by calling screen
+        },
+    )
+    selectAdditionListScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        onAdditionListSelected = { additionUuidList ->
+            // Result handled by calling screen
         },
     )
     profileScreenRoute(
