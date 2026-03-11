@@ -18,6 +18,9 @@ import com.bunbeauty.presentation.feature.category.navigation.categoryListScreen
 import com.bunbeauty.presentation.feature.gallery.navigation.galleryScreenRoute
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
+import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
+import com.bunbeauty.presentation.feature.mapdelivery.navigation.navigateToMapDeliveryZoneScreen
+import com.bunbeauty.presentation.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
@@ -145,6 +148,20 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.popBackStack()
         },
     )
+    mapDeliveryZoneScreenRoute(
+        goBack = {
+            navController.popBackStack()
+        },
+        goToEditDeliveryZoneInfo = { zoneUuid ->
+            navController.navigateToEditDeliveryZoneInfoScreen(
+                zoneUuid = zoneUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+        onZoneUpdated = { zoneUuid ->
+            // Zone updated - handled by map screen via onAction
+        },
+    )
     galleryScreenRoute(
         goBack = {
             navController.popBackStack()
@@ -259,7 +276,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.navigateToStatisticScreen(emptyNavOptions)
         },
         goToMapScreen = {
-            //navigate to map
+            //navigate to map - handled by existing navigation
         },
         goToLoginScreen = {
             //navigate to login
