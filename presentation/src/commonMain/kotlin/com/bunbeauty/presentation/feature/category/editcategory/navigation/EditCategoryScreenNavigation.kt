@@ -22,7 +22,7 @@ fun NavController.navigateToEditCategoryScreen(
 ) = navigate(route = EditCategoryScreenDestination(categoryUuid = categoryUuid), navOptions)
 
 fun NavGraphBuilder.editCategoryScreenRoute(
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<EditCategoryScreenDestination> {

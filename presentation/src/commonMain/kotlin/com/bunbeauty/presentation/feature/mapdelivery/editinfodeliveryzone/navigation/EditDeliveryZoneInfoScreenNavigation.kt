@@ -18,7 +18,7 @@ fun NavController.navigateToEditDeliveryZoneInfoScreen(
 ) = navigate(route = EditDeliveryZoneInfoScreenDestination(zoneUuid = zoneUuid), navOptions)
 
 fun NavGraphBuilder.editDeliveryZoneInfoScreenRoute(
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<EditDeliveryZoneInfoScreenDestination> {

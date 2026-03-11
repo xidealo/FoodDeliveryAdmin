@@ -19,7 +19,6 @@ import kotlinx.collections.immutable.toPersistentList
 
 class OrderDetailsStateMapper(
     private val dateTimeUtil: DateTimeUtil,
-    private val orderStatusMapper: OrderStatusMapper,
     private val orderProductMapper: OrderProductMapper,
     private val paymentMethodMapper: PaymentMethodMapper,
 ) {
@@ -77,7 +76,7 @@ class OrderDetailsStateMapper(
                                                 ?.map { orderStatus ->
                                                     OrderDetailsViewState.State.Success.StatusListUI.StatusItem(
                                                         orderStatus = orderStatus,
-                                                        status = orderStatusMapper.map(orderStatus),
+                                                        status = orderStatus.map,
                                                     )
                                                 }?.toPersistentList() ?: persistentListOf(),
                                     ),

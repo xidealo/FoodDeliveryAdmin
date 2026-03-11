@@ -35,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EditAdditionGroupRouteScreen(
     viewModel: EditAdditionGroupViewModel = koinViewModel(),
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +75,7 @@ fun EditAdditionGroupRouteScreen(
 @Composable
 private fun EditAdditionGroupEffect(
     effects: List<EditAdditionGroupDataState.Event>,
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -92,6 +92,7 @@ private fun EditAdditionGroupEffect(
                             Res.string.msg_edit_addition_group_updated,
                             effect.additionGroupName,
                         ),
+                        0
                     )
                     goBack()
                 }

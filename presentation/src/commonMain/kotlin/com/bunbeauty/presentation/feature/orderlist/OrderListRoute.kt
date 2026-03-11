@@ -76,7 +76,6 @@ fun OrderList.DataState.mapState(): OrderListViewState = mapStateOrderList()
 @Composable
 fun OrderListRouteScreen(
     viewModel: OrderListViewModel = koinViewModel(),
-    //notificationManagerCompat: NotificationManagerCompat = koinViewModel(),
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
 ) {

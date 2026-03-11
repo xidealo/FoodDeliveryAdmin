@@ -13,7 +13,7 @@ data object CreateCategoryScreenDestination
 fun NavController.navigateToCreateCategoryScreen(navOptions: NavOptions) = navigate(route = CreateCategoryScreenDestination, navOptions)
 
 fun NavGraphBuilder.createCategoryScreenRoute(
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<CreateCategoryScreenDestination> {

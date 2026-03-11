@@ -13,18 +13,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.presentation.designsystem.compose.element.card.SwitcherCard
-import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextField
+import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_addition_list_group_show_in_menu
-import fooddeliveryadmin.presentation.generated.resources.action_common_cancel
 import fooddeliveryadmin.presentation.generated.resources.action_create_category_save
-import fooddeliveryadmin.presentation.generated.resources.error_common_create_addition_group_duplicate_name
-import fooddeliveryadmin.presentation.generated.resources.error_common_create_addition_group_name
-import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
 import fooddeliveryadmin.presentation.generated.resources.hint_edit_create_addition_group_name
 import fooddeliveryadmin.presentation.generated.resources.msg_addition_list_group_appliances_hint
 import fooddeliveryadmin.presentation.generated.resources.msg_addition_list_group_switcher_card
@@ -39,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CreateAdditionGroupRouteScreen(
     viewModel: CreateAdditionGroupViewModel = koinViewModel(),
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +71,7 @@ fun CreateAdditionGroupRouteScreen(
 @Composable
 private fun CreateAdditionGroupEffect(
     effects: List<CreateAdditionGroupDataState.Event>,
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -92,6 +88,7 @@ private fun CreateAdditionGroupEffect(
                             Res.string.msg_create_addition_group_created,
                             effect.additionGroupName,
                         ),
+                        0
                     )
                     goBack()
                 }

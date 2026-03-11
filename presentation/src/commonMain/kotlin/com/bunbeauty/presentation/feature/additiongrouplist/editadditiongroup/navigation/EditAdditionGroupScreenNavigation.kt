@@ -18,7 +18,7 @@ fun NavController.navigateToEditAdditionGroupScreen(
 ) = navigate(route = EditAdditionGroupScreenDestination(additionGroupUuid = additionGroupUuid), navOptions)
 
 fun NavGraphBuilder.editAdditionGroupScreenRoute(
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<EditAdditionGroupScreenDestination> {

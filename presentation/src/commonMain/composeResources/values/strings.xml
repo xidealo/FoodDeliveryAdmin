@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Админ</string>
-    <string name="version_app">Версия приложения %s</string>
+    <string name="version_app">Версия приложения %1$s</string>
     <!--
     title — заголовки;
     hint — подсказки в edittext;
@@ -44,7 +44,7 @@
     <string name="hint_login_login">Логин</string>
     <string name="hint_login_password">Пароль</string>
     <string name="action_login_enter">Войти</string>
-    <string name="msg_login_version">Версия приложения %s</string>
+    <string name="msg_login_version">Версия приложения %1$s</string>
     <string name="error_login_wrong_data">Неверный логин или пароль</string>
     <string name="error_login_wrong_login">Ошибка при входе</string>
 
@@ -80,7 +80,7 @@
     <string name="action_order_details_no">Нет</string>
     <string name="title_order_details_choice_cafe">Выбрать кафе</string>
     <string name="title_order_status">Статус заказа</string>
-    <string name="msg_order_details_saved">Заказ %s обновлен</string>
+    <string name="msg_order_details_saved">Заказ %1$s обновлен</string>
 
     <string name="msg_payment_cash">Наличные</string>
     <string name="msg_payment_card">Картой при получении</string>
@@ -150,10 +150,10 @@
     <!-- CREATE MENU PRODUCT -->
     <string name="title_create_menu_product_new_product">Новая позиция</string>
     <string name="action_create_menu_product_create">Создать</string>
-    <string name="msg_create_menu_product_add_menu_added">%s добавлен</string>
+    <string name="msg_create_menu_product_add_menu_added">%1$s добавлен</string>
 
     <!-- EDIT MENU PRODUCT -->
-    <string name="msg_edit_menu_product_updated">%s обновлён</string>
+    <string name="msg_edit_menu_product_updated">%1$s обновлён</string>
 
     <!-- CROP IMAGE -->
     <string name="title_crop_image">Обработка фото</string>
@@ -236,7 +236,7 @@
     <string name="hint_edit_addition_price">Цена</string>
     <string name="hint_edit_addition_tag">Тэг</string>
     <string name="title_edit_addition_is_visible">Показывать в меню</string>
-    <string name="msg_edit_addition_updated">%s обновлён</string>
+    <string name="msg_edit_addition_updated">%1$s обновлён</string>
     <string name="error_edit_addition_empty_name">Название не может быть пустым</string>
     <string name="error_edit_addition_empty_full_name">Полное название не может быть пустым</string>
 
@@ -248,7 +248,7 @@
     <string name="hint_create_addition_price">Цена</string>
     <string name="hint_create_addition_tag">Тэг</string>
     <string name="title_create_addition_is_visible">Показывать в меню</string>
-    <string name="msg_create_addition_updated">%s добавлен</string>
+    <string name="msg_create_addition_updated">%1$s добавлен</string>
     <string name="error_create_addition_empty_name">Название не может быть пустым</string>
     <string name="error_create_addition_empty_full_name">Полное название не может быть пустым</string>
     <string name="error_create_addition_empty_priority">Приоритет не может быть пустым</string>
@@ -261,7 +261,7 @@
     <string name="action_addition_list_group_show_in_menu">Показывать в меню</string>
     <string name="msg_addition_list_group_appliances_hint">Пользователь сможет выбрать только одну добавку из группы</string>
     <string name="msg_addition_list_group_switcher_card">Можно выбрать 1 добавку</string>
-    <string name="msg_create_addition_group_created">%s создан</string>
+    <string name="msg_create_addition_group_created">%1$s создан</string>
     <string name="error_common_create_addition_group_name">Название не может быть пустым</string>
     <string name="error_common_create_addition_group_duplicate_name">Группа добавок с таким именем уже существует</string>
     <string name="title_create_addition_group">Создание группы добавок</string>
@@ -269,7 +269,7 @@
 
     <!-- EDIT ADDITION GROUP -->
     <string name="title_edit_addition_group">Редактирование группы</string>
-    <string name="msg_edit_addition_group_updated">%s обновлён</string>
+    <string name="msg_edit_addition_group_updated">%1$s обновлён</string>
     <string name="action_edit_addition_group_save">Сохранить</string>
     <string name="hint_edit_addition_group_name">Название*</string>
     <string name="error_common_edit_addition_group_empty_name">Название не может быть пустым</string>
@@ -293,7 +293,7 @@
     <string name="action_create_category_save">Сохранить</string>
     <string name="error_common_create_category_empty_name">Название не может быть пустым</string>
     <string name="error_common_create_category_duplicate_name">Категория с таким именем уже существует</string>
-    <string name="msg_create_category_created">%s создан</string>
+    <string name="msg_create_category_created">%1$s создан</string>
     <string name="msg_update_category_priority_list">Список обновлен</string>
 
     <!--EDIT CATEGORY-->
@@ -301,7 +301,7 @@
     <string name="action_edit_category_save">Сохранить</string>
     <string name="error_common_edit_category_empty_name">Название не может быть пустым</string>
     <string name="error_common_edit_category_duplicate_name">Категория с таким именем уже существует</string>
-    <string name="msg_edit_category_updated">%s обновлён</string>
+    <string name="msg_edit_category_updated">%1$s обновлён</string>
 
     <!-- Gallery -->
     <string name="title_gallery">Галерея</string>
@@ -342,21 +342,21 @@
     <string name="title_select_addition_group_position_visible">Видимые позиции</string>
     <string name="title_select_addition_group_position_hidden">Скрытые позиции</string>
     <string name="title_select_addition_group_empty_list">Нет доступных групп</string>
-    <string name="msg_select_addition_group_selected">Выбрана группа %s</string>
+    <string name="msg_select_addition_group_selected">Выбрана группа %1$s</string>
 
     <!--Select Addition List-->
     <string name="title_select_addition_list">Выбор добавок</string>
     <string name="action_select_addition_list_save">Сохранить</string>
-    <string name="action_select_addition_list_title_group">Добавки в группе %s</string>
+    <string name="action_select_addition_list_title_group">Добавки в группе %1$s</string>
     <string name="action_select_addition_list_title_additions">Добавки</string>
     <string name="action_select_addition_list_title_selected">Изменены добавки</string>
     <string name="msg_update_select_addition_list_priority_list">Список обновлен</string>
-    <string name="msg_update_select_addition_list_added">Добавлено %s</string>
-    <string name="msg_update_select_addition_list_removed">Удалено %s</string>
+    <string name="msg_update_select_addition_list_added">Добавлено %1$s</string>
+    <string name="msg_update_select_addition_list_removed">Удалено %1$s</string>
 
     <!--Map Delivery Area-->
     <string name="title_map_delivery_area">Зона обслуживания</string>
-    <string name="title_bottom_sheet_map_delivery_area">Зона доставки: %s</string>
+    <string name="title_bottom_sheet_map_delivery_area">Зона доставки: %1$s</string>
     <string name="title_bottom_sheet_min_orders_cost">Минимальная стоимость заказа: </string>
     <string name="title_bottom_sheet_orders_cost">Стоимость доставки: </string>
     <string name="title_bottom_sheet_free_orders_cost">Бесплатная доставка от: </string>
@@ -370,22 +370,22 @@
     <string name="hint_edit_min_order_cost_info_delivery_zone">Минимальная стоимость доставки</string>
     <string name="hint_edit_normal_cost_info_delivery_zone">Стоимость доставки</string>
     <string name="hint_edit_for_low_cost_info_delivery_zone">Бесплатная доставка</string>
-    <string name="msg_edit_info_delivery_zone_updated">%s обновлён</string>
+    <string name="msg_edit_info_delivery_zone_updated">%1$s обновлён</string>
     <!-- ADDRESS -->
-    <string name="msg_address_house">д. %s</string>
-    <string name="msg_address_flat">кв. %s</string>
-    <string name="msg_address_entrance">%s подъезд</string>
-    <string name="msg_address_floor">%s этаж</string>
+    <string name="msg_address_house">д. %1$s</string>
+    <string name="msg_address_flat">кв. %1$s</string>
+    <string name="msg_address_entrance">%1$s подъезд</string>
+    <string name="msg_address_floor">%1$s этаж</string>
 
     <!-- COMMON -->
     <string name="msg_ruble">&#160;₽</string>
-    <string name="common_with_ruble">%s ₽</string>
-    <string name="with_ruble_negative">-%s ₽</string>
+    <string name="common_with_ruble">%1$s ₽</string>
+    <string name="with_ruble_negative">-%1$s ₽</string>
     <string name="msg_break">\n</string>
     <string name="msg_parenthesis">)&#160;</string>
     <string name="msg_colon">:&#160;</string>
     <string name="msg_pieces">x&#160;</string>
-    <string name="common_with_pieces">× %s</string>
+    <string name="common_with_pieces">× %1$s</string>
     <string name="msg_comma">,&#160;</string>
 
     <!-- ORDER -->
@@ -396,7 +396,7 @@
     <string name="msg_order_delivery_free">Бесплатно</string>
 
     <!-- ORDER DETAILS -->
-    <string name="title_order_details">Заказ «%s»</string>
+    <string name="title_order_details">Заказ «%1$s»</string>
     <string name="hint_order_details_delivery_deferred_time">Время доставки</string>
     <string name="hint_order_details_pickup_deferred_time">Время самовывоза</string>
     <string name="msg_order_details_delivery">Доставка</string>

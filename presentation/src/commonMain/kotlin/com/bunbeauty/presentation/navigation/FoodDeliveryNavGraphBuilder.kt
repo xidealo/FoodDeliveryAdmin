@@ -16,34 +16,33 @@ import com.bunbeauty.presentation.feature.category.editcategory.navigation.editC
 import com.bunbeauty.presentation.feature.category.editcategory.navigation.navigateToEditCategoryScreen
 import com.bunbeauty.presentation.feature.category.navigation.categoryListScreenRoute
 import com.bunbeauty.presentation.feature.gallery.navigation.galleryScreenRoute
-import com.bunbeauty.presentation.feature.gallery.navigation.navigateToGalleryScreen
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
-import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
-import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
-import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.navigation.additionGroupForMenuProductListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.navigateToEditAdditionGroupForMenuProductScreen
+import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
+import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
+import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
 import com.bunbeauty.presentation.feature.settings.navigation.navigateToSettingsScreen
 import com.bunbeauty.presentation.feature.settings.navigation.settingsScreenRoute
 import com.bunbeauty.presentation.feature.statistic.navigation.navigateToStatisticScreen
 import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
-import com.bunbeauty.presentation.feature.statisticdetails.navigation.navigateToStatisticDetailsScreen
 import com.bunbeauty.presentation.feature.statisticdetails.navigation.statisticDetailsScreenRoute
-import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.navigateToSelectCategoryListScreen
-import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
-import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
-import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.navigateToCropImageScreen
 
 internal val emptyNavOptions = navOptions { }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     navController: NavController,
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     showErrorMessage: (String) -> Unit,
     cancelNotification: (Int) -> Unit,
-    openOrderDetails: (String, String) -> Unit,
 ) {
     loginScreenRoute(
         showErrorMessage = showErrorMessage,
@@ -163,6 +162,49 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.popBackStack()
         },
     )
+    additionGroupForMenuProductListScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToCreateAdditionGroup = { menuProductUuid ->
+            navController.navigateToCreateAdditionGroupForMenuProductScreen(
+                menuProductUuid = menuProductUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToEditAdditionGroup = { menuProductUuid, additionGroupUuid ->
+            navController.navigateToEditAdditionGroupForMenuProductScreen(
+                additionGroupUuid = additionGroupUuid,
+                menuProductUuid = menuProductUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    createAdditionGroupForMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToSelectAdditionGroup = { uuid, menuProductUuid, _ ->
+            //navigate to select addition group
+        },
+        goToSelectAdditionList = { _, menuProductUuid, groupName, addListUuid ->
+            //navigate to select addition list
+        },
+    )
+    editAdditionGroupForMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToSelectAdditionGroup = { _, _, _ ->
+            //navigate to select addition group
+        },
+        goToSelectAdditionList = { _, _, _, _ ->
+            //navigate to select addition list
+        },
+    )
     profileScreenRoute(
         showErrorMessage = showErrorMessage,
         goToSettingsScreen = {
@@ -191,8 +233,8 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
 
     orderListScreenRoute(
         cancelNotification = cancelNotification,
-        openOrderDetails =
-            openOrderDetails
+        openOrderDetails = { string, string1 ->
+        }
     )
 
 }

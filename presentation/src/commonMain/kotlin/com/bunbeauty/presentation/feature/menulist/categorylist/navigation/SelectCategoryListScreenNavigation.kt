@@ -13,7 +13,7 @@ data object SelectCategoryListScreenDestination
 fun NavController.navigateToSelectCategoryListScreen(navOptions: NavOptions) = navigate(route = SelectCategoryListScreenDestination, navOptions)
 
 fun NavGraphBuilder.selectCategoryListScreenRoute(
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<SelectCategoryListScreenDestination> {

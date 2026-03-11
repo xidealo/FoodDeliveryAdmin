@@ -34,7 +34,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EditDeliveryZoneInfoRouteScreen(
     viewModel: EditDeliveryZoneInfoViewModel = koinViewModel(),
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -73,7 +73,7 @@ fun EditDeliveryZoneInfoRouteScreen(
 @Composable
 private fun EditDeliveryZoneInfoEffect(
     effects: List<EditDeliveryZoneInfo.Event>,
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {

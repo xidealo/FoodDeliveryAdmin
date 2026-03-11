@@ -13,7 +13,7 @@ data object CreateAdditionGroupScreenDestination
 fun NavController.navigateToCreateAdditionGroupScreen(navOptions: NavOptions) = navigate(route = CreateAdditionGroupScreenDestination, navOptions)
 
 fun NavGraphBuilder.createAdditionGroupScreenRoute(
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<CreateAdditionGroupScreenDestination> {

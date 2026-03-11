@@ -30,7 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun SelectCategoryListRouteScreen(
     viewModel: SelectCategoryListViewModel = koinViewModel(),
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -69,7 +69,7 @@ fun SelectCategoryListRouteScreen(
 @Composable
 private fun SelectCategoryListEffect(
     effects: List<SelectCategoryList.Event>,
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -81,7 +81,7 @@ private fun SelectCategoryListEffect(
                 }
 
                 is SelectCategoryList.Event.Save -> {
-                    showInfoMessage(getString(Res.string.msg_category_list_selected))
+                    showInfoMessage(getString(Res.string.msg_category_list_selected), 2000)
                     goBack()
                 }
             }

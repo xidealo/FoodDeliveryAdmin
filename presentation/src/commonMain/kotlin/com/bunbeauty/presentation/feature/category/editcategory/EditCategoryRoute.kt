@@ -31,7 +31,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EditCategoryRouteScreen(
     viewModel: EditCategoryViewModel = koinViewModel(),
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -71,7 +71,7 @@ fun EditCategoryRouteScreen(
 @Composable
 private fun EditCategoryEffect(
     effects: List<EditCategoryState.Event>,
-    showInfoMessage: (String) -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
