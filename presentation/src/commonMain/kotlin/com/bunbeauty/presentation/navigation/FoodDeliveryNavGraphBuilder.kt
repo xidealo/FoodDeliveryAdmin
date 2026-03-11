@@ -19,19 +19,19 @@ import com.bunbeauty.presentation.feature.gallery.navigation.galleryScreenRoute
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
-import com.bunbeauty.presentation.feature.mapdelivery.navigation.navigateToMapDeliveryZoneScreen
 import com.bunbeauty.presentation.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.navigateToEditAdditionGroupForMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.navigation.additionGroupForMenuProductListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.navigateToSelectAdditionListScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.selectAdditionListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.navigateToSelectAdditionGroupScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.selectAdditionGroupScreenRoute
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
-import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.navigateToEditAdditionGroupForMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
@@ -73,10 +73,23 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     menuListScreenRoute(
         goToCreateMenuProductScreen = {
-            //navigate to create menu product
+            //navigate to create menu product - handled by parent routing
         },
         goToEditMenuProductScreen = { uuid ->
             //navigate to edit menu product
+        },
+    )
+    createMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToCategoryList = { selectedCategoryList ->
+            //navigate to category list - handled by parent
+        },
+        goToCropImage = { imageUri ->
+            //navigate to crop image - handled by parent
         },
     )
     additionGroupListScreenRoute(

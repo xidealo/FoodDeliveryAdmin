@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.selectadditiongroup.SelectableAdditionGroup
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Immutable
@@ -18,7 +17,7 @@ data class SelectAdditionGroupViewState(
 
         data object Error : State
 
-        data class Empty : State
+        data object Empty : State
 
         data class Success(
             val visibleSelectableAdditionGroupList: ImmutableList<SelectableAdditionGroup>,
@@ -27,7 +26,6 @@ data class SelectAdditionGroupViewState(
     }
 }
 
-@Immutable
 @Composable
 internal fun SelectAdditionGroup.DataState.toViewState(): SelectAdditionGroupViewState =
     SelectAdditionGroupViewState(

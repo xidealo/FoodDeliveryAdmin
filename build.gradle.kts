@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.compose.plugin) apply false
-    alias(libs.plugins.navigation) apply false
     alias(libs.plugins.crashlytics.firebase) apply false
     alias(libs.plugins.ktLint) apply false
     alias(libs.plugins.android.library) apply false
@@ -22,7 +21,6 @@ buildscript {
     dependencies {
         classpath(libs.kotlin.plugin)
         classpath(libs.gradle)
-        classpath(libs.navigation.services)
         classpath(libs.kotlin.serialization)
         classpath(libs.google.services)
         classpath(libs.firebase.crashlytics.gradle)

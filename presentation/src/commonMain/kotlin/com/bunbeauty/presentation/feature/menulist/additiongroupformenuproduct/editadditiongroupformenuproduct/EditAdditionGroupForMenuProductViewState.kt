@@ -28,7 +28,6 @@ data class EditAdditionGroupForMenuProductViewState(
     }
 }
 
-@Immutable
 @Composable
 internal fun EditAdditionGroupForMenu.DataState.toViewState(): EditAdditionGroupForMenuProductViewState =
     EditAdditionGroupForMenuProductViewState(

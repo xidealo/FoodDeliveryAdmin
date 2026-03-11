@@ -88,6 +88,7 @@ private fun EditCategoryEffect(
                             Res.string.msg_edit_category_updated,
                             effect.categoryName,
                         ),
+                        0
                     )
                     goBack()
                 }
