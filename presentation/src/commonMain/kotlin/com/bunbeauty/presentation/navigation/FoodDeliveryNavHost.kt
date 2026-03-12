@@ -16,6 +16,8 @@ fun FoodDeliveryNavHost(
     goToOrderList: () -> Unit,
     goToMenu: () -> Unit,
     goToProfile: () -> Unit,
+    cancelNotification: (Int) -> Unit,
+    openOrderDetails: (String, String) -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -30,6 +32,9 @@ fun FoodDeliveryNavHost(
             navController = navController,
             showErrorMessage = showErrorMessage,
             showInfoMessage = showInfoMessage,
-        )
+            cancelNotification = cancelNotification,
+            openOrderDetails = openOrderDetails,
+
+            )
     }
 }

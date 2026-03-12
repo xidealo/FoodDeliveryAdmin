@@ -1,12 +1,14 @@
-package com.bunbeauty.presentation.feature.additionlist.editadditionlist
+package com.bunbeauty.presentation.feature.additionlist.editadditionlist.state
 
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
+import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
 interface EditAddition {
     data class DataState(
+        val state: State,
         val uuid: String,
         val name: String,
         val hasEditNameError: Boolean,
@@ -16,7 +18,13 @@ interface EditAddition {
         val isLoading: Boolean,
         val isVisible: Boolean,
         val imageFieldData: EditImageFieldData,
-    ) : BaseDataState
+    ) : BaseViewDataState{
+        enum class State {
+            LOADING,
+            SUCCESS,
+            ERROR
+        }
+    }
 
     sealed interface Action : BaseAction {
         data object InitAddition : Action

@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navOptions
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.editadditionlist.navigation.editAdditionScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
 import com.bunbeauty.presentation.feature.category.navigation.categoryListScreenRoute
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
@@ -118,6 +119,14 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         cancelNotification = cancelNotification,
         openOrderDetails =
             openOrderDetails
+    )
+
+
+    editAdditionScreenRoute(
+        goBack = {
+            navController.popBackStack()
+        },
+        showInfoMessage = TODO()
     )
 
 }

@@ -1,11 +1,9 @@
-package com.bunbeauty.fooddeliveryadmin.screen.image
+package com.bunbeauty.presentation.feature.image
 
 import androidx.compose.runtime.Immutable
-import androidx.core.net.toUri
-import com.bunbeauty.fooddeliveryadmin.compose.element.image.ImageData
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.FieldUi
+import coil3.toUri
 import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
-import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.common.FieldUi
 
 fun EditImageFieldData.toImageFieldUi(): ImageFieldUi =
     ImageFieldUi(

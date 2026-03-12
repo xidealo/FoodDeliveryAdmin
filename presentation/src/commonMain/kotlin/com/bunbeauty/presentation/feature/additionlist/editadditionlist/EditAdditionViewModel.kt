@@ -7,7 +7,10 @@ import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
+import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
+import com.bunbeauty.presentation.feature.common.TextFieldUi
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.image.ImageFieldUi
 import com.bunbeauty.presentation.feature.image.ProductImage
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
@@ -20,19 +23,19 @@ class EditAdditionViewModel(
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
         initState =
             EditAddition.DataState(
+                state = EditAddition.DataState.State.LOADING,
                 uuid = "",
-                name = "",
+                name = TextFieldUi.empty,
                 price = "",
                 isLoading = true,
                 isVisible = false,
                 fullName = "",
                 hasEditNameError = false,
                 tag = "",
-                imageFieldData =
-                    EditImageFieldData(
-                        value = null,
-                        isError = false,
-                    ),
+                imageFieldData = ImageFieldUi(
+                    value = null,
+                    isError = false
+                ),
             ),
     ) {
     override fun reduce(
@@ -72,21 +75,21 @@ class EditAdditionViewModel(
                     val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                     copy(
                         uuid = addition.uuid,
-                        name = addition.name,
+                        name = TextFieldUi(value = addition.name,isError = false, errorRes = null),
                         fullName = addition.fullName.orEmpty(),
                         price = addition.price?.toString().orEmpty(),
                         isVisible = addition.isVisible,
                         tag = addition.tag.orEmpty(),
                         isLoading = false,
-                        imageFieldData =
-                            EditImageFieldData(
-                                value =
-                                    ProductImage(
-                                        photoLink = addition.photoLink,
-                                        newImageUri = null,
-                                    ),
-                                isError = false,
-                            ),
+//                        imageFieldData =
+//                            EditImageFieldData(
+//                                value =
+//                                    ProductImage(
+//                                        photoLink = addition.photoLink,
+//                                        newImageUri = null,
+//                                    ),
+//                                isError = false,
+//                            ),
                     )
                 }
             },
@@ -143,14 +146,14 @@ class EditAdditionViewModel(
     fun setImage(croppedImageUri: String) {
         setState {
             copy(
-                imageFieldData =
-                    imageFieldData.copy(
-                        value =
-                            imageFieldData.value?.copy(
-                                newImageUri = croppedImageUri,
-                            ),
-                        isError = false,
-                    ),
+//                imageFieldData =
+//                    imageFieldData.copy(
+//                        value =
+//                            imageFieldData.value?.copy(
+//                                newImageUri = croppedImageUri,
+//                            ),
+//                        isError = false,
+//                    ),
             )
         }
     }
@@ -173,8 +176,8 @@ class EditAdditionViewModel(
                                 price = price.toIntOrNull(),
                                 isVisible = isVisible,
                                 tag = tag.trim(),
-                                photoLink = imageFieldData.value?.photoLink,
-                                newImageUri = imageFieldData.value?.newImageUri,
+//                                photoLink = imageFieldData.value?.photoLink,
+//                                newImageUri = imageFieldData.value?.newImageUri,
                             )
                         },
                     additionUuid = state.value.uuid,
