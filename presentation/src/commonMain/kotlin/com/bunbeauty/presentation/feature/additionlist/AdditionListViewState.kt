@@ -47,7 +47,6 @@ data class AdditionListViewState(
     )
 }
 
-@Immutable
 @Composable
 internal fun AdditionList.DataState.toViewState(): AdditionListViewState =
     AdditionListViewState(

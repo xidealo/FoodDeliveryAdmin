@@ -14,7 +14,6 @@ import com.bunbeauty.domain.feature.mapzonedelivery.di.mapDeliveryArea
 import com.bunbeauty.domain.feature.orderlist.di.orderListModule
 import com.bunbeauty.domain.feature.profile.di.profileModule
 import com.bunbeauty.domain.feature.time.di.timeUseCaseModule
-import com.bunbeauty.presentation.di.presentationMapperModule
 import com.bunbeauty.presentation.di.presentationModule
 import com.bunbeauty.presentation.di.presentationViewModelModule
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -42,7 +41,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             workManagerModule(),
             timeModule(),
             presentationModule(),
-            presentationMapperModule(),
             presentationViewModelModule(),
             repositoryModule(),
             mapperModule(),

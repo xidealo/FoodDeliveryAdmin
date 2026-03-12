@@ -41,7 +41,6 @@ data class SettingsViewState(
     )
 }
 
-@Immutable
 @Composable
 internal fun SettingsState.DataState.toViewState(): SettingsViewState =
     SettingsViewState(

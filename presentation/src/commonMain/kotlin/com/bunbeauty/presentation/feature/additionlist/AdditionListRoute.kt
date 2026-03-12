@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FabPosition
@@ -34,6 +36,7 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_addition_list_create
 import fooddeliveryadmin.presentation.generated.resources.default_product
 import fooddeliveryadmin.presentation.generated.resources.description_product
+import fooddeliveryadmin.presentation.generated.resources.error_common_loading_failed
 import fooddeliveryadmin.presentation.generated.resources.ic_plus
 import fooddeliveryadmin.presentation.generated.resources.ic_visible
 import fooddeliveryadmin.presentation.generated.resources.title_addition_list
@@ -84,7 +87,7 @@ fun AdditionListRouteScreen(
     )
 
     AdditionListScreen(
-        state = remember(viewState) { viewState.toViewState() },
+        state = viewState.toViewState(),
         onAction = onAction,
         goToCreateAdditionScreen = goToCreateAdditionScreen,
         onBackClick = goBack,
@@ -333,7 +336,7 @@ private fun AdditionCard(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview()
 @Composable
 fun AdditionListScreenPreview() {
     AdminTheme {
