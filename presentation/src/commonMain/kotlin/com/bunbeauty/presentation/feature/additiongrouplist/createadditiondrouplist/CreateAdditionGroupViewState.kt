@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.additiongrouplist.createadditiondroup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_create_addition_group_duplicate_name
@@ -27,12 +28,7 @@ data class CreateAdditionGroupViewState(
         ) : State
     }
 
-    @Immutable
-    data class TextFieldUi(
-        val value: String,
-        val isError: Boolean,
-        val errorResId: StringResource,
-    )
+
 }
 
 @Composable
@@ -44,7 +40,7 @@ internal fun CreateAdditionGroupDataState.DataState.toViewState(): CreateAdditio
                     CreateAdditionGroupViewState.State.Success(
                         isLoading = isLoading,
                         nameField =
-                            CreateAdditionGroupViewState.TextFieldUi(
+                            TextFieldUi(
                                 value = nameField.value,
                                 isError = nameField.isError,
                                 errorResId =

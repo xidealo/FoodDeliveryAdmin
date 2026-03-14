@@ -152,7 +152,7 @@ private fun EditAdditionGroupSuccessScreen(
                     EditAdditionGroupDataState.Action.EditNameAdditionGroup(name),
                 )
             },
-            errorText = stringResource(state.nameField.errorResId),
+            errorText = state.nameField.errorResId,
             isError = state.nameField.isError,
             enabled = !state.isLoading,
         )

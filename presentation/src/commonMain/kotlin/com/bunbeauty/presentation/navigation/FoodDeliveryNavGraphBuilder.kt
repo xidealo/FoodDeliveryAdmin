@@ -9,6 +9,8 @@ import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondroupl
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.editAdditionGroupScreenRoute
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.navigateToEditAdditionGroupScreen
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.createAdditionScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.navigateToCreateAdditionScreen
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.navigation.editAdditionScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.createCategoryScreenRoute
@@ -34,7 +36,10 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.s
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
+import com.bunbeauty.presentation.feature.order.navigation.orderDetailsScreenRoute
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
 import com.bunbeauty.presentation.feature.settings.navigation.navigateToSettingsScreen
@@ -77,7 +82,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             //navigate to create menu product - handled by parent routing
         },
         goToEditMenuProductScreen = { uuid ->
-            //navigate to edit menu product
+            navController.navigateToEditMenuProductScreen(
+                menuProductUuid = uuid,
+                navOptions = emptyNavOptions,
+            )
         },
     )
     createMenuProductScreenRoute(
@@ -88,6 +96,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
         goToCategoryList = { selectedCategoryList ->
             //navigate to category list - handled by parent
+        },
+        goToCropImage = { imageUri ->
+            //navigate to crop image - handled by parent
+        },
+    )
+    editMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToCategoryList = { selectedCategoryList ->
+            //navigate to category list - handled by parent
+        },
+        goToAdditionList = { menuProductUuid ->
+            //navigate to addition list - handled by parent
         },
         goToCropImage = { imageUri ->
             //navigate to crop image - handled by parent
@@ -112,10 +136,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             //navigate back
         },
         goToCreateAdditionScreen = {
-            //navigate to create addition
+            navController.navigateToCreateAdditionScreen(
+                navOptions = emptyNavOptions,
+            )
         },
         goToEditAdditionScreen = { uuid ->
             //navigate to edit addition
+        },
+    )
+    createAdditionScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToCropImage = { imageUri ->
+            //navigate to crop image - handled by parent
         },
     )
     categoryListScreenRoute(
@@ -309,8 +345,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
 
     orderListScreenRoute(
         cancelNotification = cancelNotification,
-        openOrderDetails = { string, string1 ->
-        }
+        openOrderDetails = { orderUuid, orderCode ->
+            // Navigate to order details - handled by parent routing
+        },
+    )
+    orderDetailsScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        onCallPhone = { phoneNumber ->
+            // Phone call - handled by platform-specific implementation
+        },
+        onCancellationConfirmed = {
+            // Cancellation confirmed - handled by parent
+        },
     )
 
 

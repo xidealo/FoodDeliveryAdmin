@@ -183,10 +183,7 @@ private fun CreateAdditionGroupForMenuProductSuccessScreen(
                     resource = Res.string.title_create_addition_group_for_menu_product_group,
                 ),
             isError = state.groupHasError,
-            errorText =
-                stringResource(
-                    resource = Res.string.error_create_addition_group_for_menu_product_group,
-                ),
+            errorText = Res.string.error_create_addition_group_for_menu_product_group,
             hasDivider = true,
         )
 
@@ -203,10 +200,7 @@ private fun CreateAdditionGroupForMenuProductSuccessScreen(
                     resource = Res.string.title_create_addition_group_for_menu_product_addition,
                 ),
             isError = state.additionListHasError,
-            errorText =
-                stringResource(
-                    resource = Res.string.error_create_addition_group_for_menu_product_addition,
-                ),
+            errorText = Res.string.error_create_addition_group_for_menu_product_addition,
             hasDivider = true,
         )
 

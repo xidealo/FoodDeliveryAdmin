@@ -18,6 +18,7 @@ import com.bunbeauty.presentation.designsystem.compose.theme.medium
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.description_common_navigate
 import fooddeliveryadmin.presentation.generated.resources.ic_right_arrow
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -28,7 +29,7 @@ fun NavigationTextCard(
     labelText: String,
     valueText: String? = null,
     isError: Boolean = false,
-    errorText: String? = null,
+    errorText: StringResource? = null,
     clickable: Boolean = true,
     elevated: Boolean = true,
     hasDivider: Boolean = false,
@@ -105,7 +106,7 @@ fun NavigationTextCard(
                         Modifier
                             .fillMaxWidth()
                             .padding(start = 16.dp, top = 4.dp),
-                    text = errorText,
+                    text = stringResource(errorText),
                     style = AdminTheme.typography.bodySmall,
                     color = AdminTheme.colors.main.error,
                 )
