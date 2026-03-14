@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
@@ -79,6 +80,14 @@ fun OrderListRouteScreen(
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
 ) {
+
+    LifecycleStartEffect(Unit) {
+        viewModel.onAction(OrderList.Action.StartObserveOrders)
+        onStopOrDispose {
+            viewModel.onAction(OrderList.Action.StopObserveOrders)
+        }
+    }
+
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -103,18 +112,9 @@ fun OrderListRouteScreen(
     )
     OrderListScreen(
         state = viewState.mapState(),
-        lazyListState = TODO(),
+        lazyListState = rememberLazyListState(),
         onAction = onAction,
     )
-//    fun onStart() {
-//        super.onStart()
-//        viewModel.onAction(OrderList.Action.StartObserveOrders)
-//    }
-//
-//    fun onStop() {
-//        viewModel.onAction(OrderList.Action.StopObserveOrders)
-//        super.onStop()
-//    }
 
 }
 

@@ -10,10 +10,7 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.msg_order_deferred_date_time
 import org.jetbrains.compose.resources.stringResource
 
-class OrderMapper(
-    private val dateTimeUtil: DateTimeUtil,
-
-) {
+class OrderMapper{
     @Composable
     fun map(order: Order): OrderListViewState.OrderItem =
         OrderListViewState.OrderItem(
@@ -22,7 +19,7 @@ class OrderMapper(
             statusString = orderStatusMap(order.orderStatus),
             code = order.code,
             deferredTime = getDeferredTime(order.deferredTime),
-            dateTime = dateTimeUtil.formatDateTime(order.time, PATTERN_DD_MMMM_HH_MM),
+            dateTime = DateTimeUtil.formatDateTime(order.time, PATTERN_DD_MMMM_HH_MM),
         )
 
     @Composable
@@ -31,6 +28,6 @@ class OrderMapper(
             ""
         } else {
             stringResource(Res.string.msg_order_deferred_date_time) +
-                dateTimeUtil.formatDateTime(deferredTime, PATTERN_HH_MM)
+                DateTimeUtil.formatDateTime(deferredTime, PATTERN_HH_MM)
         }
 }

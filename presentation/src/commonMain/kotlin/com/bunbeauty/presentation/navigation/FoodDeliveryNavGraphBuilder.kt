@@ -40,6 +40,7 @@ import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.ed
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
 import com.bunbeauty.presentation.feature.order.navigation.orderDetailsScreenRoute
+import com.bunbeauty.presentation.feature.orderlist.navigation.navigateToOrderListScreen
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
 import com.bunbeauty.presentation.feature.settings.navigation.navigateToSettingsScreen
@@ -60,7 +61,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     loginScreenRoute(
         showErrorMessage = showErrorMessage,
         goToOrderListScreen = {
-            //navigate to order list
+            navController.navigateToOrderListScreen(emptyNavOptions)
         },
     )
     menuScreenRoute(

@@ -7,8 +7,6 @@ fun uiMapperModule() =
     module {
 
         factory {
-            OrderMapper(
-                dateTimeUtil = get(),
-            )
+            OrderMapper()
         }
     }
