@@ -30,6 +30,7 @@ fun FoodDeliveryNavHost(
             navController = navController,
             showErrorMessage = showErrorMessage,
             showInfoMessage = showInfoMessage,
+            cancelNotification = {},
         )
     }
 }

@@ -76,7 +76,7 @@ fun AdditionGroupListRouteScreen(
     )
 
     AdditionGroupListScreen(
-        state = remember(viewState) { viewState.toViewState() },
+        state = viewState.toViewState(),
         onAction = onAction,
         goToCreateAdditionGroupScreen = goToCreateAdditionGroupScreen,
         onBackClick = goBack,
@@ -242,7 +242,7 @@ private fun AdditionGroupCard(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 fun AdditionListScreenPreview() {
     AdminTheme {

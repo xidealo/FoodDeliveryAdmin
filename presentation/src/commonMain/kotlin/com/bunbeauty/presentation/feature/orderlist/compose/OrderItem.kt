@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.bold
 import com.bunbeauty.presentation.feature.orderlist.state.OrderListViewState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun OrderItem(
@@ -85,7 +85,7 @@ private fun OrderItemPreview() {
     }
 }
 
-@Preview(fontScale = 1.5f)
+@Preview()
 @Composable
 private fun OrderItemLageFontPreview() {
     AdminTheme {
