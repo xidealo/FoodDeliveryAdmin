@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.screen.orderdetails
+package com.bunbeauty.presentation.feature.order
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,14 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.bold
 
 @Composable
-fun OrderProductItem(
+internal fun OrderProductItem(
     product: OrderDetailsViewState.Product,
     modifier: Modifier = Modifier,
 ) {
@@ -65,19 +64,4 @@ fun OrderProductItem(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun OrderProductItemPreview() {
-    OrderProductItem(
-        product =
-            OrderDetailsViewState.Product(
-                title = "Хот-дог французский с куриной колбаской",
-                price = "99 ₽",
-                count = "× 2",
-                cost = "198 ₽",
-                description = "Необычный лаваш • Добавка 1 • Добавка 2",
-            ),
-    )
 }

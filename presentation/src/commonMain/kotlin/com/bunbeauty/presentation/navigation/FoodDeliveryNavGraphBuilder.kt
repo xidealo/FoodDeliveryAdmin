@@ -34,6 +34,8 @@ import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selec
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
+import com.bunbeauty.presentation.feature.order.navigation.navigateToOrderDetailsScreen
+import com.bunbeauty.presentation.feature.order.navigation.orderDetailsScreenRoute
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
 import com.bunbeauty.presentation.feature.settings.navigation.navigateToSettingsScreen
@@ -308,8 +310,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
 
     orderListScreenRoute(
         cancelNotification = cancelNotification,
-        openOrderDetails = { string, string1 ->
-        }
+        openOrderDetails = { orderUuid, orderCode ->
+            // Navigate to order details - handled by parent routing
+        },
+    )
+    orderDetailsScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        onCallPhone = { phoneNumber ->
+            // Phone call - handled by platform-specific implementation
+        },
+        onCancellationConfirmed = {
+            // Cancellation confirmed - handled by parent
+        },
     )
 
 }
