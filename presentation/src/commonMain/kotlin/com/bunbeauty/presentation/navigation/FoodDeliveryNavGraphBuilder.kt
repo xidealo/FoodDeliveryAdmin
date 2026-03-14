@@ -33,8 +33,9 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.s
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
-import com.bunbeauty.presentation.feature.order.navigation.navigateToOrderDetailsScreen
 import com.bunbeauty.presentation.feature.order.navigation.orderDetailsScreenRoute
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
 import com.bunbeauty.presentation.feature.profile.navigation.profileScreenRoute
@@ -78,7 +79,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             //navigate to create menu product - handled by parent routing
         },
         goToEditMenuProductScreen = { uuid ->
-            //navigate to edit menu product
+            navController.navigateToEditMenuProductScreen(
+                menuProductUuid = uuid,
+                navOptions = emptyNavOptions,
+            )
         },
     )
     createMenuProductScreenRoute(
@@ -89,6 +93,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
         goToCategoryList = { selectedCategoryList ->
             //navigate to category list - handled by parent
+        },
+        goToCropImage = { imageUri ->
+            //navigate to crop image - handled by parent
+        },
+    )
+    editMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToCategoryList = { selectedCategoryList ->
+            //navigate to category list - handled by parent
+        },
+        goToAdditionList = { menuProductUuid ->
+            //navigate to addition list - handled by parent
         },
         goToCropImage = { imageUri ->
             //navigate to crop image - handled by parent
