@@ -9,17 +9,22 @@ import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondroupl
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.editAdditionGroupScreenRoute
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.navigateToEditAdditionGroupScreen
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
+import com.bunbeauty.presentation.feature.additiongrouplist.navigation.navigateToAdditionGroupListScreen
 import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.createAdditionScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.navigateToCreateAdditionScreen
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.navigation.editAdditionScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.editadditionlist.navigation.navigateToEditAdditionScreen
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.navigation.navigateToAdditionListScreen
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.createCategoryScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.navigateToCreateCategoryScreen
 import com.bunbeauty.presentation.feature.category.editcategory.navigation.editCategoryScreenRoute
 import com.bunbeauty.presentation.feature.category.editcategory.navigation.navigateToEditCategoryScreen
 import com.bunbeauty.presentation.feature.category.navigation.categoryListScreenRoute
+import com.bunbeauty.presentation.feature.category.navigation.navigateToCategoryListScreen
 import com.bunbeauty.presentation.feature.gallery.navigation.galleryScreenRoute
 import com.bunbeauty.presentation.feature.login.navigation.loginScreenRoute
+import com.bunbeauty.presentation.feature.login.navigation.navigateToLoginScreen
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
 import com.bunbeauty.presentation.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
@@ -35,10 +40,13 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.s
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.selectAdditionGroupScreenRoute
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.navigation.navigateToMenuListScreen
+import com.bunbeauty.presentation.feature.order.navigation.navigateToOrderDetailsScreen
 import com.bunbeauty.presentation.feature.order.navigation.orderDetailsScreenRoute
 import com.bunbeauty.presentation.feature.orderlist.navigation.navigateToOrderListScreen
 import com.bunbeauty.presentation.feature.orderlist.navigation.orderListScreenRoute
@@ -64,23 +72,32 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.navigateToOrderListScreen(emptyNavOptions)
         },
     )
-    menuScreenRoute(
-        goToCategoriesScreen = {
-            // navigate to categories
-        },
-        goToMenuListScreen = {
-            // navigate to menu list
-        },
-        goToAdditionGroupListScreen = {
-            // navigate to addition group list
-        },
-        goToAdditionListScreen = {
-            // navigate to addition list
+
+    orderListScreenRoute(
+        cancelNotification = cancelNotification,
+        openOrderDetails = { orderUuid, orderCode ->
+            navController.navigateToOrderDetailsScreen(orderUuid, orderCode, emptyNavOptions)
         },
     )
+
+    menuScreenRoute(
+        goToCategoriesScreen = {
+            navController.navigateToCategoryListScreen(emptyNavOptions)
+        },
+        goToMenuListScreen = {
+            navController.navigateToMenuListScreen(emptyNavOptions)
+        },
+        goToAdditionGroupListScreen = {
+            navController.navigateToAdditionGroupListScreen(emptyNavOptions)
+        },
+        goToAdditionListScreen = {
+            navController.navigateToAdditionListScreen(emptyNavOptions)
+        },
+    )
+
     menuListScreenRoute(
         goToCreateMenuProductScreen = {
-            // navigate to create menu product - handled by parent routing
+            navController.navigateToCreateMenuProductScreen(emptyNavOptions)
         },
         goToEditMenuProductScreen = { uuid ->
             navController.navigateToEditMenuProductScreen(
@@ -89,14 +106,13 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
     )
+
     createMenuProductScreenRoute(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToCategoryList = { selectedCategoryList ->
-            // navigate to category list - handled by parent
+            navController.navigateToCategoryListScreen(emptyNavOptions)
         },
         goToCropImage = { imageUri ->
             // navigate to crop image - handled by parent
@@ -105,11 +121,9 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     editMenuProductScreenRoute(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToCategoryList = { selectedCategoryList ->
-            // navigate to category list - handled by parent
+            navController.navigateToCategoryListScreen(emptyNavOptions)
         },
         goToAdditionList = { menuProductUuid ->
             // navigate to addition list - handled by parent
@@ -119,9 +133,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
     additionGroupListScreenRoute(
-        goBack = {
-            // navigate back
-        },
+        goBack = navController::navigateUp,
         goToCreateAdditionGroupScreen = {
             navController.navigateToCreateAdditionGroupScreen(emptyNavOptions)
         },
@@ -133,32 +145,26 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
     additionListScreenRoute(
-        goBack = {
-            // navigate back
-        },
+        goBack = navController::navigateUp,
         goToCreateAdditionScreen = {
             navController.navigateToCreateAdditionScreen(
                 navOptions = emptyNavOptions,
             )
         },
         goToEditAdditionScreen = { uuid ->
-            // navigate to edit addition
+            navController.navigateToEditAdditionScreen(emptyNavOptions)
         },
     )
     createAdditionScreenRoute(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToCropImage = { imageUri ->
             // navigate to crop image - handled by parent
         },
     )
     categoryListScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToCreateCategoryScreen = {
             navController.navigateToCreateCategoryScreen(emptyNavOptions)
         },
@@ -171,38 +177,26 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     createCategoryScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     editCategoryScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     createAdditionGroupScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     editAdditionGroupScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     editDeliveryZoneInfoScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     mapDeliveryZoneScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToEditDeliveryZoneInfo = { zoneUuid ->
             navController.navigateToEditDeliveryZoneInfoScreen(
                 zoneUuid = zoneUuid,
@@ -210,35 +204,26 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
         onZoneUpdated = { zoneUuid ->
-            // Zone updated - handled by map screen via onAction
+            navController.navigateToEditDeliveryZoneInfoScreen(zoneUuid, emptyNavOptions)
         },
     )
     galleryScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     statisticDetailsScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     selectCategoryListScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     cropImageScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     additionGroupForMenuProductListScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
+
         goToCreateAdditionGroup = { menuProductUuid ->
             navController.navigateToCreateAdditionGroupForMenuProductScreen(
                 menuProductUuid = menuProductUuid,
@@ -255,9 +240,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     createAdditionGroupForMenuProductScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToSelectAdditionGroup = { uuid, menuProductUuid, mainEditedAdditionGroupUuid ->
             navController.navigateToSelectAdditionGroupScreen(
                 additionGroupUuid = uuid,
@@ -278,9 +261,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     editAdditionGroupForMenuProductScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         goToSelectAdditionGroup = { editedAdditionGroupUuid, menuProductUuid, mainEditedAdditionGroupUuid ->
             navController.navigateToSelectAdditionGroupScreen(
                 additionGroupUuid = editedAdditionGroupUuid,
@@ -301,9 +282,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     selectAdditionGroupScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         onAdditionGroupSelected = { additionGroupUuid, additionGroupName ->
             // Result handled by calling screen
         },
@@ -311,9 +290,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     selectAdditionListScreenRoute(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         onAdditionListSelected = { additionUuidList ->
             // Result handled by calling screen
         },
@@ -330,32 +307,21 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             // navigate to map - handled by existing navigation
         },
         goToLoginScreen = {
-            // navigate to login
+            //TODO CLEAN BACK STACK
+            navController.navigateToLoginScreen(emptyNavOptions)
         },
     )
     settingsScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
     statisticScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
     )
 
-    orderListScreenRoute(
-        cancelNotification = cancelNotification,
-        openOrderDetails = { orderUuid, orderCode ->
-            // Navigate to order details - handled by parent routing
-        },
-    )
     orderDetailsScreenRoute(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         onCallPhone = { phoneNumber ->
             // Phone call - handled by platform-specific implementation
         },
@@ -365,9 +331,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
 
     editAdditionScreenRoute(
-        goBack = {
-            navController.popBackStack()
-        },
+        goBack = navController::navigateUp,
         showInfoMessage = showInfoMessage,
     )
 }
