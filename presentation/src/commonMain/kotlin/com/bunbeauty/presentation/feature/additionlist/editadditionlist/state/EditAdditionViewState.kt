@@ -1,10 +1,8 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist.state
 
 import androidx.compose.runtime.Immutable
-import com.bunbeauty.fooddeliveryadmin.screen.image.ImageFieldUi
-import com.bunbeauty.fooddeliveryadmin.screen.menulist.common.TextFieldUi
 import com.bunbeauty.presentation.feature.common.TextFieldUi
-import com.bunbeauty.presentation.feature.image.ImageFieldUi
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable

@@ -8,10 +8,8 @@ import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
-import com.bunbeauty.presentation.feature.common.TextFieldUi
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
-import com.bunbeauty.presentation.feature.image.ImageFieldUi
-import com.bunbeauty.presentation.feature.image.ProductImage
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_UUID = "additionUuid"
@@ -21,23 +19,24 @@ class EditAdditionViewModel(
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase,
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
-        initState =
-            EditAddition.DataState(
-                state = EditAddition.DataState.State.LOADING,
-                uuid = "",
-                name = TextFieldUi.empty,
-                price = "",
-                isLoading = true,
-                isVisible = false,
-                fullName = "",
-                hasEditNameError = false,
-                tag = "",
-                imageFieldData = ImageFieldUi(
-                    value = null,
-                    isError = false
-                ),
+    initState =
+        EditAddition.DataState(
+            state = EditAddition.DataState.State.LOADING,
+            uuid = "",
+            name = "",
+            price = "",
+            isLoading = true,
+            isVisible = false,
+            fullName = "",
+            hasEditNameError = false,
+            tag = "",
+            imageFieldData = ImageFieldUi(
+                value = null,
+                isError = false,
+                isSelected = false
             ),
-    ) {
+        ),
+) {
     override fun reduce(
         action: EditAddition.Action,
         dataState: EditAddition.DataState,
@@ -75,7 +74,7 @@ class EditAdditionViewModel(
                     val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
                     copy(
                         uuid = addition.uuid,
-                        name = TextFieldUi(value = addition.name,isError = false, errorRes = null),
+                        name = name,
                         fullName = addition.fullName.orEmpty(),
                         price = addition.price?.toString().orEmpty(),
                         isVisible = addition.isVisible,
@@ -122,7 +121,7 @@ class EditAdditionViewModel(
     private fun editNameAddition(name: String) {
         setState {
             copy(
-                name = name,
+                name = name
             )
         }
     }

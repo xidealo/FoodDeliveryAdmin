@@ -36,8 +36,7 @@ import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAdditionViewState
 import com.bunbeauty.presentation.feature.common.TextFieldUi
-import com.bunbeauty.presentation.feature.image.ImageFieldUi
-import com.bunbeauty.presentation.feature.image.toImageFieldUi
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
@@ -102,9 +101,10 @@ private fun EditAdditionEffect(
                 EditAddition.Event.Back -> {
                     goBack()
                 }
+
                 is EditAddition.Event.ShowUpdateAdditionSuccess -> showInfoMessage(
-                    getString(Res.string.msg_edit_addition_updated, effect.additionName)
-               ,3)
+                    getString(Res.string.msg_edit_addition_updated, effect.additionName), 3
+                )
             }
         }
         consumeEffects()
@@ -117,7 +117,7 @@ fun Screen(
     state: EditAdditionViewState,
     onAction: (EditAddition.Action) -> Unit,
 ) {
-    when(state.state){
+    when (state.state) {
         EditAdditionViewState.State.Error -> ErrorScreen(
             mainTextId = Res.string.title_common_can_not_load_data,
             extraTextId = Res.string.msg_common_check_connection_and_retry,
@@ -125,8 +125,12 @@ fun Screen(
                 onAction(EditAddition.Action.InitAddition)
             },
         )
+
         EditAdditionViewState.State.Loading -> LoadingScreen()
-        is EditAdditionViewState.State.Success -> EditAdditionScreen(onAction = onAction, state = state.state)
+        is EditAdditionViewState.State.Success -> EditAdditionScreen(
+            onAction = onAction,
+            state = state.state
+        )
     }
 }
 
@@ -174,7 +178,7 @@ fun EditAdditionScreen(
                                 EditAddition.Action.EditNameAddition(name),
                             )
                         },
-                        errorText = state.nameField.errorRes?.let { stringResource(it) },
+                        errorText = state.nameField.errorRes,
                         isError = state.nameField.isError,
                         enabled = !state.isLoading,
                     )
@@ -339,7 +343,7 @@ fun mapState(state: EditAddition.DataState): EditAdditionViewState {
                         isVisible = state.isVisible,
                         isLoading = state.isLoading,
                         tag = state.tag,
-                        imageFieldUi = state.imageFieldData.toImageFieldUi(),
+                        imageFieldUi = state.imageFieldData,
                     )
             )
     }
@@ -367,6 +371,7 @@ fun EditAdditionScreenPreview() {
                         ImageFieldUi(
                             value = null,
                             isError = false,
+                            isSelected = false
                         ),
                 ),
             onAction = {},

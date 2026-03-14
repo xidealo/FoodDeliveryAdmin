@@ -1,6 +1,8 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist.state
 
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.image.ImageFieldData
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
@@ -17,8 +19,8 @@ interface EditAddition {
         val fullName: String,
         val isLoading: Boolean,
         val isVisible: Boolean,
-        val imageFieldData: EditImageFieldData,
-    ) : BaseViewDataState{
+        val imageFieldData: ImageFieldUi,
+    ) : BaseViewDataState {
         enum class State {
             LOADING,
             SUCCESS,

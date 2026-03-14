@@ -8,7 +8,6 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_create_addition_group_duplicate_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_create_addition_group_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
-import org.jetbrains.compose.resources.StringResource
 
 @Immutable
 data class CreateAdditionGroupViewState(
@@ -27,8 +26,6 @@ data class CreateAdditionGroupViewState(
             val isShowMenuVisible: Boolean,
         ) : State
     }
-
-
 }
 
 @Composable
