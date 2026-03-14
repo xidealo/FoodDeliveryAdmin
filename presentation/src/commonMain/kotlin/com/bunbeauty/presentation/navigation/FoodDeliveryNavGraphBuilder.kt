@@ -11,6 +11,7 @@ import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.na
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.createAdditionScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.navigateToCreateAdditionScreen
+import com.bunbeauty.presentation.feature.additionlist.editadditionlist.navigation.editAdditionScreenRoute
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.createCategoryScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.navigateToCreateCategoryScreen
@@ -360,6 +361,14 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         onCancellationConfirmed = {
             // Cancellation confirmed - handled by parent
         },
+    )
+
+
+    editAdditionScreenRoute(
+        goBack = {
+            navController.popBackStack()
+        },
+        showInfoMessage = TODO()
     )
 
 }
