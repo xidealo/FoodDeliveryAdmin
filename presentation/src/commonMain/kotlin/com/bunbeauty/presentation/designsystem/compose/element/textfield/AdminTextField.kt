@@ -17,6 +17,10 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
 import com.bunbeauty.presentation.designsystem.compose.applyIfNotNull
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -31,7 +35,7 @@ fun AdminTextField(
     maxSymbols: Int = Int.MAX_VALUE,
     maxLines: Int = 1,
     isError: Boolean = false,
-    errorText: String? = null,
+    errorText: StringResource? = null,
     enabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     leadingIcon: (@Composable () -> Unit)? = null,
@@ -58,10 +62,12 @@ fun AdminTextField(
             trailingIcon = trailingIcon,
             leadingIcon = leadingIcon,
         )
-        ErrorText(
-            isError = isError,
-            errorText = errorText,
-        )
+        errorText?.let {
+            ErrorText(
+                isError = isError,
+                errorText = stringResource(errorText),
+            )
+        }
     }
 }
 
@@ -105,7 +111,7 @@ private fun FoodDeliveryTextFieldWithErrorPreview() {
             labelText = "Комментарий",
             value = "Нужно больше еды \n ...",
             onValueChange = {},
-            errorText = "Какая-то ошибка",
+            errorText = Res.string.error_common_something_went_wrong,
             isError = true,
         )
     }

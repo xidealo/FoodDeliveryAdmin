@@ -167,12 +167,7 @@ internal fun CreateAdditionScreen(
                                 CreateAddition.Action.EditNameAddition(name),
                             )
                         },
-                        errorText =
-                            if (state.nameField.isError) {
-                                state.nameField.errorResId
-                            } else {
-                                null
-                            },
+                        errorText = state.nameField.errorResId,
                         isError = state.nameField.isError,
                         enabled = !state.isLoading,
                     )

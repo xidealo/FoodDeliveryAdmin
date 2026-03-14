@@ -2,13 +2,12 @@ package com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
-import fooddeliveryadmin.presentation.generated.resources.action_common_cancel
 import fooddeliveryadmin.presentation.generated.resources.error_common_edit_addition_group_duplicate_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_edit_addition_group_empty_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
-import org.jetbrains.compose.resources.StringResource
 
 @Immutable
 data class EditAdditionGroupViewState(
@@ -28,12 +27,7 @@ data class EditAdditionGroupViewState(
         ) : State
     }
 
-    @Immutable
-    data class TextFieldUi(
-        val value: String,
-        val isError: Boolean,
-        val errorResId: StringResource,
-    )
+
 }
 
 @Composable
@@ -49,7 +43,7 @@ internal fun EditAdditionGroupDataState.DataState.toViewState(): EditAdditionGro
                         isVisible = isVisible,
                         isVisibleSingleChoice = isSingleChoice,
                         nameField =
-                            EditAdditionGroupViewState.TextFieldUi(
+                            TextFieldUi(
                                 value = name.value,
                                 isError = name.isError,
                                 errorResId =

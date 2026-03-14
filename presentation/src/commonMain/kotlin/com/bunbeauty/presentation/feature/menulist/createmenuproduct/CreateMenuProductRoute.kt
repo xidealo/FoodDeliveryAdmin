@@ -198,7 +198,7 @@ private fun CreateMenuProductScreen(
                 labelText = state.categoriesField.labelResId,
                 valueText = state.categoriesField.value,
                 isError = state.categoriesField.isError,
-                errorText = stringResource(resource = state.categoriesField.errorResId),
+                errorText = state.categoriesField.errorResId,
                 onClick = {
                     onAction(CreateMenuProduct.Action.CategoriesClick)
                 },
@@ -295,7 +295,7 @@ private fun TextFieldsCard(
                     onAction(CreateMenuProduct.Action.ChangeNameText(name))
                 },
                 isError = state.nameField.isError,
-                errorText = stringResource(state.nameField.errorResId),
+                errorText = state.nameField.errorResId,
                 enabled = !state.sendingToServer,
             )
             AdminTextField(
@@ -306,7 +306,7 @@ private fun TextFieldsCard(
                     onAction(CreateMenuProduct.Action.ChangeNewPriceText(newPrice))
                 },
                 isError = state.newPriceField.isError,
-                errorText = stringResource(state.newPriceField.errorResId),
+                errorText = state.newPriceField.errorResId,
                 enabled = !state.sendingToServer,
                 keyboardOptions =
                     AdminTextFieldDefaults.keyboardOptions(
@@ -325,7 +325,7 @@ private fun TextFieldsCard(
                     onAction(CreateMenuProduct.Action.ChangeOldPriceText(oldPrice))
                 },
                 isError = state.oldPriceField.isError,
-                errorText = stringResource(state.oldPriceField.errorResId),
+                errorText = state.oldPriceField.errorResId,
                 enabled = !state.sendingToServer,
                 keyboardOptions =
                     AdminTextFieldDefaults.keyboardOptions(
@@ -346,7 +346,7 @@ private fun TextFieldsCard(
                     },
                     enabled = !state.sendingToServer,
                     isError = state.nutritionField.isError,
-                    errorText = stringResource(state.nutritionField.errorResId),
+                    errorText = state.nutritionField.errorResId,
                     keyboardOptions =
                         AdminTextFieldDefaults.keyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -393,7 +393,7 @@ private fun TextFieldsCard(
                     ),
                 maxLines = 20,
                 isError = state.descriptionField.isError,
-                errorText = stringResource(state.descriptionField.errorResId),
+                errorText = state.descriptionField.errorResId,
                 enabled = !state.sendingToServer,
             )
 

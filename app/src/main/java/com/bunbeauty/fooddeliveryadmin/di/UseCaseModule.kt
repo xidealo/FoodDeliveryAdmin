@@ -226,10 +226,6 @@ fun useCaseModule() =
         }
 
         factory {
-            DateTimeUtil()
-        }
-
-        factory {
             ProductUtil()
         }
     }

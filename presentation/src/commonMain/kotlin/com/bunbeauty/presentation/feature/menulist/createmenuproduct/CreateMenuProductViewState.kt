@@ -2,8 +2,11 @@ package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.presentation.designsystem.compose.CardFieldUi
+import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.feature.image.ImageFieldData
+import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
@@ -37,20 +40,6 @@ data class CreateMenuProductViewState(
     val sendingToServer: Boolean,
 ) : BaseViewState
 
-@Immutable
-data class TextFieldUi(
-    val value: String,
-    val isError: Boolean,
-    val errorResId: StringResource,
-)
-
-@Immutable
-data class CardFieldUi(
-    val labelResId: String,
-    val value: String?,
-    val isError: Boolean,
-    val errorResId: StringResource,
-)
 
 @Immutable
 data class ImageFieldUi(
@@ -116,6 +105,7 @@ fun CategoriesFieldData.toCardFieldUi(): CardFieldUi =
         isError = isError,
         errorResId = Res.string.error_common_menu_product_categories,
     )
+
 
 fun ImageFieldData.toImageFieldUi(): ImageFieldUi =
     ImageFieldUi(

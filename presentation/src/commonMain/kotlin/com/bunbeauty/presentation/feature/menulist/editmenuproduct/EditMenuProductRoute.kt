@@ -198,20 +198,19 @@ private fun EditMenuProductScreen(
         backActionClick = {
             onAction(EditMenuProduct.Action.BackClick)
         },
-        actionButton =
+        actionButton = {
             when (state.state) {
                 is EditMenuProductViewState.State.Success -> {
-                    {
-                        BottomButtons(
-                            state = state.state,
-                            addPhotoClick = addPhotoClick,
-                            onAction = onAction,
-                        )
-                    }
+                    BottomButtons(
+                        state = state.state,
+                        addPhotoClick = addPhotoClick,
+                        onAction = onAction,
+                    )
                 }
 
                 else -> Unit
-            },
+            }
+        }
     ) {
         when (state.state) {
             EditMenuProductViewState.State.Error -> {
@@ -331,14 +330,14 @@ private fun EditMenuProductSuccessScreen(
             enabled = !state.sendingToServer,
         )
         state.imageField.value?.let { imageData ->
-            AdminAsyncImage(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp)),
-                imageData = imageData,
-                contentDescription = Res.string.description_product,
-            )
+//            AdminAsyncImage(
+//                modifier =
+//                    Modifier
+//                        .fillMaxWidth()
+//                        .clip(RoundedCornerShape(8.dp)),
+//                imageData = imageData,
+//                contentDescription = Res.string.description_product,
+//            )
         }
 
         Spacer(modifier = Modifier.height(120.dp))
@@ -481,7 +480,7 @@ fun TextFieldsCard(
                     ),
                 maxLines = 20,
                 isError = state.descriptionField.isError,
-                errorText = stringResource(state.descriptionField.errorResId),
+                errorText = state.descriptionField.errorResId,
                 enabled = !state.sendingToServer,
             )
 

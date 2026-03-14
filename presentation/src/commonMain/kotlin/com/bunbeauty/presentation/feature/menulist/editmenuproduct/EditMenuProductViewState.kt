@@ -2,11 +2,17 @@ package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.presentation.designsystem.compose.CardFieldUi
+import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.feature.image.ImageFieldData
+import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.toCardFieldUi
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.toTextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
+import common.Constants
 import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_categories
 import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_empty_description
 import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_empty_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_empty_new_price
@@ -14,6 +20,9 @@ import fooddeliveryadmin.presentation.generated.resources.error_common_menu_prod
 import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_low_old_price
 import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_nutrition_without_units
 import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
+import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_additions
+import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_categories
+import org.jetbrains.compose.resources.stringResource
 
 @Immutable
 data class EditMenuProductViewState(
@@ -42,22 +51,6 @@ data class EditMenuProductViewState(
             val sendingToServer: Boolean,
         ) : State
     }
-
-    @Immutable
-    data class TextFieldUi(
-        val value: String,
-        val isError: Boolean,
-        val errorResId: String,
-    )
-
-    @Immutable
-    data class CardFieldUi(
-        val labelResId: String,
-        val value: String,
-        val isError: Boolean,
-        val errorResId: String,
-    )
-
     @Immutable
     data class EditImageFieldUi(
         val value: Any?,
@@ -109,7 +102,24 @@ internal fun EditMenuProduct.DataState.toViewState(): EditMenuProductViewState =
             },
     )
 
-internal fun ImageFieldData.toEditImageFieldUi(): EditMenuProductViewState.EditImageFieldUi =
+
+@Composable
+fun AdditionGroupListFieldData.toCardFieldUi(): CardFieldUi =
+    CardFieldUi(
+        labelResId = stringResource(Res.string.hint_common_menu_product_additions),
+        value =
+            value
+                .takeIf { list ->
+                    list.isNotEmpty()
+                }?.joinToString(" ${Constants.BULLET_SYMBOL} ") { addition ->
+                    addition.name
+                },
+        isError = isError,
+        errorResId = Res.string.error_common_menu_product_categories,
+    )
+
+
+internal fun EditImageFieldData.toEditImageFieldUi(): EditMenuProductViewState.EditImageFieldUi =
     EditMenuProductViewState.EditImageFieldUi(
         value = this.value,
         isError = this.isError,

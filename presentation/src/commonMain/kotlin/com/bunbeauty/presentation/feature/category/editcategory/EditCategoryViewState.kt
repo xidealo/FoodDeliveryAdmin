@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.category.editcategory
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_create_category_duplicate_name
@@ -24,13 +25,6 @@ data class EditCategoryViewState(
             val isLoading: Boolean,
         ) : State
     }
-
-    @Immutable
-    data class TextFieldUi(
-        val value: String,
-        val isError: Boolean,
-        val errorResId: StringResource,
-    )
 }
 
 @Composable
@@ -43,7 +37,7 @@ internal fun EditCategoryState.DataState.toViewState(): EditCategoryViewState =
                 EditCategoryState.DataState.State.SUCCESS ->
                     EditCategoryViewState.State.Success(
                         nameField =
-                            EditCategoryViewState.TextFieldUi(
+                            TextFieldUi(
                                 value = name.value,
                                 isError = name.isError,
                                 errorResId =

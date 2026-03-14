@@ -150,7 +150,7 @@ private fun EditCategorySuccessScreen(
                     EditCategoryState.Action.EditNameCategory(name),
                 )
             },
-            errorText = stringResource(state.nameField.errorResId),
+            errorText = state.nameField.errorResId,
             isError = state.nameField.isError,
             enabled = !state.isLoading,
         )

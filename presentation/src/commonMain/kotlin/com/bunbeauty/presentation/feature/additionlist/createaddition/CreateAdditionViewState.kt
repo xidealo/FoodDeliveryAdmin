@@ -2,6 +2,7 @@ package com.bunbeauty.presentation.feature.additionlist.createaddition
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
@@ -18,12 +19,6 @@ data class CreateAdditionViewState(
     val tag: String,
     val imageFieldUi: ImageFieldUi,
 ) : BaseViewState {
-    @Immutable
-    data class TextFieldUi(
-        val value: String,
-        val isError: Boolean,
-        val errorResId: String,
-    )
 
     @Immutable
     data class ImageFieldUi(
@@ -46,14 +41,14 @@ data class CreateAdditionViewState(
 internal fun CreateAddition.DataState.toViewState(): CreateAdditionViewState =
     CreateAdditionViewState(
         nameField =
-            CreateAdditionViewState.TextFieldUi(
+            TextFieldUi(
                 value = name,
                 isError = hasEditNameError,
                 errorResId =
                     if (hasEditNameError) {
-                        stringResource(Res.string.error_create_addition_empty_name)
+                        Res.string.error_create_addition_empty_name
                     } else {
-                        ""
+                        null
                     },
             ),
         fullName = fullName,
