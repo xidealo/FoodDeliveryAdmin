@@ -9,6 +9,8 @@ import com.bunbeauty.presentation.feature.additiongrouplist.createadditiondroupl
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.editAdditionGroupScreenRoute
 import com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation.navigateToEditAdditionGroupScreen
 import com.bunbeauty.presentation.feature.additiongrouplist.navigation.additionGroupListScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.createAdditionScreenRoute
+import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.navigateToCreateAdditionScreen
 import com.bunbeauty.presentation.feature.additionlist.navigation.additionListScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.createCategoryScreenRoute
 import com.bunbeauty.presentation.feature.category.createcategory.navigation.navigateToCreateCategoryScreen
@@ -133,10 +135,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             //navigate back
         },
         goToCreateAdditionScreen = {
-            //navigate to create addition
+            navController.navigateToCreateAdditionScreen(
+                navOptions = emptyNavOptions,
+            )
         },
         goToEditAdditionScreen = { uuid ->
             //navigate to edit addition
+        },
+    )
+    createAdditionScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = {
+            navController.popBackStack()
+        },
+        goToCropImage = { imageUri ->
+            //navigate to crop image - handled by parent
         },
     )
     categoryListScreenRoute(
