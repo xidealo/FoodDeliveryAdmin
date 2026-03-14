@@ -11,9 +11,9 @@ import com.bunbeauty.domain.model.order.details.PaymentMethod
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
 import com.bunbeauty.presentation.feature.order.mapper.orderStatusMap
-import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import com.bunbeauty.presentation.feature.orderlist.compose.getOrderColor
+import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import common.Constants
 import common.Constants.BULLET_SYMBOL
 import common.Constants.RUBLE_CURRENCY
@@ -31,7 +31,6 @@ import fooddeliveryadmin.presentation.generated.resources.msg_payment_cash
 import fooddeliveryadmin.presentation.generated.resources.msg_payment_phone_number
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
 @Immutable
@@ -93,9 +92,8 @@ data class OrderDetailsViewState(
 }
 
 @Composable
-internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState {
-
-    return OrderDetailsViewState(
+internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState =
+    OrderDetailsViewState(
         title = "Заказ «$code»",
         state =
             when (state) {
@@ -104,10 +102,11 @@ internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState {
                 OrderDetailsState.DataState.State.SUCCESS -> {
                     orderDetails?.let { details ->
                         OrderDetailsViewState.State.Success(
-                            dateTime = DateTimeUtil.formatDateTime(
-                                orderDetails.time,
-                                PATTERN_DD_MMMM_HH_MM,
-                            ),
+                            dateTime =
+                                DateTimeUtil.formatDateTime(
+                                    orderDetails.time,
+                                    PATTERN_DD_MMMM_HH_MM,
+                                ),
                             deferredTime = getDeferredTime(details),
                             paymentMethod = details.paymentMethod?.map(),
                             receiptMethod = getReceiptMethod(orderDetails),
@@ -124,17 +123,18 @@ internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState {
                             percentDiscount = details.percentDiscount?.let { "$it%" },
                             finalCost = "${details.newTotalCost} ₽",
                             saving = saving,
-                            statusListUI = OrderDetailsViewState.State.Success.StatusListUI(
-                                isShown = showStatusList,
-                                statusList =
-                                    details.availableStatusList
-                                        .map { status ->
-                                            OrderDetailsViewState.State.Success.StatusListUI.StatusItem(
-                                                orderStatus = status,
-                                                status = orderStatusMap(status),
-                                            )
-                                        }.toPersistentList(),
-                            ),
+                            statusListUI =
+                                OrderDetailsViewState.State.Success.StatusListUI(
+                                    isShown = showStatusList,
+                                    statusList =
+                                        details.availableStatusList
+                                            .map { status ->
+                                                OrderDetailsViewState.State.Success.StatusListUI.StatusItem(
+                                                    orderStatus = status,
+                                                    status = orderStatusMap(status),
+                                                )
+                                            }.toPersistentList(),
+                                ),
                             statusColor =
                                 getOrderColor(
                                     orderStatus = orderDetails.status,
@@ -144,7 +144,6 @@ internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState {
                 }
             },
     )
-}
 
 @Composable
 private fun getDeferredTime(orderDetails: OrderDetails): OrderDetailsViewState.HintWithValue? =
@@ -161,55 +160,53 @@ private fun getDeferredTime(orderDetails: OrderDetails): OrderDetailsViewState.H
         )
     }
 
-private fun getReceiptMethod(details: OrderDetails): String {
-    return if (details.isDelivery) "Доставка" else "Самовывоз"
-}
+private fun getReceiptMethod(details: OrderDetails): String = if (details.isDelivery) "Доставка" else "Самовывоз"
 
 @Composable
 private fun getOrderAddressString(address: OrderAddress): String =
     address.description ?: (
-            address.street +
-                    getAddressPart(
-                        part =
-                            Constants.ADDRESS_DIVIDER +
-                                    stringResource(
-                                        Res.string.msg_address_house,
-                                        address.house.orEmpty(),
-                                    ),
-                        data = address.house,
-                    ) +
-                    getAddressPart(
-                        part =
-                            Constants.ADDRESS_DIVIDER +
-                                    stringResource(
-                                        Res.string.msg_address_flat,
-                                        address.flat.orEmpty(),
-                                    ),
-                        data = address.flat,
-                    ) +
-                    getAddressPart(
-                        part =
-                            Constants.ADDRESS_DIVIDER +
-                                    stringResource(
-                                        Res.string.msg_address_entrance,
-                                        address.entrance.orEmpty(),
-                                    ),
-                        data = address.entrance,
-                    ) +
-                    getAddressPart(
-                        part =
-                            Constants.ADDRESS_DIVIDER +
-                                    stringResource(
-                                        Res.string.msg_address_floor,
-                                        address.floor.orEmpty(),
-                                    ),
-                        data = address.floor,
-                    ) +
-                    getAddressPart(
-                        part = Constants.ADDRESS_DIVIDER + address.comment.orEmpty(),
-                        data = address.comment,
-                    )
+        address.street +
+            getAddressPart(
+                part =
+                    Constants.ADDRESS_DIVIDER +
+                        stringResource(
+                            Res.string.msg_address_house,
+                            address.house.orEmpty(),
+                        ),
+                data = address.house,
+            ) +
+            getAddressPart(
+                part =
+                    Constants.ADDRESS_DIVIDER +
+                        stringResource(
+                            Res.string.msg_address_flat,
+                            address.flat.orEmpty(),
+                        ),
+                data = address.flat,
+            ) +
+            getAddressPart(
+                part =
+                    Constants.ADDRESS_DIVIDER +
+                        stringResource(
+                            Res.string.msg_address_entrance,
+                            address.entrance.orEmpty(),
+                        ),
+                data = address.entrance,
+            ) +
+            getAddressPart(
+                part =
+                    Constants.ADDRESS_DIVIDER +
+                        stringResource(
+                            Res.string.msg_address_floor,
+                            address.floor.orEmpty(),
+                        ),
+                data = address.floor,
+            ) +
+            getAddressPart(
+                part = Constants.ADDRESS_DIVIDER + address.comment.orEmpty(),
+                data = address.comment,
             )
+    )
 
 private fun getAddressPart(
     part: String,
@@ -220,7 +217,6 @@ private fun getAddressPart(
     } else {
         part
     }
-
 
 fun map(orderProduct: OrderProduct): OrderDetailsViewState.Product =
     OrderDetailsViewState.Product(

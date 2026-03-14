@@ -51,9 +51,7 @@ import org.koin.compose.viewmodel.koinViewModel
 const val CAFE_ADDRESS_KEY = "cafeAddress"
 
 @Composable
-fun OrderList.DataState.mapStateOrderList(
-    orderMapper: OrderMapper = koinInject()
-): OrderListViewState =
+fun OrderList.DataState.mapStateOrderList(orderMapper: OrderMapper = koinInject()): OrderListViewState =
     OrderListViewState(
         state =
             when (orderListState) {
@@ -61,9 +59,11 @@ fun OrderList.DataState.mapStateOrderList(
                 OrderList.DataState.State.SUCCESS ->
                     OrderListViewState.State.Success(
                         cafeAddress = cafe?.address.orEmpty(),
-                        orderList = orderList.map { order ->
-                            orderMapper.map(order)
-                        }.toPersistentList(),
+                        orderList =
+                            orderList
+                                .map { order ->
+                                    orderMapper.map(order)
+                                }.toPersistentList(),
                         connectionError = hasConnectionError,
                         refreshing = refreshing,
                         loadingOrderList = loadingOrderList,
@@ -80,7 +80,6 @@ fun OrderListRouteScreen(
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
 ) {
-
     LifecycleStartEffect(Unit) {
         viewModel.onAction(OrderList.Action.StartObserveOrders)
         onStopOrDispose {
@@ -115,7 +114,6 @@ fun OrderListRouteScreen(
         lazyListState = rememberLazyListState(),
         onAction = onAction,
     )
-
 }
 
 @Composable
@@ -133,10 +131,11 @@ private fun OrderListEffect(
                     cancelNotification(effect.notificationId)
                 }
 
-                is OrderList.Event.OpenOrderDetailsEvent -> openOrderDetails(
-                    effect.orderCode,
-                    effect.orderUuid
-                )
+                is OrderList.Event.OpenOrderDetailsEvent ->
+                    openOrderDetails(
+                        effect.orderCode,
+                        effect.orderUuid,
+                    )
 
                 OrderList.Event.ScrollToTop -> {
                     coroutineScope {
@@ -151,7 +150,6 @@ private fun OrderListEffect(
         }
     }
 }
-
 
 @Composable
 private fun OrderListScreen(
@@ -181,7 +179,6 @@ private fun OrderListScreen(
         }
     }
 }
-
 
 @Composable
 private fun ConnectionError() {
@@ -284,4 +281,3 @@ private fun OrderListSuccessScreenPreview() {
         )
     }
 }
-

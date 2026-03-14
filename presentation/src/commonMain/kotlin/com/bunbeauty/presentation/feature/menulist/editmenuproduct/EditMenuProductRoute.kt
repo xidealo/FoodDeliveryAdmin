@@ -1,22 +1,21 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -30,16 +29,13 @@ import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingBut
 import com.bunbeauty.presentation.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.presentation.designsystem.compose.element.card.NavigationTextCard
 import com.bunbeauty.presentation.designsystem.compose.element.card.SwitcherCard
-import com.bunbeauty.presentation.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.presentation.designsystem.compose.element.surface.AdminSurface
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldWithMenu
-import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.designsystem.compose.theme.bold
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.EditMenuProductScreenDestination
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
@@ -47,8 +43,7 @@ import fooddeliveryadmin.presentation.generated.resources.action_common_menu_pro
 import fooddeliveryadmin.presentation.generated.resources.action_common_menu_product_show_in_menu
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
 import fooddeliveryadmin.presentation.generated.resources.action_order_details_save
-import fooddeliveryadmin.presentation.generated.resources.description_product
-import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_categories
+import fooddeliveryadmin.presentation.generated.resources.array_common_menu_product_units
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_combo_description
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_description
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_name
@@ -56,14 +51,11 @@ import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_produ
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_nutrition
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_old_price
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_units
+import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
+import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.compose.foundation.layout.Row
-import androidx.compose.runtime.LaunchedEffect
-import fooddeliveryadmin.presentation.generated.resources.array_common_menu_product_units
-import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
-import org.jetbrains.compose.resources.stringArrayResource
 
 private const val IMAGE = "image/*"
 
@@ -210,7 +202,7 @@ private fun EditMenuProductScreen(
 
                 else -> Unit
             }
-        }
+        },
     ) {
         when (state.state) {
             EditMenuProductViewState.State.Error -> {

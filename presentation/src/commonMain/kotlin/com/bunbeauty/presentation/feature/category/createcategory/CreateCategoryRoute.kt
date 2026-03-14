@@ -84,7 +84,7 @@ private fun CreateCategoryEffect(
                             Res.string.msg_create_category_created,
                             effect.categoryName,
                         ),
-                        0
+                        0,
                     )
                     goBack()
                 }

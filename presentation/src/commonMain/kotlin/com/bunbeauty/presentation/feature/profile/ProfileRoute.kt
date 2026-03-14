@@ -47,7 +47,6 @@ fun ProfileRouteScreen(
     goToMapScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
 ) {
-
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -77,7 +76,6 @@ fun ProfileRouteScreen(
         state = viewState,
         onAction = onAction,
     )
-
 }
 
 @Composable
@@ -93,7 +91,7 @@ private fun ProfileEffect(
         effects.forEach { effect ->
             when (effect) {
                 Profile.Event.OpenSettings -> {
-                     goToSettingsScreen()
+                    goToSettingsScreen()
                 }
 
                 Profile.Event.OpenStatistic -> {
@@ -118,7 +116,7 @@ private fun ProfileScreen(
     state: Profile.DataState,
     onAction: (Profile.Action) -> Unit,
 ) {
-    val viewState =  state.toViewState()
+    val viewState = state.toViewState()
 
     AdminScaffold(
         title = stringResource(Res.string.title_profile),

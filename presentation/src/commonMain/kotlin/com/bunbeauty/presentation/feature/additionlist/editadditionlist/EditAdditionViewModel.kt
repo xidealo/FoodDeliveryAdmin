@@ -18,24 +18,25 @@ class EditAdditionViewModel(
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase,
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
-    initState =
-        EditAddition.DataState(
-            state = EditAddition.DataState.State.LOADING,
-            uuid = "",
-            name = "",
-            price = "",
-            isLoading = true,
-            isVisible = false,
-            fullName = "",
-            hasEditNameError = false,
-            tag = "",
-            imageFieldData = ImageFieldUi(
-                value = null,
-                isError = false,
-                isSelected = false
+        initState =
+            EditAddition.DataState(
+                state = EditAddition.DataState.State.LOADING,
+                uuid = "",
+                name = "",
+                price = "",
+                isLoading = true,
+                isVisible = false,
+                fullName = "",
+                hasEditNameError = false,
+                tag = "",
+                imageFieldData =
+                    ImageFieldUi(
+                        value = null,
+                        isError = false,
+                        isSelected = false,
+                    ),
             ),
-        ),
-) {
+    ) {
     override fun reduce(
         action: EditAddition.Action,
         dataState: EditAddition.DataState,
@@ -120,7 +121,7 @@ class EditAdditionViewModel(
     private fun editNameAddition(name: String) {
         setState {
             copy(
-                name = name
+                name = name,
             )
         }
     }

@@ -10,9 +10,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object CreateMenuProductScreenDestination
 
-fun NavController.navigateToCreateMenuProductScreen(
-    navOptions: NavOptions,
-) = navigate(route = CreateMenuProductScreenDestination, navOptions)
+fun NavController.navigateToCreateMenuProductScreen(navOptions: NavOptions) =
+    navigate(route = CreateMenuProductScreenDestination, navOptions)
 
 fun NavGraphBuilder.createMenuProductScreenRoute(
     showInfoMessage: (String, Int) -> Unit,

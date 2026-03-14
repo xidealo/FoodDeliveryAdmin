@@ -10,8 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object EditAdditionScreenDestination
 
-fun NavController.navigateToEditAdditionScreen(navOptions: NavOptions) =
-    navigate(route = EditAdditionScreenDestination, navOptions)
+fun NavController.navigateToEditAdditionScreen(navOptions: NavOptions) = navigate(route = EditAdditionScreenDestination, navOptions)
 
 fun NavGraphBuilder.editAdditionScreenRoute(
     goBack: () -> Unit,
@@ -20,7 +19,7 @@ fun NavGraphBuilder.editAdditionScreenRoute(
     composable<EditAdditionScreenDestination> {
         EditAdditionRouteScreen(
             showInfoMessage = showInfoMessage,
-            goBack = goBack
+            goBack = goBack,
         )
     }
 }

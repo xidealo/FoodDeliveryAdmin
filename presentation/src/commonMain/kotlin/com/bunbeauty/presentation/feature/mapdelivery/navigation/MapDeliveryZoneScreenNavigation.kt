@@ -10,9 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object MapDeliveryZoneScreenDestination
 
-fun NavController.navigateToMapDeliveryZoneScreen(
-    navOptions: NavOptions,
-) = navigate(route = MapDeliveryZoneScreenDestination, navOptions)
+fun NavController.navigateToMapDeliveryZoneScreen(navOptions: NavOptions) = navigate(route = MapDeliveryZoneScreenDestination, navOptions)
 
 fun NavGraphBuilder.mapDeliveryZoneScreenRoute(
     goBack: () -> Unit,

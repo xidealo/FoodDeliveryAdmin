@@ -8,7 +8,6 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_create_category_duplicate_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_create_category_empty_name
 import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
-import org.jetbrains.compose.resources.StringResource
 
 @Immutable
 data class EditCategoryViewState(

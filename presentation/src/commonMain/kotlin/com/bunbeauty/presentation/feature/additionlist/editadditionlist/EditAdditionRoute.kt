@@ -102,15 +102,16 @@ private fun EditAdditionEffect(
                     goBack()
                 }
 
-                is EditAddition.Event.ShowUpdateAdditionSuccess -> showInfoMessage(
-                    getString(Res.string.msg_edit_addition_updated, effect.additionName), 3
-                )
+                is EditAddition.Event.ShowUpdateAdditionSuccess ->
+                    showInfoMessage(
+                        getString(Res.string.msg_edit_addition_updated, effect.additionName),
+                        3,
+                    )
             }
         }
         consumeEffects()
     }
 }
-
 
 @Composable
 fun Screen(
@@ -118,19 +119,21 @@ fun Screen(
     onAction: (EditAddition.Action) -> Unit,
 ) {
     when (state.state) {
-        EditAdditionViewState.State.Error -> ErrorScreen(
-            mainTextId = Res.string.title_common_can_not_load_data,
-            extraTextId = Res.string.msg_common_check_connection_and_retry,
-            onClick = {
-                onAction(EditAddition.Action.InitAddition)
-            },
-        )
+        EditAdditionViewState.State.Error ->
+            ErrorScreen(
+                mainTextId = Res.string.title_common_can_not_load_data,
+                extraTextId = Res.string.msg_common_check_connection_and_retry,
+                onClick = {
+                    onAction(EditAddition.Action.InitAddition)
+                },
+            )
 
         EditAdditionViewState.State.Loading -> LoadingScreen()
-        is EditAdditionViewState.State.Success -> EditAdditionScreen(
-            onAction = onAction,
-            state = state.state
-        )
+        is EditAdditionViewState.State.Success ->
+            EditAdditionScreen(
+                onAction = onAction,
+                state = state.state,
+            )
     }
 }
 
@@ -139,7 +142,6 @@ fun EditAdditionScreen(
     state: EditAdditionViewState.State.Success,
     onAction: (EditAddition.Action) -> Unit,
 ) {
-
 //    val galleryLauncher =
 //        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 //            navigateToCropImage(uri)
@@ -316,16 +318,16 @@ private fun BottomButtons(
 //            )
 //    }
 
-fun mapState(state: EditAddition.DataState): EditAdditionViewState {
-    return when (state.state) {
+fun mapState(state: EditAddition.DataState): EditAdditionViewState =
+    when (state.state) {
         EditAddition.DataState.State.LOADING ->
             EditAdditionViewState(
-                state = EditAdditionViewState.State.Loading
+                state = EditAdditionViewState.State.Loading,
             )
 
         EditAddition.DataState.State.ERROR ->
             EditAdditionViewState(
-                state = EditAdditionViewState.State.Error
+                state = EditAdditionViewState.State.Error,
             )
 
         EditAddition.DataState.State.SUCCESS ->
@@ -344,10 +346,9 @@ fun mapState(state: EditAddition.DataState): EditAdditionViewState {
                         isLoading = state.isLoading,
                         tag = state.tag,
                         imageFieldUi = state.imageFieldData,
-                    )
+                    ),
             )
     }
-}
 
 @Preview()
 @Composable
@@ -371,11 +372,10 @@ fun EditAdditionScreenPreview() {
                         ImageFieldUi(
                             value = null,
                             isError = false,
-                            isSelected = false
+                            isSelected = false,
                         ),
                 ),
             onAction = {},
         )
     }
 }
-

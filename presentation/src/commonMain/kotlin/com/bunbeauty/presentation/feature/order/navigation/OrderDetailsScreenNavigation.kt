@@ -18,10 +18,11 @@ fun NavController.navigateToOrderDetailsScreen(
     orderCode: String,
     navOptions: NavOptions,
 ) = navigate(
-    route = OrderDetailsScreenDestination(
-        orderUuid = orderUuid,
-        orderCode = orderCode,
-    ),
+    route =
+        OrderDetailsScreenDestination(
+            orderUuid = orderUuid,
+            orderCode = orderCode,
+        ),
     navOptions,
 )
 
@@ -39,7 +40,7 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
             goBack = goBack,
             onCallPhone = onCallPhone,
             onCancellationConfirmed = onCancellationConfirmed,
-            backStackEntry = it
+            backStackEntry = it,
         )
     }
 }

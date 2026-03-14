@@ -17,11 +17,9 @@ import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.presentation.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
-import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.description_product
 import fooddeliveryadmin.presentation.generated.resources.title_gallery
-import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

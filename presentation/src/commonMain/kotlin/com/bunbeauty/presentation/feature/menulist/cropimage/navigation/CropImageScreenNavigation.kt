@@ -20,9 +20,7 @@ fun NavController.navigateToCropImageScreen(
     navOptions: NavOptions,
 ) = navigate(route = CropImageScreenDestination(uri = uri), navOptions)
 
-fun NavGraphBuilder.cropImageScreenRoute(
-    goBack: () -> Unit,
-) {
+fun NavGraphBuilder.cropImageScreenRoute(goBack: () -> Unit) {
     composable<CropImageScreenDestination> { backStackEntry ->
         CropImageRouteScreen(
             viewModel = koinViewModel(),

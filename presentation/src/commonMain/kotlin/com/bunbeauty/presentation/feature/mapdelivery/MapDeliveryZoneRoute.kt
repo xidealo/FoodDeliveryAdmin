@@ -15,11 +15,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavBackStackEntry
+import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
+import com.bunbeauty.presentation.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
+import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
+import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHorizontalDivider
+import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import common.Constants.RUBLE_CURRENCY
+import fooddeliveryadmin.presentation.generated.resources.Res
+import fooddeliveryadmin.presentation.generated.resources.action_bottom_sheet_edit
+import fooddeliveryadmin.presentation.generated.resources.error_bottom_sheet_free_orders_cost
+import fooddeliveryadmin.presentation.generated.resources.error_bottom_sheet_min_orders_cost
+import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_free_orders_cost
+import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_map_delivery_area
+import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_min_orders_cost
+import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_orders_cost
+import fooddeliveryadmin.presentation.generated.resources.title_map_delivery_area
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 import org.maplibre.compose.expressions.dsl.const
@@ -35,23 +50,6 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.koin.compose.viewmodel.koinViewModel
-import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
-import com.bunbeauty.presentation.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
-import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
-import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHorizontalDivider
-import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.mapdelivery.navigation.MapDeliveryZoneScreenDestination
-import fooddeliveryadmin.presentation.generated.resources.Res
-import fooddeliveryadmin.presentation.generated.resources.action_bottom_sheet_edit
-import fooddeliveryadmin.presentation.generated.resources.error_bottom_sheet_free_orders_cost
-import fooddeliveryadmin.presentation.generated.resources.error_bottom_sheet_min_orders_cost
-import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_free_orders_cost
-import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_map_delivery_area
-import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_min_orders_cost
-import fooddeliveryadmin.presentation.generated.resources.title_bottom_sheet_orders_cost
-import fooddeliveryadmin.presentation.generated.resources.title_map_delivery_area
-import org.jetbrains.compose.resources.stringResource
 
 private const val BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
 private const val POLYGON_LAYER_PREFIX = "polygon-layer-"

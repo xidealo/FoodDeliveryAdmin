@@ -72,7 +72,7 @@ class MainActivity :
     override fun showErrorMessage(text: String) {
         viewModel.onAction(Main.Action.ShowErrorMessage(text))
     }
-    
+
     private fun handleEventList(
         events: List<Main.Event>,
         snackbarHostState: SnackbarHostState,

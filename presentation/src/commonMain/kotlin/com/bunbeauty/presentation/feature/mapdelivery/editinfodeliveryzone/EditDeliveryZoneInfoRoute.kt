@@ -90,7 +90,7 @@ private fun EditDeliveryZoneInfoEffect(
                             Res.string.msg_edit_info_delivery_zone_updated,
                             effect.zoneName,
                         ),
-                        0
+                        0,
                     )
                     goBack()
                 }

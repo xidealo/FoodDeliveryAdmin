@@ -21,7 +21,8 @@ data class CropImageViewState(
 internal fun CropImage.DataState.toViewState(): CropImageViewState =
     CropImageViewState(
         isLoading = isLoading,
-        imageContent = CropImageViewState.ImageContent(
-            uri = uri?.toUri()
-        ),
+        imageContent =
+            CropImageViewState.ImageContent(
+                uri = uri?.toUri(),
+            ),
     )

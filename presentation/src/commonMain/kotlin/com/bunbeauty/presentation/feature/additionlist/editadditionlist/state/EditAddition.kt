@@ -1,10 +1,7 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist.state
 
-import com.bunbeauty.presentation.feature.image.EditImageFieldData
-import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
-import com.bunbeauty.presentation.viewmodel.base.BaseDataState
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
 
@@ -24,7 +21,7 @@ interface EditAddition {
         enum class State {
             LOADING,
             SUCCESS,
-            ERROR
+            ERROR,
         }
     }
 

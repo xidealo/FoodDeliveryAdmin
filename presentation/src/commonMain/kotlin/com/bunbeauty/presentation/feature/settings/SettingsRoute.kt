@@ -40,6 +40,7 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_cancel
 import fooddeliveryadmin.presentation.generated.resources.action_edit_addition_save
 import fooddeliveryadmin.presentation.generated.resources.action_settings_disable
+import fooddeliveryadmin.presentation.generated.resources.action_work_load_cafe_disable
 import fooddeliveryadmin.presentation.generated.resources.ic_cellular_average
 import fooddeliveryadmin.presentation.generated.resources.ic_cellular_high
 import fooddeliveryadmin.presentation.generated.resources.ic_cellular_low
@@ -48,6 +49,7 @@ import fooddeliveryadmin.presentation.generated.resources.ic_delivery
 import fooddeliveryadmin.presentation.generated.resources.ic_delivery_and_pickup
 import fooddeliveryadmin.presentation.generated.resources.ic_pickup
 import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.presentation.generated.resources.msg_settings_disable_orders
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_kitchen_appliances
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_kitchen_appliances_hint
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_status_accept_orders
@@ -62,8 +64,6 @@ import fooddeliveryadmin.presentation.generated.resources.msg_work_load_low
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_settings
 import fooddeliveryadmin.presentation.generated.resources.title_settings_disable_orders
-import fooddeliveryadmin.presentation.generated.resources.action_work_load_cafe_disable
-import fooddeliveryadmin.presentation.generated.resources.msg_settings_disable_orders
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
@@ -127,7 +127,6 @@ private fun SettingsEffect(
                 }
 
                 is SettingsState.Event.ShowErrorMessage -> {
-
                 }
             }
         }

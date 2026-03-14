@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.presentation.designsystem.compose.icon16
@@ -18,6 +17,7 @@ import fooddeliveryadmin.presentation.generated.resources.description_ic_checked
 import fooddeliveryadmin.presentation.generated.resources.ic_check
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SelectableItem(

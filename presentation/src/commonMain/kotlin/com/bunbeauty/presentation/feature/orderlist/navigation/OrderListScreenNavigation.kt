@@ -19,7 +19,7 @@ fun NavGraphBuilder.orderListScreenRoute(
     composable<OrderListScreenNavigation> {
         OrderListRouteScreen(
             cancelNotification = cancelNotification,
-            openOrderDetails = openOrderDetails
+            openOrderDetails = openOrderDetails,
         )
     }
 }

@@ -23,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
-import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.presentation.designsystem.compose.element.button.FloatingButton
+import com.bunbeauty.presentation.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.presentation.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
@@ -271,7 +271,9 @@ private fun MenuListProductCard(
                 },
             ) {
                 Icon(
-                    painter = org.jetbrains.compose.resources.painterResource(Res.drawable.ic_visible),
+                    painter =
+                        org.jetbrains.compose.resources
+                            .painterResource(Res.drawable.ic_visible),
                     contentDescription = null,
                     tint =
                         if (menuProduct.visible) {

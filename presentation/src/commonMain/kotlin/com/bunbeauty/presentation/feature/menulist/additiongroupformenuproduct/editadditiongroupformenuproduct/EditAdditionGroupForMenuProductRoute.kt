@@ -100,7 +100,7 @@ private fun EditAdditionGroupForMenuEffect(
                 EditAdditionGroupForMenu.Event.SaveAndBack -> {
                     showInfoMessage(
                         getString(
-                            resource = Res.string.msg_update_edit_addition_group_for_menu_product
+                            resource = Res.string.msg_update_edit_addition_group_for_menu_product,
                         ),
                         2000,
                     )

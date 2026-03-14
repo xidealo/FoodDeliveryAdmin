@@ -45,15 +45,16 @@ fun AdminAsyncImage(
 ) {
     AsyncImage(
         modifier = modifier,
-        model = ImageRequest
-            .Builder(LocalPlatformContext.current)
-            .data(
-                when (imageData) {
-                    is ImageData.HttpUrl -> imageData.url
-                    is ImageData.LocalId -> imageData.id
-                },
-            ).crossfade(true)
-            .build(),
+        model =
+            ImageRequest
+                .Builder(LocalPlatformContext.current)
+                .data(
+                    when (imageData) {
+                        is ImageData.HttpUrl -> imageData.url
+                        is ImageData.LocalId -> imageData.id
+                    },
+                ).crossfade(true)
+                .build(),
         placeholder = painterResource(placeholder),
         contentDescription = stringResource(contentDescription),
         contentScale = ContentScale.FillWidth,

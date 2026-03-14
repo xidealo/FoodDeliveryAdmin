@@ -35,7 +35,6 @@ fun MenuRouteScreen(
     goToAdditionGroupListScreen: () -> Unit,
     goToAdditionListScreen: () -> Unit,
 ) {
-
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -62,7 +61,6 @@ fun MenuRouteScreen(
     )
 
     MenuScreen(onAction = onAction)
-
 }
 
 @Composable

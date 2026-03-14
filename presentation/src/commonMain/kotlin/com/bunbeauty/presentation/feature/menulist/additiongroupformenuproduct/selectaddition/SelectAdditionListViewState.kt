@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Immutable
@@ -46,30 +45,36 @@ internal fun SelectAdditionList.DataState.toViewState(): SelectAdditionListViewS
                 SelectAdditionList.DataState.State.ERROR -> SelectAdditionListViewState.State.Error
                 SelectAdditionList.DataState.State.SUCCESS ->
                     SelectAdditionListViewState.State.Success(
-                        selectedAdditionList = selectedAdditionList.map {
-                            SelectAdditionListViewState.AdditionItem(
-                                uuid = it.uuid,
-                                name = it.name,
-                            )
-                        }.toPersistentList(),
-                        notSelectedAdditionList = notSelectedAdditionList.map {
-                            SelectAdditionListViewState.AdditionItem(
-                                uuid = it.uuid,
-                                name = it.name,
-                            )
-                        }.toPersistentList(),
+                        selectedAdditionList =
+                            selectedAdditionList
+                                .map {
+                                    SelectAdditionListViewState.AdditionItem(
+                                        uuid = it.uuid,
+                                        name = it.name,
+                                    )
+                                }.toPersistentList(),
+                        notSelectedAdditionList =
+                            notSelectedAdditionList
+                                .map {
+                                    SelectAdditionListViewState.AdditionItem(
+                                        uuid = it.uuid,
+                                        name = it.name,
+                                    )
+                                }.toPersistentList(),
                         groupName = groupName,
                         emptySelectedList = emptySelectedList,
                     )
 
                 SelectAdditionList.DataState.State.SUCCESS_DRAG_DROP ->
                     SelectAdditionListViewState.State.SuccessDragDrop(
-                        selectedAdditionList = selectedAdditionList.map {
-                            SelectAdditionListViewState.AdditionItem(
-                                uuid = it.uuid,
-                                name = it.name,
-                            )
-                        }.toPersistentList(),
+                        selectedAdditionList =
+                            selectedAdditionList
+                                .map {
+                                    SelectAdditionListViewState.AdditionItem(
+                                        uuid = it.uuid,
+                                        name = it.name,
+                                    )
+                                }.toPersistentList(),
                         groupName = groupName,
                     )
             },

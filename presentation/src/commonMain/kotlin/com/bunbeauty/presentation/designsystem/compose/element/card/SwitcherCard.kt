@@ -10,10 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.element.switcher.AdminSwitchDefaults
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SwitcherCard(

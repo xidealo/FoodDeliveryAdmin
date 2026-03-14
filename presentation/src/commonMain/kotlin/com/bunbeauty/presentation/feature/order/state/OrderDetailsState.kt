@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.order.state
 
-import androidx.annotation.StringRes
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.presentation.viewmodel.base.BaseAction

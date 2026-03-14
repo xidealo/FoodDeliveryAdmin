@@ -7,7 +7,6 @@ import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_create_addition_empty_name
-import org.jetbrains.compose.resources.stringResource
 
 @Immutable
 data class CreateAdditionViewState(
@@ -19,7 +18,6 @@ data class CreateAdditionViewState(
     val tag: String,
     val imageFieldUi: ImageFieldUi,
 ) : BaseViewState {
-
     @Immutable
     data class ImageFieldUi(
         val value: Any?,

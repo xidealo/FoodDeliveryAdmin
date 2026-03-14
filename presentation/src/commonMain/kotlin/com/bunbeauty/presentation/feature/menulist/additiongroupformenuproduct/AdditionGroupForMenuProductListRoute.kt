@@ -55,8 +55,10 @@ fun AdditionGroupForMenuProductListRouteScreen(
     goToEditAdditionGroup: (String, String) -> Unit,
     backStackEntry: NavBackStackEntry,
 ) {
-    val menuProductUuid = backStackEntry
-        .toRoute<AdditionGroupForMenuProductListScreenDestination>().menuProductUuid
+    val menuProductUuid =
+        backStackEntry
+            .toRoute<AdditionGroupForMenuProductListScreenDestination>()
+            .menuProductUuid
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -122,7 +124,7 @@ private fun AdditionGroupForMenuProductEffect(
                 AdditionGroupForMenuProductList.Event.ShowUpdateAdditionGroupListSuccess -> {
                     showInfoMessage(
                         getString(
-                            resource = Res.string.msg_update_addition_group_for_menu_product_priority_list
+                            resource = Res.string.msg_update_addition_group_for_menu_product_priority_list,
                         ),
                         2000,
                     )
@@ -154,7 +156,7 @@ private fun AdditionGroupForMenuProductScreen(
 
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
-                    -> null
+                -> null
             },
         pullRefreshEnabled = true,
         refreshing = state.isRefreshing,
@@ -215,7 +217,7 @@ private fun AdditionGroupForMenuProductScreen(
 
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
-                    -> emptyList()
+                -> emptyList()
             },
         actionButton = {
             when (state.state) {
@@ -232,7 +234,7 @@ private fun AdditionGroupForMenuProductScreen(
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
                 is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop,
-                    -> Unit
+                -> Unit
             }
         },
         actionButtonPosition = FabPosition.End,

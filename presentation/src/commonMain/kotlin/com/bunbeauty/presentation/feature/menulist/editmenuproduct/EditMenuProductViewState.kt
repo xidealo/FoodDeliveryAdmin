@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 import com.bunbeauty.presentation.designsystem.compose.CardFieldUi
 import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
-import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.toCardFieldUi
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.toTextFieldUi
@@ -21,7 +20,6 @@ import fooddeliveryadmin.presentation.generated.resources.error_common_menu_prod
 import fooddeliveryadmin.presentation.generated.resources.error_common_menu_product_nutrition_without_units
 import fooddeliveryadmin.presentation.generated.resources.error_common_something_went_wrong
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_additions
-import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_categories
 import org.jetbrains.compose.resources.stringResource
 
 @Immutable
@@ -51,6 +49,7 @@ data class EditMenuProductViewState(
             val sendingToServer: Boolean,
         ) : State
     }
+
     @Immutable
     data class EditImageFieldUi(
         val value: Any?,
@@ -86,9 +85,10 @@ internal fun EditMenuProduct.DataState.toViewState(): EditMenuProductViewState =
                                             Res.string.error_common_something_went_wrong
                                     },
                             ),
-                        nutritionField = nutritionField.toTextFieldUi(
-                            errorResId = Res.string.error_common_menu_product_nutrition_without_units
-                        ),
+                        nutritionField =
+                            nutritionField.toTextFieldUi(
+                                errorResId = Res.string.error_common_menu_product_nutrition_without_units,
+                            ),
                         comboDescription = comboDescription,
                         utils = units,
                         categoriesField = categoriesField.toCardFieldUi(),
@@ -101,7 +101,6 @@ internal fun EditMenuProduct.DataState.toViewState(): EditMenuProductViewState =
                 }
             },
     )
-
 
 @Composable
 fun AdditionGroupListFieldData.toCardFieldUi(): CardFieldUi =
@@ -117,7 +116,6 @@ fun AdditionGroupListFieldData.toCardFieldUi(): CardFieldUi =
         isError = isError,
         errorResId = Res.string.error_common_menu_product_categories,
     )
-
 
 internal fun EditImageFieldData.toEditImageFieldUi(): EditMenuProductViewState.EditImageFieldUi =
     EditMenuProductViewState.EditImageFieldUi(

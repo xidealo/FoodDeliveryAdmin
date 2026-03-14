@@ -10,7 +10,7 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.msg_order_deferred_date_time
 import org.jetbrains.compose.resources.stringResource
 
-class OrderMapper{
+class OrderMapper {
     @Composable
     fun map(order: Order): OrderListViewState.OrderItem =
         OrderListViewState.OrderItem(

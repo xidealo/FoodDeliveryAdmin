@@ -145,7 +145,7 @@ private fun SelectAdditionListEffect(
                 SelectAdditionList.Event.ShowUpdateSelectAdditionListSuccess -> {
                     showInfoMessage(
                         getString(
-                            resource = Res.string.msg_update_select_addition_list_priority_list
+                            resource = Res.string.msg_update_select_addition_list_priority_list,
                         ),
                         2000,
                     )
@@ -180,14 +180,15 @@ private fun SelectAdditionScreen(
     state: SelectAdditionListViewState,
     onAction: (SelectAdditionList.Action) -> Unit,
 ) {
-    val title = when (state.state) {
-        SelectAdditionListViewState.State.Loading,
-        SelectAdditionListViewState.State.Error,
+    val title =
+        when (state.state) {
+            SelectAdditionListViewState.State.Loading,
+            SelectAdditionListViewState.State.Error,
             -> null
 
-        is SelectAdditionListViewState.State.Success -> stringResource(Res.string.title_select_addition_list)
-        is SelectAdditionListViewState.State.SuccessDragDrop -> stringResource(Res.string.title_edit_priority)
-    }
+            is SelectAdditionListViewState.State.Success -> stringResource(Res.string.title_select_addition_list)
+            is SelectAdditionListViewState.State.SuccessDragDrop -> stringResource(Res.string.title_edit_priority)
+        }
 
     val topActions: List<AdminTopBarAction> =
         when (state.state) {

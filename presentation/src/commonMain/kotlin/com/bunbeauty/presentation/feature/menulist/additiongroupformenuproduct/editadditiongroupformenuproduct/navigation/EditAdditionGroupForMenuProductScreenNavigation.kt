@@ -17,7 +17,10 @@ fun NavController.navigateToEditAdditionGroupForMenuProductScreen(
     additionGroupUuid: String,
     menuProductUuid: String,
     navOptions: NavOptions,
-) = navigate(route = EditAdditionGroupForMenuProductScreenDestination(additionGroupUuid = additionGroupUuid, menuProductUuid = menuProductUuid), navOptions)
+) = navigate(
+    route = EditAdditionGroupForMenuProductScreenDestination(additionGroupUuid = additionGroupUuid, menuProductUuid = menuProductUuid),
+    navOptions,
+)
 
 fun NavGraphBuilder.editAdditionGroupForMenuProductScreenRoute(
     showInfoMessage: (String, Int) -> Unit,

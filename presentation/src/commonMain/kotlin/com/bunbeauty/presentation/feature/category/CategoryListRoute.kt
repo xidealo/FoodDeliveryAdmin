@@ -33,9 +33,6 @@ import fooddeliveryadmin.presentation.generated.resources.msg_common_check_conne
 import fooddeliveryadmin.presentation.generated.resources.title_categories_list
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_edit_priority
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

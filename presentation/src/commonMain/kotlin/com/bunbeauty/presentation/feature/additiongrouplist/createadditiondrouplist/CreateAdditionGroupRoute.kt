@@ -88,7 +88,7 @@ private fun CreateAdditionGroupEffect(
                             Res.string.msg_create_addition_group_created,
                             effect.additionGroupName,
                         ),
-                        0
+                        0,
                     )
                     goBack()
                 }

@@ -26,8 +26,6 @@ data class EditAdditionGroupViewState(
             val nameField: TextFieldUi,
         ) : State
     }
-
-
 }
 
 @Composable

@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.element.rememberMultipleEventsCutter
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
@@ -25,12 +24,13 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondaryButton(
     modifier: Modifier = Modifier,
-     textStringId: StringResource,
+    textStringId: StringResource,
     onClick: () -> Unit,
     elevated: Boolean = true,
     isEnabled: Boolean = true,

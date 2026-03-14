@@ -12,7 +12,6 @@ import fooddeliveryadmin.presentation.generated.resources.msg_status_ready
 import fooddeliveryadmin.presentation.generated.resources.msg_status_sent_out
 import org.jetbrains.compose.resources.stringResource
 
-
 @Composable
 fun orderStatusMap(orderStatus: OrderStatus): String =
     when (orderStatus) {

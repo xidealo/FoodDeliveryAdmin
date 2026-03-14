@@ -8,7 +8,7 @@ import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 @Immutable
 data class EditAdditionViewState(
     val state: State,
-) : BaseViewState{
+) : BaseViewState {
     @Immutable
     sealed interface State {
         data object Loading : State

@@ -11,7 +11,6 @@ import fooddeliveryadmin.presentation.generated.resources.msg_statistic_orders
 import fooddeliveryadmin.presentation.generated.resources.msg_statistic_week_interval
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Immutable

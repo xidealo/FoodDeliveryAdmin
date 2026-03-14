@@ -10,7 +10,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object CreateAdditionGroupScreenDestination
 
-fun NavController.navigateToCreateAdditionGroupScreen(navOptions: NavOptions) = navigate(route = CreateAdditionGroupScreenDestination, navOptions)
+fun NavController.navigateToCreateAdditionGroupScreen(navOptions: NavOptions) =
+    navigate(route = CreateAdditionGroupScreenDestination, navOptions)
 
 fun NavGraphBuilder.createAdditionGroupScreenRoute(
     showInfoMessage: (String, Int) -> Unit,

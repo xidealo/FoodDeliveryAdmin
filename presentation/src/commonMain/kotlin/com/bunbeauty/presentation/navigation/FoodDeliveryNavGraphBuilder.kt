@@ -66,21 +66,21 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     menuScreenRoute(
         goToCategoriesScreen = {
-            //navigate to categories
+            // navigate to categories
         },
         goToMenuListScreen = {
-            //navigate to menu list
+            // navigate to menu list
         },
         goToAdditionGroupListScreen = {
-            //navigate to addition group list
+            // navigate to addition group list
         },
         goToAdditionListScreen = {
-            //navigate to addition list
+            // navigate to addition list
         },
     )
     menuListScreenRoute(
         goToCreateMenuProductScreen = {
-            //navigate to create menu product - handled by parent routing
+            // navigate to create menu product - handled by parent routing
         },
         goToEditMenuProductScreen = { uuid ->
             navController.navigateToEditMenuProductScreen(
@@ -96,10 +96,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.popBackStack()
         },
         goToCategoryList = { selectedCategoryList ->
-            //navigate to category list - handled by parent
+            // navigate to category list - handled by parent
         },
         goToCropImage = { imageUri ->
-            //navigate to crop image - handled by parent
+            // navigate to crop image - handled by parent
         },
     )
     editMenuProductScreenRoute(
@@ -109,18 +109,18 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.popBackStack()
         },
         goToCategoryList = { selectedCategoryList ->
-            //navigate to category list - handled by parent
+            // navigate to category list - handled by parent
         },
         goToAdditionList = { menuProductUuid ->
-            //navigate to addition list - handled by parent
+            // navigate to addition list - handled by parent
         },
         goToCropImage = { imageUri ->
-            //navigate to crop image - handled by parent
+            // navigate to crop image - handled by parent
         },
     )
     additionGroupListScreenRoute(
         goBack = {
-            //navigate back
+            // navigate back
         },
         goToCreateAdditionGroupScreen = {
             navController.navigateToCreateAdditionGroupScreen(emptyNavOptions)
@@ -134,7 +134,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     additionListScreenRoute(
         goBack = {
-            //navigate back
+            // navigate back
         },
         goToCreateAdditionScreen = {
             navController.navigateToCreateAdditionScreen(
@@ -142,7 +142,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
         goToEditAdditionScreen = { uuid ->
-            //navigate to edit addition
+            // navigate to edit addition
         },
     )
     createAdditionScreenRoute(
@@ -152,7 +152,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.popBackStack()
         },
         goToCropImage = { imageUri ->
-            //navigate to crop image - handled by parent
+            // navigate to crop image - handled by parent
         },
     )
     categoryListScreenRoute(
@@ -327,10 +327,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.navigateToStatisticScreen(emptyNavOptions)
         },
         goToMapScreen = {
-            //navigate to map - handled by existing navigation
+            // navigate to map - handled by existing navigation
         },
         goToLoginScreen = {
-            //navigate to login
+            // navigate to login
         },
     )
     settingsScreenRoute(
@@ -364,12 +364,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
 
-
     editAdditionScreenRoute(
         goBack = {
             navController.popBackStack()
         },
-        showInfoMessage = showInfoMessage
+        showInfoMessage = showInfoMessage,
     )
-
 }

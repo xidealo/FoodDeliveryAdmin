@@ -46,27 +46,30 @@ internal fun MapDeliveryZone.DataState.toViewState(): MapDeliveryZoneViewState =
                 MapDeliveryZone.State.ERROR -> Error
                 MapDeliveryZone.State.SUCCESS -> {
                     Success(
-                        listDeliveryAreaZone = listDeliveryAreaZone.map {
-                            MapDeliveryZoneViewState.ZoneData(
-                                uuid = it.uuid,
-                                nameZona = it.nameZona,
-                                minOrderCost = it.minOrderCost,
-                                normalDeliveryCost = it.normalDeliveryCost,
-                                forLowDeliveryCost = it.forLowDeliveryCost,
-                                deliveryZonePoint = it.deliveryZonePoint,
-                            )
-                        }.toPersistentList(),
+                        listDeliveryAreaZone =
+                            listDeliveryAreaZone
+                                .map {
+                                    MapDeliveryZoneViewState.ZoneData(
+                                        uuid = it.uuid,
+                                        nameZona = it.nameZona,
+                                        minOrderCost = it.minOrderCost,
+                                        normalDeliveryCost = it.normalDeliveryCost,
+                                        forLowDeliveryCost = it.forLowDeliveryCost,
+                                        deliveryZonePoint = it.deliveryZonePoint,
+                                    )
+                                }.toPersistentList(),
                         positionCafe = positionCafe,
-                        selectedZoneData = selectedZoneData?.let {
-                            MapDeliveryZoneViewState.ZoneData(
-                                uuid = it.uuid,
-                                nameZona = it.nameZona,
-                                minOrderCost = it.minOrderCost,
-                                normalDeliveryCost = it.normalDeliveryCost,
-                                forLowDeliveryCost = it.forLowDeliveryCost,
-                                deliveryZonePoint = it.deliveryZonePoint,
-                            )
-                        },
+                        selectedZoneData =
+                            selectedZoneData?.let {
+                                MapDeliveryZoneViewState.ZoneData(
+                                    uuid = it.uuid,
+                                    nameZona = it.nameZona,
+                                    minOrderCost = it.minOrderCost,
+                                    normalDeliveryCost = it.normalDeliveryCost,
+                                    forLowDeliveryCost = it.forLowDeliveryCost,
+                                    deliveryZonePoint = it.deliveryZonePoint,
+                                )
+                            },
                         loadingMap = loadingMap,
                     )
                 }
@@ -87,5 +90,4 @@ private object MapColors {
 }
 
 @Composable
-internal fun generatePolygonColors(count: Int): List<Color> =
-    (0 until count).map { MapColors.generatePolygonColor(it) }
+internal fun generatePolygonColors(count: Int): List<Color> = (0 until count).map { MapColors.generatePolygonColor(it) }

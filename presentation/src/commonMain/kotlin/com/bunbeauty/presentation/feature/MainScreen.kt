@@ -37,9 +37,10 @@ fun MainScreen(
     snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
-        modifier = Modifier
-            .navigationBarsPadding()
-            .imePadding(),
+        modifier =
+            Modifier
+                .navigationBarsPadding()
+                .imePadding(),
         snackbarHost = {
             AdminSnackbarHost(
                 snackbarHostState = snackbarHostState,
@@ -65,10 +66,8 @@ fun MainScreen(
             Box(modifier = Modifier.weight(1f)) {
                 FoodDeliveryNavHost(
                     showInfoMessage = { string: String, i: Int ->
-
                     },
                     showErrorMessage = {
-
                     },
                     goToOrderList = {},
                     goToMenu = {},
@@ -78,7 +77,6 @@ fun MainScreen(
         }
     }
 }
-
 
 @Composable
 private fun ConnectionErrorMessage(visible: Boolean) {

@@ -28,14 +28,16 @@ data class AdditionGroupListViewState(
 @Composable
 internal fun AdditionGroupList.DataState.toViewState(): AdditionGroupListViewState =
     AdditionGroupListViewState(
-        visibleAdditionItems = visibleAdditionGroups
-            .map { additionGroup ->
-                additionGroup.toItem()
-            }.toImmutableList(),
-        hiddenAdditionItems = hiddenAdditionGroups
-            .map { additionGroup ->
-                additionGroup.toItem()
-            }.toImmutableList(),
+        visibleAdditionItems =
+            visibleAdditionGroups
+                .map { additionGroup ->
+                    additionGroup.toItem()
+                }.toImmutableList(),
+        hiddenAdditionItems =
+            hiddenAdditionGroups
+                .map { additionGroup ->
+                    additionGroup.toItem()
+                }.toImmutableList(),
         isRefreshing = isRefreshing,
         isLoading = isLoading,
     )

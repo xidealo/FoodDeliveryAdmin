@@ -111,7 +111,7 @@ fun CreateMenuProductRouteScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         addPhotoClick = {
-          //  galleryLauncher.launch(IMAGE)
+            //  galleryLauncher.launch(IMAGE)
         },
     )
 }

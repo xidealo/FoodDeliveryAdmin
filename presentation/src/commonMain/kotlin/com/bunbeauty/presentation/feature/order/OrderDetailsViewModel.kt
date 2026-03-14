@@ -8,7 +8,6 @@ import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import fooddeliveryadmin.presentation.generated.resources.Res
 
 class OrderDetailsViewModel(
     private val loadOrderDetails: LoadOrderDetailsUseCase,

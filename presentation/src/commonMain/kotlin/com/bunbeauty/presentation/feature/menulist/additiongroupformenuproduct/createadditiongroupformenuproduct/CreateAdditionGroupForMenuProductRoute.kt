@@ -21,14 +21,14 @@ import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.CreateAdditionGroupForMenuProductScreenDestination
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_create_addition_group_for_menu_product_save
+import fooddeliveryadmin.presentation.generated.resources.error_create_addition_group_for_menu_product_addition
+import fooddeliveryadmin.presentation.generated.resources.error_create_addition_group_for_menu_product_group
 import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.presentation.generated.resources.msg_update_create_addition_group_for_menu_product_addition
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_create_addition_group_for_menu_product
 import fooddeliveryadmin.presentation.generated.resources.title_create_addition_group_for_menu_product_addition
 import fooddeliveryadmin.presentation.generated.resources.title_create_addition_group_for_menu_product_group
-import fooddeliveryadmin.presentation.generated.resources.error_create_addition_group_for_menu_product_addition
-import fooddeliveryadmin.presentation.generated.resources.error_create_addition_group_for_menu_product_group
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -101,7 +101,7 @@ private fun CreateAdditionGroupForMenuEffect(
                 CreateAdditionGroupForMenu.Event.SaveAndBack -> {
                     showInfoMessage(
                         getString(
-                            resource = Res.string.msg_update_create_addition_group_for_menu_product_addition
+                            resource = Res.string.msg_update_create_addition_group_for_menu_product_addition,
                         ),
                         2000,
                     )

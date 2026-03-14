@@ -10,7 +10,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object SelectCategoryListScreenDestination
 
-fun NavController.navigateToSelectCategoryListScreen(navOptions: NavOptions) = navigate(route = SelectCategoryListScreenDestination, navOptions)
+fun NavController.navigateToSelectCategoryListScreen(navOptions: NavOptions) =
+    navigate(route = SelectCategoryListScreenDestination, navOptions)
 
 fun NavGraphBuilder.selectCategoryListScreenRoute(
     showInfoMessage: (String, Int) -> Unit,

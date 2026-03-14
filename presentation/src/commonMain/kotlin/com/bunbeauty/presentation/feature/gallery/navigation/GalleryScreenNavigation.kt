@@ -12,9 +12,7 @@ data object GalleryScreenDestination
 
 fun NavController.navigateToGalleryScreen(navOptions: NavOptions) = navigate(route = GalleryScreenDestination, navOptions)
 
-fun NavGraphBuilder.galleryScreenRoute(
-    goBack: () -> Unit,
-) {
+fun NavGraphBuilder.galleryScreenRoute(goBack: () -> Unit) {
     composable<GalleryScreenDestination> {
         GalleryRouteScreen(
             goBack = goBack,

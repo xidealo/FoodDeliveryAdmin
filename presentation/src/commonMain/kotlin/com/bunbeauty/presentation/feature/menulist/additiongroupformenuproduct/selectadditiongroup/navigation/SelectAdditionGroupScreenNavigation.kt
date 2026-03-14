@@ -20,11 +20,12 @@ fun NavController.navigateToSelectAdditionGroupScreen(
     mainEditedAdditionGroupUuid: String?,
     navOptions: NavOptions,
 ) = navigate(
-    route = SelectAdditionGroupScreenDestination(
-        additionGroupUuid = additionGroupUuid,
-        menuProductUuid = menuProductUuid,
-        mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
-    ),
+    route =
+        SelectAdditionGroupScreenDestination(
+            additionGroupUuid = additionGroupUuid,
+            menuProductUuid = menuProductUuid,
+            mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
+        ),
     navOptions,
 )
 

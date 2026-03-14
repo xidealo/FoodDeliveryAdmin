@@ -22,12 +22,13 @@ fun NavController.navigateToSelectAdditionListScreen(
     editedAdditionListUuid: List<String>?,
     navOptions: NavOptions,
 ) = navigate(
-    route = SelectAdditionListScreenDestination(
-        menuProductUuid = menuProductUuid,
-        additionGroupUuid = additionGroupUuid,
-        additionGroupName = additionGroupName,
-        editedAdditionListUuid = editedAdditionListUuid,
-    ),
+    route =
+        SelectAdditionListScreenDestination(
+            menuProductUuid = menuProductUuid,
+            additionGroupUuid = additionGroupUuid,
+            additionGroupName = additionGroupName,
+            editedAdditionListUuid = editedAdditionListUuid,
+        ),
     navOptions,
 )
 

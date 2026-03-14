@@ -62,7 +62,7 @@ class StringUtil(
             ""
         } else {
             stringResource(Res.string.msg_order_deferred_date_time) +
-                    dateTimeUtil.formatDateTime(deferred, PATTERN_HH_MM)
+                dateTimeUtil.formatDateTime(deferred, PATTERN_HH_MM)
         }
 
     @Composable
@@ -74,8 +74,7 @@ class StringUtil(
         }
 
     @Composable
-    override fun getOrderCodeString(orderCode: String): String =
-        stringResource(Res.string.msg_order) + orderCode
+    override fun getOrderCodeString(orderCode: String): String = stringResource(Res.string.msg_order) + orderCode
 
     @Composable
     override fun getReceiveMethodString(isDelivery: Boolean): String =
@@ -86,8 +85,7 @@ class StringUtil(
         }
 
     @Composable
-    override fun getProductCountString(count: Int): String =
-        stringResource(Res.string.msg_pieces) + count
+    override fun getProductCountString(count: Int): String = stringResource(Res.string.msg_pieces) + count
 
     @Composable
     override fun getOrderStatusString(orderStatus: OrderStatus): String =
@@ -117,55 +115,54 @@ class StringUtil(
     @Composable
     override fun getOrderAddressString(address: OrderAddress): String =
         address.description ?: (
-                address.street +
-                        getAddressPart(
-                            part =
-                                ADDRESS_DIVIDER +
-                                        stringResource(
-                                            Res.string.msg_address_house,
-                                            address.house.orEmpty(),
-                                        ),
-                            data = address.house,
-                        ) +
-                        address.flat?.let { flat ->
-                            getAddressPart(
-                                part =
-                                    ADDRESS_DIVIDER +
-                                            stringResource(
-                                                Res.string.msg_address_flat,
-                                                flat,
-                                            ),
-                                data = address.flat,
-                            )
-                        }
-                        + address.entrance?.let { entrance ->
+            address.street +
+                getAddressPart(
+                    part =
+                        ADDRESS_DIVIDER +
+                            stringResource(
+                                Res.string.msg_address_house,
+                                address.house.orEmpty(),
+                            ),
+                    data = address.house,
+                ) +
+                address.flat?.let { flat ->
                     getAddressPart(
                         part =
                             ADDRESS_DIVIDER +
-                                    stringResource(
-                                        Res.string.msg_address_entrance,
-                                        entrance,
-                                    ),
+                                stringResource(
+                                    Res.string.msg_address_flat,
+                                    flat,
+                                ),
+                        data = address.flat,
+                    )
+                } +
+                address.entrance?.let { entrance ->
+                    getAddressPart(
+                        part =
+                            ADDRESS_DIVIDER +
+                                stringResource(
+                                    Res.string.msg_address_entrance,
+                                    entrance,
+                                ),
                         data = address.entrance,
                     )
                 } +
-                        address.floor?.let { floor ->
-                            getAddressPart(
-                                part =
-                                    ADDRESS_DIVIDER +
-                                            stringResource(
-                                                Res.string.msg_address_floor,
-                                                floor,
-                                            ),
-                                data = address.floor,
-                            )
-                        }
-                        +
-                        getAddressPart(
-                            part = ADDRESS_DIVIDER + address.comment,
-                            data = address.comment,
-                        )
+                address.floor?.let { floor ->
+                    getAddressPart(
+                        part =
+                            ADDRESS_DIVIDER +
+                                stringResource(
+                                    Res.string.msg_address_floor,
+                                    floor,
+                                ),
+                        data = address.floor,
+                    )
+                } +
+                getAddressPart(
+                    part = ADDRESS_DIVIDER + address.comment,
+                    data = address.comment,
                 )
+        )
 
     @Composable
     override fun getDeliveryString(deliveryCost: Int): String =

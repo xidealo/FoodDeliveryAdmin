@@ -5,7 +5,6 @@ import org.koin.dsl.module
 
 fun uiMapperModule() =
     module {
-
         factory {
             OrderMapper()
         }

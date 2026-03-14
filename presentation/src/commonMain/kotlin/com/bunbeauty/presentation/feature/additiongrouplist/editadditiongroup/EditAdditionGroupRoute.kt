@@ -92,7 +92,7 @@ private fun EditAdditionGroupEffect(
                             Res.string.msg_edit_addition_group_updated,
                             effect.additionGroupName,
                         ),
-                        0
+                        0,
                     )
                     goBack()
                 }

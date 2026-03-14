@@ -12,9 +12,7 @@ data object StatisticDetailsScreenDestination
 
 fun NavController.navigateToStatisticDetailsScreen(navOptions: NavOptions) = navigate(route = StatisticDetailsScreenDestination, navOptions)
 
-fun NavGraphBuilder.statisticDetailsScreenRoute(
-    goBack: () -> Unit,
-) {
+fun NavGraphBuilder.statisticDetailsScreenRoute(goBack: () -> Unit) {
     composable<StatisticDetailsScreenDestination> {
         StatisticDetailsRouteScreen(
             goBack = goBack,

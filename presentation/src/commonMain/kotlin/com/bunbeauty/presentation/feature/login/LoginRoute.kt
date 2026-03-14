@@ -55,7 +55,6 @@ fun LoginRouteScreen(
     showErrorMessage: (String) -> Unit,
     goToOrderListScreen: () -> Unit,
 ) {
-
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -79,7 +78,6 @@ fun LoginRouteScreen(
         goToOrderListScreen = goToOrderListScreen,
     )
     LoginScreen(state = viewState, onAction = onAction)
-
 }
 
 @Composable
@@ -93,24 +91,24 @@ private fun LoginEffect(
         effects.forEach { effect ->
             when (effect) {
                 Login.Event.OpenOrderListEvent -> {
-                     goToOrderListScreen()
+                    goToOrderListScreen()
                 }
 
                 Login.Event.ShowWrongCredentialError -> {
                     showErrorMessage(
-                        getString(Res.string.error_login_wrong_data)
+                        getString(Res.string.error_login_wrong_data),
                     )
                 }
 
                 Login.Event.ShowConnectionError -> {
                     showErrorMessage(
-                        getString(Res.string.msg_common_check_connection_and_retry)
+                        getString(Res.string.msg_common_check_connection_and_retry),
                     )
                 }
 
                 Login.Event.ShowWrongLoginError -> {
                     showErrorMessage(
-                        getString(Res.string.error_login_wrong_login)
+                        getString(Res.string.error_login_wrong_login),
                     )
                 }
             }
@@ -132,7 +130,6 @@ private fun LoginScreen(
                 onAction = onAction,
             )
     }
-
 }
 
 @Composable
@@ -140,7 +137,6 @@ private fun LoginScreenSuccess(
     state: Login.DataState,
     onAction: (Login.Action) -> Unit,
 ) {
-
     AdminScaffold(
         actionButton = {
             LoadingButton(
@@ -159,8 +155,7 @@ private fun LoginScreenSuccess(
                 Modifier
                     .padding(
                         horizontal = 16.dp,
-                    )
-                    .verticalScroll(rememberScrollState()),
+                    ).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AdminAsyncImage(

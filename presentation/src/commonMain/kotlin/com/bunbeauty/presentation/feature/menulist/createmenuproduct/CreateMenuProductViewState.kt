@@ -6,7 +6,6 @@ import com.bunbeauty.presentation.designsystem.compose.CardFieldUi
 import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
 import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.feature.image.ImageFieldData
-import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
@@ -39,7 +38,6 @@ data class CreateMenuProductViewState(
     val imageField: ImageFieldUi,
     val sendingToServer: Boolean,
 ) : BaseViewState
-
 
 @Immutable
 data class ImageFieldUi(
@@ -82,9 +80,7 @@ internal fun CreateMenuProduct.DataState.toViewState(): CreateMenuProductViewSta
         sendingToServer = sendingToServer,
     )
 
-fun TextFieldData.toTextFieldUi(
-    errorResId: StringResource,
-): TextFieldUi =
+fun TextFieldData.toTextFieldUi(errorResId: StringResource): TextFieldUi =
     TextFieldUi(
         value = value,
         isError = isError,
@@ -106,10 +102,9 @@ fun CategoriesFieldData.toCardFieldUi(): CardFieldUi =
         errorResId = Res.string.error_common_menu_product_categories,
     )
 
-
 fun ImageFieldData.toImageFieldUi(): ImageFieldUi =
     ImageFieldUi(
         value = null,
         isError = isError,
-        isSelected = value != null
+        isSelected = value != null,
     )
