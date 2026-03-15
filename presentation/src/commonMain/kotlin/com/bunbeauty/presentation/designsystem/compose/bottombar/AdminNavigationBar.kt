@@ -10,8 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.designsystem.compose.theme.medium
+import com.bunbeauty.presentation.feature.menu.navigation.navigateToMenuScreen
+import com.bunbeauty.presentation.feature.orderlist.navigation.navigateToOrderListScreen
+import com.bunbeauty.presentation.feature.profile.navigation.navigateToProfileScreen
+import com.bunbeauty.presentation.navigation.emptyNavOptions
 import com.bunbeauty.presentation.viewmodel.main.Main
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.ic_menu
@@ -28,9 +33,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun AdminNavigationBar(
     options: Main.NavigationBarOptions,
-    goToOrderList: () -> Unit,
-    goToMenu: () -> Unit,
-    goToProfile: () -> Unit,
+    navHostController: NavHostController,
 ) {
     if (options is Main.NavigationBarOptions.Visible) {
         NavigationBar(
@@ -41,19 +44,25 @@ fun AdminNavigationBar(
                 selected = options.selectedItem == Main.NavigationBarItem.ORDERS,
                 iconId = Res.drawable.ic_orders,
                 labelId = Res.string.title_bottom_navigation_orders,
-                onClick = goToOrderList,
+                onClick = {
+                    navHostController.navigateToOrderListScreen(emptyNavOptions)
+                },
             )
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == Main.NavigationBarItem.MENU,
                 iconId = Res.drawable.ic_menu,
                 labelId = Res.string.title_bottom_navigation_menu,
-                onClick = goToMenu,
+                onClick = {
+                    navHostController.navigateToMenuScreen(emptyNavOptions)
+                },
             )
             FoodDeliveryBottomItem(
                 selected = options.selectedItem == Main.NavigationBarItem.PROFILE,
                 iconId = Res.drawable.ic_profile,
                 labelId = Res.string.title_bottom_navigation_profile,
-                onClick = goToProfile,
+                onClick = {
+                    navHostController.navigateToProfileScreen(emptyNavOptions)
+                },
             )
         }
     }

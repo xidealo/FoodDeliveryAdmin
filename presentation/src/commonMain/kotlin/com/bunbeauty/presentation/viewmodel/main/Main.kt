@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.viewmodel.main
 
-import androidx.navigation.NavController
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
@@ -23,14 +22,12 @@ interface Main {
 
         data class Visible(
             val selectedItem: NavigationBarItem,
-            val navController: NavController,
         ) : NavigationBarOptions
     }
 
     sealed interface Action : BaseAction {
         data class UpdateNavDestination(
             val navigationBarItem: NavigationBarItem?,
-            val navController: NavController,
         ) : Action
 
         data class ShowErrorMessage(

@@ -1,7 +1,6 @@
 package com.bunbeauty.presentation.viewmodel.main
 
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
@@ -42,7 +41,6 @@ class MainViewModel(
             is Main.Action.UpdateNavDestination -> {
                 updateNavDestination(
                     navigationBarItem = action.navigationBarItem,
-                    navController = action.navController,
                 )
             }
 
@@ -56,15 +54,11 @@ class MainViewModel(
         }
     }
 
-    private fun updateNavDestination(
-        navigationBarItem: Main.NavigationBarItem?,
-        navController: NavController,
-    ) {
+    private fun updateNavDestination(navigationBarItem: Main.NavigationBarItem?) {
         val navigationBarOptions =
             navigationBarItem?.let {
                 Main.NavigationBarOptions.Visible(
                     selectedItem = navigationBarItem,
-                    navController = navController,
                 )
             } ?: Main.NavigationBarOptions.Hidden
 

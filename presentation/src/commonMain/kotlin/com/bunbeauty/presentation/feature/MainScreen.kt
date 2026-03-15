@@ -17,25 +17,51 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.bunbeauty.presentation.designsystem.compose.AdminSnackbarVisuals
 import com.bunbeauty.presentation.designsystem.compose.bottombar.AdminNavigationBar
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.menu.navigation.MenuScreenDestination
+import com.bunbeauty.presentation.feature.orderlist.navigation.OrderListScreenNavigation
+import com.bunbeauty.presentation.feature.profile.navigation.ProfileScreenDestination
 import com.bunbeauty.presentation.navigation.FoodDeliveryNavHost
 import com.bunbeauty.presentation.viewmodel.main.Main
+import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_no_internet
 import fooddeliveryadmin.presentation.generated.resources.msg_common_non_working_day
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MainScreen(
-    mainState: Main.ViewDataState,
-    snackbarHostState: SnackbarHostState,
-) {
+fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
+    val mainState by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val events by viewModel.events.collectAsStateWithLifecycle()
+
+    HandleEventList(
+        events = events,
+        snackbarHostState = snackbarHostState,
+        consumeEventList = viewModel::consumeEvents,
+    )
+    val navController = rememberNavController()
+
+    HandleNavigation(
+        onAction = viewModel::onAction,
+        navHostController = navController,
+    )
+
     Scaffold(
         modifier =
             Modifier
@@ -50,9 +76,7 @@ fun MainScreen(
         bottomBar = {
             AdminNavigationBar(
                 options = mainState.navigationBarOptions,
-                goToOrderList = {},
-                goToMenu = {},
-                goToProfile = {},
+                navHostController = navController,
             )
         },
     ) { padding ->
@@ -65,13 +89,13 @@ fun MainScreen(
             NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
             Box(modifier = Modifier.weight(1f)) {
                 FoodDeliveryNavHost(
-                    showInfoMessage = { string: String, i: Int ->
+                    showInfoMessage = { text: String, i: Int ->
+                        viewModel.onAction(Main.Action.ShowInfoMessage(text))
                     },
-                    showErrorMessage = {
+                    showErrorMessage = { text ->
+                        viewModel.onAction(Main.Action.ShowErrorMessage(text))
                     },
-                    goToOrderList = {},
-                    goToMenu = {},
-                    goToProfile = {},
+                    navController = navController,
                 )
             }
         }
@@ -153,6 +177,80 @@ private fun AdminSnackbarHost(
                 containerColor = containerColor,
                 contentColor = contentColor,
             )
+        }
+    }
+}
+
+@Composable
+private fun HandleEventList(
+    events: List<Main.Event>,
+    snackbarHostState: SnackbarHostState,
+    consumeEventList: (List<Main.Event>) -> Unit,
+) {
+    LaunchedEffect(events) {
+        events.forEach { event ->
+            when (event) {
+                is Main.Event.ShowMessageEvent -> {
+                    launch {
+                        snackbarHostState.showSnackbar(
+                            AdminSnackbarVisuals(event.message),
+                        )
+                    }
+                }
+            }
+        }
+        consumeEventList(events)
+    }
+}
+
+@Composable
+private fun HandleNavigation(
+    onAction: (Main.Action) -> Unit,
+    navHostController: NavHostController,
+) {
+    LaunchedEffect(Unit) {
+        navHostController.currentBackStackEntryFlow.collect { navBackStackEntry ->
+            when {
+                navBackStackEntry.destination.hasRoute(
+                    route = OrderListScreenNavigation::class.qualifiedName.orEmpty(),
+                    arguments = null,
+                ) -> {
+                    onAction(
+                        Main.Action.UpdateNavDestination(
+                            Main.NavigationBarItem.ORDERS,
+                        ),
+                    )
+                }
+
+                navBackStackEntry.destination.hasRoute(
+                    route = MenuScreenDestination::class.qualifiedName.orEmpty(),
+                    arguments = null,
+                ) -> {
+                    onAction(
+                        Main.Action.UpdateNavDestination(
+                            Main.NavigationBarItem.MENU,
+                        ),
+                    )
+                }
+
+                navBackStackEntry.destination.hasRoute(
+                    route = ProfileScreenDestination::class.qualifiedName.orEmpty(),
+                    arguments = null,
+                ) -> {
+                    onAction(
+                        Main.Action.UpdateNavDestination(
+                            Main.NavigationBarItem.PROFILE,
+                        ),
+                    )
+                }
+
+                else ->
+                    onAction(
+                        Main.Action.UpdateNavDestination(
+                            null,
+                        ),
+                    )
+            }
         }
     }
 }

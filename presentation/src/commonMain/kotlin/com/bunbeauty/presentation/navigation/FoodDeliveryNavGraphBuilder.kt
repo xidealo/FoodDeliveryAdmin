@@ -223,7 +223,6 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     additionGroupForMenuProductListScreenRoute(
         showInfoMessage = showInfoMessage,
         goBack = navController::navigateUp,
-
         goToCreateAdditionGroup = { menuProductUuid ->
             navController.navigateToCreateAdditionGroupForMenuProductScreen(
                 menuProductUuid = menuProductUuid,
@@ -307,7 +306,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             // navigate to map - handled by existing navigation
         },
         goToLoginScreen = {
-            //TODO CLEAN BACK STACK
+            // TODO CLEAN BACK STACK
             navController.navigateToLoginScreen(emptyNavOptions)
         },
     )
