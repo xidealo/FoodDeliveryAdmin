@@ -38,7 +38,10 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.s
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.selectAdditionListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.navigateToSelectAdditionGroupScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.selectAdditionGroupScreenRoute
+import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
+import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.navigateToSelectCategoryListScreen
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
@@ -105,6 +108,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 navOptions = emptyNavOptions,
             )
         },
+        back = navController::navigateUp
     )
 
     createMenuProductScreenRoute(
@@ -112,7 +116,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
         goToCategoryList = { selectedCategoryList ->
-            navController.navigateToCategoryListScreen(emptyNavOptions)
+            navController.navigateToSelectCategoryListScreen(
+                selectedCategoryList = selectedCategoryList,
+                navOptions = emptyNavOptions
+            )
         },
         goToCropImage = { imageUri ->
             // navigate to crop image - handled by parent
@@ -123,7 +130,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
         goToCategoryList = { selectedCategoryList ->
-            navController.navigateToCategoryListScreen(emptyNavOptions)
+            navController.navigateToSelectCategoryListScreen(
+                selectedCategoryList = selectedCategoryList,
+                navOptions = emptyNavOptions
+            )
         },
         goToAdditionList = { menuProductUuid ->
             // navigate to addition list - handled by parent
@@ -216,6 +226,22 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     selectCategoryListScreenRoute(
         showInfoMessage = showInfoMessage,
         goBack = navController::navigateUp,
+        onSaveCategoryList = {
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(SELECTED_CATEGORY_UUID_LIST, it)
+//            savedStateHandle.getStateFlow(
+//                key = SELECTED_CATEGORY_UUID_LIST,
+//                initialValue = emptyList<String>()
+//            )
+//                .collect {
+//                    onAction(
+//                        action =
+//                            CreateMenuProduct.Action.SelectCategories(categoryUuidList = it)
+//                    )
+//                }
+            navController.navigateUp()
+        }
     )
     cropImageScreenRoute(
         goBack = navController::navigateUp,

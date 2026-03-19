@@ -13,16 +13,21 @@ class ProfileViewModel(
     private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
-        initState =
-            Profile.DataState(
-                state = Profile.DataState.State.LOADING,
-                user = null,
-                acceptOrders = true,
-                showAcceptOrdersConfirmation = false,
-                logoutLoading = false,
-                isShowLogoutBottomSheet = false,
-            ),
-    ) {
+    initState =
+        Profile.DataState(
+            state = Profile.DataState.State.LOADING,
+            user = null,
+            acceptOrders = true,
+            showAcceptOrdersConfirmation = false,
+            logoutLoading = false,
+            isShowLogoutBottomSheet = false,
+        ),
+) {
+
+    init {
+        handleUpdateData()
+    }
+
     override fun reduce(
         action: Profile.Action,
         dataState: Profile.DataState,

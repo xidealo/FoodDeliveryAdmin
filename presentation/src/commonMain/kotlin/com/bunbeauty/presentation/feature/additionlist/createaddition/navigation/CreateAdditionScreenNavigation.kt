@@ -5,12 +5,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAdditionRouteScreen
+import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object CreateAdditionScreenDestination
 
-fun NavController.navigateToCreateAdditionScreen(navOptions: NavOptions) = navigate(route = CreateAdditionScreenDestination, navOptions)
+fun NavController.navigateToCreateAdditionScreen(navOptions: NavOptions) =
+    navigate(route = CreateAdditionScreenDestination, navOptions)
 
 fun NavGraphBuilder.createAdditionScreenRoute(
     showInfoMessage: (String, Int) -> Unit,
@@ -18,13 +20,13 @@ fun NavGraphBuilder.createAdditionScreenRoute(
     goBack: () -> Unit,
     goToCropImage: (String) -> Unit,
 ) {
-    composable<CreateAdditionScreenDestination> {
+    composable<CreateAdditionScreenDestination> { backStackEntry ->
         CreateAdditionRouteScreen(
             showInfoMessage = showInfoMessage,
             showErrorMessage = showErrorMessage,
             goBack = goBack,
             goToCropImage = goToCropImage,
-            backStackEntry = it,
+            backStackEntry = backStackEntry,
         )
     }
 }

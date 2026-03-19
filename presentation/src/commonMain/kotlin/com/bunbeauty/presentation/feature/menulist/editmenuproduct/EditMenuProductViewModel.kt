@@ -26,46 +26,46 @@ class EditMenuProductViewModel(
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
     private val updateMenuProductUseCase: UpdateMenuProductUseCase,
 ) : BaseStateViewModel<EditMenuProduct.DataState, EditMenuProduct.Action, EditMenuProduct.Event>(
-        initState =
-            EditMenuProduct.DataState(
-                state = EditMenuProduct.DataState.State.LOADING,
-                productUuid = "",
-                productName = "",
-                nameField = TextFieldData.empty,
-                newPriceField = TextFieldData.empty,
-                oldPriceField = TextFieldData.empty,
-                descriptionField = TextFieldData.empty,
-                nutritionField = TextFieldData.empty,
-                units = "",
-                comboDescription = "",
-                categoriesField =
-                    CategoriesFieldData(
-                        value = listOf(),
-                        isError = false,
-                    ),
-                isVisibleInMenu = true,
-                isVisibleInRecommendations = false,
-                imageField =
-                    EditImageFieldData(
-                        value = null,
-                        isError = false,
-                    ),
-                sendingToServer = false,
-                descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
-                additionGroupListField =
-                    AdditionGroupListFieldData(
-                        value = listOf(),
-                        isError = false,
-                    ),
-            ),
-    ) {
+    initState =
+        EditMenuProduct.DataState(
+            state = EditMenuProduct.DataState.State.LOADING,
+            productUuid = "",
+            productName = "",
+            nameField = TextFieldData.empty,
+            newPriceField = TextFieldData.empty,
+            oldPriceField = TextFieldData.empty,
+            descriptionField = TextFieldData.empty,
+            nutritionField = TextFieldData.empty,
+            units = "",
+            comboDescription = "",
+            categoriesField =
+                CategoriesFieldData(
+                    value = listOf(),
+                    isError = false,
+                ),
+            isVisibleInMenu = true,
+            isVisibleInRecommendations = false,
+            imageField =
+                EditImageFieldData(
+                    value = null,
+                    isError = false,
+                ),
+            sendingToServer = false,
+            descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
+            additionGroupListField =
+                AdditionGroupListFieldData(
+                    value = listOf(),
+                    isError = false,
+                ),
+        ),
+) {
     override fun reduce(
         action: EditMenuProduct.Action,
         dataState: EditMenuProduct.DataState,
     ) {
         when (action) {
             is EditMenuProduct.Action.LoadData -> {
-                loadData(productUuid = action.productUuid)
+                loadData(productUuid = action.productUuid, dataState = dataState)
             }
 
             EditMenuProduct.Action.BackClick -> {
@@ -178,7 +178,9 @@ class EditMenuProductViewModel(
                                 value =
                                     categoriesField.value.map { selectableCategory ->
                                         selectableCategory.copy(
-                                            selected = action.categoryUuidList.contains(selectableCategory.category.uuid),
+                                            selected = action.categoryUuidList.contains(
+                                                selectableCategory.category.uuid
+                                            ),
                                         )
                                     },
                                 isError = false,
@@ -220,9 +222,11 @@ class EditMenuProductViewModel(
         }
     }
 
-    private fun loadData(productUuid: String) {
+    private fun loadData(productUuid: String, dataState: EditMenuProduct.DataState) {
         viewModelScope.launchSafe(
             block = {
+                if (dataState.productUuid.isNotEmpty()) return@launchSafe
+
                 val menuProduct = getMenuProductUseCase(productUuid)
                 setState {
                     copy(

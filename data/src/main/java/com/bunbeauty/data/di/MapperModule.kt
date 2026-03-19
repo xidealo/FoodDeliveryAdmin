@@ -33,9 +33,7 @@ fun mapperModule() =
         single { CityMapper() }
 
         single {
-            StatisticMapper(
-                dateTimeUtil = get(),
-            )
+            StatisticMapper()
         }
 
         single {

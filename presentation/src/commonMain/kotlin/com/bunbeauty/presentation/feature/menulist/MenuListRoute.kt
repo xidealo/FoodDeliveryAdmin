@@ -58,6 +58,7 @@ fun MenuListRouteScreen(
     viewModel: MenuListViewModel = koinViewModel(),
     goToCreateMenuProductScreen: () -> Unit,
     goToEditMenuProductScreen: (String) -> Unit,
+    back: () -> Unit,
 ) {
     val menuViewState by viewModel.menuState.collectAsStateWithLifecycle()
 
@@ -91,6 +92,7 @@ fun MenuListRouteScreen(
         onRefresh = {
             viewModel.refreshData()
         },
+        back = back
     )
 }
 
@@ -102,14 +104,14 @@ private fun MenuListScreen(
     onUpdateVisible: (MenuProductItem) -> Unit,
     onLoadData: () -> Unit,
     onRefresh: () -> Unit,
+    back: () -> Unit,
 ) {
     AdminScaffold(
         title = stringResource(Res.string.title_bottom_navigation_menu),
         pullRefreshEnabled = true,
         refreshing = menuListViewState.isRefreshing,
         onRefresh = onRefresh,
-        backActionClick = {
-        },
+        backActionClick = back,
         actionButton = {
             if (menuListViewState.state is MenuListViewState.State.Success) {
                 FloatingButton(
@@ -293,9 +295,9 @@ private fun MenuListScreenPreview() {
     AdminTheme {
         MenuListScreen(
             menuListViewState =
-                com.bunbeauty.presentation.model.MenuListViewState(
+                MenuListViewState(
                     state =
-                        com.bunbeauty.presentation.model.MenuListViewState.State.Success(
+                        MenuListViewState.State.Success(
                             visibleMenuProductItems =
                                 listOf(
                                     MenuProductItem(
@@ -347,6 +349,7 @@ private fun MenuListScreenPreview() {
             onUpdateVisible = {},
             onLoadData = {},
             onRefresh = {},
+            back = {}
         )
     }
 }

@@ -14,11 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.toRoute
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.button.MainButton
 import com.bunbeauty.presentation.designsystem.compose.element.selectableitem.SelectableItem
 import com.bunbeauty.presentation.designsystem.compose.element.selectableitem.SelectableItemView
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.SelectCategoryListScreenDestination
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_category_list_save
 import fooddeliveryadmin.presentation.generated.resources.msg_category_list_selected
@@ -30,9 +33,16 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun SelectCategoryListRouteScreen(
     viewModel: SelectCategoryListViewModel = koinViewModel(),
+    backStackEntry: NavBackStackEntry,
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
+    onSaveCategoryList: (List<String>) -> Unit,
 ) {
+    val selectedCategoryList =
+        backStackEntry
+            .toRoute<SelectCategoryListScreenDestination>()
+            .selectedCategoryList
+
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -50,7 +60,11 @@ fun SelectCategoryListRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        onAction(SelectCategoryList.Action.Init)
+        onAction(
+            SelectCategoryList.Action.Init(
+                selectedCategoryList
+            )
+        )
     }
 
     SelectCategoryListEffect(
@@ -58,6 +72,7 @@ fun SelectCategoryListRouteScreen(
         consumeEffects = consumeEffects,
         showInfoMessage = showInfoMessage,
         goBack = goBack,
+        onSaveCategoryList = onSaveCategoryList
     )
 
     SelectCategoryListScreen(
@@ -72,6 +87,7 @@ private fun SelectCategoryListEffect(
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
+    onSaveCategoryList: (List<String>) -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
@@ -82,7 +98,7 @@ private fun SelectCategoryListEffect(
 
                 is SelectCategoryList.Event.Save -> {
                     showInfoMessage(getString(Res.string.msg_category_list_selected), 2000)
-                    goBack()
+                    onSaveCategoryList(effect.selectedCategoryUuidList)
                 }
             }
         }

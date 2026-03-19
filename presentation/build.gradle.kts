@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
 
 plugins {
     alias(libs.plugins.admin.multiplatform.feature)

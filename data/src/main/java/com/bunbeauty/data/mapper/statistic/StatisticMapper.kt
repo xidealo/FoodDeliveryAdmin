@@ -6,13 +6,11 @@ import com.bunbeauty.domain.model.statistic.Statistic
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import common.Constants.RUBLE_CURRENCY
 
-class StatisticMapper(
-    private val dateTimeUtil: DateTimeUtil,
-) {
+class StatisticMapper() {
     fun toModel(statisticServer: StatisticServer): Statistic =
         Statistic(
             period =
-                dateTimeUtil.formatDateTime(
+                DateTimeUtil.formatDateTime(
                     statisticServer.startPeriodTime,
                     PATTERN_DD_MMMM_HH_MM,
                 ),

@@ -8,19 +8,30 @@ import com.bunbeauty.presentation.feature.menulist.categorylist.SelectCategoryLi
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object SelectCategoryListScreenDestination
+data class SelectCategoryListScreenDestination(
+    val selectedCategoryList: List<String>
+)
 
-fun NavController.navigateToSelectCategoryListScreen(navOptions: NavOptions) =
-    navigate(route = SelectCategoryListScreenDestination, navOptions)
+fun NavController.navigateToSelectCategoryListScreen(
+    selectedCategoryList: List<String>,
+    navOptions: NavOptions
+) = navigate(
+    route = SelectCategoryListScreenDestination(
+        selectedCategoryList = selectedCategoryList
+    ), navOptions
+)
 
 fun NavGraphBuilder.selectCategoryListScreenRoute(
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
+    onSaveCategoryList: (List<String>) -> Unit,
 ) {
     composable<SelectCategoryListScreenDestination> {
         SelectCategoryListRouteScreen(
             showInfoMessage = showInfoMessage,
             goBack = goBack,
+            backStackEntry = it,
+            onSaveCategoryList = onSaveCategoryList
         )
     }
 }

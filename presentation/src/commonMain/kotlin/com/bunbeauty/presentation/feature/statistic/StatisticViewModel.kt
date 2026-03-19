@@ -11,7 +11,6 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 class StatisticViewModel(
     private val getCafeUseCase: GetCafeUseCase,
-    private val dateTimeUtil: DateTimeUtil,
     private val getStatisticUseCase: GetStatisticUseCase,
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
         initState =
@@ -112,18 +111,18 @@ class StatisticViewModel(
                         date =
                             when (period) {
                                 TimeIntervalCode.DAY ->
-                                    dateTimeUtil.formatDateTime(
+                                    DateTimeUtil.formatDateTime(
                                         statistic.startPeriodTime,
                                         PATTERN_DD_MMMM_YYYY,
                                     )
 
                                 TimeIntervalCode.MONTH ->
-                                    dateTimeUtil.formatDateTime(
+                                    DateTimeUtil.formatDateTime(
                                         statistic.startPeriodTime,
                                         PATTERN_MMMM,
                                     )
 
-                                TimeIntervalCode.WEEK -> dateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
+                                TimeIntervalCode.WEEK -> DateTimeUtil.getWeekPeriod(statistic.startPeriodTime)
                             },
                     )
                 }.let { statisticItemList ->

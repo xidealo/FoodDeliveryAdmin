@@ -36,6 +36,8 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
+import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.EditMenuProductScreenDestination
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
@@ -100,6 +102,13 @@ fun EditMenuProductRouteScreen(
                 productUuid = route.menuProductUuid,
             ),
         )
+
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_CATEGORY_UUID_LIST,
+            emptyList<String>()
+        ).collect {
+            onAction(EditMenuProduct.Action.SelectCategories(it))
+        }
     }
 
     EditMenuProductEffect(

@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
@@ -14,45 +15,51 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingIm
 import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.image.ImageFieldData
+import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import kotlinx.coroutines.launch
 
 class CreateMenuProductViewModel(
     private val createMenuProductUseCase: CreateMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
 ) : BaseStateViewModel<CreateMenuProduct.DataState, CreateMenuProduct.Action, CreateMenuProduct.Event>(
-        initState =
-            CreateMenuProduct.DataState(
-                nameField = TextFieldData.empty,
-                newPriceField = TextFieldData.empty,
-                oldPriceField = TextFieldData.empty,
-                descriptionField = TextFieldData.empty,
-                nutritionField = TextFieldData.empty,
-                units = "",
-                comboDescription = "",
-                categoriesField =
-                    CategoriesFieldData(
-                        value = listOf(),
-                        isError = false,
-                    ),
-                isVisibleInMenu = true,
-                isVisibleInRecommendations = false,
-                imageField =
-                    ImageFieldData(
-                        value = null,
-                        isError = false,
-                    ),
-                sendingToServer = false,
-                descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.NO_ERROR,
-            ),
-    ) {
+    initState =
+        CreateMenuProduct.DataState(
+            nameField = TextFieldData.empty,
+            newPriceField = TextFieldData.empty,
+            oldPriceField = TextFieldData.empty,
+            descriptionField = TextFieldData.empty,
+            nutritionField = TextFieldData.empty,
+            units = "",
+            comboDescription = "",
+            categoriesField =
+                CategoriesFieldData(
+                    value = listOf(),
+                    isError = false,
+                ),
+            isVisibleInMenu = true,
+            isVisibleInRecommendations = false,
+            imageField =
+                ImageFieldData(
+                    value = null,
+                    isError = false,
+                ),
+            sendingToServer = false,
+            descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.NO_ERROR,
+        ),
+) {
+
+    init {
+        loadData()
+    }
+
     override fun reduce(
         action: CreateMenuProduct.Action,
         dataState: CreateMenuProduct.DataState,
     ) {
         when (action) {
-            CreateMenuProduct.Action.Init -> loadData()
 
             CreateMenuProduct.Action.BackClick -> {
                 sendEvent {
@@ -148,7 +155,9 @@ class CreateMenuProductViewModel(
                                 value =
                                     categoriesField.value.map { selectableCategory ->
                                         selectableCategory.copy(
-                                            selected = action.categoryUuidList.contains(selectableCategory.category.uuid),
+                                            selected = action.categoryUuidList.contains(
+                                                selectableCategory.category.uuid
+                                            ),
                                         )
                                     },
                                 isError = false,

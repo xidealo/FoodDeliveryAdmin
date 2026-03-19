@@ -90,21 +90,13 @@ private fun ProfileEffect(
     LaunchedEffect(effects) {
         effects.forEach { effect ->
             when (effect) {
-                Profile.Event.OpenSettings -> {
-                    goToSettingsScreen()
-                }
+                Profile.Event.OpenSettings -> goToSettingsScreen()
 
-                Profile.Event.OpenStatistic -> {
-                    goToStatisticScreen()
-                }
+                Profile.Event.OpenStatistic -> goToStatisticScreen()
 
-                Profile.Event.OpenLogin -> {
-                    goToLoginScreen()
-                }
+                Profile.Event.OpenLogin -> goToLoginScreen()
 
-                Profile.Event.OpenMap -> {
-                    goToMapScreen()
-                }
+                Profile.Event.OpenMap -> goToMapScreen()
             }
         }
         consumeEffects()

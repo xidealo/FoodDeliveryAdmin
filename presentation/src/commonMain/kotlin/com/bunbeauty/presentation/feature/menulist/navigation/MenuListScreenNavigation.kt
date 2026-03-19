@@ -10,16 +10,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object MenuListScreenDestination
 
-fun NavController.navigateToMenuListScreen(navOptions: NavOptions) = navigate(route = MenuListScreenDestination, navOptions)
+fun NavController.navigateToMenuListScreen(navOptions: NavOptions) =
+    navigate(route = MenuListScreenDestination, navOptions)
 
 fun NavGraphBuilder.menuListScreenRoute(
     goToCreateMenuProductScreen: () -> Unit,
     goToEditMenuProductScreen: (String) -> Unit,
+    back: () -> Unit,
 ) {
     composable<MenuListScreenDestination> {
         MenuListRouteScreen(
             goToCreateMenuProductScreen = goToCreateMenuProductScreen,
             goToEditMenuProductScreen = goToEditMenuProductScreen,
+            back = back
         )
     }
 }

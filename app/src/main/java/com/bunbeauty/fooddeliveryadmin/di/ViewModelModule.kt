@@ -210,7 +210,6 @@ fun viewModelModule() =
 
         viewModel {
             StatisticViewModel(
-                dateTimeUtil = get(),
                 getStatisticUseCase = get(),
                 getCafeUseCase = get(),
             )

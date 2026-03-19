@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.button.AdminButtonDefaults
@@ -35,6 +36,8 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition
+import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_menu_product_recommend
@@ -67,6 +70,7 @@ fun CreateMenuProductRouteScreen(
     goBack: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
     goToCropImage: (String) -> Unit,
+    backStackEntry: NavBackStackEntry,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -84,16 +88,21 @@ fun CreateMenuProductRouteScreen(
             }
         }
 
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_CATEGORY_UUID_LIST,
+            emptyList<String>()
+        ).collect {
+            onAction(CreateMenuProduct.Action.SelectCategories(it))
+        }
+    }
+
     //  val galleryLauncher =
 //        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 //            uri?.let {
 //                goToCropImage(it.toString())
 //            }
 //        }
-
-    LaunchedEffect(Unit) {
-        onAction(CreateMenuProduct.Action.Init)
-    }
 
     CreateMenuProductEffect(
         effects = effects,
@@ -102,9 +111,6 @@ fun CreateMenuProductRouteScreen(
         showErrorMessage = showErrorMessage,
         goBack = goBack,
         goToCategoryList = goToCategoryList,
-        onCategoriesSelected = { categoryUuidList ->
-            onAction(CreateMenuProduct.Action.SelectCategories(categoryUuidList))
-        },
     )
 
     CreateMenuProductScreen(
@@ -124,7 +130,6 @@ private fun CreateMenuProductEffect(
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
-    onCategoriesSelected: (List<String>) -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
@@ -135,7 +140,6 @@ private fun CreateMenuProductEffect(
 
                 is CreateMenuProduct.Event.NavigateToCategoryList -> {
                     goToCategoryList(effect.selectedCategoryList)
-                    onCategoriesSelected(effect.selectedCategoryList)
                 }
 
                 is CreateMenuProduct.Event.ShowMenuProductCreated -> {

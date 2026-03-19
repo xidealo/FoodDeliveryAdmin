@@ -19,7 +19,9 @@ interface SelectCategoryList {
     }
 
     sealed interface Action : BaseAction {
-        data object Init : Action
+        data class Init(
+            val selectedCategoryList: List<String>
+        ) : Action
 
         data object OnSaveClick : Action
 

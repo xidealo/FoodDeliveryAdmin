@@ -6,46 +6,47 @@ import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryLi
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
-private const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
+const val SELECTED_CATEGORY_UUID_LIST = "selectedCategoryUuidList"
 
 class SelectCategoryListViewModel(
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : BaseStateViewModel<SelectCategoryList.DataState, SelectCategoryList.Action, SelectCategoryList.Event>(
-        initState =
-            SelectCategoryList.DataState(
-                selectableCategoryList = listOf(),
-                hasError = false,
-            ),
-    ) {
-    private val selectedCategoryUuidList: List<String> =
-        savedStateHandle
-            .get<Array<String>>(
-                SELECTED_CATEGORY_UUID_LIST,
-            )?.toList() ?: emptyList()
-
+    initState =
+        SelectCategoryList.DataState(
+            selectableCategoryList = listOf(),
+            hasError = false,
+        ),
+) {
     override fun reduce(
         action: SelectCategoryList.Action,
         dataState: SelectCategoryList.DataState,
     ) {
         when (action) {
-            SelectCategoryList.Action.Init -> loadData()
+            is SelectCategoryList.Action.Init -> loadData(
+                selectedCategoryList = action.selectedCategoryList
+            )
+
             SelectCategoryList.Action.OnBackClick ->
                 sendEvent {
                     SelectCategoryList.Event.Back
                 }
 
-            SelectCategoryList.Action.OnSaveClick ->
-                sendEvent {
-                    SelectCategoryList.Event.Save(
-                        dataState.selectedCategoryList.map { selectableCategory ->
-                            selectableCategory.category.uuid
-                        },
-                    )
+            SelectCategoryList.Action.OnSaveClick -> {
+                val list = dataState.selectedCategoryList.map { selectableCategory ->
+                    selectableCategory.category.uuid
                 }
 
-            is SelectCategoryList.Action.OnCategoryClick ->
-                selectCategory(
+                savedStateHandle[SELECTED_CATEGORY_UUID_LIST] = list
+
+                sendEvent {
+                    SelectCategoryList.Event.Save(
+                        list,
+                    )
+                }
+            }
+
+            is SelectCategoryList.Action.OnCategoryClick -> selectCategory(
                     uuid = action.uuid,
                     selected = action.selected,
                 )
@@ -70,14 +71,16 @@ class SelectCategoryListViewModel(
         }
     }
 
-    private fun loadData() {
+    private fun loadData(
+        selectedCategoryList: List<String>
+    ) {
         viewModelScope.launchSafe(
             block = {
                 setState {
                     copy(
                         selectableCategoryList =
                             getSelectableCategoryListUseCase(
-                                selectedCategoryUuidList = selectedCategoryUuidList,
+                                selectedCategoryUuidList = selectedCategoryList,
                             ),
                     )
                 }

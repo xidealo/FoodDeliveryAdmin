@@ -39,7 +39,6 @@ interface CreateMenuProduct {
     }
 
     sealed interface Action : BaseAction {
-        data object Init : Action
 
         data object BackClick : Action
 
