@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -79,11 +80,11 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
                 navHostController = navController,
             )
         },
-    ) { padding ->
+    ) {
         Column(
-            modifier =
-                Modifier
-                    .padding(padding),
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
         ) {
             ConnectionErrorMessage(visible = mainState.connectionLost)
             NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)

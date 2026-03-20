@@ -189,10 +189,10 @@ private fun CategoryListScreen(
                 else -> Unit
             }
         },
-        actionButtonPosition =
+        floatingActionButtonPosition =
             when (state.state) {
-                is CategoryListViewState.State.Success -> FabPosition.End
-                else -> FabPosition.Center
+                is CategoryListViewState.State.Success -> Alignment.BottomEnd
+                else -> Alignment.Center
             },
     ) {
         when (state.state) {

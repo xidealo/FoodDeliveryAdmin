@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose) {
         }
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
 
         setContent {
             MainScreen()

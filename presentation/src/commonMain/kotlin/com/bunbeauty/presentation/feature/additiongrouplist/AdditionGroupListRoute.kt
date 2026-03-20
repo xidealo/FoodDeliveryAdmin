@@ -128,7 +128,7 @@ fun AdditionGroupListScreen(
                 onClick = goToCreateAdditionGroupScreen,
             )
         },
-        actionButtonPosition = FabPosition.End,
+        floatingActionButtonPosition = Alignment.BottomEnd,
     ) {
         when {
             state.isLoading -> LoadingScreen()

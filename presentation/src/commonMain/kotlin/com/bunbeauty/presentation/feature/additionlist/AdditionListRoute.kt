@@ -141,7 +141,7 @@ fun AdditionListScreen(
                 )
             }
         },
-        actionButtonPosition = FabPosition.End,
+        floatingActionButtonPosition = Alignment.BottomEnd,
     ) {
         when {
             state.hasError -> {

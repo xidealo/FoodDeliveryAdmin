@@ -156,7 +156,7 @@ private fun AdditionGroupForMenuProductScreen(
 
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
-                -> null
+                    -> null
             },
         pullRefreshEnabled = true,
         refreshing = state.isRefreshing,
@@ -217,7 +217,7 @@ private fun AdditionGroupForMenuProductScreen(
 
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
-                -> emptyList()
+                    -> emptyList()
             },
         actionButton = {
             when (state.state) {
@@ -234,10 +234,10 @@ private fun AdditionGroupForMenuProductScreen(
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
                 is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop,
-                -> Unit
+                    -> Unit
             }
         },
-        actionButtonPosition = FabPosition.End,
+        floatingActionButtonPosition = Alignment.BottomEnd,
     ) {
         when (state.state) {
             is AdditionGroupForMenuProductListViewState.State.Loading -> LoadingScreen()
