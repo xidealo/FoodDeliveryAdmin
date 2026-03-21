@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
@@ -9,13 +8,8 @@ import com.bunbeauty.domain.usecase.GetAdditionUseCase
 import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
-import com.bunbeauty.presentation.feature.image.EditImageFieldData
-import com.bunbeauty.presentation.feature.image.ImageFieldData
-import com.bunbeauty.presentation.feature.image.ProductImage
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-
-private const val ADDITION_UUID = "additionUuid"
 
 class EditAdditionViewModel(
     private val getAdditionUseCase: GetAdditionUseCase,
@@ -81,7 +75,7 @@ class EditAdditionViewModel(
                     val addition = getAdditionUseCase(additionUuid = additionUuid)
                     copy(
                         uuid = addition.uuid,
-                        name = name,
+                        name = addition.name,
                         fullName = addition.fullName.orEmpty(),
                         price = addition.price?.toString().orEmpty(),
                         isVisible = addition.isVisible,

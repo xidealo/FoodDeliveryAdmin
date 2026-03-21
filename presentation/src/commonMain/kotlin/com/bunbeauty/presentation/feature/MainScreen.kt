@@ -40,6 +40,7 @@ import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_no_internet
 import fooddeliveryadmin.presentation.generated.resources.msg_common_non_working_day
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -82,9 +83,9 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
         },
     ) {
         Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize(),
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             ConnectionErrorMessage(visible = mainState.connectionLost)
             NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
@@ -192,11 +193,16 @@ private fun HandleEventList(
         events.forEach { event ->
             when (event) {
                 is Main.Event.ShowMessageEvent -> {
-                    launch {
+                    val snackbarJob = launch {
                         snackbarHostState.showSnackbar(
-                            AdminSnackbarVisuals(event.message),
+                            visuals =
+                                AdminSnackbarVisuals(
+                                    adminMessage = event.message,
+                                ),
                         )
                     }
+                    delay(2_000)
+                    snackbarJob.cancel()
                 }
             }
         }
