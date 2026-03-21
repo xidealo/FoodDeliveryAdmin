@@ -4,13 +4,21 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.EditAdditionRouteScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object EditAdditionScreenDestination
+data class EditAdditionScreenDestination(
+    val additionUuid: String
+)
 
-fun NavController.navigateToEditAdditionScreen(navOptions: NavOptions) = navigate(route = EditAdditionScreenDestination, navOptions)
+fun NavController.navigateToEditAdditionScreen(additionUuid: String, navOptions: NavOptions) =
+    navigate(
+        route = EditAdditionScreenDestination(
+            additionUuid = additionUuid
+        ), navOptions
+    )
 
 fun NavGraphBuilder.editAdditionScreenRoute(
     goBack: () -> Unit,
@@ -20,6 +28,7 @@ fun NavGraphBuilder.editAdditionScreenRoute(
         EditAdditionRouteScreen(
             showInfoMessage = showInfoMessage,
             goBack = goBack,
+            additionUuid = it.toRoute<EditAdditionScreenDestination>().additionUuid
         )
     }
 }

@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +28,7 @@ import com.bunbeauty.presentation.designsystem.compose.element.button.AdminButto
 import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.presentation.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.presentation.designsystem.compose.element.card.SwitcherCard
+import com.bunbeauty.presentation.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.presentation.designsystem.compose.element.surface.AdminSurface
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
@@ -34,6 +38,7 @@ import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
 import fooddeliveryadmin.presentation.generated.resources.action_create_addition_save
+import fooddeliveryadmin.presentation.generated.resources.description_product
 import fooddeliveryadmin.presentation.generated.resources.hint_create_addition_full_name
 import fooddeliveryadmin.presentation.generated.resources.hint_create_addition_name
 import fooddeliveryadmin.presentation.generated.resources.hint_create_addition_price
@@ -234,15 +239,15 @@ internal fun CreateAdditionScreen(
                             .fillMaxWidth(),
                     contentAlignment = Alignment.Center,
                 ) {
-//                    AdminAsyncImage(
-//                        modifier =
-//                            Modifier
-//                                .padding(top = 8.dp)
-//                                .clip(shape = RoundedCornerShape(size = 8.dp))
-//                                .size(240.dp),
-//                        imageData = imageData,
-//                        contentDescription = Res.string.description_product,
-//                    )
+                    AdminAsyncImage(
+                        modifier =
+                            Modifier
+                                .padding(top = 8.dp)
+                                .clip(shape = RoundedCornerShape(size = 8.dp))
+                                .size(240.dp),
+                        imageData = imageData,
+                        contentDescription = Res.string.description_product,
+                    )
                 }
             }
 

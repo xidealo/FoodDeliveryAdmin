@@ -5,7 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bunbeauty.presentation.feature.category.CategoryListRouteScreen
-import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
 import kotlinx.serialization.Serializable
 
 @Serializable

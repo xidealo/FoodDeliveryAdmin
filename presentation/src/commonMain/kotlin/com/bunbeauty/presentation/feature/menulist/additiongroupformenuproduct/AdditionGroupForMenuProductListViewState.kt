@@ -11,7 +11,7 @@ import kotlinx.collections.immutable.toPersistentList
 data class AdditionGroupForMenuProductListViewState(
     val state: State,
     val isRefreshing: Boolean,
-    val emptyListAdditionGroup: Boolean,
+    val canBeChangedPlace: Boolean,
 ) : BaseViewState {
     @Immutable
     sealed interface State {
@@ -47,5 +47,5 @@ internal fun AdditionGroupForMenuProductList.DataState.toViewState(): AdditionGr
                     )
             },
         isRefreshing = isRefreshing,
-        emptyListAdditionGroup = emptyListAdditionGroup,
+        canBeChangedPlace = canBeChangedPlace,
     )

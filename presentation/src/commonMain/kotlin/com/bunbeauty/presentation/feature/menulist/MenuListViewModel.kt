@@ -94,9 +94,9 @@ class MenuListViewModel(
     fun goToEditMenuProduct(menuProductItemUuid: String) {
         mutableState.update { oldState ->
             oldState +
-                MenuListEvent.GoToEditMenuProductList(
-                    menuProductItemUuid,
-                )
+                    MenuListEvent.GoToEditMenuProductList(
+                        menuProductItemUuid,
+                    )
         }
     }
 

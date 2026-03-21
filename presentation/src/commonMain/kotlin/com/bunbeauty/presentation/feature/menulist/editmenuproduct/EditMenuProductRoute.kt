@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,12 +17,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.toRoute
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.button.AdminButtonDefaults
@@ -29,6 +30,7 @@ import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingBut
 import com.bunbeauty.presentation.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.presentation.designsystem.compose.element.card.NavigationTextCard
 import com.bunbeauty.presentation.designsystem.compose.element.card.SwitcherCard
+import com.bunbeauty.presentation.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.presentation.designsystem.compose.element.surface.AdminSurface
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
@@ -36,9 +38,7 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
-import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
-import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.EditMenuProductScreenDestination
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_menu_product_recommend
@@ -46,6 +46,7 @@ import fooddeliveryadmin.presentation.generated.resources.action_common_menu_pro
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
 import fooddeliveryadmin.presentation.generated.resources.action_order_details_save
 import fooddeliveryadmin.presentation.generated.resources.array_common_menu_product_units
+import fooddeliveryadmin.presentation.generated.resources.description_product
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_combo_description
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_description
 import fooddeliveryadmin.presentation.generated.resources.hint_common_menu_product_name
@@ -58,21 +59,26 @@ import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_l
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 private const val IMAGE = "image/*"
 
 @Composable
 fun EditMenuProductRouteScreen(
-    viewModel: EditMenuProductViewModel = koinViewModel(),
+    menuProductUuid: String,
     showInfoMessage: (String, Int) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
     goToAdditionList: (String) -> Unit,
     goToCropImage: (String) -> Unit,
-    backStackEntry: NavBackStackEntry,
+    savedStateHandle: SavedStateHandle
 ) {
-    val route = backStackEntry.toRoute<EditMenuProductScreenDestination>()
+
+    val viewModel: EditMenuProductViewModel = koinViewModel(
+        parameters = { parametersOf(menuProductUuid) }
+    )
+
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -89,27 +95,21 @@ fun EditMenuProductRouteScreen(
             }
         }
 
+    LaunchedEffect(Unit) {
+        savedStateHandle.getStateFlow(
+            SELECTED_CATEGORY_UUID_LIST,
+            viewState.categoriesField.value.map { it.category.uuid }
+        ).collect {
+            onAction(EditMenuProduct.Action.SelectCategories(it))
+        }
+    }
+
 //    val galleryLauncher =
 //        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 //            uri?.let {
 //                goToCropImage(it.toString())
 //            }
 //        }
-
-    LaunchedEffect(route.menuProductUuid) {
-        onAction(
-            EditMenuProduct.Action.LoadData(
-                productUuid = route.menuProductUuid,
-            ),
-        )
-
-        backStackEntry.savedStateHandle.getStateFlow(
-            SELECTED_CATEGORY_UUID_LIST,
-            emptyList<String>()
-        ).collect {
-            onAction(EditMenuProduct.Action.SelectCategories(it))
-        }
-    }
 
     EditMenuProductEffect(
         effects = effects,
@@ -119,9 +119,6 @@ fun EditMenuProductRouteScreen(
         goBack = goBack,
         goToCategoryList = goToCategoryList,
         goToAdditionList = goToAdditionList,
-        onCategoriesSelected = { categoryUuidList ->
-            onAction(EditMenuProduct.Action.SelectCategories(categoryUuidList))
-        },
     )
 
     EditMenuProductScreen(
@@ -130,9 +127,7 @@ fun EditMenuProductRouteScreen(
         addPhotoClick = {
             //  galleryLauncher.launch(IMAGE)
         },
-    ) { productUuid ->
-        goToAdditionList(productUuid)
-    }
+    )
 }
 
 @Composable
@@ -144,7 +139,6 @@ private fun EditMenuProductEffect(
     consumeEffects: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
     goToAdditionList: (String) -> Unit,
-    onCategoriesSelected: (List<String>) -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
@@ -155,7 +149,6 @@ private fun EditMenuProductEffect(
 
                 is EditMenuProduct.Event.NavigateToCategoryList -> {
                     goToCategoryList(effect.selectedCategoryList)
-                    onCategoriesSelected(effect.selectedCategoryList)
                 }
 
                 is EditMenuProduct.Event.NavigateToAdditionList -> {
@@ -192,7 +185,6 @@ private fun EditMenuProductScreen(
     state: EditMenuProductViewState,
     onAction: (EditMenuProduct.Action) -> Unit,
     addPhotoClick: () -> Unit,
-    onAdditionListClick: (String) -> Unit,
 ) {
     AdminScaffold(
         title = state.title,
@@ -230,7 +222,6 @@ private fun EditMenuProductScreen(
                 EditMenuProductSuccessScreen(
                     state = state.state,
                     onAction = onAction,
-                    onAdditionListClick = onAdditionListClick,
                 )
             }
         }
@@ -280,7 +271,6 @@ private fun BottomButtons(
 private fun EditMenuProductSuccessScreen(
     state: EditMenuProductViewState.State.Success,
     onAction: (EditMenuProduct.Action) -> Unit,
-    onAdditionListClick: (String) -> Unit,
 ) {
     Column(
         modifier =
@@ -310,7 +300,7 @@ private fun EditMenuProductSuccessScreen(
             isError = state.additionListField.isError,
             errorText = state.additionListField.errorResId,
             onClick = {
-                onAdditionListClick("") // TODO: Need productUuid
+                onAction(EditMenuProduct.Action.AdditionListClick)
             },
         )
 
@@ -331,14 +321,14 @@ private fun EditMenuProductSuccessScreen(
             enabled = !state.sendingToServer,
         )
         state.imageField.value?.let { imageData ->
-//            AdminAsyncImage(
-//                modifier =
-//                    Modifier
-//                        .fillMaxWidth()
-//                        .clip(RoundedCornerShape(8.dp)),
-//                imageData = imageData,
-//                contentDescription = Res.string.description_product,
-//            )
+           AdminAsyncImage(
+               modifier =
+                   Modifier
+                       .fillMaxWidth()
+                       .clip(RoundedCornerShape(8.dp)),
+               imageData = imageData,
+               contentDescription = Res.string.description_product,
+           )
         }
 
         Spacer(modifier = Modifier.height(120.dp))

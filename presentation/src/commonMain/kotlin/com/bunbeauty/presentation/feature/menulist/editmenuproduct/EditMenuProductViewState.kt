@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.presentation.designsystem.compose.CardFieldUi
 import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
+import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.feature.image.EditImageFieldData
 import com.bunbeauty.presentation.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.toCardFieldUi
@@ -52,7 +53,7 @@ data class EditMenuProductViewState(
 
     @Immutable
     data class EditImageFieldUi(
-        val value: Any?,
+        val value: ImageData?,
         val isError: Boolean,
         val isSelected: Boolean,
     )
@@ -119,7 +120,7 @@ fun AdditionGroupListFieldData.toCardFieldUi(): CardFieldUi =
 
 internal fun EditImageFieldData.toEditImageFieldUi(): EditMenuProductViewState.EditImageFieldUi =
     EditMenuProductViewState.EditImageFieldUi(
-        value = this.value,
+        value = ImageData.HttpUrl(value?.newImageUri ?: value?.photoLink ?: ""),
         isError = this.isError,
         isSelected = this.value != null,
     )

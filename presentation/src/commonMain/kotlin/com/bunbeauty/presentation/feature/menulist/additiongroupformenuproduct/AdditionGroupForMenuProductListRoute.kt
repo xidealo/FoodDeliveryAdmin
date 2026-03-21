@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -59,6 +58,7 @@ fun AdditionGroupForMenuProductListRouteScreen(
         backStackEntry
             .toRoute<AdditionGroupForMenuProductListScreenDestination>()
             .menuProductUuid
+
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -75,7 +75,7 @@ fun AdditionGroupForMenuProductListRouteScreen(
             }
         }
 
-    LaunchedEffect(menuProductUuid) {
+    LaunchedEffect(Unit) {
         onAction(AdditionGroupForMenuProductList.Action.Init(menuProductUuid = menuProductUuid))
     }
 
@@ -186,7 +186,7 @@ private fun AdditionGroupForMenuProductScreen(
         topActions =
             when (state.state) {
                 is AdditionGroupForMenuProductListViewState.State.Success ->
-                    if (state.emptyListAdditionGroup) {
+                    if (state.canBeChangedPlace) {
                         emptyList()
                     } else {
                         listOf(

@@ -25,6 +25,7 @@ class EditMenuProductViewModel(
     private val getMenuProductUseCase: GetMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
     private val updateMenuProductUseCase: UpdateMenuProductUseCase,
+    private val menuProductUuid: String,
 ) : BaseStateViewModel<EditMenuProduct.DataState, EditMenuProduct.Action, EditMenuProduct.Event>(
     initState =
         EditMenuProduct.DataState(
@@ -59,14 +60,18 @@ class EditMenuProductViewModel(
                 ),
         ),
 ) {
+
+    init {
+        loadData(
+            productUuid = menuProductUuid,
+        )
+    }
+
     override fun reduce(
         action: EditMenuProduct.Action,
         dataState: EditMenuProduct.DataState,
     ) {
         when (action) {
-            is EditMenuProduct.Action.LoadData -> {
-                loadData(productUuid = action.productUuid, dataState = dataState)
-            }
 
             EditMenuProduct.Action.BackClick -> {
                 sendEvent {
@@ -222,10 +227,9 @@ class EditMenuProductViewModel(
         }
     }
 
-    private fun loadData(productUuid: String, dataState: EditMenuProduct.DataState) {
+    private fun loadData(productUuid: String) {
         viewModelScope.launchSafe(
             block = {
-                if (dataState.productUuid.isNotEmpty()) return@launchSafe
 
                 val menuProduct = getMenuProductUseCase(productUuid)
                 setState {

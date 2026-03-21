@@ -42,9 +42,6 @@ interface EditMenuProduct {
     }
 
     sealed interface Action : BaseAction {
-        data class LoadData(
-            val productUuid: String,
-        ) : Action
 
         data object BackClick : Action
 

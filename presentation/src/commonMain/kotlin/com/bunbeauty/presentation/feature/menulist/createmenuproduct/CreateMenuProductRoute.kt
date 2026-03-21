@@ -36,8 +36,7 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.additionlist.createaddition.CreateAddition
-import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_menu_product_recommend
@@ -88,22 +87,22 @@ fun CreateMenuProductRouteScreen(
             }
         }
 
-    LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow(
-            SELECTED_CATEGORY_UUID_LIST,
-            emptyList<String>()
-        ).collect {
-            onAction(CreateMenuProduct.Action.SelectCategories(it))
-        }
-    }
-
     //  val galleryLauncher =
 //        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 //            uri?.let {
 //                goToCropImage(it.toString())
 //            }
+
 //        }
 
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_CATEGORY_UUID_LIST,
+            viewState.categoriesField.value.map { it.category.uuid }
+        ).collect {
+            onAction(CreateMenuProduct.Action.SelectCategories(it))
+        }
+    }
     CreateMenuProductEffect(
         effects = effects,
         consumeEffects = consumeEffects,

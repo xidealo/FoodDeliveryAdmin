@@ -3,6 +3,7 @@ package com.bunbeauty.presentation.feature.additionlist.createaddition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.bunbeauty.presentation.designsystem.compose.TextFieldUi
+import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.feature.image.ImageFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import fooddeliveryadmin.presentation.generated.resources.Res
@@ -20,7 +21,7 @@ data class CreateAdditionViewState(
 ) : BaseViewState {
     @Immutable
     data class ImageFieldUi(
-        val value: Any?,
+        val value: ImageData?,
         val isError: Boolean,
         val isSelected: Boolean,
     ) {
@@ -59,7 +60,7 @@ internal fun CreateAddition.DataState.toViewState(): CreateAdditionViewState =
 
 internal fun ImageFieldData.toImageFieldUi(): CreateAdditionViewState.ImageFieldUi =
     CreateAdditionViewState.ImageFieldUi(
-        value = this.value,
+        value = ImageData.HttpUrl(value.orEmpty()),
         isError = this.isError,
         isSelected = this.value != null,
     )

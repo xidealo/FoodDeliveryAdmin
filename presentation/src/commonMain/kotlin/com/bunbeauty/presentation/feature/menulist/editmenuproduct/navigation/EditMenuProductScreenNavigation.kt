@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductRouteScreen
 import kotlinx.serialization.Serializable
 
@@ -15,7 +16,10 @@ data class EditMenuProductScreenDestination(
 fun NavController.navigateToEditMenuProductScreen(
     menuProductUuid: String,
     navOptions: NavOptions,
-) = navigate(route = EditMenuProductScreenDestination(menuProductUuid = menuProductUuid), navOptions)
+) = navigate(
+    route = EditMenuProductScreenDestination(menuProductUuid = menuProductUuid),
+    navOptions
+)
 
 fun NavGraphBuilder.editMenuProductScreenRoute(
     showInfoMessage: (String, Int) -> Unit,
@@ -33,7 +37,9 @@ fun NavGraphBuilder.editMenuProductScreenRoute(
             goToCategoryList = goToCategoryList,
             goToAdditionList = goToAdditionList,
             goToCropImage = goToCropImage,
-            backStackEntry = backStackEntry,
+            menuProductUuid = backStackEntry
+                .toRoute<EditMenuProductScreenDestination>().menuProductUuid,
+            savedStateHandle = backStackEntry.savedStateHandle
         )
     }
 }

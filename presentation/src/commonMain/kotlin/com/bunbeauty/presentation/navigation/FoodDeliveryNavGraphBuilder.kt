@@ -34,14 +34,13 @@ import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.c
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.navigateToEditAdditionGroupForMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.navigation.additionGroupForMenuProductListScreenRoute
+import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.navigation.navigateToAdditionGroupForMenuProductListScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.navigateToSelectAdditionListScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.selectAdditionListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.navigateToSelectAdditionGroupScreen
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.selectAdditionGroupScreenRoute
-import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.navigateToSelectCategoryListScreen
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
-import com.bunbeauty.presentation.feature.menulist.createmenuproduct.CreateMenuProduct
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
@@ -59,6 +58,7 @@ import com.bunbeauty.presentation.feature.settings.navigation.settingsScreenRout
 import com.bunbeauty.presentation.feature.statistic.navigation.navigateToStatisticScreen
 import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
 import com.bunbeauty.presentation.feature.statisticdetails.navigation.statisticDetailsScreenRoute
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 
 internal val emptyNavOptions = navOptions { }
 
@@ -136,7 +136,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
         goToAdditionList = { menuProductUuid ->
-            // navigate to addition list - handled by parent
+            navController.navigateToAdditionGroupForMenuProductListScreen(
+                menuProductUuid,
+                emptyNavOptions
+            )
         },
         goToCropImage = { imageUri ->
             // navigate to crop image - handled by parent
@@ -162,7 +165,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
         goToEditAdditionScreen = { uuid ->
-            navController.navigateToEditAdditionScreen(emptyNavOptions)
+            navController.navigateToEditAdditionScreen(uuid, emptyNavOptions)
         },
     )
     createAdditionScreenRoute(
@@ -226,20 +229,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     selectCategoryListScreenRoute(
         showInfoMessage = showInfoMessage,
         goBack = navController::navigateUp,
-        onSaveCategoryList = {
+        onSaveCategoryList = { categoryList ->
             navController.previousBackStackEntry
                 ?.savedStateHandle
-                ?.set(SELECTED_CATEGORY_UUID_LIST, it)
-//            savedStateHandle.getStateFlow(
-//                key = SELECTED_CATEGORY_UUID_LIST,
-//                initialValue = emptyList<String>()
-//            )
-//                .collect {
-//                    onAction(
-//                        action =
-//                            CreateMenuProduct.Action.SelectCategories(categoryUuidList = it)
-//                    )
-//                }
+                ?.set(SELECTED_CATEGORY_UUID_LIST, categoryList)
             navController.navigateUp()
         }
     )

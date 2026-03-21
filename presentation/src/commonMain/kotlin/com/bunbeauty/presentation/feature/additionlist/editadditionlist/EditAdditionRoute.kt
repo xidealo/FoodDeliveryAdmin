@@ -37,6 +37,7 @@ import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.Ed
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAdditionViewState
 import com.bunbeauty.presentation.feature.common.TextFieldUi
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
@@ -56,13 +57,18 @@ import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun EditAdditionRouteScreen(
-    viewModel: EditAdditionViewModel = koinViewModel(),
+    additionUuid: String,
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
 ) {
+    val viewModel: EditAdditionViewModel = koinViewModel(
+        parameters = { parametersOf(additionUuid) }
+    )
+
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {

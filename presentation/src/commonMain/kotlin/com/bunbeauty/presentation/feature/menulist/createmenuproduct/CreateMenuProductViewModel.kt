@@ -15,11 +15,9 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingIm
 import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.image.ImageFieldData
-import com.bunbeauty.presentation.feature.menulist.categorylist.SELECTED_CATEGORY_UUID_LIST
 import com.bunbeauty.presentation.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.presentation.feature.menulist.common.TextFieldData
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
-import kotlinx.coroutines.launch
 
 class CreateMenuProductViewModel(
     private val createMenuProductUseCase: CreateMenuProductUseCase,

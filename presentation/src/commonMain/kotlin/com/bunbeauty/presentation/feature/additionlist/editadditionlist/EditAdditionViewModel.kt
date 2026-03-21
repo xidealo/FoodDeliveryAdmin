@@ -6,37 +6,46 @@ import com.bunbeauty.domain.exception.updateaddition.AdditionNameException
 import com.bunbeauty.domain.feature.additionlist.UpdateAdditionUseCase
 import com.bunbeauty.domain.model.addition.UpdateAddition
 import com.bunbeauty.domain.usecase.GetAdditionUseCase
+import com.bunbeauty.presentation.designsystem.compose.element.image.ImageData
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
+import com.bunbeauty.presentation.feature.image.EditImageFieldData
+import com.bunbeauty.presentation.feature.image.ImageFieldData
+import com.bunbeauty.presentation.feature.image.ProductImage
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 
 private const val ADDITION_UUID = "additionUuid"
 
 class EditAdditionViewModel(
-    private val savedStateHandle: SavedStateHandle,
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase,
+    private val additionUuid: String
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
-        initState =
-            EditAddition.DataState(
-                state = EditAddition.DataState.State.LOADING,
-                uuid = "",
-                name = "",
-                price = "",
-                isLoading = true,
-                isVisible = false,
-                fullName = "",
-                hasEditNameError = false,
-                tag = "",
-                imageFieldData =
-                    ImageFieldUi(
-                        value = null,
-                        isError = false,
-                        isSelected = false,
-                    ),
-            ),
-    ) {
+    initState =
+        EditAddition.DataState(
+            state = EditAddition.DataState.State.LOADING,
+            uuid = "",
+            name = "",
+            price = "",
+            isLoading = true,
+            isVisible = false,
+            fullName = "",
+            hasEditNameError = false,
+            tag = "",
+            imageFieldData =
+                ImageFieldUi(
+                    value = null,
+                    isError = false,
+                    isSelected = false,
+                ),
+        ),
+) {
+
+    init {
+        loadData()
+    }
+
     override fun reduce(
         action: EditAddition.Action,
         dataState: EditAddition.DataState,
@@ -69,9 +78,7 @@ class EditAdditionViewModel(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    val additionUuidNavigation =
-                        savedStateHandle.get<String>(ADDITION_UUID).orEmpty()
-                    val addition = getAdditionUseCase(additionUuid = additionUuidNavigation)
+                    val addition = getAdditionUseCase(additionUuid = additionUuid)
                     copy(
                         uuid = addition.uuid,
                         name = name,
@@ -80,15 +87,15 @@ class EditAdditionViewModel(
                         isVisible = addition.isVisible,
                         tag = addition.tag.orEmpty(),
                         isLoading = false,
-//                        imageFieldData =
-//                            EditImageFieldData(
-//                                value =
-//                                    ProductImage(
-//                                        photoLink = addition.photoLink,
-//                                        newImageUri = null,
-//                                    ),
-//                                isError = false,
-//                            ),
+                        state = EditAddition.DataState.State.SUCCESS,
+                        imageFieldData =
+                            ImageFieldUi(
+                                value = ImageData.HttpUrl(
+                                    url = addition.photoLink,
+                                ),
+                                isError = false,
+                                isSelected = false,
+                            ),
                     )
                 }
             },
