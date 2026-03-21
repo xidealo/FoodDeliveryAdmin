@@ -108,11 +108,13 @@ private fun EditAdditionEffect(
                     goBack()
                 }
 
-                is EditAddition.Event.ShowUpdateAdditionSuccess ->
+                is EditAddition.Event.ShowUpdateAdditionSuccess -> {
                     showInfoMessage(
                         getString(Res.string.msg_edit_addition_updated, effect.additionName),
-                        3,
+                        2000,
                     )
+                    goBack()
+                }
             }
         }
         consumeEffects()
