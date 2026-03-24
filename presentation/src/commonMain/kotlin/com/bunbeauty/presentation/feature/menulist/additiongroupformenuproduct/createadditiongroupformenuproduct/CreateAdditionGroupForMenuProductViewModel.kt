@@ -15,31 +15,35 @@ class CreateAdditionGroupForMenuProductViewModel(
     private val getAdditionGroupUseCase: GetAdditionGroupUseCase,
     val getAdditionListNameUseCase: GetAdditionListNameUseCase,
     val getAdditionUseCase: GetAdditionUseCase,
+    private val menuProductUuid: String,
 ) : BaseStateViewModel<CreateAdditionGroupForMenu.DataState, CreateAdditionGroupForMenu.Action, CreateAdditionGroupForMenu.Event>(
-        initState =
-            CreateAdditionGroupForMenu.DataState(
-                state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
-                groupName = null,
-                additionNameList = null,
-                menuProductUuid = "",
-                editedAdditionGroupUuid = null,
-                additionGroupForMenuProductUuid = "",
-                createdAdditionListUuid = listOf(),
-                isVisible = false,
-                groupHasError = false,
-                isSaveLoading = false,
-                additionListHasError = false,
-            ),
-    ) {
+    initState =
+        CreateAdditionGroupForMenu.DataState(
+            state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
+            groupName = null,
+            additionNameList = null,
+            menuProductUuid = "",
+            editedAdditionGroupUuid = null,
+            additionGroupForMenuProductUuid = "",
+            createdAdditionListUuid = listOf(),
+            isVisible = false,
+            groupHasError = false,
+            isSaveLoading = false,
+            additionListHasError = false,
+        ),
+) {
+
+    init {
+        initData(
+            menuProductUuid = menuProductUuid,
+        )
+    }
+
     override fun reduce(
         action: CreateAdditionGroupForMenu.Action,
         dataState: CreateAdditionGroupForMenu.DataState,
     ) {
         when (action) {
-            is CreateAdditionGroupForMenu.Action.Init ->
-                initData(
-                    menuProductUuid = action.menuProductUuid,
-                )
 
             is CreateAdditionGroupForMenu.Action.SelectAdditionGroup -> {
                 setSelectedAdditionGroup(action.additionGroupUuid)
@@ -83,7 +87,9 @@ class CreateAdditionGroupForMenuProductViewModel(
         }
     }
 
-    private fun setSelectedAdditionGroup(uuid: String) {
+    private fun setSelectedAdditionGroup(uuid: String?) {
+        if (uuid == null) return
+
         viewModelScope.launchSafe(
             block = {
                 val selectedAdditionGroup =

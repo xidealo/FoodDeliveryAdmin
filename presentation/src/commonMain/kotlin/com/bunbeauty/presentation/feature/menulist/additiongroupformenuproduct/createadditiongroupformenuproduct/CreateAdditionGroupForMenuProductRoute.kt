@@ -19,6 +19,10 @@ import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.CreateAdditionGroupForMenuProductScreenDestination
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
+import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_create_addition_group_for_menu_product_save
 import fooddeliveryadmin.presentation.generated.resources.error_create_addition_group_for_menu_product_addition
@@ -32,10 +36,10 @@ import fooddeliveryadmin.presentation.generated.resources.title_create_addition_
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun CreateAdditionGroupForMenuProductRouteScreen(
-    viewModel: CreateAdditionGroupForMenuProductViewModel = koinViewModel(),
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     goToSelectAdditionGroup: (String, String, String?) -> Unit,
@@ -43,6 +47,10 @@ fun CreateAdditionGroupForMenuProductRouteScreen(
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<CreateAdditionGroupForMenuProductScreenDestination>()
+    val viewModel: CreateAdditionGroupForMenuProductViewModel = koinViewModel(
+        parameters = { parametersOf(route.menuProductUuid) }
+    )
+
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -60,11 +68,16 @@ fun CreateAdditionGroupForMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        onAction(
-            CreateAdditionGroupForMenu.Action.Init(
-                menuProductUuid = route.menuProductUuid,
-            ),
-        )
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_ADDITION_GROUP_UUID,
+            viewState.editedAdditionGroupUuid
+        ).collect {
+            onAction(
+                CreateAdditionGroupForMenu.Action.SelectAdditionGroup(
+                    additionGroupUuid = it
+                )
+            )
+        }
     }
 
     CreateAdditionGroupForMenuEffect(
@@ -171,7 +184,7 @@ private fun CreateAdditionGroupForMenuProductSuccessScreen(
 ) {
     Column {
         NavigationTextCard(
-            valueText = state.groupName.orEmpty(),
+            valueText = state.groupName,
             onClick = {
                 onAction(
                     CreateAdditionGroupForMenu.Action.OnAdditionGroupClick,
@@ -188,7 +201,7 @@ private fun CreateAdditionGroupForMenuProductSuccessScreen(
         )
 
         NavigationTextCard(
-            valueText = state.additionNameList.orEmpty(),
+            valueText = state.additionNameList,
             onClick = {
                 onAction(
                     CreateAdditionGroupForMenu.Action.OnAdditionListClick,

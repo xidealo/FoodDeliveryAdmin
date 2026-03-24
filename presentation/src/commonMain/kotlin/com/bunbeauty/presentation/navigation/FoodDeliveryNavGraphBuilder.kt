@@ -59,6 +59,7 @@ import com.bunbeauty.presentation.feature.settings.navigation.settingsScreenRout
 import com.bunbeauty.presentation.feature.statistic.navigation.navigateToStatisticScreen
 import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
 import com.bunbeauty.presentation.feature.statisticdetails.navigation.statisticDetailsScreenRoute
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 
 internal val emptyNavOptions = navOptions { }
@@ -305,7 +306,9 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showInfoMessage = showInfoMessage,
         goBack = navController::navigateUp,
         onAdditionGroupSelected = { additionGroupUuid, additionGroupName ->
-            // Result handled by calling screen
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(SELECTED_ADDITION_GROUP_UUID, additionGroupUuid)
         },
     )
     selectAdditionListScreenRoute(

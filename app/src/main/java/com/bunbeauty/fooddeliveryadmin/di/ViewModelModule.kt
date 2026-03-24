@@ -138,6 +138,7 @@ fun viewModelModule() =
                 getAdditionGroupUseCase = get(),
                 getAdditionListNameUseCase = get(),
                 getAdditionUseCase = get(),
+                menuProductUuid = it.get()
             )
         }
 

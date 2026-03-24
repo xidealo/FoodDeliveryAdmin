@@ -26,12 +26,9 @@ interface CreateAdditionGroupForMenu {
     }
 
     sealed interface Action : BaseAction {
-        data class Init(
-            val menuProductUuid: String,
-        ) : Action
 
         data class SelectAdditionGroup(
-            val additionGroupUuid: String,
+            val additionGroupUuid: String?,
         ) : Action
 
         data class SelectAdditionList(
