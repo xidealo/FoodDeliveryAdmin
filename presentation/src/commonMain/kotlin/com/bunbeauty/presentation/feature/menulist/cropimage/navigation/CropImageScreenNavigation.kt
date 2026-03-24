@@ -4,11 +4,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageRouteScreen
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
-const val URI_ARG = "uri"
 
 @Serializable
 data class CropImageScreenDestination(
@@ -25,7 +25,7 @@ fun NavGraphBuilder.cropImageScreenRoute(goBack: () -> Unit) {
         CropImageRouteScreen(
             viewModel = koinViewModel(),
             goBack = goBack,
-            backStackEntry = backStackEntry,
+            uri = backStackEntry.toRoute<CropImageScreenDestination>().uri
         )
     }
 }

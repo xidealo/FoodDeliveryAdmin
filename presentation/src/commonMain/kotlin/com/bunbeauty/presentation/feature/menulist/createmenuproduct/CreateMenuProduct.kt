@@ -85,6 +85,7 @@ interface CreateMenuProduct {
         ) : Action
 
         data object CreateMenuProductClick : Action
+        data object SelectPhotoFromGallery : Action
     }
 
     sealed interface Event : BaseEvent {
@@ -103,5 +104,6 @@ interface CreateMenuProduct {
         data object ShowImageUploadingFailed : Event
 
         data object ShowEmptyPhoto : Event
+        data object ShowGallery : Event
     }
 }

@@ -44,6 +44,7 @@ import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selec
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
+import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.navigateToCropImageScreen
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
@@ -122,7 +123,9 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
         goToCropImage = { imageUri ->
-            // navigate to crop image - handled by parent
+            navController.navigateToCropImageScreen(
+                uri = imageUri, navOptions = emptyNavOptions
+            )
         },
     )
     editMenuProductScreenRoute(

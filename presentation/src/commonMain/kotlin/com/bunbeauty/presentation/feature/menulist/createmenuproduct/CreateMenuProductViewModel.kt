@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
@@ -187,6 +186,7 @@ class CreateMenuProductViewModel(
                 }
 
             CreateMenuProduct.Action.CreateMenuProductClick -> createMenuProduct()
+            CreateMenuProduct.Action.SelectPhotoFromGallery -> openGallery()
         }
     }
 
@@ -364,6 +364,12 @@ class CreateMenuProductViewModel(
                     CreateMenuProduct.Event.ShowSomethingWentWrong
                 }
             }
+        }
+    }
+
+    private fun openGallery() {
+        sendEvent {
+            CreateMenuProduct.Event.ShowGallery
         }
     }
 }

@@ -160,6 +160,10 @@ private fun CreateMenuProductEffect(
                 CreateMenuProduct.Event.ShowEmptyPhoto -> {
                     showErrorMessage("Добавьте фотографию")
                 }
+
+                CreateMenuProduct.Event.ShowGallery -> {
+
+                }
             }
         }
         consumeEffects()
