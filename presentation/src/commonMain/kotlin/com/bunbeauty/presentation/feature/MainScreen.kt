@@ -40,8 +40,8 @@ import com.bunbeauty.presentation.viewmodel.main.MainViewModel
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.error_common_no_internet
 import fooddeliveryadmin.presentation.generated.resources.msg_common_non_working_day
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -50,12 +50,9 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
     val mainState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val events by viewModel.events.collectAsStateWithLifecycle()
-
-    HandleEventList(
-        events = events,
+    HandleSnackbarMessages(
+        snackbarMessages = viewModel.snackbarMessages,
         snackbarHostState = snackbarHostState,
-        consumeEventList = viewModel::consumeEvents,
     )
     val navController = rememberNavController()
 
@@ -184,29 +181,20 @@ private fun AdminSnackbarHost(
 }
 
 @Composable
-private fun HandleEventList(
-    events: List<Main.Event>,
+private fun HandleSnackbarMessages(
+    snackbarMessages: Flow<Main.Message>,
     snackbarHostState: SnackbarHostState,
-    consumeEventList: (List<Main.Event>) -> Unit,
 ) {
-    LaunchedEffect(events) {
-        events.forEach { event ->
-            when (event) {
-                is Main.Event.ShowMessageEvent -> {
-                    val snackbarJob = launch {
-                        snackbarHostState.showSnackbar(
-                            visuals =
-                                AdminSnackbarVisuals(
-                                    adminMessage = event.message,
-                                ),
-                        )
-                    }
-                    delay(2_000)
-                    snackbarJob.cancel()
-                }
-            }
+    LaunchedEffect(Unit) {
+        snackbarMessages.collectLatest { message ->
+            snackbarHostState.currentSnackbarData?.dismiss()
+            snackbarHostState.showSnackbar(
+                visuals =
+                    AdminSnackbarVisuals(
+                        adminMessage = message,
+                    ),
+            )
         }
-        consumeEventList(events)
     }
 }
 

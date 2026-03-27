@@ -4,8 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.asSharedFlow
 
 class MainViewModel(
     getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,
@@ -17,6 +20,14 @@ class MainViewModel(
                 navigationBarOptions = Main.NavigationBarOptions.Hidden,
             ),
     ) {
+    private val mutableSnackbarMessages =
+        MutableSharedFlow<Main.Message>(
+            replay = 0,
+            extraBufferCapacity = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        )
+    val snackbarMessages = mutableSnackbarMessages.asSharedFlow()
+
     init {
         viewModelScope.launchSafe(
             block = {
@@ -71,14 +82,11 @@ class MainViewModel(
         text: String,
         type: Main.Message.Type,
     ) {
-        sendEvent {
-            Main.Event.ShowMessageEvent(
-                message =
-                    Main.Message(
-                        type = type,
-                        text = text,
-                    ),
-            )
-        }
+        mutableSnackbarMessages.tryEmit(
+            Main.Message(
+                type = type,
+                text = text,
+            ),
+        )
     }
 }
