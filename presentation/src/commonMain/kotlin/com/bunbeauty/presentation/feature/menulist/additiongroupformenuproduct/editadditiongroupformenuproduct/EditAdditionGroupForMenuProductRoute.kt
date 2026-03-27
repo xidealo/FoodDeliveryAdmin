@@ -19,6 +19,8 @@ import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.EditAdditionGroupForMenuProductScreenDestination
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_edit_addition_group_for_menu_product_save
 import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
@@ -64,6 +66,32 @@ fun EditAdditionGroupForMenuProductRouteScreen(
                 menuProductUuid = route.menuProductUuid,
             ),
         )
+    }
+
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_ADDITION_GROUP_UUID,
+            viewState.editedAdditionGroupUuid,
+        ).collect { selectedAdditionGroupUuid ->
+            onAction(
+                EditAdditionGroupForMenu.Action.SelectAdditionGroup(
+                    additionGroupUuid = selectedAdditionGroupUuid,
+                ),
+            )
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_ADDITION_UUID_LIST,
+            viewState.editedAdditionListUuid,
+        ).collect { selectedAdditionUuidList ->
+            onAction(
+                EditAdditionGroupForMenu.Action.SelectAdditionList(
+                    additionListUuid = selectedAdditionUuidList ?: emptyList(),
+                ),
+            )
+        }
     }
 
     EditAdditionGroupForMenuEffect(

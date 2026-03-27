@@ -16,18 +16,18 @@ class EditAdditionGroupForMenuProductViewModel(
     val getAdditionUseCase: GetAdditionUseCase,
     val saveEditAdditionGroupWithAdditionsUseCase: SaveEditAdditionGroupWithAdditionsUseCase,
 ) : BaseStateViewModel<EditAdditionGroupForMenu.DataState, EditAdditionGroupForMenu.Action, EditAdditionGroupForMenu.Event>(
-        initState =
-            EditAdditionGroupForMenu.DataState(
-                groupName = null,
-                state = EditAdditionGroupForMenu.DataState.State.LOADING,
-                additionNameList = null,
-                isVisible = false,
-                additionGroupForMenuProductUuid = "",
-                menuProductUuid = "",
-                editedAdditionGroupUuid = null,
-                editedAdditionListUuid = null,
-            ),
-    ) {
+    initState =
+        EditAdditionGroupForMenu.DataState(
+            groupName = null,
+            state = EditAdditionGroupForMenu.DataState.State.LOADING,
+            additionNameList = null,
+            isVisible = false,
+            additionGroupForMenuProductUuid = "",
+            menuProductUuid = "",
+            editedAdditionGroupUuid = null,
+            editedAdditionListUuid = null,
+        ),
+) {
     override fun reduce(
         action: EditAdditionGroupForMenu.Action,
         dataState: EditAdditionGroupForMenu.DataState,
@@ -189,7 +189,9 @@ class EditAdditionGroupForMenuProductViewModel(
         }
     }
 
-    private fun setSelectedAdditionGroup(uuid: String) {
+    private fun setSelectedAdditionGroup(uuid: String?) {
+        if (uuid == null) return
+
         viewModelScope.launchSafe(
             block = {
                 val selectedAdditionGroup =

@@ -41,7 +41,7 @@ interface EditAdditionGroupForMenu {
         data object OnSaveClick : Action
 
         data class SelectAdditionGroup(
-            val additionGroupUuid: String,
+            val additionGroupUuid: String?,
         ) : Action
 
         data class SelectAdditionList(

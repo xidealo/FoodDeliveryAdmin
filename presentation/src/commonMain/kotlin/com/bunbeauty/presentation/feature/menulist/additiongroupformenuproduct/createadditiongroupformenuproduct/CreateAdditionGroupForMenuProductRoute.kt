@@ -19,10 +19,8 @@ import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.CreateAdditionGroupForMenuProductScreenDestination
-import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProduct
-import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
-import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_create_addition_group_for_menu_product_save
 import fooddeliveryadmin.presentation.generated.resources.error_create_addition_group_for_menu_product_addition
@@ -71,12 +69,27 @@ fun CreateAdditionGroupForMenuProductRouteScreen(
         backStackEntry.savedStateHandle.getStateFlow(
             SELECTED_ADDITION_GROUP_UUID,
             viewState.editedAdditionGroupUuid
-        ).collect {
+        ).collect { selectedAdditionGroupUuid ->
             onAction(
                 CreateAdditionGroupForMenu.Action.SelectAdditionGroup(
-                    additionGroupUuid = it
+                    additionGroupUuid = selectedAdditionGroupUuid
                 )
             )
+
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow(
+            SELECTED_ADDITION_UUID_LIST,
+            viewState.createdAdditionListUuid ?: emptyList(),
+        ).collect { selectedAdditionUuidList ->
+            onAction(
+                CreateAdditionGroupForMenu.Action.SelectAdditionList(
+                    additionListUuid = selectedAdditionUuidList,
+                ),
+            )
+
         }
     }
 
