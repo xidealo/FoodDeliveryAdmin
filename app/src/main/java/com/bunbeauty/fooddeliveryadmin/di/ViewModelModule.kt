@@ -129,6 +129,8 @@ fun viewModelModule() =
                 getAdditionGroupUseCase = get(),
                 getAdditionUseCase = get(),
                 saveEditAdditionGroupWithAdditionsUseCase = get(),
+                additionGroupForMenuUuid = it.get(),
+                menuProductUuid = it.get(),
             )
         }
 

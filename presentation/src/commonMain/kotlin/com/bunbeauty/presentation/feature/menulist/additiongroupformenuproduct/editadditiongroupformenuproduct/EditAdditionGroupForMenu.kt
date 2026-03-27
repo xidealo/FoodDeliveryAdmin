@@ -23,10 +23,6 @@ interface EditAdditionGroupForMenu {
     }
 
     sealed interface Action : BaseAction {
-        data class Init(
-            val additionGroupForMenuUuid: String,
-            val menuProductUuid: String,
-        ) : Action
 
         data object OnBackClick : Action
 
@@ -41,7 +37,7 @@ interface EditAdditionGroupForMenu {
         data object OnSaveClick : Action
 
         data class SelectAdditionGroup(
-            val additionGroupUuid: String?,
+            val additionGroupUuid: String,
         ) : Action
 
         data class SelectAdditionList(

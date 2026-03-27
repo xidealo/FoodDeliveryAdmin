@@ -32,10 +32,10 @@ import fooddeliveryadmin.presentation.generated.resources.title_edit_addition_gr
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun EditAdditionGroupForMenuProductRouteScreen(
-    viewModel: EditAdditionGroupForMenuProductViewModel = koinViewModel(),
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
     goToSelectAdditionGroup: (String, String, String) -> Unit,
@@ -43,6 +43,11 @@ fun EditAdditionGroupForMenuProductRouteScreen(
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<EditAdditionGroupForMenuProductScreenDestination>()
+    val viewModel: EditAdditionGroupForMenuProductViewModel = koinViewModel(
+        parameters = {
+            parametersOf(route.additionGroupUuid, route.menuProductUuid)
+        },
+    )
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -60,24 +65,18 @@ fun EditAdditionGroupForMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        onAction(
-            EditAdditionGroupForMenu.Action.Init(
-                additionGroupForMenuUuid = route.additionGroupUuid,
-                menuProductUuid = route.menuProductUuid,
-            ),
-        )
-    }
-
-    LaunchedEffect(Unit) {
         backStackEntry.savedStateHandle.getStateFlow(
             SELECTED_ADDITION_GROUP_UUID,
             viewState.editedAdditionGroupUuid,
         ).collect { selectedAdditionGroupUuid ->
-            onAction(
-                EditAdditionGroupForMenu.Action.SelectAdditionGroup(
-                    additionGroupUuid = selectedAdditionGroupUuid,
-                ),
-            )
+            if (selectedAdditionGroupUuid != null) {
+                onAction(
+                    EditAdditionGroupForMenu.Action.SelectAdditionGroup(
+                        additionGroupUuid = selectedAdditionGroupUuid,
+                    ),
+                )
+                backStackEntry.savedStateHandle.remove<String>(SELECTED_ADDITION_GROUP_UUID)
+            }
         }
     }
 
@@ -86,11 +85,14 @@ fun EditAdditionGroupForMenuProductRouteScreen(
             SELECTED_ADDITION_UUID_LIST,
             viewState.editedAdditionListUuid,
         ).collect { selectedAdditionUuidList ->
-            onAction(
-                EditAdditionGroupForMenu.Action.SelectAdditionList(
-                    additionListUuid = selectedAdditionUuidList ?: emptyList(),
-                ),
-            )
+            if (selectedAdditionUuidList != null) {
+                onAction(
+                    EditAdditionGroupForMenu.Action.SelectAdditionList(
+                        additionListUuid = selectedAdditionUuidList,
+                    ),
+                )
+                backStackEntry.savedStateHandle.remove<List<String>>(SELECTED_ADDITION_UUID_LIST)
+            }
         }
     }
 
