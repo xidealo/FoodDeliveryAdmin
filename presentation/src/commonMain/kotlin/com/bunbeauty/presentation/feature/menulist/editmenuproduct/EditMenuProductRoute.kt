@@ -100,13 +100,14 @@ fun EditMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        savedStateHandle.getStateFlow(
+        savedStateHandle.getStateFlow<List<String>?>(
             key = SELECTED_CATEGORY_UUID_LIST,
-            initialValue = viewState.categoriesField.value.map {
-                it.category.uuid
+            initialValue = null,
+        ).collect { selectedCategoryUuidList ->
+            if (selectedCategoryUuidList != null) {
+                onAction(EditMenuProduct.Action.SelectCategories(selectedCategoryUuidList))
+                savedStateHandle.remove<List<String>>(SELECTED_CATEGORY_UUID_LIST)
             }
-        ).collect {
-            onAction(EditMenuProduct.Action.SelectCategories(it))
         }
     }
 

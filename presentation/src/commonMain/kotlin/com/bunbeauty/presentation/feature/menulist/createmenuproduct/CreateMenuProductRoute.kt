@@ -92,11 +92,14 @@ fun CreateMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow(
+        backStackEntry.savedStateHandle.getStateFlow<List<String>?>(
             SELECTED_CATEGORY_UUID_LIST,
-            viewState.categoriesField.value.map { it.category.uuid }
-        ).collect {
-            onAction(CreateMenuProduct.Action.SelectCategories(it))
+            null,
+        ).collect { selectedCategoryUuidList ->
+            if (selectedCategoryUuidList != null) {
+                onAction(CreateMenuProduct.Action.SelectCategories(selectedCategoryUuidList))
+                backStackEntry.savedStateHandle.remove<List<String>>(SELECTED_CATEGORY_UUID_LIST)
+            }
         }
     }
     LaunchedEffect(Unit) {
