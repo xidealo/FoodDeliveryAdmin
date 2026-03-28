@@ -26,7 +26,7 @@ class CropImageViewModel :
                     copy(uri = action.uri)
                 }
 
-            is CropImage.Action.SaveClick -> {
+            CropImage.Action.SaveClick -> {
                 setState { copy(isLoading = true) }
                 sendEvent {
                     CropImage.Event.CropImage

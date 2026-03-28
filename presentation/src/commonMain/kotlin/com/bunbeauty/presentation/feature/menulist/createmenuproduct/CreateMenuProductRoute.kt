@@ -36,6 +36,8 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldWithMenu
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
@@ -58,8 +60,6 @@ import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-private const val IMAGE = "image/*"
 
 @Composable
 fun CreateMenuProductRouteScreen(
@@ -86,14 +86,10 @@ fun CreateMenuProductRouteScreen(
                 viewModel.consumeEvents(effects)
             }
         }
-
-    //  val galleryLauncher =
-//        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            uri?.let {
-//                goToCropImage(it.toString())
-//            }
-
-//        }
+    val launchImagePicker =
+        rememberImagePickerLauncher { imageUri ->
+            goToCropImage(imageUri)
+        }
 
     LaunchedEffect(Unit) {
         backStackEntry.savedStateHandle.getStateFlow(
@@ -103,6 +99,17 @@ fun CreateMenuProductRouteScreen(
             onAction(CreateMenuProduct.Action.SelectCategories(it))
         }
     }
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow<String?>(
+            CROPPED_IMAGE_URI,
+            null,
+        ).collect { croppedImageUri ->
+            if (croppedImageUri != null) {
+                onAction(CreateMenuProduct.Action.SetImage(croppedImageUri))
+                backStackEntry.savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+            }
+        }
+    }
     CreateMenuProductEffect(
         effects = effects,
         consumeEffects = consumeEffects,
@@ -110,13 +117,14 @@ fun CreateMenuProductRouteScreen(
         showErrorMessage = showErrorMessage,
         goBack = goBack,
         goToCategoryList = goToCategoryList,
+        launchImagePicker = launchImagePicker,
     )
 
     CreateMenuProductScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         addPhotoClick = {
-            //  galleryLauncher.launch(IMAGE)
+            onAction(CreateMenuProduct.Action.SelectPhotoFromGallery)
         },
     )
 }
@@ -129,6 +137,7 @@ private fun CreateMenuProductEffect(
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
+    launchImagePicker: () -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
@@ -162,7 +171,7 @@ private fun CreateMenuProductEffect(
                 }
 
                 CreateMenuProduct.Event.ShowGallery -> {
-
+                    launchImagePicker()
                 }
             }
         }

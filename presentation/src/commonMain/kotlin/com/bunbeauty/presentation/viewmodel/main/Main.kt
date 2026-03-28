@@ -39,11 +39,7 @@ interface Main {
         ) : Action
     }
 
-    sealed interface Event : BaseEvent {
-        class ShowMessageEvent(
-            val message: Message,
-        ) : Event
-    }
+    sealed interface Event : BaseEvent
 
     data class Message(
         val type: Type,

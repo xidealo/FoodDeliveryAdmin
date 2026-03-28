@@ -13,7 +13,7 @@ data class CropImageViewState(
 ) : BaseViewState {
     @Immutable
     data class ImageContent(
-        val uri: Uri?,
+        val uri: String?,
     )
 }
 
@@ -23,6 +23,6 @@ internal fun CropImage.DataState.toViewState(): CropImageViewState =
         isLoading = isLoading,
         imageContent =
             CropImageViewState.ImageContent(
-                uri = uri?.toUri(),
+                uri = uri,
             ),
     )

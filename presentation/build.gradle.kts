@@ -40,6 +40,11 @@ kotlin {
                 implementation(libs.kotlinx.collections.immutable)
             }
         }
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.android.image.cropper)
+            }
+        }
         val androidUnitTest by getting {
             dependencies {
                 implementation(kotlin("test"))
