@@ -88,7 +88,7 @@ class EditAdditionViewModel(
                                     url = addition.photoLink,
                                 ),
                                 isError = false,
-                                isSelected = false,
+                                isSelected = addition.photoLink.isNotBlank(),
                             ),
                     )
                 }
@@ -146,14 +146,12 @@ class EditAdditionViewModel(
     fun setImage(croppedImageUri: String) {
         setState {
             copy(
-//                imageFieldData =
-//                    imageFieldData.copy(
-//                        value =
-//                            imageFieldData.value?.copy(
-//                                newImageUri = croppedImageUri,
-//                            ),
-//                        isError = false,
-//                    ),
+                imageFieldData =
+                    imageFieldData.copy(
+                        value = ImageData.HttpUrl(croppedImageUri),
+                        isError = false,
+                        isSelected = true,
+                    ),
             )
         }
     }
@@ -176,8 +174,14 @@ class EditAdditionViewModel(
                                 price = price.toIntOrNull(),
                                 isVisible = isVisible,
                                 tag = tag.trim(),
-//                                photoLink = imageFieldData.value?.photoLink,
-//                                newImageUri = imageFieldData.value?.newImageUri,
+                                photoLink =
+                                    (imageFieldData.value as? ImageData.HttpUrl)
+                                        ?.url
+                                        ?.takeUnless { it.startsWith("file:/") || it.startsWith("content:/") },
+                                newImageUri =
+                                    (imageFieldData.value as? ImageData.HttpUrl)
+                                        ?.url
+                                        ?.takeIf { it.startsWith("file:/") || it.startsWith("content:/") },
                             )
                         },
                     additionUuid = state.value.uuid,

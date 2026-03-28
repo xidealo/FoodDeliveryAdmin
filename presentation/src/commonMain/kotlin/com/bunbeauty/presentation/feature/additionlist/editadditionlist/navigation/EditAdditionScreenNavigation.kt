@@ -23,12 +23,15 @@ fun NavController.navigateToEditAdditionScreen(additionUuid: String, navOptions:
 fun NavGraphBuilder.editAdditionScreenRoute(
     goBack: () -> Unit,
     showInfoMessage: (String, Int) -> Unit,
+    goToCropImage: (String) -> Unit,
 ) {
     composable<EditAdditionScreenDestination> {
         EditAdditionRouteScreen(
             showInfoMessage = showInfoMessage,
             goBack = goBack,
-            additionUuid = it.toRoute<EditAdditionScreenDestination>().additionUuid
+            goToCropImage = goToCropImage,
+            additionUuid = it.toRoute<EditAdditionScreenDestination>().additionUuid,
+            savedStateHandle = it.savedStateHandle,
         )
     }
 }

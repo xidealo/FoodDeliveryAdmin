@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.button.AdminButtonDefaults
@@ -33,11 +34,12 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAdditionViewState
 import com.bunbeauty.presentation.feature.common.TextFieldUi
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
-import com.bunbeauty.presentation.feature.menulist.editmenuproduct.EditMenuProductViewModel
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
@@ -64,6 +66,8 @@ fun EditAdditionRouteScreen(
     additionUuid: String,
     showInfoMessage: (String, Int) -> Unit,
     goBack: () -> Unit,
+    goToCropImage: (String) -> Unit,
+    savedStateHandle: SavedStateHandle,
 ) {
     val viewModel: EditAdditionViewModel = koinViewModel(
         parameters = { parametersOf(additionUuid) }
@@ -84,6 +88,22 @@ fun EditAdditionRouteScreen(
                 viewModel.consumeEvents(effects)
             }
         }
+    val launchImagePicker =
+        rememberImagePickerLauncher { imageUri ->
+            goToCropImage(imageUri)
+        }
+
+    LaunchedEffect(Unit) {
+        savedStateHandle.getStateFlow<String?>(
+            CROPPED_IMAGE_URI,
+            null,
+        ).collect { croppedImageUri ->
+            if (croppedImageUri != null) {
+                onAction(EditAddition.Action.SetImage(croppedImageUri))
+                savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+            }
+        }
+    }
 
     EditAdditionEffect(
         effects = effects,
@@ -91,7 +111,11 @@ fun EditAdditionRouteScreen(
         showInfoMessage = showInfoMessage,
         goBack = goBack,
     )
-    Screen(state = mapState(viewState), onAction = onAction)
+    Screen(
+        state = mapState(viewState),
+        onAction = onAction,
+        onAddPhotoClick = launchImagePicker,
+    )
 }
 
 @Composable
@@ -125,6 +149,7 @@ private fun EditAdditionEffect(
 fun Screen(
     state: EditAdditionViewState,
     onAction: (EditAddition.Action) -> Unit,
+    onAddPhotoClick: () -> Unit,
 ) {
     when (state.state) {
         EditAdditionViewState.State.Error ->
@@ -141,6 +166,7 @@ fun Screen(
             EditAdditionScreen(
                 onAction = onAction,
                 state = state.state,
+                onAddPhotoClick = onAddPhotoClick,
             )
     }
 }
@@ -149,21 +175,15 @@ fun Screen(
 fun EditAdditionScreen(
     state: EditAdditionViewState.State.Success,
     onAction: (EditAddition.Action) -> Unit,
+    onAddPhotoClick: () -> Unit,
 ) {
-//    val galleryLauncher =
-//        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            navigateToCropImage(uri)
-//        }
-
     AdminScaffold(
         title = stringResource(Res.string.title_edit_addition),
         backActionClick = { onAction(EditAddition.Action.OnBackClick) },
         actionButton = {
             BottomButtons(
                 state = state,
-                onAddPhotoClick = {
-                    // galleryLauncher.launch(IMAGE)
-                },
+                onAddPhotoClick = onAddPhotoClick,
                 onAction = onAction,
             )
         },
@@ -384,6 +404,7 @@ fun EditAdditionScreenPreview() {
                         ),
                 ),
             onAction = {},
+            onAddPhotoClick = {},
         )
     }
 }

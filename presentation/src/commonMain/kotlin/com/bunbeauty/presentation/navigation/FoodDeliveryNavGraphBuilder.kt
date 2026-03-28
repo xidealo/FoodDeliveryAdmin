@@ -127,7 +127,9 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
         goToCropImage = { imageUri ->
             navController.navigateToCropImageScreen(
-                uri = imageUri, navOptions = emptyNavOptions
+                uri = imageUri,
+                isEditAddition = true,
+                navOptions = emptyNavOptions,
             )
         },
     )
@@ -150,6 +152,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCropImage = { imageUri ->
             navController.navigateToCropImageScreen(
                 uri = imageUri,
+                isEditAddition = true,
                 navOptions = emptyNavOptions,
             )
         },
@@ -182,7 +185,11 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
         goToCropImage = { imageUri ->
-            // navigate to crop image - handled by parent
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                isEditAddition = false,
+                navOptions = emptyNavOptions,
+            )
         },
     )
     categoryListScreenRoute(
@@ -369,5 +376,12 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     editAdditionScreenRoute(
         goBack = navController::navigateUp,
         showInfoMessage = showInfoMessage,
+        goToCropImage = { imageUri ->
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                isEditAddition = false,
+                navOptions = emptyNavOptions,
+            )
+        },
     )
 }

@@ -20,5 +20,6 @@ expect fun rememberPlatformCropImageController(
 expect fun PlatformCropImageView(
     imageUri: String,
     controller: PlatformCropImageController,
+    isEditAddition: Boolean,
     modifier: Modifier = Modifier,
 )
