@@ -178,18 +178,17 @@ class EditMenuProductViewModel(
             is EditMenuProduct.Action.SelectCategories -> {
                 setState {
                     copy(
-                        categoriesField =
-                            categoriesField.copy(
-                                value =
-                                    categoriesField.value.map { selectableCategory ->
-                                        selectableCategory.copy(
-                                            selected = action.categoryUuidList.contains(
-                                                selectableCategory.category.uuid
-                                            ),
-                                        )
-                                    },
-                                isError = false,
-                            ),
+                        categoriesField = categoriesField.copy(
+                            value =
+                                categoriesField.value.map { selectableCategory ->
+                                    selectableCategory.copy(
+                                        selected = action.categoryUuidList.contains(
+                                            selectableCategory.category.uuid
+                                        ),
+                                    )
+                                },
+                            isError = false,
+                        ),
                     )
                 }
             }

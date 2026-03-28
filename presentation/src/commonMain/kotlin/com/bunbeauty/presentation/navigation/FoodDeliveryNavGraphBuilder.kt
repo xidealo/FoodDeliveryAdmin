@@ -148,7 +148,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             )
         },
         goToCropImage = { imageUri ->
-            // navigate to crop image - handled by parent
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                navOptions = emptyNavOptions,
+            )
         },
     )
     additionGroupListScreenRoute(

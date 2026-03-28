@@ -38,6 +38,8 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
@@ -60,8 +62,6 @@ import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
-
-private const val IMAGE = "image/*"
 
 @Composable
 fun EditMenuProductRouteScreen(
@@ -94,22 +94,33 @@ fun EditMenuProductRouteScreen(
                 viewModel.consumeEvents(effects)
             }
         }
+    val launchImagePicker =
+        rememberImagePickerLauncher { imageUri ->
+            goToCropImage(imageUri)
+        }
 
     LaunchedEffect(Unit) {
         savedStateHandle.getStateFlow(
-            SELECTED_CATEGORY_UUID_LIST,
-            viewState.categoriesField.value.map { it.category.uuid }
+            key = SELECTED_CATEGORY_UUID_LIST,
+            initialValue = viewState.categoriesField.value.map {
+                it.category.uuid
+            }
         ).collect {
             onAction(EditMenuProduct.Action.SelectCategories(it))
         }
     }
 
-//    val galleryLauncher =
-//        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            uri?.let {
-//                goToCropImage(it.toString())
-//            }
-//        }
+    LaunchedEffect(Unit) {
+        savedStateHandle.getStateFlow<String?>(
+            CROPPED_IMAGE_URI,
+            null,
+        ).collect { croppedImageUri ->
+            if (croppedImageUri != null) {
+                onAction(EditMenuProduct.Action.SetImage(croppedImageUri))
+                savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+            }
+        }
+    }
 
     EditMenuProductEffect(
         effects = effects,
@@ -125,7 +136,7 @@ fun EditMenuProductRouteScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         addPhotoClick = {
-            //  galleryLauncher.launch(IMAGE)
+            launchImagePicker()
         },
     )
 }
@@ -321,14 +332,14 @@ private fun EditMenuProductSuccessScreen(
             enabled = !state.sendingToServer,
         )
         state.imageField.value?.let { imageData ->
-           AdminAsyncImage(
-               modifier =
-                   Modifier
-                       .fillMaxWidth()
-                       .clip(RoundedCornerShape(8.dp)),
-               imageData = imageData,
-               contentDescription = Res.string.description_product,
-           )
+            AdminAsyncImage(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp)),
+                imageData = imageData,
+                contentDescription = Res.string.description_product,
+            )
         }
 
         Spacer(modifier = Modifier.height(120.dp))

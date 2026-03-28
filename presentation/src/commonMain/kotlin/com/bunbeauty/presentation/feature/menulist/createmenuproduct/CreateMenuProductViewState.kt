@@ -104,7 +104,12 @@ fun CategoriesFieldData.toCardFieldUi(): CardFieldUi =
 
 fun ImageFieldData.toImageFieldUi(): ImageFieldUi =
     ImageFieldUi(
-        value = null,
+        value =
+            value?.let { imageUri ->
+                ImageData.HttpUrl(
+                    url = imageUri,
+                )
+            },
         isError = isError,
         isSelected = value != null,
     )

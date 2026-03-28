@@ -33,7 +33,9 @@ import com.bunbeauty.presentation.designsystem.compose.element.surface.AdminSurf
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.CreateAdditionScreenDestination
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
 import fooddeliveryadmin.presentation.generated.resources.action_common_replace_photo
@@ -49,8 +51,6 @@ import fooddeliveryadmin.presentation.generated.resources.title_create_addition_
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-private const val IMAGE = "image/*"
 
 @Composable
 fun CreateAdditionRouteScreen(
@@ -77,13 +77,22 @@ fun CreateAdditionRouteScreen(
                 viewModel.consumeEvents(effects)
             }
         }
+    val launchImagePicker =
+        rememberImagePickerLauncher { imageUri ->
+            goToCropImage(imageUri)
+        }
 
-//    val galleryLauncher =
-//        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            uri?.let {
-//                goToCropImage(it.toString())
-//            }
-//        }
+    LaunchedEffect(Unit) {
+        backStackEntry.savedStateHandle.getStateFlow<String?>(
+            CROPPED_IMAGE_URI,
+            null,
+        ).collect { croppedImageUri ->
+            if (croppedImageUri != null) {
+                onAction(CreateAddition.Action.SetImage(croppedImageUri))
+                backStackEntry.savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+            }
+        }
+    }
 
     CreateAdditionEffect(
         effects = effects,
@@ -97,7 +106,7 @@ fun CreateAdditionRouteScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         addPhotoClick = {
-            // galleryLauncher.launch(IMAGE)
+            launchImagePicker()
         },
     )
 }
