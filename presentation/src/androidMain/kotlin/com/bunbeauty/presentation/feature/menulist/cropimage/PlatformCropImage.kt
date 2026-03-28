@@ -11,7 +11,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import androidx.core.net.toUri
-import com.canhub.cropper.CropImageView.OnCropImageCompleteListener
 
 private const val DEFAULT_ANGLE = 90
 private const val ORIGINAL_QUALITY = 100
@@ -67,9 +66,6 @@ actual fun PlatformCropImageView(
         imageContent = imageUri,
         cropImageDefaults = CropImageDefaults.menuProductOptions(),
         androidController = androidController,
-        onImageCropped = {
-
-        }
     )
 }
 
@@ -78,35 +74,22 @@ private fun CropImageView(
     imageContent: String,
     cropImageDefaults: CropImageOptions,
     androidController: AndroidPlatformCropImageController,
-    onImageCropped: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val uri = imageContent.toUri()
-
-    val callback = remember {
-        object : OnCropImageCompleteListener {
-            override fun onCropImageComplete(
-                view: CropImageView,
-                result: CropImageView.CropResult
-            ) {
-                onImageCropped(result.uriContent.toString())
-            }
-        }
-    }
 
     Box(modifier = modifier.fillMaxSize()) {
         AndroidView(
             modifier = Modifier.align(Alignment.Center),
             factory = { context ->
                 LinearLayout(context).apply {
-                    var cropImageView =
+                    val cropImageView =
                         CropImageView(context)
                             .apply {
                                 setImageCropOptions(cropImageDefaults)
                                 setImageUriAsync(uri)
-                            }.also { view ->
-                                view.setOnCropImageCompleteListener(callback)
                             }
+                            .also(androidController::bind)
                     addView(cropImageView)
                 }
             },
