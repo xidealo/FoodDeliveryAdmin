@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -69,7 +70,7 @@ internal val emptyNavOptions = navOptions { }
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     navController: NavController,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     cancelNotification: (Int) -> Unit,
 ) {

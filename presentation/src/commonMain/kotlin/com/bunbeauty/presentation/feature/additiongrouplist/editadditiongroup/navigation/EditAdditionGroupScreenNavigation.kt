@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -18,7 +19,7 @@ fun NavController.navigateToEditAdditionGroupScreen(
 ) = navigate(route = EditAdditionGroupScreenDestination(additionGroupUuid = additionGroupUuid), navOptions)
 
 fun NavGraphBuilder.editAdditionGroupScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<EditAdditionGroupScreenDestination> {

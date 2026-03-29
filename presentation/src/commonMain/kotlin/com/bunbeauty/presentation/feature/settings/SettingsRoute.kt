@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.settings
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -77,7 +78,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsRouteScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     goBack: () -> Unit,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -117,7 +118,7 @@ fun SettingsRouteScreen(
 private fun SettingsEffect(
     effects: List<SettingsState.Event>,
     goBack: () -> Unit,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
@@ -128,7 +129,7 @@ private fun SettingsEffect(
                 }
 
                 SettingsState.Event.ShowSaveSettingEvent -> {
-                    showInfoMessage(getString(Res.string.settings_success_save_message), 0)
+                    showInfoMessage(getString(Res.string.settings_success_save_message), 0.dp)
                     goBack()
                 }
 

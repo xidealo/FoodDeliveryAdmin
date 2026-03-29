@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.order.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -27,7 +28,7 @@ fun NavController.navigateToOrderDetailsScreen(
 )
 
 fun NavGraphBuilder.orderDetailsScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     onCallPhone: (String) -> Unit,

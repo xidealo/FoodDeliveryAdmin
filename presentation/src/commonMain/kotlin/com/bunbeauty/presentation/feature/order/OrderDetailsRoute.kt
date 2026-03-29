@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.order
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -65,7 +66,7 @@ private const val PHONE_LINK = "tel:"
 @Composable
 fun OrderDetailsRouteScreen(
     viewModel: OrderDetailsViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     onCallPhone: (String) -> Unit,
@@ -117,7 +118,7 @@ fun OrderDetailsRouteScreen(
 @Composable
 private fun OrderDetailsEffect(
     effects: List<OrderDetailsState.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
@@ -140,7 +141,7 @@ private fun OrderDetailsEffect(
                 is OrderDetailsState.Event.SavedEvent -> {
                     showInfoMessage(
                         effect.orderCode,
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

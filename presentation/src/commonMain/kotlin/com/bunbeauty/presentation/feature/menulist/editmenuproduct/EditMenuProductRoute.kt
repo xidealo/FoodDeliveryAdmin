@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -66,7 +67,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EditMenuProductRouteScreen(
     menuProductUuid: String,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
@@ -145,7 +146,7 @@ fun EditMenuProductRouteScreen(
 @Composable
 private fun EditMenuProductEffect(
     effects: List<EditMenuProduct.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
@@ -170,7 +171,7 @@ private fun EditMenuProductEffect(
                 is EditMenuProduct.Event.ShowUpdateProductSuccess -> {
                     showInfoMessage(
                         "Продукт обновлен: ${effect.productName}",
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

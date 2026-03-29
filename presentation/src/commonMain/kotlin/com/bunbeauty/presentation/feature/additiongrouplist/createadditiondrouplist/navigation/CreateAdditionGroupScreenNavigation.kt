@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additiongrouplist.createadditiondrouplist.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,7 +15,7 @@ fun NavController.navigateToCreateAdditionGroupScreen(navOptions: NavOptions) =
     navigate(route = CreateAdditionGroupScreenDestination, navOptions)
 
 fun NavGraphBuilder.createAdditionGroupScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<CreateAdditionGroupScreenDestination> {

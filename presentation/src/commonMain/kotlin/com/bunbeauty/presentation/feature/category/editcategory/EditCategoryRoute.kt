@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.category.editcategory
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EditCategoryRouteScreen(
     viewModel: EditCategoryViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -71,7 +72,7 @@ fun EditCategoryRouteScreen(
 @Composable
 private fun EditCategoryEffect(
     effects: List<EditCategoryState.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -88,7 +89,7 @@ private fun EditCategoryEffect(
                             Res.string.msg_edit_category_updated,
                             effect.categoryName,
                         ),
-                        0,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

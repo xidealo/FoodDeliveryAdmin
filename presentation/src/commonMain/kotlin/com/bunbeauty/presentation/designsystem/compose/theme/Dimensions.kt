@@ -1,8 +1,8 @@
 package com.bunbeauty.presentation.designsystem.compose.theme
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 internal val LocalAdminDimensions = staticCompositionLocalOf { AdminDimensions() }

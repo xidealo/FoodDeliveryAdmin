@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additionlist.createaddition
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,7 +56,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CreateAdditionRouteScreen(
     viewModel: CreateAdditionViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCropImage: (String) -> Unit,
@@ -114,7 +115,7 @@ fun CreateAdditionRouteScreen(
 @Composable
 private fun CreateAdditionEffect(
     effects: List<CreateAddition.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
@@ -132,7 +133,7 @@ private fun CreateAdditionEffect(
                             Res.string.msg_create_addition_updated,
                             effect.additionName,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

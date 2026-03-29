@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.categorylist
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SelectCategoryListRouteScreen(
     viewModel: SelectCategoryListViewModel = koinViewModel(),
     backStackEntry: NavBackStackEntry,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     onSaveCategoryList: (List<String>) -> Unit,
 ) {
@@ -84,7 +85,7 @@ fun SelectCategoryListRouteScreen(
 @Composable
 private fun SelectCategoryListEffect(
     effects: List<SelectCategoryList.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     onSaveCategoryList: (List<String>) -> Unit,
@@ -97,7 +98,7 @@ private fun SelectCategoryListEffect(
                 }
 
                 is SelectCategoryList.Event.Save -> {
-                    showInfoMessage(getString(Res.string.msg_category_list_selected), 2000)
+                    showInfoMessage(getString(Res.string.msg_category_list_selected), androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp)
                     onSaveCategoryList(effect.selectedCategoryUuidList)
                 }
             }

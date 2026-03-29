@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -64,7 +65,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CreateMenuProductRouteScreen(
     viewModel: CreateMenuProductViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,
@@ -135,7 +136,7 @@ fun CreateMenuProductRouteScreen(
 @Composable
 private fun CreateMenuProductEffect(
     effects: List<CreateMenuProduct.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
@@ -156,7 +157,7 @@ private fun CreateMenuProductEffect(
                 is CreateMenuProduct.Event.ShowMenuProductCreated -> {
                     showInfoMessage(
                         effect.menuProductName,
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,7 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun AdditionGroupForMenuProductListRouteScreen(
     viewModel: AdditionGroupForMenuProductListViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     goToCreateAdditionGroup: (String) -> Unit,
     goToEditAdditionGroup: (String, String) -> Unit,
@@ -100,7 +101,7 @@ fun AdditionGroupForMenuProductListRouteScreen(
 @Composable
 private fun AdditionGroupForMenuProductEffect(
     effects: List<AdditionGroupForMenuProductList.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     goToCreateAdditionGroup: () -> Unit,
@@ -126,7 +127,7 @@ private fun AdditionGroupForMenuProductEffect(
                         getString(
                             resource = Res.string.msg_update_addition_group_for_menu_product_priority_list,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                 }
             }

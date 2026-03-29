@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -20,10 +21,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -49,10 +51,16 @@ import org.koin.compose.viewmodel.koinViewModel
 fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
     val mainState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    var snackbarPaddingBottom by remember {
+        mutableStateOf(0.dp)
+    }
 
     HandleSnackbarMessages(
         snackbarMessages = viewModel.snackbarMessages,
         snackbarHostState = snackbarHostState,
+        onShowMessage = { message ->
+            snackbarPaddingBottom = message.paddingBottom ?: 0.dp
+        },
     )
     val navController = rememberNavController()
 
@@ -69,7 +77,7 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
         snackbarHost = {
             AdminSnackbarHost(
                 snackbarHostState = snackbarHostState,
-                paddingBottom = AdminTheme.dimensions.snackBarPadding,
+                paddingBottom = snackbarPaddingBottom,
             )
         },
         bottomBar = {
@@ -88,8 +96,8 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
             NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
             Box(modifier = Modifier.weight(1f)) {
                 FoodDeliveryNavHost(
-                    showInfoMessage = { text: String, i: Int ->
-                        viewModel.onAction(Main.Action.ShowInfoMessage(text))
+                    showInfoMessage = { text: String, paddingBottom: Dp ->
+                        viewModel.onAction(Main.Action.ShowInfoMessage(text, paddingBottom))
                     },
                     showErrorMessage = { text ->
                         viewModel.onAction(Main.Action.ShowErrorMessage(text))
@@ -184,9 +192,11 @@ private fun AdminSnackbarHost(
 private fun HandleSnackbarMessages(
     snackbarMessages: Flow<Main.Message>,
     snackbarHostState: SnackbarHostState,
+    onShowMessage: (Main.Message) -> Unit,
 ) {
     LaunchedEffect(Unit) {
         snackbarMessages.collectLatest { message ->
+            onShowMessage(message)
             snackbarHostState.currentSnackbarData?.dismiss()
             snackbarHostState.showSnackbar(
                 visuals =

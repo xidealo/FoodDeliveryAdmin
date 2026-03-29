@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.settings.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,7 +15,7 @@ fun NavController.navigateToSettingsScreen(navOptions: NavOptions) = navigate(ro
 
 fun NavGraphBuilder.settingsScreenRoute(
     goBack: () -> Unit,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
 ) {
     composable<SettingsScreenDestination> {
         SettingsRouteScreen(

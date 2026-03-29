@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -48,7 +49,7 @@ private const val LIST_ANIMATION_DURATION = 500
 @Composable
 fun SelectAdditionGroupRouteScreen(
     viewModel: SelectAdditionGroupViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     onAdditionGroupSelected: (String, String) -> Unit,
     backStackEntry: NavBackStackEntry,
@@ -97,7 +98,7 @@ fun SelectAdditionGroupRouteScreen(
 @Composable
 private fun SelectAdditionGroupEffect(
     effects: List<SelectAdditionGroup.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     onAdditionGroupSelected: (String, String) -> Unit,
@@ -115,7 +116,7 @@ private fun SelectAdditionGroupEffect(
                             resource = Res.string.msg_select_addition_group_selected,
                             effect.additionGroupName,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     onAdditionGroupSelected(
                         effect.additionGroupUuid,

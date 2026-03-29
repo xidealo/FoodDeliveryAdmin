@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -36,7 +37,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun EditAdditionGroupForMenuProductRouteScreen(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     goToSelectAdditionGroup: (String, String, String) -> Unit,
     goToSelectAdditionList: (String, String, String, List<String>?) -> Unit,
@@ -114,7 +115,7 @@ fun EditAdditionGroupForMenuProductRouteScreen(
 @Composable
 private fun EditAdditionGroupForMenuEffect(
     effects: List<EditAdditionGroupForMenu.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     goToSelectAdditionGroup: (String, String, String) -> Unit,
@@ -132,7 +133,7 @@ private fun EditAdditionGroupForMenuEffect(
                         getString(
                             resource = Res.string.msg_update_edit_addition_group_for_menu_product,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

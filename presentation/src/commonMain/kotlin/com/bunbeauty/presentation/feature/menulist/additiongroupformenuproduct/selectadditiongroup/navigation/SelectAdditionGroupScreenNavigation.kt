@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -30,7 +31,7 @@ fun NavController.navigateToSelectAdditionGroupScreen(
 )
 
 fun NavGraphBuilder.selectAdditionGroupScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     onAdditionGroupSelected: (String, String) -> Unit,
 ) {

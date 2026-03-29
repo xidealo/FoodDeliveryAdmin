@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.category.editcategory.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -20,7 +21,7 @@ fun NavController.navigateToEditCategoryScreen(
 ) = navigate(route = EditCategoryScreenDestination(categoryUuid = categoryUuid), navOptions)
 
 fun NavGraphBuilder.editCategoryScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<EditCategoryScreenDestination> {

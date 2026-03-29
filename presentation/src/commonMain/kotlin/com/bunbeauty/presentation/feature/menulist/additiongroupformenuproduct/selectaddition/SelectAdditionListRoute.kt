@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
@@ -66,7 +67,7 @@ private const val LIST_ANIMATION_DURATION = 500
 @Composable
 fun SelectAdditionListRouteScreen(
     viewModel: SelectAdditionListViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     onAdditionListSelected: (List<String>) -> Unit,
@@ -118,7 +119,7 @@ fun SelectAdditionListRouteScreen(
 @Composable
 private fun SelectAdditionListEffect(
     effects: List<SelectAdditionList.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
@@ -136,7 +137,7 @@ private fun SelectAdditionListEffect(
                         getString(
                             resource = Res.string.action_select_addition_list_title_selected,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     onAdditionListSelected(effect.additionUuidList)
                     goBack()
@@ -147,7 +148,7 @@ private fun SelectAdditionListEffect(
                         getString(
                             resource = Res.string.msg_update_select_addition_list_priority_list,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                 }
 
@@ -157,7 +158,7 @@ private fun SelectAdditionListEffect(
                             resource = Res.string.msg_update_select_addition_list_added,
                             effect.name,
                         ),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                 }
 

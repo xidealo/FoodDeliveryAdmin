@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.category.createcategory.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -13,7 +14,7 @@ data object CreateCategoryScreenDestination
 fun NavController.navigateToCreateCategoryScreen(navOptions: NavOptions) = navigate(route = CreateCategoryScreenDestination, navOptions)
 
 fun NavGraphBuilder.createCategoryScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<CreateCategoryScreenDestination> {

@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -22,7 +23,7 @@ fun NavController.navigateToEditMenuProductScreen(
 )
 
 fun NavGraphBuilder.editMenuProductScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,

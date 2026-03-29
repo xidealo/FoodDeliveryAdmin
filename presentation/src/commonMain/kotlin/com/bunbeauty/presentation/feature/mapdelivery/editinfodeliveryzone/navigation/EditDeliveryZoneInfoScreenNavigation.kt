@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -18,7 +19,7 @@ fun NavController.navigateToEditDeliveryZoneInfoScreen(
 ) = navigate(route = EditDeliveryZoneInfoScreenDestination(zoneUuid = zoneUuid), navOptions)
 
 fun NavGraphBuilder.editDeliveryZoneInfoScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     composable<EditDeliveryZoneInfoScreenDestination> {

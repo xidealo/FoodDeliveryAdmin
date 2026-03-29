@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -34,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EditDeliveryZoneInfoRouteScreen(
     viewModel: EditDeliveryZoneInfoViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -73,7 +74,7 @@ fun EditDeliveryZoneInfoRouteScreen(
 @Composable
 private fun EditDeliveryZoneInfoEffect(
     effects: List<EditDeliveryZoneInfo.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -90,7 +91,7 @@ private fun EditDeliveryZoneInfoEffect(
                             Res.string.msg_edit_info_delivery_zone_updated,
                             effect.zoneName,
                         ),
-                        0,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

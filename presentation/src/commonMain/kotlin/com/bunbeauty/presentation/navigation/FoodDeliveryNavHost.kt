@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -12,7 +13,7 @@ import com.bunbeauty.presentation.feature.login.navigation.LoginScreenDestinatio
 @Composable
 fun FoodDeliveryNavHost(
     navController: NavHostController,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
 ) {
     NavHost(

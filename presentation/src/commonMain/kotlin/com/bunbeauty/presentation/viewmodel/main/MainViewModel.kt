@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.viewmodel.main
 
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
 import com.bunbeauty.presentation.extension.launchSafe
@@ -56,7 +57,11 @@ class MainViewModel(
             }
 
             is Main.Action.ShowInfoMessage -> {
-                showMessage(action.text, Main.Message.Type.INFO)
+                showMessage(
+                    text = action.text,
+                    type = Main.Message.Type.INFO,
+                    paddingBottom = action.paddingBottom,
+                )
             }
 
             is Main.Action.ShowErrorMessage -> {
@@ -81,11 +86,13 @@ class MainViewModel(
     private fun showMessage(
         text: String,
         type: Main.Message.Type,
+        paddingBottom: Dp? = null,
     ) {
         mutableSnackbarMessages.tryEmit(
             Main.Message(
                 type = type,
                 text = text,
+                paddingBottom = paddingBottom,
             ),
         )
     }

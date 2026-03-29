@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,7 +15,7 @@ fun NavController.navigateToCreateMenuProductScreen(navOptions: NavOptions) =
     navigate(route = CreateMenuProductScreenDestination, navOptions)
 
 fun NavGraphBuilder.createMenuProductScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCategoryList: (List<String>) -> Unit,

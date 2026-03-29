@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.viewmodel.main
 
+import androidx.compose.ui.unit.Dp
 import com.bunbeauty.presentation.viewmodel.base.BaseAction
 import com.bunbeauty.presentation.viewmodel.base.BaseEvent
 import com.bunbeauty.presentation.viewmodel.base.BaseViewDataState
@@ -36,6 +37,7 @@ interface Main {
 
         data class ShowInfoMessage(
             val text: String,
+            val paddingBottom: Dp,
         ) : Action
     }
 
@@ -44,6 +46,7 @@ interface Main {
     data class Message(
         val type: Type,
         val text: String,
+        val paddingBottom: Dp? = null,
     ) {
         enum class Type {
             INFO,

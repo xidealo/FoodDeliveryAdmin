@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -22,7 +23,7 @@ fun NavController.navigateToEditAdditionScreen(additionUuid: String, navOptions:
 
 fun NavGraphBuilder.editAdditionScreenRoute(
     goBack: () -> Unit,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goToCropImage: (String) -> Unit,
 ) {
     composable<EditAdditionScreenDestination> {

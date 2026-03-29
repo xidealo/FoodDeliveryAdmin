@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additiongrouplist.editadditiongroup
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -35,7 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EditAdditionGroupRouteScreen(
     viewModel: EditAdditionGroupViewModel = koinViewModel(),
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +76,7 @@ fun EditAdditionGroupRouteScreen(
 @Composable
 private fun EditAdditionGroupEffect(
     effects: List<EditAdditionGroupDataState.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -92,7 +93,7 @@ private fun EditAdditionGroupEffect(
                             Res.string.msg_edit_addition_group_updated,
                             effect.additionGroupName,
                         ),
-                        0,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,7 +65,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EditAdditionRouteScreen(
     additionUuid: String,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     goToCropImage: (String) -> Unit,
     savedStateHandle: SavedStateHandle,
@@ -121,7 +122,7 @@ fun EditAdditionRouteScreen(
 @Composable
 private fun EditAdditionEffect(
     effects: List<EditAddition.Event>,
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -135,7 +136,7 @@ private fun EditAdditionEffect(
                 is EditAddition.Event.ShowUpdateAdditionSuccess -> {
                     showInfoMessage(
                         getString(Res.string.msg_edit_addition_updated, effect.additionName),
-                        2000,
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }

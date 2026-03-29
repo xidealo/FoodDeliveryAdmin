@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.additionlist.createaddition.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,7 +15,7 @@ fun NavController.navigateToCreateAdditionScreen(navOptions: NavOptions) =
     navigate(route = CreateAdditionScreenDestination, navOptions)
 
 fun NavGraphBuilder.createAdditionScreenRoute(
-    showInfoMessage: (String, Int) -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
     goToCropImage: (String) -> Unit,
