@@ -371,9 +371,6 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
-        onCancellationConfirmed = {
-            // Cancellation confirmed - handled by parent
-        },
     )
 
     editAdditionScreenRoute(

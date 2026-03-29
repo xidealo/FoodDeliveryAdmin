@@ -15,11 +15,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,11 +48,14 @@ import com.bunbeauty.presentation.feature.order.navigation.OrderDetailsScreenDes
 import com.bunbeauty.presentation.feature.order.state.OrderDetailsState
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_order_details_do_not_save
+import fooddeliveryadmin.presentation.generated.resources.action_order_details_no
 import fooddeliveryadmin.presentation.generated.resources.action_order_details_save
+import fooddeliveryadmin.presentation.generated.resources.action_order_details_yes
 import fooddeliveryadmin.presentation.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.presentation.generated.resources.ic_call
 import fooddeliveryadmin.presentation.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_address
+import fooddeliveryadmin.presentation.generated.resources.msg_order_details_alert
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_comment
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_delivery_cost
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_discount_cost
@@ -58,6 +65,7 @@ import fooddeliveryadmin.presentation.generated.resources.msg_order_details_paym
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_pickup_method
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_saved
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
+import fooddeliveryadmin.presentation.generated.resources.title_order_details_alert
 import fooddeliveryadmin.presentation.generated.resources.title_order_status
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -69,11 +77,13 @@ fun OrderDetailsRouteScreen(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
-    onCancellationConfirmed: () -> Unit,
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<OrderDetailsScreenDestination>()
     val onCallPhone = rememberPhoneDialerLauncher()
+    var isCancellationWarningShown by remember {
+        mutableStateOf(false)
+    }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -105,13 +115,26 @@ fun OrderDetailsRouteScreen(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
         goBack = goBack,
+        onShowCancellationWarning = {
+            isCancellationWarningShown = true
+        },
     )
 
     OrderDetailsScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         onCallPhone = onCallPhone,
-        onCancellationConfirmed = onCancellationConfirmed,
+    )
+
+    CancellationWarningDialog(
+        isShown = isCancellationWarningShown,
+        onDismiss = {
+            isCancellationWarningShown = false
+        },
+        onConfirm = {
+            isCancellationWarningShown = false
+            viewModel.onCancellationConfirmed()
+        },
     )
 }
 
@@ -121,13 +144,14 @@ private fun OrderDetailsEffect(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
+    onShowCancellationWarning: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
             when (effect) {
                 OrderDetailsState.Event.OpenWarningDialogEvent -> {
-                    // Show cancellation dialog - handled via callback
+                    onShowCancellationWarning()
                 }
 
                 is OrderDetailsState.Event.ShowErrorMessage -> {
@@ -159,7 +183,6 @@ private fun OrderDetailsScreen(
     state: OrderDetailsViewState,
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
-    onCancellationConfirmed: () -> Unit,
 ) {
     AdminScaffold(
         title = state.title,
@@ -185,7 +208,6 @@ private fun OrderDetailsScreen(
                     state = state.state,
                     onAction = onAction,
                     onCallPhone = onCallPhone,
-                    onCancellationConfirmed = onCancellationConfirmed,
                 )
             }
         }
@@ -197,7 +219,6 @@ private fun SuccessOrderDetailsScreen(
     state: OrderDetailsViewState.State.Success,
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
-    onCancellationConfirmed: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -250,6 +271,35 @@ private fun SuccessOrderDetailsScreen(
             onAction = onAction,
         )
     }
+}
+
+@Composable
+private fun CancellationWarningDialog(
+    isShown: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    if (!isShown) return
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(text = stringResource(Res.string.title_order_details_alert))
+        },
+        text = {
+            Text(text = stringResource(Res.string.msg_order_details_alert))
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = stringResource(Res.string.action_order_details_yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(Res.string.action_order_details_no))
+            }
+        },
+    )
 }
 
 @Composable

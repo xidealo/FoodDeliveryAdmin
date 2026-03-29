@@ -31,14 +31,12 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
-    onCancellationConfirmed: () -> Unit,
 ) {
     composable<OrderDetailsScreenDestination> {
         OrderDetailsRouteScreen(
             showInfoMessage = showInfoMessage,
             showErrorMessage = showErrorMessage,
             goBack = goBack,
-            onCancellationConfirmed = onCancellationConfirmed,
             backStackEntry = it,
         )
     }
