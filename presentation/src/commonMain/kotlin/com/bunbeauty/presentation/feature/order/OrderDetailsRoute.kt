@@ -56,8 +56,10 @@ import fooddeliveryadmin.presentation.generated.resources.msg_order_details_orde
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_order_time
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_payment_method
 import fooddeliveryadmin.presentation.generated.resources.msg_order_details_pickup_method
+import fooddeliveryadmin.presentation.generated.resources.msg_order_details_saved
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_order_status
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -140,8 +142,11 @@ private fun OrderDetailsEffect(
 
                 is OrderDetailsState.Event.SavedEvent -> {
                     showInfoMessage(
-                        effect.orderCode,
-                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
+                        getString(
+                            Res.string.msg_order_details_saved,
+                            effect.orderCode
+                        ),
+                        0.dp
                     )
                     goBack()
                 }

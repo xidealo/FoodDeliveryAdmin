@@ -133,8 +133,8 @@ private fun OrderListEffect(
 
                 is OrderList.Event.OpenOrderDetailsEvent ->
                     openOrderDetails(
-                        effect.orderCode,
                         effect.orderUuid,
+                        effect.orderCode,
                     )
 
                 OrderList.Event.ScrollToTop -> {

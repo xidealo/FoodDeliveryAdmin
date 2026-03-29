@@ -84,7 +84,11 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     orderListScreenRoute(
         cancelNotification = cancelNotification,
         openOrderDetails = { orderUuid, orderCode ->
-            navController.navigateToOrderDetailsScreen(orderUuid, orderCode, emptyNavOptions)
+            navController.navigateToOrderDetailsScreen(
+                orderUuid = orderUuid,
+                orderCode = orderCode,
+                navOptions = emptyNavOptions
+            )
         },
     )
 
