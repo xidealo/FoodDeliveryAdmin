@@ -31,7 +31,6 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
-    onCallPhone: (String) -> Unit,
     onCancellationConfirmed: () -> Unit,
 ) {
     composable<OrderDetailsScreenDestination> {
@@ -39,7 +38,6 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
             showInfoMessage = showInfoMessage,
             showErrorMessage = showErrorMessage,
             goBack = goBack,
-            onCallPhone = onCallPhone,
             onCancellationConfirmed = onCancellationConfirmed,
             backStackEntry = it,
         )

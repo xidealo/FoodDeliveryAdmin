@@ -371,9 +371,6 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
-        onCallPhone = { phoneNumber ->
-            // Phone call - handled by platform-specific implementation
-        },
         onCancellationConfirmed = {
             // Cancellation confirmed - handled by parent
         },

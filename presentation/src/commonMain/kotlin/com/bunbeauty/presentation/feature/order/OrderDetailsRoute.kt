@@ -63,19 +63,17 @@ import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-private const val PHONE_LINK = "tel:"
-
 @Composable
 fun OrderDetailsRouteScreen(
     viewModel: OrderDetailsViewModel = koinViewModel(),
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
-    onCallPhone: (String) -> Unit,
     onCancellationConfirmed: () -> Unit,
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<OrderDetailsScreenDestination>()
+    val onCallPhone = rememberPhoneDialerLauncher()
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
