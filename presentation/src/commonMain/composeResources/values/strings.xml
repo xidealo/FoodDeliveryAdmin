@@ -191,6 +191,7 @@
     <string name="msg_settings_status_pickup">Самовывоз</string>
     <string name="msg_settings_status_pickup_delivery">Самовывоз и доставка</string>
     <string name="action_settings_save">Настройки сохранены</string>
+    <string name="settings_success_save_message">Настройки успешно сохранены</string>
     <string name="msg_settings_status_accept_orders">Не принимать заказы</string>
     <string name="title_settings_disable_orders">Отключить заказы?</string>
     <string name="msg_settings_disable_orders">Пользователи не смогут делать заказы</string>

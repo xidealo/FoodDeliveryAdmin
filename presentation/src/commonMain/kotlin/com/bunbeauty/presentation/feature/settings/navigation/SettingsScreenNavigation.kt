@@ -12,10 +12,14 @@ data object SettingsScreenDestination
 
 fun NavController.navigateToSettingsScreen(navOptions: NavOptions) = navigate(route = SettingsScreenDestination, navOptions)
 
-fun NavGraphBuilder.settingsScreenRoute(goBack: () -> Unit) {
+fun NavGraphBuilder.settingsScreenRoute(
+    goBack: () -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
+) {
     composable<SettingsScreenDestination> {
         SettingsRouteScreen(
             goBack = goBack,
+            showInfoMessage = showInfoMessage,
         )
     }
 }

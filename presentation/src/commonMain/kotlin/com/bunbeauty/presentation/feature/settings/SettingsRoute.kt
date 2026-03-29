@@ -58,6 +58,7 @@ import fooddeliveryadmin.presentation.generated.resources.msg_settings_status_pi
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_status_pickup_delivery
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_type_work
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_unlimited_notifications
+import fooddeliveryadmin.presentation.generated.resources.settings_success_save_message
 import fooddeliveryadmin.presentation.generated.resources.msg_work_load_average
 import fooddeliveryadmin.presentation.generated.resources.msg_work_load_high
 import fooddeliveryadmin.presentation.generated.resources.msg_work_load_low
@@ -66,6 +67,7 @@ import fooddeliveryadmin.presentation.generated.resources.title_settings
 import fooddeliveryadmin.presentation.generated.resources.title_settings_disable_orders
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -75,6 +77,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsRouteScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     goBack: () -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -100,6 +103,7 @@ fun SettingsRouteScreen(
         effects = effects,
         consumeEffects = consumeEffects,
         goBack = goBack,
+        showInfoMessage = showInfoMessage,
     )
 
     SettingsScreen(
@@ -113,6 +117,7 @@ fun SettingsRouteScreen(
 private fun SettingsEffect(
     effects: List<SettingsState.Event>,
     goBack: () -> Unit,
+    showInfoMessage: (String, Int) -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
@@ -123,10 +128,12 @@ private fun SettingsEffect(
                 }
 
                 SettingsState.Event.ShowSaveSettingEvent -> {
+                    showInfoMessage(getString(Res.string.settings_success_save_message), 0)
                     goBack()
                 }
 
                 is SettingsState.Event.ShowErrorMessage -> {
+
                 }
             }
         }

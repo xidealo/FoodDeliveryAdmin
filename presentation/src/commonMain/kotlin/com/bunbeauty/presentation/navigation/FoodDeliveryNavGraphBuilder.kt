@@ -356,6 +356,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     settingsScreenRoute(
         goBack = navController::navigateUp,
+        showInfoMessage = showInfoMessage,
     )
     statisticScreenRoute(
         goBack = navController::navigateUp,
