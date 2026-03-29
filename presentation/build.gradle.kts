@@ -36,7 +36,6 @@ kotlin {
                 implementation(compose.animation)
                 implementation(compose.animationGraphics)
                 implementation(compose.components.uiToolingPreview)
-                implementation(compose.uiTooling)
                 implementation(libs.bundles.coil)
                 implementation(libs.kotlinx.collections.immutable)
             }
@@ -44,6 +43,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.android.image.cropper)
+                implementation(compose.uiTooling)
+
             }
         }
         val androidUnitTest by getting {

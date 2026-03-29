@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
@@ -112,18 +114,6 @@ private fun ProfileScreen(
 
     AdminScaffold(
         title = stringResource(Res.string.title_profile),
-        actionButton = {
-            if (viewState.state is ProfileViewState.State.Success) {
-                LoadingButton(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(Res.string.action_common_logout),
-                    onClick = {
-                        onAction(Profile.Action.LogoutClick)
-                    },
-                    isLoading = viewState.state.logoutLoading,
-                )
-            }
-        },
     ) {
         when (viewState.state) {
             ProfileViewState.State.Loading -> {
@@ -160,11 +150,14 @@ private fun SuccessProfileScreen(
     state: ProfileViewState.State.Success,
     onAction: (Profile.Action) -> Unit,
 ) {
+    val appVersion = rememberAppVersion()
+
     Column(
         modifier =
             Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .padding(bottom = 72.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         TextWithHintCard(
@@ -192,19 +185,22 @@ private fun SuccessProfileScreen(
                 onAction(Profile.Action.SettingsClick)
             },
         )
-    }
-    Column(
-        modifier =
-            Modifier
-                .fillMaxSize(),
-    ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = stringResource(Res.string.version_app, "1.0.0"),
-            modifier =
-                Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 72.dp),
+            text = stringResource(Res.string.version_app, appVersion),
+            modifier = Modifier
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+
+        LoadingButton(
+            modifier = Modifier.padding(horizontal = 16.dp)
+                .padding(top = 8.dp),
+            text = stringResource(Res.string.action_common_logout),
+            onClick = {
+                onAction(Profile.Action.LogoutClick)
+            },
+            isLoading = state.logoutLoading,
         )
     }
 }
