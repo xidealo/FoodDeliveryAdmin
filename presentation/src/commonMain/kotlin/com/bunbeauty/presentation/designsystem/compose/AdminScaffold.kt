@@ -5,9 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -31,7 +35,7 @@ fun AdminScaffold(
     topActions: List<AdminTopBarAction> = emptyList(),
     backgroundColor: Color = AdminTheme.colors.main.background,
     actionButton: @Composable () -> Unit = {},
-      pullRefreshEnabled: Boolean = false,
+    pullRefreshEnabled: Boolean = false,
     refreshing: Boolean = false,
     onRefresh: () -> Unit = {},
     floatingActionButtonPosition: Alignment = Alignment.BottomCenter,
@@ -40,6 +44,7 @@ fun AdminScaffold(
     val appBarState = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.pinnedScrollBehavior(appBarState)
     val scrollBehavior = remember { behavior }
+    val pullToRefreshState = rememberPullToRefreshState()
 
     Box(
         modifier =
@@ -58,7 +63,35 @@ fun AdminScaffold(
                 scrollBehavior = scrollBehavior,
                 actions = topActions,
             )
-            content()
+            if (pullRefreshEnabled) {
+                PullToRefreshBox(
+                    isRefreshing = refreshing,
+                    onRefresh = onRefresh,
+                    state = pullToRefreshState,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                    indicator = {
+                        PullToRefreshDefaults.Indicator(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            isRefreshing = refreshing,
+                            state = pullToRefreshState,
+                        )
+                    },
+                ) {
+                    content()
+                }
+            } else {
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                ) {
+                    content()
+                }
+            }
         }
 
         Box(

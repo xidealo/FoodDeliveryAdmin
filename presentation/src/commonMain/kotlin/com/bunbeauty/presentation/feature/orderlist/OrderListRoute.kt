@@ -159,7 +159,8 @@ private fun OrderListScreen(
 ) {
     AdminScaffold(
         title = stringResource(Res.string.title_orders),
-        //  pullRefreshEnabled = state.state is OrderListViewState.State.Success,
+        pullRefreshEnabled = state.state is OrderListViewState.State.Success,
+        refreshing = (state.state as? OrderListViewState.State.Success)?.refreshing == true,
         onRefresh = {
             onAction(OrderList.Action.RefreshSwipe)
         },
