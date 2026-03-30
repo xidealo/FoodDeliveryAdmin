@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.bunbeauty.presentation.feature.menulist.cropimage.CropImagePreset
 import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageRouteScreen
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -13,18 +14,18 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 data class CropImageScreenDestination(
     val uri: String,
-    val isEditAddition: Boolean,
+    val preset: CropImagePreset,
 )
 
 fun NavController.navigateToCropImageScreen(
     uri: String,
-    isEditAddition: Boolean,
+    preset: CropImagePreset,
     navOptions: NavOptions,
 ) = navigate(
     route =
         CropImageScreenDestination(
             uri = uri,
-            isEditAddition = isEditAddition,
+            preset = preset,
         ),
     navOptions,
 )
@@ -40,7 +41,7 @@ fun NavGraphBuilder.cropImageScreenRoute(
             goBack = goBack,
             onCropSaved = onCropSaved,
             uri = destination.uri,
-            isEditAddition = destination.isEditAddition,
+            preset = destination.preset,
         )
     }
 }

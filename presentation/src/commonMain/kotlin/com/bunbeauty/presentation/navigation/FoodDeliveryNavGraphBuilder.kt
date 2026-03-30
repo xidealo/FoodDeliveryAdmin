@@ -46,6 +46,7 @@ import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.navigateToCropImageScreen
+import com.bunbeauty.presentation.feature.menulist.cropimage.CropImagePreset
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
@@ -133,7 +134,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCropImage = { imageUri ->
             navController.navigateToCropImageScreen(
                 uri = imageUri,
-                isEditAddition = true,
+                preset = CropImagePreset.MENU_PRODUCT,
                 navOptions = emptyNavOptions,
             )
         },
@@ -157,7 +158,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCropImage = { imageUri ->
             navController.navigateToCropImageScreen(
                 uri = imageUri,
-                isEditAddition = true,
+                preset = CropImagePreset.MENU_PRODUCT,
                 navOptions = emptyNavOptions,
             )
         },
@@ -192,7 +193,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCropImage = { imageUri ->
             navController.navigateToCropImageScreen(
                 uri = imageUri,
-                isEditAddition = false,
+                preset = CropImagePreset.ADDITION,
                 navOptions = emptyNavOptions,
             )
         },
@@ -379,7 +380,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCropImage = { imageUri ->
             navController.navigateToCropImageScreen(
                 uri = imageUri,
-                isEditAddition = false,
+                preset = CropImagePreset.ADDITION,
                 navOptions = emptyNavOptions,
             )
         },

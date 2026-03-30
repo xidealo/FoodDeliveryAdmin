@@ -33,7 +33,7 @@ import org.jetbrains.compose.resources.stringResource
 fun CropImageRouteScreen(
     viewModel: CropImageViewModel,
     uri: String,
-    isEditAddition: Boolean,
+    preset: CropImagePreset,
     goBack: () -> Unit,
     onCropSaved: (String) -> Unit,
 ) {
@@ -74,7 +74,7 @@ fun CropImageRouteScreen(
         state = viewState,
         onAction = onAction,
         cropImageController = cropImageController,
-        isEditAddition = isEditAddition
+        preset = preset,
     )
 }
 
@@ -104,7 +104,7 @@ private fun CropImageEffect(
 @Composable
 private fun CropImageScreen(
     state: CropImage.DataState,
-    isEditAddition: Boolean,
+    preset: CropImagePreset,
     onAction: (CropImage.Action) -> Unit,
     cropImageController: PlatformCropImageController,
 ) {
@@ -161,7 +161,7 @@ private fun CropImageScreen(
             PlatformCropImageView(
                 imageUri = imageUri,
                 controller = cropImageController,
-                isEditAddition = isEditAddition,
+                preset = preset,
                 modifier =
                     Modifier
                         .fillMaxSize()

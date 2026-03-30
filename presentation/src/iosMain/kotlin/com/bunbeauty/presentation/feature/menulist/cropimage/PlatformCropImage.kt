@@ -26,6 +26,7 @@ actual fun rememberPlatformCropImageController(
 actual fun PlatformCropImageView(
     imageUri: String,
     controller: PlatformCropImageController,
+    preset: CropImagePreset,
     modifier: Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize())

@@ -58,18 +58,18 @@ actual fun rememberPlatformCropImageController(
 actual fun PlatformCropImageView(
     imageUri: String,
     controller: PlatformCropImageController,
-    isEditAddition: Boolean,
+    preset: CropImagePreset,
     modifier: Modifier,
 ) {
     val androidController = controller as AndroidPlatformCropImageController
 
     CropImageView(
         imageContent = imageUri,
-        cropImageDefaults = if (isEditAddition) {
-            CropImageDefaults.menuProductOptions()
-        }else{
-            CropImageDefaults.additionOptions()
-        },
+        cropImageDefaults =
+            when (preset) {
+                CropImagePreset.MENU_PRODUCT -> CropImageDefaults.menuProductOptions()
+                CropImagePreset.ADDITION -> CropImageDefaults.additionOptions()
+            },
         androidController = androidController,
     )
 }
