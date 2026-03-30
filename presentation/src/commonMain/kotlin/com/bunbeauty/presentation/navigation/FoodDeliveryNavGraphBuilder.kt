@@ -356,8 +356,15 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             // navigate to map - handled by existing navigation
         },
         goToLoginScreen = {
-            // TODO CLEAN BACK STACK
-            navController.navigateToLoginScreen(emptyNavOptions)
+            navController.navigateToLoginScreen(
+                navOptions =
+                    navOptions {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+            )
         },
     )
     settingsScreenRoute(
