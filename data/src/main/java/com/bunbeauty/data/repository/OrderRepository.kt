@@ -4,6 +4,7 @@ import android.util.Log
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.toOrderAvailability
+import com.bunbeauty.data.model.server.order.GetCafeOrder
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.exception.ServerConnectionException
@@ -49,7 +50,7 @@ class OrderRepository(
         val updatedOrderListFlow =
             networkConnector
                 .getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-                .filterIsInstance<ApiResult.Success<OrderServer>>()
+                .filterIsInstance<ApiResult.Success<GetCafeOrder>>()
                 .map { successApiResult ->
                     val order = serverOrderMapper.mapOrder(successApiResult.data)
                     val updatedOrderList =
@@ -75,7 +76,7 @@ class OrderRepository(
     ): Flow<OrderError> =
         networkConnector
             .getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-            .filterIsInstance<ApiResult.Error<OrderServer>>()
+            .filterIsInstance<ApiResult.Error<GetCafeOrder>>()
             .map { errorApiResult ->
                 OrderError(errorApiResult.apiError.message)
             }

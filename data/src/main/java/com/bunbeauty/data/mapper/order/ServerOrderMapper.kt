@@ -1,6 +1,7 @@
 package com.bunbeauty.data.mapper.order
 
 import com.bunbeauty.data.mapper.OderProductMapper
+import com.bunbeauty.data.model.server.order.GetCafeOrder
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
@@ -60,6 +61,16 @@ class ServerOrderMapper(
             deferredTime = orderServer.deferredTime,
             timeZone = orderServer.timeZone,
             orderStatus = getOrderStatus(orderServer.status),
+        )
+
+    override fun mapOrder(getCafeOrder: GetCafeOrder): Order =
+        Order(
+            uuid = getCafeOrder.uuid,
+            code = getCafeOrder.code,
+            time = getCafeOrder.time,
+            deferredTime = getCafeOrder.deferredTime,
+            timeZone = getCafeOrder.timeZone,
+            orderStatus = getOrderStatus(getCafeOrder.status),
         )
 
     private fun getOrderStatus(statusName: String): OrderStatus = getOrderStatusNullable(statusName) ?: OrderStatus.NOT_ACCEPTED

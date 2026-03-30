@@ -44,7 +44,6 @@ androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", nam
 material = { module = "com.google.android.material:material", version.ref = "material" }
 
 # Ktor
-ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -165,7 +164,6 @@ di = [
 ]
 
 ktor = [
-    "ktor-client-websockets",
     "ktor-client-content-negotiation",
     "ktor-client-json",
     "ktor-serialization-kotlinx-json",

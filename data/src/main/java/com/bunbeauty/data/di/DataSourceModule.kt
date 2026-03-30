@@ -8,7 +8,6 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -40,7 +39,6 @@ fun dataSourceModule() =
                         },
                     )
                 }
-                install(WebSockets)
                 install(Logging) {
                     logger =
                         object : KtorLogger {

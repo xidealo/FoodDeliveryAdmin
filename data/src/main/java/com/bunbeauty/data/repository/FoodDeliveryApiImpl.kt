@@ -33,6 +33,7 @@ import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
 import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
+import com.bunbeauty.data.model.server.order.GetCafeOrder
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
@@ -46,10 +47,9 @@ import common.ApiResult
 import common.Constants.WEB_SOCKET_TAG
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpTimeoutConfig
 import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
-import io.ktor.client.plugins.websocket.WebSocketException
-import io.ktor.client.plugins.websocket.wss
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -57,20 +57,19 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
+import io.ktor.client.request.prepareGet
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.HttpHeaders.Authorization
-import io.ktor.http.HttpMethod
+import io.ktor.http.isSuccess
 import io.ktor.http.path
-import io.ktor.websocket.CloseReason
-import io.ktor.websocket.Frame
-import io.ktor.websocket.close
-import io.ktor.websocket.readText
+import io.ktor.utils.io.readUTF8Line
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -85,13 +84,11 @@ class FoodDeliveryApiImpl(
     private val client: HttpClient,
     private val json: Json,
 ) : FoodDeliveryApi {
-    private var webSocketSession: DefaultClientWebSocketSession? = null
-
-    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<OrderServer>>()
+    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<GetCafeOrder>>()
 
     private val mutex = Mutex()
 
-    private var webSocketSessionOpened = false
+    private var orderSseJob: Job? = null
 
     override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> =
         post(
@@ -261,9 +258,9 @@ class FoodDeliveryApiImpl(
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
         cafeUuid: String,
-    ): Flow<ApiResult<OrderServer>> {
+    ): Flow<ApiResult<GetCafeOrder>> {
         mutex.withLock {
-            if (!webSocketSessionOpened) {
+            if (orderSseJob?.isActive != true) {
                 subscribeOnOrderUpdates(token, cafeUuid)
             }
         }
@@ -274,57 +271,88 @@ class FoodDeliveryApiImpl(
         token: String,
         cafeUuid: String,
     ) {
-        CoroutineScope(Job() + IO).launch {
-            try {
-                webSocketSessionOpened = true
-                client.wss(
-                    HttpMethod.Get,
-                    path = "user/order/subscribe",
-                    port = 443,
-                    request = {
-                        header("Authorization", "Bearer $token")
+        orderSseJob =
+            CoroutineScope(Job() + IO).launch {
+                try {
+                    Log.d(WEB_SOCKET_TAG, "SSE order subscribe started")
+                    client.prepareGet {
+                        url {
+                            path("v2/user/order/subscribe")
+                        }
                         parameter("cafeUuid", cafeUuid)
-                    },
-                ) {
-                    Log.d(WEB_SOCKET_TAG, "WebSocket connected")
-                    webSocketSession = this
-                    while (true) {
-                        val message = incoming.receive() as? Frame.Text ?: continue
-                        Log.d(WEB_SOCKET_TAG, "Message: ${message.readText()}")
-                        val serverModel =
-                            json.decodeFromString(OrderServer.serializer(), message.readText())
-                        mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
+                        header("Authorization", "Bearer $token")
+                        header("Accept", "text/event-stream")
+                        timeout {
+                            requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                            socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                        }
+                    }.execute { response ->
+                        if (!response.status.isSuccess()) {
+                            Log.e(WEB_SOCKET_TAG, "SSE subscribe failed: ${response.status}")
+                            mutableUpdatedOrderFlow.emit(
+                                ApiResult.Error(
+                                    ApiError(
+                                        response.status.value,
+                                        response.status.description,
+                                    ),
+                                ),
+                            )
+                            return@execute
+                        }
+                        val channel = response.bodyAsChannel()
+                        val dataLines = mutableListOf<String>()
+                        while (!channel.isClosedForRead) {
+                            val line =
+                                try {
+                                    channel.readUTF8Line()
+                                } catch (e: Exception) {
+                                    Log.e(WEB_SOCKET_TAG, "SSE read error: ${e.message}")
+                                    break
+                                } ?: break
+                            if (line.isEmpty()) {
+                                if (dataLines.isNotEmpty()) {
+                                    val payload = dataLines.joinToString("\n")
+                                    dataLines.clear()
+                                    try {
+                                        val serverModel =
+                                            json.decodeFromString(GetCafeOrder.serializer(), payload)
+                                        Log.d(WEB_SOCKET_TAG, "SSE order event")
+                                        mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
+                                    } catch (e: Exception) {
+                                        Log.e(WEB_SOCKET_TAG, "SSE decode error: ${e.message}")
+                                    }
+                                }
+                                continue
+                            }
+                            when {
+                                line.startsWith("data:") ->
+                                    dataLines.add(line.removePrefix("data:").trimStart())
+                                line.startsWith(":") -> { }
+                            }
+                        }
                     }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (exception: SocketException) {
+                    Log.e(WEB_SOCKET_TAG, "SocketException: ${exception.message}")
+                    mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+                } catch (exception: Exception) {
+                    val stackTrace =
+                        exception.stackTrace.joinToString("\n") {
+                            "${it.className} ${it.methodName} ${it.lineNumber}"
+                        }
+                    Log.e(WEB_SOCKET_TAG, "Exception: $exception \n$stackTrace")
+                    mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+                } finally {
+                    orderSseJob = null
                 }
-            } catch (exception: WebSocketException) {
-                Log.e(WEB_SOCKET_TAG, "WebSocketException: ${exception.message}")
-                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
-            } catch (exception: SocketException) {
-                Log.e(WEB_SOCKET_TAG, "SocketException: ${exception.message}")
-                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
-            } catch (exception: ClosedReceiveChannelException) {
-                Log.d(WEB_SOCKET_TAG, "ClosedReceiveChannelException: ${exception.message}")
-                // Nothing
-            } catch (exception: Exception) {
-                val stackTrace =
-                    exception.stackTrace.joinToString("\n") {
-                        "${it.className} ${it.methodName} ${it.lineNumber}"
-                    }
-                Log.e(WEB_SOCKET_TAG, "Exception: $exception \n$stackTrace")
-                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
-            } finally {
-                webSocketSessionOpened = false
             }
-        }
     }
 
     override suspend fun unsubscribeOnOrderList(message: String) {
-        if (webSocketSession != null) {
-            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, message))
-            webSocketSession = null
-
-            Log.d(WEB_SOCKET_TAG, "webSocketSession closed ($message)")
-        }
+        orderSseJob?.cancel()
+        orderSseJob = null
+        Log.d(WEB_SOCKET_TAG, "SSE order subscribe cancelled ($message)")
     }
 
     override suspend fun getOrderListByCafeUuid(

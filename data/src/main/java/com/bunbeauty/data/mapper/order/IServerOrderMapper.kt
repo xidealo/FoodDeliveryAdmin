@@ -1,5 +1,6 @@
 package com.bunbeauty.data.mapper.order
 
+import com.bunbeauty.data.model.server.order.GetCafeOrder
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.model.order.Order
@@ -9,4 +10,6 @@ interface IServerOrderMapper {
     fun mapOrderDetails(orderDetailsServer: OrderDetailsServer): OrderDetails
 
     fun mapOrder(orderServer: OrderServer): Order
+
+    fun mapOrder(getCafeOrder: GetCafeOrder): Order
 }

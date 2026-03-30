@@ -29,6 +29,7 @@ import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
+import com.bunbeauty.data.model.server.order.GetCafeOrder
 import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
@@ -125,7 +126,7 @@ interface FoodDeliveryApi {
     suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
         cafeUuid: String,
-    ): Flow<ApiResult<OrderServer>>
+    ): Flow<ApiResult<GetCafeOrder>>
 
     suspend fun unsubscribeOnOrderList(message: String)
 
