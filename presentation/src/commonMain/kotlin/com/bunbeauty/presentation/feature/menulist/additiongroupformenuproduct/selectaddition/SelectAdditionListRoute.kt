@@ -96,7 +96,7 @@ fun SelectAdditionListRouteScreen(
                 menuProductUuid = route.menuProductUuid,
                 additionGroupUuid = route.additionGroupUuid,
                 additionGroupName = route.additionGroupName,
-                editedAdditionListUuid = route.editedAdditionListUuid,
+                editedAdditionListUuid = route.editedAdditionListUuid?.ifEmpty { null },
             ),
         )
     }
