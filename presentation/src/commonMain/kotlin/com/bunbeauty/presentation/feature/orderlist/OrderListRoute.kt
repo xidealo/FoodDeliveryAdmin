@@ -223,7 +223,12 @@ private fun OrderListSuccessScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState,
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = 16.dp,
+                bottom = 86.dp
+            ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item(key = CAFE_ADDRESS_KEY) {
