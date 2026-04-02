@@ -193,6 +193,10 @@ class EditMenuProductViewModel(
                 }
             }
 
+            EditMenuProduct.Action.RefreshAdditionGroups -> {
+                refreshAdditionGroupsOnly()
+            }
+
             is EditMenuProduct.Action.ToggleVisibilityInMenu -> {
                 setState {
                     copy(isVisibleInMenu = !isVisibleInMenu)
@@ -302,6 +306,31 @@ class EditMenuProductViewModel(
                     copy(state = EditMenuProduct.DataState.State.ERROR)
                 }
             },
+        )
+    }
+
+    private fun refreshAdditionGroupsOnly() {
+        val productUuid = state.value.productUuid
+        if (productUuid.isBlank() || state.value.state != EditMenuProduct.DataState.State.SUCCESS) {
+            return
+        }
+        viewModelScope.launchSafe(
+            block = {
+                val menuProduct = getMenuProductUseCase(productUuid)
+                setState {
+                    copy(
+                        additionGroupListField =
+                            AdditionGroupListFieldData(
+                                value =
+                                    menuProduct.additionGroups.map { additionGroupWithAdditions ->
+                                        additionGroupWithAdditions.additionGroup
+                                    },
+                                isError = false,
+                            ),
+                    )
+                }
+            },
+            onError = {},
         )
     }
 

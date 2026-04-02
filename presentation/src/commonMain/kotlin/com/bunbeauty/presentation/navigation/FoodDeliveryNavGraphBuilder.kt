@@ -62,6 +62,7 @@ import com.bunbeauty.presentation.feature.statistic.navigation.navigateToStatist
 import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRoute
 import com.bunbeauty.presentation.feature.statisticdetails.navigation.statisticDetailsScreenRoute
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
@@ -268,7 +269,13 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     additionGroupForMenuProductListScreenRoute(
         showInfoMessage = showInfoMessage,
-        goBack = navController::navigateUp,
+        goBack = {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS,
+                true,
+            )
+            navController.navigateUp()
+        },
         goToCreateAdditionGroup = { menuProductUuid ->
             navController.navigateToCreateAdditionGroupForMenuProductScreen(
                 menuProductUuid = menuProductUuid,

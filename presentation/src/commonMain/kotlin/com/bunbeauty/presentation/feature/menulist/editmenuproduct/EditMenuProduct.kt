@@ -81,6 +81,8 @@ interface EditMenuProduct {
             val categoryUuidList: List<String>,
         ) : Action
 
+        data object RefreshAdditionGroups : Action
+
         data object ToggleVisibilityInMenu : Action
 
         data object ToggleVisibilityInRecommendations : Action

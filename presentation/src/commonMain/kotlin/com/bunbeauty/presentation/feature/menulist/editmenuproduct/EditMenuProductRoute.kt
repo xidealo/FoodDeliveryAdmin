@@ -41,6 +41,7 @@ import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
@@ -120,6 +121,18 @@ fun EditMenuProductRouteScreen(
             if (croppedImageUri != null) {
                 onAction(EditMenuProduct.Action.SetImage(croppedImageUri))
                 savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        savedStateHandle.getStateFlow<Boolean?>(
+            key = REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS,
+            initialValue = null,
+        ).collect { shouldRefresh ->
+            if (shouldRefresh == true) {
+                onAction(EditMenuProduct.Action.RefreshAdditionGroups)
+                savedStateHandle.remove<Boolean>(REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS)
             }
         }
     }

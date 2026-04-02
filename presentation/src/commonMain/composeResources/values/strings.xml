@@ -16,7 +16,7 @@
     <string name="title_common_loading">Загрузка</string>
     <string name="title_common_select_date">Выбрать дату</string>
     <string name="title_common_select_time">Выбрать дату</string>
-    <string name="title_edit_priority">"Изменение порядка</string>
+    <string name="title_edit_priority">Изменение порядка</string>
     <string name="msg_common_check_connection_and_retry">Проверьте соединение и повторите попытку</string>
     <string name="msg_common_non_working_day">Сегодня запланирован нерабочий день</string>
     <string name="msg_common_cafe">Ресторан</string>
