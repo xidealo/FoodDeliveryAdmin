@@ -137,10 +137,6 @@ class EditAdditionGroupForMenuProductViewModel(
                         additionNameList = getAdditionListNameUseCase(
                             additionList = additionGroupWithAdditionsForMenu.additionList,
                         ),
-                        editedAdditionListUuid = additionGroupWithAdditionsForMenu.additionList
-                            .map { addition ->
-                                addition.uuid
-                            },
                         isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible,
                         menuProductUuid = menuProductUuid,
                     )
