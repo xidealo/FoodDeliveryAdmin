@@ -339,7 +339,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     selectAdditionGroupScreenRoute(
         showInfoMessage = showInfoMessage,
         goBack = navController::navigateUp,
-        onAdditionGroupSelected = { additionGroupUuid, additionGroupName ->
+        onAdditionGroupSelected = { additionGroupUuid ->
             navController.previousBackStackEntry
                 ?.savedStateHandle
                 ?.set(SELECTED_ADDITION_GROUP_UUID, additionGroupUuid)

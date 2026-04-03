@@ -51,7 +51,7 @@ fun SelectAdditionGroupRouteScreen(
     viewModel: SelectAdditionGroupViewModel = koinViewModel(),
     showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
-    onAdditionGroupSelected: (String, String) -> Unit,
+    onAdditionGroupSelected: (String) -> Unit,
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<SelectAdditionGroupScreenDestination>()
@@ -101,7 +101,7 @@ private fun SelectAdditionGroupEffect(
     showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
-    onAdditionGroupSelected: (String, String) -> Unit,
+    onAdditionGroupSelected: (String) -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
@@ -119,8 +119,7 @@ private fun SelectAdditionGroupEffect(
                         androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     onAdditionGroupSelected(
-                        effect.additionGroupUuid,
-                        effect.additionGroupName,
+                        effect.additionGroupUuid
                     )
                     goBack()
                 }
