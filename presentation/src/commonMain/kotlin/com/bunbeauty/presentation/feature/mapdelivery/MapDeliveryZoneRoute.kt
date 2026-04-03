@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.presentation.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.UPDATED_DELIVERY_ZONE_UUID
 import common.Constants.RUBLE_CURRENCY
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_bottom_sheet_edit
@@ -58,9 +60,9 @@ private const val MAP_ZOOM = 10.5
 @Composable
 fun MapDeliveryZoneRouteScreen(
     viewModel: MapDeliveryZoneViewModel = koinViewModel(),
+    savedStateHandle: SavedStateHandle,
     goBack: () -> Unit,
     goToEditDeliveryZoneInfo: (String) -> Unit,
-    onZoneUpdated: (String) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -82,12 +84,23 @@ fun MapDeliveryZoneRouteScreen(
         onAction(MapDeliveryZone.Action.LoadAllData)
     }
 
+    LaunchedEffect(Unit) {
+        savedStateHandle.getStateFlow<String?>(
+            key = UPDATED_DELIVERY_ZONE_UUID,
+            initialValue = null,
+        ).collect { updatedZoneUuid ->
+            if (updatedZoneUuid != null) {
+                onAction(MapDeliveryZone.Action.UpdateDeliveryZone(updatedZoneUuid))
+                savedStateHandle.remove<String>(UPDATED_DELIVERY_ZONE_UUID)
+            }
+        }
+    }
+
     MapDeliveryZoneEffect(
         effects = effects,
         consumeEffects = consumeEffects,
         goBack = goBack,
         goToEditDeliveryZoneInfo = goToEditDeliveryZoneInfo,
-        onZoneUpdated = onZoneUpdated,
     )
 
     MapScreen(
@@ -106,7 +119,6 @@ private fun MapDeliveryZoneEffect(
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
     goToEditDeliveryZoneInfo: (String) -> Unit,
-    onZoneUpdated: (String) -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->

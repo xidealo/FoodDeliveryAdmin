@@ -15,13 +15,12 @@ fun NavController.navigateToMapDeliveryZoneScreen(navOptions: NavOptions) = navi
 fun NavGraphBuilder.mapDeliveryZoneScreenRoute(
     goBack: () -> Unit,
     goToEditDeliveryZoneInfo: (String) -> Unit,
-    onZoneUpdated: (String) -> Unit,
 ) {
-    composable<MapDeliveryZoneScreenDestination> {
+    composable<MapDeliveryZoneScreenDestination> { backStackEntry ->
         MapDeliveryZoneRouteScreen(
+            savedStateHandle = backStackEntry.savedStateHandle,
             goBack = goBack,
             goToEditDeliveryZoneInfo = goToEditDeliveryZoneInfo,
-            onZoneUpdated = onZoneUpdated,
         )
     }
 }

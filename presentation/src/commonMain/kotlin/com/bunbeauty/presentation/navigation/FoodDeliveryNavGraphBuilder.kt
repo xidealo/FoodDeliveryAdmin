@@ -29,6 +29,7 @@ import com.bunbeauty.presentation.feature.login.navigation.navigateToLoginScreen
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
 import com.bunbeauty.presentation.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
 import com.bunbeauty.presentation.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
+import com.bunbeauty.presentation.feature.mapdelivery.navigation.navigateToMapDeliveryZoneScreen
 import com.bunbeauty.presentation.feature.menu.navigation.menuScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
@@ -66,6 +67,7 @@ import com.bunbeauty.presentation.navigation.NavStateHandleParameters.REFRESH_ED
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.UPDATED_DELIVERY_ZONE_UUID
 
 internal val emptyNavOptions = navOptions { }
 
@@ -229,6 +231,11 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     editDeliveryZoneInfoScreenRoute(
         showInfoMessage = showInfoMessage,
+        onZoneUpdated = { zoneUuid ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(UPDATED_DELIVERY_ZONE_UUID, zoneUuid)
+        },
         goBack = navController::navigateUp,
     )
     mapDeliveryZoneScreenRoute(
@@ -238,9 +245,6 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 zoneUuid = zoneUuid,
                 navOptions = emptyNavOptions,
             )
-        },
-        onZoneUpdated = { zoneUuid ->
-            navController.navigateToEditDeliveryZoneInfoScreen(zoneUuid, emptyNavOptions)
         },
     )
     galleryScreenRoute(
@@ -359,9 +363,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToStatisticScreen = {
             navController.navigateToStatisticScreen(emptyNavOptions)
         },
-        goToMapScreen = {
-            // navigate to map - handled by existing navigation
-        },
+        goToMapScreen = { navController.navigateToMapDeliveryZoneScreen(emptyNavOptions) },
         goToLoginScreen = {
             navController.navigateToLoginScreen(
                 navOptions =

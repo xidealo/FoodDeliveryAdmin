@@ -36,6 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun EditDeliveryZoneInfoRouteScreen(
     viewModel: EditDeliveryZoneInfoViewModel = koinViewModel(),
     showInfoMessage: (String, Dp) -> Unit,
+    onZoneUpdated: (String) -> Unit,
     goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -62,6 +63,7 @@ fun EditDeliveryZoneInfoRouteScreen(
         effects = effects,
         consumeEffects = consumeEffects,
         showInfoMessage = showInfoMessage,
+        onZoneUpdated = onZoneUpdated,
         goBack = goBack,
     )
 
@@ -75,6 +77,7 @@ fun EditDeliveryZoneInfoRouteScreen(
 private fun EditDeliveryZoneInfoEffect(
     effects: List<EditDeliveryZoneInfo.Event>,
     showInfoMessage: (String, Dp) -> Unit,
+    onZoneUpdated: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -93,6 +96,7 @@ private fun EditDeliveryZoneInfoEffect(
                         ),
                         androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
+                    onZoneUpdated(effect.uuid)
                     goBack()
                 }
             }
