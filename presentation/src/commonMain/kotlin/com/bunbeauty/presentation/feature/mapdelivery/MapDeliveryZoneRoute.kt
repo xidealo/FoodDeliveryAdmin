@@ -85,15 +85,16 @@ fun MapDeliveryZoneRouteScreen(
     }
 
     LaunchedEffect(Unit) {
-        savedStateHandle.getStateFlow<String?>(
-            key = UPDATED_DELIVERY_ZONE_UUID,
-            initialValue = null,
-        ).collect { updatedZoneUuid ->
-            if (updatedZoneUuid != null) {
-                onAction(MapDeliveryZone.Action.UpdateDeliveryZone(updatedZoneUuid))
-                savedStateHandle.remove<String>(UPDATED_DELIVERY_ZONE_UUID)
+        savedStateHandle
+            .getStateFlow<String?>(
+                key = UPDATED_DELIVERY_ZONE_UUID,
+                initialValue = null,
+            ).collect { updatedZoneUuid ->
+                if (updatedZoneUuid != null) {
+                    onAction(MapDeliveryZone.Action.UpdateDeliveryZone(updatedZoneUuid))
+                    savedStateHandle.remove<String>(UPDATED_DELIVERY_ZONE_UUID)
+                }
             }
-        }
     }
 
     MapDeliveryZoneEffect(

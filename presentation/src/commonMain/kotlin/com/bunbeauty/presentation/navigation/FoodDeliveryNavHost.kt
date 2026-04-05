@@ -1,10 +1,10 @@
 package com.bunbeauty.presentation.navigation
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.bunbeauty.presentation.feature.login.navigation.LoginScreenDestination

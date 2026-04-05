@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -9,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -44,11 +44,12 @@ fun EditAdditionGroupForMenuProductRouteScreen(
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<EditAdditionGroupForMenuProductScreenDestination>()
-    val viewModel: EditAdditionGroupForMenuProductViewModel = koinViewModel(
-        parameters = {
-            parametersOf(route.additionGroupUuid, route.menuProductUuid)
-        },
-    )
+    val viewModel: EditAdditionGroupForMenuProductViewModel =
+        koinViewModel(
+            parameters = {
+                parametersOf(route.additionGroupUuid, route.menuProductUuid)
+            },
+        )
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -66,35 +67,37 @@ fun EditAdditionGroupForMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow(
-            SELECTED_ADDITION_GROUP_UUID,
-            viewState.editedAdditionGroupUuid,
-        ).collect { selectedAdditionGroupUuid ->
-            if (selectedAdditionGroupUuid != null) {
-                onAction(
-                    EditAdditionGroupForMenu.Action.SelectAdditionGroup(
-                        additionGroupUuid = selectedAdditionGroupUuid,
-                    ),
-                )
-                backStackEntry.savedStateHandle.remove<String>(SELECTED_ADDITION_GROUP_UUID)
+        backStackEntry.savedStateHandle
+            .getStateFlow(
+                SELECTED_ADDITION_GROUP_UUID,
+                viewState.editedAdditionGroupUuid,
+            ).collect { selectedAdditionGroupUuid ->
+                if (selectedAdditionGroupUuid != null) {
+                    onAction(
+                        EditAdditionGroupForMenu.Action.SelectAdditionGroup(
+                            additionGroupUuid = selectedAdditionGroupUuid,
+                        ),
+                    )
+                    backStackEntry.savedStateHandle.remove<String>(SELECTED_ADDITION_GROUP_UUID)
+                }
             }
-        }
     }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow(
-            SELECTED_ADDITION_UUID_LIST,
-            viewState.editedAdditionListUuid,
-        ).collect { selectedAdditionUuidList ->
-            if (selectedAdditionUuidList != null) {
-                onAction(
-                    EditAdditionGroupForMenu.Action.SelectAdditionList(
-                        additionListUuid = selectedAdditionUuidList,
-                    ),
-                )
-                backStackEntry.savedStateHandle.remove<List<String>>(SELECTED_ADDITION_UUID_LIST)
+        backStackEntry.savedStateHandle
+            .getStateFlow(
+                SELECTED_ADDITION_UUID_LIST,
+                viewState.editedAdditionListUuid,
+            ).collect { selectedAdditionUuidList ->
+                if (selectedAdditionUuidList != null) {
+                    onAction(
+                        EditAdditionGroupForMenu.Action.SelectAdditionList(
+                            additionListUuid = selectedAdditionUuidList,
+                        ),
+                    )
+                    backStackEntry.savedStateHandle.remove<List<String>>(SELECTED_ADDITION_UUID_LIST)
+                }
             }
-        }
     }
 
     EditAdditionGroupForMenuEffect(

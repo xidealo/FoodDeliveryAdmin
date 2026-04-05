@@ -10,16 +10,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SelectCategoryListScreenDestination(
-    val selectedCategoryList: List<String>
+    val selectedCategoryList: List<String>,
 )
 
 fun NavController.navigateToSelectCategoryListScreen(
     selectedCategoryList: List<String>,
-    navOptions: NavOptions
+    navOptions: NavOptions,
 ) = navigate(
-    route = SelectCategoryListScreenDestination(
-        selectedCategoryList = selectedCategoryList
-    ), navOptions
+    route =
+        SelectCategoryListScreenDestination(
+            selectedCategoryList = selectedCategoryList,
+        ),
+    navOptions,
 )
 
 fun NavGraphBuilder.selectCategoryListScreenRoute(
@@ -32,7 +34,7 @@ fun NavGraphBuilder.selectCategoryListScreenRoute(
             showInfoMessage = showInfoMessage,
             goBack = goBack,
             backStackEntry = it,
-            onSaveCategoryList = onSaveCategoryList
+            onSaveCategoryList = onSaveCategoryList,
         )
     }
 }

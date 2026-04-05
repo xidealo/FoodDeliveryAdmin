@@ -2,8 +2,6 @@ package com.bunbeauty.presentation.feature.menulist.cropimage
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import coil3.Uri
-import coil3.toUri
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 
 @Immutable

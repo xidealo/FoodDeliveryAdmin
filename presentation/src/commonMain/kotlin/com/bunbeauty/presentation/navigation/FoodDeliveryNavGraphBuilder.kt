@@ -1,7 +1,7 @@
 package com.bunbeauty.presentation.navigation
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navOptions
@@ -45,9 +45,9 @@ import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.navig
 import com.bunbeauty.presentation.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
+import com.bunbeauty.presentation.feature.menulist.cropimage.CropImagePreset
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.cropImageScreenRoute
 import com.bunbeauty.presentation.feature.menulist.cropimage.navigation.navigateToCropImageScreen
-import com.bunbeauty.presentation.feature.menulist.cropimage.CropImagePreset
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
 import com.bunbeauty.presentation.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
 import com.bunbeauty.presentation.feature.menulist.navigation.menuListScreenRoute
@@ -64,8 +64,8 @@ import com.bunbeauty.presentation.feature.statistic.navigation.statisticScreenRo
 import com.bunbeauty.presentation.feature.statisticdetails.navigation.statisticDetailsScreenRoute
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
-import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
+import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.UPDATED_DELIVERY_ZONE_UUID
 
@@ -91,7 +91,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
             navController.navigateToOrderDetailsScreen(
                 orderUuid = orderUuid,
                 orderCode = orderCode,
-                navOptions = emptyNavOptions
+                navOptions = emptyNavOptions,
             )
         },
     )
@@ -121,7 +121,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 navOptions = emptyNavOptions,
             )
         },
-        back = navController::navigateUp
+        back = navController::navigateUp,
     )
 
     createMenuProductScreenRoute(
@@ -131,7 +131,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCategoryList = { selectedCategoryList ->
             navController.navigateToSelectCategoryListScreen(
                 selectedCategoryList = selectedCategoryList,
-                navOptions = emptyNavOptions
+                navOptions = emptyNavOptions,
             )
         },
         goToCropImage = { imageUri ->
@@ -149,13 +149,13 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToCategoryList = { selectedCategoryList ->
             navController.navigateToSelectCategoryListScreen(
                 selectedCategoryList = selectedCategoryList,
-                navOptions = emptyNavOptions
+                navOptions = emptyNavOptions,
             )
         },
         goToAdditionList = { menuProductUuid ->
             navController.navigateToAdditionGroupForMenuProductListScreen(
                 menuProductUuid,
-                emptyNavOptions
+                emptyNavOptions,
             )
         },
         goToCropImage = { imageUri ->
@@ -261,7 +261,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 ?.savedStateHandle
                 ?.set(SELECTED_CATEGORY_UUID_LIST, categoryList)
             navController.navigateUp()
-        }
+        },
     )
     cropImageScreenRoute(
         goBack = navController::navigateUp,

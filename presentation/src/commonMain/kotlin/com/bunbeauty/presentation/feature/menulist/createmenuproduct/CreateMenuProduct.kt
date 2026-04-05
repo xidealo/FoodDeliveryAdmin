@@ -39,7 +39,6 @@ interface CreateMenuProduct {
     }
 
     sealed interface Action : BaseAction {
-
         data object BackClick : Action
 
         data class ChangeNameText(
@@ -85,6 +84,7 @@ interface CreateMenuProduct {
         ) : Action
 
         data object CreateMenuProductClick : Action
+
         data object SelectPhotoFromGallery : Action
     }
 
@@ -104,6 +104,7 @@ interface CreateMenuProduct {
         data object ShowImageUploadingFailed : Event
 
         data object ShowEmptyPhoto : Event
+
         data object ShowGallery : Event
     }
 }

@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.additionlist.createaddition
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -34,8 +34,8 @@ import com.bunbeauty.presentation.designsystem.compose.element.surface.AdminSurf
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTextFieldDefaults
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.feature.additionlist.createaddition.navigation.CreateAdditionScreenDestination
+import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import fooddeliveryadmin.presentation.generated.resources.Res
 import fooddeliveryadmin.presentation.generated.resources.action_common_add_photo
@@ -84,15 +84,16 @@ fun CreateAdditionRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow<String?>(
-            CROPPED_IMAGE_URI,
-            null,
-        ).collect { croppedImageUri ->
-            if (croppedImageUri != null) {
-                onAction(CreateAddition.Action.SetImage(croppedImageUri))
-                backStackEntry.savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+        backStackEntry.savedStateHandle
+            .getStateFlow<String?>(
+                CROPPED_IMAGE_URI,
+                null,
+            ).collect { croppedImageUri ->
+                if (croppedImageUri != null) {
+                    onAction(CreateAddition.Action.SetImage(croppedImageUri))
+                    backStackEntry.savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+                }
             }
-        }
     }
 
     CreateAdditionEffect(

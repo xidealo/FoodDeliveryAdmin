@@ -14,28 +14,27 @@ import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 class EditAdditionViewModel(
     private val getAdditionUseCase: GetAdditionUseCase,
     private val updateAdditionUseCase: UpdateAdditionUseCase,
-    private val additionUuid: String
+    private val additionUuid: String,
 ) : BaseStateViewModel<EditAddition.DataState, EditAddition.Action, EditAddition.Event>(
-    initState =
-        EditAddition.DataState(
-            state = EditAddition.DataState.State.LOADING,
-            uuid = "",
-            name = "",
-            price = "",
-            isLoading = true,
-            isVisible = false,
-            fullName = "",
-            hasEditNameError = false,
-            tag = "",
-            imageFieldData =
-                ImageFieldUi(
-                    value = null,
-                    isError = false,
-                    isSelected = false,
-                ),
-        ),
-) {
-
+        initState =
+            EditAddition.DataState(
+                state = EditAddition.DataState.State.LOADING,
+                uuid = "",
+                name = "",
+                price = "",
+                isLoading = true,
+                isVisible = false,
+                fullName = "",
+                hasEditNameError = false,
+                tag = "",
+                imageFieldData =
+                    ImageFieldUi(
+                        value = null,
+                        isError = false,
+                        isSelected = false,
+                    ),
+            ),
+    ) {
     init {
         loadData()
     }
@@ -84,9 +83,10 @@ class EditAdditionViewModel(
                         state = EditAddition.DataState.State.SUCCESS,
                         imageFieldData =
                             ImageFieldUi(
-                                value = ImageData.HttpUrl(
-                                    url = addition.photoLink,
-                                ),
+                                value =
+                                    ImageData.HttpUrl(
+                                        url = addition.photoLink,
+                                    ),
                                 isError = false,
                                 isSelected = addition.photoLink.isNotBlank(),
                             ),

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -93,7 +92,7 @@ fun MenuListRouteScreen(
         onRefresh = {
             viewModel.refreshData()
         },
-        back = back
+        back = back,
     )
 }
 
@@ -122,7 +121,7 @@ private fun MenuListScreen(
                 )
             }
         },
-        floatingActionButtonPosition =  Alignment.BottomEnd,
+        floatingActionButtonPosition = Alignment.BottomEnd,
     ) {
         when (val state = menuListViewState.state) {
             is MenuListViewState.State.Success -> {
@@ -350,7 +349,7 @@ private fun MenuListScreenPreview() {
             onUpdateVisible = {},
             onLoadData = {},
             onRefresh = {},
-            back = {}
+            back = {},
         )
     }
 }

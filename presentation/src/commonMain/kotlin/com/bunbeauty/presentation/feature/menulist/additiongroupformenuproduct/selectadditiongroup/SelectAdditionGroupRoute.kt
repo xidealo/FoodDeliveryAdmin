@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -119,7 +119,7 @@ private fun SelectAdditionGroupEffect(
                         androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     onAdditionGroupSelected(
-                        effect.additionGroupUuid
+                        effect.additionGroupUuid,
                     )
                     goBack()
                 }

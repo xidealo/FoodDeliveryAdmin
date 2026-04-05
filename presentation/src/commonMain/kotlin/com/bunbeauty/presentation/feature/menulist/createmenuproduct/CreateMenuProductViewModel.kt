@@ -22,32 +22,31 @@ class CreateMenuProductViewModel(
     private val createMenuProductUseCase: CreateMenuProductUseCase,
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
 ) : BaseStateViewModel<CreateMenuProduct.DataState, CreateMenuProduct.Action, CreateMenuProduct.Event>(
-    initState =
-        CreateMenuProduct.DataState(
-            nameField = TextFieldData.empty,
-            newPriceField = TextFieldData.empty,
-            oldPriceField = TextFieldData.empty,
-            descriptionField = TextFieldData.empty,
-            nutritionField = TextFieldData.empty,
-            units = "",
-            comboDescription = "",
-            categoriesField =
-                CategoriesFieldData(
-                    value = listOf(),
-                    isError = false,
-                ),
-            isVisibleInMenu = true,
-            isVisibleInRecommendations = false,
-            imageField =
-                ImageFieldData(
-                    value = null,
-                    isError = false,
-                ),
-            sendingToServer = false,
-            descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.NO_ERROR,
-        ),
-) {
-
+        initState =
+            CreateMenuProduct.DataState(
+                nameField = TextFieldData.empty,
+                newPriceField = TextFieldData.empty,
+                oldPriceField = TextFieldData.empty,
+                descriptionField = TextFieldData.empty,
+                nutritionField = TextFieldData.empty,
+                units = "",
+                comboDescription = "",
+                categoriesField =
+                    CategoriesFieldData(
+                        value = listOf(),
+                        isError = false,
+                    ),
+                isVisibleInMenu = true,
+                isVisibleInRecommendations = false,
+                imageField =
+                    ImageFieldData(
+                        value = null,
+                        isError = false,
+                    ),
+                sendingToServer = false,
+                descriptionStateError = CreateMenuProduct.DataState.DescriptionStateError.NO_ERROR,
+            ),
+    ) {
     init {
         loadData()
     }
@@ -57,7 +56,6 @@ class CreateMenuProductViewModel(
         dataState: CreateMenuProduct.DataState,
     ) {
         when (action) {
-
             CreateMenuProduct.Action.BackClick -> {
                 sendEvent {
                     CreateMenuProduct.Event.NavigateBack
@@ -152,9 +150,10 @@ class CreateMenuProductViewModel(
                                 value =
                                     categoriesField.value.map { selectableCategory ->
                                         selectableCategory.copy(
-                                            selected = action.categoryUuidList.contains(
-                                                selectableCategory.category.uuid
-                                            ),
+                                            selected =
+                                                action.categoryUuidList.contains(
+                                                    selectableCategory.category.uuid,
+                                                ),
                                         )
                                     },
                                 isError = false,

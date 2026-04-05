@@ -42,7 +42,6 @@ interface EditMenuProduct {
     }
 
     sealed interface Action : BaseAction {
-
         data object BackClick : Action
 
         data class ChangeNameText(

@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.categorylist
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -63,8 +63,8 @@ fun SelectCategoryListRouteScreen(
     LaunchedEffect(Unit) {
         onAction(
             SelectCategoryList.Action.Init(
-                selectedCategoryList
-            )
+                selectedCategoryList,
+            ),
         )
     }
 
@@ -73,7 +73,7 @@ fun SelectCategoryListRouteScreen(
         consumeEffects = consumeEffects,
         showInfoMessage = showInfoMessage,
         goBack = goBack,
-        onSaveCategoryList = onSaveCategoryList
+        onSaveCategoryList = onSaveCategoryList,
     )
 
     SelectCategoryListScreen(
@@ -98,7 +98,10 @@ private fun SelectCategoryListEffect(
                 }
 
                 is SelectCategoryList.Event.Save -> {
-                    showInfoMessage(getString(Res.string.msg_category_list_selected), androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp)
+                    showInfoMessage(
+                        getString(Res.string.msg_category_list_selected),
+                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
+                    )
                     onSaveCategoryList(effect.selectedCategoryUuidList)
                 }
             }

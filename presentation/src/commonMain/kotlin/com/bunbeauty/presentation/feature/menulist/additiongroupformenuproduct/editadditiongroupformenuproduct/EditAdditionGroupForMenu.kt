@@ -23,7 +23,6 @@ interface EditAdditionGroupForMenu {
     }
 
     sealed interface Action : BaseAction {
-
         data object OnBackClick : Action
 
         data class OnAdditionGroupClick(

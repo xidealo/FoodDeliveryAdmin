@@ -1,10 +1,10 @@
 package com.bunbeauty.presentation.designsystem.compose.element.topbar
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
 

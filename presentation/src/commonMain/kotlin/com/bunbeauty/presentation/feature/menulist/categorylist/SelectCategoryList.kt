@@ -20,7 +20,7 @@ interface SelectCategoryList {
 
     sealed interface Action : BaseAction {
         data class Init(
-            val selectedCategoryList: List<String>
+            val selectedCategoryList: List<String>,
         ) : Action
 
         data object OnSaveClick : Action

@@ -12,9 +12,7 @@ interface PlatformCropImageController {
 }
 
 @Composable
-expect fun rememberPlatformCropImageController(
-    onImageCropped: (String) -> Unit,
-): PlatformCropImageController
+expect fun rememberPlatformCropImageController(onImageCropped: (String) -> Unit): PlatformCropImageController
 
 @Composable
 expect fun PlatformCropImageView(

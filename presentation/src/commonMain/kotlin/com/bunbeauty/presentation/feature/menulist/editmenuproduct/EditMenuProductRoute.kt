@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.editmenuproduct
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -74,12 +74,12 @@ fun EditMenuProductRouteScreen(
     goToCategoryList: (List<String>) -> Unit,
     goToAdditionList: (String) -> Unit,
     goToCropImage: (String) -> Unit,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) {
-
-    val viewModel: EditMenuProductViewModel = koinViewModel(
-        parameters = { parametersOf(menuProductUuid) }
-    )
+    val viewModel: EditMenuProductViewModel =
+        koinViewModel(
+            parameters = { parametersOf(menuProductUuid) },
+        )
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -102,39 +102,42 @@ fun EditMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        savedStateHandle.getStateFlow<List<String>?>(
-            key = SELECTED_CATEGORY_UUID_LIST,
-            initialValue = null,
-        ).collect { selectedCategoryUuidList ->
-            if (selectedCategoryUuidList != null) {
-                onAction(EditMenuProduct.Action.SelectCategories(selectedCategoryUuidList))
-                savedStateHandle.remove<List<String>>(SELECTED_CATEGORY_UUID_LIST)
+        savedStateHandle
+            .getStateFlow<List<String>?>(
+                key = SELECTED_CATEGORY_UUID_LIST,
+                initialValue = null,
+            ).collect { selectedCategoryUuidList ->
+                if (selectedCategoryUuidList != null) {
+                    onAction(EditMenuProduct.Action.SelectCategories(selectedCategoryUuidList))
+                    savedStateHandle.remove<List<String>>(SELECTED_CATEGORY_UUID_LIST)
+                }
             }
-        }
     }
 
     LaunchedEffect(Unit) {
-        savedStateHandle.getStateFlow<String?>(
-            CROPPED_IMAGE_URI,
-            null,
-        ).collect { croppedImageUri ->
-            if (croppedImageUri != null) {
-                onAction(EditMenuProduct.Action.SetImage(croppedImageUri))
-                savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+        savedStateHandle
+            .getStateFlow<String?>(
+                CROPPED_IMAGE_URI,
+                null,
+            ).collect { croppedImageUri ->
+                if (croppedImageUri != null) {
+                    onAction(EditMenuProduct.Action.SetImage(croppedImageUri))
+                    savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+                }
             }
-        }
     }
 
     LaunchedEffect(Unit) {
-        savedStateHandle.getStateFlow<Boolean?>(
-            key = REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS,
-            initialValue = null,
-        ).collect { shouldRefresh ->
-            if (shouldRefresh == true) {
-                onAction(EditMenuProduct.Action.RefreshAdditionGroups)
-                savedStateHandle.remove<Boolean>(REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS)
+        savedStateHandle
+            .getStateFlow<Boolean?>(
+                key = REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS,
+                initialValue = null,
+            ).collect { shouldRefresh ->
+                if (shouldRefresh == true) {
+                    onAction(EditMenuProduct.Action.RefreshAdditionGroups)
+                    savedStateHandle.remove<Boolean>(REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS)
+                }
             }
-        }
     }
 
     EditMenuProductEffect(
