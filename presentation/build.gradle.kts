@@ -59,5 +59,5 @@ kotlin {
     }
 }
 android {
-    namespace = Namespace.domain
+    namespace = Namespace.presentation
 }
