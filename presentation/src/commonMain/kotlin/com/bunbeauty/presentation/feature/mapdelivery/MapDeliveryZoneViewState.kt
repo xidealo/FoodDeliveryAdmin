@@ -3,7 +3,8 @@ package com.bunbeauty.presentation.feature.mapdelivery
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZoneViewState.State.*
+import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZoneViewState.State.Error
+import com.bunbeauty.presentation.feature.mapdelivery.MapDeliveryZoneViewState.State.Success
 import com.bunbeauty.presentation.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList

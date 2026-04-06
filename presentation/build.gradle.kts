@@ -8,7 +8,10 @@ plugins {
 
 ktlint {
     filter {
-        exclude("**/build/generated/**")
+        exclude {
+            val path = it.file.absolutePath.replace('\\', '/')
+            path.contains("/build/generated/")
+        }
     }
 }
 
