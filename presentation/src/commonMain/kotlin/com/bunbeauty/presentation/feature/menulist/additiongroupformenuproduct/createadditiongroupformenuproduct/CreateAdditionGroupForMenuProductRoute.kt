@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -9,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -46,9 +46,10 @@ fun CreateAdditionGroupForMenuProductRouteScreen(
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<CreateAdditionGroupForMenuProductScreenDestination>()
-    val viewModel: CreateAdditionGroupForMenuProductViewModel = koinViewModel(
-        parameters = { parametersOf(route.menuProductUuid) }
-    )
+    val viewModel: CreateAdditionGroupForMenuProductViewModel =
+        koinViewModel(
+            parameters = { parametersOf(route.menuProductUuid) },
+        )
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -67,31 +68,31 @@ fun CreateAdditionGroupForMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow(
-            SELECTED_ADDITION_GROUP_UUID,
-            viewState.editedAdditionGroupUuid
-        ).collect { selectedAdditionGroupUuid ->
-            onAction(
-                CreateAdditionGroupForMenu.Action.SelectAdditionGroup(
-                    additionGroupUuid = selectedAdditionGroupUuid
+        backStackEntry.savedStateHandle
+            .getStateFlow(
+                SELECTED_ADDITION_GROUP_UUID,
+                viewState.editedAdditionGroupUuid,
+            ).collect { selectedAdditionGroupUuid ->
+                onAction(
+                    CreateAdditionGroupForMenu.Action.SelectAdditionGroup(
+                        additionGroupUuid = selectedAdditionGroupUuid,
+                    ),
                 )
-            )
-
-        }
+            }
     }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow(
-            SELECTED_ADDITION_UUID_LIST,
-            viewState.createdAdditionListUuid ?: emptyList(),
-        ).collect { selectedAdditionUuidList ->
-            onAction(
-                CreateAdditionGroupForMenu.Action.SelectAdditionList(
-                    additionListUuid = selectedAdditionUuidList,
-                ),
-            )
-
-        }
+        backStackEntry.savedStateHandle
+            .getStateFlow(
+                SELECTED_ADDITION_UUID_LIST,
+                viewState.createdAdditionListUuid ?: emptyList(),
+            ).collect { selectedAdditionUuidList ->
+                onAction(
+                    CreateAdditionGroupForMenu.Action.SelectAdditionList(
+                        additionListUuid = selectedAdditionUuidList,
+                    ),
+                )
+            }
     }
 
     CreateAdditionGroupForMenuEffect(

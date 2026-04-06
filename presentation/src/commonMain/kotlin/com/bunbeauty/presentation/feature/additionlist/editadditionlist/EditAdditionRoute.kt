@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.additionlist.editadditionlist
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,10 +35,10 @@ import com.bunbeauty.presentation.designsystem.compose.element.textfield.AdminTe
 import com.bunbeauty.presentation.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.presentation.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.presentation.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAddition
 import com.bunbeauty.presentation.feature.additionlist.editadditionlist.state.EditAdditionViewState
 import com.bunbeauty.presentation.feature.common.TextFieldUi
+import com.bunbeauty.presentation.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.presentation.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.presentation.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import fooddeliveryadmin.presentation.generated.resources.Res
@@ -70,9 +70,10 @@ fun EditAdditionRouteScreen(
     goToCropImage: (String) -> Unit,
     savedStateHandle: SavedStateHandle,
 ) {
-    val viewModel: EditAdditionViewModel = koinViewModel(
-        parameters = { parametersOf(additionUuid) }
-    )
+    val viewModel: EditAdditionViewModel =
+        koinViewModel(
+            parameters = { parametersOf(additionUuid) },
+        )
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -95,15 +96,16 @@ fun EditAdditionRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        savedStateHandle.getStateFlow<String?>(
-            CROPPED_IMAGE_URI,
-            null,
-        ).collect { croppedImageUri ->
-            if (croppedImageUri != null) {
-                onAction(EditAddition.Action.SetImage(croppedImageUri))
-                savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+        savedStateHandle
+            .getStateFlow<String?>(
+                CROPPED_IMAGE_URI,
+                null,
+            ).collect { croppedImageUri ->
+                if (croppedImageUri != null) {
+                    onAction(EditAddition.Action.SetImage(croppedImageUri))
+                    savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+                }
             }
-        }
     }
 
     EditAdditionEffect(

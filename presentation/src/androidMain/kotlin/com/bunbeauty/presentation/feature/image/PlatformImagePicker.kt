@@ -7,8 +7,8 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import coil3.compose.LocalPlatformContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,9 +20,7 @@ private const val IMAGE_MIME_TYPE = "image/*"
 private const val MAX_PICKED_IMAGE_SIZE = 2048
 
 @Composable
-actual fun rememberImagePickerLauncher(
-    onImagePicked: (String) -> Unit,
-): () -> Unit {
+actual fun rememberImagePickerLauncher(onImagePicked: (String) -> Unit): () -> Unit {
     val context = LocalPlatformContext.current
     val coroutineScope = rememberCoroutineScope()
     val launcher =

@@ -33,7 +33,7 @@ fun NavController.navigateToSelectAdditionGroupScreen(
 fun NavGraphBuilder.selectAdditionGroupScreenRoute(
     showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
-    onAdditionGroupSelected: (String, String) -> Unit,
+    onAdditionGroupSelected: (String) -> Unit,
 ) {
     composable<SelectAdditionGroupScreenDestination> { backStackEntry ->
         SelectAdditionGroupRouteScreen(

@@ -10,7 +10,6 @@ import com.bunbeauty.presentation.feature.menulist.cropimage.CropImageRouteScree
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
-
 @Serializable
 data class CropImageScreenDestination(
     val uri: String,

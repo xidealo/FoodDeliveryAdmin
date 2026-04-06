@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectadditiongroup
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -51,7 +51,7 @@ fun SelectAdditionGroupRouteScreen(
     viewModel: SelectAdditionGroupViewModel = koinViewModel(),
     showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
-    onAdditionGroupSelected: (String, String) -> Unit,
+    onAdditionGroupSelected: (String) -> Unit,
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<SelectAdditionGroupScreenDestination>()
@@ -101,7 +101,7 @@ private fun SelectAdditionGroupEffect(
     showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
-    onAdditionGroupSelected: (String, String) -> Unit,
+    onAdditionGroupSelected: (String) -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
@@ -120,7 +120,6 @@ private fun SelectAdditionGroupEffect(
                     )
                     onAdditionGroupSelected(
                         effect.additionGroupUuid,
-                        effect.additionGroupName,
                     )
                     goBack()
                 }

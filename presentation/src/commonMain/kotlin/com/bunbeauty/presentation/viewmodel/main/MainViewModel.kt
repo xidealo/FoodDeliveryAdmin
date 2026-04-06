@@ -6,10 +6,10 @@ import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
 import com.bunbeauty.presentation.extension.launchSafe
 import com.bunbeauty.presentation.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class MainViewModel(
     getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,

@@ -15,9 +15,7 @@ private class IosPlatformCropImageController : PlatformCropImageController {
 }
 
 @Composable
-actual fun rememberPlatformCropImageController(
-    onImageCropped: (String) -> Unit,
-): PlatformCropImageController =
+actual fun rememberPlatformCropImageController(onImageCropped: (String) -> Unit): PlatformCropImageController =
     remember {
         IosPlatformCropImageController()
     }

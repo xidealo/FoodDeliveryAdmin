@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.createmenuproduct
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -93,26 +93,28 @@ fun CreateMenuProductRouteScreen(
         }
 
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow<List<String>?>(
-            SELECTED_CATEGORY_UUID_LIST,
-            null,
-        ).collect { selectedCategoryUuidList ->
-            if (selectedCategoryUuidList != null) {
-                onAction(CreateMenuProduct.Action.SelectCategories(selectedCategoryUuidList))
-                backStackEntry.savedStateHandle.remove<List<String>>(SELECTED_CATEGORY_UUID_LIST)
+        backStackEntry.savedStateHandle
+            .getStateFlow<List<String>?>(
+                SELECTED_CATEGORY_UUID_LIST,
+                null,
+            ).collect { selectedCategoryUuidList ->
+                if (selectedCategoryUuidList != null) {
+                    onAction(CreateMenuProduct.Action.SelectCategories(selectedCategoryUuidList))
+                    backStackEntry.savedStateHandle.remove<List<String>>(SELECTED_CATEGORY_UUID_LIST)
+                }
             }
-        }
     }
     LaunchedEffect(Unit) {
-        backStackEntry.savedStateHandle.getStateFlow<String?>(
-            CROPPED_IMAGE_URI,
-            null,
-        ).collect { croppedImageUri ->
-            if (croppedImageUri != null) {
-                onAction(CreateMenuProduct.Action.SetImage(croppedImageUri))
-                backStackEntry.savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+        backStackEntry.savedStateHandle
+            .getStateFlow<String?>(
+                CROPPED_IMAGE_URI,
+                null,
+            ).collect { croppedImageUri ->
+                if (croppedImageUri != null) {
+                    onAction(CreateMenuProduct.Action.SetImage(croppedImageUri))
+                    backStackEntry.savedStateHandle.remove<String>(CROPPED_IMAGE_URI)
+                }
             }
-        }
     }
     CreateMenuProductEffect(
         effects = effects,

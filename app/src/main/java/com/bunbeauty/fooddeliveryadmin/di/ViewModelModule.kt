@@ -54,7 +54,7 @@ fun viewModelModule() =
             EditAdditionViewModel(
                 getAdditionUseCase = get(),
                 updateAdditionUseCase = get(),
-                additionUuid = it.get()
+                additionUuid = it.get(),
             )
         }
         viewModel {
@@ -140,7 +140,7 @@ fun viewModelModule() =
                 getAdditionGroupUseCase = get(),
                 getAdditionListNameUseCase = get(),
                 getAdditionUseCase = get(),
-                menuProductUuid = it.get()
+                menuProductUuid = it.get(),
             )
         }
 
@@ -167,7 +167,7 @@ fun viewModelModule() =
                 getSelectableCategoryListUseCase = get(),
                 getMenuProductUseCase = get(),
                 updateMenuProductUseCase = get(),
-                menuProductUuid = it.get()
+                menuProductUuid = it.get(),
             )
         }
 

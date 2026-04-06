@@ -11,15 +11,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditAdditionScreenDestination(
-    val additionUuid: String
+    val additionUuid: String,
 )
 
-fun NavController.navigateToEditAdditionScreen(additionUuid: String, navOptions: NavOptions) =
-    navigate(
-        route = EditAdditionScreenDestination(
-            additionUuid = additionUuid
-        ), navOptions
-    )
+fun NavController.navigateToEditAdditionScreen(
+    additionUuid: String,
+    navOptions: NavOptions,
+) = navigate(
+    route =
+        EditAdditionScreenDestination(
+            additionUuid = additionUuid,
+        ),
+    navOptions,
+)
 
 fun NavGraphBuilder.editAdditionScreenRoute(
     goBack: () -> Unit,

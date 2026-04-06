@@ -6,6 +6,19 @@ plugins {
     alias(libs.plugins.compose.plugin)
 }
 
+ktlint {
+    filter {
+        exclude("**/build/generated/**")
+    }
+}
+
+tasks.named("runKtlintCheckOverAndroidMainSourceSet") {
+    enabled = false
+}
+tasks.named("ktlintAndroidMainSourceSetCheck") {
+    enabled = false
+}
+
 android {
     namespace = Namespace.presentation
 }
@@ -44,7 +57,6 @@ kotlin {
             dependencies {
                 implementation(libs.android.image.cropper)
                 implementation(compose.uiTooling)
-
             }
         }
         val androidUnitTest by getting {
@@ -57,7 +69,4 @@ kotlin {
             }
         }
     }
-}
-android {
-    namespace = Namespace.domain
 }

@@ -10,8 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object MenuListScreenDestination
 
-fun NavController.navigateToMenuListScreen(navOptions: NavOptions) =
-    navigate(route = MenuListScreenDestination, navOptions)
+fun NavController.navigateToMenuListScreen(navOptions: NavOptions) = navigate(route = MenuListScreenDestination, navOptions)
 
 fun NavGraphBuilder.menuListScreenRoute(
     goToCreateMenuProductScreen: () -> Unit,
@@ -22,7 +21,7 @@ fun NavGraphBuilder.menuListScreenRoute(
         MenuListRouteScreen(
             goToCreateMenuProductScreen = goToCreateMenuProductScreen,
             goToEditMenuProductScreen = goToEditMenuProductScreen,
-            back = back
+            back = back,
         )
     }
 }

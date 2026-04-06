@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -157,7 +157,7 @@ private fun AdditionGroupForMenuProductScreen(
 
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
-                    -> null
+                -> null
             },
         pullRefreshEnabled = true,
         refreshing = state.isRefreshing,
@@ -218,7 +218,7 @@ private fun AdditionGroupForMenuProductScreen(
 
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
-                    -> emptyList()
+                -> emptyList()
             },
         actionButton = {
             when (state.state) {
@@ -235,7 +235,7 @@ private fun AdditionGroupForMenuProductScreen(
                 AdditionGroupForMenuProductListViewState.State.Error,
                 AdditionGroupForMenuProductListViewState.State.Loading,
                 is AdditionGroupForMenuProductListViewState.State.SuccessDragDrop,
-                    -> Unit
+                -> Unit
             }
         },
         floatingActionButtonPosition = Alignment.BottomEnd,

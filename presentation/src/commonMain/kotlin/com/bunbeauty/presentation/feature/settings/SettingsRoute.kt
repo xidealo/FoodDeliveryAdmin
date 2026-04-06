@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.settings
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.domain.model.settings.WorkLoad
@@ -59,10 +59,10 @@ import fooddeliveryadmin.presentation.generated.resources.msg_settings_status_pi
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_status_pickup_delivery
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_type_work
 import fooddeliveryadmin.presentation.generated.resources.msg_settings_unlimited_notifications
-import fooddeliveryadmin.presentation.generated.resources.settings_success_save_message
 import fooddeliveryadmin.presentation.generated.resources.msg_work_load_average
 import fooddeliveryadmin.presentation.generated.resources.msg_work_load_high
 import fooddeliveryadmin.presentation.generated.resources.msg_work_load_low
+import fooddeliveryadmin.presentation.generated.resources.settings_success_save_message
 import fooddeliveryadmin.presentation.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.presentation.generated.resources.title_settings
 import fooddeliveryadmin.presentation.generated.resources.title_settings_disable_orders
@@ -134,7 +134,6 @@ private fun SettingsEffect(
                 }
 
                 is SettingsState.Event.ShowErrorMessage -> {
-
                 }
             }
         }

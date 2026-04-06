@@ -8,9 +8,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.net.toUri
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
-import androidx.core.net.toUri
 
 private const val DEFAULT_ANGLE = 90
 private const val ORIGINAL_QUALITY = 100
@@ -47,9 +47,7 @@ private class AndroidPlatformCropImageController(
 }
 
 @Composable
-actual fun rememberPlatformCropImageController(
-    onImageCropped: (String) -> Unit,
-): PlatformCropImageController =
+actual fun rememberPlatformCropImageController(onImageCropped: (String) -> Unit): PlatformCropImageController =
     remember(onImageCropped) {
         AndroidPlatformCropImageController(onImageCropped)
     }
@@ -93,8 +91,7 @@ private fun CropImageView(
                             .apply {
                                 setImageCropOptions(cropImageDefaults)
                                 setImageUriAsync(uri)
-                            }
-                            .also(androidController::bind)
+                            }.also(androidController::bind)
                     addView(cropImageView)
                 }
             },

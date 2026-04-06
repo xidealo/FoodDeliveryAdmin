@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.category.editcategory
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold

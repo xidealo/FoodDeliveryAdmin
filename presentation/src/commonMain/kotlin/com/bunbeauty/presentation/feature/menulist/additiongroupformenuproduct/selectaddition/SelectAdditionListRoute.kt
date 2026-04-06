@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.menulist.additiongroupformenuproduct.selectaddition
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry

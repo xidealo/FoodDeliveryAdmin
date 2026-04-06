@@ -27,40 +27,39 @@ class EditMenuProductViewModel(
     private val updateMenuProductUseCase: UpdateMenuProductUseCase,
     private val menuProductUuid: String,
 ) : BaseStateViewModel<EditMenuProduct.DataState, EditMenuProduct.Action, EditMenuProduct.Event>(
-    initState =
-        EditMenuProduct.DataState(
-            state = EditMenuProduct.DataState.State.LOADING,
-            productUuid = "",
-            productName = "",
-            nameField = TextFieldData.empty,
-            newPriceField = TextFieldData.empty,
-            oldPriceField = TextFieldData.empty,
-            descriptionField = TextFieldData.empty,
-            nutritionField = TextFieldData.empty,
-            units = "",
-            comboDescription = "",
-            categoriesField =
-                CategoriesFieldData(
-                    value = listOf(),
-                    isError = false,
-                ),
-            isVisibleInMenu = true,
-            isVisibleInRecommendations = false,
-            imageField =
-                EditImageFieldData(
-                    value = null,
-                    isError = false,
-                ),
-            sendingToServer = false,
-            descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
-            additionGroupListField =
-                AdditionGroupListFieldData(
-                    value = listOf(),
-                    isError = false,
-                ),
-        ),
-) {
-
+        initState =
+            EditMenuProduct.DataState(
+                state = EditMenuProduct.DataState.State.LOADING,
+                productUuid = "",
+                productName = "",
+                nameField = TextFieldData.empty,
+                newPriceField = TextFieldData.empty,
+                oldPriceField = TextFieldData.empty,
+                descriptionField = TextFieldData.empty,
+                nutritionField = TextFieldData.empty,
+                units = "",
+                comboDescription = "",
+                categoriesField =
+                    CategoriesFieldData(
+                        value = listOf(),
+                        isError = false,
+                    ),
+                isVisibleInMenu = true,
+                isVisibleInRecommendations = false,
+                imageField =
+                    EditImageFieldData(
+                        value = null,
+                        isError = false,
+                    ),
+                sendingToServer = false,
+                descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
+                additionGroupListField =
+                    AdditionGroupListFieldData(
+                        value = listOf(),
+                        isError = false,
+                    ),
+            ),
+    ) {
     init {
         loadData(
             productUuid = menuProductUuid,
@@ -72,7 +71,6 @@ class EditMenuProductViewModel(
         dataState: EditMenuProduct.DataState,
     ) {
         when (action) {
-
             EditMenuProduct.Action.BackClick -> {
                 sendEvent {
                     EditMenuProduct.Event.NavigateBack
@@ -178,19 +176,25 @@ class EditMenuProductViewModel(
             is EditMenuProduct.Action.SelectCategories -> {
                 setState {
                     copy(
-                        categoriesField = categoriesField.copy(
-                            value =
-                                categoriesField.value.map { selectableCategory ->
-                                    selectableCategory.copy(
-                                        selected = action.categoryUuidList.contains(
-                                            selectableCategory.category.uuid
-                                        ),
-                                    )
-                                },
-                            isError = false,
-                        ),
+                        categoriesField =
+                            categoriesField.copy(
+                                value =
+                                    categoriesField.value.map { selectableCategory ->
+                                        selectableCategory.copy(
+                                            selected =
+                                                action.categoryUuidList.contains(
+                                                    selectableCategory.category.uuid,
+                                                ),
+                                        )
+                                    },
+                                isError = false,
+                            ),
                     )
                 }
+            }
+
+            EditMenuProduct.Action.RefreshAdditionGroups -> {
+                refreshAdditionGroupsOnly()
             }
 
             is EditMenuProduct.Action.ToggleVisibilityInMenu -> {
@@ -229,7 +233,6 @@ class EditMenuProductViewModel(
     private fun loadData(productUuid: String) {
         viewModelScope.launchSafe(
             block = {
-
                 val menuProduct = getMenuProductUseCase(productUuid)
                 setState {
                     copy(
@@ -302,6 +305,31 @@ class EditMenuProductViewModel(
                     copy(state = EditMenuProduct.DataState.State.ERROR)
                 }
             },
+        )
+    }
+
+    private fun refreshAdditionGroupsOnly() {
+        val productUuid = state.value.productUuid
+        if (productUuid.isBlank() || state.value.state != EditMenuProduct.DataState.State.SUCCESS) {
+            return
+        }
+        viewModelScope.launchSafe(
+            block = {
+                val menuProduct = getMenuProductUseCase(productUuid)
+                setState {
+                    copy(
+                        additionGroupListField =
+                            AdditionGroupListFieldData(
+                                value =
+                                    menuProduct.additionGroups.map { additionGroupWithAdditions ->
+                                        additionGroupWithAdditions.additionGroup
+                                    },
+                                isError = false,
+                            ),
+                    )
+                }
+            },
+            onError = {},
         )
     }
 

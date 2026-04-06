@@ -17,22 +17,21 @@ class CreateAdditionGroupForMenuProductViewModel(
     val getAdditionUseCase: GetAdditionUseCase,
     private val menuProductUuid: String,
 ) : BaseStateViewModel<CreateAdditionGroupForMenu.DataState, CreateAdditionGroupForMenu.Action, CreateAdditionGroupForMenu.Event>(
-    initState =
-        CreateAdditionGroupForMenu.DataState(
-            state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
-            groupName = null,
-            additionNameList = null,
-            menuProductUuid = "",
-            editedAdditionGroupUuid = null,
-            additionGroupForMenuProductUuid = "",
-            createdAdditionListUuid = listOf(),
-            isVisible = false,
-            groupHasError = false,
-            isSaveLoading = false,
-            additionListHasError = false,
-        ),
-) {
-
+        initState =
+            CreateAdditionGroupForMenu.DataState(
+                state = CreateAdditionGroupForMenu.DataState.State.SUCCESS,
+                groupName = null,
+                additionNameList = null,
+                menuProductUuid = "",
+                editedAdditionGroupUuid = null,
+                additionGroupForMenuProductUuid = "",
+                createdAdditionListUuid = listOf(),
+                isVisible = false,
+                groupHasError = false,
+                isSaveLoading = false,
+                additionListHasError = false,
+            ),
+    ) {
     init {
         initData(
             menuProductUuid = menuProductUuid,
@@ -44,7 +43,6 @@ class CreateAdditionGroupForMenuProductViewModel(
         dataState: CreateAdditionGroupForMenu.DataState,
     ) {
         when (action) {
-
             is CreateAdditionGroupForMenu.Action.SelectAdditionGroup -> {
                 setSelectedAdditionGroup(action.additionGroupUuid)
             }

@@ -38,11 +38,12 @@ fun CropImageRouteScreen(
     onCropSaved: (String) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val onAction = remember {
-        { event: CropImage.Action ->
-            viewModel.onAction(event)
+    val onAction =
+        remember {
+            { event: CropImage.Action ->
+                viewModel.onAction(event)
+            }
         }
-    }
     val cropImageController =
         rememberPlatformCropImageController(
             onImageCropped = { croppedImageUri ->

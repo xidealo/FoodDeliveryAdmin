@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation.feature.order
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -166,9 +166,9 @@ private fun OrderDetailsEffect(
                     showInfoMessage(
                         getString(
                             Res.string.msg_order_details_saved,
-                            effect.orderCode
+                            effect.orderCode,
                         ),
-                        0.dp
+                        0.dp,
                     )
                     goBack()
                 }

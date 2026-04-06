@@ -28,7 +28,7 @@ fun NavGraphBuilder.createMenuProductScreenRoute(
             goBack = goBack,
             goToCategoryList = goToCategoryList,
             goToCropImage = goToCropImage,
-            backStackEntry = it
+            backStackEntry = it,
         )
     }
 }

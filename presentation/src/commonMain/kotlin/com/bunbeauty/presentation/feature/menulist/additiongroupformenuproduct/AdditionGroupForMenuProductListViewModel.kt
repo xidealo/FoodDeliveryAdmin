@@ -17,23 +17,24 @@ class AdditionGroupForMenuProductListViewModel(
         AdditionGroupForMenuProductList.DataState,
         AdditionGroupForMenuProductList.Action,
         AdditionGroupForMenuProductList.Event,
-        >(
-    initState =
-        AdditionGroupForMenuProductList.DataState(
-            additionGroupList = listOf(),
-            state = AdditionGroupForMenuProductList.DataState.State.LOADING,
-            isRefreshing = false,
-            canBeChangedPlace = false,
-        ),
-) {
+    >(
+        initState =
+            AdditionGroupForMenuProductList.DataState(
+                additionGroupList = listOf(),
+                state = AdditionGroupForMenuProductList.DataState.State.LOADING,
+                isRefreshing = false,
+                canBeChangedPlace = false,
+            ),
+    ) {
     override fun reduce(
         action: AdditionGroupForMenuProductList.Action,
         dataState: AdditionGroupForMenuProductList.DataState,
     ) {
         when (action) {
-            is AdditionGroupForMenuProductList.Action.Init -> loadData(
-                menuProductUuid = action.menuProductUuid,
-            )
+            is AdditionGroupForMenuProductList.Action.Init ->
+                loadData(
+                    menuProductUuid = action.menuProductUuid,
+                )
 
             is AdditionGroupForMenuProductList.Action.OnAdditionGroupClick ->
                 onAdditionGroupClick(

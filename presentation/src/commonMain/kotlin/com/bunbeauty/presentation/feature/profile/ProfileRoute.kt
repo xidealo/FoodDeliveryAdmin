@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -188,13 +187,15 @@ private fun SuccessProfileScreen(
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = stringResource(Res.string.version_app, appVersion),
-            modifier = Modifier
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            textAlign = TextAlign.Center,
         )
 
         LoadingButton(
-            modifier = Modifier
+            modifier =
+                Modifier
                 .padding(top = 8.dp),
             text = stringResource(Res.string.action_common_logout),
             onClick = {

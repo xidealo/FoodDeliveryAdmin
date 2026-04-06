@@ -18,19 +18,18 @@ class EditAdditionGroupForMenuProductViewModel(
     private val additionGroupForMenuUuid: String,
     private val menuProductUuid: String,
 ) : BaseStateViewModel<EditAdditionGroupForMenu.DataState, EditAdditionGroupForMenu.Action, EditAdditionGroupForMenu.Event>(
-    initState =
-        EditAdditionGroupForMenu.DataState(
-            groupName = null,
-            state = EditAdditionGroupForMenu.DataState.State.LOADING,
-            additionNameList = null,
-            isVisible = false,
-            additionGroupForMenuProductUuid = "",
-            menuProductUuid = "",
-            editedAdditionGroupUuid = null,
-            editedAdditionListUuid = null,
-        ),
-) {
-
+        initState =
+            EditAdditionGroupForMenu.DataState(
+                groupName = null,
+                state = EditAdditionGroupForMenu.DataState.State.LOADING,
+                additionNameList = null,
+                isVisible = false,
+                additionGroupForMenuProductUuid = "",
+                menuProductUuid = "",
+                editedAdditionGroupUuid = null,
+                editedAdditionListUuid = null,
+            ),
+    ) {
     init {
         loadData(
             additionGroupForMenuUuid = additionGroupForMenuUuid,
@@ -134,9 +133,10 @@ class EditAdditionGroupForMenuProductViewModel(
                         additionGroupForMenuProductUuid = additionGroupWithAdditionsForMenu.additionGroup.uuid,
                         groupName = additionGroupWithAdditionsForMenu.additionGroup.name,
                         state = EditAdditionGroupForMenu.DataState.State.SUCCESS,
-                        additionNameList = getAdditionListNameUseCase(
-                            additionList = additionGroupWithAdditionsForMenu.additionList,
-                        ),
+                        additionNameList =
+                            getAdditionListNameUseCase(
+                                additionList = additionGroupWithAdditionsForMenu.additionList,
+                            ),
                         isVisible = additionGroupWithAdditionsForMenu.additionGroup.isVisible,
                         menuProductUuid = menuProductUuid,
                     )

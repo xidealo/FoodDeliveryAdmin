@@ -19,7 +19,7 @@ fun NavController.navigateToEditMenuProductScreen(
     navOptions: NavOptions,
 ) = navigate(
     route = EditMenuProductScreenDestination(menuProductUuid = menuProductUuid),
-    navOptions
+    navOptions,
 )
 
 fun NavGraphBuilder.editMenuProductScreenRoute(
@@ -38,9 +38,11 @@ fun NavGraphBuilder.editMenuProductScreenRoute(
             goToCategoryList = goToCategoryList,
             goToAdditionList = goToAdditionList,
             goToCropImage = goToCropImage,
-            menuProductUuid = backStackEntry
-                .toRoute<EditMenuProductScreenDestination>().menuProductUuid,
-            savedStateHandle = backStackEntry.savedStateHandle
+            menuProductUuid =
+                backStackEntry
+                    .toRoute<EditMenuProductScreenDestination>()
+                    .menuProductUuid,
+            savedStateHandle = backStackEntry.savedStateHandle,
         )
     }
 }
