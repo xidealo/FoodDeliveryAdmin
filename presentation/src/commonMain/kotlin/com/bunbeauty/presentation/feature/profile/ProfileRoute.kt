@@ -194,7 +194,7 @@ private fun SuccessProfileScreen(
         )
 
         LoadingButton(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
                 .padding(top = 8.dp),
             text = stringResource(Res.string.action_common_logout),
             onClick = {

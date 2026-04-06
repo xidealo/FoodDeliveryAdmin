@@ -1,5 +1,6 @@
 package com.bunbeauty.presentation.feature.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,11 +18,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.bunbeauty.presentation.designsystem.compose.AdminScaffold
 import com.bunbeauty.presentation.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.presentation.designsystem.compose.element.image.AdminAsyncImage
@@ -158,19 +164,15 @@ private fun LoginScreenSuccess(
                     ).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            AdminAsyncImage(
-                imageData =
-                    ImageData.LocalId(
-                        Res.drawable.logo,
+            Image(
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .size(250.dp)
+                    .haloGlowAnimated(
+                        color = Color(0xFF494848),
                     ),
-                modifier =
-                    Modifier
-                        .padding(top = 24.dp)
-                        .size(250.dp)
-                        .haloGlowAnimated(
-                            color = Color(0xFF494848),
-                        ),
-                contentDescription = Res.string.description_logo,
+                painter = painterResource(Res.drawable.logo),
+                contentDescription = stringResource(Res.string.description_logo),
             )
 
             AdminTextField(
