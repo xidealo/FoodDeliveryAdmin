@@ -1,6 +1,5 @@
 package com.bunbeauty.presentation
 
-import app.cash.turbine.test
 import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
 import com.bunbeauty.domain.feature.menu.common.model.Category
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
@@ -18,6 +17,8 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -30,17 +31,10 @@ class EditMenuProductViewModelTest {
     private val getMenuProductUseCase: GetMenuProductUseCase = mockk()
     private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase = mockk()
     private val updateMenuProductUseCase: UpdateMenuProductUseCase = mockk()
-    private lateinit var viewModel: EditMenuProductViewModel
 
     @BeforeTest
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel =
-            EditMenuProductViewModel(
-                getMenuProductUseCase = getMenuProductUseCase,
-                getSelectableCategoryListUseCase = getSelectableCategoryListUseCase,
-                updateMenuProductUseCase = updateMenuProductUseCase,
-            )
     }
 
     @Test
@@ -64,7 +58,16 @@ class EditMenuProductViewModelTest {
                 )
             coEvery { getMenuProductUseCase(productUuid) } returns menuProductMock
             coEvery { getSelectableCategoryListUseCase(listOf("1", "2")) } returns selectedCategories
-            val excepted =
+
+            val viewModel =
+                EditMenuProductViewModel(
+                    getMenuProductUseCase = getMenuProductUseCase,
+                    getSelectableCategoryListUseCase = getSelectableCategoryListUseCase,
+                    updateMenuProductUseCase = updateMenuProductUseCase,
+                    menuProductUuid = productUuid,
+                )
+
+            val expected =
                 EditMenuProduct.DataState(
                     state = EditMenuProduct.DataState.State.SUCCESS,
                     productUuid = productUuid,
@@ -95,10 +98,16 @@ class EditMenuProductViewModelTest {
                             value = "description",
                             isError = false,
                         ),
+                    descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
                     comboDescription = "comboDescription",
                     categoriesField =
                         CategoriesFieldData(
                             value = selectedCategories,
+                            isError = false,
+                        ),
+                    additionGroupListField =
+                        AdditionGroupListFieldData(
+                            value = emptyList(),
                             isError = false,
                         ),
                     isVisibleInMenu = true,
@@ -113,28 +122,13 @@ class EditMenuProductViewModelTest {
                             isError = false,
                         ),
                     sendingToServer = false,
-                    descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
-                    additionGroupListField =
-                        AdditionGroupListFieldData(
-                            value = emptyList(),
-                            isError = false,
-                        ),
                 )
 
-            viewModel.state.test {
-                skipItems(1)
-
-                // When
-                viewModel.onAction(
-                    EditMenuProduct.Action.LoadData(productUuid = productUuid),
-                )
-
-                // Then
-                assertEquals(
-                    expected = excepted,
-                    actual = awaitItem(),
-                )
-            }
+            val item =
+                viewModel.state
+                    .dropWhile { it.state == EditMenuProduct.DataState.State.LOADING }
+                    .first()
+            assertEquals(expected, item)
         }
 
     private val productUuid: String = "1"
