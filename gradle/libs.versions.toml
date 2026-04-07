@@ -139,6 +139,7 @@ ktLint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktLint" }
 triplet-play = { id = "com.github.triplet.play", version.ref = "tripletPlay" }
 compose-plugin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+cocoa = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 
 # Plugins defined by this project
 admin-android-feature = { id = "com.bunbeauty.android.feature", version = "1.0" }
