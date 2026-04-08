@@ -1,0 +1,404 @@
+package com.bunbeauty.shared.navigation
+
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.ui.unit.Dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.navOptions
+import com.bunbeauty.shared.feature.additiongrouplist.createadditiondrouplist.navigation.createAdditionGroupScreenRoute
+import com.bunbeauty.shared.feature.additiongrouplist.createadditiondrouplist.navigation.navigateToCreateAdditionGroupScreen
+import com.bunbeauty.shared.feature.additiongrouplist.editadditiongroup.navigation.editAdditionGroupScreenRoute
+import com.bunbeauty.shared.feature.additiongrouplist.editadditiongroup.navigation.navigateToEditAdditionGroupScreen
+import com.bunbeauty.shared.feature.additiongrouplist.navigation.additionGroupListScreenRoute
+import com.bunbeauty.shared.feature.additiongrouplist.navigation.navigateToAdditionGroupListScreen
+import com.bunbeauty.shared.feature.additionlist.createaddition.navigation.createAdditionScreenRoute
+import com.bunbeauty.shared.feature.additionlist.createaddition.navigation.navigateToCreateAdditionScreen
+import com.bunbeauty.shared.feature.additionlist.editadditionlist.navigation.editAdditionScreenRoute
+import com.bunbeauty.shared.feature.additionlist.editadditionlist.navigation.navigateToEditAdditionScreen
+import com.bunbeauty.shared.feature.additionlist.navigation.additionListScreenRoute
+import com.bunbeauty.shared.feature.additionlist.navigation.navigateToAdditionListScreen
+import com.bunbeauty.shared.feature.category.createcategory.navigation.createCategoryScreenRoute
+import com.bunbeauty.shared.feature.category.createcategory.navigation.navigateToCreateCategoryScreen
+import com.bunbeauty.shared.feature.category.editcategory.navigation.editCategoryScreenRoute
+import com.bunbeauty.shared.feature.category.editcategory.navigation.navigateToEditCategoryScreen
+import com.bunbeauty.shared.feature.category.navigation.categoryListScreenRoute
+import com.bunbeauty.shared.feature.category.navigation.navigateToCategoryListScreen
+import com.bunbeauty.shared.feature.gallery.navigation.galleryScreenRoute
+import com.bunbeauty.shared.feature.login.navigation.loginScreenRoute
+import com.bunbeauty.shared.feature.login.navigation.navigateToLoginScreen
+import com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
+import com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
+import com.bunbeauty.shared.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
+import com.bunbeauty.shared.feature.mapdelivery.navigation.navigateToMapDeliveryZoneScreen
+import com.bunbeauty.shared.feature.menu.navigation.menuScreenRoute
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.navigateToEditAdditionGroupForMenuProductScreen
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.navigation.additionGroupForMenuProductListScreenRoute
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.navigation.navigateToAdditionGroupForMenuProductListScreen
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.navigateToSelectAdditionListScreen
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.selectaddition.navigation.selectAdditionListScreenRoute
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.navigateToSelectAdditionGroupScreen
+import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.selectadditiongroup.navigation.selectAdditionGroupScreenRoute
+import com.bunbeauty.shared.feature.menulist.categorylist.navigation.navigateToSelectCategoryListScreen
+import com.bunbeauty.shared.feature.menulist.categorylist.navigation.selectCategoryListScreenRoute
+import com.bunbeauty.shared.feature.menulist.createmenuproduct.navigation.createMenuProductScreenRoute
+import com.bunbeauty.shared.feature.menulist.createmenuproduct.navigation.navigateToCreateMenuProductScreen
+import com.bunbeauty.shared.feature.menulist.cropimage.CropImagePreset
+import com.bunbeauty.shared.feature.menulist.cropimage.navigation.cropImageScreenRoute
+import com.bunbeauty.shared.feature.menulist.cropimage.navigation.navigateToCropImageScreen
+import com.bunbeauty.shared.feature.menulist.editmenuproduct.navigation.editMenuProductScreenRoute
+import com.bunbeauty.shared.feature.menulist.editmenuproduct.navigation.navigateToEditMenuProductScreen
+import com.bunbeauty.shared.feature.menulist.navigation.menuListScreenRoute
+import com.bunbeauty.shared.feature.menulist.navigation.navigateToMenuListScreen
+import com.bunbeauty.shared.feature.order.navigation.navigateToOrderDetailsScreen
+import com.bunbeauty.shared.feature.order.navigation.orderDetailsScreenRoute
+import com.bunbeauty.shared.feature.orderlist.navigation.navigateToOrderListScreen
+import com.bunbeauty.shared.feature.orderlist.navigation.orderListScreenRoute
+import com.bunbeauty.shared.feature.profile.navigation.profileScreenRoute
+import com.bunbeauty.shared.feature.settings.navigation.navigateToSettingsScreen
+import com.bunbeauty.shared.feature.settings.navigation.settingsScreenRoute
+import com.bunbeauty.shared.feature.statistic.navigation.navigateToStatisticScreen
+import com.bunbeauty.shared.feature.statistic.navigation.statisticScreenRoute
+import com.bunbeauty.shared.feature.statisticdetails.navigation.statisticDetailsScreenRoute
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.UPDATED_DELIVERY_ZONE_UUID
+
+internal val emptyNavOptions = navOptions { }
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
+    navController: NavController,
+    showInfoMessage: (String, Dp) -> Unit,
+    showErrorMessage: (String) -> Unit,
+    cancelNotification: (Int) -> Unit,
+) {
+    loginScreenRoute(
+        showErrorMessage = showErrorMessage,
+        goToOrderListScreen = {
+            navController.navigateToOrderListScreen(emptyNavOptions)
+        },
+    )
+
+    orderListScreenRoute(
+        cancelNotification = cancelNotification,
+        openOrderDetails = { orderUuid, orderCode ->
+            navController.navigateToOrderDetailsScreen(
+                orderUuid = orderUuid,
+                orderCode = orderCode,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+
+    menuScreenRoute(
+        goToCategoriesScreen = {
+            navController.navigateToCategoryListScreen(emptyNavOptions)
+        },
+        goToMenuListScreen = {
+            navController.navigateToMenuListScreen(emptyNavOptions)
+        },
+        goToAdditionGroupListScreen = {
+            navController.navigateToAdditionGroupListScreen(emptyNavOptions)
+        },
+        goToAdditionListScreen = {
+            navController.navigateToAdditionListScreen(emptyNavOptions)
+        },
+    )
+
+    menuListScreenRoute(
+        goToCreateMenuProductScreen = {
+            navController.navigateToCreateMenuProductScreen(emptyNavOptions)
+        },
+        goToEditMenuProductScreen = { uuid ->
+            navController.navigateToEditMenuProductScreen(
+                menuProductUuid = uuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+        back = navController::navigateUp,
+    )
+
+    createMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = navController::navigateUp,
+        goToCategoryList = { selectedCategoryList ->
+            navController.navigateToSelectCategoryListScreen(
+                selectedCategoryList = selectedCategoryList,
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToCropImage = { imageUri ->
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                preset = CropImagePreset.MENU_PRODUCT,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    editMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = navController::navigateUp,
+        goToCategoryList = { selectedCategoryList ->
+            navController.navigateToSelectCategoryListScreen(
+                selectedCategoryList = selectedCategoryList,
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToAdditionList = { menuProductUuid ->
+            navController.navigateToAdditionGroupForMenuProductListScreen(
+                menuProductUuid,
+                emptyNavOptions,
+            )
+        },
+        goToCropImage = { imageUri ->
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                preset = CropImagePreset.MENU_PRODUCT,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    additionGroupListScreenRoute(
+        goBack = navController::navigateUp,
+        goToCreateAdditionGroupScreen = {
+            navController.navigateToCreateAdditionGroupScreen(emptyNavOptions)
+        },
+        goToEditAdditionGroupScreen = { uuid ->
+            navController.navigateToEditAdditionGroupScreen(
+                additionGroupUuid = uuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    additionListScreenRoute(
+        goBack = navController::navigateUp,
+        goToCreateAdditionScreen = {
+            navController.navigateToCreateAdditionScreen(
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToEditAdditionScreen = { uuid ->
+            navController.navigateToEditAdditionScreen(uuid, emptyNavOptions)
+        },
+    )
+    createAdditionScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = navController::navigateUp,
+        goToCropImage = { imageUri ->
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                preset = CropImagePreset.ADDITION,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    categoryListScreenRoute(
+        goBack = navController::navigateUp,
+        goToCreateCategoryScreen = {
+            navController.navigateToCreateCategoryScreen(emptyNavOptions)
+        },
+        goToEditCategoryScreen = { categoryUuid ->
+            navController.navigateToEditCategoryScreen(
+                categoryUuid = categoryUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    createCategoryScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+    )
+    editCategoryScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+    )
+    createAdditionGroupScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+    )
+    editAdditionGroupScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+    )
+    editDeliveryZoneInfoScreenRoute(
+        showInfoMessage = showInfoMessage,
+        onZoneUpdated = { zoneUuid ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(UPDATED_DELIVERY_ZONE_UUID, zoneUuid)
+        },
+        goBack = navController::navigateUp,
+    )
+    mapDeliveryZoneScreenRoute(
+        goBack = navController::navigateUp,
+        goToEditDeliveryZoneInfo = { zoneUuid ->
+            navController.navigateToEditDeliveryZoneInfoScreen(
+                zoneUuid = zoneUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    galleryScreenRoute(
+        goBack = navController::navigateUp,
+    )
+    statisticDetailsScreenRoute(
+        goBack = navController::navigateUp,
+    )
+    selectCategoryListScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+        onSaveCategoryList = { categoryList ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(SELECTED_CATEGORY_UUID_LIST, categoryList)
+            navController.navigateUp()
+        },
+    )
+    cropImageScreenRoute(
+        goBack = navController::navigateUp,
+        onCropSaved = { croppedImageUri ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(CROPPED_IMAGE_URI, croppedImageUri)
+        },
+    )
+    additionGroupForMenuProductListScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS,
+                true,
+            )
+            navController.navigateUp()
+        },
+        goToCreateAdditionGroup = { menuProductUuid ->
+            navController.navigateToCreateAdditionGroupForMenuProductScreen(
+                menuProductUuid = menuProductUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToEditAdditionGroup = { menuProductUuid, additionGroupUuid ->
+            navController.navigateToEditAdditionGroupForMenuProductScreen(
+                additionGroupUuid = additionGroupUuid,
+                menuProductUuid = menuProductUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    createAdditionGroupForMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+        goToSelectAdditionGroup = { uuid, menuProductUuid, mainEditedAdditionGroupUuid ->
+            navController.navigateToSelectAdditionGroupScreen(
+                additionGroupUuid = uuid,
+                menuProductUuid = menuProductUuid,
+                mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToSelectAdditionList = { additionGroupUuid, menuProductUuid, groupName, addListUuid ->
+            navController.navigateToSelectAdditionListScreen(
+                menuProductUuid = menuProductUuid,
+                additionGroupUuid = additionGroupUuid,
+                additionGroupName = groupName,
+                editedAdditionListUuid = addListUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    editAdditionGroupForMenuProductScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+        goToSelectAdditionGroup = { editedAdditionGroupUuid, menuProductUuid, mainEditedAdditionGroupUuid ->
+            navController.navigateToSelectAdditionGroupScreen(
+                additionGroupUuid = editedAdditionGroupUuid,
+                menuProductUuid = menuProductUuid,
+                mainEditedAdditionGroupUuid = mainEditedAdditionGroupUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+        goToSelectAdditionList = { additionGroupUuid, menuProductUuid, additionGroupName, editedAdditionListUuid ->
+            navController.navigateToSelectAdditionListScreen(
+                menuProductUuid = menuProductUuid,
+                additionGroupUuid = additionGroupUuid,
+                additionGroupName = additionGroupName,
+                editedAdditionListUuid = editedAdditionListUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+    selectAdditionGroupScreenRoute(
+        showInfoMessage = showInfoMessage,
+        goBack = navController::navigateUp,
+        onAdditionGroupSelected = { additionGroupUuid ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(SELECTED_ADDITION_GROUP_UUID, additionGroupUuid)
+        },
+    )
+    selectAdditionListScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = navController::navigateUp,
+        onAdditionListSelected = { additionUuidList ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(SELECTED_ADDITION_UUID_LIST, additionUuidList)
+        },
+    )
+    profileScreenRoute(
+        showErrorMessage = showErrorMessage,
+        goToSettingsScreen = {
+            navController.navigateToSettingsScreen(emptyNavOptions)
+        },
+        goToStatisticScreen = {
+            navController.navigateToStatisticScreen(emptyNavOptions)
+        },
+        goToMapScreen = { navController.navigateToMapDeliveryZoneScreen(emptyNavOptions) },
+        goToLoginScreen = {
+            navController.navigateToLoginScreen(
+                navOptions =
+                    navOptions {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+            )
+        },
+    )
+    settingsScreenRoute(
+        goBack = navController::navigateUp,
+        showInfoMessage = showInfoMessage,
+    )
+    statisticScreenRoute(
+        goBack = navController::navigateUp,
+    )
+
+    orderDetailsScreenRoute(
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
+        goBack = navController::navigateUp,
+    )
+
+    editAdditionScreenRoute(
+        goBack = navController::navigateUp,
+        showInfoMessage = showInfoMessage,
+        goToCropImage = { imageUri ->
+            navController.navigateToCropImageScreen(
+                uri = imageUri,
+                preset = CropImagePreset.ADDITION,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+}

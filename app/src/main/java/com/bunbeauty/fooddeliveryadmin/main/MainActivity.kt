@@ -7,13 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bunbeauty.fooddeliveryadmin.R
-import com.bunbeauty.presentation.feature.MainScreen
-import kotlinx.coroutines.launch
+import com.bunbeauty.shared.feature.MainScreen
 
 class MainActivity : AppCompatActivity(R.layout.layout_compose) {
     private val requestPermissionLauncher by lazy {

@@ -14,8 +14,8 @@ import com.bunbeauty.domain.feature.mapzonedelivery.di.mapDeliveryArea
 import com.bunbeauty.domain.feature.orderlist.di.orderListModule
 import com.bunbeauty.domain.feature.profile.di.profileModule
 import com.bunbeauty.domain.feature.time.di.timeUseCaseModule
-import com.bunbeauty.presentation.di.presentationModule
-import com.bunbeauty.presentation.di.presentationViewModelModule
+import com.bunbeauty.shared.di.presentationModule
+import com.bunbeauty.shared.di.presentationViewModelModule
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration

@@ -10,7 +10,7 @@ object Application {
 
 object Namespace {
     const val app = "com.bunbeauty.fooddeliveryadmin"
-    const val presentation = "com.bunbeauty.presentation"
+    const val presentation = "com.bunbeauty.shared"
     const val domain = "com.bunbeauty.domain"
     const val data = "com.bunbeauty.data"
     const val common = "com.bunbeauty.common"

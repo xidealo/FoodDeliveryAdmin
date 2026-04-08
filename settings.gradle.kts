@@ -8,7 +8,7 @@ pluginManagement {
     }
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":presentation")
+include(":shared")
 include(":common")
 include(":domain")
 include(":data")

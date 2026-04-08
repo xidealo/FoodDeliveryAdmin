@@ -93,7 +93,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":common"))
-    implementation(project(":presentation"))
+    implementation(project(":shared"))
 
     // Firebase
     implementation(platform(libs.firebase.bom))
