@@ -1,5 +1,6 @@
 package com.bunbeauty.shared.di
 
+import com.bunbeauty.data.di.dataSourceModule
 import com.bunbeauty.data.di.platformDataModule
 import com.bunbeauty.domain.di.domainModule
 import com.bunbeauty.domain.di.platformModule
@@ -12,6 +13,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
         modules(
             domainModule(),
             platformModule(),
+            dataSourceModule(),
             platformDataModule(),
             presentationModule(),
             presentationViewModelModule(),

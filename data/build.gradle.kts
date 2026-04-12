@@ -37,6 +37,11 @@ kotlin {
                 implementation(libs.bundles.di)
             }
         }
+        val iosMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
         val androidUnitTest by getting {
             dependencies {
                 implementation(kotlin("test"))
