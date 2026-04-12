@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.ui.Modifier
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -33,7 +35,10 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose) {
         enableEdgeToEdge()
 
         setContent {
-            MainScreen()
+            MainScreen(
+                modifier = Modifier
+                    .navigationBarsPadding()
+            )
         }
 
         checkNotificationPermission()

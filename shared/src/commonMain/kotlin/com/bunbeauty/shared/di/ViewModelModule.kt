@@ -14,6 +14,7 @@ import com.bunbeauty.shared.feature.gallery.selectphoto.SelectPhotoViewModel
 import com.bunbeauty.shared.feature.login.LoginViewModel
 import com.bunbeauty.shared.feature.mapdelivery.MapDeliveryZoneViewModel
 import com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.EditDeliveryZoneInfoViewModel
+import com.bunbeauty.shared.feature.menu.MenuViewModel
 import com.bunbeauty.shared.feature.menulist.MenuListViewModel
 import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.AdditionGroupForMenuProductListViewModel
 import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.CreateAdditionGroupForMenuProductViewModel
@@ -48,6 +49,10 @@ fun viewModelModule() =
                 getSeparatedAdditionListUseCase = get(),
                 updateVisibleAdditionUseCase = get(),
             )
+        }
+
+        viewModel {
+            MenuViewModel()
         }
 
         viewModel {

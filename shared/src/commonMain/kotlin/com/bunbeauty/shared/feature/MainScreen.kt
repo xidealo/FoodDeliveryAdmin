@@ -48,7 +48,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
+fun MainScreen(
+    modifier: Modifier,
+    viewModel: MainViewModel = koinViewModel()) {
     val mainState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     var snackbarPaddingBottom by remember {
@@ -71,8 +73,7 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
 
     Scaffold(
         modifier =
-            Modifier
-                .navigationBarsPadding()
+            modifier
                 .imePadding(),
         snackbarHost = {
             AdminSnackbarHost(

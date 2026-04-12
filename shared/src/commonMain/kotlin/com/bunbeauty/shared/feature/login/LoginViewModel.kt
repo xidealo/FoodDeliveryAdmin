@@ -81,6 +81,7 @@ class LoginViewModel(
                 }
             },
             onError = {
+                println("Login error: " + it.message)
                 setState {
                     copy(startLoginLoading = false)
                 }

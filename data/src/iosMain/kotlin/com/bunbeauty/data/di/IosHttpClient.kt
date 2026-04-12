@@ -27,7 +27,7 @@ internal fun createIosHttpClient(json: Json): HttpClient =
             logger =
                 object : KtorLogger {
                     override fun log(message: String) {
-                        println(message)
+                        println("NETWORK MESSAGE: $message")
                     }
                 }
             level = LogLevel.ALL

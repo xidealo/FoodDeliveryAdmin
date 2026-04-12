@@ -1,9 +1,14 @@
 package com.bunbeauty.shared.feature.login
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -157,23 +163,32 @@ private fun LoginScreenSuccess(
                     ).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Image(
-                modifier =
-                    Modifier
-                        .padding(top = 24.dp)
-                        .size(250.dp)
-                        .haloGlowAnimated(
-                            color = Color(0xFF494848),
-                        ),
-                painter = painterResource(Res.drawable.logo),
-                contentDescription = stringResource(Res.string.description_logo),
-            )
+            val density = LocalDensity.current
+            val isKeyboardOpen = WindowInsets.ime.getBottom(density) > 0
+
+            AnimatedVisibility(
+                visible = !isKeyboardOpen,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                Image(
+                    modifier =
+                        Modifier
+                            .padding(top = 24.dp)
+                            .size(250.dp)
+                            .haloGlowAnimated(
+                                color = Color(0xFF494848),
+                            ),
+                    painter = painterResource(Res.drawable.logo),
+                    contentDescription = stringResource(Res.string.description_logo),
+                )
+            }
 
             AdminTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = 64.dp),
+                        .padding(top = if (isKeyboardOpen) 24.dp else 64.dp),
                 labelText = stringResource(Res.string.hint_login_login),
                 value = state.username,
                 onValueChange = { name ->
