@@ -13,7 +13,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 data class CropImageScreenDestination(
     val uri: String,
-    val preset: CropImagePreset,
+    val presetName: String,
 )
 
 fun NavController.navigateToCropImageScreen(
@@ -24,7 +24,7 @@ fun NavController.navigateToCropImageScreen(
     route =
         CropImageScreenDestination(
             uri = uri,
-            preset = preset,
+            presetName = preset.name,
         ),
     navOptions,
 )
@@ -35,12 +35,13 @@ fun NavGraphBuilder.cropImageScreenRoute(
 ) {
     composable<CropImageScreenDestination> { backStackEntry ->
         val destination = backStackEntry.toRoute<CropImageScreenDestination>()
+        val preset = CropImagePreset.valueOf(destination.presetName)
         CropImageRouteScreen(
             viewModel = koinViewModel(),
             goBack = goBack,
             onCropSaved = onCropSaved,
             uri = destination.uri,
-            preset = destination.preset,
+            preset = preset,
         )
     }
 }
