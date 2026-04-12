@@ -7,17 +7,14 @@ import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.CategoryRepository
 import com.bunbeauty.data.repository.CityRepository
 import com.bunbeauty.data.repository.CompanyRepository
-import com.bunbeauty.data.repository.DataStoreRepository
 import com.bunbeauty.data.repository.FoodDeliveryApiImpl
 import com.bunbeauty.data.repository.MenuProductRepository
 import com.bunbeauty.data.repository.MenuProductToAdditionGroupRepositoryImpl
 import com.bunbeauty.data.repository.MenuProductToAdditionGroupToAdditionRepositoryImpl
 import com.bunbeauty.data.repository.NonWorkingDayRepository
 import com.bunbeauty.data.repository.OrderRepository
-import com.bunbeauty.data.repository.PhotoRepository
 import com.bunbeauty.data.repository.SettingsRepository
 import com.bunbeauty.data.repository.StatisticRepository
-import com.bunbeauty.data.repository.UserAuthorizationRepository
 import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -25,15 +22,12 @@ import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.CityRepo
 import com.bunbeauty.domain.repo.CompanyRepo
-import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupToAdditionRepository
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
-import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.SettingsRepo
 import com.bunbeauty.domain.repo.StatisticRepo
-import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import org.koin.dsl.module
 
 fun repositoryModule() =
@@ -49,18 +43,6 @@ fun repositoryModule() =
             FoodDeliveryApiImpl(
                 client = get(),
                 json = get(),
-            )
-        }
-        single<DataStoreRepo> {
-            DataStoreRepository(
-                context = get(),
-            )
-        }
-        single<UserAuthorizationRepo> {
-            UserAuthorizationRepository(
-                context = get(),
-                dataStoreRepo = get(),
-                networkConnector = get(),
             )
         }
         single<CategoryRepo> {
@@ -107,11 +89,6 @@ fun repositoryModule() =
         single<AdditionGroupRepo> {
             AdditionGroupRepository(
                 networkConnector = get(),
-            )
-        }
-        single<PhotoRepo> {
-            PhotoRepository(
-                context = get(),
             )
         }
         single<SettingsRepo> {

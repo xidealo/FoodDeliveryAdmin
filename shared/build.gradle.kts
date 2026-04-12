@@ -49,6 +49,7 @@ kotlin {
             dependencies {
                 implementation(project(":domain"))
                 implementation(project(":common"))
+                implementation(project(":data"))
 
                 // Koin
                 implementation(libs.bundles.di)
@@ -94,8 +95,9 @@ kotlin {
         val iosSimulatorArm64Main by getting
         val iosMain by getting {
             dependencies {
-//                implementation(libs.sqlDelight.native)
-//                implementation(libs.ktor.client.darwin)
+                implementation("io.ktor:ktor-client-darwin:3.3.2")
+                implementation("io.ktor:ktor-client-content-negotiation:3.3.2")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.2")
             }
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)

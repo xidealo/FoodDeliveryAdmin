@@ -19,26 +19,12 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import io.ktor.client.plugins.logging.Logger as KtorLogger
 
-fun dataSourceModule() =
+fun androidDataSourceModule() =
     module {
-        single {
-            Json {
-                isLenient = false
-                ignoreUnknownKeys = true
-            }
-        }
-
         single {
             HttpClient(OkHttp.create()) {
                 install(ContentNegotiation) {
-                    json(
-                        Json {
-                            prettyPrint = true
-                            isLenient = true
-                            ignoreUnknownKeys = true
-                            encodeDefaults = false
-                        },
-                    )
+                    json(get<Json>())
                 }
                 install(WebSockets)
                 install(Logging) {

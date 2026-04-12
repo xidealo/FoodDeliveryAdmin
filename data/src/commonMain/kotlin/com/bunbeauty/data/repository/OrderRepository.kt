@@ -1,6 +1,4 @@
 package com.bunbeauty.data.repository
-
-import android.util.Log
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.toOrderAvailability
@@ -92,10 +90,7 @@ class OrderRepository(
             }
 
             is ApiResult.Error -> {
-                Log.e(
-                    ORDER_TAG,
-                    "getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}",
-                )
+                println("$ORDER_TAG: getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}")
                 throw ServerConnectionException()
             }
         }
@@ -110,10 +105,7 @@ class OrderRepository(
             }
 
             is ApiResult.Error -> {
-                Log.e(
-                    ORDER_TAG,
-                    "loadOrderByUuid ${result.apiError.message} ${result.apiError.code}",
-                )
+                println("$ORDER_TAG: loadOrderByUuid ${result.apiError.message} ${result.apiError.code}")
                 null
             }
         }
@@ -134,10 +126,7 @@ class OrderRepository(
             }
 
             is ApiResult.Error -> {
-                Log.e(
-                    ORDER_TAG,
-                    "getOrderAvailability ${result.apiError.message} ${result.apiError.code}",
-                )
+                println("$ORDER_TAG: getOrderAvailability ${result.apiError.message} ${result.apiError.code}")
                 null
             }
         }

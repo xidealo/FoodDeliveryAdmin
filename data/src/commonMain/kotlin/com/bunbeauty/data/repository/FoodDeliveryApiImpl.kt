@@ -1,6 +1,4 @@
 package com.bunbeauty.data.repository
-
-import android.util.Log
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
@@ -68,7 +66,7 @@ import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.Flow
@@ -79,7 +77,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import java.net.SocketException
 
 class FoodDeliveryApiImpl(
     private val client: HttpClient,
@@ -274,7 +271,7 @@ class FoodDeliveryApiImpl(
         token: String,
         cafeUuid: String,
     ) {
-        CoroutineScope(Job() + IO).launch {
+        CoroutineScope(Job() + Default).launch {
             try {
                 webSocketSessionOpened = true
                 client.wss(
@@ -286,31 +283,24 @@ class FoodDeliveryApiImpl(
                         parameter("cafeUuid", cafeUuid)
                     },
                 ) {
-                    Log.d(WEB_SOCKET_TAG, "WebSocket connected")
+                    println("$WEB_SOCKET_TAG: WebSocket connected")
                     webSocketSession = this
                     while (true) {
                         val message = incoming.receive() as? Frame.Text ?: continue
-                        Log.d(WEB_SOCKET_TAG, "Message: ${message.readText()}")
+                        println("$WEB_SOCKET_TAG: Message: ${message.readText()}")
                         val serverModel =
                             json.decodeFromString(OrderServer.serializer(), message.readText())
                         mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
                     }
                 }
             } catch (exception: WebSocketException) {
-                Log.e(WEB_SOCKET_TAG, "WebSocketException: ${exception.message}")
-                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
-            } catch (exception: SocketException) {
-                Log.e(WEB_SOCKET_TAG, "SocketException: ${exception.message}")
+                println("$WEB_SOCKET_TAG: WebSocketException: ${exception.message}")
                 mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
             } catch (exception: ClosedReceiveChannelException) {
-                Log.d(WEB_SOCKET_TAG, "ClosedReceiveChannelException: ${exception.message}")
+                println("$WEB_SOCKET_TAG: ClosedReceiveChannelException: ${exception.message}")
                 // Nothing
             } catch (exception: Exception) {
-                val stackTrace =
-                    exception.stackTrace.joinToString("\n") {
-                        "${it.className} ${it.methodName} ${it.lineNumber}"
-                    }
-                Log.e(WEB_SOCKET_TAG, "Exception: $exception \n$stackTrace")
+                println("$WEB_SOCKET_TAG: Exception: ${exception.message}")
                 mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
             } finally {
                 webSocketSessionOpened = false
@@ -323,7 +313,7 @@ class FoodDeliveryApiImpl(
             webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, message))
             webSocketSession = null
 
-            Log.d(WEB_SOCKET_TAG, "webSocketSession closed ($message)")
+            println("$WEB_SOCKET_TAG: webSocketSession closed ($message)")
         }
     }
 
@@ -642,7 +632,7 @@ class FoodDeliveryApiImpl(
 
     private suspend inline fun <reified R> safeCall(crossinline networkCall: suspend () -> HttpResponse): ApiResult<R> =
         try {
-            withContext(IO) {
+            withContext(Default) {
                 ApiResult.Success(networkCall().body())
             }
         } catch (exception: ResponseException) {
