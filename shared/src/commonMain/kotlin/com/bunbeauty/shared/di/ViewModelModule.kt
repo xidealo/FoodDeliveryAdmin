@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.di
+package com.bunbeauty.shared.di
 
 import com.bunbeauty.shared.feature.additiongrouplist.AdditionGroupListViewModel
 import com.bunbeauty.shared.feature.additiongrouplist.createadditiondrouplist.CreateAdditionGroupViewModel
@@ -223,9 +223,7 @@ fun viewModelModule() =
         }
 
         viewModel {
-            MainViewModel(
-                getIsNonWorkingDayFlow = get(),
-            )
+            MainViewModel()
         }
 
         viewModel {

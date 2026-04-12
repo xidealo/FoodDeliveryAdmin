@@ -53,7 +53,7 @@ actual fun platformDataModule() =
                 install(WebSockets)
                 install(Logging) {
                     logger =
-                        object : KtorLogger {
+                        object : Logger {
                             override fun log(message: String) {
                                 Log.d("Ktor", message)
                             }

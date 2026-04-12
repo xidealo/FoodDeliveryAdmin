@@ -16,7 +16,8 @@ import com.bunbeauty.domain.feature.orderlist.di.orderListModule
 import com.bunbeauty.domain.feature.profile.di.profileModule
 import com.bunbeauty.domain.feature.time.di.timeUseCaseModule
 import com.bunbeauty.shared.di.presentationModule
-import com.bunbeauty.shared.di.presentationViewModelModule
+import com.bunbeauty.shared.di.useCaseModule
+import com.bunbeauty.shared.di.viewModelModule
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -40,9 +41,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             timeUseCaseModule(),
             viewModelModule(),
             workManagerModule(),
-            timeModule(),
             presentationModule(),
-            presentationViewModelModule(),
             repositoryModule(),
             mapperModule(),
             dataSourceModule(),

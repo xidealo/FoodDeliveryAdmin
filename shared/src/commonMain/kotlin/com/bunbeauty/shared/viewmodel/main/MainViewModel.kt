@@ -11,16 +11,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class MainViewModel(
-    getIsNonWorkingDayFlow: GetIsNonWorkingDayFlowUseCase,
-) : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
-        initState =
-            Main.ViewDataState(
-                connectionLost = false,
-                nonWorkingDay = false,
-                navigationBarOptions = Main.NavigationBarOptions.Hidden,
-            ),
-    ) {
+class MainViewModel : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
+    initState =
+        Main.ViewDataState(
+            connectionLost = false,
+            nonWorkingDay = false,
+            navigationBarOptions = Main.NavigationBarOptions.Hidden,
+        ),
+) {
     private val mutableSnackbarMessages =
         MutableSharedFlow<Main.Message>(
             replay = 0,
@@ -28,22 +26,6 @@ class MainViewModel(
             onBufferOverflow = BufferOverflow.DROP_OLDEST,
         )
     val snackbarMessages = mutableSnackbarMessages.asSharedFlow()
-
-    init {
-        viewModelScope.launchSafe(
-            block = {
-                getIsNonWorkingDayFlow()
-                    .onEach { isNonWorkingDay ->
-                        setState {
-                            copy(nonWorkingDay = isNonWorkingDay)
-                        }
-                    }.launchIn(viewModelScope)
-            },
-            onError = {
-                // todo log error
-            },
-        )
-    }
 
     override fun reduce(
         action: Main.Action,

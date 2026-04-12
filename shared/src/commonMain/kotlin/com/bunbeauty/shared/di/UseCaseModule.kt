@@ -1,4 +1,4 @@
-package com.bunbeauty.fooddeliveryadmin.di
+package com.bunbeauty.shared.di
 
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
