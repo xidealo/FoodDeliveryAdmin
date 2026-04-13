@@ -41,6 +41,7 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic = true
+            binaryOption("bundleId", "com.bunbeauty.fooddeliveryadmin.shared")
         }
     }
 
