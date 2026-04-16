@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.admin.multiplatform.feature)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.cocoa)
 }
 
 android {
@@ -8,6 +9,22 @@ android {
 }
 
 kotlin {
+
+    cocoapods {
+        summary = "Main shared module with presentation layer"
+        homepage = "Link to the Shared Module homepage"
+        version = "1.0"
+        ios.deploymentTarget =  "15.5"
+        podfile = project.file("../FoodDelivery/Podfile")
+
+        pod("FirebaseMessaging")
+
+        framework {
+            baseName = "data"
+            isStatic = true
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {

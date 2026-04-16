@@ -10,6 +10,8 @@ import SwiftUI
 
 @main
 struct FoodDeliveryApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+
     init() {
         KoinKt.doInitKoin()
     }

@@ -11,9 +11,12 @@ import kotlin.experimental.ExperimentalNativeApi
 actual fun platformDataModule() = module {
     single<HttpClient> { createIosHttpClient(get()) }
     single<DataStoreRepo> { IosDataStoreRepository() }
-    single<UserAuthorizationRepo> { IosStubUserAuthorizationRepository(
-        networkConnector = get()
-    ) }
+    single<UserAuthorizationRepo> {
+        IosUserAuthorizationRepository(
+            networkConnector = get(),
+            dataStoreRepo = get(),
+        )
+    }
     single<PhotoRepo> { IosStubPhotoRepository() }
 }
 

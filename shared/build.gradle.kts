@@ -36,6 +36,7 @@ kotlin {
         ios.deploymentTarget =  "15.5"
         podfile = project.file("../FoodDelivery/Podfile")
 
+        pod("FirebaseMessaging")
         pod("MapLibre", "6.17.1")
 
         framework {
