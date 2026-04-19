@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.DragDropList
 import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
@@ -224,6 +225,7 @@ private fun AdditionGroupForMenuProductScreen(
             when (state.state) {
                 is AdditionGroupForMenuProductListViewState.State.Success -> {
                     FloatingButton(
+                        modifier = Modifier.bottomBarPadding(),
                         iconId = Res.drawable.ic_plus,
                         textStringId = Res.string.action_addition_group_for_menu_product_addition_add,
                         onClick = {

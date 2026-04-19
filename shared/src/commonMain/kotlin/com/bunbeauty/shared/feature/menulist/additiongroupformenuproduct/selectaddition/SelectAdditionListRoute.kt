@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.DragDropList
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
@@ -241,7 +242,8 @@ private fun SelectAdditionScreen(
                     },
                     modifier =
                         Modifier
-                            .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+                            .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                            .bottomBarPadding(),
                 )
             }
         },

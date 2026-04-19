@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.image.haloGlowAnimated
 import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextField
@@ -145,7 +146,10 @@ private fun LoginScreenSuccess(
     AdminScaffold(
         actionButton = {
             LoadingButton(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .bottomBarPadding(),
                 text = stringResource(Res.string.action_login_enter),
                 isLoading = state.startLoginLoading,
                 onClick = {

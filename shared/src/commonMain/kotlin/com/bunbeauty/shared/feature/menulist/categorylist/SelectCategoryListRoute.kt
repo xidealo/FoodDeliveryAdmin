@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.MainButton
 import com.bunbeauty.shared.designsystem.compose.element.selectableitem.SelectableItem
 import com.bunbeauty.shared.designsystem.compose.element.selectableitem.SelectableItemView
@@ -122,7 +123,10 @@ private fun SelectCategoryListScreen(
         },
         actionButton = {
             MainButton(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .bottomBarPadding(),
                 text = stringResource(resource = Res.string.action_category_list_save),
                 onClick = {
                     onAction(SelectCategoryList.Action.OnSaveClick)

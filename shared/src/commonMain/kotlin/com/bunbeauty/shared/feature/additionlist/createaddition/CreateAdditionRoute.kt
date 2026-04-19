@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
@@ -299,6 +300,7 @@ private fun BottomButtons(
         )
 
         LoadingButton(
+            modifier = Modifier.bottomBarPadding(),
             text = stringResource(Res.string.action_create_addition_save),
             isLoading = state.isLoading,
             onClick = {

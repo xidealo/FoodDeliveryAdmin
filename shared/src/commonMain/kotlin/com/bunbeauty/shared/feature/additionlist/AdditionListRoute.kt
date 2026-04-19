@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.image.AdminAsyncImage
@@ -134,6 +135,7 @@ fun AdditionListScreen(
         actionButton = {
             if (!state.isLoading && !state.hasError) {
                 FloatingButton(
+                    modifier = Modifier.bottomBarPadding(),
                     iconId = Res.drawable.ic_plus,
                     textStringId = Res.string.action_addition_list_create,
                     onClick = goToCreateAdditionScreen,

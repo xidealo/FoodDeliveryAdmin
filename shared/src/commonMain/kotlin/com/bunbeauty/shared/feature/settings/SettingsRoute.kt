@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.domain.model.settings.WorkLoad
 import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.button.MainButton
@@ -156,7 +157,10 @@ private fun SettingsScreen(
         actionButton = {
             if (state.state is SettingsViewState.State.Success) {
                 LoadingButton(
-                    modifier = Modifier.padding(16.dp),
+                    modifier =
+                        Modifier
+                            .padding(horizontal = 16.dp)
+                            .bottomBarPadding(16.dp),
                     text = stringResource(Res.string.action_edit_addition_save),
                     isLoading = state.state.isLoading,
                     onClick = {

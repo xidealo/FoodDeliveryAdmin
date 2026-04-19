@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
@@ -153,6 +154,7 @@ private fun CreateCategoryScreenSuccess(
         Spacer(modifier = Modifier.weight(1f))
 
         LoadingButton(
+            modifier = Modifier.bottomBarPadding(),
             text = stringResource(Res.string.action_create_category_save),
             isLoading = state.isLoading,
             onClick = {

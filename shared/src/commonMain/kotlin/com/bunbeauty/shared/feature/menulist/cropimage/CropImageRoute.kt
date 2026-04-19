@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import fooddeliveryadmin.shared.generated.resources.Res
@@ -149,6 +150,7 @@ private fun CropImageScreen(
                     )
                 }
                 LoadingButton(
+                    modifier = Modifier.bottomBarPadding(),
                     text = stringResource(Res.string.action_select_photo_save),
                     isLoading = state.isLoading,
                     onClick = {

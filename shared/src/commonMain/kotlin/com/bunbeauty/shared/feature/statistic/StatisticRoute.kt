@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
@@ -112,7 +113,10 @@ private fun StatisticScreen(
         actionButton = {
             if (state.state is StatisticViewState.State.Success) {
                 LoadingButton(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier =
+                        Modifier
+                            .padding(horizontal = 16.dp)
+                            .bottomBarPadding(),
                     text = stringResource(Res.string.action_product_statistic_load),
                     isLoading = state.state.loadingStatistic,
                     onClick = {

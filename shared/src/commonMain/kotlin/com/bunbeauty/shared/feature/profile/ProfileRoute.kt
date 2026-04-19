@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.TextWithHintCard
@@ -196,7 +197,8 @@ private fun SuccessProfileScreen(
         LoadingButton(
             modifier =
                 Modifier
-                    .padding(top = 8.dp),
+                    .padding(top = 8.dp)
+                    .bottomBarPadding(),
             text = stringResource(Res.string.action_common_logout),
             onClick = {
                 onAction(Profile.Action.LogoutClick)

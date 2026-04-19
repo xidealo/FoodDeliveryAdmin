@@ -7,10 +7,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -19,17 +20,20 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.AdminSnackbarVisuals
 import com.bunbeauty.shared.designsystem.compose.bottombar.AdminNavigationBar
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
@@ -71,40 +75,47 @@ fun MainScreen(
         navHostController = navController,
     )
 
-    Scaffold(
-        modifier =
-            modifier
-                .imePadding(),
-        snackbarHost = {
-            AdminSnackbarHost(
-                snackbarHostState = snackbarHostState,
-                paddingBottom = snackbarPaddingBottom,
-            )
-        },
-        bottomBar = {
-            AdminNavigationBar(
-                options = mainState.navigationBarOptions,
-                navHostController = navController,
-            )
-        },
-    ) {
-        Column(
+    val localBottomBarPadding =
+        with(LocalDensity.current) {
+            WindowInsets.navigationBars.getBottom(this).toDp()
+        }
+
+    CompositionLocalProvider(LocalBottomBarPadding provides localBottomBarPadding) {
+        Scaffold(
             modifier =
-                Modifier
-                    .fillMaxSize(),
-        ) {
-            ConnectionErrorMessage(visible = mainState.connectionLost)
-            NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
-            Box(modifier = Modifier.weight(1f)) {
-                FoodDeliveryNavHost(
-                    showInfoMessage = { text: String, paddingBottom: Dp ->
-                        viewModel.onAction(Main.Action.ShowInfoMessage(text, paddingBottom))
-                    },
-                    showErrorMessage = { text ->
-                        viewModel.onAction(Main.Action.ShowErrorMessage(text))
-                    },
-                    navController = navController,
+                modifier
+                    .imePadding(),
+            snackbarHost = {
+                AdminSnackbarHost(
+                    snackbarHostState = snackbarHostState,
+                    paddingBottom = snackbarPaddingBottom,
                 )
+            },
+            bottomBar = {
+                AdminNavigationBar(
+                    options = mainState.navigationBarOptions,
+                    navHostController = navController,
+                )
+            },
+        ) {
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
+            ) {
+                ConnectionErrorMessage(visible = mainState.connectionLost)
+                NonWorkingDayWarningMessage(visible = mainState.nonWorkingDay)
+                Box(modifier = Modifier.weight(1f)) {
+                    FoodDeliveryNavHost(
+                        showInfoMessage = { text: String, paddingBottom: Dp ->
+                            viewModel.onAction(Main.Action.ShowInfoMessage(text, paddingBottom))
+                        },
+                        showErrorMessage = { text ->
+                            viewModel.onAction(Main.Action.ShowErrorMessage(text))
+                        },
+                        navController = navController,
+                    )
+                }
             }
         }
     }

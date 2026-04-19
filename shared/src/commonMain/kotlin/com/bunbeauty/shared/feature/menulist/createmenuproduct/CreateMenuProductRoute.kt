@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
@@ -286,6 +287,7 @@ private fun BottomButtons(
             buttonColors = AdminButtonDefaults.accentSecondaryButtonColors,
         )
         LoadingButton(
+            modifier = Modifier.bottomBarPadding(),
             text = stringResource(Res.string.action_order_details_save),
             isLoading = state.sendingToServer,
             onClick = {

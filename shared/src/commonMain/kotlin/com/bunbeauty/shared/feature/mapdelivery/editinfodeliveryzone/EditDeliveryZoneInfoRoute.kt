@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextFieldDefaults.keyboardOptions
@@ -150,7 +151,8 @@ private fun EditDeliveryZoneInfoSuccessScreen(
                 onClick = { onAction(EditDeliveryZoneInfo.Action.SaveDeliveryZone) },
                 modifier =
                     Modifier
-                        .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+                        .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                        .bottomBarPadding(),
             )
         },
     ) {

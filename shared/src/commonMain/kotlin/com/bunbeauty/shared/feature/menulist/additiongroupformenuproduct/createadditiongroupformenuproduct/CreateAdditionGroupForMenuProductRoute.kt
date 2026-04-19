@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.NavigationTextCard
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
@@ -234,7 +235,10 @@ private fun CreateAdditionGroupForMenuProductSuccessScreen(
 
         Spacer(modifier = Modifier.weight(1f))
         LoadingButton(
-            modifier = Modifier.padding(16.dp),
+            modifier =
+                Modifier
+                    .padding(16.dp)
+                    .bottomBarPadding(),
             text = stringResource(Res.string.action_create_addition_group_for_menu_product_save),
             isLoading = state.isSaveLoading,
             onClick = {

@@ -1,6 +1,7 @@
 package com.bunbeauty.shared.feature.category
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,9 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCardDefaults.noCornerCardShape
+import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
@@ -101,6 +105,7 @@ private fun CategoryListEffect(
                 }
 
                 CategoryListState.Event.ShowUpdateCategoryListSuccess -> {
+                    //TODO show message
                 }
             }
         }
@@ -177,6 +182,7 @@ private fun CategoryListScreen(
             when (state.state) {
                 is CategoryListViewState.State.Success -> {
                     FloatingButton(
+                        modifier = Modifier.bottomBarPadding(),
                         iconId = Res.drawable.ic_plus,
                         textStringId = Res.string.action_menu_list_create,
                         onClick = {
@@ -230,6 +236,9 @@ private fun CategoriesListSuccessScreen(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(
+            bottom = 24.dp + LocalBottomBarPadding.current
+        )
     ) {
         items(
             items = state.categoryList,
@@ -247,7 +256,7 @@ private fun CategoriesListSuccessScreen(
                     },
                     isClickable = true,
                 )
-                com.bunbeauty.shared.designsystem.compose.element.topbar.AdminHorizontalDivider(
+                AdminHorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }

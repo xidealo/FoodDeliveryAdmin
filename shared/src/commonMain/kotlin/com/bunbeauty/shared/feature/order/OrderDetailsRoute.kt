@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
@@ -491,7 +492,10 @@ private fun BottomAmountBar(
             },
         )
         SecondaryButton(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier =
+                Modifier
+                    .padding(top = 8.dp)
+                    .bottomBarPadding(),
             textStringId = Res.string.action_order_details_do_not_save,
             onClick = {
                 onAction(OrderDetailsState.Action.OnBackClicked)
