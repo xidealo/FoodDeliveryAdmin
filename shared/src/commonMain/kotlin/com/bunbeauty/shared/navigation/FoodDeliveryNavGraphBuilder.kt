@@ -202,6 +202,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
     )
     categoryListScreenRoute(
+        showInfoMessage = showInfoMessage,
         goBack = navController::navigateUp,
         goToCreateCategoryScreen = {
             navController.navigateToCreateCategoryScreen(emptyNavOptions)

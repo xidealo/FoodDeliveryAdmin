@@ -1,5 +1,6 @@
 package com.bunbeauty.shared.feature.category.navigation
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -13,12 +14,14 @@ data object CategoryListScreenDestination
 fun NavController.navigateToCategoryListScreen(navOptions: NavOptions) = navigate(route = CategoryListScreenDestination, navOptions)
 
 fun NavGraphBuilder.categoryListScreenRoute(
+    showInfoMessage: (String, Dp) -> Unit,
     goBack: () -> Unit,
     goToCreateCategoryScreen: () -> Unit,
     goToEditCategoryScreen: (String) -> Unit,
 ) {
     composable<CategoryListScreenDestination> {
         CategoryListRouteScreen(
+            showInfoMessage = showInfoMessage,
             goBack = goBack,
             goToCreateCategoryScreen = goToCreateCategoryScreen,
             goToEditCategoryScreen = goToEditCategoryScreen,
