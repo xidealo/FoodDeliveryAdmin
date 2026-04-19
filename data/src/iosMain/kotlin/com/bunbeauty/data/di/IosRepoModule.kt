@@ -74,8 +74,15 @@ class IosUserAuthorizationRepository(
         suspendCoroutine { continuation ->
             FIRMessaging.messaging().tokenWithCompletion { token, error ->
                 when {
-                    error != null -> continuation.resumeWithException(Exception(error.toString()))
-                    token != null -> continuation.resume(token)
+                    error != null -> {
+                        println("MY TOOKEN ERROR  FCM: $token")
+                        continuation.resumeWithException(Exception(error.toString()))
+                    }
+                    token != null -> {
+                        println("MY TOOKEN FCM: $token")
+
+                        continuation.resume(token)
+                    }
                     else -> continuation.resumeWithException(Exception("Token is null"))
                 }
             }
