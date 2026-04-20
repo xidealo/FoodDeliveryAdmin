@@ -3,6 +3,8 @@ package com.bunbeauty.shared.model
 data class MenuListDataState(
     val visibleMenuProductItems: List<MenuProductItem> = listOf(),
     val hiddenMenuProductItems: List<MenuProductItem> = listOf(),
+    val isSearchEnabled: Boolean = false,
+    val searchQuery: String = "",
     val isRefreshing: Boolean = false,
     val throwable: Throwable? = null,
     val eventList: List<MenuListEvent> = emptyList(),
@@ -37,6 +39,9 @@ data class MenuListViewState(
         data class Success(
             val visibleMenuProductItems: List<MenuProductItem>,
             val hiddenMenuProductItems: List<MenuProductItem>,
+            val isSearchEnabled: Boolean,
+            val searchQuery: String,
+            val searchResultList: List<MenuProductItem>?,
         ) : State
 
         data object Loading : State

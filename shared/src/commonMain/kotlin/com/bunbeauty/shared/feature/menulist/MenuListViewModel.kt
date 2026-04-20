@@ -100,6 +100,27 @@ class MenuListViewModel(
         }
     }
 
+    fun onSearchClicked() {
+        mutableState.update { oldState ->
+            val isSearchEnabled = !oldState.isSearchEnabled
+            oldState.copy(
+                isSearchEnabled = isSearchEnabled,
+                searchQuery =
+                    if (isSearchEnabled) {
+                        oldState.searchQuery
+                    } else {
+                        ""
+                    },
+            )
+        }
+    }
+
+    fun onSearchQueryChange(searchQuery: String) {
+        mutableState.update { oldState ->
+            oldState.copy(searchQuery = searchQuery)
+        }
+    }
+
     private fun toItemModel(menuProduct: MenuProduct): MenuProductItem =
         MenuProductItem(
             uuid = menuProduct.uuid,
@@ -116,6 +137,9 @@ class MenuListViewModel(
                         MenuListViewState.State.Success(
                             visibleMenuProductItems = dataState.visibleMenuProductItems,
                             hiddenMenuProductItems = dataState.hiddenMenuProductItems,
+                            isSearchEnabled = dataState.isSearchEnabled,
+                            searchQuery = dataState.searchQuery,
+                            searchResultList = getSearchResultList(dataState),
                         )
                     }
 
@@ -125,6 +149,17 @@ class MenuListViewModel(
             eventList = dataState.eventList,
             isRefreshing = dataState.isRefreshing,
         )
+
+    private fun getSearchResultList(dataState: MenuListDataState): List<MenuProductItem>? {
+        val normalizedSearchQuery = dataState.searchQuery.trim()
+        if (!dataState.isSearchEnabled || normalizedSearchQuery.isEmpty()) {
+            return null
+        }
+
+        return (dataState.visibleMenuProductItems + dataState.hiddenMenuProductItems).filter { menuProduct ->
+            menuProduct.name.contains(normalizedSearchQuery, ignoreCase = true)
+        }
+    }
 
     fun consumeEvents(events: List<MenuListEvent>) {
         mutableState.update { dataState ->
