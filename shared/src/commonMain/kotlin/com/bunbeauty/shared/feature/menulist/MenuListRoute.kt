@@ -46,7 +46,6 @@ import fooddeliveryadmin.shared.generated.resources.action_menu_list_create
 import fooddeliveryadmin.shared.generated.resources.default_product
 import fooddeliveryadmin.shared.generated.resources.description_product
 import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
-import fooddeliveryadmin.shared.generated.resources.ic_edit
 import fooddeliveryadmin.shared.generated.resources.ic_plus
 import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.ic_visible
