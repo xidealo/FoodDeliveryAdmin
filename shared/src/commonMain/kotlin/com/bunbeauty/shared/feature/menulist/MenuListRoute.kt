@@ -48,6 +48,7 @@ import fooddeliveryadmin.shared.generated.resources.description_product
 import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
 import fooddeliveryadmin.shared.generated.resources.ic_edit
 import fooddeliveryadmin.shared.generated.resources.ic_plus
+import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.ic_visible
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_bottom_navigation_menu
@@ -130,7 +131,7 @@ private fun MenuListScreen(
             if (menuListViewState.state is MenuListViewState.State.Success) {
                 listOf(
                     AdminTopBarAction(
-                        iconId = Res.drawable.ic_edit,
+                        iconId = Res.drawable.ic_search,
                         color = AdminTheme.colors.main.primary,
                         onClick = onSearchClick,
                     ),
