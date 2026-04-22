@@ -2,9 +2,9 @@ package com.bunbeauty.shared.feature.menulist
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,9 +52,9 @@ import fooddeliveryadmin.shared.generated.resources.ic_visible
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_bottom_navigation_menu
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
-import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_hidden
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_visible
+import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -353,9 +353,7 @@ private fun MenuListSearchResultScreen(
 }
 
 @Composable
-private fun MenuListSearchEmptyScreen(
-    modifier: Modifier = Modifier,
-) {
+private fun MenuListSearchEmptyScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
     ) {

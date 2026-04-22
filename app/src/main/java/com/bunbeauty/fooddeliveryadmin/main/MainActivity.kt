@@ -36,8 +36,9 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose) {
 
         setContent {
             MainScreen(
-                modifier = Modifier
-                    .navigationBarsPadding()
+                modifier =
+                    Modifier
+                        .navigationBarsPadding(),
             )
         }
 
