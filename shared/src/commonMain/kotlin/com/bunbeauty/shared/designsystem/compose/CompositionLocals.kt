@@ -10,5 +10,4 @@ import androidx.compose.ui.unit.dp
 val LocalBottomBarPadding = compositionLocalOf { 0.dp }
 
 @Composable
-fun Modifier.bottomBarPadding(bottom: Dp = 0.dp): Modifier =
-    this.padding(bottom = bottom + LocalBottomBarPadding.current)
+fun Modifier.bottomBarPadding(bottom: Dp = 0.dp): Modifier = this.padding(bottom = bottom + LocalBottomBarPadding.current)

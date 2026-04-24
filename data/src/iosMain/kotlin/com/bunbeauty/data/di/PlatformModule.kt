@@ -8,15 +8,15 @@ import org.koin.dsl.module
 import kotlin.experimental.ExperimentalNativeApi
 
 @OptIn(ExperimentalNativeApi::class)
-actual fun platformDataModule() = module {
-    single<HttpClient> { createIosHttpClient(get()) }
-    single<DataStoreRepo> { IosDataStoreRepository() }
-    single<UserAuthorizationRepo> {
-        IosUserAuthorizationRepository(
-            networkConnector = get(),
-            dataStoreRepo = get(),
-        )
+actual fun platformDataModule() =
+    module {
+        single<HttpClient> { createIosHttpClient(get()) }
+        single<DataStoreRepo> { IosDataStoreRepository() }
+        single<UserAuthorizationRepo> {
+            IosUserAuthorizationRepository(
+                networkConnector = get(),
+                dataStoreRepo = get(),
+            )
+        }
+        single<PhotoRepo> { IosStubPhotoRepository() }
     }
-    single<PhotoRepo> { IosStubPhotoRepository() }
-}
-

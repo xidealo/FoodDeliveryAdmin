@@ -3,8 +3,11 @@ package com.bunbeauty.shared.feature.menulist
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
@@ -28,6 +32,8 @@ import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.shared.designsystem.compose.element.image.ImageData
+import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextField
+import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
@@ -39,13 +45,16 @@ import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.action_menu_list_create
 import fooddeliveryadmin.shared.generated.resources.default_product
 import fooddeliveryadmin.shared.generated.resources.description_product
+import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
 import fooddeliveryadmin.shared.generated.resources.ic_plus
+import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.ic_visible
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_bottom_navigation_menu
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_hidden
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_visible
+import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -93,6 +102,8 @@ fun MenuListRouteScreen(
         onRefresh = {
             viewModel.refreshData()
         },
+        onSearchClick = viewModel::onSearchClicked,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
         back = back,
     )
 }
@@ -105,6 +116,8 @@ private fun MenuListScreen(
     onUpdateVisible: (MenuProductItem) -> Unit,
     onLoadData: () -> Unit,
     onRefresh: () -> Unit,
+    onSearchClick: () -> Unit,
+    onSearchQueryChange: (String) -> Unit,
     back: () -> Unit,
 ) {
     AdminScaffold(
@@ -113,6 +126,18 @@ private fun MenuListScreen(
         refreshing = menuListViewState.isRefreshing,
         onRefresh = onRefresh,
         backActionClick = back,
+        topActions =
+            if (menuListViewState.state is MenuListViewState.State.Success) {
+                listOf(
+                    AdminTopBarAction(
+                        iconId = Res.drawable.ic_search,
+                        color = AdminTheme.colors.main.primary,
+                        onClick = onSearchClick,
+                    ),
+                )
+            } else {
+                emptyList()
+            },
         actionButton = {
             if (menuListViewState.state is MenuListViewState.State.Success) {
                 FloatingButton(
@@ -127,7 +152,22 @@ private fun MenuListScreen(
     ) {
         when (val state = menuListViewState.state) {
             is MenuListViewState.State.Success -> {
-                MenuListSuccessScreen(state, onProductClick, onUpdateVisible)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    if (state.isSearchEnabled) {
+                        MenuListSearchField(
+                            searchQuery = state.searchQuery,
+                            onSearchQueryChange = onSearchQueryChange,
+                        )
+                    }
+                    MenuListSuccessScreen(
+                        modifier = Modifier.weight(1f),
+                        state = state,
+                        onProductClick = onProductClick,
+                        onUpdateVisible = onUpdateVisible,
+                    )
+                }
             }
 
             is MenuListViewState.State.Error -> {
@@ -147,11 +187,61 @@ private fun MenuListScreen(
 
 @Composable
 private fun MenuListSuccessScreen(
+    modifier: Modifier = Modifier,
     state: MenuListViewState.State.Success,
     onProductClick: (String) -> Unit,
     onUpdateVisible: (MenuProductItem) -> Unit,
 ) {
+    when {
+        state.searchResultList == null -> {
+            MenuListSeparatedContent(
+                modifier = modifier,
+                state = state,
+                onProductClick = onProductClick,
+                onUpdateVisible = onUpdateVisible,
+            )
+        }
+
+        state.searchResultList.isEmpty() -> {
+            MenuListSearchEmptyScreen(modifier = modifier)
+        }
+
+        else -> {
+            MenuListSearchResultScreen(
+                modifier = modifier,
+                menuProductList = state.searchResultList,
+                onProductClick = onProductClick,
+                onUpdateVisible = onUpdateVisible,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MenuListSearchField(
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+) {
+    AdminTextField(
+        value = searchQuery,
+        labelText = stringResource(Res.string.hint_menu_list_search),
+        onValueChange = onSearchQueryChange,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+    )
+}
+
+@Composable
+private fun MenuListSeparatedContent(
+    state: MenuListViewState.State.Success,
+    onProductClick: (String) -> Unit,
+    onUpdateVisible: (MenuProductItem) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
+        modifier = modifier,
         contentPadding =
             PaddingValues(
                 start = 16.dp,
@@ -209,8 +299,8 @@ private fun MenuListSuccessScreen(
             }
             items(
                 items = state.hiddenMenuProductItems,
-                key = { visibleMenuProduct ->
-                    visibleMenuProduct.uuid
+                key = { hiddenMenuProduct ->
+                    hiddenMenuProduct.uuid
                 },
             ) { hiddenMenuProduct ->
                 MenuListProductCard(
@@ -226,6 +316,58 @@ private fun MenuListSuccessScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun MenuListSearchResultScreen(
+    menuProductList: List<MenuProductItem>,
+    onProductClick: (String) -> Unit,
+    onUpdateVisible: (MenuProductItem) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding =
+            PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = 8.dp,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+            ),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(
+            items = menuProductList,
+            key = { menuProduct ->
+                menuProduct.uuid
+            },
+        ) { menuProduct ->
+            MenuListProductCard(
+                menuProduct = menuProduct,
+                onProductClick = onProductClick,
+                onUpdateVisible = onUpdateVisible,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MenuListSearchEmptyScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                    .align(Alignment.Center),
+            text = stringResource(Res.string.title_menu_list_search_empty),
+            style = AdminTheme.typography.titleMedium,
+            color = AdminTheme.colors.main.onSurface,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
@@ -342,6 +484,17 @@ private fun MenuListScreenPreview() {
                                         uuid = "asdasd",
                                     ),
                                 ),
+                            isSearchEnabled = true,
+                            searchQuery = "name",
+                            searchResultList =
+                                listOf(
+                                    MenuProductItem(
+                                        name = "name",
+                                        photoLink = "",
+                                        visible = true,
+                                        uuid = "asdasd",
+                                    ),
+                                ),
                         ),
                     isRefreshing = false,
                     eventList = emptyList(),
@@ -351,6 +504,8 @@ private fun MenuListScreenPreview() {
             onUpdateVisible = {},
             onLoadData = {},
             onRefresh = {},
+            onSearchClick = {},
+            onSearchQueryChange = {},
             back = {},
         )
     }

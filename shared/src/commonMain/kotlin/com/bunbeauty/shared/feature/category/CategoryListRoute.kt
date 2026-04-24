@@ -246,9 +246,10 @@ private fun CategoriesListSuccessScreen(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(
-            bottom = 24.dp + LocalBottomBarPadding.current
-        )
+        contentPadding =
+            PaddingValues(
+                bottom = 24.dp + LocalBottomBarPadding.current,
+            ),
     ) {
         items(
             items = state.categoryList,

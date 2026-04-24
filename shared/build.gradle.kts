@@ -33,7 +33,7 @@ kotlin {
         summary = "Main shared module with presentation layer"
         homepage = "Link to the Shared Module homepage"
         version = "1.0"
-        ios.deploymentTarget =  "15.5"
+        ios.deploymentTarget = "15.5"
         podfile = project.file("../FoodDelivery/Podfile")
 
         pod("FirebaseMessaging")
@@ -101,10 +101,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:3.3.2")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.2")
             }
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
         }
         val iosX64Test by getting
         val iosArm64Test by getting
