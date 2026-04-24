@@ -40,11 +40,10 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             mapDeliveryArea(),
             platformModule(),
             platformDataModule(),
-            uiMapperModule()
+            uiMapperModule(),
         )
     }
 
 fun doInitKoin() {
     initKoin()
 }
-

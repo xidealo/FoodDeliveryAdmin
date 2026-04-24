@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import platform.Foundation.NSUserDefaults
 
 class IosDataStoreRepository : DataStoreRepo {
-
     private val defaults = NSUserDefaults.standardUserDefaults
 
     private val tokenState = MutableStateFlow<String?>(null)

@@ -14,7 +14,7 @@ kotlin {
         summary = "Main shared module with presentation layer"
         homepage = "Link to the Shared Module homepage"
         version = "1.0"
-        ios.deploymentTarget =  "15.5"
+        ios.deploymentTarget = "15.5"
         podfile = project.file("../FoodDelivery/Podfile")
 
         pod("FirebaseMessaging")

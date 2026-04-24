@@ -7,8 +7,8 @@ import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.model.user.LoginUser
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import com.bunbeauty.domain.repo.PhotoRepo
+import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import common.ApiResult
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
@@ -28,8 +28,8 @@ class IosUserAuthorizationRepository(
     override suspend fun login(
         username: String,
         password: String,
-    ): LoginUser? {
-        return when (
+    ): LoginUser? =
+        when (
             val result =
                 networkConnector.login(
                     UserAuthorizationRequest(
@@ -48,7 +48,6 @@ class IosUserAuthorizationRepository(
 
             is ApiResult.Error -> null
         }
-    }
 
     override fun updateNotificationToken() {
         coroutineScope.launch {

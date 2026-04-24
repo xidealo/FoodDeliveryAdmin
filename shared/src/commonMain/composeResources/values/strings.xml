@@ -123,6 +123,8 @@
     <string name="title_menu_list_position_visible">Видимые позиции</string>
     <string name="title_menu_list_position_hidden">Скрытые позиции</string>
     <string name="action_menu_list_create">Создать</string>
+    <string name="hint_menu_list_search">Поиск по названию</string>
+    <string name="title_menu_list_search_empty">Ничего не найдено</string>
 
     <!-- MENU PRODUCT COMMON -->
     <string name="hint_common_menu_product_name">Название*</string>

@@ -1,24 +1,20 @@
 package com.bunbeauty.shared.viewmodel.main
 
 import androidx.compose.ui.unit.Dp
-import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.main.GetIsNonWorkingDayFlowUseCase
-import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
-class MainViewModel : BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
-    initState =
-        Main.ViewDataState(
-            connectionLost = false,
-            nonWorkingDay = false,
-            navigationBarOptions = Main.NavigationBarOptions.Hidden,
-        ),
-) {
+class MainViewModel :
+    BaseStateViewModel<Main.ViewDataState, Main.Action, Main.Event>(
+        initState =
+            Main.ViewDataState(
+                connectionLost = false,
+                nonWorkingDay = false,
+                navigationBarOptions = Main.NavigationBarOptions.Hidden,
+            ),
+    ) {
     private val mutableSnackbarMessages =
         MutableSharedFlow<Main.Message>(
             replay = 0,
