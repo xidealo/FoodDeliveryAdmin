@@ -16,16 +16,20 @@ fun NavGraphBuilder.profileScreenRoute(
     showErrorMessage: (String) -> Unit,
     goToSettingsScreen: () -> Unit,
     goToStatisticScreen: () -> Unit,
+    goToMenuScreen: () -> Unit,
     goToMapScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
+    goBack: () -> Unit,
 ) {
     composable<ProfileScreenDestination> {
         ProfileRouteScreen(
             showErrorMessage = showErrorMessage,
             goToSettingsScreen = goToSettingsScreen,
             goToStatisticScreen = goToStatisticScreen,
+            goToMenuScreen = goToMenuScreen,
             goToMapScreen = goToMapScreen,
             goToLoginScreen = goToLoginScreen,
+            goBack = goBack,
         )
     }
 }

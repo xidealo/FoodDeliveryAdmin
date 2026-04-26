@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
 import com.bunbeauty.shared.designsystem.compose.element.card.TextWithHintCard
+import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.feature.orderlist.compose.OrderItem
@@ -36,6 +37,7 @@ import com.bunbeauty.shared.feature.orderlist.state.OrderListViewState
 import com.bunbeauty.shared.feature.orderlist.state.OrderMapper
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.error_order_list_connection
+import fooddeliveryadmin.shared.generated.resources.ic_profile
 import fooddeliveryadmin.shared.generated.resources.msg_common_cafe
 import fooddeliveryadmin.shared.generated.resources.title_orders
 import kotlinx.collections.immutable.persistentListOf
@@ -79,6 +81,7 @@ fun OrderListRouteScreen(
     viewModel: OrderListViewModel = koinViewModel(),
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
+    goToProfileScreen: () -> Unit,
 ) {
     LifecycleStartEffect(Unit) {
         viewModel.onAction(OrderList.Action.StartObserveOrders)
@@ -113,6 +116,7 @@ fun OrderListRouteScreen(
         state = viewState.mapState(),
         lazyListState = rememberLazyListState(),
         onAction = onAction,
+        goToProfileScreen = goToProfileScreen,
     )
 }
 
@@ -156,9 +160,18 @@ private fun OrderListScreen(
     state: OrderListViewState,
     lazyListState: LazyListState,
     onAction: (OrderList.Action) -> Unit,
+    goToProfileScreen: () -> Unit,
 ) {
     AdminScaffold(
         title = stringResource(Res.string.title_orders),
+        topActions =
+            listOf(
+                AdminTopBarAction(
+                    iconId = Res.drawable.ic_profile,
+                    color = AdminTheme.colors.main.primary,
+                    onClick = goToProfileScreen,
+                ),
+            ),
         pullRefreshEnabled = state.state is OrderListViewState.State.Success,
         refreshing = (state.state as? OrderListViewState.State.Success)?.refreshing == true,
         onRefresh = {

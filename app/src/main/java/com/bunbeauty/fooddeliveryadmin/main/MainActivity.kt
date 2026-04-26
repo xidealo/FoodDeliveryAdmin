@@ -3,10 +3,12 @@ package com.bunbeauty.fooddeliveryadmin.main
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.core.app.NotificationManagerCompat
@@ -21,24 +23,15 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            isAppearanceLightStatusBars = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-        } else {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
-        }
+        enableEdgeToEdge()
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
 
         setContent {
             MainScreen(
                 modifier =
                     Modifier
-                        .navigationBarsPadding(),
+                        .imePadding(),
             )
         }
 

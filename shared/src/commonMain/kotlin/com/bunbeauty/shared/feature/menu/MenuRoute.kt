@@ -22,7 +22,7 @@ import fooddeliveryadmin.shared.generated.resources.ic_addition
 import fooddeliveryadmin.shared.generated.resources.ic_addition_group
 import fooddeliveryadmin.shared.generated.resources.ic_categories
 import fooddeliveryadmin.shared.generated.resources.ic_products
-import fooddeliveryadmin.shared.generated.resources.title_bottom_navigation_menu
+import fooddeliveryadmin.shared.generated.resources.title_menu
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -34,6 +34,7 @@ fun MenuRouteScreen(
     goToMenuListScreen: () -> Unit,
     goToAdditionGroupListScreen: () -> Unit,
     goToAdditionListScreen: () -> Unit,
+    goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -60,7 +61,10 @@ fun MenuRouteScreen(
         goToAdditionListScreen = goToAdditionListScreen,
     )
 
-    MenuScreen(onAction = onAction)
+    MenuScreen(
+        onAction = onAction,
+        goBack = goBack,
+    )
 }
 
 @Composable
@@ -97,9 +101,13 @@ private fun MenuEffect(
 }
 
 @Composable
-private fun MenuScreen(onAction: (Menu.Action) -> Unit) {
+private fun MenuScreen(
+    onAction: (Menu.Action) -> Unit,
+    goBack: () -> Unit,
+) {
     AdminScaffold(
-        title = stringResource(Res.string.title_bottom_navigation_menu),
+        title = stringResource(Res.string.title_menu),
+        backActionClick = goBack,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -141,6 +149,9 @@ private fun MenuScreen(onAction: (Menu.Action) -> Unit) {
 @Composable
 private fun MenuScreenPreview() {
     AdminTheme {
-        MenuScreen(onAction = {})
+        MenuScreen(
+            onAction = {},
+            goBack = {},
+        )
     }
 }

@@ -9,28 +9,9 @@ interface Main {
     data class ViewDataState(
         val connectionLost: Boolean,
         val nonWorkingDay: Boolean,
-        val navigationBarOptions: NavigationBarOptions,
     ) : BaseViewDataState
 
-    enum class NavigationBarItem {
-        ORDERS,
-        MENU,
-        PROFILE,
-    }
-
-    sealed interface NavigationBarOptions {
-        data object Hidden : NavigationBarOptions
-
-        data class Visible(
-            val selectedItem: NavigationBarItem,
-        ) : NavigationBarOptions
-    }
-
     sealed interface Action : BaseAction {
-        data class UpdateNavDestination(
-            val navigationBarItem: NavigationBarItem?,
-        ) : Action
-
         data class ShowErrorMessage(
             val text: String,
         ) : Action

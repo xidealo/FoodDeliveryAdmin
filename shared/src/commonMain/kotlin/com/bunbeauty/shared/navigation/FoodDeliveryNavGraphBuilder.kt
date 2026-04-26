@@ -31,6 +31,7 @@ import com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation.
 import com.bunbeauty.shared.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
 import com.bunbeauty.shared.feature.mapdelivery.navigation.navigateToMapDeliveryZoneScreen
 import com.bunbeauty.shared.feature.menu.navigation.menuScreenRoute
+import com.bunbeauty.shared.feature.menu.navigation.navigateToMenuScreen
 import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.createAdditionGroupForMenuProductScreenRoute
 import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.createadditiongroupformenuproduct.navigation.navigateToCreateAdditionGroupForMenuProductScreen
 import com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.editadditiongroupformenuproduct.navigation.editAdditionGroupForMenuProductScreenRoute
@@ -56,6 +57,7 @@ import com.bunbeauty.shared.feature.order.navigation.navigateToOrderDetailsScree
 import com.bunbeauty.shared.feature.order.navigation.orderDetailsScreenRoute
 import com.bunbeauty.shared.feature.orderlist.navigation.navigateToOrderListScreen
 import com.bunbeauty.shared.feature.orderlist.navigation.orderListScreenRoute
+import com.bunbeauty.shared.feature.profile.navigation.navigateToProfileScreen
 import com.bunbeauty.shared.feature.profile.navigation.profileScreenRoute
 import com.bunbeauty.shared.feature.settings.navigation.navigateToSettingsScreen
 import com.bunbeauty.shared.feature.settings.navigation.settingsScreenRoute
@@ -94,6 +96,9 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 navOptions = emptyNavOptions,
             )
         },
+        goToProfileScreen = {
+            navController.navigateToProfileScreen(emptyNavOptions)
+        },
     )
 
     menuScreenRoute(
@@ -109,6 +114,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToAdditionListScreen = {
             navController.navigateToAdditionListScreen(emptyNavOptions)
         },
+        goBack = navController::navigateUp,
     )
 
     menuListScreenRoute(
@@ -364,7 +370,11 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToStatisticScreen = {
             navController.navigateToStatisticScreen(emptyNavOptions)
         },
+        goToMenuScreen = {
+            navController.navigateToMenuScreen(emptyNavOptions)
+        },
         goToMapScreen = { navController.navigateToMapDeliveryZoneScreen(emptyNavOptions) },
+        goBack = navController::navigateUp,
         goToLoginScreen = {
             navController.navigateToLoginScreen(
                 navOptions =

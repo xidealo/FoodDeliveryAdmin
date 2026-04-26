@@ -23,7 +23,6 @@ import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBar
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 
-// TODO ADD PULL TO REFRESH
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminScaffold(

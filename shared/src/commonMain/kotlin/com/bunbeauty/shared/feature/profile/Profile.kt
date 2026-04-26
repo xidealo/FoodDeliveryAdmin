@@ -31,6 +31,8 @@ interface Profile {
 
         data object StatisticClick : Action
 
+        data object MenuClick : Action
+
         data object SettingsClick : Action
 
         data object LogoutClick : Action
@@ -46,6 +48,8 @@ interface Profile {
         data object OpenSettings : Event
 
         data object OpenStatistic : Event
+
+        data object OpenMenu : Event
 
         data object OpenLogin : Event
 

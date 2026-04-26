@@ -12,7 +12,6 @@ class MainViewModel :
             Main.ViewDataState(
                 connectionLost = false,
                 nonWorkingDay = false,
-                navigationBarOptions = Main.NavigationBarOptions.Hidden,
             ),
     ) {
     private val mutableSnackbarMessages =
@@ -28,12 +27,6 @@ class MainViewModel :
         dataState: Main.ViewDataState,
     ) {
         when (action) {
-            is Main.Action.UpdateNavDestination -> {
-                updateNavDestination(
-                    navigationBarItem = action.navigationBarItem,
-                )
-            }
-
             is Main.Action.ShowInfoMessage -> {
                 showMessage(
                     text = action.text,
@@ -45,19 +38,6 @@ class MainViewModel :
             is Main.Action.ShowErrorMessage -> {
                 showMessage(action.text, Main.Message.Type.ERROR)
             }
-        }
-    }
-
-    private fun updateNavDestination(navigationBarItem: Main.NavigationBarItem?) {
-        val navigationBarOptions =
-            navigationBarItem?.let {
-                Main.NavigationBarOptions.Visible(
-                    selectedItem = navigationBarItem,
-                )
-            } ?: Main.NavigationBarOptions.Hidden
-
-        setState {
-            copy(navigationBarOptions = navigationBarOptions)
         }
     }
 

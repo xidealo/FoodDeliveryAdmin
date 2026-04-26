@@ -31,15 +31,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bunbeauty.shared.designsystem.compose.AdminSnackbarVisuals
 import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
-import com.bunbeauty.shared.designsystem.compose.bottombar.AdminNavigationBar
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
-import com.bunbeauty.shared.feature.menu.navigation.MenuScreenDestination
-import com.bunbeauty.shared.feature.orderlist.navigation.OrderListScreenNavigation
-import com.bunbeauty.shared.feature.profile.navigation.ProfileScreenDestination
 import com.bunbeauty.shared.navigation.FoodDeliveryNavHost
 import com.bunbeauty.shared.viewmodel.main.Main
 import com.bunbeauty.shared.viewmodel.main.MainViewModel
@@ -71,11 +66,6 @@ fun MainScreen(
     )
     val navController = rememberNavController()
 
-    HandleNavigation(
-        onAction = viewModel::onAction,
-        navHostController = navController,
-    )
-
     val localBottomBarPadding =
         with(LocalDensity.current) {
             WindowInsets.navigationBars.getBottom(this).toDp()
@@ -90,12 +80,6 @@ fun MainScreen(
                 AdminSnackbarHost(
                     snackbarHostState = snackbarHostState,
                     paddingBottom = snackbarPaddingBottom,
-                )
-            },
-            bottomBar = {
-                AdminNavigationBar(
-                    options = mainState.navigationBarOptions,
-                    navHostController = navController,
                 )
             },
         ) {
@@ -221,54 +205,3 @@ private fun HandleSnackbarMessages(
     }
 }
 
-@Composable
-private fun HandleNavigation(
-    onAction: (Main.Action) -> Unit,
-    navHostController: NavHostController,
-) {
-    LaunchedEffect(Unit) {
-        navHostController.currentBackStackEntryFlow.collect { navBackStackEntry ->
-            when {
-                navBackStackEntry.destination.hasRoute(
-                    route = OrderListScreenNavigation::class.qualifiedName.orEmpty(),
-                    arguments = null,
-                ) -> {
-                    onAction(
-                        Main.Action.UpdateNavDestination(
-                            Main.NavigationBarItem.ORDERS,
-                        ),
-                    )
-                }
-
-                navBackStackEntry.destination.hasRoute(
-                    route = MenuScreenDestination::class.qualifiedName.orEmpty(),
-                    arguments = null,
-                ) -> {
-                    onAction(
-                        Main.Action.UpdateNavDestination(
-                            Main.NavigationBarItem.MENU,
-                        ),
-                    )
-                }
-
-                navBackStackEntry.destination.hasRoute(
-                    route = ProfileScreenDestination::class.qualifiedName.orEmpty(),
-                    arguments = null,
-                ) -> {
-                    onAction(
-                        Main.Action.UpdateNavDestination(
-                            Main.NavigationBarItem.PROFILE,
-                        ),
-                    )
-                }
-
-                else ->
-                    onAction(
-                        Main.Action.UpdateNavDestination(
-                            null,
-                        ),
-                    )
-            }
-        }
-    }
-}

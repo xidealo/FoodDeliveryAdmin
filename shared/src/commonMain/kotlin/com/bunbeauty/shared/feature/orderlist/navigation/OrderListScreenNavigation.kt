@@ -15,11 +15,13 @@ fun NavController.navigateToOrderListScreen(navOptions: NavOptions) = navigate(r
 fun NavGraphBuilder.orderListScreenRoute(
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
+    goToProfileScreen: () -> Unit,
 ) {
     composable<OrderListScreenNavigation> {
         OrderListRouteScreen(
             cancelNotification = cancelNotification,
             openOrderDetails = openOrderDetails,
+            goToProfileScreen = goToProfileScreen,
         )
     }
 }

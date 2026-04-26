@@ -10,20 +10,25 @@ import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.plugins.websocket.pingInterval
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
+import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.io.EOFException
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
+import kotlin.time.Duration.Companion.seconds
 
 actual fun platformDataModule() =
     module {
@@ -50,7 +55,18 @@ actual fun platformDataModule() =
                 install(ContentNegotiation) {
                     json(get<Json>())
                 }
-                install(WebSockets)
+                install(WebSockets) {
+                    pingInterval = 20.seconds
+                }
+                install(HttpRequestRetry) {
+                    maxRetries = 3
+                    retryIf { request, response ->
+                        !response.status.isSuccess()
+                    }
+                    delayMillis { retry ->
+                        retry * 3000L
+                    } // retries in 3, 6, 9, etc. seconds
+                }
                 install(Logging) {
                     logger =
                         object : Logger {

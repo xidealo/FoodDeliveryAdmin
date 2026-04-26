@@ -1,33 +1,33 @@
 [versions]
 gradle = "8.13.0"
-kotlin = "2.2.21"
+kotlin = "2.3.10"
 compose = "1.11.0-alpha01"
 androidTools = "31.8.1"
 googleServices = "4.4.4"
-navigationCompose = "2.9.1"
-ktor = "3.3.2"
-coil = "3.3.0"
-datastorePreferences = "1.1.7"
-koin = "4.1.1"
+navigationCompose = "2.9.2"
+ktor = "3.4.3"
+coil = "3.4.0"
+datastorePreferences = "1.2.1"
+koin = "4.2.1"
 kotlinxDatetime = "0.7.1"
-crashlytics = "3.0.6"
+crashlytics = "3.0.7"
 publisher = "3.12.2"
-joda = "2.14.0"
+joda = "2.14.1"
 ktLint = "14.0.1"
 tripletPlay = "3.12.2"
-lifecycle = "2.9.4"
-lifecycleRuntimeCompose = "2.9.4"
+lifecycle = "2.10.0"
+lifecycleRuntimeCompose = "2.10.0"
 material = "1.13.0"
 viewBindingDelegate = "1.5.9"
 composeBom = "2025.11.01"
 datetime = "0.9.0"
-firebase = "34.6.0"
+firebase = "34.12.0"
 mockk = "1.14.6"
 kotlinCoroutines = "1.10.2"
 imageCpropper = "4.6.0"
 turbine = "1.2.1"
 collectionsImmutable = "0.4.0"
-work = "2.11.0"
+work = "2.11.2"
 maplibreCompose = "0.12.1"
 kotlinStdlib = "2.2.21"
 kotlinTest = "2.2.21"
@@ -52,6 +52,7 @@ ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", vers
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
 # Image Loading Libraries

@@ -51,6 +51,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.services)
                 implementation(libs.datastore.preferences)
                 implementation(libs.ktor.client.okhttp)
+               // implementation(libs.ktor.client.cio)
                 implementation(libs.bundles.di)
             }
         }

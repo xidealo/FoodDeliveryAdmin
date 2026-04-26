@@ -64,6 +64,7 @@ import io.ktor.http.path
 import io.ktor.websocket.CloseReason
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
+import io.ktor.websocket.readReason
 import io.ktor.websocket.readText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
@@ -286,22 +287,56 @@ class FoodDeliveryApiImpl(
                     println("$WEB_SOCKET_TAG: WebSocket connected")
                     webSocketSession = this
                     while (true) {
-                        val message = incoming.receive() as? Frame.Text ?: continue
-                        println("$WEB_SOCKET_TAG: Message: ${message.readText()}")
-                        val serverModel =
-                            json.decodeFromString(OrderServer.serializer(), message.readText())
-                        mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
+                        when (val frame = incoming.receive()) {
+                            is Frame.Text -> {
+                                val text = frame.readText()
+                                println("$WEB_SOCKET_TAG: Frame.Text (${text.length} chars): $text")
+                                val serverModel =
+                                    json.decodeFromString(
+                                        OrderServer.serializer(),
+                                        text,
+                                    )
+                                mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
+                            }
+                            is Frame.Binary -> {
+                                println(
+                                    "$WEB_SOCKET_TAG: Frame.Binary (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
+                                )
+                            }
+                            is Frame.Ping -> {
+                                println(
+                                    "$WEB_SOCKET_TAG: Frame.Ping (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
+                                )
+                            }
+                            is Frame.Pong -> {
+                                println(
+                                    "$WEB_SOCKET_TAG: Frame.Pong (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
+                                )
+                            }
+                            is Frame.Close -> {
+                                val reason = frame.readReason()
+                                println("$WEB_SOCKET_TAG: Frame.Close reason=$reason")
+                                break
+                            }
+
+                            else -> {
+                                println("$WEB_SOCKET_TAG else")
+                            }
+                        }
                     }
                 }
             } catch (exception: WebSocketException) {
-                println("$WEB_SOCKET_TAG: WebSocketException: ${exception.message}")
-                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+                logWsException("WebSocketException", exception)
+                mutableUpdatedOrderFlow.emit(
+                    ApiResult.Error(ApiError(message = describeException(exception))),
+                )
             } catch (exception: ClosedReceiveChannelException) {
-                println("$WEB_SOCKET_TAG: ClosedReceiveChannelException: ${exception.message}")
-                // Nothing
+                logWsException("ClosedReceiveChannelException", exception)
             } catch (exception: Exception) {
-                println("$WEB_SOCKET_TAG: Exception: ${exception.message}")
-                mutableUpdatedOrderFlow.emit(ApiResult.Error(ApiError(message = exception.message.toString())))
+                logWsException("Exception", exception)
+                mutableUpdatedOrderFlow.emit(
+                    ApiResult.Error(ApiError(message = describeException(exception))),
+                )
             } finally {
                 webSocketSessionOpened = false
             }
@@ -640,4 +675,54 @@ class FoodDeliveryApiImpl(
         } catch (exception: Throwable) {
             ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }
+
+    private fun logWsException(label: String, throwable: Throwable) {
+        println(
+            "$WEB_SOCKET_TAG: $label -> ${describeException(throwable)}\n" +
+                throwable.stackTraceToString(),
+        )
+    }
+
+    private fun describeException(throwable: Throwable): String {
+        val parts = mutableListOf<String>()
+        var current: Throwable? = throwable
+        var depth = 0
+        while (current != null && depth < 5) {
+            val className = current::class.simpleName ?: "Throwable"
+            val msg = current.message ?: "<no message>"
+            parts += if (depth == 0) "$className: $msg" else "caused by $className: $msg"
+            current = current.cause?.takeIf { it !== current }
+            depth++
+        }
+        return parts.joinToString(" | ")
+    }
+
+    private fun bytesPreview(bytes: ByteArray, maxBytes: Int = 64): String {
+        if (bytes.isEmpty()) return "<empty>"
+        val preview = bytes.take(maxBytes).toByteArray()
+
+        val hex =
+            preview.joinToString(separator = " ") { b ->
+                (b.toInt() and 0xFF).toString(16).padStart(2, '0')
+            }
+
+        val utf8 =
+            runCatching { preview.decodeToString() }
+                .getOrNull()
+                ?.replace("\n", "\\n")
+                ?.replace("\r", "\\r")
+                ?.replace("\t", "\\t")
+
+        return buildString {
+            append("hex=[")
+            append(hex)
+            if (bytes.size > maxBytes) append(" …")
+            append("]")
+            if (!utf8.isNullOrBlank()) {
+                append(" utf8=\"")
+                append(utf8)
+                append("\"")
+            }
+        }
+    }
 }

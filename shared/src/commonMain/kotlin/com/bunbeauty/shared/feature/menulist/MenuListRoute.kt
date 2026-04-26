@@ -50,8 +50,8 @@ import fooddeliveryadmin.shared.generated.resources.ic_plus
 import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.ic_visible
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
-import fooddeliveryadmin.shared.generated.resources.title_bottom_navigation_menu
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
+import fooddeliveryadmin.shared.generated.resources.title_menu
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_hidden
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_visible
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
@@ -121,7 +121,7 @@ private fun MenuListScreen(
     back: () -> Unit,
 ) {
     AdminScaffold(
-        title = stringResource(Res.string.title_bottom_navigation_menu),
+        title = stringResource(Res.string.title_menu),
         pullRefreshEnabled = true,
         refreshing = menuListViewState.isRefreshing,
         onRefresh = onRefresh,

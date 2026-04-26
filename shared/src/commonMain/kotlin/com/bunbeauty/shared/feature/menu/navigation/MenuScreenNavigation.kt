@@ -17,6 +17,7 @@ fun NavGraphBuilder.menuScreenRoute(
     goToMenuListScreen: () -> Unit,
     goToAdditionGroupListScreen: () -> Unit,
     goToAdditionListScreen: () -> Unit,
+    goBack: () -> Unit,
 ) {
     composable<MenuScreenDestination> {
         MenuRouteScreen(
@@ -24,6 +25,7 @@ fun NavGraphBuilder.menuScreenRoute(
             goToMenuListScreen = goToMenuListScreen,
             goToAdditionGroupListScreen = goToAdditionGroupListScreen,
             goToAdditionListScreen = goToAdditionListScreen,
+            goBack = goBack,
         )
     }
 }

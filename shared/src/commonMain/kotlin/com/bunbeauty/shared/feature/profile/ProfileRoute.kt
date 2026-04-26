@@ -29,11 +29,13 @@ import fooddeliveryadmin.shared.generated.resources.action_common_logout
 import fooddeliveryadmin.shared.generated.resources.action_profile_map
 import fooddeliveryadmin.shared.generated.resources.action_profile_settings
 import fooddeliveryadmin.shared.generated.resources.action_profile_statistic
+import fooddeliveryadmin.shared.generated.resources.ic_menu
 import fooddeliveryadmin.shared.generated.resources.ic_point
 import fooddeliveryadmin.shared.generated.resources.ic_settings
 import fooddeliveryadmin.shared.generated.resources.ic_statistic
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
+import fooddeliveryadmin.shared.generated.resources.title_menu
 import fooddeliveryadmin.shared.generated.resources.title_profile
 import fooddeliveryadmin.shared.generated.resources.version_app
 import org.jetbrains.compose.resources.stringResource
@@ -46,8 +48,10 @@ fun ProfileRouteScreen(
     showErrorMessage: (String) -> Unit,
     goToSettingsScreen: () -> Unit,
     goToStatisticScreen: () -> Unit,
+    goToMenuScreen: () -> Unit,
     goToMapScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
+    goBack: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -70,6 +74,7 @@ fun ProfileRouteScreen(
         consumeEffects = consumeEffects,
         goToSettingsScreen = goToSettingsScreen,
         goToStatisticScreen = goToStatisticScreen,
+        goToMenuScreen = goToMenuScreen,
         goToMapScreen = goToMapScreen,
         goToLoginScreen = goToLoginScreen,
     )
@@ -77,6 +82,7 @@ fun ProfileRouteScreen(
     ProfileScreen(
         state = viewState,
         onAction = onAction,
+        goBack = goBack,
     )
 }
 
@@ -85,6 +91,7 @@ private fun ProfileEffect(
     effects: List<Profile.Event>,
     goToSettingsScreen: () -> Unit,
     goToStatisticScreen: () -> Unit,
+    goToMenuScreen: () -> Unit,
     goToMapScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
     consumeEffects: () -> Unit,
@@ -95,6 +102,8 @@ private fun ProfileEffect(
                 Profile.Event.OpenSettings -> goToSettingsScreen()
 
                 Profile.Event.OpenStatistic -> goToStatisticScreen()
+
+                Profile.Event.OpenMenu -> goToMenuScreen()
 
                 Profile.Event.OpenLogin -> goToLoginScreen()
 
@@ -109,11 +118,13 @@ private fun ProfileEffect(
 private fun ProfileScreen(
     state: Profile.DataState,
     onAction: (Profile.Action) -> Unit,
+    goBack: () -> Unit,
 ) {
     val viewState = state.toViewState()
 
     AdminScaffold(
         title = stringResource(Res.string.title_profile),
+        backActionClick = goBack,
     ) {
         when (viewState.state) {
             ProfileViewState.State.Loading -> {
@@ -156,13 +167,19 @@ private fun SuccessProfileScreen(
         modifier =
             Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .padding(bottom = 72.dp),
+                .padding(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         TextWithHintCard(
             hint = state.role,
             label = state.userName,
+        )
+        NavigationIconCard(
+            iconId = Res.drawable.ic_menu,
+            labelStringId = Res.string.title_menu,
+            onClick = {
+                onAction(Profile.Action.MenuClick)
+            },
         )
         NavigationIconCard(
             iconId = Res.drawable.ic_statistic,
@@ -227,6 +244,7 @@ private fun ProfileScreenPreview() {
                     isShowLogoutBottomSheet = false,
                 ),
             onAction = {},
+            goBack = {},
         )
     }
 }

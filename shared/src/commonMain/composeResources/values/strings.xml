@@ -87,11 +87,6 @@
     <string name="msg_payment_card_number">Переводом по номеру карты</string>
     <string name="msg_payment_phone_number">Переводом по номеру телефона</string>
 
-    <!-- BOTTOM PANEL -->
-    <string name="title_bottom_navigation_orders">Заказы</string>
-    <string name="title_bottom_navigation_menu">Меню</string>
-    <string name="title_bottom_navigation_profile">Профиль</string>
-
     <!-- STATISTIC -->
     <string name="title_statistic">Статистика</string>
     <string name="title_statistic_select_cafe">Выберите кафе</string>
