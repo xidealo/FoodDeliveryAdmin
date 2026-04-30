@@ -1,7 +1,6 @@
 package com.bunbeauty.domain.feature.order
 
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.feature.order.model.OrderAvailability
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.model.order.details.OrderDetails
@@ -28,8 +27,6 @@ interface OrderRepo {
         token: String,
         orderUuid: String,
     ): OrderDetails?
-
-    suspend fun getOrderAvailability(companyUuid: String): OrderAvailability?
 
     fun clearCache()
 }

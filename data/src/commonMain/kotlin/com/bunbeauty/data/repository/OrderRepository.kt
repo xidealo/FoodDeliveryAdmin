@@ -1,12 +1,11 @@
 package com.bunbeauty.data.repository
+
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
-import com.bunbeauty.data.mapper.order.toOrderAvailability
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.exception.ServerConnectionException
 import com.bunbeauty.domain.feature.order.OrderRepo
-import com.bunbeauty.domain.feature.order.model.OrderAvailability
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.model.order.details.OrderDetails
@@ -24,7 +23,6 @@ class OrderRepository(
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
     private var cachedOrderList: List<Order>? = null
-    private var cachedOrderAvailability: OrderAvailability? = null
 
     override suspend fun updateStatus(
         token: String,
@@ -110,31 +108,8 @@ class OrderRepository(
             }
         }
 
-    override suspend fun getOrderAvailability(companyUuid: String): OrderAvailability? {
-        if (cachedOrderAvailability != null) {
-            return cachedOrderAvailability
-        }
-
-        return when (
-            val result =
-                networkConnector.getOrderAvailability(companyUuid = companyUuid)
-        ) {
-            is ApiResult.Success -> {
-                val orderAvailability = result.data.toOrderAvailability()
-                cachedOrderAvailability = orderAvailability
-                orderAvailability
-            }
-
-            is ApiResult.Error -> {
-                println("$ORDER_TAG: getOrderAvailability ${result.apiError.message} ${result.apiError.code}")
-                null
-            }
-        }
-    }
-
     override fun clearCache() {
         cachedOrderList = null
-        cachedOrderAvailability = null
     }
 
     private fun updateOrderList(

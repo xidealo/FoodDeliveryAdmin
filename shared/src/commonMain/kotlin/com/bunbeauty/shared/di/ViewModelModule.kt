@@ -194,7 +194,6 @@ fun viewModelModule() =
         viewModel {
             ProfileViewModel(
                 getUsernameUseCase = get(),
-                isOrderAvailableUseCase = get(),
                 logoutUseCase = get(),
             )
         }

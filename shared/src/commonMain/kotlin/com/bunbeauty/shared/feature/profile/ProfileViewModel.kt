@@ -2,7 +2,6 @@ package com.bunbeauty.shared.feature.profile
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
-import com.bunbeauty.domain.feature.profile.IsOrderAvailableUseCase
 import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.shared.extension.launchSafe
@@ -10,14 +9,12 @@ import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 
 class ProfileViewModel(
     private val getUsernameUseCase: GetUsernameUseCase,
-    private val isOrderAvailableUseCase: IsOrderAvailableUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
         initState =
             Profile.DataState(
                 state = Profile.DataState.State.LOADING,
                 user = null,
-                acceptOrders = true,
                 showAcceptOrdersConfirmation = false,
                 logoutLoading = false,
                 isShowLogoutBottomSheet = false,
@@ -57,7 +54,6 @@ class ProfileViewModel(
                                         char.uppercase()
                                     },
                             ),
-                        acceptOrders = isOrderAvailableUseCase(),
                     )
                 }
             },

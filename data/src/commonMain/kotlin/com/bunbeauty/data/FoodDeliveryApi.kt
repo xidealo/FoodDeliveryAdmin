@@ -29,7 +29,6 @@ import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
 import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
 import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
-import com.bunbeauty.data.model.server.order.OrderAvailabilityServer
 import com.bunbeauty.data.model.server.order.OrderDetailsServer
 import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
@@ -138,8 +137,6 @@ interface FoodDeliveryApi {
         token: String,
         orderUuid: String,
     ): ApiResult<OrderDetailsServer>
-
-    suspend fun getOrderAvailability(companyUuid: String): ApiResult<OrderAvailabilityServer>
 
     suspend fun updateOrderStatus(
         token: String,

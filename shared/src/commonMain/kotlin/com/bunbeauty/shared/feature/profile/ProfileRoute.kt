@@ -238,7 +238,6 @@ private fun ProfileScreenPreview() {
                             role = com.bunbeauty.domain.feature.profile.model.UserRole.MANAGER,
                             userName = "UserName",
                         ),
-                    acceptOrders = true,
                     showAcceptOrdersConfirmation = false,
                     logoutLoading = false,
                     isShowLogoutBottomSheet = false,

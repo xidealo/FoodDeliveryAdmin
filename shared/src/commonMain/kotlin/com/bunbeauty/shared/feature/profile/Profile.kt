@@ -9,7 +9,6 @@ interface Profile {
     data class DataState(
         val state: State,
         val user: User?,
-        val acceptOrders: Boolean,
         val showAcceptOrdersConfirmation: Boolean,
         val logoutLoading: Boolean,
         val isShowLogoutBottomSheet: Boolean,
