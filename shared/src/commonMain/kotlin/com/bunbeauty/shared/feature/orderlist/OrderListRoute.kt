@@ -42,9 +42,6 @@ import fooddeliveryadmin.shared.generated.resources.msg_common_cafe
 import fooddeliveryadmin.shared.generated.resources.title_orders
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -105,16 +102,18 @@ fun OrderListRouteScreen(
                 viewModel.consumeEvents(effects)
             }
         }
+    val lazyListState = rememberLazyListState()
 
     OrderListEffect(
         effects = effects,
         consumeEffects = consumeEffects,
         cancelNotification = cancelNotification,
         openOrderDetails = openOrderDetails,
+        lazyListState = lazyListState,
     )
     OrderListScreen(
         state = viewState.mapState(),
-        lazyListState = rememberLazyListState(),
+        lazyListState = lazyListState,
         onAction = onAction,
         goToProfileScreen = goToProfileScreen,
     )
@@ -123,11 +122,11 @@ fun OrderListRouteScreen(
 @Composable
 private fun OrderListEffect(
     effects: List<OrderList.Event>,
+    lazyListState: LazyListState,
     cancelNotification: (Int) -> Unit,
     openOrderDetails: (String, String) -> Unit,
     consumeEffects: () -> Unit,
 ) {
-    val lazyListState = rememberLazyListState()
     LaunchedEffect(effects) {
         effects.forEach { effect ->
             when (effect) {
@@ -142,16 +141,11 @@ private fun OrderListEffect(
                     )
 
                 OrderList.Event.ScrollToTop -> {
-                    coroutineScope {
-                        launch {
-                            delay(100)
-                            lazyListState.animateScrollToItem(0)
-                        }
-                    }
+                    lazyListState.animateScrollToItem(index = 0)
                 }
             }
-            consumeEffects()
         }
+        consumeEffects()
     }
 }
 
