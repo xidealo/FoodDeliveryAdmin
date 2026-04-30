@@ -3,17 +3,13 @@ package com.bunbeauty.fooddeliveryadmin.main
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.bunbeauty.fooddeliveryadmin.R
 import com.bunbeauty.shared.feature.MainScreen
 

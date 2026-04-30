@@ -13,13 +13,12 @@ import androidx.compose.ui.unit.dp
 val LocalBottomBarPadding = compositionLocalOf { 0.dp }
 
 @Composable
-fun Modifier.bottomBarPadding(bottom: Dp = 0.dp): Modifier {
-    return if (getIsImeVisible()) {
+fun Modifier.bottomBarPadding(bottom: Dp = 0.dp): Modifier =
+    if (getIsImeVisible()) {
         this
     } else {
         this.padding(bottom = bottom + LocalBottomBarPadding.current)
     }
-}
 
 @Composable
 fun getIsImeVisible() = WindowInsets.ime.getBottom(LocalDensity.current) > 0

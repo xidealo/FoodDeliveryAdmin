@@ -68,11 +68,12 @@ import io.ktor.websocket.readReason
 import io.ktor.websocket.readText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -272,7 +273,7 @@ class FoodDeliveryApiImpl(
         token: String,
         cafeUuid: String,
     ) {
-        CoroutineScope(Job() + Default).launch {
+        CoroutineScope(SupervisorJob() + Default).launch {
             try {
                 webSocketSessionOpened = true
                 client.wss(
@@ -286,7 +287,7 @@ class FoodDeliveryApiImpl(
                 ) {
                     println("$WEB_SOCKET_TAG: WebSocket connected")
                     webSocketSession = this
-                    while (true) {
+                    while (isActive) {
                         when (val frame = incoming.receive()) {
                             is Frame.Text -> {
                                 val text = frame.readText()
@@ -303,11 +304,8 @@ class FoodDeliveryApiImpl(
                                     "$WEB_SOCKET_TAG: Frame.Binary (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
                                 )
                             }
-                            is Frame.Ping -> {
-                                println(
-                                    "$WEB_SOCKET_TAG: Frame.Ping (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
-                                )
-                            }
+                            is Frame.Ping -> send(Frame.Pong(frame.data))
+
                             is Frame.Pong -> {
                                 println(
                                     "$WEB_SOCKET_TAG: Frame.Pong (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
@@ -676,7 +674,10 @@ class FoodDeliveryApiImpl(
             ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }
 
-    private fun logWsException(label: String, throwable: Throwable) {
+    private fun logWsException(
+        label: String,
+        throwable: Throwable,
+    ) {
         println(
             "$WEB_SOCKET_TAG: $label -> ${describeException(throwable)}\n" +
                 throwable.stackTraceToString(),
@@ -697,7 +698,10 @@ class FoodDeliveryApiImpl(
         return parts.joinToString(" | ")
     }
 
-    private fun bytesPreview(bytes: ByteArray, maxBytes: Int = 64): String {
+    private fun bytesPreview(
+        bytes: ByteArray,
+        maxBytes: Int = 64,
+    ): String {
         if (bytes.isEmpty()) return "<empty>"
         val preview = bytes.take(maxBytes).toByteArray()
 
