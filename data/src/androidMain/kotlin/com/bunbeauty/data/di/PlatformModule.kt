@@ -60,12 +60,16 @@ actual fun platformDataModule() =
                 install(HttpRequestRetry) {
                     maxRetries = 3
                     retryIf { request, response ->
-                        val isLoginRequest =
+                        val isRetryIgnoredRequest =
                             request.url.protocol == URLProtocol.HTTPS &&
                                 request.url.host == "fooddelivery-xidealo.amvera.io" &&
-                                request.url.encodedPath == "/user/login"
+                                request.url.encodedPath in
+                                listOf(
+                                    "/user/login",
+                                    "/menu_product_to_addition_group",
+                                )
 
-                        !isLoginRequest && !response.status.isSuccess()
+                        !isRetryIgnoredRequest && !response.status.isSuccess()
                     }
                     delayMillis { retry ->
                         retry * 3000L

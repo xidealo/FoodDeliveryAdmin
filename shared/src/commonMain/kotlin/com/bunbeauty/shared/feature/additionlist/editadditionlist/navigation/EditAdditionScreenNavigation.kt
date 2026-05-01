@@ -1,15 +1,15 @@
 package com.bunbeauty.shared.feature.additionlist.editadditionlist.navigation
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
-import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
-import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import com.bunbeauty.shared.feature.additionlist.editadditionlist.EditAdditionRouteScreen
 import kotlinx.serialization.Serializable
 

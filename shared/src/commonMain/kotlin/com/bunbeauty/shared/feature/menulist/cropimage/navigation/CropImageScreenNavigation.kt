@@ -2,13 +2,13 @@ package com.bunbeauty.shared.feature.menulist.cropimage.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
-import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
-import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import com.bunbeauty.shared.feature.menulist.cropimage.CropImagePreset
 import com.bunbeauty.shared.feature.menulist.cropimage.CropImageRouteScreen
 import kotlinx.serialization.Serializable
