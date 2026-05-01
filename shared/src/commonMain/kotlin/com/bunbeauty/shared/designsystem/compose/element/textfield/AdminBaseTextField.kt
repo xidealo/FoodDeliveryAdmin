@@ -3,6 +3,7 @@ package com.bunbeauty.shared.designsystem.compose.element.textfield
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -12,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -89,73 +89,7 @@ fun AdminBaseTextField(
             singleLine = maxLines == 1,
             maxLines = maxLines,
             colors = AdminTextFieldDefaults.textFieldColors,
-        )
-    }
-}
-
-@Composable
-fun AdminBaseTextField(
-    labelText: String,
-    value: TextFieldValue,
-    onValueChange: (value: TextFieldValue) -> Unit,
-    modifier: Modifier = Modifier,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    maxSymbols: Int = Int.MAX_VALUE,
-    maxLines: Int = 1,
-    isError: Boolean = false,
-    enabled: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null,
-) {
-    CompositionLocalProvider(
-        LocalTextSelectionColors provides AdminTextFieldDefaults.textSelectionColors,
-    ) {
-        OutlinedTextField(
-            modifier = modifier.fillMaxWidth(),
-            value = value,
-            onValueChange = { changedValue ->
-                onValueChange(
-                    changedValue.copy(
-                        text = changedValue.text.take(maxSymbols),
-                    ),
-                )
-            },
-            textStyle = AdminTheme.typography.bodyLarge,
-            label = {
-                Text(
-                    text = labelText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
-            trailingIcon = {
-                if (trailingIcon == null) {
-                    if (value.text.isNotEmpty()) {
-                        Icon(
-                            modifier =
-                                Modifier
-                                    .size(16.dp)
-                                    .clickable(
-                                        onClick = {
-                                            onValueChange(TextFieldValue(""))
-                                        },
-                                    ),
-                            painter = painterResource(Res.drawable.ic_clear),
-                            tint = AdminTheme.colors.main.onSurfaceVariant,
-                            contentDescription = null,
-                        )
-                    }
-                } else {
-                    trailingIcon()
-                }
-            },
-            isError = isError,
-            enabled = enabled,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = maxLines == 1,
-            maxLines = maxLines,
-            colors = AdminTextFieldDefaults.textFieldColors,
+            shape = RoundedCornerShape(AdminTheme.dimensions.cardRadius)
         )
     }
 }
