@@ -160,7 +160,7 @@ private fun SettingsScreen(
                     modifier =
                         Modifier
                             .padding(horizontal = 16.dp)
-                            .bottomBarPadding(16.dp),
+                            .bottomBarPadding(),
                     text = stringResource(Res.string.action_edit_addition_save),
                     isLoading = state.state.isLoading,
                     onClick = {
