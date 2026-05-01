@@ -199,7 +199,7 @@ private fun SelectAdditionGroupSuccessScreen(
                 .fillMaxSize(),
         contentPadding =
             PaddingValues(
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
     ) {
         item(

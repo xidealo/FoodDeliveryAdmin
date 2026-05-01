@@ -63,7 +63,7 @@ fun <T> DragDropList(
         modifier = Modifier.fillMaxSize(),
         contentPadding =
             PaddingValues(
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
     ) {
         title?.takeIf { titleItems -> titleItems.isNotBlank() }?.let { nonEmptyTitle ->

@@ -173,7 +173,7 @@ private fun AdditionListSuccessScreen(
                 top = 16.dp,
                 start = 16.dp,
                 end = 16.dp,
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

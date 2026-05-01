@@ -291,7 +291,7 @@ fun EditAdditionScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
+            Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace()))
         }
     }
 }

@@ -247,7 +247,7 @@ private fun MenuListSeparatedContent(
                 start = 16.dp,
                 end = 16.dp,
                 top = 16.dp,
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -333,7 +333,7 @@ private fun MenuListSearchResultScreen(
                 start = 16.dp,
                 end = 16.dp,
                 top = 8.dp,
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

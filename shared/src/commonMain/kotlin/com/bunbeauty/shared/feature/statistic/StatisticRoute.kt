@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
-import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
@@ -188,7 +187,7 @@ private fun StatisticSuccessScreen(
                 top = 8.dp,
                 start = 16.dp,
                 end = 16.dp,
-                bottom = AdminTheme.dimensions.scrollScreenBottomSpace + LocalBottomBarPadding.current,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         state = listState,

@@ -26,6 +26,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
@@ -362,7 +363,7 @@ private fun EditMenuProductSuccessScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(120.dp))
+        Spacer(modifier = Modifier.height(120.dp + LocalBottomBarPadding.current))
     }
 }
 

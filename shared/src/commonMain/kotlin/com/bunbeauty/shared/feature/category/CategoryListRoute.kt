@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
-import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
@@ -248,7 +247,7 @@ private fun CategoriesListSuccessScreen(
         modifier = Modifier.fillMaxWidth(),
         contentPadding =
             PaddingValues(
-                bottom = 24.dp + LocalBottomBarPadding.current,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
     ) {
         items(

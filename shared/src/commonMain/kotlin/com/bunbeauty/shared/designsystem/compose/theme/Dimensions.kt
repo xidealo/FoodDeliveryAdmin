@@ -1,9 +1,11 @@
 package com.bunbeauty.shared.designsystem.compose.theme
 
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
 
 internal val LocalAdminDimensions = staticCompositionLocalOf { AdminDimensions() }
 
@@ -27,6 +29,8 @@ data class AdminDimensions(
     val bottomSheetRadius: Dp = 16.dp,
     val screenContentSpace: Dp = 16.dp,
     val codeWidth: Dp = 56.dp,
-    val scrollScreenBottomSpace: Dp = ButtonDefaults.MinHeight + 32.dp,
     val snackBarPadding: Dp = ButtonDefaults.MinHeight + 12.dp,
-)
+) {
+    @Composable
+    fun scrollScreenBottomSpace() = ButtonDefaults.MinHeight + 32.dp + LocalBottomBarPadding.current
+}

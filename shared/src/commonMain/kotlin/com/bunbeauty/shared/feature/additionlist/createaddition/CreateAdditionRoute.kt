@@ -263,7 +263,7 @@ internal fun CreateAdditionScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace))
+            Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace()))
         }
     }
 }

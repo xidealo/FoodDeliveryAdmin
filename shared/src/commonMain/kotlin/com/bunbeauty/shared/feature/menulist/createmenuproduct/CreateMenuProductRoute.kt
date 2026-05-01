@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.bunbeauty.domain.model.Suggestion
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.LocalBottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.AdminButtonDefaults
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
@@ -253,7 +254,7 @@ private fun CreateMenuProductScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(136.dp))
+            Spacer(modifier = Modifier.height(136.dp + LocalBottomBarPadding.current))
         }
     }
 }
