@@ -1,6 +1,10 @@
 package com.bunbeauty.shared.feature.menulist.additiongroupformenuproduct.selectaddition.navigation
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeOut
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -39,7 +43,31 @@ fun NavGraphBuilder.selectAdditionListScreenRoute(
     goBack: () -> Unit,
     onAdditionListSelected: (List<String>) -> Unit,
 ) {
-    composable<SelectAdditionListScreenDestination> { backStackEntry ->
+    composable<SelectAdditionListScreenDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = navAnimationSpecDurationForEnterFade,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+    ) { backStackEntry ->
         SelectAdditionListRouteScreen(
             showInfoMessage = showInfoMessage,
             showErrorMessage = showErrorMessage,

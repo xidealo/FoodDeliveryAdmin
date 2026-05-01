@@ -1,6 +1,10 @@
 package com.bunbeauty.shared.feature.order.navigation
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeOut
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -32,7 +36,31 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
 ) {
-    composable<OrderDetailsScreenDestination> {
+    composable<OrderDetailsScreenDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = navAnimationSpecDurationForEnterFade,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+    ) {
         OrderDetailsRouteScreen(
             showInfoMessage = showInfoMessage,
             showErrorMessage = showErrorMessage,

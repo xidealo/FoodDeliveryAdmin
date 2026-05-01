@@ -1,5 +1,9 @@
 package com.bunbeauty.shared.feature.profile.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeOut
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -21,7 +25,31 @@ fun NavGraphBuilder.profileScreenRoute(
     goToLoginScreen: () -> Unit,
     goBack: () -> Unit,
 ) {
-    composable<ProfileScreenDestination> {
+    composable<ProfileScreenDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = navAnimationSpecDurationForEnterFade,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+    ) {
         ProfileRouteScreen(
             showErrorMessage = showErrorMessage,
             goToSettingsScreen = goToSettingsScreen,

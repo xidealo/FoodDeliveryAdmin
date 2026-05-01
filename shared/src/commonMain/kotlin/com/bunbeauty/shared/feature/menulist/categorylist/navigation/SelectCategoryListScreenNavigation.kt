@@ -1,6 +1,10 @@
 package com.bunbeauty.shared.feature.menulist.categorylist.navigation
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeOut
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -29,7 +33,31 @@ fun NavGraphBuilder.selectCategoryListScreenRoute(
     goBack: () -> Unit,
     onSaveCategoryList: (List<String>) -> Unit,
 ) {
-    composable<SelectCategoryListScreenDestination> {
+    composable<SelectCategoryListScreenDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = navAnimationSpecDurationForEnterFade,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+    ) {
         SelectCategoryListRouteScreen(
             showInfoMessage = showInfoMessage,
             goBack = goBack,

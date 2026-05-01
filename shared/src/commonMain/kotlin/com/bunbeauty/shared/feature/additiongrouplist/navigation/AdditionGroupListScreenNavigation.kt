@@ -1,5 +1,9 @@
 package com.bunbeauty.shared.feature.additiongrouplist.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeOut
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -18,7 +22,31 @@ fun NavGraphBuilder.additionGroupListScreenRoute(
     goToCreateAdditionGroupScreen: () -> Unit,
     goToEditAdditionGroupScreen: (String) -> Unit,
 ) {
-    composable<AdditionGroupListScreenDestination> {
+    composable<AdditionGroupListScreenDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = navAnimationSpecDurationForEnterFade,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+    ) {
         AdditionGroupListRouteScreen(
             goBack = goBack,
             goToCreateAdditionGroupScreen = goToCreateAdditionGroupScreen,

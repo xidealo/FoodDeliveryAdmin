@@ -1,6 +1,10 @@
 package com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeOut
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
+import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -23,7 +27,31 @@ fun NavGraphBuilder.editDeliveryZoneInfoScreenRoute(
     onZoneUpdated: (String) -> Unit,
     goBack: () -> Unit,
 ) {
-    composable<EditDeliveryZoneInfoScreenDestination> {
+    composable<EditDeliveryZoneInfoScreenDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = navAnimationSpecDurationForEnterFade,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                navAnimationSpecDurationForSlide,
+            )
+        },
+    ) {
         EditDeliveryZoneInfoRouteScreen(
             showInfoMessage = showInfoMessage,
             onZoneUpdated = onZoneUpdated,
