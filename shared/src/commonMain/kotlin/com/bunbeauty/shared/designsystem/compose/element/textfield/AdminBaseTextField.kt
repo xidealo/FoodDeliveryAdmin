@@ -89,7 +89,7 @@ fun AdminBaseTextField(
             singleLine = maxLines == 1,
             maxLines = maxLines,
             colors = AdminTextFieldDefaults.textFieldColors,
-            shape = RoundedCornerShape(AdminTheme.dimensions.cardRadius)
+            shape = RoundedCornerShape(AdminTheme.dimensions.cardRadius),
         )
     }
 }
