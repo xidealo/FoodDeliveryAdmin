@@ -3,6 +3,7 @@ package com.bunbeauty.shared.designsystem.compose.element.textfield
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -89,6 +90,7 @@ fun AdminBaseTextField(
             singleLine = maxLines == 1,
             maxLines = maxLines,
             colors = AdminTextFieldDefaults.textFieldColors,
+            shape = RoundedCornerShape(AdminTheme.dimensions.cardRadius)
         )
     }
 }
