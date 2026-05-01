@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.menu.editmenuproduct
 
-import android.util.Log
 import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
 import com.bunbeauty.domain.feature.menu.common.model.SelectableCategory
@@ -75,7 +74,8 @@ class UpdateMenuProductUseCase(
             runCatching {
                 deletePhotoUseCase(photoLink = params.photoLink)
             }.onFailure {
-                Log.e(UPDATE_MENU_PRODUCT_TAG, "Photo deletion failed ${it.message}")
+                // commonMain: no Android logger available here
+                println("$UPDATE_MENU_PRODUCT_TAG: Photo deletion failed ${it.message}")
             }
         }
 

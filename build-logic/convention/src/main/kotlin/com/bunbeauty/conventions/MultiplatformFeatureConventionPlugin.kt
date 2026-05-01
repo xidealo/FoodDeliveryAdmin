@@ -26,6 +26,7 @@ class MultiplatformFeatureConventionPlugin : Plugin<Project> {
                 iosArm64()
                 iosSimulatorArm64()
             }
+
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = AndroidSdk.TARGET

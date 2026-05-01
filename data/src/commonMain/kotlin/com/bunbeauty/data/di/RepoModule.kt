@@ -1,0 +1,117 @@
+package com.bunbeauty.data.di
+
+import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.repository.AdditionGroupRepository
+import com.bunbeauty.data.repository.AdditionRepository
+import com.bunbeauty.data.repository.CafeRepository
+import com.bunbeauty.data.repository.CategoryRepository
+import com.bunbeauty.data.repository.CityRepository
+import com.bunbeauty.data.repository.CompanyRepository
+import com.bunbeauty.data.repository.FoodDeliveryApiImpl
+import com.bunbeauty.data.repository.MenuProductRepository
+import com.bunbeauty.data.repository.MenuProductToAdditionGroupRepositoryImpl
+import com.bunbeauty.data.repository.MenuProductToAdditionGroupToAdditionRepositoryImpl
+import com.bunbeauty.data.repository.NonWorkingDayRepository
+import com.bunbeauty.data.repository.OrderRepository
+import com.bunbeauty.data.repository.SettingsRepository
+import com.bunbeauty.data.repository.StatisticRepository
+import com.bunbeauty.domain.feature.order.OrderRepo
+import com.bunbeauty.domain.repo.AdditionGroupRepo
+import com.bunbeauty.domain.repo.AdditionRepo
+import com.bunbeauty.domain.repo.CafeRepo
+import com.bunbeauty.domain.repo.CategoryRepo
+import com.bunbeauty.domain.repo.CityRepo
+import com.bunbeauty.domain.repo.CompanyRepo
+import com.bunbeauty.domain.repo.MenuProductRepo
+import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
+import com.bunbeauty.domain.repo.MenuProductToAdditionGroupToAdditionRepository
+import com.bunbeauty.domain.repo.NonWorkingDayRepo
+import com.bunbeauty.domain.repo.SettingsRepo
+import com.bunbeauty.domain.repo.StatisticRepo
+import org.koin.dsl.module
+
+fun repositoryModule() =
+    module {
+        single<MenuProductRepo> {
+            MenuProductRepository(
+                menuProductMapper = get(),
+                networkConnector = get(),
+                dataStoreRepository = get(),
+            )
+        }
+        single<FoodDeliveryApi> {
+            FoodDeliveryApiImpl(
+                client = get(),
+                json = get(),
+            )
+        }
+        single<CategoryRepo> {
+            CategoryRepository(
+                categoryMapper = get(),
+                networkConnector = get(),
+            )
+        }
+        single<OrderRepo> {
+            OrderRepository(
+                networkConnector = get(),
+                serverOrderMapper = get(),
+            )
+        }
+        single<StatisticRepo> {
+            StatisticRepository(
+                networkConnector = get(),
+                statisticMapper = get(),
+            )
+        }
+        single<CafeRepo> {
+            CafeRepository(
+                cafeMapper = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<CityRepo> {
+            CityRepository(
+                cityMapper = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<NonWorkingDayRepo> {
+            NonWorkingDayRepository(
+                foodDeliveryApi = get(),
+                nonWorkingDayMapper = get(),
+            )
+        }
+        single<AdditionRepo> {
+            AdditionRepository(
+                networkConnector = get(),
+            )
+        }
+        single<AdditionGroupRepo> {
+            AdditionGroupRepository(
+                networkConnector = get(),
+            )
+        }
+        single<SettingsRepo> {
+            SettingsRepository(
+                dataStoreRepo = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<CompanyRepo> {
+            CompanyRepository(
+                networkConnector = get(),
+            )
+        }
+        single<MenuProductToAdditionGroupRepository> {
+            MenuProductToAdditionGroupRepositoryImpl(
+                foodDeliveryApi = get(),
+                dataStoreRepo = get(),
+            )
+        }
+        single<MenuProductToAdditionGroupToAdditionRepository> {
+            MenuProductToAdditionGroupToAdditionRepositoryImpl(
+                foodDeliveryApi = get(),
+                dataStoreRepo = get(),
+            )
+        }
+    }

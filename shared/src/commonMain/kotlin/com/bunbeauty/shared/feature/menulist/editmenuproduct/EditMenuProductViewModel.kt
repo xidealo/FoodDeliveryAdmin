@@ -1,0 +1,492 @@
+package com.bunbeauty.shared.feature.menulist.editmenuproduct
+
+import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.menu.common.category.GetSelectableCategoryListUseCase
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductCategoriesException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductDescriptionLongException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductImageException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNameException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNewPriceException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductNutritionException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceException
+import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
+import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
+import com.bunbeauty.shared.extension.launchSafe
+import com.bunbeauty.shared.feature.image.EditImageFieldData
+import com.bunbeauty.shared.feature.image.ProductImage
+import com.bunbeauty.shared.feature.menulist.common.AdditionGroupListFieldData
+import com.bunbeauty.shared.feature.menulist.common.CategoriesFieldData
+import com.bunbeauty.shared.feature.menulist.common.TextFieldData
+import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
+
+class EditMenuProductViewModel(
+    private val getMenuProductUseCase: GetMenuProductUseCase,
+    private val getSelectableCategoryListUseCase: GetSelectableCategoryListUseCase,
+    private val updateMenuProductUseCase: UpdateMenuProductUseCase,
+    private val menuProductUuid: String,
+) : BaseStateViewModel<EditMenuProduct.DataState, EditMenuProduct.Action, EditMenuProduct.Event>(
+        initState =
+            EditMenuProduct.DataState(
+                state = EditMenuProduct.DataState.State.LOADING,
+                productUuid = "",
+                productName = "",
+                nameField = TextFieldData.empty,
+                newPriceField = TextFieldData.empty,
+                oldPriceField = TextFieldData.empty,
+                descriptionField = TextFieldData.empty,
+                nutritionField = TextFieldData.empty,
+                units = "",
+                comboDescription = "",
+                categoriesField =
+                    CategoriesFieldData(
+                        value = listOf(),
+                        isError = false,
+                    ),
+                isVisibleInMenu = true,
+                isVisibleInRecommendations = false,
+                imageField =
+                    EditImageFieldData(
+                        value = null,
+                        isError = false,
+                    ),
+                sendingToServer = false,
+                descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.NO_ERROR,
+                additionGroupListField =
+                    AdditionGroupListFieldData(
+                        value = listOf(),
+                        isError = false,
+                    ),
+            ),
+    ) {
+    init {
+        loadData(
+            productUuid = menuProductUuid,
+        )
+    }
+
+    override fun reduce(
+        action: EditMenuProduct.Action,
+        dataState: EditMenuProduct.DataState,
+    ) {
+        when (action) {
+            EditMenuProduct.Action.BackClick -> {
+                sendEvent {
+                    EditMenuProduct.Event.NavigateBack
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeNameText -> {
+                setState {
+                    copy(
+                        nameField =
+                            nameField.copy(
+                                value = action.name,
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeNewPriceText -> {
+                setState {
+                    copy(
+                        newPriceField =
+                            newPriceField.copy(
+                                value = action.newPrice,
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeOldPriceText -> {
+                setState {
+                    copy(
+                        oldPriceField =
+                            oldPriceField.copy(
+                                value = action.oldPrice,
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeNutritionText -> {
+                setState {
+                    copy(
+                        nutritionField =
+                            nutritionField.copy(
+                                value = action.nutrition,
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeUtilsText -> {
+                setState {
+                    copy(
+                        units = action.units,
+                        nutritionField =
+                            nutritionField.copy(
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeDescriptionText -> {
+                setState {
+                    copy(
+                        descriptionField =
+                            descriptionField.copy(
+                                value = action.description,
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.ChangeComboDescriptionText -> {
+                setState {
+                    copy(comboDescription = action.comboDescription)
+                }
+            }
+
+            EditMenuProduct.Action.CategoriesClick -> {
+                sendEvent {
+                    EditMenuProduct.Event.NavigateToCategoryList(
+                        dataState.categoriesField.selectedCategoryList.map { selectableCategory ->
+                            selectableCategory.category.uuid
+                        },
+                    )
+                }
+            }
+
+            EditMenuProduct.Action.AdditionListClick -> {
+                sendEvent {
+                    EditMenuProduct.Event.NavigateToAdditionList(
+                        menuProductUuid = dataState.productUuid,
+                    )
+                }
+            }
+
+            is EditMenuProduct.Action.SelectCategories -> {
+                setState {
+                    copy(
+                        categoriesField =
+                            categoriesField.copy(
+                                value =
+                                    categoriesField.value.map { selectableCategory ->
+                                        selectableCategory.copy(
+                                            selected =
+                                                action.categoryUuidList.contains(
+                                                    selectableCategory.category.uuid,
+                                                ),
+                                        )
+                                    },
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            EditMenuProduct.Action.RefreshAdditionGroups -> {
+                refreshAdditionGroupsOnly()
+            }
+
+            is EditMenuProduct.Action.ToggleVisibilityInMenu -> {
+                setState {
+                    copy(isVisibleInMenu = !isVisibleInMenu)
+                }
+            }
+
+            is EditMenuProduct.Action.ToggleVisibilityInRecommendations -> {
+                setState {
+                    copy(isVisibleInRecommendations = !isVisibleInRecommendations)
+                }
+            }
+
+            is EditMenuProduct.Action.SetImage -> {
+                setState {
+                    copy(
+                        imageField =
+                            imageField.copy(
+                                value =
+                                    imageField.value?.copy(
+                                        newImageUri = action.croppedImageUri,
+                                    ),
+                                isError = false,
+                            ),
+                    )
+                }
+            }
+
+            EditMenuProduct.Action.SaveMenuProductClick -> {
+                updateMenuProduct()
+            }
+        }
+    }
+
+    private fun loadData(productUuid: String) {
+        viewModelScope.launchSafe(
+            block = {
+                val menuProduct = getMenuProductUseCase(productUuid)
+                setState {
+                    copy(
+                        state = EditMenuProduct.DataState.State.SUCCESS,
+                        productUuid = menuProduct.uuid,
+                        productName = menuProduct.name,
+                        nameField =
+                            TextFieldData(
+                                value = menuProduct.name,
+                                isError = false,
+                            ),
+                        newPriceField =
+                            TextFieldData(
+                                value = menuProduct.newPrice.toString(),
+                                isError = false,
+                            ),
+                        oldPriceField =
+                            TextFieldData(
+                                value = menuProduct.oldPrice?.toString() ?: "",
+                                isError = false,
+                            ),
+                        descriptionField =
+                            TextFieldData(
+                                value = menuProduct.description,
+                                isError = false,
+                            ),
+                        nutritionField =
+                            TextFieldData(
+                                value =
+                                    menuProduct.nutrition
+                                        ?.takeIf { nutrition ->
+                                            nutrition != 0
+                                        }?.toString() ?: "",
+                                isError = false,
+                            ),
+                        units = menuProduct.units ?: "",
+                        comboDescription = menuProduct.comboDescription ?: "",
+                        categoriesField =
+                            CategoriesFieldData(
+                                value =
+                                    getSelectableCategoryListUseCase(
+                                        selectedCategoryUuidList = menuProduct.categoryUuids,
+                                    ),
+                                isError = false,
+                            ),
+                        isVisibleInMenu = menuProduct.isVisible,
+                        isVisibleInRecommendations = menuProduct.isRecommended,
+                        imageField =
+                            EditImageFieldData(
+                                value =
+                                    ProductImage(
+                                        photoLink = menuProduct.photoLink,
+                                        newImageUri = null,
+                                    ),
+                                isError = false,
+                            ),
+                        additionGroupListField =
+                            AdditionGroupListFieldData(
+                                value =
+                                    menuProduct.additionGroups.map { additionGroupWithAdditions ->
+                                        additionGroupWithAdditions.additionGroup
+                                    },
+                                isError = false,
+                            ),
+                    )
+                }
+            },
+            onError = {
+                setState {
+                    copy(state = EditMenuProduct.DataState.State.ERROR)
+                }
+            },
+        )
+    }
+
+    private fun refreshAdditionGroupsOnly() {
+        val productUuid = state.value.productUuid
+        if (productUuid.isBlank() || state.value.state != EditMenuProduct.DataState.State.SUCCESS) {
+            return
+        }
+        viewModelScope.launchSafe(
+            block = {
+                val menuProduct = getMenuProductUseCase(productUuid)
+                setState {
+                    copy(
+                        additionGroupListField =
+                            AdditionGroupListFieldData(
+                                value =
+                                    menuProduct.additionGroups.map { additionGroupWithAdditions ->
+                                        additionGroupWithAdditions.additionGroup
+                                    },
+                                isError = false,
+                            ),
+                    )
+                }
+            },
+            onError = {},
+        )
+    }
+
+    private fun updateMenuProduct() {
+        setState {
+            copy(
+                nameField = nameField.copy(isError = false),
+                newPriceField = newPriceField.copy(isError = false),
+                oldPriceField = oldPriceField.copy(isError = false),
+                nutritionField = nutritionField.copy(isError = false),
+                descriptionField = descriptionField.copy(isError = false),
+                categoriesField = categoriesField.copy(isError = false),
+                imageField = imageField.copy(isError = false),
+                sendingToServer = true,
+            )
+        }
+        viewModelScope.launchSafe(
+            block = {
+                updateMenuProductUseCase(
+                    params =
+                        state.value.run {
+                            UpdateMenuProductUseCase.Params(
+                                uuid = productUuid,
+                                name = nameField.value,
+                                newPrice = newPriceField.value,
+                                oldPrice = oldPriceField.value,
+                                nutrition = nutritionField.value,
+                                units = units,
+                                description = descriptionField.value,
+                                comboDescription = comboDescription,
+                                selectedCategories = categoriesField.selectedCategoryList,
+                                isVisible = isVisibleInMenu,
+                                isRecommended = isVisibleInRecommendations,
+                                photoLink = imageField.value?.photoLink,
+                                newImageUri = imageField.value?.newImageUri,
+                            )
+                        },
+                )
+                sendEvent { dataState ->
+                    EditMenuProduct.Event.ShowUpdateProductSuccess(
+                        productName = dataState.nameField.value,
+                    )
+                }
+            },
+            onError = { throwable ->
+                setState { copy(sendingToServer = false) }
+                handleUpdateMenuProductError(throwable = throwable)
+            },
+        )
+    }
+
+    private fun handleUpdateMenuProductError(throwable: Throwable) {
+        when (throwable) {
+            is MenuProductNameException -> {
+                setState {
+                    copy(
+                        nameField =
+                            nameField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductNewPriceException -> {
+                setState {
+                    copy(
+                        newPriceField =
+                            newPriceField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductOldPriceException -> {
+                setState {
+                    copy(
+                        oldPriceField =
+                            oldPriceField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductNutritionException -> {
+                setState {
+                    copy(
+                        nutritionField =
+                            nutritionField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductDescriptionException -> {
+                setState {
+                    copy(
+                        descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.EMPTY_DESCRIPTION_ERROR,
+                        descriptionField =
+                            descriptionField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductDescriptionLongException -> {
+                setState {
+                    copy(
+                        descriptionStateError = EditMenuProduct.DataState.DescriptionStateError.LONG_DESCRIPTION_ERROR,
+                        descriptionField =
+                            descriptionField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductCategoriesException -> {
+                setState {
+                    copy(
+                        categoriesField =
+                            categoriesField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+            }
+
+            is MenuProductImageException -> {
+                setState {
+                    copy(
+                        imageField =
+                            imageField.copy(
+                                isError = true,
+                            ),
+                    )
+                }
+                sendEvent {
+                    EditMenuProduct.Event.ShowEmptyPhoto
+                }
+            }
+
+            is MenuProductUploadingImageException -> {
+                sendEvent {
+                    EditMenuProduct.Event.ShowImageUploadingFailed
+                }
+            }
+
+            else -> {
+                sendEvent {
+                    EditMenuProduct.Event.ShowSomethingWentWrong
+                }
+            }
+        }
+    }
+}

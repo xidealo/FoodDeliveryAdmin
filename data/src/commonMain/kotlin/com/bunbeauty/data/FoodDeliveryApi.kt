@@ -1,0 +1,236 @@
+package com.bunbeauty.data
+
+import com.bunbeauty.data.model.server.ServerList
+import com.bunbeauty.data.model.server.addition.AdditionPatchServer
+import com.bunbeauty.data.model.server.addition.AdditionPostServer
+import com.bunbeauty.data.model.server.addition.AdditionServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPatchServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupPostServer
+import com.bunbeauty.data.model.server.additiongroup.AdditionGroupServer
+import com.bunbeauty.data.model.server.additiongroup.PatchMenuProductToAdditionGroupPriorityUuid
+import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.cafe.GetDeliveryZoneResponse
+import com.bunbeauty.data.model.server.cafe.PatchCafeServer
+import com.bunbeauty.data.model.server.cafe.PatchDeliveryZone
+import com.bunbeauty.data.model.server.category.CategoryPatchServer
+import com.bunbeauty.data.model.server.category.CategoryServer
+import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
+import com.bunbeauty.data.model.server.category.PatchCategoryList
+import com.bunbeauty.data.model.server.city.CityServer
+import com.bunbeauty.data.model.server.company.CompanyPatchServer
+import com.bunbeauty.data.model.server.company.WorkInfoData
+import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
+import com.bunbeauty.data.model.server.menuProductToAdditionGroupToAddition.MenuProductToAdditionGroupToAdditionServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPostServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPatchServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductPostServer
+import com.bunbeauty.data.model.server.menuproduct.MenuProductServer
+import com.bunbeauty.data.model.server.nonworkingday.NonWorkingDayServer
+import com.bunbeauty.data.model.server.nonworkingday.PatchNonWorkingDayServer
+import com.bunbeauty.data.model.server.nonworkingday.PostNonWorkingDayServer
+import com.bunbeauty.data.model.server.order.OrderDetailsServer
+import com.bunbeauty.data.model.server.order.OrderServer
+import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
+import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
+import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
+import com.bunbeauty.data.model.server.statistic.StatisticServer
+import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
+import com.bunbeauty.data.model.server.user.UserResponse
+import com.bunbeauty.domain.enums.OrderStatus
+import common.ApiResult
+import kotlinx.coroutines.flow.Flow
+
+interface FoodDeliveryApi {
+    // LOGIN
+    suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse>
+
+    suspend fun getUser(token: String): ApiResult<UserResponse>
+
+    suspend fun putNotificationToken(
+        updateNotificationTokenRequest: UpdateNotificationTokenRequest,
+        token: String,
+    ): ApiResult<Unit>
+
+    suspend fun deleteNotificationToken(token: String): ApiResult<Unit>
+
+    suspend fun putUnlimitedNotification(
+        updateUnlimitedNotificationRequest: UpdateUnlimitedNotificationRequest,
+        token: String,
+    ): ApiResult<Unit>
+
+    // CAFE
+    suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
+
+    suspend fun getCafeByUuid(cafeUuid: String): ApiResult<CafeServer>
+
+    suspend fun patchCafe(
+        cafeUuid: String,
+        patchCafe: PatchCafeServer,
+        token: String,
+    ): ApiResult<CafeServer>
+
+    suspend fun getDeliveryZone(
+        cafeUuid: String,
+        token: String,
+    ): ApiResult<GetDeliveryZoneResponse>
+
+    suspend fun patchDeliveryZone(
+        cafeUuid: String,
+        zoneUuid: String,
+        token: String,
+        patchZone: PatchDeliveryZone,
+    ): ApiResult<Unit>
+
+    // CITY
+    suspend fun getCityList(companyUuid: String): ApiResult<ServerList<CityServer>>
+
+    // MENU PRODUCT
+    suspend fun getMenuProductList(companyUuid: String): ApiResult<ServerList<MenuProductServer>>
+
+    suspend fun saveMenuProductPhoto(photoByteArray: ByteArray): ApiResult<String>
+
+    suspend fun patchMenuProduct(
+        menuProductUuid: String,
+        menuProductPatchServer: MenuProductPatchServer,
+        token: String,
+    ): ApiResult<MenuProductServer>
+
+    suspend fun patchMenuProductAdditions(
+        token: String,
+        menuProductToAdditionGroupUuid: String,
+        menuProductAdditionsPatchServer: MenuProductAdditionsPatchServer,
+    ): ApiResult<Unit>
+
+    suspend fun postMenuProduct(
+        token: String,
+        menuProductPostServer: MenuProductPostServer,
+    ): ApiResult<MenuProductServer>
+
+    suspend fun postMenuProductAdditions(
+        token: String,
+        menuProductAdditionsPostServer: MenuProductAdditionsPostServer,
+    ): ApiResult<List<MenuProductServer>>
+
+    // STATISTIC
+    suspend fun getStatistic(
+        token: String,
+        cafeUuid: String?,
+        period: String,
+    ): List<StatisticServer>
+
+    // ORDER
+
+    suspend fun getUpdatedOrderFlowByCafeUuid(
+        token: String,
+        cafeUuid: String,
+    ): Flow<ApiResult<OrderServer>>
+
+    suspend fun unsubscribeOnOrderList(message: String)
+
+    suspend fun getOrderListByCafeUuid(
+        token: String,
+        cafeUuid: String,
+    ): ApiResult<ServerList<OrderServer>>
+
+    suspend fun getOrderByUuid(
+        token: String,
+        orderUuid: String,
+    ): ApiResult<OrderDetailsServer>
+
+    suspend fun updateOrderStatus(
+        token: String,
+        orderUuid: String,
+        status: OrderStatus,
+    ): ApiResult<OrderDetailsServer>
+
+    suspend fun getWorkInfo(companyUuid: String): ApiResult<WorkInfoData>
+
+    // COMPANY
+    suspend fun patchCompany(
+        token: String,
+        companyPatch: CompanyPatchServer,
+        companyUuid: String,
+    ): ApiResult<Unit>
+
+    // CATEGORIES
+    suspend fun getCategoriesByCompanyUuid(
+        token: String,
+        companyUuid: String,
+    ): ApiResult<ServerList<CategoryServer>>
+
+    suspend fun postCategory(
+        token: String,
+        categoryServerPost: CreateCategoryPostServer,
+    ): ApiResult<CategoryServer>
+
+    suspend fun patchCategory(
+        token: String,
+        uuid: String,
+        patchCategory: CategoryPatchServer,
+    ): ApiResult<CategoryServer>
+
+    suspend fun patchCategoryPriority(
+        token: String,
+        patchCategoryItem: PatchCategoryList,
+    ): ApiResult<Unit>
+
+    // NON WORKING DAYS
+    suspend fun getNonWorkingDaysByCafeUuid(cafeUuid: String): ApiResult<ServerList<NonWorkingDayServer>>
+
+    suspend fun postNonWorkingDay(
+        token: String,
+        postNonWorkingDay: PostNonWorkingDayServer,
+    ): ApiResult<NonWorkingDayServer>
+
+    suspend fun patchNonWorkingDay(
+        token: String,
+        uuid: String,
+        patchNonWorkingDay: PatchNonWorkingDayServer,
+    ): ApiResult<NonWorkingDayServer>
+
+    // ADDITION LIST
+    suspend fun getAdditionList(token: String): ApiResult<ServerList<AdditionServer>>
+
+    suspend fun patchAddition(
+        additionUuid: String,
+        additionPatchServer: AdditionPatchServer,
+        token: String,
+    ): ApiResult<AdditionServer>
+
+    suspend fun postAddition(
+        additionPostServer: AdditionPostServer,
+        token: String,
+    ): ApiResult<AdditionServer>
+
+    // ADDITION GROUP LIST
+    suspend fun getAdditionGroupList(token: String): ApiResult<ServerList<AdditionGroupServer>>
+
+    suspend fun patchAdditionGroup(
+        additionGroupUuid: String,
+        additionGroupPatchServer: AdditionGroupPatchServer,
+        token: String,
+    ): ApiResult<AdditionGroupServer>
+
+    suspend fun postAdditionGroup(
+        token: String,
+        additionGroupServerPost: AdditionGroupPostServer,
+    ): ApiResult<AdditionGroupServer>
+
+    // MENU PRODUCT TO ADDITION GROUP
+    suspend fun getMenuProductToAdditionGroup(
+        token: String,
+        uuid: String,
+    ): ApiResult<MenuProductToAdditionGroupServer>
+
+    // MENU PRODUCT TO ADDITION GROUP TO ADDITION
+    suspend fun getMenuProductToAdditionGroupToAdditionList(
+        token: String,
+        uuidList: List<String>,
+    ): ApiResult<List<MenuProductToAdditionGroupToAdditionServer>>
+
+    suspend fun patchMenuProductToAdditionGroupPriorityUuid(
+        token: String,
+        additionGroupListUuid: PatchMenuProductToAdditionGroupPriorityUuid,
+    ): ApiResult<Unit>
+}

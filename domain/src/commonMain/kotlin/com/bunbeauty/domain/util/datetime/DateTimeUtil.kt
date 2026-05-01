@@ -20,7 +20,7 @@ import kotlin.time.ExperimentalTime
 private const val SECONDS_IN_HOUR = 60 * 60
 private const val SECONDS_IN_MINUTE = 60
 
-class DateTimeUtil : IDateTimeUtil {
+object DateTimeUtil : IDateTimeUtil {
     val DayOfWeek.daysToMonday: Int
         get() =
             when (this) {

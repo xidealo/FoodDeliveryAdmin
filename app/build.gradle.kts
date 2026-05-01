@@ -6,7 +6,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.admin.android.application)
     alias(libs.plugins.compose)
-    alias(libs.plugins.navigation)
+    alias(libs.plugins.compose.plugin)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.firebase)
     alias(libs.plugins.triplet.play)
@@ -93,10 +93,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":common"))
-    implementation(project(":presentation"))
-
-    // Navigation
-    implementation(libs.bundles.navigation)
+    implementation(project(":shared"))
 
     // Firebase
     implementation(platform(libs.firebase.bom))
