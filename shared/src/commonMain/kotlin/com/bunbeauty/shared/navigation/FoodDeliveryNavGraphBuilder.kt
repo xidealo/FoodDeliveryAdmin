@@ -83,7 +83,14 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     loginScreenRoute(
         showErrorMessage = showErrorMessage,
         goToOrderListScreen = {
-            navController.navigateToOrderListScreen(emptyNavOptions)
+            navController.navigateToOrderListScreen(
+                navOptions {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                },
+            )
         },
     )
 
