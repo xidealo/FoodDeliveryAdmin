@@ -1,0 +1,19 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+source "https://cdn.cocoapods.org"
+
+use_frameworks! :linkage => :static
+
+platform :ios, '15.5'
+install! 'cocoapods'
+
+def default_pods
+  pod 'Firebase','11.12.0'
+  pod 'FirebaseCrashlytics','11.12.0'
+  pod 'shared', :path => '../shared'
+end
+
+target 'FoodDelivery' do
+  default_pods
+end

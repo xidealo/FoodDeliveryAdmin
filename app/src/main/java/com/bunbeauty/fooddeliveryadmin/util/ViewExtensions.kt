@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.bunbeauty.fooddeliveryadmin.compose.theme.AdminTheme
+import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 
 fun TextView.strikeOutText() {
     this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
