@@ -10,9 +10,5 @@ interface StatisticRepo {
         period: String,
     ): List<Statistic>
 
-    suspend fun getStatisticDayDetail(
-        token: String,
-        companyUuid: String,
-        date: String,
-    ): StatisticDayDetail
+    suspend fun getStatisticDayDetail(date: String): StatisticDayDetail
 }

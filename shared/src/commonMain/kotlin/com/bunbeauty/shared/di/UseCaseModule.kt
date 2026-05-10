@@ -198,7 +198,6 @@ fun useCaseModule() =
         factory {
             GetStatisticDayDetailUseCase(
                 statisticRepo = get(),
-                dataStoreRepo = get(),
             )
         }
 

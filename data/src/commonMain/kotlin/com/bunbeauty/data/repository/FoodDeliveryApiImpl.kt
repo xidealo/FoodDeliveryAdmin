@@ -262,15 +262,22 @@ class FoodDeliveryApiImpl(
         companyUuid: String,
         date: String,
     ): StatisticDayDetailServer =
-        client
-            .get {
-                url {
-                    path("statistic", "day-detail")
-                }
-                parameter("companyUuid", companyUuid)
-                parameter("date", date)
-                header("Authorization", "Bearer $token")
-            }.body()
+        when (
+            val result =
+                get<StatisticDayDetailServer>(
+                    path = "statistic/day-detail",
+                    token = token,
+                    parameters =
+                        listOf(
+                            "companyUuid" to companyUuid,
+                            "date" to date,
+                        ),
+                )
+        ) {
+            is ApiResult.Success -> result.data
+            is ApiResult.Error ->
+                throw IllegalStateException(result.apiError.message)
+        }
 
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,
