@@ -116,6 +116,8 @@
     <string name="msg_statistic_detail_average_value">%1$.2f %2$s</string>
     <string name="msg_statistic_detail_product_sold">Количество проданных: %1$d</string>
     <string name="msg_statistic_detail_product_sum">Сумма: %1$d %2$s</string>
+    <string name="common_preview_statistic_detail_product_1">Товар (превью 1)</string>
+    <string name="common_preview_statistic_detail_product_2">Товар (превью 2)</string>
     <string name="description_statistic_product_photo">Фото позиции меню</string>
 
     <!-- MENU -->

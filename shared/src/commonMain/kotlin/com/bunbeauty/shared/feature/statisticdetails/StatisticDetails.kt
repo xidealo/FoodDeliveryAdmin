@@ -5,6 +5,10 @@ import com.bunbeauty.shared.viewmodel.base.BaseAction
 import com.bunbeauty.shared.viewmodel.base.BaseEvent
 import com.bunbeauty.shared.viewmodel.base.BaseViewDataState
 
+/**
+ * Договор MVI для экрана детализации статистики за день.
+ * Разметка и `@Preview` — в файле `StatisticDetailsRoute.kt` ([StatisticDetailsRouteScreen] и превью рядом с ним).
+ */
 interface StatisticDetails {
     data class DataState(
         val state: State,

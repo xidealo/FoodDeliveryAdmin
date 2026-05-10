@@ -22,15 +22,17 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
-import com.bunbeauty.shared.designsystem.compose.element.card.TextWithHintCard
 import com.bunbeauty.shared.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.shared.designsystem.compose.element.image.ImageData
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.designsystem.compose.theme.bold
+import com.bunbeauty.shared.designsystem.compose.theme.medium
 import com.bunbeauty.shared.feature.statisticdetails.navigation.StatisticDetailsScreenDestination
 import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.common_preview_statistic_detail_product_1
+import fooddeliveryadmin.shared.generated.resources.common_preview_statistic_detail_product_2
 import fooddeliveryadmin.shared.generated.resources.default_product
 import fooddeliveryadmin.shared.generated.resources.description_statistic_product_photo
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
@@ -47,8 +49,9 @@ import fooddeliveryadmin.shared.generated.resources.msg_statistic_detail_product
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_total_count
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_statistic_details
-import org.jetbrains.compose.resources.StringResource
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -122,6 +125,7 @@ private fun StatisticDetailsScreen(
         backActionClick = {
             onAction(StatisticDetails.Action.SelectGoBackClick)
         },
+        backgroundColor = AdminTheme.colors.main.surface,
     ) {
         when (val uiState = state.state) {
             StatisticDetailsViewState.State.Loading -> LoadingScreen()
@@ -142,64 +146,20 @@ private fun StatisticDetailsScreen(
     }
 }
 
-@Suppress("NonSkippableComposable")
 @Composable
 private fun StatisticDetailsSuccessContent(uiState: StatisticDetailsViewState.State.Success) {
     LazyColumn(
         contentPadding =
             PaddingValues(
-                top = 16.dp,
-                start = 16.dp,
-                end = 16.dp,
+                start = AdminTheme.dimensions.screenContentSpace,
+                end = AdminTheme.dimensions.screenContentSpace,
+                top = AdminTheme.dimensions.screenContentSpace,
                 bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
-            StatisticSummaryTwoColumnRow(
-                startHint = Res.string.msg_statistic_total_count,
-                startLabel = uiState.orderCount.toString(),
-                endHint = Res.string.msg_statistic_detail_date,
-                endLabel = uiState.dateIso,
-            )
-        }
-        item {
-            StatisticSummaryTwoColumnRow(
-                startHint = Res.string.msg_statistic_detail_delivery_order_count_label,
-                startLabel = uiState.deliveryOrderCount.toString(),
-                endHint = Res.string.msg_statistic_detail_pickup_order_count_label,
-                endLabel = uiState.pickupOrderCount.toString(),
-            )
-        }
-        item {
-            StatisticSummaryTwoColumnRow(
-                startHint = Res.string.msg_statistic_detail_orders_total_label,
-                startLabel =
-                    stringResource(
-                        Res.string.msg_statistic_detail_amount_value,
-                        uiState.orderProceedsTotal,
-                        uiState.currency,
-                    ),
-                endHint = Res.string.msg_statistic_average_check,
-                endLabel =
-                    stringResource(
-                        Res.string.msg_statistic_detail_average_value,
-                        uiState.averageCheck,
-                        uiState.currency,
-                    ),
-            )
-        }
-        item {
-            TextWithHintCard(
-                modifier = Modifier.fillMaxWidth(),
-                hintStringId = Res.string.msg_statistic_detail_orders_without_delivery,
-                label =
-                    stringResource(
-                        Res.string.msg_statistic_detail_amount_value,
-                        uiState.orderProceedsProducts,
-                        uiState.currency,
-                    ),
-            )
+            StatisticDetailsInfoCard(uiState = uiState)
         }
         items(
             items = uiState.products,
@@ -213,30 +173,110 @@ private fun StatisticDetailsSuccessContent(uiState: StatisticDetailsViewState.St
 }
 
 @Composable
-private fun StatisticSummaryTwoColumnRow(
-    startHint: StringResource,
-    startLabel: String,
-    endHint: StringResource,
-    endLabel: String,
+private fun StatisticDetailsInfoCard(
+    modifier: Modifier = Modifier,
+    uiState: StatisticDetailsViewState.State.Success,
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+    Column(
+        modifier =
+            Modifier
+                .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        TextWithHintCard(
-            modifier = Modifier.weight(1f),
-            hintStringId = startHint,
-            label = startLabel,
-        )
-        TextWithHintCard(
-            modifier = Modifier.weight(1f),
-            hintStringId = endHint,
-            label = endLabel,
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            StatisticDetailsInfoTextColumn(
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_statistic_total_count),
+                info = uiState.orderCount.toString(),
+            )
+            StatisticDetailsInfoTextColumn(
+                modifier =
+                    Modifier
+                        .padding(start = 16.dp)
+                        .weight(1f),
+                hint = stringResource(Res.string.msg_statistic_detail_date),
+                info = uiState.dateIso,
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            StatisticDetailsInfoTextColumn(
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_statistic_detail_delivery_order_count_label),
+                info = uiState.deliveryOrderCount.toString(),
+            )
+            StatisticDetailsInfoTextColumn(
+                modifier =
+                    Modifier
+                        .padding(start = 16.dp)
+                        .weight(1f),
+                hint = stringResource(Res.string.msg_statistic_detail_pickup_order_count_label),
+                info = uiState.pickupOrderCount.toString(),
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            StatisticDetailsInfoTextColumn(
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_statistic_detail_orders_total_label),
+                info =
+                    stringResource(
+                        Res.string.msg_statistic_detail_amount_value,
+                        uiState.orderProceedsTotal,
+                        uiState.currency,
+                    ),
+            )
+            StatisticDetailsInfoTextColumn(
+                modifier =
+                    Modifier
+                        .padding(start = 16.dp)
+                        .weight(1f),
+                hint = stringResource(Res.string.msg_statistic_average_check),
+                info =
+                    stringResource(
+                        Res.string.msg_statistic_detail_average_value,
+                        uiState.averageCheck,
+                        uiState.currency,
+                    ),
+            )
+        }
+        StatisticDetailsInfoTextColumn(
+            hint = stringResource(Res.string.msg_statistic_detail_orders_without_delivery),
+            info =
+                stringResource(
+                    Res.string.msg_statistic_detail_amount_value,
+                    uiState.orderProceedsProducts,
+                    uiState.currency,
+                ),
         )
     }
 }
 
-@Suppress("NonSkippableComposable")
+@Composable
+private fun StatisticDetailsInfoTextColumn(
+    modifier: Modifier = Modifier,
+    hint: String,
+    info: String,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = hint,
+            style = AdminTheme.typography.labelSmall.medium,
+            color = AdminTheme.colors.main.onSurfaceVariant,
+        )
+        Text(
+            text = info,
+            style = AdminTheme.typography.bodyMedium,
+            color = AdminTheme.colors.main.onSurface,
+        )
+    }
+}
+
 @Composable
 private fun StatisticDetailsProductRow(product: StatisticDetailsViewState.State.Success.ProductRow) {
     AdminCard(
@@ -297,5 +337,79 @@ private fun StatisticDetailsProductRow(product: StatisticDetailsViewState.State.
                 )
             }
         }
+    }
+}
+
+@Suppress("NonSkippableComposable")
+@Preview
+@Composable
+private fun StatisticDetailsScreenLoadingPreview() {
+    AdminTheme {
+        StatisticDetailsScreen(
+            state =
+                StatisticDetailsViewState(
+                    state = StatisticDetailsViewState.State.Loading,
+                ),
+            onAction = {},
+        )
+    }
+}
+
+@Suppress("NonSkippableComposable")
+@Preview
+@Composable
+private fun StatisticDetailsScreenErrorPreview() {
+    AdminTheme {
+        StatisticDetailsScreen(
+            state =
+                StatisticDetailsViewState(
+                    state = StatisticDetailsViewState.State.Error,
+                ),
+            onAction = {},
+        )
+    }
+}
+
+@Suppress("NonSkippableComposable")
+@Preview
+@Composable
+private fun StatisticDetailsScreenSuccessPreview() {
+    AdminTheme {
+        StatisticDetailsScreen(
+            state =
+                StatisticDetailsViewState(
+                    state =
+                        StatisticDetailsViewState.State.Success(
+                            dateIso = "2024-05-01",
+                            orderCount = 42,
+                            orderProceedsTotal = 125_000,
+                            orderProceedsProducts = 98_000,
+                            averageCheck = 2976.19,
+                            deliveryOrderCount = 28,
+                            pickupOrderCount = 14,
+                            currency = "$",
+                            products =
+                                persistentListOf(
+                                    StatisticDetailsViewState.State.Success.ProductRow(
+                                        menuProductUuid = "preview-1",
+                                        name = stringResource(Res.string.common_preview_statistic_detail_product_1),
+                                        photoLink = "",
+                                        productCount = 12,
+                                        proceeds = 45_000,
+                                        currency = "$",
+                                    ),
+                                    StatisticDetailsViewState.State.Success.ProductRow(
+                                        menuProductUuid = "preview-2",
+                                        name = stringResource(Res.string.common_preview_statistic_detail_product_2),
+                                        photoLink = "https://example.com/image.jpg",
+                                        productCount = 3,
+                                        proceeds = 2100,
+                                        currency = "$",
+                                    ),
+                                ),
+                        ),
+                ),
+            onAction = {},
+        )
     }
 }
