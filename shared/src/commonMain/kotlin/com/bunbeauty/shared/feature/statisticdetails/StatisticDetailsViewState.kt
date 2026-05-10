@@ -2,9 +2,15 @@ package com.bunbeauty.shared.feature.statisticdetails
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
 import com.bunbeauty.shared.viewmodel.base.BaseViewState
+import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.msg_statistic_detail_date
+import fooddeliveryadmin.shared.generated.resources.msg_statistic_detail_period_label
+import fooddeliveryadmin.shared.generated.resources.msg_statistic_detail_period_range
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import org.jetbrains.compose.resources.stringResource
 import kotlin.math.round
 
 @Immutable
@@ -18,7 +24,8 @@ data class StatisticDetailsViewState(
         data object Error : State
 
         data class Success(
-            val dateIso: String,
+            val periodHintText: String,
+            val periodSummaryText: String,
             val orderCount: Int,
             val orderProceedsTotal: Int,
             val orderProceedsProducts: Int,
@@ -56,7 +63,29 @@ internal fun StatisticDetails.DataState.toViewState(): StatisticDetailsViewState
                     val detail = dayDetail
                     if (detail != null) {
                         StatisticDetailsViewState.State.Success(
-                            dateIso = detail.date,
+                            periodHintText =
+                                when (detail.periodType) {
+                                    StatisticDetailPeriod.DAY ->
+                                        stringResource(Res.string.msg_statistic_detail_date)
+
+                                    else ->
+                                        stringResource(Res.string.msg_statistic_detail_period_label)
+                                },
+                            periodSummaryText =
+                                when (detail.periodType) {
+                                    StatisticDetailPeriod.DAY -> detail.date
+
+                                    else ->
+                                        if (detail.periodStart == detail.periodEnd) {
+                                            detail.periodStart
+                                        } else {
+                                            stringResource(
+                                                Res.string.msg_statistic_detail_period_range,
+                                                detail.periodStart,
+                                                detail.periodEnd,
+                                            )
+                                        }
+                                },
                             orderCount = detail.orderCount,
                             orderProceedsTotal = detail.orderProceedsTotal,
                             orderProceedsProducts = detail.orderProceedsProducts,

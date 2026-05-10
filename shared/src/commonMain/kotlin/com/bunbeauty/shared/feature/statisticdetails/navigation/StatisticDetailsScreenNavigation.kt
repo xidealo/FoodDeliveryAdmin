@@ -8,19 +8,22 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
+import com.bunbeauty.shared.feature.statistic.TimeIntervalCode
 import com.bunbeauty.shared.feature.statisticdetails.StatisticDetailsRouteScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class StatisticDetailsScreenDestination(
     val date: String,
+    val period: TimeIntervalCode = TimeIntervalCode.DAY,
 )
 
 fun NavController.navigateToStatisticDetailsScreen(
     date: String,
+    period: TimeIntervalCode,
     navOptions: NavOptions,
 ) = navigate(
-    route = StatisticDetailsScreenDestination(date = date),
+    route = StatisticDetailsScreenDestination(date = date, period = period),
     navOptions = navOptions,
 )
 

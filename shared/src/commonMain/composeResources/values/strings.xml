@@ -108,6 +108,8 @@
     <string name="msg_product_statistic_cost">Стоимость</string>
     <string name="title_statistic_details">Статистика. Детали</string>
     <string name="msg_statistic_detail_date">Дата</string>
+    <string name="msg_statistic_detail_period_label">Период</string>
+    <string name="msg_statistic_detail_period_range">%1$s — %2$s</string>
     <string name="msg_statistic_detail_orders_total_label">Сумма заказов</string>
     <string name="msg_statistic_detail_orders_without_delivery">Сумма заказов без учета доставки</string>
     <string name="msg_statistic_detail_delivery_order_count_label">Число заказов с доставкой</string>

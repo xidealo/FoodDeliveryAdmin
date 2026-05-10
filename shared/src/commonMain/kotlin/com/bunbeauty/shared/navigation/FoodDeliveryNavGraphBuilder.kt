@@ -401,9 +401,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     statisticScreenRoute(
         goBack = navController::navigateUp,
-        goToStatisticDetails = { dateIso ->
+        goToStatisticDetails = { dateIso, period ->
             navController.navigateToStatisticDetailsScreen(
                 date = dateIso,
+                period = period,
                 navOptions = emptyNavOptions,
             )
         },

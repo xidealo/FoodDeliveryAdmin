@@ -14,13 +14,12 @@ class StatisticViewModel(
     private val getCafeUseCase: GetCafeUseCase,
     private val getStatisticUseCase: GetStatisticUseCase,
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
-    initState =
-        Statistic.DataState(
-            loadingStatistic = false,
-            state = Statistic.DataState.State.LOADING,
-        ),
-) {
-
+        initState =
+            Statistic.DataState(
+                loadingStatistic = false,
+                state = Statistic.DataState.State.LOADING,
+            ),
+    ) {
     init {
         updateData()
     }
@@ -68,9 +67,6 @@ class StatisticViewModel(
         startMillis: Long,
         dataState: Statistic.DataState,
     ) {
-        if (dataState.selectedTimeInterval != TimeIntervalCode.DAY) {
-            return
-        }
         val offset = dataState.cafeOffsetHours ?: return
         val dateIso =
             DateTimeUtil.formatDateTime(
@@ -79,7 +75,10 @@ class StatisticViewModel(
                 offset = offset,
             )
         sendEvent {
-            Statistic.Event.NavigateToDayDetail(dateIso = dateIso)
+            Statistic.Event.NavigateToDayDetail(
+                dateIso = dateIso,
+                period = dataState.selectedTimeInterval,
+            )
         }
     }
 

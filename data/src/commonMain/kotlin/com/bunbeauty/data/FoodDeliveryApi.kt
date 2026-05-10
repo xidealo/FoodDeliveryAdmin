@@ -39,6 +39,7 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
 import common.ApiResult
 import kotlinx.coroutines.flow.Flow
 
@@ -122,8 +123,8 @@ interface FoodDeliveryApi {
 
     suspend fun getStatisticDayDetail(
         token: String,
-        companyUuid: String,
         date: String,
+        period: StatisticDetailPeriod,
     ): StatisticDayDetailServer
 
     // ORDER

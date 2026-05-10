@@ -3,6 +3,9 @@ package com.bunbeauty.domain.model.statistic
 data class StatisticDayDetail(
     val companyUuid: String,
     val date: String,
+    val periodType: StatisticDetailPeriod,
+    val periodStart: String,
+    val periodEnd: String,
     val orderCount: Int,
     val orderProceedsTotal: Int,
     val orderProceedsProducts: Int,

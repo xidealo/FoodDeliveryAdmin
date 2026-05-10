@@ -39,6 +39,7 @@ import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
 import common.ApiError
 import common.ApiResult
 import common.Constants.WEB_SOCKET_TAG
@@ -259,8 +260,8 @@ class FoodDeliveryApiImpl(
 
     override suspend fun getStatisticDayDetail(
         token: String,
-        companyUuid: String,
         date: String,
+        period: StatisticDetailPeriod,
     ): StatisticDayDetailServer =
         when (
             val result =
@@ -268,10 +269,12 @@ class FoodDeliveryApiImpl(
                     path = "statistic/day-detail",
                     token = token,
                     parameters =
-                        listOf(
-                            "companyUuid" to companyUuid,
-                            "date" to date,
-                        ),
+                        buildList {
+                            add("date" to date)
+                            if (period != StatisticDetailPeriod.DAY) {
+                                add("period" to period.name)
+                            }
+                        },
                 )
         ) {
             is ApiResult.Success -> result.data

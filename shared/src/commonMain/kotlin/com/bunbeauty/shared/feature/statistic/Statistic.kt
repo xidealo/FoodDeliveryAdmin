@@ -1,8 +1,17 @@
 package com.bunbeauty.shared.feature.statistic
 
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
 import com.bunbeauty.shared.viewmodel.base.BaseAction
 import com.bunbeauty.shared.viewmodel.base.BaseDataState
 import com.bunbeauty.shared.viewmodel.base.BaseEvent
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class TimeIntervalCode {
+    DAY,
+    WEEK,
+    MONTH,
+}
 
 interface Statistic {
     data class DataState(
@@ -32,6 +41,7 @@ interface Statistic {
 
     sealed interface Action : BaseAction {
         data object LoadStatisticClick : Action
+
         data object Reload : Action
 
         data object SelectTimeIntervalClick : Action
@@ -54,12 +64,14 @@ interface Statistic {
 
         data class NavigateToDayDetail(
             val dateIso: String,
+            val period: TimeIntervalCode,
         ) : Event
     }
 }
 
-enum class TimeIntervalCode {
-    DAY,
-    WEEK,
-    MONTH,
-}
+fun TimeIntervalCode.toStatisticDetailPeriod(): StatisticDetailPeriod =
+    when (this) {
+        TimeIntervalCode.DAY -> StatisticDetailPeriod.DAY
+        TimeIntervalCode.WEEK -> StatisticDetailPeriod.WEEK
+        TimeIntervalCode.MONTH -> StatisticDetailPeriod.MONTH
+    }

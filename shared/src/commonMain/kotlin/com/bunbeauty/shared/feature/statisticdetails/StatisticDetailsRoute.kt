@@ -72,10 +72,11 @@ fun StatisticDetailsRouteScreen(
             }
         }
 
-    LaunchedEffect(route.date) {
+    LaunchedEffect(route.date, route.period) {
         onAction(
             StatisticDetails.Action.Init(
                 dateIso = route.date,
+                period = route.period,
             ),
         )
     }
@@ -191,8 +192,8 @@ private fun StatisticDetailsInfoCard(
                     Modifier
                         .padding(start = 16.dp)
                         .weight(1f),
-                hint = stringResource(Res.string.msg_statistic_detail_date),
-                info = uiState.dateIso,
+                hint = uiState.periodHintText,
+                info = uiState.periodSummaryText,
             )
         }
         Row(
@@ -361,7 +362,8 @@ private fun StatisticDetailsScreenSuccessPreview() {
                 StatisticDetailsViewState(
                     state =
                         StatisticDetailsViewState.State.Success(
-                            dateIso = "2024-05-01",
+                            periodHintText = stringResource(Res.string.msg_statistic_detail_date),
+                            periodSummaryText = "2024-05-01",
                             orderCount = 42,
                             orderProceedsTotal = 125_000,
                             orderProceedsProducts = 98_000,

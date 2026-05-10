@@ -1,12 +1,13 @@
 package com.bunbeauty.shared.feature.statisticdetails
 
 import com.bunbeauty.domain.model.statistic.StatisticDayDetail
+import com.bunbeauty.shared.feature.statistic.TimeIntervalCode
 import com.bunbeauty.shared.viewmodel.base.BaseAction
 import com.bunbeauty.shared.viewmodel.base.BaseEvent
 import com.bunbeauty.shared.viewmodel.base.BaseViewDataState
 
 /**
- * Договор MVI для экрана детализации статистики за день.
+ * Договор MVI для экрана детальной статистики (день / неделя / месяц по API).
  * Разметка и `@Preview` — в файле `StatisticDetailsRoute.kt` ([StatisticDetailsRouteScreen] и превью рядом с ним).
  */
 interface StatisticDetails {
@@ -14,6 +15,7 @@ interface StatisticDetails {
         val state: State,
         val dayDetail: StatisticDayDetail? = null,
         val loadedDateIso: String = "",
+        val loadedPeriod: TimeIntervalCode = TimeIntervalCode.DAY,
     ) : BaseViewDataState {
         enum class State {
             LOADING,
@@ -25,6 +27,7 @@ interface StatisticDetails {
     sealed interface Action : BaseAction {
         data class Init(
             val dateIso: String,
+            val period: TimeIntervalCode,
         ) : Action
 
         data object Retry : Action

@@ -49,7 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun StatisticRouteScreen(
     viewModel: StatisticViewModel = koinViewModel(),
     goBack: () -> Unit,
-    goToStatisticDetails: (String) -> Unit,
+    goToStatisticDetails: (String, TimeIntervalCode) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -85,7 +85,7 @@ fun StatisticRouteScreen(
 private fun StatisticEffect(
     effects: List<Statistic.Event>,
     goBack: () -> Unit,
-    goToStatisticDetails: (String) -> Unit,
+    goToStatisticDetails: (String, TimeIntervalCode) -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
@@ -96,7 +96,7 @@ private fun StatisticEffect(
                 }
 
                 is Statistic.Event.NavigateToDayDetail -> {
-                    goToStatisticDetails(effect.dateIso)
+                    goToStatisticDetails(effect.dateIso, effect.period)
                 }
             }
         }

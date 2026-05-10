@@ -2,6 +2,7 @@ package usecase
 
 import com.bunbeauty.domain.model.statistic.StatisticDayDetail
 import com.bunbeauty.domain.model.statistic.StatisticDayProduct
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
 import com.bunbeauty.domain.repo.StatisticRepo
 import com.bunbeauty.domain.usecase.GetStatisticDayDetailUseCase
 import common.Constants.RUBLE_CURRENCY
@@ -33,6 +34,9 @@ class GetStatisticDayDetailUseCaseTest {
                 StatisticDayDetail(
                     companyUuid = "company-uuid",
                     date = date,
+                    periodType = StatisticDetailPeriod.DAY,
+                    periodStart = date,
+                    periodEnd = date,
                     orderCount = 1,
                     orderProceedsTotal = 100,
                     orderProceedsProducts = 90,
@@ -53,14 +57,14 @@ class GetStatisticDayDetailUseCaseTest {
                     currency = RUBLE_CURRENCY,
                 )
             coEvery {
-                statisticRepo.getStatisticDayDetail(date)
+                statisticRepo.getStatisticDayDetail(date, StatisticDetailPeriod.DAY)
             } returns expected
 
-            val result = useCase(date)
+            val result = useCase(date, StatisticDetailPeriod.DAY)
 
             assertEquals(expected, result)
             coVerify(exactly = 1) {
-                statisticRepo.getStatisticDayDetail(date)
+                statisticRepo.getStatisticDayDetail(date, StatisticDetailPeriod.DAY)
             }
         }
 }

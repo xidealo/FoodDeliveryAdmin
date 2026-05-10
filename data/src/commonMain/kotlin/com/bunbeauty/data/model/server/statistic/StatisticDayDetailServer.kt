@@ -6,6 +6,9 @@ import kotlinx.serialization.Serializable
 data class StatisticDayDetailServer(
     val companyUuid: String,
     val date: String,
+    val periodType: String? = null,
+    val periodStart: String? = null,
+    val periodEnd: String? = null,
     val orderCount: Int,
     val orderProceedsTotal: Int,
     val orderProceedsProducts: Int,
