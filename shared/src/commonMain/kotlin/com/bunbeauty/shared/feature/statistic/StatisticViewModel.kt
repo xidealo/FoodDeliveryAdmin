@@ -14,31 +14,31 @@ class StatisticViewModel(
     private val getCafeUseCase: GetCafeUseCase,
     private val getStatisticUseCase: GetStatisticUseCase,
 ) : BaseStateViewModel<Statistic.DataState, Statistic.Action, Statistic.Event>(
-        initState =
-            Statistic.DataState(
-                loadingStatistic = false,
-                state = Statistic.DataState.State.LOADING,
-            ),
-    ) {
+    initState =
+        Statistic.DataState(
+            loadingStatistic = false,
+            state = Statistic.DataState.State.LOADING,
+        ),
+) {
+
+    init {
+        updateData()
+    }
+
     override fun reduce(
         action: Statistic.Action,
         dataState: Statistic.DataState,
     ) {
         when (action) {
-            is Statistic.Action.Init -> {
-                setState {
-                    copy(
-                        selectedTimeInterval = TimeIntervalCode.MONTH,
-                    )
-                }
-                updateData()
-            }
-
             Statistic.Action.LoadStatisticClick -> {
                 loadStatistic(
                     cafeUuid = dataState.cafeUuid,
                     period = dataState.selectedTimeInterval,
                 )
+            }
+
+            Statistic.Action.Reload -> {
+                updateData()
             }
 
             Statistic.Action.SelectTimeIntervalClick -> {

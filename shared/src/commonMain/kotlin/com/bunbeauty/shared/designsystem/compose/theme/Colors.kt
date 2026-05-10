@@ -11,6 +11,7 @@ object Colors {
     val Grey2 = Color(0xFFC1C1C1)
     val Grey3 = Color(0xFFA7A5A5)
     val Cream = Color(0xFFF2F1F6)
+    val SurfaceVariant = Color(0xFFFCF5ED)
     val Red = Color(0xFFB1021D)
     val Purple = Color(0xFF815FB1)
     val Blue1 = Color(0xFF2985F1)

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import com.bunbeauty.shared.viewmodel.base.BaseViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlin.math.round
 
 @Immutable
 data class StatisticDetailsViewState(
@@ -59,7 +60,7 @@ internal fun StatisticDetails.DataState.toViewState(): StatisticDetailsViewState
                             orderCount = detail.orderCount,
                             orderProceedsTotal = detail.orderProceedsTotal,
                             orderProceedsProducts = detail.orderProceedsProducts,
-                            averageCheck = detail.averageCheck,
+                            averageCheck = round(detail.averageCheck),
                             deliveryOrderCount = detail.deliveryOrderCount,
                             pickupOrderCount = detail.pickupOrderCount,
                             currency = detail.currency,

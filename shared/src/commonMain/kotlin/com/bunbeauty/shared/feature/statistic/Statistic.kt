@@ -31,9 +31,8 @@ interface Statistic {
     }
 
     sealed interface Action : BaseAction {
-        data object Init : Action
-
         data object LoadStatisticClick : Action
+        data object Reload : Action
 
         data object SelectTimeIntervalClick : Action
 

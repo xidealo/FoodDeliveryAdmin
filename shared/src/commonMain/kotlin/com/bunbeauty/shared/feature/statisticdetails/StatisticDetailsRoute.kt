@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -14,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,8 +20,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
-import com.bunbeauty.shared.designsystem.compose.element.image.AdminAsyncImage
-import com.bunbeauty.shared.designsystem.compose.element.image.ImageData
+import com.bunbeauty.shared.designsystem.compose.element.card.AdminCardDefaults
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
@@ -33,8 +30,6 @@ import com.bunbeauty.shared.feature.statisticdetails.navigation.StatisticDetails
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.common_preview_statistic_detail_product_1
 import fooddeliveryadmin.shared.generated.resources.common_preview_statistic_detail_product_2
-import fooddeliveryadmin.shared.generated.resources.default_product
-import fooddeliveryadmin.shared.generated.resources.description_statistic_product_photo
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_average_check
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_detail_amount_value
@@ -177,7 +172,6 @@ private fun StatisticDetailsInfoCard(
     modifier: Modifier = Modifier,
     uiState: StatisticDetailsViewState.State.Success,
 ) {
-
     Column(
         modifier =
             Modifier
@@ -282,40 +276,28 @@ private fun StatisticDetailsProductRow(product: StatisticDetailsViewState.State.
     AdminCard(
         modifier = Modifier.fillMaxWidth(),
         clickable = false,
+        colors = AdminCardDefaults.cardVariantColors,
+        elevated = false,
     ) {
-        Row(
+        Column(
             modifier =
                 Modifier
+                    .fillMaxWidth()
                     .padding(
                         horizontal = 16.dp,
                         vertical = 8.dp,
                     ),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            val imageData =
-                if (product.photoLink.isBlank()) {
-                    ImageData.LocalId(Res.drawable.default_product)
-                } else {
-                    ImageData.HttpUrl(product.photoLink)
-                }
-            AdminAsyncImage(
-                contentDescription = Res.string.description_statistic_product_photo,
-                imageData = imageData,
-                modifier = Modifier.size(56.dp),
-            )
             Column(
-                modifier =
-                    Modifier
-                        .padding(start = 12.dp)
-                        .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = product.name,
-                    style = AdminTheme.typography.titleSmall,
+                    style = AdminTheme.typography.titleSmall.bold,
                     color = AdminTheme.colors.main.onSurface,
                 )
                 Text(
-                    modifier = Modifier.padding(top = 4.dp),
                     text =
                         stringResource(
                             Res.string.msg_statistic_detail_product_sold,
@@ -324,18 +306,17 @@ private fun StatisticDetailsProductRow(product: StatisticDetailsViewState.State.
                     style = AdminTheme.typography.bodySmall,
                     color = AdminTheme.colors.main.onSurface,
                 )
-                Text(
-                    modifier = Modifier.padding(top = 2.dp),
-                    text =
-                        stringResource(
-                            Res.string.msg_statistic_detail_product_sum,
-                            product.proceeds,
-                            product.currency,
-                        ),
-                    style = AdminTheme.typography.bodySmall.bold,
-                    color = AdminTheme.colors.main.onSurface,
-                )
             }
+            Text(
+                text =
+                    stringResource(
+                        Res.string.msg_statistic_detail_product_sum,
+                        product.proceeds,
+                        product.currency,
+                    ),
+                style = AdminTheme.typography.bodySmall.bold,
+                color = AdminTheme.colors.main.onSurface,
+            )
         }
     }
 }

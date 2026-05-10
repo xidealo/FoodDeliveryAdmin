@@ -67,10 +67,6 @@ fun StatisticRouteScreen(
             }
         }
 
-    LaunchedEffect(Unit) {
-        onAction(Statistic.Action.Init)
-    }
-
     StatisticEffect(
         effects = effects,
         consumeEffects = consumeEffects,
@@ -139,7 +135,7 @@ private fun StatisticScreen(
                     mainTextId = Res.string.title_common_can_not_load_data,
                     extraTextId = Res.string.msg_common_check_connection_and_retry,
                     onClick = {
-                        onAction(Statistic.Action.Init)
+                        onAction(Statistic.Action.Reload)
                     },
                 )
             }
