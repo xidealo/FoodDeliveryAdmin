@@ -49,6 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun StatisticRouteScreen(
     viewModel: StatisticViewModel = koinViewModel(),
     goBack: () -> Unit,
+    goToStatisticDetails: (String) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -74,6 +75,7 @@ fun StatisticRouteScreen(
         effects = effects,
         consumeEffects = consumeEffects,
         goBack = goBack,
+        goToStatisticDetails = goToStatisticDetails,
     )
 
     StatisticScreen(
@@ -87,6 +89,7 @@ fun StatisticRouteScreen(
 private fun StatisticEffect(
     effects: List<Statistic.Event>,
     goBack: () -> Unit,
+    goToStatisticDetails: (String) -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
@@ -94,6 +97,10 @@ private fun StatisticEffect(
             when (effect) {
                 Statistic.Event.GoBack -> {
                     goBack()
+                }
+
+                is Statistic.Event.NavigateToDayDetail -> {
+                    goToStatisticDetails(effect.dateIso)
                 }
             }
         }
@@ -165,6 +172,9 @@ private fun StatisticScreen(
                         StatisticSuccessScreen(
                             state = state.state,
                             onAction = onAction,
+                            dayRowsClickable =
+                                state.state.selectedIntervalCode ==
+                                    TimeIntervalCode.DAY,
                         )
                     }
                 }
@@ -178,6 +188,7 @@ private fun StatisticScreen(
 private fun StatisticSuccessScreen(
     state: StatisticViewState.State.Success,
     onAction: (Statistic.Action) -> Unit,
+    dayRowsClickable: Boolean,
 ) {
     val listState = rememberLazyListState()
 
@@ -198,7 +209,17 @@ private fun StatisticSuccessScreen(
                 statisticItemModel.startMillis
             },
         ) { statisticItemModel ->
-            StatisticItem(statisticItemModel)
+            StatisticItem(
+                statisticItemModel = statisticItemModel,
+                dayClickable = dayRowsClickable,
+                onDayClick = {
+                    onAction(
+                        Statistic.Action.DayRowClick(
+                            startMillis = statisticItemModel.startMillis,
+                        ),
+                    )
+                },
+            )
         }
     }
 
@@ -245,10 +266,15 @@ private fun TimeIntervalListBottomSheet(
 
 @Suppress("NonSkippableComposable")
 @Composable
-private fun StatisticItem(statisticItemModel: StatisticViewState.State.Success.StatisticItemModel) {
+private fun StatisticItem(
+    statisticItemModel: StatisticViewState.State.Success.StatisticItemModel,
+    dayClickable: Boolean,
+    onDayClick: () -> Unit,
+) {
     AdminCard(
         modifier = Modifier.fillMaxWidth(),
-        clickable = false,
+        clickable = dayClickable,
+        onClick = onDayClick,
     ) {
         Row(
             modifier =
@@ -330,6 +356,7 @@ private fun StatisticScreenPreview() {
                                 ),
                             loadingStatistic = false,
                             cafeAddress = "Кимры чупки 22 в",
+                            selectedIntervalCode = TimeIntervalCode.MONTH,
                         ),
                 ),
             onAction = {},

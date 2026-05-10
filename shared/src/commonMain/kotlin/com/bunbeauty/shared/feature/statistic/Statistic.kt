@@ -13,6 +13,7 @@ interface Statistic {
         val loadingStatistic: Boolean,
         val cafeAddress: String? = null,
         val cafeUuid: String? = null,
+        val cafeOffsetHours: Int? = null,
     ) : BaseDataState {
         enum class State {
             LOADING,
@@ -43,10 +44,18 @@ interface Statistic {
         data class SelectedTimeInterval(
             val timeInterval: TimeIntervalCode,
         ) : Action
+
+        data class DayRowClick(
+            val startMillis: Long,
+        ) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBack : Event
+
+        data class NavigateToDayDetail(
+            val dateIso: String,
+        ) : Event
     }
 }
 

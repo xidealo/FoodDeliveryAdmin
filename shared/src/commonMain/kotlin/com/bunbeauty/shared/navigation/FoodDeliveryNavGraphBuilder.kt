@@ -63,6 +63,7 @@ import com.bunbeauty.shared.feature.settings.navigation.navigateToSettingsScreen
 import com.bunbeauty.shared.feature.settings.navigation.settingsScreenRoute
 import com.bunbeauty.shared.feature.statistic.navigation.navigateToStatisticScreen
 import com.bunbeauty.shared.feature.statistic.navigation.statisticScreenRoute
+import com.bunbeauty.shared.feature.statisticdetails.navigation.navigateToStatisticDetailsScreen
 import com.bunbeauty.shared.feature.statisticdetails.navigation.statisticDetailsScreenRoute
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
@@ -400,6 +401,12 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     )
     statisticScreenRoute(
         goBack = navController::navigateUp,
+        goToStatisticDetails = { dateIso ->
+            navController.navigateToStatisticDetailsScreen(
+                date = dateIso,
+                navOptions = emptyNavOptions,
+            )
+        },
     )
 
     orderDetailsScreenRoute(

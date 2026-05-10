@@ -8,6 +8,7 @@ import com.bunbeauty.data.mapper.city.CityMapper
 import com.bunbeauty.data.mapper.nonworkingday.NonWorkingDayMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.ServerOrderMapper
+import com.bunbeauty.data.mapper.statistic.StatisticDayDetailMapper
 import com.bunbeauty.data.mapper.statistic.StatisticMapper
 import com.bunbeauty.data.repository.AdditionRepository
 import org.koin.dsl.module
@@ -34,6 +35,10 @@ fun mapperModule() =
 
         single {
             StatisticMapper()
+        }
+
+        single {
+            StatisticDayDetailMapper()
         }
 
         single {

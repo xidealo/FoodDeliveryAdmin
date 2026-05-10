@@ -12,9 +12,17 @@ import com.bunbeauty.shared.feature.statisticdetails.StatisticDetailsRouteScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object StatisticDetailsScreenDestination
+data class StatisticDetailsScreenDestination(
+    val date: String,
+)
 
-fun NavController.navigateToStatisticDetailsScreen(navOptions: NavOptions) = navigate(route = StatisticDetailsScreenDestination, navOptions)
+fun NavController.navigateToStatisticDetailsScreen(
+    date: String,
+    navOptions: NavOptions,
+) = navigate(
+    route = StatisticDetailsScreenDestination(date = date),
+    navOptions = navOptions,
+)
 
 fun NavGraphBuilder.statisticDetailsScreenRoute(goBack: () -> Unit) {
     composable<StatisticDetailsScreenDestination>(
@@ -44,6 +52,7 @@ fun NavGraphBuilder.statisticDetailsScreenRoute(goBack: () -> Unit) {
     ) {
         StatisticDetailsRouteScreen(
             goBack = goBack,
+            backStackEntry = it,
         )
     }
 }

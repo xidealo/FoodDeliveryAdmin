@@ -16,7 +16,10 @@ data object StatisticScreenDestination
 
 fun NavController.navigateToStatisticScreen(navOptions: NavOptions) = navigate(route = StatisticScreenDestination, navOptions)
 
-fun NavGraphBuilder.statisticScreenRoute(goBack: () -> Unit) {
+fun NavGraphBuilder.statisticScreenRoute(
+    goBack: () -> Unit,
+    goToStatisticDetails: (String) -> Unit,
+) {
     composable<StatisticScreenDestination>(
         enterTransition = {
             slideIntoContainer(
@@ -44,6 +47,7 @@ fun NavGraphBuilder.statisticScreenRoute(goBack: () -> Unit) {
     ) {
         StatisticRouteScreen(
             goBack = goBack,
+            goToStatisticDetails = goToStatisticDetails,
         )
     }
 }

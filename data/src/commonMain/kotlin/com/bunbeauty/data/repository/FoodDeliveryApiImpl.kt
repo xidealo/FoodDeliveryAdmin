@@ -34,6 +34,7 @@ import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
+import com.bunbeauty.data.model.server.statistic.StatisticDayDetailServer
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.user.UserResponse
@@ -255,6 +256,21 @@ class FoodDeliveryApiImpl(
                 header("Authorization", "Bearer $token")
             }.body()
     }
+
+    override suspend fun getStatisticDayDetail(
+        token: String,
+        companyUuid: String,
+        date: String,
+    ): StatisticDayDetailServer =
+        client
+            .get {
+                url {
+                    path("statistic", "day-detail")
+                }
+                parameter("companyUuid", companyUuid)
+                parameter("date", date)
+                header("Authorization", "Bearer $token")
+            }.body()
 
     override suspend fun getUpdatedOrderFlowByCafeUuid(
         token: String,

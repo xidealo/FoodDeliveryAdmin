@@ -23,6 +23,7 @@ import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
+import com.bunbeauty.domain.usecase.GetStatisticDayDetailUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.domain.usecase.UpdateVisibleMenuProductUseCase
@@ -191,6 +192,13 @@ fun useCaseModule() =
             GetStatisticUseCase(
                 dataStoreRepo = get(),
                 statisticRepo = get(),
+            )
+        }
+
+        factory {
+            GetStatisticDayDetailUseCase(
+                statisticRepo = get(),
+                dataStoreRepo = get(),
             )
         }
 

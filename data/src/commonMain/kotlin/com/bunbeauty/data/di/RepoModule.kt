@@ -61,6 +61,7 @@ fun repositoryModule() =
             StatisticRepository(
                 networkConnector = get(),
                 statisticMapper = get(),
+                statisticDayDetailMapper = get(),
             )
         }
         single<CafeRepo> {

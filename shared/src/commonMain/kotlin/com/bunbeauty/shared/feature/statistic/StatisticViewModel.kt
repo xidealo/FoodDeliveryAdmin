@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
+import com.bunbeauty.domain.util.datetime.PATTERN_ISO_DATE
 import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
@@ -54,6 +55,31 @@ class StatisticViewModel(
                 onTimeIntervalSelected(
                     timeInterval = action.timeInterval,
                 )
+
+            is Statistic.Action.DayRowClick ->
+                onDayRowClicked(
+                    startMillis = action.startMillis,
+                    dataState = dataState,
+                )
+        }
+    }
+
+    private fun onDayRowClicked(
+        startMillis: Long,
+        dataState: Statistic.DataState,
+    ) {
+        if (dataState.selectedTimeInterval != TimeIntervalCode.DAY) {
+            return
+        }
+        val offset = dataState.cafeOffsetHours ?: return
+        val dateIso =
+            DateTimeUtil.formatDateTime(
+                millis = startMillis,
+                pattern = PATTERN_ISO_DATE,
+                offset = offset,
+            )
+        sendEvent {
+            Statistic.Event.NavigateToDayDetail(dateIso = dateIso)
         }
     }
 
@@ -158,6 +184,7 @@ class StatisticViewModel(
                     copy(
                         cafeAddress = cafe.address,
                         cafeUuid = cafe.uuid,
+                        cafeOffsetHours = cafe.offset,
                         state = Statistic.DataState.State.SUCCESS,
                     )
                 }
