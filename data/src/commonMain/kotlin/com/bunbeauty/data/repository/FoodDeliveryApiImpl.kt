@@ -228,6 +228,7 @@ class FoodDeliveryApiImpl(
                 header("Authorization", "Bearer $token")
             }.body()
     }
+
     override suspend fun getStatisticDayDetail(
         token: String,
         date: String,
@@ -251,6 +252,7 @@ class FoodDeliveryApiImpl(
             is ApiResult.Error ->
                 throw IllegalStateException(result.apiError.message)
         }
+
     override suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String,
