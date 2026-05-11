@@ -10,7 +10,6 @@ import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -23,7 +22,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
-import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
@@ -56,24 +54,6 @@ actual fun platformDataModule() =
                 }
                 install(WebSockets) {
                     pingInterval = 20.seconds
-                }
-                install(HttpRequestRetry) {
-                    maxRetries = 3
-                    retryIf { request, response ->
-                        val isRetryIgnoredRequest =
-                            request.url.protocol == URLProtocol.HTTPS &&
-                                request.url.host == "fooddelivery-xidealo.amvera.io" &&
-                                request.url.encodedPath in
-                                listOf(
-                                    "/user/login",
-                                    "/menu_product_to_addition_group",
-                                )
-
-                        !isRetryIgnoredRequest && !response.status.isSuccess()
-                    }
-                    delayMillis { retry ->
-                        retry * 3000L
-                    } // retries in 3, 6, 9, etc. seconds
                 }
                 install(Logging) {
                     logger =

@@ -1,4 +1,5 @@
 package com.bunbeauty.data.repository
+
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
@@ -40,13 +41,9 @@ import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
 import common.ApiError
 import common.ApiResult
-import common.Constants.WEB_SOCKET_TAG
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
-import io.ktor.client.plugins.websocket.WebSocketException
-import io.ktor.client.plugins.websocket.wss
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -58,39 +55,13 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders.Authorization
-import io.ktor.http.HttpMethod
 import io.ktor.http.path
-import io.ktor.websocket.CloseReason
-import io.ktor.websocket.Frame
-import io.ktor.websocket.close
-import io.ktor.websocket.readReason
-import io.ktor.websocket.readText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.channels.ClosedReceiveChannelException
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 
 class FoodDeliveryApiImpl(
     private val client: HttpClient,
-    private val json: Json,
 ) : FoodDeliveryApi {
-    private var webSocketSession: DefaultClientWebSocketSession? = null
-
-    private val mutableUpdatedOrderFlow = MutableSharedFlow<ApiResult<OrderServer>>()
-
-    private val mutex = Mutex()
-
-    private var webSocketSessionOpened = false
-
     override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> =
         post(
             path = "user/login",
@@ -254,99 +225,6 @@ class FoodDeliveryApiImpl(
 
                 header("Authorization", "Bearer $token")
             }.body()
-    }
-
-    override suspend fun getUpdatedOrderFlowByCafeUuid(
-        token: String,
-        cafeUuid: String,
-    ): Flow<ApiResult<OrderServer>> {
-        mutex.withLock {
-            if (!webSocketSessionOpened) {
-                subscribeOnOrderUpdates(token, cafeUuid)
-            }
-        }
-        return mutableUpdatedOrderFlow.asSharedFlow()
-    }
-
-    private fun subscribeOnOrderUpdates(
-        token: String,
-        cafeUuid: String,
-    ) {
-        CoroutineScope(SupervisorJob() + Default).launch {
-            try {
-                webSocketSessionOpened = true
-                client.wss(
-                    HttpMethod.Get,
-                    path = "user/order/subscribe",
-                    port = 443,
-                    request = {
-                        header("Authorization", "Bearer $token")
-                        parameter("cafeUuid", cafeUuid)
-                    },
-                ) {
-                    println("$WEB_SOCKET_TAG: WebSocket connected")
-                    webSocketSession = this
-                    while (isActive) {
-                        when (val frame = incoming.receive()) {
-                            is Frame.Text -> {
-                                val text = frame.readText()
-                                println("$WEB_SOCKET_TAG: Frame.Text (${text.length} chars): $text")
-                                val serverModel =
-                                    json.decodeFromString(
-                                        OrderServer.serializer(),
-                                        text,
-                                    )
-                                mutableUpdatedOrderFlow.emit(ApiResult.Success(serverModel))
-                            }
-                            is Frame.Binary -> {
-                                println(
-                                    "$WEB_SOCKET_TAG: Frame.Binary (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
-                                )
-                            }
-                            is Frame.Ping -> send(Frame.Pong(frame.data))
-
-                            is Frame.Pong -> {
-                                println(
-                                    "$WEB_SOCKET_TAG: Frame.Pong (${frame.data.size} bytes): ${bytesPreview(frame.data)}",
-                                )
-                            }
-                            is Frame.Close -> {
-                                val reason = frame.readReason()
-                                println("$WEB_SOCKET_TAG: Frame.Close reason=$reason")
-                                break
-                            }
-
-                            else -> {
-                                println("$WEB_SOCKET_TAG else")
-                            }
-                        }
-                    }
-                }
-            } catch (exception: WebSocketException) {
-                logWsException("WebSocketException", exception)
-                mutableUpdatedOrderFlow.emit(
-                    ApiResult.Error(ApiError(message = describeException(exception))),
-                )
-            } catch (exception: ClosedReceiveChannelException) {
-                logWsException("ClosedReceiveChannelException", exception)
-            } catch (exception: Exception) {
-                logWsException("Exception", exception)
-                mutableUpdatedOrderFlow.emit(
-                    ApiResult.Error(ApiError(message = describeException(exception))),
-                )
-            } finally {
-                webSocketSessionOpened = false
-            }
-        }
-    }
-
-    override suspend fun unsubscribeOnOrderList(message: String) {
-        if (webSocketSession != null) {
-            webSocketSession?.close(CloseReason(CloseReason.Codes.NORMAL, message))
-            webSocketSession = null
-
-            println("$WEB_SOCKET_TAG: webSocketSession closed ($message)")
-        }
     }
 
     override suspend fun getOrderListByCafeUuid(
@@ -666,60 +544,4 @@ class FoodDeliveryApiImpl(
         } catch (exception: Throwable) {
             ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
         }
-
-    private fun logWsException(
-        label: String,
-        throwable: Throwable,
-    ) {
-        println(
-            "$WEB_SOCKET_TAG: $label -> ${describeException(throwable)}\n" +
-                throwable.stackTraceToString(),
-        )
-    }
-
-    private fun describeException(throwable: Throwable): String {
-        val parts = mutableListOf<String>()
-        var current: Throwable? = throwable
-        var depth = 0
-        while (current != null && depth < 5) {
-            val className = current::class.simpleName ?: "Throwable"
-            val msg = current.message ?: "<no message>"
-            parts += if (depth == 0) "$className: $msg" else "caused by $className: $msg"
-            current = current.cause?.takeIf { it !== current }
-            depth++
-        }
-        return parts.joinToString(" | ")
-    }
-
-    private fun bytesPreview(
-        bytes: ByteArray,
-        maxBytes: Int = 64,
-    ): String {
-        if (bytes.isEmpty()) return "<empty>"
-        val preview = bytes.take(maxBytes).toByteArray()
-
-        val hex =
-            preview.joinToString(separator = " ") { b ->
-                (b.toInt() and 0xFF).toString(16).padStart(2, '0')
-            }
-
-        val utf8 =
-            runCatching { preview.decodeToString() }
-                .getOrNull()
-                ?.replace("\n", "\\n")
-                ?.replace("\r", "\\r")
-                ?.replace("\t", "\\t")
-
-        return buildString {
-            append("hex=[")
-            append(hex)
-            if (bytes.size > maxBytes) append(" …")
-            append("]")
-            if (!utf8.isNullOrBlank()) {
-                append(" utf8=\"")
-                append(utf8)
-                append("\"")
-            }
-        }
-    }
 }

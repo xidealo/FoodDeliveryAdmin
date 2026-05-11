@@ -12,6 +12,7 @@ interface OrderList {
         val orderListState: State,
         val orderList: List<Order>,
         val hasConnectionError: Boolean,
+        val loadingOrderUpdates: Boolean,
         val cafe: Cafe?,
         val loadingOrderList: Boolean,
     ) : BaseDataState {
