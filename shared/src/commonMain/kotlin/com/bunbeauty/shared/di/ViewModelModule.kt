@@ -186,8 +186,8 @@ fun viewModelModule() =
         viewModel {
             OrderListViewModel(
                 getCafeUseCase = get(),
-                getOrderListFlow = get(),
-                getOrderErrorFlow = get(),
+                observeOrderListStream = get(),
+                unsubscribeOrderUpdates = get(),
             )
         }
 

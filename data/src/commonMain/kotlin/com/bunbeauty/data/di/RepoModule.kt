@@ -15,6 +15,8 @@ import com.bunbeauty.data.repository.NonWorkingDayRepository
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.data.repository.SettingsRepository
 import com.bunbeauty.data.repository.StatisticRepository
+import com.bunbeauty.data.websocket.OrderUpdatesWebSocket
+import com.bunbeauty.data.websocket.OrderUpdatesWebSocketImpl
 import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.repo.AdditionGroupRepo
 import com.bunbeauty.domain.repo.AdditionRepo
@@ -42,6 +44,11 @@ fun repositoryModule() =
         single<FoodDeliveryApi> {
             FoodDeliveryApiImpl(
                 client = get(),
+            )
+        }
+        single<OrderUpdatesWebSocket> {
+            OrderUpdatesWebSocketImpl(
+                client = get(),
                 json = get(),
             )
         }
@@ -53,7 +60,8 @@ fun repositoryModule() =
         }
         single<OrderRepo> {
             OrderRepository(
-                networkConnector = get(),
+                foodDeliveryApi = get(),
+                orderUpdatesWebSocket = get(),
                 serverOrderMapper = get(),
             )
         }

@@ -1,8 +1,6 @@
 package com.bunbeauty.domain.feature.order
 
 import com.bunbeauty.domain.enums.OrderStatus
-import com.bunbeauty.domain.model.order.Order
-import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import kotlinx.coroutines.flow.Flow
 
@@ -13,15 +11,12 @@ interface OrderRepo {
         status: OrderStatus,
     )
 
-    suspend fun getOrderListFlow(
+    suspend fun getOrderUpdatesStream(
         token: String,
         cafeUuid: String,
-    ): Flow<List<Order>>
+    ): Flow<OrderUpdatesStreamEvent>
 
-    suspend fun getOrderErrorFlow(
-        token: String,
-        cafeUuid: String,
-    ): Flow<OrderError>
+    suspend fun unsubscribeOrderUpdates(message: String)
 
     suspend fun loadOrderByUuid(
         token: String,
