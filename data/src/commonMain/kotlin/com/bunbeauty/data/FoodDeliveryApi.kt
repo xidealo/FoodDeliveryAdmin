@@ -39,7 +39,6 @@ import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
 import common.ApiResult
-import kotlinx.coroutines.flow.Flow
 
 interface FoodDeliveryApi {
     // LOGIN
@@ -120,13 +119,6 @@ interface FoodDeliveryApi {
     ): List<StatisticServer>
 
     // ORDER
-
-    suspend fun getUpdatedOrderFlowByCafeUuid(
-        token: String,
-        cafeUuid: String,
-    ): Flow<ApiResult<OrderServer>>
-
-    suspend fun unsubscribeOnOrderList(message: String)
 
     suspend fun getOrderListByCafeUuid(
         token: String,

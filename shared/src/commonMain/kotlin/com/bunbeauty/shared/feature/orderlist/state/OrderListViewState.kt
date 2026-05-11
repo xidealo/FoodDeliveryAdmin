@@ -19,6 +19,7 @@ data class OrderListViewState(
             val connectionError: Boolean,
             val refreshing: Boolean,
             val loadingOrderList: Boolean,
+            val loadingOrderUpdates: Boolean,
         ) : State
     }
 
