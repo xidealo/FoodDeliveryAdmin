@@ -179,7 +179,6 @@ private fun StatisticScreen(
     }
 }
 
-@Suppress("NonSkippableComposable")
 @Composable
 private fun StatisticSuccessScreen(
     state: StatisticViewState.State.Success,
