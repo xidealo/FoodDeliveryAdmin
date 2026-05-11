@@ -3,6 +3,7 @@ import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_HH_MM
 import com.bunbeauty.domain.util.datetime.PATTERN_DD_MMMM_YYYY
 import com.bunbeauty.domain.util.datetime.PATTERN_HH_MM
+import com.bunbeauty.domain.util.datetime.PATTERN_ISO_DATE
 import com.bunbeauty.domain.util.datetime.PATTERN_MMMM
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
@@ -145,6 +146,11 @@ object DateTimeUtil : IDateTimeUtil {
             PATTERN_DD_MMMM -> formatDayMonth(localDateTime)
             PATTERN_DD_MMMM_HH_MM -> formatDayMonthTime(localDateTime)
             PATTERN_DD_MMMM_YYYY -> formatFullDate(localDateTime)
+            PATTERN_ISO_DATE ->
+                "${localDateTime.year}-${
+                    localDateTime.month.number.pad()
+                }-${localDateTime.day.pad()}"
+
             else -> localDateTime.toString()
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
 import com.bunbeauty.shared.feature.statistic.StatisticRouteScreen
+import com.bunbeauty.shared.feature.statistic.TimeIntervalCode
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,7 +17,10 @@ data object StatisticScreenDestination
 
 fun NavController.navigateToStatisticScreen(navOptions: NavOptions) = navigate(route = StatisticScreenDestination, navOptions)
 
-fun NavGraphBuilder.statisticScreenRoute(goBack: () -> Unit) {
+fun NavGraphBuilder.statisticScreenRoute(
+    goBack: () -> Unit,
+    goToStatisticDetails: (String, TimeIntervalCode) -> Unit,
+) {
     composable<StatisticScreenDestination>(
         enterTransition = {
             slideIntoContainer(
@@ -44,6 +48,7 @@ fun NavGraphBuilder.statisticScreenRoute(goBack: () -> Unit) {
     ) {
         StatisticRouteScreen(
             goBack = goBack,
+            goToStatisticDetails = goToStatisticDetails,
         )
     }
 }
