@@ -5,7 +5,6 @@ import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.feature.order.OrderUpdatesStreamEvent
 import com.bunbeauty.domain.repo.DataStoreRepo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 
@@ -40,6 +39,5 @@ class ObserveOrderListStreamUseCase(
                     }
                 }
             }
-
     }
 }

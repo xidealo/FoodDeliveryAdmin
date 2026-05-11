@@ -38,8 +38,8 @@ class OrderRepository(
     override suspend fun getOrderUpdatesStream(
         token: String,
         cafeUuid: String,
-    ): Flow<OrderUpdatesStreamEvent> {
-        return flow {
+    ): Flow<OrderUpdatesStreamEvent> =
+        flow {
             val initialList =
                 getOrderListByCafeUuid(
                     token = token,
@@ -76,7 +76,6 @@ class OrderRepository(
                     }
                 }
         }
-    }
 
     private suspend fun getOrderListByCafeUuid(
         token: String,

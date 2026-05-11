@@ -82,9 +82,9 @@ fun OrderListRouteScreen(
     goToProfileScreen: () -> Unit,
 ) {
     LifecycleStartEffect(Unit) {
-       // viewModel.onAction(OrderList.Action.StartObserveOrders)
+        viewModel.onAction(OrderList.Action.StartObserveOrders)
         onStopOrDispose {
-           // viewModel.onAction(OrderList.Action.StopObserveOrders)
+            viewModel.onAction(OrderList.Action.StopObserveOrders)
         }
     }
 

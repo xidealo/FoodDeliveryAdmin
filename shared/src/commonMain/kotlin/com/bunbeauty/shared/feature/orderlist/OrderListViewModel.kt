@@ -5,14 +5,24 @@ import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.ObserveOrderListStreamUseCase
 import com.bunbeauty.domain.feature.orderlist.OrderListStreamState
 import com.bunbeauty.domain.feature.orderlist.UnsubscribeOrderUpdatesUseCase
+import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.feature.orderlist.state.OrderList
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 private const val TAG = "OrderListViewModel"
+
+private val reconnectDelaysMs = listOf(0L, 1_000L, 1_000L, 1_000L, 1_000L, 1_000L)
+
+private enum class OrderListObservationResult {
+    COMPLETED,
+    ERROR,
+}
 
 class OrderListViewModel(
     private val observeOrderListStream: ObserveOrderListStreamUseCase,
@@ -30,12 +40,6 @@ class OrderListViewModel(
                 loadingOrderList = false,
             ),
     ) {
-
-    init {
-        stopObservingOrderList()
-        observeOrderList()
-    }
-
     override fun reduce(
         action: OrderList.Action,
         dataState: OrderList.DataState,
@@ -90,14 +94,14 @@ class OrderListViewModel(
     }
 
     private fun observeOrderList() {
+        if (orderListJob != null) return
+
         setState {
             copy(
                 hasConnectionError = false,
                 loadingOrderList = true,
             )
         }
-
-        if (orderListJob != null) return
 
         orderListJob =
             viewModelScope.launchSafe(
@@ -123,57 +127,107 @@ class OrderListViewModel(
                         )
                     }
 
-                    observeOrderListStream(cafe.uuid)
-                        .onCompletion {
-                            setState {
-                                copy(
-                                    refreshing = false,
-                                    loadingOrderList = false,
-                                    loadingOrderUpdates = false,
-                                )
-                            }
-                        }.collect { streamState ->
-                            when (streamState) {
-                                is OrderListStreamState.Loading -> {
-                                    setState {
-                                        copy(loadingOrderUpdates = streamState.isLoading)
-                                    }
-                                }
-
-                                is OrderListStreamState.Error -> {
-                                    setState {
-                                        copy(
-                                            refreshing = false,
-                                            hasConnectionError = true,
-                                            loadingOrderList = false,
-                                            loadingOrderUpdates = false,
-                                        )
-                                    }
-                                }
-
-                                is OrderListStreamState.Orders -> {
-                                    val oldOrderList = mutableDataState.value.orderList
-                                    val hasNewOrder = oldOrderList.size < streamState.list.size
-
-                                    setState {
-                                        copy(
-                                            orderList = streamState.list,
-                                            refreshing = false,
-                                            loadingOrderList = false,
-                                            orderListState = OrderList.DataState.State.SUCCESS,
-                                        )
-                                    }
-
-                                    if (oldOrderList.isNotEmpty() && hasNewOrder) {
-                                        sendEvent {
-                                            OrderList.Event.ScrollToTop
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    observeOrderListWithReconnect(cafeUuid = cafe.uuid)
                 },
             )
+    }
+
+    private suspend fun observeOrderListWithReconnect(
+        cafeUuid: String,
+        reconnectAttemptIndex: Int = 0,
+    ) {
+        val observationResult = observeOrderListUntilError(cafeUuid = cafeUuid)
+        if (observationResult != OrderListObservationResult.ERROR) return
+
+        val shouldReconnect = reconnectAttemptIndex < reconnectDelaysMs.size
+        unsubscribeOrderUpdates(
+            message =
+                if (shouldReconnect) {
+                    "ws_reconnect_attempt_${reconnectAttemptIndex + 1}"
+                } else {
+                    "ws_reconnect_give_up"
+                },
+        )
+
+        if (!shouldReconnect) return
+
+        delay(reconnectDelaysMs[reconnectAttemptIndex])
+        observeOrderListWithReconnect(
+            cafeUuid = cafeUuid,
+            reconnectAttemptIndex = reconnectAttemptIndex + 1,
+        )
+    }
+
+    private suspend fun observeOrderListUntilError(cafeUuid: String): OrderListObservationResult {
+        var observationResult = OrderListObservationResult.COMPLETED
+
+        observeOrderListStream(cafeUuid)
+            .onEach { streamState ->
+                if (streamState is OrderListStreamState.Error) {
+                    observationResult = OrderListObservationResult.ERROR
+                    handleOrderListStreamError()
+                }
+            }.onCompletion {
+                setState {
+                    copy(
+                        refreshing = false,
+                        loadingOrderList = false,
+                        loadingOrderUpdates = false,
+                    )
+                }
+            }.takeWhile { streamState ->
+                streamState !is OrderListStreamState.Error
+            }.collect(::handleOrderListStreamState)
+
+        return observationResult
+    }
+
+    private fun handleOrderListStreamState(streamState: OrderListStreamState) {
+        when (streamState) {
+            is OrderListStreamState.Loading -> {
+                setState {
+                    copy(loadingOrderUpdates = streamState.isLoading)
+                }
+            }
+
+            is OrderListStreamState.Error -> Unit
+
+            is OrderListStreamState.Orders -> {
+                handleOrderListUpdated(orderList = streamState.list)
+            }
+        }
+    }
+
+    private fun handleOrderListStreamError() {
+        setState {
+            copy(
+                refreshing = false,
+                hasConnectionError = true,
+                loadingOrderList = false,
+                loadingOrderUpdates = false,
+            )
+        }
+    }
+
+    private fun handleOrderListUpdated(orderList: List<Order>) {
+        val oldOrderList = mutableDataState.value.orderList
+        val hasNewOrder = oldOrderList.size < orderList.size
+
+        setState {
+            copy(
+                hasConnectionError = false,
+                orderList = orderList,
+                refreshing = false,
+                loadingOrderList = false,
+                orderListState = OrderList.DataState.State.SUCCESS,
+            )
+        }
+
+        if (oldOrderList.isNotEmpty() && hasNewOrder) {
+            sendEvent {
+                OrderList.Event.ScrollToTop
+            }
+        }
     }
 
     private fun stopObservingOrderList() {
