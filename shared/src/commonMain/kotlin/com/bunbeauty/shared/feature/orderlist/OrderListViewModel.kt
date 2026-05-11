@@ -2,30 +2,40 @@ package com.bunbeauty.shared.feature.orderlist
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
-import com.bunbeauty.domain.feature.orderlist.GetOrderErrorFlowUseCase
-import com.bunbeauty.domain.feature.orderlist.GetOrderListFlowUseCase
+import com.bunbeauty.domain.feature.orderlist.ObserveOrderListStreamUseCase
+import com.bunbeauty.domain.feature.orderlist.OrderListStreamState
+import com.bunbeauty.domain.feature.orderlist.UnsubscribeOrderUpdatesUseCase
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.feature.orderlist.state.OrderList
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 
 private const val TAG = "OrderListViewModel"
 
 class OrderListViewModel(
-    private val getOrderListFlow: GetOrderListFlowUseCase,
-    private val getOrderErrorFlow: GetOrderErrorFlowUseCase,
+    private val observeOrderListStream: ObserveOrderListStreamUseCase,
+    private val unsubscribeOrderUpdates: UnsubscribeOrderUpdatesUseCase,
     private val getCafeUseCase: GetCafeUseCase,
 ) : BaseStateViewModel<OrderList.DataState, OrderList.Action, OrderList.Event>(
         initState =
             OrderList.DataState(
                 refreshing = false,
                 hasConnectionError = false,
+                loadingOrderUpdates = false,
                 orderList = emptyList(),
                 orderListState = OrderList.DataState.State.LOADING,
                 cafe = null,
                 loadingOrderList = false,
             ),
     ) {
+
+    init {
+        stopObservingOrderList()
+        observeOrderList()
+    }
+
     override fun reduce(
         action: OrderList.Action,
         dataState: OrderList.DataState,
@@ -48,7 +58,6 @@ class OrderListViewModel(
     }
 
     private var orderListJob: Job? = null
-    private var orderErrorJob: Job? = null
 
     private fun onRefresh() {
         setState {
@@ -97,6 +106,7 @@ class OrderListViewModel(
                         copy(
                             refreshing = false,
                             hasConnectionError = true,
+                            loadingOrderUpdates = false,
                             loadingOrderList = false,
                             orderListState = OrderList.DataState.State.SUCCESS,
                         )
@@ -113,52 +123,70 @@ class OrderListViewModel(
                         )
                     }
 
-                    getOrderListFlow(cafe.uuid).collect { orderList ->
-                        val oldOrderList = mutableDataState.value.orderList
+                    observeOrderListStream(cafe.uuid)
+                        .onCompletion {
+                            setState {
+                                copy(
+                                    refreshing = false,
+                                    loadingOrderList = false,
+                                    loadingOrderUpdates = false,
+                                )
+                            }
+                        }.collect { streamState ->
+                            when (streamState) {
+                                is OrderListStreamState.Loading -> {
+                                    setState {
+                                        copy(loadingOrderUpdates = streamState.isLoading)
+                                    }
+                                }
 
-                        val hasNewOrder = oldOrderList.size < orderList.size
+                                is OrderListStreamState.Error -> {
+                                    setState {
+                                        copy(
+                                            refreshing = false,
+                                            hasConnectionError = true,
+                                            loadingOrderList = false,
+                                            loadingOrderUpdates = false,
+                                        )
+                                    }
+                                }
 
-                        setState {
-                            copy(
-                                orderList = orderList,
-                                refreshing = false,
-                                loadingOrderList = false,
-                                orderListState = OrderList.DataState.State.SUCCESS,
-                            )
-                        }
+                                is OrderListStreamState.Orders -> {
+                                    val oldOrderList = mutableDataState.value.orderList
+                                    val hasNewOrder = oldOrderList.size < streamState.list.size
 
-                        if (oldOrderList.isNotEmpty() && hasNewOrder) {
-                            sendEvent {
-                                OrderList.Event.ScrollToTop
+                                    setState {
+                                        copy(
+                                            orderList = streamState.list,
+                                            refreshing = false,
+                                            loadingOrderList = false,
+                                            orderListState = OrderList.DataState.State.SUCCESS,
+                                        )
+                                    }
+
+                                    if (oldOrderList.isNotEmpty() && hasNewOrder) {
+                                        sendEvent {
+                                            OrderList.Event.ScrollToTop
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                },
-            )
-
-        orderErrorJob =
-            viewModelScope.launchSafe(
-                block = {
-                    getOrderErrorFlow(cafeUuid = getCafeUseCase().uuid).collect {
-                        setState {
-                            copy(
-                                hasConnectionError = true,
-                            )
-                        }
-                    }
-                },
-                onError = { error ->
-                    // commonMain: don't use Android Log or Throwable.stackTrace (not available on Native)
-                    println("$TAG: getOrderErrorFlow failed: ${error.message}")
                 },
             )
     }
 
     private fun stopObservingOrderList() {
         orderListJob?.cancel()
-        orderErrorJob?.cancel()
-
         orderListJob = null
-        orderErrorJob = null
+
+        viewModelScope.launchSafe(
+            block = {
+                unsubscribeOrderUpdates(message = "stopObservingOrderList")
+            },
+            onError = { error ->
+                println("$TAG: unsubscribeOrderUpdates failed: ${error.message}")
+            },
+        )
     }
 }

@@ -57,24 +57,6 @@ actual fun platformDataModule() =
                 install(WebSockets) {
                     pingInterval = 20.seconds
                 }
-                install(HttpRequestRetry) {
-                    maxRetries = 3
-                    retryIf { request, response ->
-                        val isRetryIgnoredRequest =
-                            request.url.protocol == URLProtocol.HTTPS &&
-                                request.url.host == "fooddelivery-xidealo.amvera.io" &&
-                                request.url.encodedPath in
-                                listOf(
-                                    "/user/login",
-                                    "/menu_product_to_addition_group",
-                                )
-
-                        !isRetryIgnoredRequest && !response.status.isSuccess()
-                    }
-                    delayMillis { retry ->
-                        retry * 3000L
-                    } // retries in 3, 6, 9, etc. seconds
-                }
                 install(Logging) {
                     logger =
                         object : Logger {

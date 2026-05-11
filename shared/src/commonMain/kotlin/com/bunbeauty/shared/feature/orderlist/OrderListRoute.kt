@@ -66,6 +66,7 @@ fun OrderList.DataState.mapStateOrderList(orderMapper: OrderMapper = koinInject(
                         connectionError = hasConnectionError,
                         refreshing = refreshing,
                         loadingOrderList = loadingOrderList,
+                        loadingOrderUpdates = loadingOrderUpdates,
                     )
             },
     )
@@ -81,9 +82,9 @@ fun OrderListRouteScreen(
     goToProfileScreen: () -> Unit,
 ) {
     LifecycleStartEffect(Unit) {
-        viewModel.onAction(OrderList.Action.StartObserveOrders)
+       // viewModel.onAction(OrderList.Action.StartObserveOrders)
         onStopOrDispose {
-            viewModel.onAction(OrderList.Action.StopObserveOrders)
+           // viewModel.onAction(OrderList.Action.StopObserveOrders)
         }
     }
 
@@ -220,6 +221,13 @@ private fun OrderListSuccessScreen(
             ConnectionError()
         }
 
+        if (state.loadingOrderUpdates) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = AdminTheme.colors.main.primary,
+            )
+        }
+
         if (state.loadingOrderList) {
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth(),
@@ -289,6 +297,7 @@ private fun OrderListSuccessScreenPreview() {
                     connectionError = false,
                     refreshing = false,
                     loadingOrderList = false,
+                    loadingOrderUpdates = false,
                 ),
             lazyListState = LazyListState(),
             onAction = {},

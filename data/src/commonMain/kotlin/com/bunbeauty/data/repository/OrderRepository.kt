@@ -3,84 +3,86 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.model.server.order.OrderServer
+import com.bunbeauty.data.websocket.ApiResultForWebsocket
+import com.bunbeauty.data.websocket.OrderUpdatesWebSocket
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.exception.ServerConnectionException
 import com.bunbeauty.domain.feature.order.OrderRepo
+import com.bunbeauty.domain.feature.order.OrderUpdatesStreamEvent
 import com.bunbeauty.domain.model.order.Order
 import com.bunbeauty.domain.model.order.OrderError
 import com.bunbeauty.domain.model.order.details.OrderDetails
 import common.ApiResult
 import common.Constants.ORDER_TAG
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onCompletion
 
 class OrderRepository(
-    private val networkConnector: FoodDeliveryApi,
+    private val foodDeliveryApi: FoodDeliveryApi,
+    private val orderUpdatesWebSocket: OrderUpdatesWebSocket,
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
-    private var cachedOrderList: List<Order>? = null
-
     override suspend fun updateStatus(
         token: String,
         orderUuid: String,
         status: OrderStatus,
     ) {
-        networkConnector.updateOrderStatus(token, orderUuid, status)
+        foodDeliveryApi.updateOrderStatus(token, orderUuid, status)
     }
 
-    override suspend fun getOrderListFlow(
+    override suspend fun unsubscribeOrderUpdates(message: String) {
+        orderUpdatesWebSocket.unsubscribe(message)
+    }
+
+    override suspend fun getOrderUpdatesStream(
         token: String,
         cafeUuid: String,
-    ): Flow<List<Order>> {
-        val orderList =
-            getOrderListByCafeUuid(
-                token = token,
-                cafeUuid = cafeUuid,
-            )
-        cachedOrderList = orderList
-        val updatedOrderListFlow =
-            networkConnector
+    ): Flow<OrderUpdatesStreamEvent> {
+        return flow {
+            val initialList =
+                getOrderListByCafeUuid(
+                    token = token,
+                    cafeUuid = cafeUuid,
+                )
+            emit(OrderUpdatesStreamEvent.Orders(list = initialList))
+
+            var currentList = initialList
+            orderUpdatesWebSocket
                 .getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-                .filterIsInstance<ApiResult.Success<OrderServer>>()
-                .map { successApiResult ->
-                    val order = serverOrderMapper.mapOrder(successApiResult.data)
-                    val updatedOrderList =
-                        updateOrderList(
-                            orderList = cachedOrderList.orEmpty(),
-                            newOrder = order,
-                        )
-                    cachedOrderList = updatedOrderList
-                    updatedOrderList
-                }.onCompletion {
-                    networkConnector.unsubscribeOnOrderList("onCompletion")
+                .collect { apiResult ->
+                    when (apiResult) {
+                        is ApiResultForWebsocket.Loading -> {
+                            emit(OrderUpdatesStreamEvent.Loading(isLoading = apiResult.isLoading))
+                        }
+
+                        is ApiResultForWebsocket.Error -> {
+                            emit(
+                                OrderUpdatesStreamEvent.Error(
+                                    error = OrderError(apiResult.apiError.message),
+                                ),
+                            )
+                        }
+
+                        is ApiResultForWebsocket.Success<OrderServer> -> {
+                            val order = serverOrderMapper.mapOrder(apiResult.data)
+                            currentList =
+                                updateOrderList(
+                                    orderList = currentList,
+                                    newOrder = order,
+                                )
+                            emit(OrderUpdatesStreamEvent.Orders(list = currentList))
+                        }
+                    }
                 }
-
-        return merge(
-            flowOf(orderList),
-            updatedOrderListFlow,
-        )
+        }
     }
-
-    override suspend fun getOrderErrorFlow(
-        token: String,
-        cafeUuid: String,
-    ): Flow<OrderError> =
-        networkConnector
-            .getUpdatedOrderFlowByCafeUuid(token, cafeUuid)
-            .filterIsInstance<ApiResult.Error<OrderServer>>()
-            .map { errorApiResult ->
-                OrderError(errorApiResult.apiError.message)
-            }
 
     private suspend fun getOrderListByCafeUuid(
         token: String,
         cafeUuid: String,
     ): List<Order> =
-        when (val result = networkConnector.getOrderListByCafeUuid(token, cafeUuid)) {
+        when (val result = foodDeliveryApi.getOrderListByCafeUuid(token, cafeUuid)) {
             is ApiResult.Success -> {
                 result.data
                     .results
@@ -97,7 +99,7 @@ class OrderRepository(
         token: String,
         orderUuid: String,
     ): OrderDetails? =
-        when (val result = networkConnector.getOrderByUuid(token, orderUuid)) {
+        when (val result = foodDeliveryApi.getOrderByUuid(token, orderUuid)) {
             is ApiResult.Success -> {
                 serverOrderMapper.mapOrderDetails(result.data)
             }
@@ -109,7 +111,7 @@ class OrderRepository(
         }
 
     override fun clearCache() {
-        cachedOrderList = null
+        // no-op (stream state is per collector)
     }
 
     private fun updateOrderList(
