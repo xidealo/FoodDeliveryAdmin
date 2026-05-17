@@ -15,8 +15,6 @@ import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-import common.log.AppLogMessages
-import common.log.AppLogger
 
 class UpdateMenuProductUseCase(
     private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
@@ -68,34 +66,15 @@ class UpdateMenuProductUseCase(
         }
         var uploadedPhotoLink: String? = null
         if (params.newImageUri != null) {
-            AppLogger.d(
-                tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
-                message = AppLogMessages.UPDATE_MENU_PRODUCT_UPLOADING_PHOTO,
-            )
             uploadedPhotoLink = uploadPhotoUseCase(imageUri = params.newImageUri).url
-            AppLogger.d(
-                tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
-                message = AppLogMessages.updateMenuProductUploadedPhotoLink(uploadedPhotoLink),
-            )
         }
         if (!params.photoLink.isNullOrBlank() && params.newImageUri != null) {
             runCatching {
                 deletePhotoUseCase(photoLink = params.photoLink)
-            }.onFailure { throwable ->
-                AppLogger.e(
-                    tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
-                    message =
-                        AppLogMessages.updateMenuProductPhotoDeletionFailed(throwable.message),
-                    throwable = throwable,
-                )
             }
         }
 
         val photoLinkForPatch = uploadedPhotoLink ?: params.photoLink?.takeIf { it.isNotBlank() }
-        AppLogger.d(
-            tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
-            message = AppLogMessages.updateMenuProductPhotoLinkForPatch(photoLinkForPatch),
-        )
 
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
         val updatedMenuProduct =

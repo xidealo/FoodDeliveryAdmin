@@ -14,8 +14,6 @@ import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import common.ApiResult
-import common.log.AppLogMessages
-import common.log.AppLogger
 
 class MenuProductRepository(
     private val networkConnector: FoodDeliveryApi,
@@ -95,14 +93,6 @@ class MenuProductRepository(
         updateMenuProduct: UpdateMenuProduct,
         token: String,
     ): MenuProduct? {
-        AppLogger.d(
-            tag = AppLogMessages.MENU_PRODUCT_REPOSITORY_TAG,
-            message =
-                AppLogMessages.menuProductPatchStart(
-                    uuid = menuProductUuid,
-                    photoLink = updateMenuProduct.photoLink,
-                ),
-        )
         val result =
             networkConnector.patchMenuProduct(
                 menuProductUuid = menuProductUuid,
@@ -114,14 +104,6 @@ class MenuProductRepository(
             is ApiResult.Success -> {
                 val menuProductServer = result.data
                 val menuProduct = menuProductMapper.toModel(menuProductServer)
-                AppLogger.d(
-                    tag = AppLogMessages.MENU_PRODUCT_REPOSITORY_TAG,
-                    message =
-                        AppLogMessages.menuProductPatchSuccess(
-                            uuid = menuProductUuid,
-                            photoLink = menuProduct.photoLink,
-                        ),
-                )
                 menuProductCache =
                     menuProductCache?.map { cachedMenuProduct ->
                         if (cachedMenuProduct.uuid == menuProductServer.uuid) {
@@ -142,14 +124,6 @@ class MenuProductRepository(
                         append(result.apiError.message)
                     }.trimEnd(' ', ':')
                         .takeIf { it.isNotBlank() }
-                AppLogger.e(
-                    tag = AppLogMessages.MENU_PRODUCT_REPOSITORY_TAG,
-                    message =
-                        AppLogMessages.menuProductPatchError(
-                            uuid = menuProductUuid,
-                            detail = detail.orEmpty(),
-                        ),
-                )
                 throw MenuProductNotUpdatedException(serverDetail = detail)
             }
         }
