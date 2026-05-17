@@ -15,8 +15,8 @@ import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
-
-private const val UPDATE_MENU_PRODUCT_TAG = "UpdateMenuProduct"
+import common.log.AppLogMessages
+import common.log.AppLogger
 
 class UpdateMenuProductUseCase(
     private val validateMenuProductNameUseCase: ValidateMenuProductNameUseCase,
@@ -63,43 +63,63 @@ class UpdateMenuProductUseCase(
         val selectableCategories =
             validateMenuProductCategoriesUseCase(categories = params.selectedCategories)
 
-        if (params.photoLink == null && params.newImageUri == null) {
+        if (params.photoLink.isNullOrBlank() && params.newImageUri == null) {
             throw MenuProductImageException()
         }
-        var newPhotoLink: String? = null
+        var uploadedPhotoLink: String? = null
         if (params.newImageUri != null) {
-            newPhotoLink = uploadPhotoUseCase(imageUri = params.newImageUri).url
+            AppLogger.d(
+                tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
+                message = AppLogMessages.UPDATE_MENU_PRODUCT_UPLOADING_PHOTO,
+            )
+            uploadedPhotoLink = uploadPhotoUseCase(imageUri = params.newImageUri).url
+            AppLogger.d(
+                tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
+                message = AppLogMessages.updateMenuProductUploadedPhotoLink(uploadedPhotoLink),
+            )
         }
-        if (params.photoLink != null && params.newImageUri != null) {
+        if (!params.photoLink.isNullOrBlank() && params.newImageUri != null) {
             runCatching {
                 deletePhotoUseCase(photoLink = params.photoLink)
-            }.onFailure {
-                // commonMain: no Android logger available here
-                println("$UPDATE_MENU_PRODUCT_TAG: Photo deletion failed ${it.message}")
+            }.onFailure { throwable ->
+                AppLogger.e(
+                    tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
+                    message =
+                        AppLogMessages.updateMenuProductPhotoDeletionFailed(throwable.message),
+                    throwable = throwable,
+                )
             }
         }
 
+        val photoLinkForPatch = uploadedPhotoLink ?: params.photoLink?.takeIf { it.isNotBlank() }
+        AppLogger.d(
+            tag = AppLogMessages.UPDATE_MENU_PRODUCT_TAG,
+            message = AppLogMessages.updateMenuProductPhotoLinkForPatch(photoLinkForPatch),
+        )
+
         val token = dataStoreRepo.getToken() ?: throw NoTokenException()
-        menuProductRepo.updateMenuProduct(
-            menuProductUuid = params.uuid,
-            updateMenuProduct =
-                UpdateMenuProduct(
-                    name = name,
-                    newPrice = newPrice,
-                    oldPrice = oldPrice,
-                    nutrition = nutrition,
-                    utils = params.units,
-                    description = description,
-                    comboDescription = params.comboDescription.trim(),
-                    photoLink = newPhotoLink,
-                    isVisible = params.isVisible,
-                    isRecommended = params.isRecommended,
-                    categories =
-                        selectableCategories.map { category ->
-                            category.category.uuid
-                        },
-                ),
-            token = token,
-        ) ?: throw MenuProductNotUpdatedException()
+        val updatedMenuProduct =
+            menuProductRepo.updateMenuProduct(
+                menuProductUuid = params.uuid,
+                updateMenuProduct =
+                    UpdateMenuProduct(
+                        name = name,
+                        newPrice = newPrice,
+                        oldPrice = oldPrice,
+                        nutrition = nutrition,
+                        utils = params.units,
+                        description = description,
+                        comboDescription = params.comboDescription.trim(),
+                        photoLink = photoLinkForPatch,
+                        isVisible = params.isVisible,
+                        isRecommended = params.isRecommended,
+                        categories =
+                            selectableCategories.map { category ->
+                                category.category.uuid
+                            },
+                    ),
+                token = token,
+            )
+        updatedMenuProduct ?: throw MenuProductNotUpdatedException()
     }
 }

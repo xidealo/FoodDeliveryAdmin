@@ -1,11 +1,39 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.admin.multiplatform.feature)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.cocoa)
 }
 
+val localProperties =
+    Properties().apply {
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            FileInputStream(localPropertiesFile).use(::load)
+        }
+    }
+
+fun localProperty(key: String): String =
+    localProperties
+        .getProperty(key)
+        .orEmpty()
+        .replace("\\", "\\\\")
+        .replace("\"", "\\\"")
+
 android {
     namespace = Namespace.data
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField("String", "YC_ACCESS_KEY", "\"${localProperty("yc.accessKey")}\"")
+        buildConfigField("String", "YC_SECRET_KEY", "\"${localProperty("yc.secretKey")}\"")
+        buildConfigField("String", "YC_BUCKET", "\"${localProperty("yc.bucket")}\"")
+    }
 }
 
 kotlin {
@@ -45,7 +73,6 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.firebase.storage)
                 implementation(libs.firebase.messaging)
                 implementation(libs.work.runtime.ktx)
                 implementation(libs.kotlinx.coroutines.services)
@@ -53,6 +80,7 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 // implementation(libs.ktor.client.cio)
                 implementation(libs.bundles.di)
+                implementation(libs.aws.s3)
             }
         }
         val iosMain by getting {
