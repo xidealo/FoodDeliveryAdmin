@@ -32,4 +32,7 @@ kotlin {
 }
 android {
     namespace = Namespace.domain
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }

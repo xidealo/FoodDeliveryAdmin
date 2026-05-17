@@ -29,6 +29,7 @@ import java.util.UUID
 private const val DEFAULT_BYTE_SIZE = 100 * 1024
 private const val YC_ENDPOINT = "https://storage.yandexcloud.net"
 private const val YC_REGION = "ru-central1"
+
 class PhotoRepository(
     private val context: Context,
 ) : PhotoRepo {
@@ -62,8 +63,7 @@ class PhotoRepository(
         }
     }
 
-    override suspend fun getPhotoList(username: String): List<Photo> =
-        photoListCache ?: fetchPhotoList(username = username)
+    override suspend fun getPhotoList(username: String): List<Photo> = photoListCache ?: fetchPhotoList(username = username)
 
     override suspend fun fetchPhotoList(username: String): List<Photo> {
         val prefix = "${username.lowercase()}/"

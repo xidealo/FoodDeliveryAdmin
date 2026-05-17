@@ -15,13 +15,13 @@ import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNotUpdatedException
 import com.bunbeauty.shared.extension.launchSafe
-import common.ApiError
 import com.bunbeauty.shared.feature.image.EditImageFieldData
 import com.bunbeauty.shared.feature.image.ProductImage
 import com.bunbeauty.shared.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.shared.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.shared.feature.menulist.common.TextFieldData
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
+import common.ApiError
 
 class EditMenuProductViewModel(
     private val getMenuProductUseCase: GetMenuProductUseCase,
