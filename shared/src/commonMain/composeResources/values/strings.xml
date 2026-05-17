@@ -39,6 +39,7 @@
     <string name="error_common_saving_failed">При сохранении данных произошла ошибка</string>
     <string name="error_common_deleting_failed">При удалении данных произошла ошибка</string>
     <string name="error_common_something_went_wrong">Что-то пошло не так</string>
+    <string name="error_common_server_error">Ошибка сервера</string>
 
     <!-- LOGIN -->
     <string name="hint_login_login">Логин</string>
@@ -151,6 +152,7 @@
 
     <!-- EDIT MENU PRODUCT -->
     <string name="msg_edit_menu_product_updated">%1$s обновлён</string>
+    <string name="error_edit_menu_product_save_failed">Не удалось сохранить продукт</string>
 
     <!-- CROP IMAGE -->
     <string name="title_crop_image">Обработка фото</string>

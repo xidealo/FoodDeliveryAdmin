@@ -7,12 +7,15 @@ import com.bunbeauty.data.mapper.toMenuProductPostServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPatchServer
 import com.bunbeauty.data.model.server.menuproduct.MenuProductAdditionsPostServer
 import com.bunbeauty.domain.exception.NoTokenException
+import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNotUpdatedException
 import com.bunbeauty.domain.model.menuproduct.MenuProduct
 import com.bunbeauty.domain.model.menuproduct.MenuProductPost
 import com.bunbeauty.domain.model.menuproduct.UpdateMenuProduct
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import common.ApiResult
+import common.log.AppLogMessages
+import common.log.AppLogger
 
 class MenuProductRepository(
     private val networkConnector: FoodDeliveryApi,
@@ -91,15 +94,34 @@ class MenuProductRepository(
         menuProductUuid: String,
         updateMenuProduct: UpdateMenuProduct,
         token: String,
-    ): MenuProduct? =
-        networkConnector
-            .patchMenuProduct(
+    ): MenuProduct? {
+        AppLogger.d(
+            tag = AppLogMessages.MENU_PRODUCT_REPOSITORY_TAG,
+            message =
+                AppLogMessages.menuProductPatchStart(
+                    uuid = menuProductUuid,
+                    photoLink = updateMenuProduct.photoLink,
+                ),
+        )
+        val result =
+            networkConnector.patchMenuProduct(
                 menuProductUuid = menuProductUuid,
                 menuProductPatchServer = menuProductMapper.toPatchServer(updateMenuProduct),
                 token = token,
-            ).dataOrNull()
-            ?.let { menuProductServer ->
+            )
+
+        return when (result) {
+            is ApiResult.Success -> {
+                val menuProductServer = result.data
                 val menuProduct = menuProductMapper.toModel(menuProductServer)
+                AppLogger.d(
+                    tag = AppLogMessages.MENU_PRODUCT_REPOSITORY_TAG,
+                    message =
+                        AppLogMessages.menuProductPatchSuccess(
+                            uuid = menuProductUuid,
+                            photoLink = menuProduct.photoLink,
+                        ),
+                )
                 menuProductCache =
                     menuProductCache?.map { cachedMenuProduct ->
                         if (cachedMenuProduct.uuid == menuProductServer.uuid) {
@@ -110,6 +132,28 @@ class MenuProductRepository(
                     }
                 menuProduct
             }
+
+            is ApiResult.Error -> {
+                val detail =
+                    buildString {
+                        if (result.apiError.code != 0) {
+                            append("${result.apiError.code}: ")
+                        }
+                        append(result.apiError.message)
+                    }.trimEnd(' ', ':')
+                        .takeIf { it.isNotBlank() }
+                AppLogger.e(
+                    tag = AppLogMessages.MENU_PRODUCT_REPOSITORY_TAG,
+                    message =
+                        AppLogMessages.menuProductPatchError(
+                            uuid = menuProductUuid,
+                            detail = detail.orEmpty(),
+                        ),
+                )
+                throw MenuProductNotUpdatedException(serverDetail = detail)
+            }
+        }
+    }
 
     override suspend fun updateMenuProductAdditions(
         menuProductToAdditionGroupUuid: String,

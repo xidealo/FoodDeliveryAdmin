@@ -112,6 +112,10 @@ interface EditMenuProduct {
 
         data object ShowSomethingWentWrong : Event
 
+        data class ShowSaveError(
+            val serverDetail: String? = null,
+        ) : Event
+
         data object ShowEmptyPhoto : Event
     }
 }

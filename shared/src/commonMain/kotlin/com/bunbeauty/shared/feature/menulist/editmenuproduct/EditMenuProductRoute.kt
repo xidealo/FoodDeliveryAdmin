@@ -61,7 +61,13 @@ import fooddeliveryadmin.shared.generated.resources.hint_common_menu_product_nut
 import fooddeliveryadmin.shared.generated.resources.hint_common_menu_product_old_price
 import fooddeliveryadmin.shared.generated.resources.hint_common_menu_product_units
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.shared.generated.resources.msg_edit_menu_product_updated
+import fooddeliveryadmin.shared.generated.resources.error_common_menu_product_empty_photo
+import fooddeliveryadmin.shared.generated.resources.error_common_menu_product_image_uploading
+import fooddeliveryadmin.shared.generated.resources.error_common_something_went_wrong
+import fooddeliveryadmin.shared.generated.resources.error_edit_menu_product_save_failed
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -188,22 +194,29 @@ private fun EditMenuProductEffect(
 
                 is EditMenuProduct.Event.ShowUpdateProductSuccess -> {
                     showInfoMessage(
-                        "Продукт обновлен: ${effect.productName}",
+                        getString(Res.string.msg_edit_menu_product_updated, effect.productName),
                         androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }
 
                 EditMenuProduct.Event.ShowImageUploadingFailed -> {
-                    showErrorMessage("Не удалось загрузить изображение")
+                    showErrorMessage(getString(Res.string.error_common_menu_product_image_uploading))
                 }
 
                 EditMenuProduct.Event.ShowSomethingWentWrong -> {
-                    showErrorMessage("Что-то пошло не так")
+                    showErrorMessage(getString(Res.string.error_common_something_went_wrong))
+                }
+
+                is EditMenuProduct.Event.ShowSaveError -> {
+                    showErrorMessage(
+                        effect.serverDetail
+                            ?: getString(Res.string.error_edit_menu_product_save_failed),
+                    )
                 }
 
                 EditMenuProduct.Event.ShowEmptyPhoto -> {
-                    showErrorMessage("Добавьте фотографию")
+                    showErrorMessage(getString(Res.string.error_common_menu_product_empty_photo))
                 }
             }
         }
