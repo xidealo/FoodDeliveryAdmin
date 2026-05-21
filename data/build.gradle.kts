@@ -129,8 +129,9 @@ kotlin {
     }
 }
 
-tasks.matching { task ->
-    task.name.startsWith("compileKotlinIos")
-}.configureEach {
-    dependsOn(generateIosYandexStorageConfig)
-}
+tasks
+    .matching { task ->
+        task.name.startsWith("compileKotlinIos")
+    }.configureEach {
+        dependsOn(generateIosYandexStorageConfig)
+    }
