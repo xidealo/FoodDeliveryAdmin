@@ -22,6 +22,35 @@ fun localProperty(key: String): String =
         .replace("\\", "\\\\")
         .replace("\"", "\\\"")
 
+val generatedYandexStorageConfigDir =
+    layout.buildDirectory.dir("generated/yandexStorage/iosMain/kotlin")
+
+val generateIosYandexStorageConfig by tasks.registering {
+    val outputDir = generatedYandexStorageConfigDir
+    outputs.dir(outputDir)
+
+    doLast {
+        val outputFile =
+            outputDir
+                .get()
+                .file("com/bunbeauty/data/YandexStorageBuildConfig.kt")
+                .asFile
+
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(
+            """
+            package com.bunbeauty.data
+
+            object YandexStorageBuildConfig {
+                const val YC_ACCESS_KEY = "${localProperty("yc.accessKey")}"
+                const val YC_SECRET_KEY = "${localProperty("yc.secretKey")}"
+                const val YC_BUCKET = "${localProperty("yc.bucket")}"
+            }
+            """.trimIndent(),
+        )
+    }
+}
+
 android {
     namespace = Namespace.data
 
@@ -84,6 +113,8 @@ kotlin {
             }
         }
         val iosMain by getting {
+            kotlin.srcDir(generatedYandexStorageConfigDir)
+
             dependencies {
                 implementation(libs.ktor.client.darwin)
             }
@@ -96,4 +127,10 @@ kotlin {
             }
         }
     }
+}
+
+tasks.matching { task ->
+    task.name.startsWith("compileKotlinIos")
+}.configureEach {
+    dependsOn(generateIosYandexStorageConfig)
 }

@@ -7,14 +7,11 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.graphics.scale
 import androidx.core.net.toUri
-import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.DeleteObjectRequest
 import aws.sdk.kotlin.services.s3.model.ListObjectsV2Request
 import aws.sdk.kotlin.services.s3.model.PutObjectRequest
 import aws.smithy.kotlin.runtime.content.ByteStream
-import aws.smithy.kotlin.runtime.net.url.Url
-import com.bunbeauty.data.BuildConfig
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
 import kotlinx.coroutines.Dispatchers
@@ -26,26 +23,13 @@ import java.util.UUID
 
 private const val DEFAULT_BYTE_SIZE = 100 * 1024
 private const val YC_ENDPOINT = "https://storage.yandexcloud.net"
-private const val YC_REGION = "ru-central1"
 
 class PhotoRepository(
     private val context: Context,
+    private val s3Client: S3Client,
+    private val bucket: String,
 ) : PhotoRepo {
     private var photoListCache: List<Photo>? = null
-    private val bucket: String = BuildConfig.YC_BUCKET
-
-    private val s3Client: S3Client by lazy {
-        S3Client {
-            region = YC_REGION
-            endpointUrl = Url.parse(YC_ENDPOINT)
-            forcePathStyle = false
-            credentialsProvider =
-                StaticCredentialsProvider {
-                    accessKeyId = BuildConfig.YC_ACCESS_KEY
-                    secretAccessKey = BuildConfig.YC_SECRET_KEY
-                }
-        }
-    }
 
     override suspend fun getPhotoList(username: String): List<Photo> = photoListCache ?: fetchPhotoList(username = username)
 
