@@ -2,6 +2,7 @@ package com.bunbeauty.data.di
 
 import cocoapods.FirebaseMessaging.FIRMessaging
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.model.server.request.ApiDeviceType
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.domain.model.Photo
@@ -35,6 +36,7 @@ class IosUserAuthorizationRepository(
                     UserAuthorizationRequest(
                         username = username,
                         password = password,
+                        device = ApiDeviceType.IOS,
                     ),
                 )
         ) {
@@ -93,6 +95,7 @@ class IosUserAuthorizationRepository(
             updateNotificationTokenRequest =
                 UpdateNotificationTokenRequest(
                     token = notificationToken,
+                    device = ApiDeviceType.IOS,
                 ),
             token = token,
         )

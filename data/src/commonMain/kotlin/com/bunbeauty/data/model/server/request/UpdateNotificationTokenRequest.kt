@@ -7,4 +7,6 @@ import kotlinx.serialization.Serializable
 class UpdateNotificationTokenRequest(
     @SerialName("token")
     val token: String,
+    @SerialName("device")
+    val device: String,
 )

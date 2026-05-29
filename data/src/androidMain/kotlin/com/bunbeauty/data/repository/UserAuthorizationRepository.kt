@@ -5,6 +5,7 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.model.server.request.ApiDeviceType
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.data.work.UpdateNotificationTokenWorker
 import com.bunbeauty.domain.exception.NoTokenException
@@ -28,6 +29,7 @@ class UserAuthorizationRepository(
                     UserAuthorizationRequest(
                         username = username,
                         password = password,
+                        device = ApiDeviceType.ANDROID,
                     ),
                 )
         ) {

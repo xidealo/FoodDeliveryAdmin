@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.model.server.request.ApiDeviceType
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.google.firebase.messaging.FirebaseMessaging
@@ -31,6 +32,7 @@ class UpdateNotificationTokenWorker(
                 updateNotificationTokenRequest =
                     UpdateNotificationTokenRequest(
                         token = notificationToken,
+                        device = ApiDeviceType.ANDROID,
                     ),
                 token = token,
             )
