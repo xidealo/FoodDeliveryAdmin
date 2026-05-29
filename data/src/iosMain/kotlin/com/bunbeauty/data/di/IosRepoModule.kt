@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -72,18 +73,20 @@ class IosUserAuthorizationRepository(
 
     @OptIn(ExperimentalForeignApi::class)
     private suspend fun getNotificationToken(): String =
-        suspendCoroutine { continuation ->
+        suspendCancellableCoroutine { continuation ->
             FIRMessaging.messaging().tokenWithCompletion { token, error ->
                 when {
                     error != null -> {
                         println("MY TOOKEN ERROR  FCM: $token")
                         continuation.resumeWithException(Exception(error.toString()))
                     }
+
                     token != null -> {
                         println("MY TOOKEN FCM: $token")
 
                         continuation.resume(token)
                     }
+
                     else -> continuation.resumeWithException(Exception("Token is null"))
                 }
             }
