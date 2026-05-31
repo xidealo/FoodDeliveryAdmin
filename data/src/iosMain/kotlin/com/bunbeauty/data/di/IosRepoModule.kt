@@ -2,6 +2,7 @@ package com.bunbeauty.data.di
 
 import cocoapods.FirebaseMessaging.FIRMessaging
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.model.server.request.ApiDeviceType
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
 import com.bunbeauty.domain.model.Photo
@@ -15,9 +16,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 class IosUserAuthorizationRepository(
     private val networkConnector: FoodDeliveryApi,
@@ -35,6 +36,7 @@ class IosUserAuthorizationRepository(
                     UserAuthorizationRequest(
                         username = username,
                         password = password,
+                        device = ApiDeviceType.IOS,
                     ),
                 )
         ) {
@@ -70,18 +72,20 @@ class IosUserAuthorizationRepository(
 
     @OptIn(ExperimentalForeignApi::class)
     private suspend fun getNotificationToken(): String =
-        suspendCoroutine { continuation ->
+        suspendCancellableCoroutine { continuation ->
             FIRMessaging.messaging().tokenWithCompletion { token, error ->
                 when {
                     error != null -> {
                         println("MY TOOKEN ERROR  FCM: $token")
                         continuation.resumeWithException(Exception(error.toString()))
                     }
+
                     token != null -> {
                         println("MY TOOKEN FCM: $token")
 
                         continuation.resume(token)
                     }
+
                     else -> continuation.resumeWithException(Exception("Token is null"))
                 }
             }
@@ -93,6 +97,7 @@ class IosUserAuthorizationRepository(
             updateNotificationTokenRequest =
                 UpdateNotificationTokenRequest(
                     token = notificationToken,
+                    device = ApiDeviceType.IOS,
                 ),
             token = token,
         )
