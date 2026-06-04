@@ -9,6 +9,6 @@ data class UserAuthorizationRequest(
     val username: String = "",
     @SerialName("password")
     val password: String = "",
-    @SerialName("device")
-    val device: String,
+   //@SerialName("device")
+   //val device: String,
 )

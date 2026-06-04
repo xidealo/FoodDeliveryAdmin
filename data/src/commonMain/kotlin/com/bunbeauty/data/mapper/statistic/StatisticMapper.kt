@@ -9,6 +9,7 @@ import common.Constants.RUBLE_CURRENCY
 class StatisticMapper {
     fun toModel(statisticServer: StatisticServer): Statistic =
         Statistic(
+            uuid = statisticServer.uuid,
             period =
                 DateTimeUtil.formatDateTime(
                     statisticServer.startPeriodTime,

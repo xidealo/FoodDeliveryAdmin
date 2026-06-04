@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.model.statistic
 
 data class Statistic(
+    val uuid: String,
     val period: String,
     val startPeriodTime: Long,
     val orderCount: Int,

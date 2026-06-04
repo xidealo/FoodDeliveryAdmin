@@ -201,7 +201,7 @@ private fun StatisticSuccessScreen(
         items(
             items = state.statisticList,
             key = { statisticItemModel ->
-                statisticItemModel.startMillis
+                statisticItemModel.uuid
             },
         ) { statisticItemModel ->
             StatisticItem(
@@ -329,6 +329,7 @@ private fun StatisticScreenPreview() {
                             statisticList =
                                 persistentListOf(
                                     StatisticViewState.State.Success.StatisticItemModel(
+                                        uuid = "preview-statistic-april",
                                         startMillis = 3064,
                                         period = "апрель",
                                         count = "Заказов: 20",
@@ -336,6 +337,7 @@ private fun StatisticScreenPreview() {
                                         date = "ssss",
                                     ),
                                     StatisticViewState.State.Success.StatisticItemModel(
+                                        uuid = "preview-statistic-may",
                                         startMillis = 3064,
                                         period = "май",
                                         count = "Заказов: 387",

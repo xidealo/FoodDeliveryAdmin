@@ -29,7 +29,7 @@ class UserAuthorizationRepository(
                     UserAuthorizationRequest(
                         username = username,
                         password = password,
-                        device = ApiDeviceType.ANDROID,
+                        //device = ApiDeviceType.ANDROID,
                     ),
                 )
         ) {

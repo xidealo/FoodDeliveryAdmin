@@ -36,7 +36,7 @@ class IosUserAuthorizationRepository(
                     UserAuthorizationRequest(
                         username = username,
                         password = password,
-                        device = ApiDeviceType.IOS,
+                      //  device = ApiDeviceType.IOS,
                     ),
                 )
         ) {
