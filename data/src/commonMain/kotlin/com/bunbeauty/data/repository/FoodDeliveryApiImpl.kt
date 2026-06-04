@@ -66,7 +66,7 @@ class FoodDeliveryApiImpl(
 ) : FoodDeliveryApi {
     override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> =
         post(
-            path = "user/login",
+            path = "v2/user/login",
             body = userAuthorizationRequest,
         )
 

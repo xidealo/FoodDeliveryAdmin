@@ -63,6 +63,7 @@ It must NOT contain:
 * network/database specifics
 * framework-dependent behavior
 * platform-specific code
+* **`DataStoreRepo` / datastore reads** (tokens, `companyUuid`, saved identifiers): resolve these inside **repositories** or dedicated domain gateways—use cases call repos with **business parameters only**, not raw persistence.
 
 ---
 

@@ -4,7 +4,7 @@ model: inherit
 description: Executes when implementing or modifying data layer logic, networking, database operations, caching, and websocket integrations
 ---
 
-# developer_dasta
+# developer_data
 
 ## Role
 
@@ -116,6 +116,15 @@ Repositories must NOT contain:
 * presentation logic
 * UI-specific transformations
 * platform-specific branching unless required
+
+---
+
+### 3.1 Server → domain mapping
+
+For straightforward JSON/server model → domain model conversion:
+
+* Prefer **top-level extension functions** (e.g. `Fun ServerDto.toDomain(): DomainModel`) in the `mapper` package.
+* Do **not** introduce a separate mapper **class** when mapping is a single, stateless transform—avoid boilerplate `XxxMapper` types unless multiple cohesive mappings or shared state justify it.
 
 ---
 
