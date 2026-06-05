@@ -200,7 +200,9 @@ private fun OrderDetailsScreen(
                 ErrorScreen(
                     mainTextId = Res.string.title_common_can_not_load_data,
                     extraTextId = Res.string.msg_common_check_connection_and_retry,
-                    onClick = {},
+                    onClick = {
+                        onAction(OrderDetailsState.Action.Retry)
+                    },
                 )
             }
 
