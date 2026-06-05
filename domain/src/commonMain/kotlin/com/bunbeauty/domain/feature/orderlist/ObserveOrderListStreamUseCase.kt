@@ -1,6 +1,5 @@
 package com.bunbeauty.domain.feature.orderlist
 
-import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.feature.order.OrderRepo
 import com.bunbeauty.domain.feature.order.OrderUpdatesStreamEvent
 import com.bunbeauty.domain.repo.DataStoreRepo
@@ -31,10 +30,7 @@ class ObserveOrderListStreamUseCase(
 
                     is OrderUpdatesStreamEvent.Orders -> {
                         OrderListStreamState.Orders(
-                            list =
-                                event.list.filter { order ->
-                                    order.orderStatus != OrderStatus.CANCELED
-                                },
+                            list = event.list,
                         )
                     }
                 }
