@@ -31,6 +31,7 @@ import com.bunbeauty.shared.designsystem.compose.element.card.TextWithHintCard
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.shared.designsystem.compose.theme.bold
 import com.bunbeauty.shared.feature.orderlist.compose.OrderItem
 import com.bunbeauty.shared.feature.orderlist.state.OrderList
 import com.bunbeauty.shared.feature.orderlist.state.OrderListViewState
@@ -39,6 +40,8 @@ import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.error_order_list_connection
 import fooddeliveryadmin.shared.generated.resources.ic_profile
 import fooddeliveryadmin.shared.generated.resources.msg_common_cafe
+import fooddeliveryadmin.shared.generated.resources.title_order_list_active
+import fooddeliveryadmin.shared.generated.resources.title_order_list_canceled
 import fooddeliveryadmin.shared.generated.resources.title_orders
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -48,6 +51,8 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 const val CAFE_ADDRESS_KEY = "cafeAddress"
+private const val ORDER_LIST_ACTIVE_TITLE_KEY = "order_list_active_title"
+private const val ORDER_LIST_CANCELED_TITLE_KEY = "order_list_canceled_title"
 
 @Composable
 fun OrderList.DataState.mapStateOrderList(orderMapper: OrderMapper = koinInject()): OrderListViewState =
@@ -247,6 +252,11 @@ private fun OrderListSuccessScreen(
                 ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            val (canceledOrders, activeOrders) =
+                state.orderList.partition { orderItem ->
+                    orderItem.status == OrderStatus.CANCELED
+                }
+
             item(key = CAFE_ADDRESS_KEY) {
                 TextWithHintCard(
                     hint = stringResource(Res.string.msg_common_cafe),
@@ -255,21 +265,60 @@ private fun OrderListSuccessScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            items(
-                items = state.orderList,
-                key = { orderItem -> orderItem.uuid },
-            ) { orderItem ->
-                OrderItem(
-                    orderItem = orderItem,
-                    onClick = {
-                        onAction(
-                            OrderList.Action.OrderClick(
-                                orderCode = orderItem.code,
-                                orderUuid = orderItem.uuid,
-                            ),
-                        )
-                    },
-                )
+            if (activeOrders.isNotEmpty()) {
+                item(key = ORDER_LIST_ACTIVE_TITLE_KEY) {
+                    Text(
+                        text = stringResource(Res.string.title_order_list_active),
+                        style = AdminTheme.typography.titleMedium.bold,
+                    )
+                }
+                items(
+                    items = activeOrders,
+                    key = { orderItem -> orderItem.uuid },
+                ) { orderItem ->
+                    OrderItem(
+                        orderItem = orderItem,
+                        onClick = {
+                            onAction(
+                                OrderList.Action.OrderClick(
+                                    orderCode = orderItem.code,
+                                    orderUuid = orderItem.uuid,
+                                ),
+                            )
+                        },
+                    )
+                }
+            }
+
+            if (canceledOrders.isNotEmpty()) {
+                item(key = ORDER_LIST_CANCELED_TITLE_KEY) {
+                    Text(
+                        modifier =
+                            if (activeOrders.isNotEmpty()) {
+                                Modifier.padding(top = 8.dp)
+                            } else {
+                                Modifier
+                            },
+                        text = stringResource(Res.string.title_order_list_canceled),
+                        style = AdminTheme.typography.titleMedium.bold,
+                    )
+                }
+                items(
+                    items = canceledOrders,
+                    key = { orderItem -> orderItem.uuid },
+                ) { orderItem ->
+                    OrderItem(
+                        orderItem = orderItem,
+                        onClick = {
+                            onAction(
+                                OrderList.Action.OrderClick(
+                                    orderCode = orderItem.code,
+                                    orderUuid = orderItem.uuid,
+                                ),
+                            )
+                        },
+                    )
+                }
             }
         }
     }
@@ -290,6 +339,14 @@ private fun OrderListSuccessScreenPreview() {
                                 status = OrderStatus.ACCEPTED,
                                 statusString = "Принят",
                                 code = "22",
+                                deferredTime = "",
+                                dateTime = "12/9/2024",
+                            ),
+                            OrderListViewState.OrderItem(
+                                uuid = "2",
+                                status = OrderStatus.CANCELED,
+                                statusString = "Отменен",
+                                code = "23",
                                 deferredTime = "",
                                 dateTime = "12/9/2024",
                             ),

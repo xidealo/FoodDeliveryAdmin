@@ -25,12 +25,14 @@ data class StatisticViewState(
         data class Success(
             val statisticList: ImmutableList<StatisticItemModel>,
             val period: String,
+            val selectedIntervalCode: TimeIntervalCode,
             val timeIntervalListUI: TimeIntervalListUI,
             val cafeAddress: String,
             val loadingStatistic: Boolean,
         ) : State {
             @Immutable
             data class StatisticItemModel(
+                val uuid: String,
                 val startMillis: Long,
                 val period: String,
                 val count: String,
@@ -71,6 +73,7 @@ internal fun Statistic.DataState.toViewState(): StatisticViewState =
                             getTimeIntervalName(
                                 timeInterval = selectedTimeInterval,
                             ).timeInterval,
+                        selectedIntervalCode = selectedTimeInterval,
                         loadingStatistic = loadingStatistic,
                         timeIntervalListUI =
                             StatisticViewState.TimeIntervalListUI(
@@ -92,6 +95,7 @@ internal fun Statistic.DataState.toViewState(): StatisticViewState =
 @Composable
 fun Statistic.DataState.StatisticItemModel.toStatisticItemModelView(): StatisticViewState.State.Success.StatisticItemModel =
     StatisticViewState.State.Success.StatisticItemModel(
+        uuid = uuid,
         startMillis = startMillis,
         period = period,
         count =

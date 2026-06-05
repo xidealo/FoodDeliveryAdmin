@@ -2,12 +2,18 @@ package com.bunbeauty.data.repository
 
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.statistic.StatisticMapper
+import com.bunbeauty.data.mapper.statistic.toDomain
+import com.bunbeauty.domain.exception.NoTokenException
 import com.bunbeauty.domain.model.statistic.Statistic
+import com.bunbeauty.domain.model.statistic.StatisticDayDetail
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
+import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.StatisticRepo
 
 class StatisticRepository(
     private val networkConnector: FoodDeliveryApi,
     private val statisticMapper: StatisticMapper,
+    private val dataStoreRepo: DataStoreRepo,
 ) : StatisticRepo {
     override suspend fun getStatistic(
         token: String,
@@ -17,4 +23,17 @@ class StatisticRepository(
         networkConnector
             .getStatistic(token, cafeUuid, period)
             .map(statisticMapper::toModel)
+
+    override suspend fun getStatisticDayDetail(
+        date: String,
+        period: StatisticDetailPeriod,
+    ): StatisticDayDetail {
+        val token = dataStoreRepo.getToken() ?: throw NoTokenException()
+        return networkConnector
+            .getStatisticDayDetail(
+                token = token,
+                date = date,
+                period = period,
+            ).toDomain()
+    }
 }

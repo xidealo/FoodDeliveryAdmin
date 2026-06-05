@@ -45,6 +45,15 @@ class OrderDetailsViewModel(
             }
 
             OrderDetailsState.Action.OnCloseStatusClicked -> closeStatusBottomSheet()
+
+            OrderDetailsState.Action.Retry -> {
+                if (dataState.orderUuid.isNotEmpty()) {
+                    setupOrder(
+                        orderUuid = dataState.orderUuid,
+                        orderCode = dataState.code,
+                    )
+                }
+            }
         }
     }
 
@@ -55,6 +64,7 @@ class OrderDetailsViewModel(
         setState {
             copy(
                 state = OrderDetailsState.DataState.State.LOADING,
+                orderUuid = orderUuid,
                 code = orderCode,
             )
         }

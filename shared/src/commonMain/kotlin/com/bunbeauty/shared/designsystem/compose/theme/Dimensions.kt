@@ -25,7 +25,7 @@ data class AdminDimensions(
     val cardElevation: Dp = 2.dp,
     val surfaceElevation: Dp = 4.dp,
     val buttonRadius: Dp = 20.dp,
-    val cardRadius: Dp = 8.dp,
+    val cardRadius: Dp = 16.dp,
     val bottomSheetRadius: Dp = 16.dp,
     val screenContentSpace: Dp = 16.dp,
     val codeWidth: Dp = 56.dp,

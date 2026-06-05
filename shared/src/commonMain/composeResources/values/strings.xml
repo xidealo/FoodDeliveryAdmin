@@ -54,6 +54,8 @@
 
     <!-- ORDER LIST -->
     <string name="title_orders">Заказы</string>
+    <string name="title_order_list_active">Активные</string>
+    <string name="title_order_list_canceled">Отмененные</string>
     <string name="title_order_list_select_cafe">Выберите кафе</string>
     <string name="error_order_list_connection">Ошибка. Проверьте подключение\nк интернету и обновите страницу</string>
 
@@ -106,6 +108,21 @@
     <string name="msg_product_statistic_order_count">Количество заказов</string>
     <string name="msg_product_statistic_count">Количество</string>
     <string name="msg_product_statistic_cost">Стоимость</string>
+    <string name="title_statistic_details">Статистика. Детали</string>
+    <string name="msg_statistic_detail_date">Дата</string>
+    <string name="msg_statistic_detail_period_label">Период</string>
+    <string name="msg_statistic_detail_period_range">%1$s — %2$s</string>
+    <string name="msg_statistic_detail_orders_total_label">Сумма заказов</string>
+    <string name="msg_statistic_detail_orders_without_delivery">Сумма заказов без учета доставки</string>
+    <string name="msg_statistic_detail_delivery_order_count_label">Число заказов с доставкой</string>
+    <string name="msg_statistic_detail_pickup_order_count_label">Число заказов самовывоз</string>
+    <string name="msg_statistic_detail_amount_value">%1$d %2$s</string>
+    <string name="msg_statistic_detail_average_value">%1$d %2$s</string>
+    <string name="msg_statistic_detail_product_sold">Количество проданных: %1$d</string>
+    <string name="msg_statistic_detail_product_sum">Сумма: %1$d %2$s</string>
+    <string name="common_preview_statistic_detail_product_1">Товар (превью 1)</string>
+    <string name="common_preview_statistic_detail_product_2">Товар (превью 2)</string>
+    <string name="description_statistic_product_photo">Фото позиции меню</string>
 
     <!-- MENU -->
     <string name="title_menu">Меню</string>

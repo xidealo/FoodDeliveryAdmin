@@ -223,7 +223,9 @@ fun viewModelModule() =
         }
 
         viewModel {
-            StatisticDetailsViewModel()
+            StatisticDetailsViewModel(
+                getStatisticDayDetailUseCase = get(),
+            )
         }
 
         viewModel {

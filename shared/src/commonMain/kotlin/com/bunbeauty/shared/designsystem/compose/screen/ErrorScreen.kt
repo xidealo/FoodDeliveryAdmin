@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.designsystem.compose.theme.bold
@@ -83,7 +84,8 @@ fun ErrorScreen(
             modifier =
                 Modifier
                     .padding(bottom = AdminTheme.dimensions.mediumSpace)
-                    .padding(horizontal = AdminTheme.dimensions.mediumSpace),
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                    .bottomBarPadding(),
             text = stringResource(Res.string.action_retry),
             isLoading = isLoading,
             onClick = onClick,

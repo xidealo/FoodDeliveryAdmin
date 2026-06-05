@@ -49,6 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun StatisticRouteScreen(
     viewModel: StatisticViewModel = koinViewModel(),
     goBack: () -> Unit,
+    goToStatisticDetails: (String, TimeIntervalCode) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
@@ -66,14 +67,11 @@ fun StatisticRouteScreen(
             }
         }
 
-    LaunchedEffect(Unit) {
-        onAction(Statistic.Action.Init)
-    }
-
     StatisticEffect(
         effects = effects,
         consumeEffects = consumeEffects,
         goBack = goBack,
+        goToStatisticDetails = goToStatisticDetails,
     )
 
     StatisticScreen(
@@ -87,6 +85,7 @@ fun StatisticRouteScreen(
 private fun StatisticEffect(
     effects: List<Statistic.Event>,
     goBack: () -> Unit,
+    goToStatisticDetails: (String, TimeIntervalCode) -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
@@ -94,6 +93,10 @@ private fun StatisticEffect(
             when (effect) {
                 Statistic.Event.GoBack -> {
                     goBack()
+                }
+
+                is Statistic.Event.NavigateToDayDetail -> {
+                    goToStatisticDetails(effect.dateIso, effect.period)
                 }
             }
         }
@@ -132,7 +135,7 @@ private fun StatisticScreen(
                     mainTextId = Res.string.title_common_can_not_load_data,
                     extraTextId = Res.string.msg_common_check_connection_and_retry,
                     onClick = {
-                        onAction(Statistic.Action.Init)
+                        onAction(Statistic.Action.Reload)
                     },
                 )
             }
@@ -165,6 +168,9 @@ private fun StatisticScreen(
                         StatisticSuccessScreen(
                             state = state.state,
                             onAction = onAction,
+                            dayRowsClickable =
+                                state.state.selectedIntervalCode ==
+                                    TimeIntervalCode.DAY,
                         )
                     }
                 }
@@ -173,11 +179,11 @@ private fun StatisticScreen(
     }
 }
 
-@Suppress("NonSkippableComposable")
 @Composable
 private fun StatisticSuccessScreen(
     state: StatisticViewState.State.Success,
     onAction: (Statistic.Action) -> Unit,
+    dayRowsClickable: Boolean,
 ) {
     val listState = rememberLazyListState()
 
@@ -195,10 +201,20 @@ private fun StatisticSuccessScreen(
         items(
             items = state.statisticList,
             key = { statisticItemModel ->
-                statisticItemModel.startMillis
+                statisticItemModel.uuid
             },
         ) { statisticItemModel ->
-            StatisticItem(statisticItemModel)
+            StatisticItem(
+                statisticItemModel = statisticItemModel,
+                dayClickable = dayRowsClickable,
+                onDayClick = {
+                    onAction(
+                        Statistic.Action.DayRowClick(
+                            startMillis = statisticItemModel.startMillis,
+                        ),
+                    )
+                },
+            )
         }
     }
 
@@ -245,10 +261,15 @@ private fun TimeIntervalListBottomSheet(
 
 @Suppress("NonSkippableComposable")
 @Composable
-private fun StatisticItem(statisticItemModel: StatisticViewState.State.Success.StatisticItemModel) {
+private fun StatisticItem(
+    statisticItemModel: StatisticViewState.State.Success.StatisticItemModel,
+    dayClickable: Boolean,
+    onDayClick: () -> Unit,
+) {
     AdminCard(
         modifier = Modifier.fillMaxWidth(),
-        clickable = false,
+        clickable = dayClickable,
+        onClick = onDayClick,
     ) {
         Row(
             modifier =
@@ -308,6 +329,7 @@ private fun StatisticScreenPreview() {
                             statisticList =
                                 persistentListOf(
                                     StatisticViewState.State.Success.StatisticItemModel(
+                                        uuid = "preview-statistic-april",
                                         startMillis = 3064,
                                         period = "апрель",
                                         count = "Заказов: 20",
@@ -315,6 +337,7 @@ private fun StatisticScreenPreview() {
                                         date = "ssss",
                                     ),
                                     StatisticViewState.State.Success.StatisticItemModel(
+                                        uuid = "preview-statistic-may",
                                         startMillis = 3064,
                                         period = "май",
                                         count = "Заказов: 387",
@@ -330,6 +353,7 @@ private fun StatisticScreenPreview() {
                                 ),
                             loadingStatistic = false,
                             cafeAddress = "Кимры чупки 22 в",
+                            selectedIntervalCode = TimeIntervalCode.MONTH,
                         ),
                 ),
             onAction = {},

@@ -19,6 +19,7 @@ import com.bunbeauty.shared.designsystem.compose.theme.Colors.LightGreen
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.LightRed
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.Purple
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.Red
+import com.bunbeauty.shared.designsystem.compose.theme.Colors.SurfaceVariant
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.White
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.Yellow
 
@@ -31,6 +32,7 @@ val LightAdminColors =
                 secondary = White,
                 background = Cream,
                 surface = White,
+                surfaceVariant = SurfaceVariant,
                 error = Red,
                 onPrimary = White,
                 onDisabled = Grey3,
@@ -109,6 +111,7 @@ class MainColors(
     secondary: Color,
     background: Color,
     surface: Color,
+    surfaceVariant: Color,
     error: Color,
     onPrimary: Color,
     onDisabled: Color,
@@ -129,6 +132,8 @@ class MainColors(
     var background by mutableStateOf(background)
         private set
     var surface by mutableStateOf(surface)
+        private set
+    var surfaceVariant by mutableStateOf(surfaceVariant)
         private set
     var error by mutableStateOf(error)
         private set
@@ -157,6 +162,7 @@ class MainColors(
         secondary: Color = this.secondary,
         background: Color = this.background,
         surface: Color = this.surface,
+        surfaceVariant: Color = this.surfaceVariant,
         error: Color = this.error,
         onPrimary: Color = this.onPrimary,
         onDisabled: Color = this.onDisabled,
@@ -173,6 +179,7 @@ class MainColors(
         secondary = secondary,
         background = background,
         surface = surface,
+        surfaceVariant = surfaceVariant,
         error = error,
         onPrimary = onPrimary,
         onDisabled = onDisabled,
@@ -191,6 +198,7 @@ class MainColors(
         secondary = other.secondary
         background = other.background
         surface = other.surface
+        surfaceVariant = other.surfaceVariant
         error = other.error
         onPrimary = other.onPrimary
         onDisabled = other.onDisabled

@@ -35,10 +35,12 @@ import com.bunbeauty.data.model.server.order.OrderServer
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UpdateUnlimitedNotificationRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
+import com.bunbeauty.data.model.server.statistic.StatisticDayDetailServer
 import com.bunbeauty.data.model.server.statistic.StatisticServer
 import com.bunbeauty.data.model.server.user.UserAuthorizationResponse
 import com.bunbeauty.data.model.server.user.UserResponse
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.model.statistic.StatisticDetailPeriod
 import common.ApiError
 import common.ApiResult
 import io.ktor.client.HttpClient
@@ -64,7 +66,7 @@ class FoodDeliveryApiImpl(
 ) : FoodDeliveryApi {
     override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> =
         post(
-            path = "user/login",
+            path = "v2/user/login",
             body = userAuthorizationRequest,
         )
 
@@ -226,6 +228,30 @@ class FoodDeliveryApiImpl(
                 header("Authorization", "Bearer $token")
             }.body()
     }
+
+    override suspend fun getStatisticDayDetail(
+        token: String,
+        date: String,
+        period: StatisticDetailPeriod,
+    ): StatisticDayDetailServer =
+        when (
+            val result =
+                get<StatisticDayDetailServer>(
+                    path = "statistic/day-detail",
+                    token = token,
+                    parameters =
+                        buildList {
+                            add("date" to date)
+                            if (period != StatisticDetailPeriod.DAY) {
+                                add("period" to period.name)
+                            }
+                        },
+                )
+        ) {
+            is ApiResult.Success -> result.data
+            is ApiResult.Error ->
+                throw IllegalStateException(result.apiError.message)
+        }
 
     override suspend fun getOrderListByCafeUuid(
         token: String,
