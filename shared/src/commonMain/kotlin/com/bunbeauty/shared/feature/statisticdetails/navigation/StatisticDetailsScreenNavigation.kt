@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StatisticDetailsScreenDestination(
     val date: String,
-    val period: TimeIntervalCode = TimeIntervalCode.DAY,
+    val periodName: String = TimeIntervalCode.DAY.name,
 )
 
 fun NavController.navigateToStatisticDetailsScreen(
@@ -23,7 +23,7 @@ fun NavController.navigateToStatisticDetailsScreen(
     period: TimeIntervalCode,
     navOptions: NavOptions,
 ) = navigate(
-    route = StatisticDetailsScreenDestination(date = date, period = period),
+    route = StatisticDetailsScreenDestination(date = date, periodName = period.name),
     navOptions = navOptions,
 )
 
