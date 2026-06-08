@@ -19,6 +19,9 @@ data class AdditionListViewState(
     val isRefreshing: Boolean,
     val isLoading: Boolean,
     val hasError: Boolean,
+    val isSearchEnabled: Boolean,
+    val searchQuery: String,
+    val searchResultList: ImmutableList<AdditionFeedViewItem>?,
 ) : BaseViewState {
     @Immutable
     sealed interface AdditionFeedViewItem {
@@ -63,7 +66,26 @@ internal fun AdditionList.DataState.toViewState(): AdditionListViewState =
         isRefreshing = isRefreshing,
         isLoading = isLoading,
         hasError = hasError,
+        isSearchEnabled = isSearchEnabled,
+        searchQuery = searchQuery,
+        searchResultList = getSearchResultList(),
     )
+
+@Composable
+private fun AdditionList.DataState.getSearchResultList(): ImmutableList<AdditionListViewState.AdditionFeedViewItem>? {
+    val normalizedSearchQuery = searchQuery.trim()
+    if (!isSearchEnabled || normalizedSearchQuery.isEmpty()) {
+        return null
+    }
+
+    return (visibleAdditions + hiddenAdditions)
+        .filterIsInstance<AdditionList.DataState.AdditionFeedItem.AdditionItem>()
+        .filter { additionFeedItem ->
+            additionFeedItem.addition.name.contains(normalizedSearchQuery, ignoreCase = true)
+        }.map { additionFeedItem ->
+            additionFeedItem.toItem()
+        }.toImmutableList()
+}
 
 @Composable
 private fun AdditionList.DataState.AdditionFeedItem.toItem(): AdditionListViewState.AdditionFeedViewItem =

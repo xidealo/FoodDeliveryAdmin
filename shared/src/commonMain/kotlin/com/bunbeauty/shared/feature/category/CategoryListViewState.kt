@@ -21,6 +21,9 @@ data class CategoryListViewState(
 
         data class Success(
             val categoryList: ImmutableList<CategoriesViewItem>,
+            val isSearchEnabled: Boolean,
+            val searchQuery: String,
+            val searchResultList: ImmutableList<CategoriesViewItem>?,
         ) : State
 
         data class SuccessDragDrop(
@@ -48,12 +51,11 @@ internal fun CategoryListState.DataState.toViewState(): CategoryListViewState =
                         categoryList =
                             categoryList
                                 .map { category ->
-                                    CategoryListViewState.CategoriesViewItem(
-                                        uuid = category.uuid,
-                                        name = category.name,
-                                        priority = category.priority,
-                                    )
+                                    category.toItem()
                                 }.toPersistentList(),
+                        isSearchEnabled = isSearchEnabled,
+                        searchQuery = searchQuery,
+                        searchResultList = getSearchResultList(),
                     )
 
                 CategoryListState.DataState.State.DRAG_DROP_SUCCESS ->
@@ -63,4 +65,25 @@ internal fun CategoryListState.DataState.toViewState(): CategoryListViewState =
             },
         isRefreshing = isRefreshing,
         categoryList = categoryList.toPersistentList(),
+    )
+
+private fun CategoryListState.DataState.getSearchResultList(): ImmutableList<CategoryListViewState.CategoriesViewItem>? {
+    val normalizedSearchQuery = searchQuery.trim()
+    if (!isSearchEnabled || normalizedSearchQuery.isEmpty()) {
+        return null
+    }
+
+    return categoryList
+        .filter { category ->
+            category.name.contains(normalizedSearchQuery, ignoreCase = true)
+        }.map { category ->
+            category.toItem()
+        }.toPersistentList()
+}
+
+private fun Category.toItem(): CategoryListViewState.CategoriesViewItem =
+    CategoryListViewState.CategoriesViewItem(
+        uuid = uuid,
+        name = name,
+        priority = priority,
     )

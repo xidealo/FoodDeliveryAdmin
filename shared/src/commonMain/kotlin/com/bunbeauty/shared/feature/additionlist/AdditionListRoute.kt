@@ -3,8 +3,11 @@ package com.bunbeauty.shared.feature.additionlist
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
@@ -28,6 +32,8 @@ import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.image.AdminAsyncImage
 import com.bunbeauty.shared.designsystem.compose.element.image.ImageData
+import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextField
+import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
@@ -37,9 +43,12 @@ import fooddeliveryadmin.shared.generated.resources.action_addition_list_create
 import fooddeliveryadmin.shared.generated.resources.default_product
 import fooddeliveryadmin.shared.generated.resources.description_product
 import fooddeliveryadmin.shared.generated.resources.error_common_loading_failed
+import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
 import fooddeliveryadmin.shared.generated.resources.ic_plus
+import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.ic_visible
 import fooddeliveryadmin.shared.generated.resources.title_addition_list
+import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_hidden
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_visible
 import kotlinx.collections.immutable.persistentListOf
@@ -132,6 +141,20 @@ fun AdditionListScreen(
             onAction(AdditionList.Action.RefreshData)
         },
         backActionClick = onBackClick,
+        topActions =
+            if (!state.isLoading && !state.hasError) {
+                listOf(
+                    AdminTopBarAction(
+                        iconId = Res.drawable.ic_search,
+                        color = AdminTheme.colors.main.primary,
+                        onClick = {
+                            onAction(AdditionList.Action.OnSearchClicked)
+                        },
+                    ),
+                )
+            } else {
+                emptyList()
+            },
         actionButton = {
             if (!state.isLoading && !state.hasError) {
                 FloatingButton(
@@ -157,7 +180,25 @@ fun AdditionListScreen(
 
             state.isLoading -> LoadingScreen()
 
-            else -> AdditionListSuccessScreen(state = state, onAction = onAction)
+            else -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    if (state.isSearchEnabled) {
+                        ListSearchField(
+                            searchQuery = state.searchQuery,
+                            onSearchQueryChange = { searchQuery ->
+                                onAction(AdditionList.Action.OnSearchQueryChange(searchQuery))
+                            },
+                        )
+                    }
+                    AdditionListSuccessScreen(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
         }
     }
 }
@@ -166,8 +207,39 @@ fun AdditionListScreen(
 private fun AdditionListSuccessScreen(
     state: AdditionListViewState,
     onAction: (AdditionList.Action) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when {
+        state.searchResultList == null -> {
+            AdditionListSeparatedContent(
+                state = state,
+                onAction = onAction,
+                modifier = modifier,
+            )
+        }
+
+        state.searchResultList.isEmpty() -> {
+            ListSearchEmptyScreen(modifier = modifier)
+        }
+
+        else -> {
+            AdditionListSearchResultScreen(
+                additionItems = state.searchResultList,
+                onAction = onAction,
+                modifier = modifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun AdditionListSeparatedContent(
+    state: AdditionListViewState,
+    onAction: (AdditionList.Action) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
+        modifier = modifier,
         contentPadding =
             PaddingValues(
                 top = 16.dp,
@@ -279,6 +351,82 @@ private fun AdditionListSuccessScreen(
 }
 
 @Composable
+private fun AdditionListSearchResultScreen(
+    additionItems: List<AdditionListViewState.AdditionFeedViewItem>,
+    onAction: (AdditionList.Action) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding =
+            PaddingValues(
+                top = 8.dp,
+                start = 16.dp,
+                end = 16.dp,
+                bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
+            ),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(
+            items = additionItems,
+            key = { additionItem ->
+                additionItem.key
+            },
+        ) { additionItem ->
+            when (additionItem) {
+                is AdditionListViewState.AdditionFeedViewItem.AdditionItem ->
+                    AdditionCard(
+                        modifier = Modifier,
+                        additionItem = additionItem.addition,
+                        onAction = onAction,
+                    )
+
+                is AdditionListViewState.AdditionFeedViewItem.Title ->
+                    Text(
+                        text = additionItem.title,
+                        style = AdminTheme.typography.titleSmall.bold,
+                    )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ListSearchField(
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+) {
+    AdminTextField(
+        value = searchQuery,
+        labelText = stringResource(Res.string.hint_menu_list_search),
+        onValueChange = onSearchQueryChange,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+    )
+}
+
+@Composable
+private fun ListSearchEmptyScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                    .align(Alignment.Center),
+            text = stringResource(Res.string.title_menu_list_search_empty),
+            style = AdminTheme.typography.titleMedium,
+            color = AdminTheme.colors.main.onSurface,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
 private fun AdditionCard(
     modifier: Modifier,
     additionItem: AdditionListViewState.AdditionViewItem,
@@ -386,6 +534,9 @@ fun AdditionListScreenPreview() {
                     isRefreshing = false,
                     isLoading = false,
                     hasError = false,
+                    isSearchEnabled = false,
+                    searchQuery = "",
+                    searchResultList = null,
                 ),
             onAction = {},
             goToCreateAdditionScreen = {},

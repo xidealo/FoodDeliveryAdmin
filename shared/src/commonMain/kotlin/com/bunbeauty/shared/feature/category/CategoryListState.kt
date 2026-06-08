@@ -11,6 +11,8 @@ interface CategoryListState {
         val isLoading: Boolean,
         val categoryList: List<Category>,
         val isRefreshing: Boolean,
+        val isSearchEnabled: Boolean = false,
+        val searchQuery: String = "",
     ) : BaseDataState {
         enum class State {
             LOADING,
@@ -32,6 +34,12 @@ interface CategoryListState {
         data object OnCreateClicked : Action
 
         data object Init : Action
+
+        data object OnSearchClicked : Action
+
+        data class OnSearchQueryChange(
+            val searchQuery: String,
+        ) : Action
 
         data class PutInItem(
             val fromIndex: Int,

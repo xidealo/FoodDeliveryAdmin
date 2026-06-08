@@ -3,6 +3,8 @@ package com.bunbeauty.shared.feature.category
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +26,7 @@ import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.FloatingButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCardDefaults.noCornerCardShape
+import com.bunbeauty.shared.designsystem.compose.element.textfield.AdminTextField
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
@@ -33,13 +37,18 @@ import fooddeliveryadmin.shared.generated.resources.action_menu_list_create
 import fooddeliveryadmin.shared.generated.resources.ic_check
 import fooddeliveryadmin.shared.generated.resources.ic_edit
 import fooddeliveryadmin.shared.generated.resources.ic_plus
+import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
+import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_categories_list
 import fooddeliveryadmin.shared.generated.resources.title_categories_list_updated
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_edit_priority
+import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -164,6 +173,13 @@ private fun CategoryListScreen(
                 is CategoryListViewState.State.Success ->
                     listOf(
                         AdminTopBarAction(
+                            iconId = Res.drawable.ic_search,
+                            color = AdminTheme.colors.main.primary,
+                            onClick = {
+                                onAction(CategoryListState.Action.OnSearchClicked)
+                            },
+                        ),
+                        AdminTopBarAction(
                             iconId = Res.drawable.ic_edit,
                             color = AdminTheme.colors.main.primary,
                             onClick = {
@@ -225,7 +241,23 @@ private fun CategoryListScreen(
             }
 
             is CategoryListViewState.State.Success -> {
-                CategoriesListSuccessScreen(state = state.state, onAction = onAction)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    if (state.state.isSearchEnabled) {
+                        ListSearchField(
+                            searchQuery = state.state.searchQuery,
+                            onSearchQueryChange = { searchQuery ->
+                                onAction(CategoryListState.Action.OnSearchQueryChange(searchQuery))
+                            },
+                        )
+                    }
+                    CategoriesListSuccessScreen(
+                        state = state.state,
+                        onAction = onAction,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
             }
 
             is CategoryListViewState.State.SuccessDragDrop -> {
@@ -242,16 +274,46 @@ private fun CategoryListScreen(
 private fun CategoriesListSuccessScreen(
     state: CategoryListViewState.State.Success,
     onAction: (CategoryListState.Action) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when {
+        state.searchResultList == null -> {
+            CategoryListContent(
+                categoryList = state.categoryList,
+                onAction = onAction,
+                modifier = modifier,
+            )
+        }
+
+        state.searchResultList.isEmpty() -> {
+            ListSearchEmptyScreen(modifier = modifier)
+        }
+
+        else -> {
+            CategoryListContent(
+                categoryList = state.searchResultList,
+                onAction = onAction,
+                modifier = modifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CategoryListContent(
+    categoryList: List<CategoryListViewState.CategoriesViewItem>,
+    onAction: (CategoryListState.Action) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         contentPadding =
             PaddingValues(
                 bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
     ) {
         items(
-            items = state.categoryList,
+            items = categoryList,
             key = { category -> category.uuid },
         ) { category ->
             Column {
@@ -271,6 +333,41 @@ private fun CategoriesListSuccessScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ListSearchField(
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+) {
+    AdminTextField(
+        value = searchQuery,
+        labelText = stringResource(Res.string.hint_menu_list_search),
+        onValueChange = onSearchQueryChange,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+    )
+}
+
+@Composable
+private fun ListSearchEmptyScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AdminTheme.dimensions.mediumSpace)
+                    .align(Alignment.Center),
+            text = stringResource(Res.string.title_menu_list_search_empty),
+            style = AdminTheme.typography.titleMedium,
+            color = AdminTheme.colors.main.onSurface,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
@@ -324,5 +421,40 @@ private fun CategoryItemView(
                 color = AdminTheme.colors.main.onSurface,
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun CategoryListScreenPreview() {
+    AdminTheme {
+        CategoryListScreen(
+            state =
+                CategoryListViewState(
+                    state =
+                        CategoryListViewState.State.Success(
+                            categoryList =
+                                persistentListOf(
+                                    CategoryListViewState.CategoriesViewItem(
+                                        uuid = "1",
+                                        name = "Бургеры",
+                                        priority = 0,
+                                    ),
+                                    CategoryListViewState.CategoriesViewItem(
+                                        uuid = "2",
+                                        name = "Напитки",
+                                        priority = 1,
+                                    ),
+                                ),
+                            isSearchEnabled = false,
+                            searchQuery = "",
+                            searchResultList = null,
+                        ),
+                    isRefreshing = false,
+                    categoryList = persistentListOf(),
+                ),
+            onAction = {},
+            goBack = {},
+        )
     }
 }
