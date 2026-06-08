@@ -48,9 +48,9 @@ import fooddeliveryadmin.shared.generated.resources.ic_plus
 import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.ic_visible
 import fooddeliveryadmin.shared.generated.resources.title_addition_list
-import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_hidden
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_position_visible
+import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

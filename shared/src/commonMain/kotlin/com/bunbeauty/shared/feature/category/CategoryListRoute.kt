@@ -1,9 +1,9 @@
 package com.bunbeauty.shared.feature.category
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,10 +34,10 @@ import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.action_menu_list_create
+import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
 import fooddeliveryadmin.shared.generated.resources.ic_check
 import fooddeliveryadmin.shared.generated.resources.ic_edit
 import fooddeliveryadmin.shared.generated.resources.ic_plus
-import fooddeliveryadmin.shared.generated.resources.hint_menu_list_search
 import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_categories_list
