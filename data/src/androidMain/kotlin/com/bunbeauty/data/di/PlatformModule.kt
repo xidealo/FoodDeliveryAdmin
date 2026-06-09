@@ -1,6 +1,8 @@
 package com.bunbeauty.data.di
 
 import android.util.Log
+import com.bunbeauty.data.logger.AndroidNetworkErrorLogger
+import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.data.repository.DataStoreRepository
 import com.bunbeauty.data.repository.PhotoRepository
 import com.bunbeauty.data.repository.UserAuthorizationRepository
@@ -46,6 +48,7 @@ actual fun platformDataModule() =
                 context = get(),
             )
         }
+        single<NetworkErrorLogger> { AndroidNetworkErrorLogger() }
 
         single {
             HttpClient(OkHttp.create()) {

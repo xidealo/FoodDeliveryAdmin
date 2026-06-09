@@ -1,5 +1,7 @@
 package com.bunbeauty.data.di
 
+import com.bunbeauty.data.logger.IosNetworkErrorLogger
+import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
@@ -19,4 +21,5 @@ actual fun platformDataModule() =
             )
         }
         single<PhotoRepo> { IosStubPhotoRepository() }
+        single<NetworkErrorLogger> { IosNetworkErrorLogger() }
     }

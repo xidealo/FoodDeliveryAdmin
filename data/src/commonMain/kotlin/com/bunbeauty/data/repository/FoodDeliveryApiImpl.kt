@@ -1,6 +1,7 @@
 package com.bunbeauty.data.repository
 
 import com.bunbeauty.data.FoodDeliveryApi
+import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.data.model.server.ServerList
 import com.bunbeauty.data.model.server.addition.AdditionPatchServer
 import com.bunbeauty.data.model.server.addition.AdditionPostServer
@@ -63,6 +64,7 @@ import kotlinx.coroutines.withContext
 
 class FoodDeliveryApiImpl(
     private val client: HttpClient,
+    private val errorLogger: NetworkErrorLogger,
 ) : FoodDeliveryApi {
     override suspend fun login(userAuthorizationRequest: UserAuthorizationRequest): ApiResult<UserAuthorizationResponse> =
         post(
@@ -566,8 +568,13 @@ class FoodDeliveryApiImpl(
                 ApiResult.Success(networkCall().body())
             }
         } catch (exception: ResponseException) {
-            ApiResult.Error(ApiError(exception.response.status.value, exception.message ?: ""))
+            val code = exception.response.status.value
+            val message = exception.message ?: ""
+            errorLogger.logWarning(code = code, message = message, throwable = exception)
+            ApiResult.Error(ApiError(code, message))
         } catch (exception: Throwable) {
-            ApiResult.Error(ApiError(0, exception.message ?: "Bad Internet"))
+            val message = exception.message ?: "Bad Internet"
+            errorLogger.logWarning(code = 0, message = message, throwable = exception)
+            ApiResult.Error(ApiError(0, message))
         }
 }
