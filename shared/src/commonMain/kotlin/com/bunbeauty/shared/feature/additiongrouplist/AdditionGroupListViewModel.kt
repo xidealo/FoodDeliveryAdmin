@@ -39,6 +39,31 @@ class AdditionGroupListViewModel(
             AdditionGroupList.Action.Init -> loadData()
 
             AdditionGroupList.Action.RefreshData -> refreshData()
+
+            AdditionGroupList.Action.OnSearchClicked -> onSearchClicked(dataState)
+
+            is AdditionGroupList.Action.OnSearchQueryChange -> onSearchQueryChange(action.searchQuery)
+        }
+    }
+
+    private fun onSearchClicked(dataState: AdditionGroupList.DataState) {
+        val isSearchEnabled = !dataState.isSearchEnabled
+        setState {
+            copy(
+                isSearchEnabled = isSearchEnabled,
+                searchQuery =
+                    if (isSearchEnabled) {
+                        searchQuery
+                    } else {
+                        ""
+                    },
+            )
+        }
+    }
+
+    private fun onSearchQueryChange(searchQuery: String) {
+        setState {
+            copy(searchQuery = searchQuery)
         }
     }
 

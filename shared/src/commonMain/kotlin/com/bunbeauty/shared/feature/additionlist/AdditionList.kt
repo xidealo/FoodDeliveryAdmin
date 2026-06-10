@@ -12,6 +12,8 @@ interface AdditionList {
         val isLoading: Boolean,
         val isRefreshing: Boolean,
         val hasError: Boolean,
+        val isSearchEnabled: Boolean = false,
+        val searchQuery: String = "",
     ) : BaseDataState {
         sealed interface AdditionFeedItem {
             data class Title(
@@ -29,6 +31,12 @@ interface AdditionList {
         data object Init : Action
 
         data object RefreshData : Action
+
+        data object OnSearchClicked : Action
+
+        data class OnSearchQueryChange(
+            val searchQuery: String,
+        ) : Action
 
         data class OnAdditionClick(
             val additionUuid: String,

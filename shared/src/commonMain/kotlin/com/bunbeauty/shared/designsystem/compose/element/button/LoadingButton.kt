@@ -3,8 +3,10 @@ package com.bunbeauty.shared.designsystem.compose.element.button
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ fun LoadingButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     hasShadow: Boolean = true,
+    colors: ButtonColors = AdminButtonDefaults.mainButtonColors,
 ) {
     CompositionLocalProvider(
         LocalMinimumInteractiveComponentSize provides 0.dp,
@@ -37,7 +40,7 @@ fun LoadingButton(
             onClick = {
                 multipleEventsCutter.processEvent(onClick)
             },
-            colors = AdminButtonDefaults.mainButtonColors,
+            colors = colors,
             shape = AdminButtonDefaults.buttonShape,
             elevation = getButtonElevation(hasShadow),
             enabled = !isLoading,
@@ -53,7 +56,7 @@ fun LoadingButton(
                 Text(
                     text = text,
                     style = AdminTheme.typography.labelLarge.medium,
-                    color = AdminTheme.colors.main.onPrimary,
+                    color = LocalContentColor.current,
                 )
             }
         }

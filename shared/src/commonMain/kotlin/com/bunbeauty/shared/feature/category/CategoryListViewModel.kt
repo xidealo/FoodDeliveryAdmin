@@ -37,6 +37,10 @@ class CategoryListViewModel(
 
             CategoryListState.Action.OnRefreshData -> refreshCategory()
 
+            CategoryListState.Action.OnSearchClicked -> onSearchClicked(dataState)
+
+            is CategoryListState.Action.OnSearchQueryChange -> onSearchQueryChange(action.searchQuery)
+
             is CategoryListState.Action.OnCategoryClick -> categoryClick(action.categoryUuid)
 
             is CategoryListState.Action.OnSaveEditPriorityCategoryClick -> {
@@ -50,6 +54,27 @@ class CategoryListViewModel(
                     toIndex = action.toIndex,
                 )
             }
+        }
+    }
+
+    private fun onSearchClicked(dataState: CategoryListState.DataState) {
+        val isSearchEnabled = !dataState.isSearchEnabled
+        setState {
+            copy(
+                isSearchEnabled = isSearchEnabled,
+                searchQuery =
+                    if (isSearchEnabled) {
+                        searchQuery
+                    } else {
+                        ""
+                    },
+            )
+        }
+    }
+
+    private fun onSearchQueryChange(searchQuery: String) {
+        setState {
+            copy(searchQuery = searchQuery)
         }
     }
 

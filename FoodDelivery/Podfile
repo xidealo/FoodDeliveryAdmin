@@ -10,8 +10,9 @@ install! 'cocoapods'
 
 def default_pods
   pod 'Firebase','11.12.0'
-  pod 'FirebaseMessaging','11.12.0'
   pod 'FirebaseCrashlytics','11.12.0'
+  pod 'FirebaseMessaging','11.12.0'
+  pod 'MapLibre', '6.17.1'
   pod 'data', :path => '../data'
   pod 'shared', :path => '../shared'
 end

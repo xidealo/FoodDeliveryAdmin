@@ -1,5 +1,7 @@
 package com.bunbeauty.data.di
 
+import com.bunbeauty.data.logger.IosNetworkErrorLogger
+import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.data.repository.IosPhotoRepository
 import com.bunbeauty.data.storage.YandexS3KtorClient
 import com.bunbeauty.data.storage.YandexStorageConfig
@@ -40,6 +42,7 @@ actual fun platformDataModule() =
                 yandexS3Client = get(),
             )
         }
+        single<NetworkErrorLogger> { IosNetworkErrorLogger() }
     }
 
 private fun requireInfoPlistValue(key: String): String =
