@@ -13,6 +13,7 @@ import com.bunbeauty.domain.feature.menu.common.exception.MenuProductOldPriceExc
 import com.bunbeauty.domain.feature.menu.common.exception.MenuProductUploadingImageException
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
+import com.bunbeauty.domain.feature.menu.editmenuproduct.exception.MenuProductNotUpdatedException
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.feature.image.EditImageFieldData
 import com.bunbeauty.shared.feature.image.ProductImage
@@ -20,6 +21,7 @@ import com.bunbeauty.shared.feature.menulist.common.AdditionGroupListFieldData
 import com.bunbeauty.shared.feature.menulist.common.CategoriesFieldData
 import com.bunbeauty.shared.feature.menulist.common.TextFieldData
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
+import common.ApiError
 
 class EditMenuProductViewModel(
     private val getMenuProductUseCase: GetMenuProductUseCase,
@@ -479,6 +481,28 @@ class EditMenuProductViewModel(
             is MenuProductUploadingImageException -> {
                 sendEvent {
                     EditMenuProduct.Event.ShowImageUploadingFailed
+                }
+            }
+
+            is MenuProductNotUpdatedException -> {
+                sendEvent {
+                    EditMenuProduct.Event.ShowSaveError(
+                        serverDetail = throwable.serverDetail?.takeUnless { it.isBlank() },
+                    )
+                }
+            }
+
+            is ApiError -> {
+                val serverDetail =
+                    buildString {
+                        if (throwable.code > 0) {
+                            append("${throwable.code}: ")
+                        }
+                        append(throwable.message)
+                    }.trimEnd(' ', ':')
+                        .takeIf { it.isNotBlank() }
+                sendEvent {
+                    EditMenuProduct.Event.ShowSaveError(serverDetail = serverDetail)
                 }
             }
 

@@ -1,6 +1,10 @@
 package com.bunbeauty.data.di
 
 import android.util.Log
+import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
+import aws.sdk.kotlin.services.s3.S3Client
+import aws.smithy.kotlin.runtime.net.url.Url
+import com.bunbeauty.data.BuildConfig
 import com.bunbeauty.data.logger.AndroidNetworkErrorLogger
 import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.data.repository.DataStoreRepository
@@ -29,6 +33,9 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import kotlin.time.Duration.Companion.seconds
 
+private const val YC_ENDPOINT = "https://storage.yandexcloud.net"
+private const val YC_REGION = "ru-central1"
+
 actual fun platformDataModule() =
     module {
         single<DataStoreRepo> {
@@ -46,9 +53,24 @@ actual fun platformDataModule() =
         single<PhotoRepo> {
             PhotoRepository(
                 context = get(),
+                s3Client = get(),
+                bucket = BuildConfig.YC_BUCKET,
             )
         }
         single<NetworkErrorLogger> { AndroidNetworkErrorLogger() }
+
+        single {
+            S3Client {
+                region = YC_REGION
+                endpointUrl = Url.parse(YC_ENDPOINT)
+                forcePathStyle = false
+                credentialsProvider =
+                    StaticCredentialsProvider {
+                        accessKeyId = BuildConfig.YC_ACCESS_KEY
+                        secretAccessKey = BuildConfig.YC_SECRET_KEY
+                    }
+            }
+        }
 
         single {
             HttpClient(OkHttp.create()) {
