@@ -35,7 +35,7 @@ class ProfileViewModel(
             Profile.Action.LogoutClick -> handleLogoutClick()
             Profile.Action.SettingsClick -> handleSettingsClick()
             Profile.Action.LogoutConfirm -> handleLogoutConfirm()
-            Profile.Action.LogoutCancel -> handleLogoutCancel()
+            Profile.Action.LogoutCancel -> handleLogoutCancel(dataState)
             Profile.Action.MapClick -> handleMapClick()
         }
     }
@@ -120,11 +120,13 @@ class ProfileViewModel(
         )
     }
 
-    private fun handleLogoutCancel() {
-        setState {
-            copy(
-                isShowLogoutBottomSheet = false,
-            )
+    private fun handleLogoutCancel(dataState: Profile.DataState) {
+        if (!dataState.logoutLoading) {
+            setState {
+                copy(
+                    isShowLogoutBottomSheet = false,
+                )
+            }
         }
     }
 }
