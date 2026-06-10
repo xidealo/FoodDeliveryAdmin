@@ -12,12 +12,20 @@ interface AdditionGroupList {
         val isLoading: Boolean,
         val isRefreshing: Boolean,
         val error: Throwable?,
+        val isSearchEnabled: Boolean = false,
+        val searchQuery: String = "",
     ) : BaseDataState
 
     sealed interface Action : BaseAction {
         data object Init : Action
 
         data object RefreshData : Action
+
+        data object OnSearchClicked : Action
+
+        data class OnSearchQueryChange(
+            val searchQuery: String,
+        ) : Action
 
         data class OnAdditionClick(
             val additionUuid: String,
