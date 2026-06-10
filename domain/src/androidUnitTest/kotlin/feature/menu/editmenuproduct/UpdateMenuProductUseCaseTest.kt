@@ -126,7 +126,7 @@ class UpdateMenuProductUseCaseTest {
                             nutrition = nutritionInt,
                             description = description,
                             comboDescription = "",
-                            photoLink = null,
+                            photoLink = photoLinkInitial,
                             isVisible = true,
                             isRecommended = false,
                             categories = listOf("123"),
@@ -156,7 +156,7 @@ class UpdateMenuProductUseCaseTest {
         }
 
     @Test
-    fun `return Unit when successfully updated with initial photo link`() =
+    fun `passes existing photoLink in patch when newImageUri is null`() =
         runTest {
             coEvery {
                 menuProductRepo.updateMenuProduct(
@@ -171,7 +171,7 @@ class UpdateMenuProductUseCaseTest {
                             nutrition = nutritionInt,
                             description = description,
                             comboDescription = "",
-                            photoLink = null,
+                            photoLink = photoLinkInitial,
                             isVisible = true,
                             isRecommended = false,
                             categories = listOf("123"),
@@ -199,13 +199,16 @@ class UpdateMenuProductUseCaseTest {
                 )
 
             coVerify(exactly = 0) {
+                uploadPhotoUseCase(imageUri = imageUri)
+            }
+            coVerify(exactly = 0) {
                 deletePhotoUseCase(photoLink = photoLinkInitial)
             }
             assertEquals(Unit, result)
         }
 
     @Test
-    fun `return Unit when successfully updated with new photo uri`() =
+    fun `passes uploaded photoLink in patch when newImageUri is set`() =
         runTest {
             coEvery {
                 menuProductRepo.updateMenuProduct(
@@ -247,6 +250,9 @@ class UpdateMenuProductUseCaseTest {
                     ),
                 )
 
+            coVerify(exactly = 1) {
+                uploadPhotoUseCase(imageUri = imageUri)
+            }
             coVerify(exactly = 1) {
                 deletePhotoUseCase(photoLink = photoLinkInitial)
             }

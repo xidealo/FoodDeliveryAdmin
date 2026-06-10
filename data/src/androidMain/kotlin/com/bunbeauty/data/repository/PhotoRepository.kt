@@ -7,46 +7,52 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.graphics.scale
 import androidx.core.net.toUri
+import aws.sdk.kotlin.services.s3.S3Client
+import aws.sdk.kotlin.services.s3.model.DeleteObjectRequest
+import aws.sdk.kotlin.services.s3.model.ListObjectsV2Request
+import aws.sdk.kotlin.services.s3.model.PutObjectRequest
+import aws.smithy.kotlin.runtime.content.ByteStream
 import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.repo.PhotoRepo
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.UUID
 
 private const val DEFAULT_BYTE_SIZE = 100 * 1024
+private const val YC_ENDPOINT = "https://storage.yandexcloud.net"
 
 class PhotoRepository(
     private val context: Context,
+    private val s3Client: S3Client,
+    private val bucket: String,
 ) : PhotoRepo {
     private var photoListCache: List<Photo>? = null
 
-    override suspend fun getPhotoList(username: String): List<Photo> =
-        coroutineScope {
-            photoListCache ?: fetchPhotoList(username = username)
-        }
+    override suspend fun getPhotoList(username: String): List<Photo> = photoListCache ?: fetchPhotoList(username = username)
 
-    override suspend fun fetchPhotoList(username: String): List<Photo> =
-        coroutineScope {
-            val imagesRef = FirebaseStorage.getInstance().reference.child(username)
-
-            val referenceListResult = imagesRef.listAll().await()
-
-            val photoList =
-                referenceListResult.items
-                    .map { reference ->
-                        async {
-                            Photo(url = reference.downloadUrl.await().toString())
-                        }
-                    }.awaitAll()
-            photoListCache = photoList
-            photoList
-        }
+    override suspend fun fetchPhotoList(username: String): List<Photo> {
+        val prefix = "${username.lowercase()}/"
+        val response =
+            s3Client.listObjectsV2(
+                ListObjectsV2Request {
+                    bucket = this@PhotoRepository.bucket
+                    this.prefix = prefix
+                },
+            )
+        val photoList =
+            response.contents
+                .orEmpty()
+                .mapNotNull { obj ->
+                    obj.key?.let { key ->
+                        Photo(url = getPublicUrl(key = key))
+                    }
+                }
+        photoListCache = photoList
+        return photoList
+    }
 
     override suspend fun uploadPhoto(
         uri: String,
@@ -62,19 +68,33 @@ class PhotoRepository(
                     height = height,
                 ) ?: return@withContext null
 
-            val uuid = UUID.randomUUID()
-            val uploadReference =
-                FirebaseStorage.getInstance().reference.child("$username/$uuid.webp")
-            val uploadTask = uploadReference.putBytes(data)
-            uploadTask.await().metadata?.reference?.let { reference ->
-                Photo(url = reference.downloadUrl.await().toString())
+            val key = "${username.lowercase()}/${UUID.randomUUID()}.webp"
+            try {
+                s3Client.putObject(
+                    PutObjectRequest {
+                        bucket = this@PhotoRepository.bucket
+                        this.key = key
+                        body = ByteStream.fromBytes(data)
+                        contentType = "image/webp"
+                    },
+                )
+                photoListCache = null
+                Photo(url = getPublicUrl(key = key))
+            } catch (_: Throwable) {
+                null
             }
         }
     }
 
     override suspend fun deletePhoto(photoLink: String) {
-        val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(photoLink)
-        storageRef.delete().await()
+        val key = extractKey(photoLink = photoLink) ?: return
+        s3Client.deleteObject(
+            DeleteObjectRequest {
+                bucket = this@PhotoRepository.bucket
+                this.key = key
+            },
+        )
+        photoListCache = null
     }
 
     override fun clearCache() {
@@ -113,6 +133,30 @@ class PhotoRepository(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Bitmap.CompressFormat.WEBP_LOSSY
         } else {
+            @Suppress("DEPRECATION")
             Bitmap.CompressFormat.WEBP
         }
+
+    private fun getPublicUrl(key: String): String {
+        val encodedKey =
+            key
+                .split('/')
+                .joinToString(separator = "/") { segment ->
+                    URLEncoder.encode(segment, Charsets.UTF_8.name()).replace("+", "%20")
+                }
+        return "https://$bucket.storage.yandexcloud.net/$encodedKey"
+    }
+
+    private fun extractKey(photoLink: String): String? {
+        val virtualHostPrefix = "https://$bucket.storage.yandexcloud.net/"
+        val pathStylePrefix = "$YC_ENDPOINT/$bucket/"
+        val rawKey =
+            when {
+                photoLink.startsWith(virtualHostPrefix) -> photoLink.removePrefix(virtualHostPrefix)
+                photoLink.startsWith(pathStylePrefix) -> photoLink.removePrefix(pathStylePrefix)
+                else -> null
+            }
+        if (rawKey == null) return null
+        return URLDecoder.decode(rawKey, Charsets.UTF_8.name())
+    }
 }

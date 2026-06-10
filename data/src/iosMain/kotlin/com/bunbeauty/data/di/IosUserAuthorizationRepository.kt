@@ -5,10 +5,8 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.ApiDeviceType
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
-import com.bunbeauty.domain.model.Photo
 import com.bunbeauty.domain.model.user.LoginUser
 import com.bunbeauty.domain.repo.DataStoreRepo
-import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import common.ApiResult
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -102,21 +100,4 @@ class IosUserAuthorizationRepository(
             token = token,
         )
     }
-}
-
-class IosStubPhotoRepository : PhotoRepo {
-    override suspend fun getPhotoList(username: String): List<Photo> = emptyList()
-
-    override suspend fun fetchPhotoList(username: String): List<Photo> = emptyList()
-
-    override suspend fun uploadPhoto(
-        uri: String,
-        username: String,
-        width: Int,
-        height: Int,
-    ): Photo? = null
-
-    override suspend fun deletePhoto(photoLink: String) = Unit
-
-    override fun clearCache() = Unit
 }
