@@ -43,6 +43,5 @@ actual fun platformDataModule() =
                 yandexS3Client = get(),
             )
         }
-        single<PhotoRepo> { IosStubPhotoRepository() }
         single<NetworkErrorLogger> { IosNetworkErrorLogger() }
     }
