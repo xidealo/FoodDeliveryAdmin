@@ -103,6 +103,7 @@ kotlin {
             dependencies {
                 implementation(project.dependencies.platform(libs.firebase.bom))
                 implementation(libs.firebase.messaging)
+                implementation(libs.firebase.crashlytics)
                 implementation(libs.work.runtime.ktx)
                 implementation(libs.kotlinx.coroutines.services)
                 implementation(libs.datastore.preferences)

@@ -44,6 +44,7 @@ fun repositoryModule() =
         single<FoodDeliveryApi> {
             FoodDeliveryApiImpl(
                 client = get(),
+                errorLogger = get(),
             )
         }
         single<OrderUpdatesWebSocket> {
