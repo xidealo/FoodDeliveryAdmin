@@ -1,6 +1,7 @@
 package com.bunbeauty.shared.feature.orderlist
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.orderlist.ObserveOrderListStreamUseCase
 import com.bunbeauty.domain.feature.orderlist.OrderListStreamState
@@ -211,7 +212,9 @@ class OrderListViewModel(
 
     private fun handleOrderListUpdated(orderList: List<Order>) {
         val oldOrderList = mutableDataState.value.orderList
-        val hasNewOrder = oldOrderList.size < orderList.size
+        val hasNewOrder =
+            oldOrderList.count { order -> order.orderStatus != OrderStatus.CANCELED } <
+                orderList.count { order -> order.orderStatus != OrderStatus.CANCELED }
 
         setState {
             copy(

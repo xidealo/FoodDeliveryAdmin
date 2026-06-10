@@ -9,6 +9,7 @@ import com.bunbeauty.shared.viewmodel.base.BaseEvent
 interface OrderDetailsState {
     data class DataState(
         val state: State,
+        val orderUuid: String = "",
         val code: String,
         val orderDetails: OrderDetails?,
         val saving: Boolean,
@@ -38,6 +39,8 @@ interface OrderDetailsState {
         data object OnSaveClicked : Action
 
         data object OnBackClicked : Action
+
+        data object Retry : Action
     }
 
     sealed interface Event : BaseEvent {

@@ -129,6 +129,7 @@ class StatisticViewModel(
                     period = period.name,
                 ).map { statistic ->
                     Statistic.DataState.StatisticItemModel(
+                        uuid = statistic.uuid,
                         startMillis = statistic.startPeriodTime,
                         period = statistic.period,
                         count = statistic.orderCount,

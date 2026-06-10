@@ -25,7 +25,7 @@ import com.bunbeauty.shared.feature.category.navigation.categoryListScreenRoute
 import com.bunbeauty.shared.feature.category.navigation.navigateToCategoryListScreen
 import com.bunbeauty.shared.feature.gallery.navigation.galleryScreenRoute
 import com.bunbeauty.shared.feature.login.navigation.loginScreenRoute
-import com.bunbeauty.shared.feature.login.navigation.navigateToLoginScreen
+import com.bunbeauty.shared.feature.login.navigation.navigateToLoginScreenClearingBackStack
 import com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation.editDeliveryZoneInfoScreenRoute
 import com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation.navigateToEditDeliveryZoneInfoScreen
 import com.bunbeauty.shared.feature.mapdelivery.navigation.mapDeliveryZoneScreenRoute
@@ -383,17 +383,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         },
         goToMapScreen = { navController.navigateToMapDeliveryZoneScreen(emptyNavOptions) },
         goBack = navController::navigateUp,
-        goToLoginScreen = {
-            navController.navigateToLoginScreen(
-                navOptions =
-                    navOptions {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    },
-            )
-        },
+        goToLoginScreen = navController::navigateToLoginScreenClearingBackStack,
     )
     settingsScreenRoute(
         goBack = navController::navigateUp,

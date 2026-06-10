@@ -31,6 +31,7 @@ interface Statistic {
         }
 
         data class StatisticItemModel(
+            val uuid: String,
             val startMillis: Long,
             val period: String,
             val count: Int,

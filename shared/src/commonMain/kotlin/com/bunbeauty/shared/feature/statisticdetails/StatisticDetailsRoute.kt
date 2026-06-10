@@ -26,6 +26,7 @@ import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.designsystem.compose.theme.bold
 import com.bunbeauty.shared.designsystem.compose.theme.medium
+import com.bunbeauty.shared.feature.statistic.TimeIntervalCode
 import com.bunbeauty.shared.feature.statisticdetails.navigation.StatisticDetailsScreenDestination
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.common_preview_statistic_detail_product_1
@@ -56,6 +57,7 @@ fun StatisticDetailsRouteScreen(
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<StatisticDetailsScreenDestination>()
+    val period = TimeIntervalCode.valueOf(route.periodName)
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -72,11 +74,11 @@ fun StatisticDetailsRouteScreen(
             }
         }
 
-    LaunchedEffect(route.date, route.period) {
+    LaunchedEffect(route.date, period) {
         onAction(
             StatisticDetails.Action.Init(
                 dateIso = route.date,
-                period = route.period,
+                period = period,
             ),
         )
     }
