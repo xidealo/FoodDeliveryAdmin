@@ -15,6 +15,9 @@ data class AdditionGroupListViewState(
     val hiddenAdditionItems: ImmutableList<AdditionGroupItem>,
     val isRefreshing: Boolean,
     val isLoading: Boolean,
+    val isSearchEnabled: Boolean,
+    val searchQuery: String,
+    val searchResultList: ImmutableList<AdditionGroupItem>?,
 ) : BaseViewState {
     @Immutable
     data class AdditionGroupItem(
@@ -40,7 +43,25 @@ internal fun AdditionGroupList.DataState.toViewState(): AdditionGroupListViewSta
                 }.toImmutableList(),
         isRefreshing = isRefreshing,
         isLoading = isLoading,
+        isSearchEnabled = isSearchEnabled,
+        searchQuery = searchQuery,
+        searchResultList = getSearchResultList(),
     )
+
+@Composable
+private fun AdditionGroupList.DataState.getSearchResultList(): ImmutableList<AdditionGroupListViewState.AdditionGroupItem>? {
+    val normalizedSearchQuery = searchQuery.trim()
+    if (!isSearchEnabled || normalizedSearchQuery.isEmpty()) {
+        return null
+    }
+
+    return (visibleAdditionGroups + hiddenAdditionGroups)
+        .filter { additionGroup ->
+            additionGroup.name.contains(normalizedSearchQuery, ignoreCase = true)
+        }.map { additionGroup ->
+            additionGroup.toItem()
+        }.toImmutableList()
+}
 
 @Composable
 private fun AdditionGroup.toItem(): AdditionGroupListViewState.AdditionGroupItem =

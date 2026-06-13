@@ -93,7 +93,7 @@ fun ErrorScreen(
     }
 }
 
-@Preview()
+@Preview(showBackground = true)
 @Composable
 private fun ErrorScreenPreview() {
     AdminTheme {

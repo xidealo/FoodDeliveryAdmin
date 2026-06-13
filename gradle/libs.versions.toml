@@ -34,6 +34,7 @@ kotlinTest = "2.2.21"
 runner = "1.7.0"
 core = "1.7.0"
 junit = "1.3.0"
+awsSdkKotlin = "1.5.56"
 
 
 [libraries]
@@ -103,7 +104,9 @@ work-runtime-ktx = {module ="androidx.work:work-runtime-ktx", version.ref ="work
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-firebase-storage = { module = "com.google.firebase:firebase-storage" }
+
+# AWS SDK for Kotlin
+aws-s3 = { module = "aws.sdk.kotlin:s3", version.ref = "awsSdkKotlin" }
 
 # Testing
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }

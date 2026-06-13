@@ -149,6 +149,7 @@ private fun ProfileScreen(
 
                 LogoutBottomSheet(
                     isShown = viewState.state.isShowLogoutBottomSheet,
+                    isLoading = viewState.state.logoutLoading,
                     onAction = onAction,
                 )
             }

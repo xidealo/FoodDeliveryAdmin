@@ -50,6 +50,8 @@ import fooddeliveryadmin.shared.generated.resources.action_common_replace_photo
 import fooddeliveryadmin.shared.generated.resources.action_order_details_save
 import fooddeliveryadmin.shared.generated.resources.array_common_menu_product_units
 import fooddeliveryadmin.shared.generated.resources.description_product
+import fooddeliveryadmin.shared.generated.resources.error_common_menu_product_empty_photo
+import fooddeliveryadmin.shared.generated.resources.error_common_menu_product_image_uploading
 import fooddeliveryadmin.shared.generated.resources.error_common_something_went_wrong
 import fooddeliveryadmin.shared.generated.resources.hint_common_menu_product_combo_description
 import fooddeliveryadmin.shared.generated.resources.hint_common_menu_product_description
@@ -171,11 +173,11 @@ private fun CreateMenuProductEffect(
                 }
 
                 CreateMenuProduct.Event.ShowImageUploadingFailed -> {
-                    showErrorMessage("Не удалось загрузить изображение")
+                    showErrorMessage(getString(Res.string.error_common_menu_product_image_uploading))
                 }
 
                 CreateMenuProduct.Event.ShowEmptyPhoto -> {
-                    showErrorMessage("Добавьте фотографию")
+                    showErrorMessage(getString(Res.string.error_common_menu_product_empty_photo))
                 }
 
                 CreateMenuProduct.Event.ShowGallery -> {

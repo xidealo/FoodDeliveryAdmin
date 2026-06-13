@@ -42,6 +42,31 @@ class AdditionListViewModel(
             AdditionList.Action.Init -> loadData()
 
             AdditionList.Action.RefreshData -> refreshData()
+
+            AdditionList.Action.OnSearchClicked -> onSearchClicked(dataState)
+
+            is AdditionList.Action.OnSearchQueryChange -> onSearchQueryChange(action.searchQuery)
+        }
+    }
+
+    private fun onSearchClicked(dataState: AdditionList.DataState) {
+        val isSearchEnabled = !dataState.isSearchEnabled
+        setState {
+            copy(
+                isSearchEnabled = isSearchEnabled,
+                searchQuery =
+                    if (isSearchEnabled) {
+                        searchQuery
+                    } else {
+                        ""
+                    },
+            )
+        }
+    }
+
+    private fun onSearchQueryChange(searchQuery: String) {
+        setState {
+            copy(searchQuery = searchQuery)
         }
     }
 
