@@ -41,6 +41,8 @@
 	<string>${APP_BUILD}</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Приложению нужен доступ к фото, чтобы добавить изображение товара или добавки.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -71,5 +73,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>YANDEX_STORAGE_ACCESS_KEY</key>
+	<string>$(YANDEX_STORAGE_ACCESS_KEY)</string>
+	<key>YANDEX_STORAGE_BUCKET</key>
+	<string>$(YANDEX_STORAGE_BUCKET)</string>
+	<key>YANDEX_STORAGE_SECRET_KEY</key>
+	<string>$(YANDEX_STORAGE_SECRET_KEY)</string>
 </dict>
 </plist>
