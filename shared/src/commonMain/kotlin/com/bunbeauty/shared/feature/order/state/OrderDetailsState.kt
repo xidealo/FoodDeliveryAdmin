@@ -5,6 +5,7 @@ import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.shared.viewmodel.base.BaseAction
 import com.bunbeauty.shared.viewmodel.base.BaseDataState
 import com.bunbeauty.shared.viewmodel.base.BaseEvent
+import org.jetbrains.compose.resources.StringResource
 
 interface OrderDetailsState {
     data class DataState(
@@ -47,7 +48,7 @@ interface OrderDetailsState {
         data object OpenWarningDialogEvent : Event
 
         data class ShowErrorMessage(
-            val messageId: Int,
+            val messageResource: StringResource,
         ) : Event
 
         data object GoBackEvent : Event
