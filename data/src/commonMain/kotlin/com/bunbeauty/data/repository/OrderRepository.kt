@@ -28,7 +28,13 @@ class OrderRepository(
         orderUuid: String,
         status: OrderStatus,
     ) {
-        foodDeliveryApi.updateOrderStatus(token, orderUuid, status)
+        when (val result = foodDeliveryApi.updateOrderStatus(token, orderUuid, status)) {
+            is ApiResult.Success -> Unit
+            is ApiResult.Error -> {
+                println("$ORDER_TAG: updateStatus ${result.apiError.message} ${result.apiError.code}")
+                throw ServerConnectionException()
+            }
+        }
     }
 
     override suspend fun unsubscribeOrderUpdates(message: String) {
