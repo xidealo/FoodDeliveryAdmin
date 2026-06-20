@@ -156,7 +156,7 @@ private fun OrderDetailsEffect(
                 }
 
                 is OrderDetailsState.Event.ShowErrorMessage -> {
-                    showErrorMessage("Ошибка")
+                    showErrorMessage(getString(effect.messageResource))
                 }
 
                 OrderDetailsState.Event.GoBackEvent -> {

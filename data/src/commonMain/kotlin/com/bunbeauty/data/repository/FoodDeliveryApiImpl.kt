@@ -279,7 +279,7 @@ class FoodDeliveryApiImpl(
         token: String,
         orderUuid: String,
         status: OrderStatus,
-    ): ApiResult<OrderDetailsServer> =
+    ): ApiResult<OrderServer> =
         patch(
             path = "order",
             body = mapOf("status" to status.toString()),
