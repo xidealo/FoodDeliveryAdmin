@@ -31,7 +31,7 @@ class OrderRepository(
         orderUuid: String,
         status: OrderStatus,
     ) {
-        when (foodDeliveryApi.updateOrderStatus(token, orderUuid, status)) {
+        when (val result = foodDeliveryApi.updateOrderStatus(token, orderUuid, status)) {
             is ApiResult.Success -> {
                 orderListCache =
                     orderListCache?.map { order ->
@@ -46,7 +46,10 @@ class OrderRepository(
                 }
             }
 
-            is ApiResult.Error -> Unit
+            is ApiResult.Error -> {
+                println("$ORDER_TAG: updateStatus ${result.apiError.message} ${result.apiError.code}")
+                throw ServerConnectionException()
+            }
         }
     }
 

@@ -142,7 +142,7 @@ interface FoodDeliveryApi {
         token: String,
         orderUuid: String,
         status: OrderStatus,
-    ): ApiResult<OrderDetailsServer>
+    ): ApiResult<OrderServer>
 
     suspend fun getWorkInfo(companyUuid: String): ApiResult<WorkInfoData>
 

@@ -8,6 +8,8 @@ import com.bunbeauty.domain.model.order.details.OrderDetails
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.feature.order.state.OrderDetailsState
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
+import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.error_order_details_can_not_save
 
 class OrderDetailsViewModel(
     private val loadOrderDetails: LoadOrderDetailsUseCase,
@@ -179,12 +181,14 @@ class OrderDetailsViewModel(
                 }
             },
             onError = {
-                // TODO SET STRING
-//                sendEvent {
-//                    OrderDetailsState.Event.ShowErrorMessage(
-//                        messageId = Res.string.error_order_details_can_not_save
-//                    )
-//                }
+                setState {
+                    copy(saving = false)
+                }
+                sendEvent {
+                    OrderDetailsState.Event.ShowErrorMessage(
+                        messageResource = Res.string.error_order_details_can_not_save,
+                    )
+                }
             },
         )
     }

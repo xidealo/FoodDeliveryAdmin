@@ -1,8 +1,10 @@
 package com.bunbeauty.fooddeliveryadmin.main
 
 import android.Manifest
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,7 +21,13 @@ class MainActivity : AppCompatActivity(R.layout.layout_compose) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle =
+                SystemBarStyle.light(
+                    scrim = Color.TRANSPARENT,
+                    darkScrim = Color.TRANSPARENT,
+                ),
+        )
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
