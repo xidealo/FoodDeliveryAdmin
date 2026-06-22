@@ -23,13 +23,29 @@ class OrderRepository(
     private val orderUpdatesWebSocket: OrderUpdatesWebSocket,
     private val serverOrderMapper: IServerOrderMapper,
 ) : OrderRepo {
+    private var orderListCache: List<Order>? = null
+    private var orderDetailsCache: MutableMap<String, OrderDetails> = mutableMapOf()
+
     override suspend fun updateStatus(
         token: String,
         orderUuid: String,
         status: OrderStatus,
     ) {
         when (val result = foodDeliveryApi.updateOrderStatus(token, orderUuid, status)) {
-            is ApiResult.Success -> Unit
+            is ApiResult.Success -> {
+                orderListCache =
+                    orderListCache?.map { order ->
+                        if (order.uuid == orderUuid) {
+                            order.copy(orderStatus = status)
+                        } else {
+                            order
+                        }
+                    }
+                orderDetailsCache[orderUuid]?.let { details ->
+                    orderDetailsCache[orderUuid] = details.copy(status = status)
+                }
+            }
+
             is ApiResult.Error -> {
                 println("$ORDER_TAG: updateStatus ${result.apiError.message} ${result.apiError.code}")
                 throw ServerConnectionException()
@@ -77,6 +93,7 @@ class OrderRepository(
                                     orderList = currentList,
                                     newOrder = order,
                                 )
+                            orderListCache = currentList
                             emit(OrderUpdatesStreamEvent.Orders(list = currentList))
                         }
                     }
@@ -92,11 +109,14 @@ class OrderRepository(
                 result.data
                     .results
                     .map(serverOrderMapper::mapOrder)
+                    .also { orderList ->
+                        orderListCache = orderList
+                    }
             }
 
             is ApiResult.Error -> {
                 println("$ORDER_TAG: getOrderListByCafeUuid ${result.apiError.message} ${result.apiError.code}")
-                throw ServerConnectionException()
+                orderListCache ?: throw ServerConnectionException()
             }
         }
 
@@ -106,17 +126,22 @@ class OrderRepository(
     ): OrderDetails? =
         when (val result = foodDeliveryApi.getOrderByUuid(token, orderUuid)) {
             is ApiResult.Success -> {
-                serverOrderMapper.mapOrderDetails(result.data)
+                serverOrderMapper
+                    .mapOrderDetails(result.data)
+                    .also { orderDetails ->
+                        orderDetailsCache[orderUuid] = orderDetails
+                    }
             }
 
             is ApiResult.Error -> {
                 println("$ORDER_TAG: loadOrderByUuid ${result.apiError.message} ${result.apiError.code}")
-                null
+                orderDetailsCache[orderUuid]
             }
         }
 
     override fun clearCache() {
-        // no-op (stream state is per collector)
+        orderListCache = null
+        orderDetailsCache.clear()
     }
 
     private fun updateOrderList(
