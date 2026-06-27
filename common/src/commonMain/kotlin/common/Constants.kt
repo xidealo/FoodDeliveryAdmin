@@ -18,4 +18,6 @@ object Constants {
 
     const val ADDITION_WIDTH = 240
     const val ADDITION_HEIGHT = 240
+
+    const val ADDITION_NAME_MAX_LENGTH = 34
 }
