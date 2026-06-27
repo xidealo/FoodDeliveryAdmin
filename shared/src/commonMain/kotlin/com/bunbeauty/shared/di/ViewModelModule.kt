@@ -205,6 +205,7 @@ fun viewModelModule() =
                 getTypeWorkUseCase = get(),
                 updateTypeWorkUseCase = get(),
                 updateWorkCafeUseCase = get(),
+                getUnfinishedOrderCodesUseCase = get(),
             )
         }
 

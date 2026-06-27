@@ -22,6 +22,7 @@ import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
 import com.bunbeauty.domain.feature.photo.UploadPhotoUseCase
+import com.bunbeauty.domain.feature.settings.GetUnfinishedOrderCodesUseCase
 import com.bunbeauty.domain.usecase.GetSeparatedMenuProductListUseCase
 import com.bunbeauty.domain.usecase.GetStatisticDayDetailUseCase
 import com.bunbeauty.domain.usecase.GetStatisticUseCase
@@ -37,6 +38,13 @@ fun useCaseModule() =
             GetCafeUseCase(
                 dataStoreRepo = get(),
                 cafeRepository = get(),
+            )
+        }
+
+        factory {
+            GetUnfinishedOrderCodesUseCase(
+                dataStoreRepo = get(),
+                orderRepo = get(),
             )
         }
 
