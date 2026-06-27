@@ -15,6 +15,7 @@ interface SettingsState {
         val workLoad: WorkLoad,
         val isLoading: Boolean,
         val showAcceptOrdersConfirmation: Boolean,
+        val unfinishedOrderCodes: List<String>,
     ) : BaseDataState {
         enum class State {
             LOADING,

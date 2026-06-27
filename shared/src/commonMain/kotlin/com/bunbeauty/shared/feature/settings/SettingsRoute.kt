@@ -59,6 +59,7 @@ import fooddeliveryadmin.shared.generated.resources.msg_settings_status_delivery
 import fooddeliveryadmin.shared.generated.resources.msg_settings_status_pickup
 import fooddeliveryadmin.shared.generated.resources.msg_settings_status_pickup_delivery
 import fooddeliveryadmin.shared.generated.resources.msg_settings_type_work
+import fooddeliveryadmin.shared.generated.resources.msg_settings_unfinished_orders_warning
 import fooddeliveryadmin.shared.generated.resources.msg_settings_unlimited_notifications
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_average
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_high
@@ -277,6 +278,21 @@ private fun BottomSheetScreen(
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
+            val unfinishedOrderCodes = state.acceptOrdersConfirmation.unfinishedOrderCodes
+            if (unfinishedOrderCodes.isNotEmpty()) {
+                Text(
+                    text =
+                        stringResource(
+                            Res.string.msg_settings_unfinished_orders_warning,
+                            unfinishedOrderCodes.size,
+                            unfinishedOrderCodes.joinToString(separator = ", "),
+                        ),
+                    style = AdminTheme.typography.bodyMedium,
+                    color = AdminTheme.colors.main.error,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                )
+            }
             MainButton(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(state.acceptOrdersConfirmation.buttonStringId),
@@ -484,6 +500,7 @@ private fun SettingsScreenPreview() {
                                     titleStringId = Res.string.title_settings_disable_orders,
                                     descriptionStringId = Res.string.msg_settings_disable_orders,
                                     buttonStringId = Res.string.action_settings_disable,
+                                    unfinishedOrderCodes = emptyList(),
                                 ),
                             isLoading = false,
                             workLoad = WorkLoad.LOW,
