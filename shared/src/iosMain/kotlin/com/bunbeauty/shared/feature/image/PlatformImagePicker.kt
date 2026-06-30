@@ -7,7 +7,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.CGSizeMake
-import platform.Foundation.NSDate
 import platform.Foundation.NSTemporaryDirectory
 import platform.Foundation.NSURL
 import platform.Foundation.writeToFile
@@ -20,13 +19,14 @@ import platform.UIKit.UIImageJPEGRepresentation
 import platform.UIKit.UIImagePickerController
 import platform.UIKit.UIImagePickerControllerDelegateProtocol
 import platform.UIKit.UIImagePickerControllerOriginalImage
-import platform.UIKit.UIImagePickerControllerSourceTypePhotoLibrary
+import platform.UIKit.UIImagePickerControllerSourceType
 import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.UIKit.UIViewController
 import platform.UIKit.UIWindow
 import platform.UIKit.UIWindowScene
 import platform.UIKit.drawInRect
 import platform.darwin.NSObject
+import kotlin.time.Clock
 
 private const val MAX_PICKED_IMAGE_SIZE = 2048.0
 private const val PICKED_JPEG_QUALITY = 0.95
@@ -46,7 +46,7 @@ actual fun rememberImagePickerLauncher(onImagePicked: (String) -> Unit): () -> U
         {
             val picker =
                 UIImagePickerController().apply {
-                    sourceType = UIImagePickerControllerSourceTypePhotoLibrary
+                    sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary
                     allowsEditing = false
                     this.delegate = delegate
                 }
@@ -77,7 +77,7 @@ private class IosImagePickerDelegate(
 @OptIn(ExperimentalForeignApi::class)
 private fun savePickedImage(image: UIImage): String? {
     val jpegData = UIImageJPEGRepresentation(image.scaledDownIfNeeded(), PICKED_JPEG_QUALITY) ?: return null
-    val outputPath = NSTemporaryDirectory() + "picked_${NSDate().timeIntervalSince1970}.jpg"
+    val outputPath = NSTemporaryDirectory() + "picked_${Clock.System.now().toEpochMilliseconds()}.jpg"
     if (!jpegData.writeToFile(outputPath, atomically = true)) return null
     return NSURL.fileURLWithPath(outputPath).absoluteString
 }
