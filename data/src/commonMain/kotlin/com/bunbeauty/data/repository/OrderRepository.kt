@@ -16,7 +16,6 @@ import common.ApiResult
 import common.Constants.ORDER_TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class OrderRepository(
     private val foodDeliveryApi: FoodDeliveryApi,
@@ -99,6 +98,15 @@ class OrderRepository(
                     }
                 }
         }
+
+    override suspend fun getOrderList(
+        token: String,
+        cafeUuid: String,
+    ): List<Order> =
+        getOrderListByCafeUuid(
+            token = token,
+            cafeUuid = cafeUuid,
+        )
 
     private suspend fun getOrderListByCafeUuid(
         token: String,

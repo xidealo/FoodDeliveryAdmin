@@ -211,6 +211,7 @@
     <string name="msg_settings_status_accept_orders">Не принимать заказы</string>
     <string name="title_settings_disable_orders">Отключить заказы?</string>
     <string name="msg_settings_disable_orders">Пользователи не смогут делать заказы</string>
+    <string name="msg_settings_unfinished_orders_warning">Есть незавершённые заказы (%1$d):\n%2$s\nОни останутся без статуса «Выдан» или «Отменён».\nВсё равно закрыть кафе?</string>
     <string name="action_settings_disable">Отключить</string>
     <string name="action_work_load_cafe_disable">Загруженность кафе</string>
     <string name="msg_work_load_low">Низкая (до 1 часа)</string>

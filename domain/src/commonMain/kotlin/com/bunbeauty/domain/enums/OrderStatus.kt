@@ -9,3 +9,5 @@ enum class OrderStatus {
     DONE,
     CANCELED,
 }
+
+fun OrderStatus.isFinal(): Boolean = this == OrderStatus.DELIVERED || this == OrderStatus.CANCELED

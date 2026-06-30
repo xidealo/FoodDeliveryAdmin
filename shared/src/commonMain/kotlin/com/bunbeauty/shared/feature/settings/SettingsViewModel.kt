@@ -6,6 +6,7 @@ import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.model.GetTypeWorkUseCase
 import com.bunbeauty.domain.feature.profile.model.UpdateTypeWorkUseCase
 import com.bunbeauty.domain.feature.profile.model.UpdateWorkCafeUseCase
+import com.bunbeauty.domain.feature.settings.GetUnfinishedOrderCodesUseCase
 import com.bunbeauty.domain.model.settings.WorkLoad
 import com.bunbeauty.domain.model.settings.WorkType
 import com.bunbeauty.shared.extension.launchSafe
@@ -18,6 +19,7 @@ class SettingsViewModel(
     private val getTypeWorkUseCase: GetTypeWorkUseCase,
     private val updateTypeWorkUseCase: UpdateTypeWorkUseCase,
     private val updateWorkCafeUseCase: UpdateWorkCafeUseCase,
+    private val getUnfinishedOrderCodesUseCase: GetUnfinishedOrderCodesUseCase,
 ) : BaseStateViewModel<SettingsState.DataState, SettingsState.Action, SettingsState.Event>(
         initState =
             SettingsState.DataState(
@@ -28,6 +30,7 @@ class SettingsViewModel(
                 showAcceptOrdersConfirmation = false,
                 workLoad = WorkLoad.LOW,
                 isKitchenAppliances = false,
+                unfinishedOrderCodes = emptyList(),
             ),
     ) {
     override fun reduce(
@@ -66,7 +69,7 @@ class SettingsViewModel(
 
     private fun handleSaveSettingsClick(dataState: SettingsState.DataState) {
         if (dataState.workType == WorkType.CLOSED) {
-            showAcceptDialog()
+            checkUnfinishedOrdersAndShowDialog()
         } else {
             updateSettings(
                 workType = dataState.workType,
@@ -75,6 +78,33 @@ class SettingsViewModel(
                 isKitchenAppliances = dataState.isKitchenAppliances,
             )
         }
+    }
+
+    private fun checkUnfinishedOrdersAndShowDialog() {
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(isLoading = true)
+                }
+                val unfinishedOrderCodes = getUnfinishedOrderCodesUseCase()
+                setState {
+                    copy(
+                        isLoading = false,
+                        unfinishedOrderCodes = unfinishedOrderCodes,
+                    )
+                }
+                showAcceptDialog()
+            },
+            onError = {
+                setState {
+                    copy(
+                        isLoading = false,
+                        unfinishedOrderCodes = emptyList(),
+                    )
+                }
+                showAcceptDialog()
+            },
+        )
     }
 
     private fun setNotificationStatus(action: SettingsState.Action.OnNotificationsClicked) {
