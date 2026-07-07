@@ -21,19 +21,19 @@ class SettingsViewModel(
     private val updateWorkCafeUseCase: UpdateWorkCafeUseCase,
     private val getUnfinishedOrderCodesUseCase: GetUnfinishedOrderCodesUseCase,
 ) : BaseStateViewModel<SettingsState.DataState, SettingsState.Action, SettingsState.Event>(
-    initState =
-        SettingsState.DataState(
+        initState =
+            SettingsState.DataState(
                 state = SettingsState.DataState.State.LOADING,
                 isLoading = false,
                 isConfirmationLoading = false,
                 isUnlimitedNotifications = true,
-            workType = WorkType.DELIVERY,
-            showAcceptOrdersConfirmation = false,
-            workLoad = WorkLoad.LOW,
-            isKitchenAppliances = false,
-            unfinishedOrderCodes = emptyList(),
-        ),
-) {
+                workType = WorkType.DELIVERY,
+                showAcceptOrdersConfirmation = false,
+                workLoad = WorkLoad.LOW,
+                isKitchenAppliances = false,
+                unfinishedOrderCodes = emptyList(),
+            ),
+    ) {
     override fun reduce(
         action: SettingsState.Action,
         dataState: SettingsState.DataState,
