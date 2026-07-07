@@ -111,7 +111,6 @@ fun SettingsRouteScreen(
     SettingsScreen(
         state = viewState.toViewState(),
         onAction = onAction,
-        goBack = goBack,
     )
 }
 
@@ -146,7 +145,6 @@ private fun SettingsEffect(
 private fun SettingsScreen(
     state: SettingsViewState,
     onAction: (SettingsState.Action) -> Unit,
-    goBack: () -> Unit,
 ) {
     AdminScaffold(
         title = stringResource(Res.string.title_settings),
@@ -508,7 +506,6 @@ private fun SettingsScreenPreview() {
                         ),
                 ),
             onAction = {},
-            goBack = {},
         )
     }
 }
