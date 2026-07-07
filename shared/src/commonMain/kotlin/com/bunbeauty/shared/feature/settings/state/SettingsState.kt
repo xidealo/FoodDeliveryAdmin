@@ -14,6 +14,7 @@ interface SettingsState {
         val workType: WorkType,
         val workLoad: WorkLoad,
         val isLoading: Boolean,
+        val isConfirmationLoading: Boolean,
         val showAcceptOrdersConfirmation: Boolean,
         val unfinishedOrderCodes: List<String>,
     ) : BaseDataState {
