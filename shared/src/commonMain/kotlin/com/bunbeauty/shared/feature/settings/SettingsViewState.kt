@@ -38,6 +38,8 @@ data class SettingsViewState(
         val titleStringId: StringResource,
         val descriptionStringId: StringResource,
         val buttonStringId: StringResource,
+        val unfinishedOrderCodes: List<String>,
+        val isLoading: Boolean,
     )
 }
 
@@ -60,6 +62,8 @@ internal fun SettingsState.DataState.toViewState(): SettingsViewState =
                                 titleStringId = Res.string.title_settings_disable_orders,
                                 descriptionStringId = Res.string.msg_settings_disable_orders,
                                 buttonStringId = Res.string.action_settings_disable,
+                                unfinishedOrderCodes = unfinishedOrderCodes,
+                                isLoading = isConfirmationLoading,
                             ),
                         isLoading = isLoading,
                     )

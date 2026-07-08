@@ -1,5 +1,6 @@
 package com.bunbeauty.data.di
 
+import com.bunbeauty.data.YandexStorageBuildConfig
 import com.bunbeauty.data.logger.IosNetworkErrorLogger
 import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.data.repository.IosPhotoRepository
@@ -10,7 +11,6 @@ import com.bunbeauty.domain.repo.PhotoRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
 import io.ktor.client.HttpClient
 import org.koin.dsl.module
-import platform.Foundation.NSBundle
 import kotlin.experimental.ExperimentalNativeApi
 
 @OptIn(ExperimentalNativeApi::class)
@@ -26,9 +26,9 @@ actual fun platformDataModule() =
         }
         single {
             YandexStorageConfig(
-                accessKey = requireInfoPlistValue("YANDEX_STORAGE_ACCESS_KEY"),
-                secretKey = requireInfoPlistValue("YANDEX_STORAGE_SECRET_KEY"),
-                bucket = requireInfoPlistValue("YANDEX_STORAGE_BUCKET"),
+                accessKey = YandexStorageBuildConfig.YC_ACCESS_KEY,
+                secretKey = YandexStorageBuildConfig.YC_SECRET_KEY,
+                bucket = YandexStorageBuildConfig.YC_BUCKET,
             )
         }
         single {
@@ -44,8 +44,3 @@ actual fun platformDataModule() =
         }
         single<NetworkErrorLogger> { IosNetworkErrorLogger() }
     }
-
-private fun requireInfoPlistValue(key: String): String =
-    (NSBundle.mainBundle.objectForInfoDictionaryKey(key) as? String)
-        ?.takeIf { value -> value.isNotBlank() && !value.startsWith("$(") }
-        ?: error("Missing $key in iOS Info.plist")

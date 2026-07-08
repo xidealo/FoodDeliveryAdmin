@@ -26,7 +26,6 @@ import com.bunbeauty.shared.designsystem.compose.AdminScaffold
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
-import com.bunbeauty.shared.designsystem.compose.element.button.MainButton
 import com.bunbeauty.shared.designsystem.compose.element.button.RadioButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
@@ -59,6 +58,7 @@ import fooddeliveryadmin.shared.generated.resources.msg_settings_status_delivery
 import fooddeliveryadmin.shared.generated.resources.msg_settings_status_pickup
 import fooddeliveryadmin.shared.generated.resources.msg_settings_status_pickup_delivery
 import fooddeliveryadmin.shared.generated.resources.msg_settings_type_work
+import fooddeliveryadmin.shared.generated.resources.msg_settings_unfinished_orders_warning
 import fooddeliveryadmin.shared.generated.resources.msg_settings_unlimited_notifications
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_average
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_high
@@ -111,7 +111,6 @@ fun SettingsRouteScreen(
     SettingsScreen(
         state = viewState.toViewState(),
         onAction = onAction,
-        goBack = goBack,
     )
 }
 
@@ -146,7 +145,6 @@ private fun SettingsEffect(
 private fun SettingsScreen(
     state: SettingsViewState,
     onAction: (SettingsState.Action) -> Unit,
-    goBack: () -> Unit,
 ) {
     AdminScaffold(
         title = stringResource(Res.string.title_settings),
@@ -277,9 +275,25 @@ private fun BottomSheetScreen(
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
-            MainButton(
+            val unfinishedOrderCodes = state.acceptOrdersConfirmation.unfinishedOrderCodes
+            if (!state.acceptOrdersConfirmation.isLoading && unfinishedOrderCodes.isNotEmpty()) {
+                Text(
+                    text =
+                        stringResource(
+                            Res.string.msg_settings_unfinished_orders_warning,
+                            unfinishedOrderCodes.size,
+                            unfinishedOrderCodes.joinToString(separator = ", "),
+                        ),
+                    style = AdminTheme.typography.bodyMedium,
+                    color = AdminTheme.colors.main.error,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                )
+            }
+            LoadingButton(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(state.acceptOrdersConfirmation.buttonStringId),
+                isLoading = state.acceptOrdersConfirmation.isLoading,
                 onClick = {
                     onAction(SettingsState.Action.ConfirmNotAcceptOrders)
                 },
@@ -484,13 +498,14 @@ private fun SettingsScreenPreview() {
                                     titleStringId = Res.string.title_settings_disable_orders,
                                     descriptionStringId = Res.string.msg_settings_disable_orders,
                                     buttonStringId = Res.string.action_settings_disable,
+                                    unfinishedOrderCodes = emptyList(),
+                                    isLoading = false,
                                 ),
                             isLoading = false,
                             workLoad = WorkLoad.LOW,
                         ),
                 ),
             onAction = {},
-            goBack = {},
         )
     }
 }

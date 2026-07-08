@@ -42,6 +42,7 @@ import com.bunbeauty.shared.feature.common.TextFieldUi
 import com.bunbeauty.shared.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.shared.feature.menulist.createmenuproduct.ImageFieldUi
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
+import common.Constants.ADDITION_NAME_MAX_LENGTH
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.action_common_add_photo
 import fooddeliveryadmin.shared.generated.resources.action_common_replace_photo
@@ -212,6 +213,7 @@ fun EditAdditionScreen(
                                 EditAddition.Action.EditNameAddition(name),
                             )
                         },
+                        maxSymbols = ADDITION_NAME_MAX_LENGTH,
                         errorText = state.nameField.errorRes,
                         isError = state.nameField.isError,
                         enabled = !state.isLoading,

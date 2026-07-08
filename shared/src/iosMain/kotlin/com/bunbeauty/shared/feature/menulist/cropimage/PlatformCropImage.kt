@@ -35,7 +35,6 @@ import platform.CoreGraphics.CGContextTranslateCTM
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.CGSizeMake
 import platform.Foundation.NSData
-import platform.Foundation.NSDate
 import platform.Foundation.NSTemporaryDirectory
 import platform.Foundation.NSURL
 import platform.Foundation.dataWithContentsOfFile
@@ -51,6 +50,7 @@ import platform.UIKit.UIImageJPEGRepresentation
 import platform.UIKit.UIRectFill
 import platform.UIKit.drawInRect
 import kotlin.math.PI
+import kotlin.time.Clock
 
 private const val DEFAULT_ANGLE = 90f
 private const val MENU_PRODUCT_ASPECT_RATIO = 1000f / 667f
@@ -239,7 +239,7 @@ private fun exportImage(
     UIGraphicsEndImageContext()
     val jpegData = outputImage?.let { image -> UIImageJPEGRepresentation(image, 0.95) } ?: return null
 
-    val outputPath = NSTemporaryDirectory() + "cropped_${NSDate().timeIntervalSince1970}.jpg"
+    val outputPath = NSTemporaryDirectory() + "cropped_${Clock.System.now().toEpochMilliseconds()}.jpg"
     if (!jpegData.writeToFile(outputPath, atomically = true)) return null
     return NSURL.fileURLWithPath(outputPath).absoluteString
 }

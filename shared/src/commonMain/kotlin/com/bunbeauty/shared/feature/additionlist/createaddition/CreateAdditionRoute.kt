@@ -38,6 +38,7 @@ import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.feature.additionlist.createaddition.navigation.CreateAdditionScreenDestination
 import com.bunbeauty.shared.feature.image.rememberImagePickerLauncher
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
+import common.Constants.ADDITION_NAME_MAX_LENGTH
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.action_common_add_photo
 import fooddeliveryadmin.shared.generated.resources.action_common_replace_photo
@@ -184,6 +185,7 @@ internal fun CreateAdditionScreen(
                                 CreateAddition.Action.EditNameAddition(name),
                             )
                         },
+                        maxSymbols = ADDITION_NAME_MAX_LENGTH,
                         errorText = state.nameField.errorResId,
                         isError = state.nameField.isError,
                         enabled = !state.isLoading,
