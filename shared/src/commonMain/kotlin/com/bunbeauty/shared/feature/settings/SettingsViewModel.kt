@@ -25,6 +25,7 @@ class SettingsViewModel(
             SettingsState.DataState(
                 state = SettingsState.DataState.State.LOADING,
                 isLoading = false,
+                isConfirmationLoading = false,
                 isUnlimitedNotifications = true,
                 workType = WorkType.DELIVERY,
                 showAcceptOrdersConfirmation = false,
@@ -84,25 +85,27 @@ class SettingsViewModel(
         viewModelScope.launchSafe(
             block = {
                 setState {
-                    copy(isLoading = true)
+                    copy(
+                        showAcceptOrdersConfirmation = true,
+                        isConfirmationLoading = true,
+                        unfinishedOrderCodes = emptyList(),
+                    )
                 }
                 val unfinishedOrderCodes = getUnfinishedOrderCodesUseCase()
                 setState {
                     copy(
-                        isLoading = false,
+                        isConfirmationLoading = false,
                         unfinishedOrderCodes = unfinishedOrderCodes,
                     )
                 }
-                showAcceptDialog()
             },
             onError = {
                 setState {
                     copy(
-                        isLoading = false,
+                        isConfirmationLoading = false,
                         unfinishedOrderCodes = emptyList(),
                     )
                 }
-                showAcceptDialog()
             },
         )
     }
@@ -116,12 +119,6 @@ class SettingsViewModel(
     private fun setAppliancesStatus(action: SettingsState.Action.OnAppliancesClicked) {
         setState {
             copy(isKitchenAppliances = action.isKitchenAppliances)
-        }
-    }
-
-    private fun showAcceptDialog() {
-        setState {
-            copy(showAcceptOrdersConfirmation = true)
         }
     }
 

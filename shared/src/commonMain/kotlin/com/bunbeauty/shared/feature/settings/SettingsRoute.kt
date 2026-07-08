@@ -26,7 +26,6 @@ import com.bunbeauty.shared.designsystem.compose.AdminScaffold
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.bottomsheet.AdminModalBottomSheet
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
-import com.bunbeauty.shared.designsystem.compose.element.button.MainButton
 import com.bunbeauty.shared.designsystem.compose.element.button.RadioButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
@@ -112,7 +111,6 @@ fun SettingsRouteScreen(
     SettingsScreen(
         state = viewState.toViewState(),
         onAction = onAction,
-        goBack = goBack,
     )
 }
 
@@ -147,7 +145,6 @@ private fun SettingsEffect(
 private fun SettingsScreen(
     state: SettingsViewState,
     onAction: (SettingsState.Action) -> Unit,
-    goBack: () -> Unit,
 ) {
     AdminScaffold(
         title = stringResource(Res.string.title_settings),
@@ -279,7 +276,7 @@ private fun BottomSheetScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
             val unfinishedOrderCodes = state.acceptOrdersConfirmation.unfinishedOrderCodes
-            if (unfinishedOrderCodes.isNotEmpty()) {
+            if (!state.acceptOrdersConfirmation.isLoading && unfinishedOrderCodes.isNotEmpty()) {
                 Text(
                     text =
                         stringResource(
@@ -293,9 +290,10 @@ private fun BottomSheetScreen(
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 )
             }
-            MainButton(
+            LoadingButton(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(state.acceptOrdersConfirmation.buttonStringId),
+                isLoading = state.acceptOrdersConfirmation.isLoading,
                 onClick = {
                     onAction(SettingsState.Action.ConfirmNotAcceptOrders)
                 },
@@ -501,13 +499,13 @@ private fun SettingsScreenPreview() {
                                     descriptionStringId = Res.string.msg_settings_disable_orders,
                                     buttonStringId = Res.string.action_settings_disable,
                                     unfinishedOrderCodes = emptyList(),
+                                    isLoading = false,
                                 ),
                             isLoading = false,
                             workLoad = WorkLoad.LOW,
                         ),
                 ),
             onAction = {},
-            goBack = {},
         )
     }
 }
