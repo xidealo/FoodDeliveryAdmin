@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.repo
 
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettingsList
+import com.bunbeauty.domain.feature.clientuser.model.ClientUserStatistic
 
 interface ClientUserRepo {
     suspend fun getClientUserList(
@@ -8,4 +9,9 @@ interface ClientUserRepo {
         limit: Int,
         offset: Int,
     ): ClientUserSettingsList
+
+    suspend fun getClientUserStatistic(
+        token: String,
+        clientUserUuid: String,
+    ): ClientUserStatistic
 }

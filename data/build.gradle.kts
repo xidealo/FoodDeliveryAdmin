@@ -46,7 +46,7 @@ val generateIosYandexStorageConfig by tasks.registering {
                 const val YC_SECRET_KEY = "${localProperty("yc.secretKey")}"
                 const val YC_BUCKET = "${localProperty("yc.bucket")}"
             }
-            """.trimIndent(),
+            """.trimIndent() + "\n",
         )
     }
 }

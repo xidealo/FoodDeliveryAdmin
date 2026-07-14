@@ -20,6 +20,7 @@ import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
+import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
@@ -91,6 +92,16 @@ class FoodDeliveryApiImpl(
                     "limit" to limit.toString(),
                     "offset" to offset.toString(),
                 ),
+            token = token,
+        )
+
+    override suspend fun getClientUserStatistic(
+        token: String,
+        clientUserUuid: String,
+    ): ApiResult<ClientUserStatisticServer> =
+        get(
+            path = "client/statistic",
+            parameters = listOf("uuid" to clientUserUuid),
             token = token,
         )
 
@@ -243,7 +254,7 @@ class FoodDeliveryApiImpl(
                 parameter("cafeUuid", cafeUuid)
                 parameter("period", period)
 
-                header("Authorization", "Bearer $token")
+                header("Authorization", "Bearer " + token)
             }.body()
     }
 
@@ -575,7 +586,7 @@ class FoodDeliveryApiImpl(
         parameters.forEach { parameterMap ->
             parameter(parameterMap.first, parameterMap.second)
         }
-        header(Authorization, "Bearer $token")
+        header(Authorization, "Bearer " + (token ?: ""))
     }
 
     private suspend inline fun <reified R> safeCall(crossinline networkCall: suspend () -> HttpResponse): ApiResult<R> =
