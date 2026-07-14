@@ -91,6 +91,7 @@ fun repositoryModule() =
             ClientUserRepository(
                 foodDeliveryApi = get(),
                 clientUserSettingsMapper = get(),
+                clientUserStatisticMapper = get(),
             )
         }
         single<NonWorkingDayRepo> {
