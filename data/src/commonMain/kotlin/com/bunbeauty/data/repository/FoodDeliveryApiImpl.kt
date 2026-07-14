@@ -140,7 +140,6 @@ class FoodDeliveryApiImpl(
         patch(
             path = "cafe",
             parameters = listOf("cafeUuid" to cafeUuid),
-
             body = patchCafe,
             token = token,
         )
