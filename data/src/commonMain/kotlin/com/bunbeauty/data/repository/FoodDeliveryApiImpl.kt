@@ -19,6 +19,7 @@ import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
+import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
@@ -75,6 +76,21 @@ class FoodDeliveryApiImpl(
     override suspend fun getUser(token: String): ApiResult<UserResponse> =
         get(
             path = "user",
+            token = token,
+        )
+
+    override suspend fun getClientUserList(
+        token: String,
+        limit: Int,
+        offset: Int,
+    ): ApiResult<ServerList<ClientUserSettingsServer>> =
+        get(
+            path = "client/list",
+            parameters =
+                listOf(
+                    "limit" to limit.toString(),
+                    "offset" to offset.toString(),
+                ),
             token = token,
         )
 

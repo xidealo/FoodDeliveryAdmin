@@ -6,6 +6,7 @@ import com.bunbeauty.data.repository.AdditionRepository
 import com.bunbeauty.data.repository.CafeRepository
 import com.bunbeauty.data.repository.CategoryRepository
 import com.bunbeauty.data.repository.CityRepository
+import com.bunbeauty.data.repository.ClientUserRepository
 import com.bunbeauty.data.repository.CompanyRepository
 import com.bunbeauty.data.repository.FoodDeliveryApiImpl
 import com.bunbeauty.data.repository.MenuProductRepository
@@ -23,6 +24,7 @@ import com.bunbeauty.domain.repo.AdditionRepo
 import com.bunbeauty.domain.repo.CafeRepo
 import com.bunbeauty.domain.repo.CategoryRepo
 import com.bunbeauty.domain.repo.CityRepo
+import com.bunbeauty.domain.repo.ClientUserRepo
 import com.bunbeauty.domain.repo.CompanyRepo
 import com.bunbeauty.domain.repo.MenuProductRepo
 import com.bunbeauty.domain.repo.MenuProductToAdditionGroupRepository
@@ -83,6 +85,12 @@ fun repositoryModule() =
             CityRepository(
                 cityMapper = get(),
                 foodDeliveryApi = get(),
+            )
+        }
+        single<ClientUserRepo> {
+            ClientUserRepository(
+                foodDeliveryApi = get(),
+                clientUserSettingsMapper = get(),
             )
         }
         single<NonWorkingDayRepo> {
