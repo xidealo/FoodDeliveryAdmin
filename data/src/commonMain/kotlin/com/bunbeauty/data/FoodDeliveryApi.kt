@@ -19,6 +19,7 @@ import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
+import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
