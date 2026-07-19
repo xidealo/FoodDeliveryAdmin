@@ -38,6 +38,33 @@ class ClientUserRepository(
             }
         }
 
+    override suspend fun getClientUserListByQuery(
+        token: String,
+        query: String,
+        limit: Int,
+        offset: Int,
+    ): ClientUserSettingsList =
+        when (
+            val result =
+                foodDeliveryApi.getClientUserSearch(
+                    token = token,
+                    query = query,
+                    limit = limit,
+                    offset = offset,
+                )
+        ) {
+            is ApiResult.Success -> {
+                ClientUserSettingsList(
+                    count = result.data.count,
+                    results = result.data.results.map(clientUserSettingsMapper::map),
+                )
+            }
+
+            is ApiResult.Error -> {
+                throw Exception("client user search load error")
+            }
+        }
+
     override suspend fun getClientUserStatistic(
         token: String,
         clientUserUuid: String,
