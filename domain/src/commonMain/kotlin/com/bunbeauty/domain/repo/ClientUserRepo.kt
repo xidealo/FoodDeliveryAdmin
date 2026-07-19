@@ -10,6 +10,13 @@ interface ClientUserRepo {
         offset: Int,
     ): ClientUserSettingsList
 
+    suspend fun getClientUserListByQuery(
+        token: String,
+        query: String,
+        limit: Int,
+        offset: Int,
+    ): ClientUserSettingsList
+
     suspend fun getClientUserStatistic(
         token: String,
         clientUserUuid: String,
