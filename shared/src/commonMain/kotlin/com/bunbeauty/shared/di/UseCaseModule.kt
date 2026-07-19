@@ -2,6 +2,7 @@ package com.bunbeauty.shared.di
 
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserListUseCase
+import com.bunbeauty.domain.feature.clientuser.GetClientUserSearchUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserStatisticUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.SaveEditAdditionGroupWithAdditionsUseCase
@@ -59,6 +60,13 @@ fun useCaseModule() =
 
         factory {
             GetClientUserListUseCase(
+                clientUserRepo = get(),
+                dataStoreRepo = get(),
+            )
+        }
+
+        factory {
+            GetClientUserSearchUseCase(
                 clientUserRepo = get(),
                 dataStoreRepo = get(),
             )

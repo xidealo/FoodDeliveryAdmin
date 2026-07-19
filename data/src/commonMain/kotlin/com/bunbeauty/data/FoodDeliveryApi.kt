@@ -69,6 +69,13 @@ interface FoodDeliveryApi {
         offset: Int,
     ): ApiResult<ServerList<ClientUserSettingsServer>>
 
+    suspend fun getClientUserSearch(
+        token: String,
+        query: String,
+        limit: Int,
+        offset: Int,
+    ): ApiResult<ServerList<ClientUserSettingsServer>>
+
     suspend fun getClientUserStatistic(
         token: String,
         clientUserUuid: String,
