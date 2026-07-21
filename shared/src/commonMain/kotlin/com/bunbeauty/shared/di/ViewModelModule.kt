@@ -234,6 +234,7 @@ fun viewModelModule() =
         viewModel {
             StatisticUserViewModel(
                 getClientUserListUseCase = get(),
+                getClientUserSearchUseCase = get(),
             )
         }
 

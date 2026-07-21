@@ -15,6 +15,11 @@ interface StatisticUser {
         val canLoadMore: Boolean,
         val isSearchEnabled: Boolean,
         val searchQuery: String,
+        val searchUsers: List<ClientUserSettings>?,
+        val searchOffset: Int,
+        val searchTotal: Int,
+        val isSearchLoading: Boolean,
+        val searchCanLoadMore: Boolean,
     ) : BaseDataState {
         enum class State {
             LOADING,

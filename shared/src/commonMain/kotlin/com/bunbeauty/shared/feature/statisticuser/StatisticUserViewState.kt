@@ -23,6 +23,8 @@ data class StatisticUserViewState(
             val searchResultList: ImmutableList<UserItem>?,
             val canLoadMore: Boolean,
             val isPageLoading: Boolean,
+            val searchCanLoadMore: Boolean,
+            val isSearchLoading: Boolean,
         ) : State
     }
 
@@ -50,21 +52,20 @@ internal fun StatisticUser.DataState.toViewState(): StatisticUserViewState =
                         searchResultList = getSearchResultList(),
                         canLoadMore = canLoadMore,
                         isPageLoading = isPageLoading,
+                        searchCanLoadMore = searchCanLoadMore,
+                        isSearchLoading = isSearchLoading,
                     )
             },
     )
 
 private fun StatisticUser.DataState.getSearchResultList(): ImmutableList<StatisticUserViewState.UserItem>? {
-    val normalizedSearchQuery = searchQuery.trim()
-    if (!isSearchEnabled || normalizedSearchQuery.isEmpty()) {
+    if (!isSearchEnabled) {
         return null
     }
 
-    return users
-        .filter { user ->
-            user.phoneNumber.contains(normalizedSearchQuery, ignoreCase = true)
-        }.map { user -> user.toItem() }
-        .toPersistentList()
+    return searchUsers
+        ?.map { user -> user.toItem() }
+        ?.toPersistentList()
 }
 
 private fun ClientUserSettings.toItem(): StatisticUserViewState.UserItem =

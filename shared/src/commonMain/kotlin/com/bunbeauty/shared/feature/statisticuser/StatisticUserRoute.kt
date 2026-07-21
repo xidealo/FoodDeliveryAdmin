@@ -194,12 +194,14 @@ private fun StatisticUserSuccessContent(
         else -> {
             StatisticUserList(
                 users = state.searchResultList,
-                canLoadMore = false,
-                isPageLoading = false,
+                canLoadMore = state.searchCanLoadMore,
+                isPageLoading = state.isSearchLoading,
                 onUserClick = { uuid ->
                     onAction(StatisticUser.Action.UserClick(uuid))
                 },
-                onLoadMore = {},
+                onLoadMore = {
+                    onAction(StatisticUser.Action.LoadMore)
+                },
                 modifier = modifier,
             )
         }
@@ -364,6 +366,8 @@ private fun StatisticUserScreenPreview() {
                             searchResultList = null,
                             canLoadMore = false,
                             isPageLoading = false,
+                            searchCanLoadMore = false,
+                            isSearchLoading = false,
                         ),
                 ),
             onAction = {},
