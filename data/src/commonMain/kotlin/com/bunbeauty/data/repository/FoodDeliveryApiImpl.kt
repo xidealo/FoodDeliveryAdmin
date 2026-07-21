@@ -95,6 +95,23 @@ class FoodDeliveryApiImpl(
             token = token,
         )
 
+    override suspend fun getClientUserSearch(
+        token: String,
+        query: String,
+        limit: Int,
+        offset: Int,
+    ): ApiResult<ServerList<ClientUserSettingsServer>> =
+        get(
+            path = "client/search",
+            parameters =
+                listOf(
+                    "query" to query,
+                    "limit" to limit.toString(),
+                    "offset" to offset.toString(),
+                ),
+            token = token,
+        )
+
     override suspend fun getClientUserStatistic(
         token: String,
         clientUserUuid: String,
