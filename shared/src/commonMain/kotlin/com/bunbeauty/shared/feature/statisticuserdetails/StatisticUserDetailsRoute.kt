@@ -2,7 +2,6 @@ package com.bunbeauty.shared.feature.statisticuserdetails
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -132,7 +131,7 @@ private fun StatisticUserDetailsSuccessContent(state: StatisticUserDetailsViewSt
         modifier =
             Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
     ) {
         AdminCard(
             modifier = Modifier.fillMaxWidth(),
