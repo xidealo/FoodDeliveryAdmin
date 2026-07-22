@@ -193,8 +193,22 @@
     <string name="action_profile_cafes">Рестораны</string>
     <string name="action_profile_settings">Настройки</string>
     <string name="action_profile_statistic">Статистика</string>
+    <string name="action_profile_statistic_user">Статистика пользователя</string>
     <string name="action_profile_map">Районы доставки</string>
     <string name="msg_profile_close_cafe_settings">Теперь закрыть кафе можно\nв разделе \"Настройки\"</string>
+
+    <!-- STATISTIC USER -->
+    <string name="title_statistic_user">Статистика. Пользователи</string>
+    <string name="title_statistic_user_details">Выбранный пользователь</string>
+    <string name="hint_statistic_user_search">Номер телефона</string>
+    <string name="hint_statistic_user_first_order_date">Дата первого заказа</string>
+    <string name="hint_statistic_user_last_order_date">Дата последнего заказа</string>
+    <string name="hint_statistic_user_delivery_order_count">Число заказов доставкой</string>
+    <string name="hint_statistic_user_pickup_order_count">Число заказов самовывоз</string>
+    <string name="hint_statistic_user_average_check">Средний чек пользователя</string>
+    <string name="hint_statistic_user_order_count">Количество заказов</string>
+    <string name="hint_statistic_user_phone_number">Номер телефона</string>
+    <string name="msg_statistic_user_empty_date">—</string>
 
 
     <!-- SETTINGS -->

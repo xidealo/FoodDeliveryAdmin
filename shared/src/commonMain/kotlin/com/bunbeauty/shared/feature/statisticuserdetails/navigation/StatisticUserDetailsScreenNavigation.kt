@@ -1,4 +1,4 @@
-package com.bunbeauty.shared.feature.profile.navigation
+package com.bunbeauty.shared.feature.statisticuserdetails.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
@@ -8,25 +8,24 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
-import com.bunbeauty.shared.feature.profile.ProfileRouteScreen
+import com.bunbeauty.shared.feature.statisticuserdetails.StatisticUserDetailsRouteScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object ProfileScreenDestination
+data class StatisticUserDetailsScreenDestination(
+    val userUuid: String,
+)
 
-fun NavController.navigateToProfileScreen(navOptions: NavOptions) = navigate(route = ProfileScreenDestination, navOptions)
+fun NavController.navigateToStatisticUserDetailsScreen(
+    userUuid: String,
+    navOptions: NavOptions,
+) = navigate(
+    route = StatisticUserDetailsScreenDestination(userUuid = userUuid),
+    navOptions = navOptions,
+)
 
-fun NavGraphBuilder.profileScreenRoute(
-    showErrorMessage: (String) -> Unit,
-    goToSettingsScreen: () -> Unit,
-    goToStatisticScreen: () -> Unit,
-    goToStatisticUserScreen: () -> Unit,
-    goToMenuScreen: () -> Unit,
-    goToMapScreen: () -> Unit,
-    goToLoginScreen: () -> Unit,
-    goBack: () -> Unit,
-) {
-    composable<ProfileScreenDestination>(
+fun NavGraphBuilder.statisticUserDetailsScreenRoute(goBack: () -> Unit) {
+    composable<StatisticUserDetailsScreenDestination>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -51,14 +50,8 @@ fun NavGraphBuilder.profileScreenRoute(
             )
         },
     ) {
-        ProfileRouteScreen(
-            showErrorMessage = showErrorMessage,
-            goToSettingsScreen = goToSettingsScreen,
-            goToStatisticScreen = goToStatisticScreen,
-            goToStatisticUserScreen = goToStatisticUserScreen,
-            goToMenuScreen = goToMenuScreen,
-            goToMapScreen = goToMapScreen,
-            goToLoginScreen = goToLoginScreen,
+        StatisticUserDetailsRouteScreen(
+            backStackEntry = it,
             goBack = goBack,
         )
     }

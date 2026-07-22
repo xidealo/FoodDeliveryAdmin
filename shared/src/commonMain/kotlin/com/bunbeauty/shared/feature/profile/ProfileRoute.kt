@@ -29,6 +29,7 @@ import fooddeliveryadmin.shared.generated.resources.action_common_logout
 import fooddeliveryadmin.shared.generated.resources.action_profile_map
 import fooddeliveryadmin.shared.generated.resources.action_profile_settings
 import fooddeliveryadmin.shared.generated.resources.action_profile_statistic
+import fooddeliveryadmin.shared.generated.resources.action_profile_statistic_user
 import fooddeliveryadmin.shared.generated.resources.ic_menu
 import fooddeliveryadmin.shared.generated.resources.ic_point
 import fooddeliveryadmin.shared.generated.resources.ic_settings
@@ -48,6 +49,7 @@ fun ProfileRouteScreen(
     showErrorMessage: (String) -> Unit,
     goToSettingsScreen: () -> Unit,
     goToStatisticScreen: () -> Unit,
+    goToStatisticUserScreen: () -> Unit,
     goToMenuScreen: () -> Unit,
     goToMapScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
@@ -74,6 +76,7 @@ fun ProfileRouteScreen(
         consumeEffects = consumeEffects,
         goToSettingsScreen = goToSettingsScreen,
         goToStatisticScreen = goToStatisticScreen,
+        goToStatisticUserScreen = goToStatisticUserScreen,
         goToMenuScreen = goToMenuScreen,
         goToMapScreen = goToMapScreen,
         goToLoginScreen = goToLoginScreen,
@@ -91,6 +94,7 @@ private fun ProfileEffect(
     effects: List<Profile.Event>,
     goToSettingsScreen: () -> Unit,
     goToStatisticScreen: () -> Unit,
+    goToStatisticUserScreen: () -> Unit,
     goToMenuScreen: () -> Unit,
     goToMapScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
@@ -102,6 +106,8 @@ private fun ProfileEffect(
                 Profile.Event.OpenSettings -> goToSettingsScreen()
 
                 Profile.Event.OpenStatistic -> goToStatisticScreen()
+
+                Profile.Event.OpenStatisticUser -> goToStatisticUserScreen()
 
                 Profile.Event.OpenMenu -> goToMenuScreen()
 
@@ -187,6 +193,13 @@ private fun SuccessProfileScreen(
             labelStringId = Res.string.action_profile_statistic,
             onClick = {
                 onAction(Profile.Action.StatisticClick)
+            },
+        )
+        NavigationIconCard(
+            iconId = Res.drawable.ic_statistic,
+            labelStringId = Res.string.action_profile_statistic_user,
+            onClick = {
+                onAction(Profile.Action.StatisticUserClick)
             },
         )
         NavigationIconCard(
