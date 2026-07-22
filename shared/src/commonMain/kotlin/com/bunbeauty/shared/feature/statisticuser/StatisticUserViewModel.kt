@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 private const val PAGE_SIZE = 20
 private const val MIN_SEARCH_LENGTH = 2
-private const val SEARCH_DEBOUNCE_MS = 50L
+private const val SEARCH_DEBOUNCE_MS = 300L
 
 class StatisticUserViewModel(
     private val getClientUserListUseCase: GetClientUserListUseCase,
