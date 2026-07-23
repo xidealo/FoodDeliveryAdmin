@@ -112,6 +112,7 @@ private fun StatisticUserScreen(
         backActionClick = {
             onAction(StatisticUser.Action.BackClick)
         },
+        backgroundColor = AdminTheme.colors.main.surface,
         topActions =
             if (state.state is StatisticUserViewState.State.Success) {
                 listOf(
