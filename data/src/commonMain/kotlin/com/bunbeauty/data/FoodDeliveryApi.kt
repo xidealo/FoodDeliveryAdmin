@@ -17,6 +17,8 @@ import com.bunbeauty.data.model.server.category.CategoryServer
 import com.bunbeauty.data.model.server.category.CreateCategoryPostServer
 import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
+import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
+import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
@@ -59,6 +61,25 @@ interface FoodDeliveryApi {
         updateUnlimitedNotificationRequest: UpdateUnlimitedNotificationRequest,
         token: String,
     ): ApiResult<Unit>
+
+    // CLIENT USER
+    suspend fun getClientUserList(
+        token: String,
+        limit: Int,
+        offset: Int,
+    ): ApiResult<ServerList<ClientUserSettingsServer>>
+
+    suspend fun getClientUserSearch(
+        token: String,
+        query: String,
+        limit: Int,
+        offset: Int,
+    ): ApiResult<ServerList<ClientUserSettingsServer>>
+
+    suspend fun getClientUserStatistic(
+        token: String,
+        clientUserUuid: String,
+    ): ApiResult<ClientUserStatisticServer>
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>

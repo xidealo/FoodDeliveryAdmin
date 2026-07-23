@@ -65,6 +65,10 @@ import com.bunbeauty.shared.feature.statistic.navigation.navigateToStatisticScre
 import com.bunbeauty.shared.feature.statistic.navigation.statisticScreenRoute
 import com.bunbeauty.shared.feature.statisticdetails.navigation.navigateToStatisticDetailsScreen
 import com.bunbeauty.shared.feature.statisticdetails.navigation.statisticDetailsScreenRoute
+import com.bunbeauty.shared.feature.statisticuser.navigation.navigateToStatisticUserScreen
+import com.bunbeauty.shared.feature.statisticuser.navigation.statisticUserScreenRoute
+import com.bunbeauty.shared.feature.statisticuserdetails.navigation.navigateToStatisticUserDetailsScreen
+import com.bunbeauty.shared.feature.statisticuserdetails.navigation.statisticUserDetailsScreenRoute
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
@@ -378,6 +382,9 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToStatisticScreen = {
             navController.navigateToStatisticScreen(emptyNavOptions)
         },
+        goToStatisticUserScreen = {
+            navController.navigateToStatisticUserScreen(emptyNavOptions)
+        },
         goToMenuScreen = {
             navController.navigateToMenuScreen(emptyNavOptions)
         },
@@ -398,6 +405,20 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 navOptions = emptyNavOptions,
             )
         },
+    )
+
+    statisticUserScreenRoute(
+        goBack = navController::navigateUp,
+        goToUserDetails = { userUuid ->
+            navController.navigateToStatisticUserDetailsScreen(
+                userUuid = userUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
+    )
+
+    statisticUserDetailsScreenRoute(
+        goBack = navController::navigateUp,
     )
 
     orderDetailsScreenRoute(

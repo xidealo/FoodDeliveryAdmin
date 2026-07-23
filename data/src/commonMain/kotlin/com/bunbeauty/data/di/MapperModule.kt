@@ -5,6 +5,8 @@ import com.bunbeauty.data.mapper.OderProductMapper
 import com.bunbeauty.data.mapper.cafe.CafeMapper
 import com.bunbeauty.data.mapper.category.CategoryMapper
 import com.bunbeauty.data.mapper.city.CityMapper
+import com.bunbeauty.data.mapper.clientuser.ClientUserSettingsMapper
+import com.bunbeauty.data.mapper.clientuser.ClientUserStatisticMapper
 import com.bunbeauty.data.mapper.nonworkingday.NonWorkingDayMapper
 import com.bunbeauty.data.mapper.order.IServerOrderMapper
 import com.bunbeauty.data.mapper.order.ServerOrderMapper
@@ -31,6 +33,10 @@ fun mapperModule() =
         single { OderProductMapper() }
 
         single { CityMapper() }
+
+        single { ClientUserSettingsMapper() }
+
+        single { ClientUserStatisticMapper() }
 
         single {
             StatisticMapper()

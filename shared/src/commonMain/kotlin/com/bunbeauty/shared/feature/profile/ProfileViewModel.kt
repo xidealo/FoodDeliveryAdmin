@@ -31,6 +31,7 @@ class ProfileViewModel(
         when (action) {
             Profile.Action.UpdateData -> handleUpdateData()
             Profile.Action.StatisticClick -> handleStatisticClick()
+            Profile.Action.StatisticUserClick -> handleStatisticUserClick()
             Profile.Action.MenuClick -> handleMenuClick()
             Profile.Action.LogoutClick -> handleLogoutClick()
             Profile.Action.SettingsClick -> handleSettingsClick()
@@ -68,6 +69,12 @@ class ProfileViewModel(
     private fun handleStatisticClick() {
         sendEvent {
             Profile.Event.OpenStatistic
+        }
+    }
+
+    private fun handleStatisticUserClick() {
+        sendEvent {
+            Profile.Event.OpenStatisticUser
         }
     }
 
