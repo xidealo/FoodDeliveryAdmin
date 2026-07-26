@@ -190,6 +190,7 @@
     <string name="title_profile">Профиль</string>
     <string name="hint_profile_manager">Менеджер</string>
     <string name="hint_profile_admin">Админ</string>
+    <string name="hint_profile_courier">Курьер</string>
     <string name="action_profile_cafes">Рестораны</string>
     <string name="action_profile_settings">Настройки</string>
     <string name="action_profile_statistic">Статистика</string>
