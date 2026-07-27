@@ -249,7 +249,6 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goBack = navController::navigateUp,
     )
     editDeliveryZoneInfoScreenRoute(
-        showInfoMessage = showInfoMessage,
         onZoneUpdated = { zoneUuid ->
             navController.previousBackStackEntry
                 ?.savedStateHandle

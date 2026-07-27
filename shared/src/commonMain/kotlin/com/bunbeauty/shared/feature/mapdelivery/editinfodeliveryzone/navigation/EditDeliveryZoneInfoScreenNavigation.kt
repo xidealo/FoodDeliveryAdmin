@@ -2,7 +2,6 @@ package com.bunbeauty.shared.feature.mapdelivery.editinfodeliveryzone.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
-import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -23,7 +22,6 @@ fun NavController.navigateToEditDeliveryZoneInfoScreen(
 ) = navigate(route = EditDeliveryZoneInfoScreenDestination(zoneUuid = zoneUuid), navOptions)
 
 fun NavGraphBuilder.editDeliveryZoneInfoScreenRoute(
-    showInfoMessage: (String, Dp) -> Unit,
     onZoneUpdated: (String) -> Unit,
     goBack: () -> Unit,
 ) {
@@ -53,7 +51,6 @@ fun NavGraphBuilder.editDeliveryZoneInfoScreenRoute(
         },
     ) {
         EditDeliveryZoneInfoRouteScreen(
-            showInfoMessage = showInfoMessage,
             onZoneUpdated = onZoneUpdated,
             goBack = goBack,
         )
