@@ -12,6 +12,7 @@ class IosDataStoreRepository : DataStoreRepo {
     private val tokenState = MutableStateFlow<String?>(null)
     private val companyUuidState = MutableStateFlow("")
     private val usernameState = MutableStateFlow("")
+    private val userRoleState = MutableStateFlow<String?>(null)
     private val cafeUuidState = MutableStateFlow<String?>(null)
     private val previousCafeUuidState = MutableStateFlow<String?>(null)
     private val isUnlimitedNotificationState = MutableStateFlow(true)
@@ -43,6 +44,15 @@ class IosDataStoreRepository : DataStoreRepo {
         usernameState.value = username
     }
 
+    override val userRole: Flow<String?> = userRoleState.asStateFlow()
+
+    override suspend fun getUserRole(): String? = defaults.stringForKey(KEY_USER_ROLE)
+
+    override suspend fun saveUserRole(userRole: String) {
+        defaults.setObject(userRole, forKey = KEY_USER_ROLE)
+        userRoleState.value = userRole
+    }
+
     override val cafeUuid: Flow<String?> = cafeUuidState.asStateFlow()
 
     override suspend fun saveCafeUuid(cafeUuid: String) {
@@ -67,12 +77,14 @@ class IosDataStoreRepository : DataStoreRepo {
     override suspend fun clearCache() {
         defaults.removeObjectForKey(KEY_TOKEN)
         defaults.removeObjectForKey(KEY_USERNAME)
+        defaults.removeObjectForKey(KEY_USER_ROLE)
         defaults.removeObjectForKey(KEY_COMPANY_UUID)
         defaults.removeObjectForKey(KEY_CAFE_UUID)
         defaults.removeObjectForKey(KEY_PREVIOUS_CAFE_UUID)
         tokenState.value = null
         companyUuidState.value = ""
         usernameState.value = ""
+        userRoleState.value = null
         cafeUuidState.value = null
         previousCafeUuidState.value = null
     }
@@ -81,6 +93,7 @@ class IosDataStoreRepository : DataStoreRepo {
         tokenState.value = defaults.stringForKey(KEY_TOKEN)
         companyUuidState.value = defaults.stringForKey(KEY_COMPANY_UUID).orEmpty()
         usernameState.value = defaults.stringForKey(KEY_USERNAME).orEmpty()
+        userRoleState.value = defaults.stringForKey(KEY_USER_ROLE)
         cafeUuidState.value = defaults.stringForKey(KEY_CAFE_UUID)
         previousCafeUuidState.value = defaults.stringForKey(KEY_PREVIOUS_CAFE_UUID)
         isUnlimitedNotificationState.value = readIsUnlimitedNotificationFromDefaults()
@@ -106,6 +119,7 @@ class IosDataStoreRepository : DataStoreRepo {
 
         private val KEY_TOKEN = key(USER_DATA_STORE, "token")
         private val KEY_USERNAME = key(USER_DATA_STORE, "username")
+        private val KEY_USER_ROLE = key(USER_DATA_STORE, "user role")
         private val KEY_COMPANY_UUID = key(USER_DATA_STORE, "company uuid")
         private val KEY_CAFE_UUID = key(CAFE_UUID_DATA_STORE, "cafe uuid")
         private val KEY_PREVIOUS_CAFE_UUID = key(CAFE_UUID_DATA_STORE, "previous cafe uuid")

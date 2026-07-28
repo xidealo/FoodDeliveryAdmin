@@ -195,7 +195,7 @@ fun viewModelModule() =
 
         viewModel {
             ProfileViewModel(
-                getUsernameUseCase = get(),
+                getProfileUserUseCase = get(),
                 logoutUseCase = get(),
             )
         }

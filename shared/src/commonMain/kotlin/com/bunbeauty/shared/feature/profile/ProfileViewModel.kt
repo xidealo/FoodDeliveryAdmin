@@ -1,14 +1,13 @@
 package com.bunbeauty.shared.feature.profile
 
 import androidx.lifecycle.viewModelScope
-import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
-import com.bunbeauty.domain.feature.profile.model.UserRole
+import com.bunbeauty.domain.feature.profile.GetProfileUserUseCase
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 
 class ProfileViewModel(
-    private val getUsernameUseCase: GetUsernameUseCase,
+    private val getProfileUserUseCase: GetProfileUserUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
         initState =
@@ -44,14 +43,15 @@ class ProfileViewModel(
     private fun handleUpdateData() {
         viewModelScope.launchSafe(
             block = {
+                val profileUser = getProfileUserUseCase()
                 setState {
                     copy(
                         state = Profile.DataState.State.SUCCESS,
                         user =
                             Profile.DataState.User(
-                                role = UserRole.MANAGER,
+                                role = profileUser.role,
                                 userName =
-                                    getUsernameUseCase().lowercase().replaceFirstChar { char ->
+                                    profileUser.userName.lowercase().replaceFirstChar { char ->
                                         char.uppercase()
                                     },
                             ),
