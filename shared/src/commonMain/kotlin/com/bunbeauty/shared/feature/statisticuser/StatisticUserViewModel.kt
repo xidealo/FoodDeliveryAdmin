@@ -134,6 +134,9 @@ class StatisticUserViewModel(
         }
         viewModelScope.launchSafe(
             block = {
+                setState {
+                    copy(isPageLoading = true)
+                }
                 val page =
                     getClientUserListUseCase(
                         limit = PAGE_SIZE,
@@ -171,6 +174,9 @@ class StatisticUserViewModel(
         }
         viewModelScope.launchSafe(
             block = {
+                setState {
+                    copy(isSearchLoading = true)
+                }
                 val page =
                     getClientUserSearchUseCase(
                         query = query,
