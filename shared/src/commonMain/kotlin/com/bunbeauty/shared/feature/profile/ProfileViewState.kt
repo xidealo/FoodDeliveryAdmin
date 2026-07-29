@@ -20,6 +20,7 @@ data class ProfileViewState(
         data class Success(
             val role: String,
             val userName: String,
+            val isCourierMode: Boolean,
             val logoutLoading: Boolean,
             val isShowLogoutBottomSheet: Boolean,
         ) : State
@@ -42,6 +43,7 @@ internal fun Profile.DataState.toViewState(): ProfileViewState =
                         ProfileViewState.State.Success(
                             role = stringResource(roleStringId),
                             userName = user.userName,
+                            isCourierMode = user.role == UserRole.COURIER,
                             logoutLoading = logoutLoading,
                             isShowLogoutBottomSheet = isShowLogoutBottomSheet,
                         )

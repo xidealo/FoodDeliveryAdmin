@@ -168,8 +168,6 @@ private fun SuccessProfileScreen(
     state: ProfileViewState.State.Success,
     onAction: (Profile.Action) -> Unit,
 ) {
-    val appVersion = rememberAppVersion()
-
     Column(
         modifier =
             Modifier
@@ -181,42 +179,45 @@ private fun SuccessProfileScreen(
             hint = state.role,
             label = state.userName,
         )
-        NavigationIconCard(
-            iconId = Res.drawable.ic_menu,
-            labelStringId = Res.string.title_menu,
-            onClick = {
-                onAction(Profile.Action.MenuClick)
-            },
-        )
-        NavigationIconCard(
-            iconId = Res.drawable.ic_statistic,
-            labelStringId = Res.string.action_profile_statistic,
-            onClick = {
-                onAction(Profile.Action.StatisticClick)
-            },
-        )
-        NavigationIconCard(
-            iconId = Res.drawable.ic_statistic,
-            labelStringId = Res.string.action_profile_statistic_user,
-            onClick = {
-                onAction(Profile.Action.StatisticUserClick)
-            },
-        )
-        NavigationIconCard(
-            iconId = Res.drawable.ic_point,
-            labelStringId = Res.string.action_profile_map,
-            onClick = {
-                onAction(Profile.Action.MapClick)
-            },
-        )
-        NavigationIconCard(
-            iconId = Res.drawable.ic_settings,
-            labelStringId = Res.string.action_profile_settings,
-            onClick = {
-                onAction(Profile.Action.SettingsClick)
-            },
-        )
+        if (!state.isCourierMode) {
+            NavigationIconCard(
+                iconId = Res.drawable.ic_menu,
+                labelStringId = Res.string.title_menu,
+                onClick = {
+                    onAction(Profile.Action.MenuClick)
+                },
+            )
+            NavigationIconCard(
+                iconId = Res.drawable.ic_statistic,
+                labelStringId = Res.string.action_profile_statistic,
+                onClick = {
+                    onAction(Profile.Action.StatisticClick)
+                },
+            )
+            NavigationIconCard(
+                iconId = Res.drawable.ic_statistic,
+                labelStringId = Res.string.action_profile_statistic_user,
+                onClick = {
+                    onAction(Profile.Action.StatisticUserClick)
+                },
+            )
+            NavigationIconCard(
+                iconId = Res.drawable.ic_point,
+                labelStringId = Res.string.action_profile_map,
+                onClick = {
+                    onAction(Profile.Action.MapClick)
+                },
+            )
+            NavigationIconCard(
+                iconId = Res.drawable.ic_settings,
+                labelStringId = Res.string.action_profile_settings,
+                onClick = {
+                    onAction(Profile.Action.SettingsClick)
+                },
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
+        val appVersion = rememberAppVersion()
         Text(
             text = stringResource(Res.string.version_app, appVersion),
             modifier =
@@ -251,6 +252,29 @@ private fun ProfileScreenPreview() {
                         Profile.DataState.User(
                             role = com.bunbeauty.domain.feature.profile.model.UserRole.MANAGER,
                             userName = "UserName",
+                        ),
+                    showAcceptOrdersConfirmation = false,
+                    logoutLoading = false,
+                    isShowLogoutBottomSheet = false,
+                ),
+            onAction = {},
+            goBack = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CourierProfileScreenPreview() {
+    AdminTheme {
+        ProfileScreen(
+            state =
+                Profile.DataState(
+                    state = Profile.DataState.State.SUCCESS,
+                    user =
+                        Profile.DataState.User(
+                            role = com.bunbeauty.domain.feature.profile.model.UserRole.COURIER,
+                            userName = "CourierName",
                         ),
                     showAcceptOrdersConfirmation = false,
                     logoutLoading = false,
