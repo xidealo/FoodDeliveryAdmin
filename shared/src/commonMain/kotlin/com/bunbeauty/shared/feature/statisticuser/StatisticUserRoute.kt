@@ -220,21 +220,19 @@ private fun StatisticUserList(
 ) {
     val listState = rememberLazyListState()
 
-    if (canLoadMore) {
-        val shouldLoadMore by remember(canLoadMore) {
-            derivedStateOf {
-                val lastVisibleIndex =
-                    listState.layoutInfo.visibleItemsInfo
-                        .lastOrNull()
-                        ?.index ?: 0
-                lastVisibleIndex >= users.size - LOAD_MORE_THRESHOLD
-            }
+    val shouldLoadMore by remember(users.size) {
+        derivedStateOf {
+            val lastVisibleIndex =
+                listState.layoutInfo.visibleItemsInfo
+                    .lastOrNull()
+                    ?.index ?: 0
+            lastVisibleIndex >= users.size - LOAD_MORE_THRESHOLD
         }
+    }
 
-        LaunchedEffect(shouldLoadMore) {
-            if (shouldLoadMore) {
-                onLoadMore()
-            }
+    LaunchedEffect(shouldLoadMore, users.size, isPageLoading) {
+        if (canLoadMore && shouldLoadMore && !isPageLoading) {
+            onLoadMore()
         }
     }
 

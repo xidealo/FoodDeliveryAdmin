@@ -129,11 +129,11 @@ class StatisticUserViewModel(
         if (dataState.isPageLoading || !dataState.canLoadMore) {
             return
         }
+        setState {
+            copy(isPageLoading = true)
+        }
         viewModelScope.launchSafe(
             block = {
-                setState {
-                    copy(isPageLoading = true)
-                }
                 val page =
                     getClientUserListUseCase(
                         limit = PAGE_SIZE,
@@ -146,7 +146,7 @@ class StatisticUserViewModel(
                         offset = updatedUsers.size,
                         total = page.count,
                         isPageLoading = false,
-                        canLoadMore = updatedUsers.size < page.count,
+                        canLoadMore = page.results.isNotEmpty() && updatedUsers.size < page.count,
                     )
                 }
             },
@@ -166,11 +166,11 @@ class StatisticUserViewModel(
         if (query.length < MIN_SEARCH_LENGTH) {
             return
         }
+        setState {
+            copy(isSearchLoading = true)
+        }
         viewModelScope.launchSafe(
             block = {
-                setState {
-                    copy(isSearchLoading = true)
-                }
                 val page =
                     getClientUserSearchUseCase(
                         query = query,
@@ -184,7 +184,7 @@ class StatisticUserViewModel(
                         searchOffset = updatedUsers.size,
                         searchTotal = page.count,
                         isSearchLoading = false,
-                        searchCanLoadMore = updatedUsers.size < page.count,
+                        searchCanLoadMore = page.results.isNotEmpty() && updatedUsers.size < page.count,
                     )
                 }
             },
