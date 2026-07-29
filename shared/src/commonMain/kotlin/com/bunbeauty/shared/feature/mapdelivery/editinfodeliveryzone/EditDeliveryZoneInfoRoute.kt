@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
@@ -26,17 +25,14 @@ import fooddeliveryadmin.shared.generated.resources.hint_edit_min_order_cost_inf
 import fooddeliveryadmin.shared.generated.resources.hint_edit_name_info_delivery_zone
 import fooddeliveryadmin.shared.generated.resources.hint_edit_normal_cost_info_delivery_zone
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
-import fooddeliveryadmin.shared.generated.resources.msg_edit_info_delivery_zone_updated
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_edit_info_delivery_zone
-import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EditDeliveryZoneInfoRouteScreen(
     viewModel: EditDeliveryZoneInfoViewModel = koinViewModel(),
-    showInfoMessage: (String, Dp) -> Unit,
     onZoneUpdated: (String) -> Unit,
     goBack: () -> Unit,
 ) {
@@ -63,7 +59,6 @@ fun EditDeliveryZoneInfoRouteScreen(
     EditDeliveryZoneInfoEffect(
         effects = effects,
         consumeEffects = consumeEffects,
-        showInfoMessage = showInfoMessage,
         onZoneUpdated = onZoneUpdated,
         goBack = goBack,
     )
@@ -77,7 +72,6 @@ fun EditDeliveryZoneInfoRouteScreen(
 @Composable
 private fun EditDeliveryZoneInfoEffect(
     effects: List<EditDeliveryZoneInfo.Event>,
-    showInfoMessage: (String, Dp) -> Unit,
     onZoneUpdated: (String) -> Unit,
     goBack: () -> Unit,
     consumeEffects: () -> Unit,
@@ -90,13 +84,6 @@ private fun EditDeliveryZoneInfoEffect(
                 }
 
                 is EditDeliveryZoneInfo.Event.SaveInfoZoneSuccess -> {
-                    showInfoMessage(
-                        getString(
-                            Res.string.msg_edit_info_delivery_zone_updated,
-                            effect.zoneName,
-                        ),
-                        androidx.compose.material3.ButtonDefaults.MinHeight + 12.dp,
-                    )
                     onZoneUpdated(effect.uuid)
                     goBack()
                 }

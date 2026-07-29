@@ -55,7 +55,6 @@ interface EditDeliveryZoneInfo {
         data object Back : Event
 
         data class SaveInfoZoneSuccess(
-            val zoneName: String,
             val uuid: String,
         ) : Event
 
