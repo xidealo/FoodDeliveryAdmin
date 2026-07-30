@@ -1,6 +1,7 @@
 package com.bunbeauty.domain.feature.profile.di
 
 import com.bunbeauty.domain.feature.profile.GetIsUnlimitedNotificationUseCase
+import com.bunbeauty.domain.feature.profile.GetProfileUserUseCase
 import com.bunbeauty.domain.feature.profile.GetUsernameUseCase
 import com.bunbeauty.domain.feature.profile.UpdateIsUnlimitedNotificationUseCase
 import com.bunbeauty.domain.feature.profile.model.GetTypeWorkUseCase
@@ -33,6 +34,13 @@ fun profileModule() =
         factory {
             GetUsernameUseCase(
                 dataStoreRepo = get(),
+            )
+        }
+
+        factory {
+            GetProfileUserUseCase(
+                dataStoreRepo = get(),
+                userRepo = get(),
             )
         }
 

@@ -126,7 +126,7 @@ class MapDeliveryZoneViewModel(
     private fun editInfoDeliveryZone(zoneUuid: String) {
         setState {
             copy(
-                isZoneBottomSheetVisible = true,
+                isZoneBottomSheetVisible = false,
             )
         }
         sendEvent {
@@ -160,6 +160,7 @@ class MapDeliveryZoneViewModel(
                 setState {
                     copy(
                         selectedZoneData = listDeliveryAreaZone,
+                        isZoneBottomSheetVisible = true,
                     )
                 }
             },

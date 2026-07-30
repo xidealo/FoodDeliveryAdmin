@@ -5,6 +5,7 @@ import com.bunbeauty.domain.feature.profile.model.UserRole
 import com.bunbeauty.shared.viewmodel.base.BaseViewState
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.hint_profile_admin
+import fooddeliveryadmin.shared.generated.resources.hint_profile_courier
 import fooddeliveryadmin.shared.generated.resources.hint_profile_manager
 import org.jetbrains.compose.resources.stringResource
 
@@ -19,6 +20,7 @@ data class ProfileViewState(
         data class Success(
             val role: String,
             val userName: String,
+            val isCourierMode: Boolean,
             val logoutLoading: Boolean,
             val isShowLogoutBottomSheet: Boolean,
         ) : State
@@ -36,10 +38,12 @@ internal fun Profile.DataState.toViewState(): ProfileViewState =
                             when (user.role) {
                                 UserRole.MANAGER -> Res.string.hint_profile_manager
                                 UserRole.ADMIN -> Res.string.hint_profile_admin
+                                UserRole.COURIER -> Res.string.hint_profile_courier
                             }
                         ProfileViewState.State.Success(
                             role = stringResource(roleStringId),
                             userName = user.userName,
+                            isCourierMode = user.role == UserRole.COURIER,
                             logoutLoading = logoutLoading,
                             isShowLogoutBottomSheet = isShowLogoutBottomSheet,
                         )

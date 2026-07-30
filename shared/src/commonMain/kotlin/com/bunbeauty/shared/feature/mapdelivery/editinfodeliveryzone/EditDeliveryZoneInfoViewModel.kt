@@ -79,7 +79,7 @@ class EditDeliveryZoneInfoViewModel(
                             ),
                         minOrderCost =
                             TextFieldData(
-                                value = zone.minOrderCost.toString(),
+                                value = zone.minOrderCost?.toString().orEmpty(),
                                 isError = false,
                             ),
                         normalDeliveryCost =
@@ -89,7 +89,7 @@ class EditDeliveryZoneInfoViewModel(
                             ),
                         forLowDeliveryCost =
                             TextFieldData(
-                                value = zone.forLowDeliveryCost.toString(),
+                                value = zone.forLowDeliveryCost?.toString().orEmpty(),
                                 isError = false,
                             ),
                     )
@@ -104,6 +104,12 @@ class EditDeliveryZoneInfoViewModel(
     }
 
     private fun saveInfoDeliveryZone() {
+        setState {
+            copy(
+                isLoading = true,
+                hasEditNameError = false,
+            )
+        }
         viewModelScope.launchSafe(
             block = {
                 saveInfoZoneUseCase(
@@ -112,16 +118,19 @@ class EditDeliveryZoneInfoViewModel(
                         state.value.run {
                             UpdateInfoDeliveryZone(
                                 name = nameZona.value,
-                                minOrderCost = minOrderCost.value.toInt(),
-                                normalDeliveryCost = normalDeliveryCost.value.toInt(),
-                                forLowDeliveryCost = forLowDeliveryCost.value.toInt(),
+                                minOrderCost = minOrderCost.value.toIntOrNull() ?: 0,
+                                normalDeliveryCost = normalDeliveryCost.value.toIntOrNull() ?: 0,
+                                forLowDeliveryCost = forLowDeliveryCost.value.toIntOrNull() ?: 0,
                             )
                         },
                 )
+                setState {
+                    copy(isLoading = false)
+                }
+
                 sendEvent { dataState ->
                     EditDeliveryZoneInfo.Event.SaveInfoZoneSuccess(
-                        zoneName = dataState.nameZona.value,
-                        uuid = state.value.uuid,
+                        uuid = dataState.uuid,
                     )
                 }
             },

@@ -17,6 +17,12 @@ interface DataStoreRepo {
 
     suspend fun saveUsername(username: String)
 
+    val userRole: Flow<String?>
+
+    suspend fun getUserRole(): String?
+
+    suspend fun saveUserRole(userRole: String)
+
     val cafeUuid: Flow<String?>
 
     suspend fun saveCafeUuid(cafeUuid: String)

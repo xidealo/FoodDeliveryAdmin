@@ -54,6 +54,19 @@ class DataStoreRepository(
         }
     }
 
+    override val userRole =
+        context.userDataStore.data.map { preferences ->
+            preferences[USER_ROLE_KEY]
+        }
+
+    override suspend fun getUserRole(): String? = userRole.firstOrNull()
+
+    override suspend fun saveUserRole(userRole: String) {
+        context.userDataStore.edit { preferences ->
+            preferences[USER_ROLE_KEY] = userRole
+        }
+    }
+
     override val cafeUuid: Flow<String?> =
         context.cafeUuidDataStore.data.map {
             it[CAFE_UUID_KEY]
@@ -105,6 +118,7 @@ class DataStoreRepository(
 
         private const val TOKEN = "token"
         private const val USERNAME = "username"
+        private const val USER_ROLE = "user role"
         private const val COMPANY_UUID = "company uuid"
         private const val CAFE_UUID = "cafe uuid"
         private const val PREVIOUS_CAFE_UUID = "previous cafe uuid"
@@ -113,6 +127,7 @@ class DataStoreRepository(
         // KEYS
         private val TOKEN_KEY = stringPreferencesKey(TOKEN)
         private val USERNAME_KEY = stringPreferencesKey(USERNAME)
+        private val USER_ROLE_KEY = stringPreferencesKey(USER_ROLE)
         private val COMPANY_UUID_KEY = stringPreferencesKey(COMPANY_UUID)
         private val CAFE_UUID_KEY = stringPreferencesKey(CAFE_UUID)
         private val PREVIOUS_CAFE_UUID_KEY = stringPreferencesKey(PREVIOUS_CAFE_UUID)

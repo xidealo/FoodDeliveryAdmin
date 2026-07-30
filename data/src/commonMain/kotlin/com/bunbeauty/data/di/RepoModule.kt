@@ -16,6 +16,7 @@ import com.bunbeauty.data.repository.NonWorkingDayRepository
 import com.bunbeauty.data.repository.OrderRepository
 import com.bunbeauty.data.repository.SettingsRepository
 import com.bunbeauty.data.repository.StatisticRepository
+import com.bunbeauty.data.repository.UserRepository
 import com.bunbeauty.data.websocket.OrderUpdatesWebSocket
 import com.bunbeauty.data.websocket.OrderUpdatesWebSocketImpl
 import com.bunbeauty.domain.feature.order.OrderRepo
@@ -32,6 +33,7 @@ import com.bunbeauty.domain.repo.MenuProductToAdditionGroupToAdditionRepository
 import com.bunbeauty.domain.repo.NonWorkingDayRepo
 import com.bunbeauty.domain.repo.SettingsRepo
 import com.bunbeauty.domain.repo.StatisticRepo
+import com.bunbeauty.domain.repo.UserRepo
 import org.koin.dsl.module
 
 fun repositoryModule() =
@@ -112,6 +114,12 @@ fun repositoryModule() =
         }
         single<SettingsRepo> {
             SettingsRepository(
+                dataStoreRepo = get(),
+                foodDeliveryApi = get(),
+            )
+        }
+        single<UserRepo> {
+            UserRepository(
                 dataStoreRepo = get(),
                 foodDeliveryApi = get(),
             )
