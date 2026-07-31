@@ -18,6 +18,7 @@ data class StatisticUserViewState(
 
         data class Success(
             val users: ImmutableList<UserItem>,
+            val totalUsers: Int,
             val isSearchEnabled: Boolean,
             val searchQuery: String,
             val searchResultList: ImmutableList<UserItem>?,
@@ -47,6 +48,7 @@ internal fun StatisticUser.DataState.toViewState(): StatisticUserViewState =
                             users
                                 .map { user -> user.toItem() }
                                 .toPersistentList(),
+                        totalUsers = total,
                         isSearchEnabled = isSearchEnabled,
                         searchQuery = searchQuery,
                         searchResultList = getSearchResultList(),

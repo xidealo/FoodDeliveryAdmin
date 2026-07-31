@@ -35,6 +35,7 @@ import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_search
 import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_total
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_menu_list_search_empty
 import fooddeliveryadmin.shared.generated.resources.title_statistic_user
@@ -147,6 +148,19 @@ private fun StatisticUserScreen(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                 ) {
+                    Text(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                        text =
+                            stringResource(
+                                Res.string.msg_statistic_user_total,
+                                currentState.totalUsers,
+                            ),
+                        style = AdminTheme.typography.bodyLarge,
+                        color = AdminTheme.colors.main.onSurface,
+                    )
                     if (currentState.isSearchEnabled) {
                         StatisticUserSearchField(
                             searchQuery = currentState.searchQuery,
@@ -360,6 +374,7 @@ private fun StatisticUserScreenPreview() {
                                         phoneNumber = "+7 996 922 41 87",
                                     ),
                                 ),
+                            totalUsers = 2,
                             isSearchEnabled = false,
                             searchQuery = "",
                             searchResultList = null,
