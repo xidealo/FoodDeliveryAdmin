@@ -201,7 +201,7 @@
     <!-- STATISTIC USER -->
     <string name="title_statistic_user">Статистика. Пользователи</string>
     <string name="title_statistic_user_details">Выбранный пользователь</string>
-    <string name="msg_statistic_user_total">Пользователей: %1$d</string>
+    <string name="msg_statistic_user_total">Всего клиентов</string>
     <string name="hint_statistic_user_search">Номер телефона</string>
     <string name="hint_statistic_user_first_order_date">Дата первого заказа</string>
     <string name="hint_statistic_user_last_order_date">Дата последнего заказа</string>

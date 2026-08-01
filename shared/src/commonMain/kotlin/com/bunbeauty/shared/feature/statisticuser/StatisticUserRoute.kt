@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -31,8 +33,10 @@ import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarActio
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
+import com.bunbeauty.shared.designsystem.compose.theme.medium
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_search
+import fooddeliveryadmin.shared.generated.resources.ic_close
 import fooddeliveryadmin.shared.generated.resources.ic_search
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_total
@@ -118,7 +122,11 @@ private fun StatisticUserScreen(
             if (state.state is StatisticUserViewState.State.Success) {
                 listOf(
                     AdminTopBarAction(
-                        iconId = Res.drawable.ic_search,
+                        iconId = if (state.state.isSearchEnabled) {
+                            Res.drawable.ic_close
+                        } else {
+                            Res.drawable.ic_search
+                        },
                         color = AdminTheme.colors.main.primary,
                         onClick = {
                             onAction(StatisticUser.Action.SearchClick)
@@ -148,19 +156,7 @@ private fun StatisticUserScreen(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    Text(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                        text =
-                            stringResource(
-                                Res.string.msg_statistic_user_total,
-                                currentState.totalUsers,
-                            ),
-                        style = AdminTheme.typography.bodyLarge,
-                        color = AdminTheme.colors.main.onSurface,
-                    )
+
                     if (currentState.isSearchEnabled) {
                         StatisticUserSearchField(
                             searchQuery = currentState.searchQuery,
@@ -199,6 +195,8 @@ private fun StatisticUserSuccessContent(
                     onAction(StatisticUser.Action.LoadMore)
                 },
                 modifier = modifier,
+                userCount = state.totalUsers,
+                isSearch = state.isSearchEnabled
             )
         }
 
@@ -218,6 +216,8 @@ private fun StatisticUserSuccessContent(
                     onAction(StatisticUser.Action.LoadMore)
                 },
                 modifier = modifier,
+                userCount = state.totalUsers,
+                isSearch = state.isSearchEnabled
             )
         }
     }
@@ -228,6 +228,8 @@ private fun StatisticUserList(
     users: List<StatisticUserViewState.UserItem>,
     canLoadMore: Boolean,
     isPageLoading: Boolean,
+    userCount: Int,
+    isSearch: Boolean,
     onUserClick: (String) -> Unit,
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier,
@@ -258,6 +260,19 @@ private fun StatisticUserList(
                 bottom = AdminTheme.dimensions.scrollScreenBottomSpace(),
             ),
     ) {
+        if (!isSearch) {
+            item {
+                StatisticUserCommonCount(
+                    stringResource(Res.string.msg_statistic_user_total),
+                    userCount.toString(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 8.dp),
+                )
+            }
+        }
         items(
             items = users,
             key = { user -> user.uuid },
@@ -350,6 +365,27 @@ private fun StatisticUserSearchEmptyScreen(modifier: Modifier = Modifier) {
             style = AdminTheme.typography.titleMedium,
             color = AdminTheme.colors.main.onSurface,
             textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+private fun StatisticUserCommonCount(
+    hint: String,
+    info: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = hint,
+            style = AdminTheme.typography.labelSmall.medium,
+            color = AdminTheme.colors.main.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = info,
+            style = AdminTheme.typography.bodyMedium,
+            color = AdminTheme.colors.main.onSurface,
         )
     }
 }
