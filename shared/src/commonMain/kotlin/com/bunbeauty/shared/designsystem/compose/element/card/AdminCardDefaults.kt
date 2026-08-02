@@ -29,11 +29,6 @@ object AdminCardDefaults {
                 containerColor = AdminTheme.colors.status.positive,
             )
 
-    val cardNegativeColors: CardColors
-        @Composable get() =
-            CardDefaults.cardColors(
-                containerColor = AdminTheme.colors.status.negative,
-            )
 
     val cardBorder: BorderStroke
         @Composable get() =
