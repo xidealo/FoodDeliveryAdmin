@@ -30,12 +30,19 @@ fun NavigationIconCard(
     labelStringId: StringResource? = null,
     label: String = "",
     elevated: Boolean = true,
+    bordered: Boolean = false,
     onClick: () -> Unit,
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
         elevated = elevated,
+        border =
+            if (bordered) {
+                AdminCardDefaults.cardBorder
+            } else {
+                null
+            },
     ) {
         Row(
             modifier =
@@ -87,6 +94,20 @@ private fun NavigationIconCardPreview() {
         NavigationIconCard(
             iconId = Res.drawable.ic_menu,
             label = "Текст",
+            onClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun NavigationIconCardBorderedPreview() {
+    AdminTheme {
+        NavigationIconCard(
+            modifier = Modifier.padding(AdminTheme.dimensions.mediumSpace),
+            iconId = Res.drawable.ic_menu,
+            label = "Текст",
+            bordered = true,
             onClick = {},
         )
     }

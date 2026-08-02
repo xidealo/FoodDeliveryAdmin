@@ -190,6 +190,7 @@ private fun OrderDetailsScreen(
         backActionClick = {
             onAction(OrderDetailsState.Action.OnBackClicked)
         },
+        backgroundColor = AdminTheme.colors.main.surface,
     ) {
         when (state.state) {
             OrderDetailsViewState.State.Loading -> {
@@ -254,9 +255,11 @@ private fun SuccessOrderDetailsScreen(
                     NavigationIconCard(
                         iconId = Res.drawable.ic_call,
                         label = state.phoneNumber,
+                        bordered = true,
                         onClick = {
                             onCallPhone(state.phoneNumber)
                         },
+                        elevated = false
                     )
                 }
 
