@@ -13,5 +13,6 @@ class ClientUserStatisticMapper {
             pickupOrderCount = clientUserStatisticServer.pickupOrderCount,
             orderCount = clientUserStatisticServer.orderCount,
             averageCheck = clientUserStatisticServer.averageCheck,
+            isProblematic = clientUserStatisticServer.isProblematic,
         )
 }
