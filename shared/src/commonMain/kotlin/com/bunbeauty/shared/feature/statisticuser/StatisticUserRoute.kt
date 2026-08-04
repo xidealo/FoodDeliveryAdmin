@@ -122,11 +122,12 @@ private fun StatisticUserScreen(
             if (state.state is StatisticUserViewState.State.Success) {
                 listOf(
                     AdminTopBarAction(
-                        iconId = if (state.state.isSearchEnabled) {
-                            Res.drawable.ic_close
-                        } else {
-                            Res.drawable.ic_search
-                        },
+                        iconId =
+                            if (state.state.isSearchEnabled) {
+                                Res.drawable.ic_close
+                            } else {
+                                Res.drawable.ic_search
+                            },
                         color = AdminTheme.colors.main.primary,
                         onClick = {
                             onAction(StatisticUser.Action.SearchClick)
@@ -156,7 +157,6 @@ private fun StatisticUserScreen(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-
                     if (currentState.isSearchEnabled) {
                         StatisticUserSearchField(
                             searchQuery = currentState.searchQuery,
@@ -196,7 +196,7 @@ private fun StatisticUserSuccessContent(
                 },
                 modifier = modifier,
                 userCount = state.totalUsers,
-                isSearch = state.isSearchEnabled
+                isSearch = state.isSearchEnabled,
             )
         }
 
@@ -217,7 +217,7 @@ private fun StatisticUserSuccessContent(
                 },
                 modifier = modifier,
                 userCount = state.totalUsers,
-                isSearch = state.isSearchEnabled
+                isSearch = state.isSearchEnabled,
             )
         }
     }

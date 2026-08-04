@@ -11,4 +11,5 @@ data class ClientUserStatisticServer(
     val pickupOrderCount: Int,
     val orderCount: Int,
     val averageCheck: Double,
+    val isProblematic: Boolean,
 )
