@@ -29,7 +29,6 @@ object AdminCardDefaults {
                 containerColor = AdminTheme.colors.status.positive,
             )
 
-
     val cardBorder: BorderStroke
         @Composable get() =
             BorderStroke(

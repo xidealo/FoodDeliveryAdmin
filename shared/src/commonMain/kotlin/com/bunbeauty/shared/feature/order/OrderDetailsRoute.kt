@@ -259,7 +259,7 @@ private fun SuccessOrderDetailsScreen(
                         onClick = {
                             onCallPhone(state.phoneNumber)
                         },
-                        elevated = false
+                        elevated = false,
                     )
                 }
 
