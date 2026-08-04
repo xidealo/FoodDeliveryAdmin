@@ -2,16 +2,21 @@ package com.bunbeauty.shared.feature.statisticuserdetails
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.feature.clientuser.GetClientUserStatisticUseCase
+import com.bunbeauty.domain.feature.clientuser.UpdateClientUserProblematicUseCase
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 
 class StatisticUserDetailsViewModel(
     private val getClientUserStatisticUseCase: GetClientUserStatisticUseCase,
+    private val updateClientUserProblematicUseCase: UpdateClientUserProblematicUseCase,
 ) : BaseStateViewModel<StatisticUserDetails.DataState, StatisticUserDetails.Action, StatisticUserDetails.Event>(
         initState =
             StatisticUserDetails.DataState(
                 state = StatisticUserDetails.DataState.State.LOADING,
                 statistic = null,
+                isProblematic = false,
+                initialIsProblematic = false,
+                saving = false,
             ),
     ) {
     private var userUuid: String? = null
@@ -24,6 +29,12 @@ class StatisticUserDetailsViewModel(
             is StatisticUserDetails.Action.Init -> handleInit(action.userUuid)
             StatisticUserDetails.Action.Retry -> loadStatistic()
             StatisticUserDetails.Action.BackClick -> handleBackClick()
+            is StatisticUserDetails.Action.OnProblematicChecked -> {
+                setState {
+                    copy(isProblematic = action.isProblematic)
+                }
+            }
+            StatisticUserDetails.Action.OnSaveClick -> handleSave()
         }
     }
 
@@ -47,12 +58,49 @@ class StatisticUserDetailsViewModel(
                     copy(
                         state = StatisticUserDetails.DataState.State.SUCCESS,
                         statistic = statistic,
+                        isProblematic = statistic.isProblematic,
+                        initialIsProblematic = statistic.isProblematic,
+                        saving = false,
                     )
                 }
             },
             onError = {
                 setState {
                     copy(state = StatisticUserDetails.DataState.State.ERROR)
+                }
+            },
+        )
+    }
+
+    private fun handleSave() {
+        val currentUserUuid = userUuid ?: return
+        val currentState = state.value
+        if (!currentState.hasChanges || currentState.saving) {
+            return
+        }
+        viewModelScope.launchSafe(
+            block = {
+                setState {
+                    copy(saving = true)
+                }
+                updateClientUserProblematicUseCase(
+                    clientUserUuid = currentUserUuid,
+                    isProblematic = currentState.isProblematic,
+                )
+                setState {
+                    copy(
+                        saving = false,
+                        initialIsProblematic = isProblematic,
+                        statistic = statistic?.copy(isProblematic = isProblematic),
+                    )
+                }
+                sendEvent {
+                    StatisticUserDetails.Event.ShowSavedMessage
+                }
+            },
+            onError = {
+                setState {
+                    copy(saving = false)
                 }
             },
         )

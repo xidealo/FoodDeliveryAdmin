@@ -9,6 +9,7 @@ data class Order(
     val deferredTime: Long?,
     val timeZone: String,
     val orderStatus: OrderStatus,
+    val isProblematic: Boolean = false,
 ) {
     companion object {
         val mock =
@@ -19,6 +20,7 @@ data class Order(
                 deferredTime = null,
                 timeZone = "",
                 orderStatus = OrderStatus.NOT_ACCEPTED,
+                isProblematic = false,
             )
     }
 }

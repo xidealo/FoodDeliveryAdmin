@@ -39,6 +39,7 @@ import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.DiscountCard
 import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.StatusNavigationTextCard
+import com.bunbeauty.shared.designsystem.compose.element.card.WarningCard
 import com.bunbeauty.shared.designsystem.compose.element.selectable.SelectableItem
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
@@ -48,6 +49,9 @@ import com.bunbeauty.shared.designsystem.compose.theme.medium
 import com.bunbeauty.shared.feature.order.navigation.OrderDetailsScreenDestination
 import com.bunbeauty.shared.feature.order.state.OrderDetailsState
 import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
+import fooddeliveryadmin.shared.generated.resources.ic_warning
+import fooddeliveryadmin.shared.generated.resources.msg_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.action_order_details_do_not_save
 import fooddeliveryadmin.shared.generated.resources.action_order_details_no
 import fooddeliveryadmin.shared.generated.resources.action_order_details_save
@@ -237,6 +241,18 @@ private fun SuccessOrderDetailsScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace),
             ) {
+                if (state.isProblematic) {
+                    item {
+                        WarningCard(
+                            title = stringResource(Res.string.msg_order_details_problematic_client),
+                            icon = Res.drawable.ic_warning,
+                            iconDescription =
+                                stringResource(
+                                    Res.string.description_order_details_problematic_client,
+                                ),
+                        )
+                    }
+                }
                 item {
                     OrderInfoCard(stateSuccess = state)
                 }

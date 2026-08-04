@@ -16,18 +16,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
+import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
+import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
+import com.bunbeauty.shared.designsystem.compose.element.button.MainButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
+import com.bunbeauty.shared.designsystem.compose.element.card.SwitcherCard
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.designsystem.compose.theme.medium
 import com.bunbeauty.shared.feature.statisticuserdetails.navigation.StatisticUserDetailsScreenDestination
 import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.action_statistic_user_save
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_average_check
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_delivery_order_count
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_first_order_date
@@ -35,9 +41,13 @@ import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_last_ord
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_order_count
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_phone_number
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_pickup_order_count
+import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_problematic
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_saved
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_statistic_user_details
+import fooddeliveryadmin.shared.generated.resources.title_statistic_user_problematic
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -47,6 +57,7 @@ fun StatisticUserDetailsRouteScreen(
     backStackEntry: NavBackStackEntry,
     viewModel: StatisticUserDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
 ) {
     val route = backStackEntry.toRoute<StatisticUserDetailsScreenDestination>()
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -72,6 +83,7 @@ fun StatisticUserDetailsRouteScreen(
     StatisticUserDetailsEffect(
         effects = effects,
         goBack = goBack,
+        showInfoMessage = showInfoMessage,
         consumeEffects = consumeEffects,
     )
 
@@ -85,12 +97,19 @@ fun StatisticUserDetailsRouteScreen(
 private fun StatisticUserDetailsEffect(
     effects: List<StatisticUserDetails.Event>,
     goBack: () -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
     consumeEffects: () -> Unit,
 ) {
     LaunchedEffect(effects) {
         effects.forEach { effect ->
             when (effect) {
                 StatisticUserDetails.Event.GoBack -> goBack()
+                StatisticUserDetails.Event.ShowSavedMessage -> {
+                    showInfoMessage(
+                        getString(Res.string.msg_statistic_user_saved),
+                        0.dp,
+                    )
+                }
             }
         }
         consumeEffects()
@@ -102,12 +121,42 @@ private fun StatisticUserDetailsScreen(
     state: StatisticUserDetailsViewState,
     onAction: (StatisticUserDetails.Action) -> Unit,
 ) {
+    val successState = state.state as? StatisticUserDetailsViewState.State.Success
+
     AdminScaffold(
         title = stringResource(Res.string.title_statistic_user_details),
         backActionClick = {
             onAction(StatisticUserDetails.Action.BackClick)
         },
         backgroundColor = AdminTheme.colors.main.surface,
+        actionButton = {
+            successState?.let { success ->
+                if (success.saving) {
+                    LoadingButton(
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .bottomBarPadding(),
+                        text = stringResource(Res.string.action_statistic_user_save),
+                        isLoading = true,
+                        onClick = {},
+                    )
+                } else {
+                    MainButton(
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .bottomBarPadding(),
+                        text = stringResource(Res.string.action_statistic_user_save),
+                        isEnabled = success.hasChanges,
+                        elevated = false,
+                        onClick = {
+                            onAction(StatisticUserDetails.Action.OnSaveClick)
+                        },
+                    )
+                }
+            }
+        },
     ) {
         when (val currentState = state.state) {
             StatisticUserDetailsViewState.State.Loading -> LoadingScreen()
@@ -122,13 +171,19 @@ private fun StatisticUserDetailsScreen(
                 )
 
             is StatisticUserDetailsViewState.State.Success ->
-                StatisticUserDetailsSuccessContent(state = currentState)
+                StatisticUserDetailsSuccessContent(
+                    state = currentState,
+                    onAction = onAction,
+                )
         }
     }
 }
 
 @Composable
-private fun StatisticUserDetailsSuccessContent(state: StatisticUserDetailsViewState.State.Success) {
+private fun StatisticUserDetailsSuccessContent(
+    state: StatisticUserDetailsViewState.State.Success,
+    onAction: (StatisticUserDetails.Action) -> Unit,
+) {
     Column(
         modifier =
             Modifier
@@ -204,6 +259,23 @@ private fun StatisticUserDetailsSuccessContent(state: StatisticUserDetailsViewSt
                 )
             }
         }
+
+        SwitcherCard(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            text = stringResource(Res.string.title_statistic_user_problematic),
+            hint = stringResource(Res.string.hint_statistic_user_problematic),
+            checked = state.isProblematic,
+            elevated = false,
+            enabled = !state.saving,
+            onCheckChanged = { isProblematic ->
+                onAction(StatisticUserDetails.Action.OnProblematicChecked(isProblematic))
+            },
+        )
+
+        Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace()))
     }
 }
 
@@ -245,6 +317,9 @@ private fun StatisticUserDetailsScreenPreview() {
                             pickupOrderCount = "75",
                             averageCheck = "500 ₽",
                             orderCount = "25",
+                            isProblematic = true,
+                            hasChanges = true,
+                            saving = false,
                         ),
                 ),
             onAction = {},

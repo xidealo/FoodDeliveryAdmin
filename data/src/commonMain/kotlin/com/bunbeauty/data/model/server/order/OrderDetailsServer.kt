@@ -23,6 +23,7 @@ class OrderDetailsServer(
     val newTotalCost: Int,
     val oderProductList: List<OrderProductServer>,
     val availableStatusList: List<String>,
+    val isProblematic: Boolean = false,
 )
 
 @Serializable

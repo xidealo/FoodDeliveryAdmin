@@ -21,4 +21,10 @@ interface ClientUserRepo {
         token: String,
         clientUserUuid: String,
     ): ClientUserStatistic
+
+    suspend fun updateClientUserProblematic(
+        token: String,
+        clientUserUuid: String,
+        isProblematic: Boolean,
+    )
 }
