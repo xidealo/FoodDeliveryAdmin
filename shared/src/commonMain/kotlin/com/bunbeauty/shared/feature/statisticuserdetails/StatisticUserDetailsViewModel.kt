@@ -83,15 +83,17 @@ class StatisticUserDetailsViewModel(
                 setState {
                     copy(saving = true)
                 }
-                updateClientUserProblematicUseCase(
-                    clientUserUuid = currentUserUuid,
-                    isProblematic = currentState.isProblematic,
-                )
+                val updated =
+                    updateClientUserProblematicUseCase(
+                        clientUserUuid = currentUserUuid,
+                        isProblematic = currentState.isProblematic,
+                    )
                 setState {
                     copy(
                         saving = false,
-                        initialIsProblematic = isProblematic,
-                        statistic = statistic?.copy(isProblematic = isProblematic),
+                        isProblematic = updated.isProblematic,
+                        initialIsProblematic = updated.isProblematic,
+                        statistic = statistic?.copy(isProblematic = updated.isProblematic),
                     )
                 }
                 sendEvent {

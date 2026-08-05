@@ -3,7 +3,8 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.clientuser.ClientUserSettingsMapper
 import com.bunbeauty.data.mapper.clientuser.ClientUserStatisticMapper
-import com.bunbeauty.data.model.server.clientuser.PatchClientUserServer
+import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
+import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettings
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettingsList
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserStatistic
 import com.bunbeauty.domain.repo.ClientUserRepo
@@ -90,21 +91,24 @@ class ClientUserRepository(
         token: String,
         clientUserUuid: String,
         isProblematic: Boolean,
-    ) {
+    ): ClientUserSettings =
         when (
-            foodDeliveryApi.patchClientUser(
-                clientUserUuid = clientUserUuid,
-                patchClientUser =
-                    PatchClientUserServer(
-                        isProblematic = isProblematic,
-                    ),
-                token = token,
-            )
+            val result =
+                foodDeliveryApi.patchClientUserProblematic(
+                    token = token,
+                    clientUserUuid = clientUserUuid,
+                    patch =
+                        PatchClientUserProblematicServer(
+                            isProblematic = isProblematic,
+                        ),
+                )
         ) {
-            is ApiResult.Success -> Unit
+            is ApiResult.Success -> {
+                clientUserSettingsMapper.map(result.data)
+            }
+
             is ApiResult.Error -> {
                 throw Exception("client user update error")
             }
         }
-    }
 }

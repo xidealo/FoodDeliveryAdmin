@@ -109,6 +109,7 @@ private fun StatisticUserDetailsEffect(
                         getString(Res.string.msg_statistic_user_saved),
                         0.dp,
                     )
+                    goBack()
                 }
             }
         }
