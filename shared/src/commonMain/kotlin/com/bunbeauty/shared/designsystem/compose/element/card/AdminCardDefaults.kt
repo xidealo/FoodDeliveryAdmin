@@ -1,5 +1,6 @@
 package com.bunbeauty.shared.designsystem.compose.element.card
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -28,14 +29,18 @@ object AdminCardDefaults {
                 containerColor = AdminTheme.colors.status.positive,
             )
 
-    val cardNegativeColors: CardColors
+    val cardBorder: BorderStroke
         @Composable get() =
-            CardDefaults.cardColors(
-                containerColor = AdminTheme.colors.status.negative,
+            BorderStroke(
+                width = 1.dp,
+                color = AdminTheme.colors.main.strokeVariant,
             )
 
     val cardShape: RoundedCornerShape
         @Composable get() = RoundedCornerShape(AdminTheme.dimensions.cardRadius)
+
+    val smallCardShape: RoundedCornerShape
+        @Composable get() = RoundedCornerShape(AdminTheme.dimensions.smallCardRadius)
 
     val noCornerCardShape: RoundedCornerShape
         @Composable get() = RoundedCornerShape(0.dp)
