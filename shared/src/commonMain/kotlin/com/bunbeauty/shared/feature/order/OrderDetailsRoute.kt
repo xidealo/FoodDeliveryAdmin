@@ -512,6 +512,7 @@ private fun BottomAmountBar(
                     .padding(top = 8.dp)
                     .bottomBarPadding(),
             textStringId = Res.string.action_order_details_do_not_save,
+            elevated = false,
             onClick = {
                 onAction(OrderDetailsState.Action.OnBackClicked)
             },
