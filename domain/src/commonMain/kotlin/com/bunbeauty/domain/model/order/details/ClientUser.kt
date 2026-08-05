@@ -4,6 +4,7 @@ data class ClientUser(
     val uuid: String,
     val phoneNumber: String,
     val email: String?,
+    val isProblematic: Boolean = false,
 ) {
     companion object {
         val mock =
@@ -11,6 +12,7 @@ data class ClientUser(
                 uuid = "",
                 phoneNumber = "",
                 email = null,
+                isProblematic = false,
             )
     }
 }

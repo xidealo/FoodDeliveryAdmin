@@ -42,6 +42,7 @@ class ServerOrderMapper(
                     uuid = orderDetailsServer.clientUser.uuid,
                     phoneNumber = orderDetailsServer.clientUser.phoneNumber,
                     email = orderDetailsServer.clientUser.email,
+                    isProblematic = orderDetailsServer.clientUser.isProblematic,
                 ),
             cafeUuid = orderDetailsServer.cafeUuid,
             deliveryCost = orderDetailsServer.deliveryCost,
@@ -50,6 +51,7 @@ class ServerOrderMapper(
             newTotalCost = orderDetailsServer.newTotalCost,
             oderProductList = orderDetailsServer.oderProductList.map(oderProductMapper::toModel),
             availableStatusList = orderDetailsServer.availableStatusList.mapNotNull(::getOrderStatusNullable),
+            isProblematic = orderDetailsServer.clientUser.isProblematic,
         )
 
     override fun mapOrder(orderServer: OrderServer): Order =
@@ -60,6 +62,7 @@ class ServerOrderMapper(
             deferredTime = orderServer.deferredTime,
             timeZone = orderServer.timeZone,
             orderStatus = getOrderStatus(orderServer.status),
+            isProblematic = orderServer.isProblematic,
         )
 
     private fun getOrderStatus(statusName: String): OrderStatus = getOrderStatusNullable(statusName) ?: OrderStatus.NOT_ACCEPTED

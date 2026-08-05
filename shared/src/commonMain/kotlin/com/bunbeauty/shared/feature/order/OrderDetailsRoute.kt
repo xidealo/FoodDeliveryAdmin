@@ -39,6 +39,7 @@ import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.DiscountCard
 import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.StatusNavigationTextCard
+import com.bunbeauty.shared.designsystem.compose.element.card.WarningCard
 import com.bunbeauty.shared.designsystem.compose.element.selectable.SelectableItem
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
@@ -52,8 +53,10 @@ import fooddeliveryadmin.shared.generated.resources.action_order_details_do_not_
 import fooddeliveryadmin.shared.generated.resources.action_order_details_no
 import fooddeliveryadmin.shared.generated.resources.action_order_details_save
 import fooddeliveryadmin.shared.generated.resources.action_order_details_yes
+import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.shared.generated.resources.ic_call
+import fooddeliveryadmin.shared.generated.resources.ic_warning
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_address
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_alert
@@ -64,6 +67,7 @@ import fooddeliveryadmin.shared.generated.resources.msg_order_details_order_cost
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_order_time
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_payment_method
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_pickup_method
+import fooddeliveryadmin.shared.generated.resources.msg_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_saved
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_order_details_alert
@@ -238,6 +242,18 @@ private fun SuccessOrderDetailsScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace),
             ) {
+                if (state.isProblematic) {
+                    item {
+                        WarningCard(
+                            title = stringResource(Res.string.msg_order_details_problematic_client),
+                            icon = Res.drawable.ic_warning,
+                            iconDescription =
+                                stringResource(
+                                    Res.string.description_order_details_problematic_client,
+                                ),
+                        )
+                    }
+                }
                 item {
                     OrderInfoCard(stateSuccess = state)
                 }

@@ -22,6 +22,7 @@ data class OrderDetails(
     val newTotalCost: Int,
     val oderProductList: List<OrderProduct>,
     val availableStatusList: List<OrderStatus>,
+    val isProblematic: Boolean = false,
 ) {
     companion object {
         val mock =
@@ -58,6 +59,7 @@ data class OrderDetails(
                 newTotalCost = 0,
                 oderProductList = emptyList(),
                 availableStatusList = emptyList(),
+                isProblematic = false,
             )
     }
 }

@@ -29,6 +29,9 @@ data class StatisticUserDetailsViewState(
             val pickupOrderCount: String,
             val averageCheck: String,
             val orderCount: String,
+            val isProblematic: Boolean,
+            val hasChanges: Boolean,
+            val saving: Boolean,
         ) : State
     }
 }
@@ -54,6 +57,9 @@ internal fun StatisticUserDetails.DataState.toViewState(): StatisticUserDetailsV
                                     statistic.averageCheck.roundToInt().toString(),
                                 ),
                             orderCount = statistic.orderCount.toString(),
+                            isProblematic = isProblematic,
+                            hasChanges = hasChanges,
+                            saving = saving,
                         )
                     } ?: StatisticUserDetailsViewState.State.Error
                 }

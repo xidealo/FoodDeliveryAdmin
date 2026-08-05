@@ -2,6 +2,7 @@ package com.bunbeauty.shared.feature.statisticuserdetails.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -24,7 +25,10 @@ fun NavController.navigateToStatisticUserDetailsScreen(
     navOptions = navOptions,
 )
 
-fun NavGraphBuilder.statisticUserDetailsScreenRoute(goBack: () -> Unit) {
+fun NavGraphBuilder.statisticUserDetailsScreenRoute(
+    goBack: () -> Unit,
+    showInfoMessage: (String, Dp) -> Unit,
+) {
     composable<StatisticUserDetailsScreenDestination>(
         enterTransition = {
             slideIntoContainer(
@@ -53,6 +57,7 @@ fun NavGraphBuilder.statisticUserDetailsScreenRoute(goBack: () -> Unit) {
         StatisticUserDetailsRouteScreen(
             backStackEntry = it,
             goBack = goBack,
+            showInfoMessage = showInfoMessage,
         )
     }
 }
