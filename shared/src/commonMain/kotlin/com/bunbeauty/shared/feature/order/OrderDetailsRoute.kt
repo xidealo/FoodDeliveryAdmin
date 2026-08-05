@@ -363,64 +363,58 @@ private fun OrderInfoCard(
     modifier: Modifier = Modifier,
     stateSuccess: OrderDetailsViewState.State.Success,
 ) {
-    AdminCard(
-        modifier = modifier,
-        clickable = false,
-        elevated = false,
+    Column(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                OrderInfoTextColumn(
-                    modifier = Modifier.weight(1f),
-                    hint = stringResource(Res.string.msg_order_details_order_time),
-                    info = stateSuccess.dateTime,
-                )
-                stateSuccess.deferredTime?.let { deferredTime ->
-                    OrderInfoTextColumn(
-                        modifier =
-                            Modifier
-                                .padding(start = 16.dp)
-                                .weight(1f),
-                        hint = deferredTime.hint,
-                        info = deferredTime.value,
-                    )
-                }
-            }
-            Row {
-                OrderInfoTextColumn(
-                    modifier = Modifier.weight(1f),
-                    hint = stringResource(Res.string.msg_order_details_pickup_method),
-                    info = stateSuccess.receiptMethod,
-                )
-                stateSuccess.paymentMethod?.let { paymentMethod ->
-                    OrderInfoTextColumn(
-                        modifier =
-                            Modifier
-                                .padding(start = 16.dp)
-                                .weight(1f),
-                        hint = stringResource(Res.string.msg_order_details_payment_method),
-                        info = paymentMethod,
-                    )
-                }
-            }
             OrderInfoTextColumn(
-                hint = stringResource(Res.string.msg_order_details_address),
-                info = stateSuccess.address,
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_order_details_order_time),
+                info = stateSuccess.dateTime,
             )
-            stateSuccess.comment?.let { comment ->
+            stateSuccess.deferredTime?.let { deferredTime ->
                 OrderInfoTextColumn(
-                    hint = stringResource(Res.string.msg_order_details_comment),
-                    info = comment,
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
+                    hint = deferredTime.hint,
+                    info = deferredTime.value,
                 )
             }
+        }
+        Row {
+            OrderInfoTextColumn(
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_order_details_pickup_method),
+                info = stateSuccess.receiptMethod,
+            )
+            stateSuccess.paymentMethod?.let { paymentMethod ->
+                OrderInfoTextColumn(
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
+                    hint = stringResource(Res.string.msg_order_details_payment_method),
+                    info = paymentMethod,
+                )
+            }
+        }
+        OrderInfoTextColumn(
+            hint = stringResource(Res.string.msg_order_details_address),
+            info = stateSuccess.address,
+        )
+        stateSuccess.comment?.let { comment ->
+            OrderInfoTextColumn(
+                hint = stringResource(Res.string.msg_order_details_comment),
+                info = comment,
+            )
         }
     }
 }
