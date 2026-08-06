@@ -31,5 +31,6 @@ data class OrderListViewState(
         val code: String,
         val deferredTime: String,
         val dateTime: String,
+        val isProblematic: Boolean,
     )
 }

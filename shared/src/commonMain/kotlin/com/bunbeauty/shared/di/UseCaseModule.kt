@@ -4,6 +4,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.Cr
 import com.bunbeauty.domain.feature.clientuser.GetClientUserListUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserSearchUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserStatisticUseCase
+import com.bunbeauty.domain.feature.clientuser.UpdateClientUserProblematicUseCase
 import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.menu.additiongroupformenuproduct.editadditiongroupformenuproduct.SaveEditAdditionGroupWithAdditionsUseCase
 import com.bunbeauty.domain.feature.menu.common.category.CreateCategoryUseCase
@@ -74,6 +75,13 @@ fun useCaseModule() =
 
         factory {
             GetClientUserStatisticUseCase(
+                clientUserRepo = get(),
+                dataStoreRepo = get(),
+            )
+        }
+
+        factory {
+            UpdateClientUserProblematicUseCase(
                 clientUserRepo = get(),
                 dataStoreRepo = get(),
             )

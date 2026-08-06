@@ -341,6 +341,7 @@ private fun OrderListSuccessScreenPreview() {
                                 code = "22",
                                 deferredTime = "",
                                 dateTime = "12/9/2024",
+                                isProblematic = false,
                             ),
                             OrderListViewState.OrderItem(
                                 uuid = "2",
@@ -349,6 +350,7 @@ private fun OrderListSuccessScreenPreview() {
                                 code = "23",
                                 deferredTime = "",
                                 dateTime = "12/9/2024",
+                                isProblematic = true,
                             ),
                         ),
                     connectionError = false,

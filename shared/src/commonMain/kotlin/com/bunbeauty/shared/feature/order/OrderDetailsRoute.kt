@@ -39,6 +39,7 @@ import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.DiscountCard
 import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.StatusNavigationTextCard
+import com.bunbeauty.shared.designsystem.compose.element.card.WarningCard
 import com.bunbeauty.shared.designsystem.compose.element.selectable.SelectableItem
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
@@ -52,8 +53,10 @@ import fooddeliveryadmin.shared.generated.resources.action_order_details_do_not_
 import fooddeliveryadmin.shared.generated.resources.action_order_details_no
 import fooddeliveryadmin.shared.generated.resources.action_order_details_save
 import fooddeliveryadmin.shared.generated.resources.action_order_details_yes
+import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.shared.generated.resources.ic_call
+import fooddeliveryadmin.shared.generated.resources.ic_warning
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_address
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_alert
@@ -64,6 +67,7 @@ import fooddeliveryadmin.shared.generated.resources.msg_order_details_order_cost
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_order_time
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_payment_method
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_pickup_method
+import fooddeliveryadmin.shared.generated.resources.msg_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_saved
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_order_details_alert
@@ -190,6 +194,7 @@ private fun OrderDetailsScreen(
         backActionClick = {
             onAction(OrderDetailsState.Action.OnBackClicked)
         },
+        backgroundColor = AdminTheme.colors.main.surface,
     ) {
         when (state.state) {
             OrderDetailsViewState.State.Loading -> {
@@ -237,6 +242,18 @@ private fun SuccessOrderDetailsScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace),
             ) {
+                if (state.isProblematic) {
+                    item {
+                        WarningCard(
+                            title = stringResource(Res.string.msg_order_details_problematic_client),
+                            icon = Res.drawable.ic_warning,
+                            iconDescription =
+                                stringResource(
+                                    Res.string.description_order_details_problematic_client,
+                                ),
+                        )
+                    }
+                }
                 item {
                     OrderInfoCard(stateSuccess = state)
                 }
@@ -254,9 +271,11 @@ private fun SuccessOrderDetailsScreen(
                     NavigationIconCard(
                         iconId = Res.drawable.ic_call,
                         label = state.phoneNumber,
+                        bordered = true,
                         onClick = {
                             onCallPhone(state.phoneNumber)
                         },
+                        elevated = false,
                     )
                 }
 
@@ -344,64 +363,58 @@ private fun OrderInfoCard(
     modifier: Modifier = Modifier,
     stateSuccess: OrderDetailsViewState.State.Success,
 ) {
-    AdminCard(
-        modifier = modifier,
-        clickable = false,
-        elevated = false,
+    Column(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                OrderInfoTextColumn(
-                    modifier = Modifier.weight(1f),
-                    hint = stringResource(Res.string.msg_order_details_order_time),
-                    info = stateSuccess.dateTime,
-                )
-                stateSuccess.deferredTime?.let { deferredTime ->
-                    OrderInfoTextColumn(
-                        modifier =
-                            Modifier
-                                .padding(start = 16.dp)
-                                .weight(1f),
-                        hint = deferredTime.hint,
-                        info = deferredTime.value,
-                    )
-                }
-            }
-            Row {
-                OrderInfoTextColumn(
-                    modifier = Modifier.weight(1f),
-                    hint = stringResource(Res.string.msg_order_details_pickup_method),
-                    info = stateSuccess.receiptMethod,
-                )
-                stateSuccess.paymentMethod?.let { paymentMethod ->
-                    OrderInfoTextColumn(
-                        modifier =
-                            Modifier
-                                .padding(start = 16.dp)
-                                .weight(1f),
-                        hint = stringResource(Res.string.msg_order_details_payment_method),
-                        info = paymentMethod,
-                    )
-                }
-            }
             OrderInfoTextColumn(
-                hint = stringResource(Res.string.msg_order_details_address),
-                info = stateSuccess.address,
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_order_details_order_time),
+                info = stateSuccess.dateTime,
             )
-            stateSuccess.comment?.let { comment ->
+            stateSuccess.deferredTime?.let { deferredTime ->
                 OrderInfoTextColumn(
-                    hint = stringResource(Res.string.msg_order_details_comment),
-                    info = comment,
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
+                    hint = deferredTime.hint,
+                    info = deferredTime.value,
                 )
             }
+        }
+        Row {
+            OrderInfoTextColumn(
+                modifier = Modifier.weight(1f),
+                hint = stringResource(Res.string.msg_order_details_pickup_method),
+                info = stateSuccess.receiptMethod,
+            )
+            stateSuccess.paymentMethod?.let { paymentMethod ->
+                OrderInfoTextColumn(
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
+                    hint = stringResource(Res.string.msg_order_details_payment_method),
+                    info = paymentMethod,
+                )
+            }
+        }
+        OrderInfoTextColumn(
+            hint = stringResource(Res.string.msg_order_details_address),
+            info = stateSuccess.address,
+        )
+        stateSuccess.comment?.let { comment ->
+            OrderInfoTextColumn(
+                hint = stringResource(Res.string.msg_order_details_comment),
+                info = comment,
+            )
         }
     }
 }
@@ -499,6 +512,7 @@ private fun BottomAmountBar(
                     .padding(top = 8.dp)
                     .bottomBarPadding(),
             textStringId = Res.string.action_order_details_do_not_save,
+            elevated = false,
             onClick = {
                 onAction(OrderDetailsState.Action.OnBackClicked)
             },

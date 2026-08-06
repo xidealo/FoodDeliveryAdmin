@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
+import com.bunbeauty.shared.designsystem.compose.element.card.AdminCardDefaults
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.designsystem.compose.theme.bold
 import com.bunbeauty.shared.feature.orderlist.state.OrderListViewState
@@ -28,6 +29,12 @@ fun OrderItem(
     AdminCard(
         modifier = modifier,
         onClick = onClick,
+        colors =
+            if (orderItem.isProblematic) {
+                AdminCardDefaults.cardVariantColors
+            } else {
+                AdminCardDefaults.cardColors
+            },
     ) {
         Row(
             modifier =
@@ -79,6 +86,7 @@ private fun OrderItemPreview() {
                     code = "Щ-99",
                     deferredTime = "",
                     dateTime = "9 февраля 22:00",
+                    isProblematic = false,
                 ),
             onClick = {},
         )
@@ -98,6 +106,7 @@ private fun OrderItemLageFontPreview() {
                     code = "Щ-99",
                     deferredTime = "Ко времени: 15:00",
                     dateTime = "9 февраля 22:00",
+                    isProblematic = true,
                 ),
             onClick = {},
         )

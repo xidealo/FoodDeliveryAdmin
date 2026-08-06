@@ -9,7 +9,13 @@ interface StatisticUserDetails {
     data class DataState(
         val state: State,
         val statistic: ClientUserStatistic?,
+        val isProblematic: Boolean,
+        val initialIsProblematic: Boolean,
+        val saving: Boolean,
     ) : BaseDataState {
+        val hasChanges: Boolean
+            get() = isProblematic != initialIsProblematic
+
         enum class State {
             LOADING,
             SUCCESS,
@@ -25,9 +31,17 @@ interface StatisticUserDetails {
         data object Retry : Action
 
         data object BackClick : Action
+
+        data class OnProblematicChecked(
+            val isProblematic: Boolean,
+        ) : Action
+
+        data object OnSaveClick : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBack : Event
+
+        data object ShowSavedMessage : Event
     }
 }

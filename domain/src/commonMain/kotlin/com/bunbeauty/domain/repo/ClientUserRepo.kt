@@ -1,5 +1,6 @@
 package com.bunbeauty.domain.repo
 
+import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettings
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettingsList
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserStatistic
 
@@ -21,4 +22,10 @@ interface ClientUserRepo {
         token: String,
         clientUserUuid: String,
     ): ClientUserStatistic
+
+    suspend fun updateClientUserProblematic(
+        token: String,
+        clientUserUuid: String,
+        isProblematic: Boolean,
+    ): ClientUserSettings
 }

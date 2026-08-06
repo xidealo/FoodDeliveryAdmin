@@ -17,6 +17,7 @@ import com.bunbeauty.shared.designsystem.compose.theme.Colors.Grey2
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.Grey3
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.LightGreen
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.LightRed
+import com.bunbeauty.shared.designsystem.compose.theme.Colors.PaleOrange
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.Purple
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.Red
 import com.bunbeauty.shared.designsystem.compose.theme.Colors.SurfaceVariant
@@ -42,7 +43,7 @@ val LightAdminColors =
                 onSurfaceVariant = Grey2,
                 onError = White,
                 stroke = Cream,
-                strokeVariant = Blue1,
+                strokeVariant = PaleOrange,
             ),
         order =
             OrderColors(

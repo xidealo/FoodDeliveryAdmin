@@ -5,4 +5,5 @@ data class ClientUserSettings(
     val phoneNumber: String,
     val email: String?,
     val isActive: Boolean,
+    val isProblematic: Boolean = false,
 )

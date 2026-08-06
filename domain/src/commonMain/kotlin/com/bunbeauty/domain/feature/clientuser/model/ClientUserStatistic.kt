@@ -8,4 +8,5 @@ data class ClientUserStatistic(
     val pickupOrderCount: Int,
     val orderCount: Int,
     val averageCheck: Double,
+    val isProblematic: Boolean,
 )
