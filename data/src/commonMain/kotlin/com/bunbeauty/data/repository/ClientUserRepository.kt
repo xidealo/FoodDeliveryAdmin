@@ -3,6 +3,8 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.clientuser.ClientUserSettingsMapper
 import com.bunbeauty.data.mapper.clientuser.ClientUserStatisticMapper
+import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
+import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettings
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettingsList
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserStatistic
 import com.bunbeauty.domain.repo.ClientUserRepo
@@ -82,6 +84,31 @@ class ClientUserRepository(
 
             is ApiResult.Error -> {
                 throw Exception("client user statistic load error")
+            }
+        }
+
+    override suspend fun updateClientUserProblematic(
+        token: String,
+        clientUserUuid: String,
+        isProblematic: Boolean,
+    ): ClientUserSettings =
+        when (
+            val result =
+                foodDeliveryApi.patchClientUserProblematic(
+                    token = token,
+                    clientUserUuid = clientUserUuid,
+                    patch =
+                        PatchClientUserProblematicServer(
+                            isProblematic = isProblematic,
+                        ),
+                )
+        ) {
+            is ApiResult.Success -> {
+                clientUserSettingsMapper.map(result.data)
+            }
+
+            is ApiResult.Error -> {
+                throw Exception("client user update error")
             }
         }
 }

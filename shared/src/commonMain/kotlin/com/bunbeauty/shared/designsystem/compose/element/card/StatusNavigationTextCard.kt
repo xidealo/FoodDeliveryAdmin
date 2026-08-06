@@ -37,11 +37,14 @@ fun StatusNavigationTextCard(
     label: String?,
     clickable: Boolean = true,
     onClick: () -> Unit,
+    elevated: Boolean = false,
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
         clickable = clickable,
+        border = AdminCardDefaults.cardBorder,
+        elevated = elevated,
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
             Spacer(

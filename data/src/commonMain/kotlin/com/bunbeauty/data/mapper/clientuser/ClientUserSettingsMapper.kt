@@ -10,5 +10,6 @@ class ClientUserSettingsMapper {
             phoneNumber = clientUserSettingsServer.phoneNumber,
             email = clientUserSettingsServer.email,
             isActive = clientUserSettingsServer.isActive,
+            isProblematic = clientUserSettingsServer.isProblematic,
         )
 }

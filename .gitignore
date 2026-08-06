@@ -67,3 +67,19 @@ lint/tmp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# CocoaPods / iOS
+Pods/
+**/xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+.swiftpm/
+.env

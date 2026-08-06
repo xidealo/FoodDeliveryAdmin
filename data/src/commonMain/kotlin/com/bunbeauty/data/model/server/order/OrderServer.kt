@@ -9,4 +9,5 @@ class OrderServer(
     val time: Long,
     val timeZone: String,
     val deferredTime: Long?,
+    val isProblematic: Boolean = false,
 )

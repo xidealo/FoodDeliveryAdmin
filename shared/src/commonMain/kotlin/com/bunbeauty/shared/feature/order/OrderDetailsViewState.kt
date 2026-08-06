@@ -60,6 +60,7 @@ data class OrderDetailsViewState(
             val finalCost: String,
             val saving: Boolean,
             val statusListUI: StatusListUI,
+            val isProblematic: Boolean,
         ) : State {
             @Immutable
             data class StatusListUI(
@@ -139,6 +140,7 @@ internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState =
                                 getOrderColor(
                                     orderStatus = orderDetails.status,
                                 ),
+                            isProblematic = details.isProblematic,
                         )
                     } ?: OrderDetailsViewState.State.Error
                 }
