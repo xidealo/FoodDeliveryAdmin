@@ -21,6 +21,7 @@ import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
+import com.bunbeauty.data.model.server.clientuser.PatchClientUserDiscountServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
@@ -131,6 +132,18 @@ class FoodDeliveryApiImpl(
         patch(
             path = "client/problematic",
             parameters = listOf("uuid" to clientUserUuid),
+            body = patch,
+            token = token,
+        )
+
+    override suspend fun patchClientUserDiscount(
+        token: String,
+        phoneNumber: String,
+        patch: PatchClientUserDiscountServer,
+    ): ApiResult<ClientUserSettingsServer> =
+        patch(
+            path = "client/discount",
+            parameters = listOf("phoneNumber" to phoneNumber),
             body = patch,
             token = token,
         )

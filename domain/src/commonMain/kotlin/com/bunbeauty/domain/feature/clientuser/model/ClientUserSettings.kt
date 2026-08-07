@@ -6,4 +6,5 @@ data class ClientUserSettings(
     val email: String?,
     val isActive: Boolean,
     val isProblematic: Boolean = false,
+    val personalDiscountPercent: Int? = null,
 )

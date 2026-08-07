@@ -28,4 +28,10 @@ interface ClientUserRepo {
         clientUserUuid: String,
         isProblematic: Boolean,
     ): ClientUserSettings
+
+    suspend fun updateClientUserDiscount(
+        token: String,
+        phoneNumber: String,
+        percentDiscount: Int,
+    ): ClientUserSettings
 }

@@ -19,6 +19,7 @@ import com.bunbeauty.data.model.server.category.PatchCategoryList
 import com.bunbeauty.data.model.server.city.CityServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
+import com.bunbeauty.data.model.server.clientuser.PatchClientUserDiscountServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
@@ -86,6 +87,12 @@ interface FoodDeliveryApi {
         token: String,
         clientUserUuid: String,
         patch: PatchClientUserProblematicServer,
+    ): ApiResult<ClientUserSettingsServer>
+
+    suspend fun patchClientUserDiscount(
+        token: String,
+        phoneNumber: String,
+        patch: PatchClientUserDiscountServer,
     ): ApiResult<ClientUserSettingsServer>
 
     // CAFE
