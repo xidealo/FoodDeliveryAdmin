@@ -11,5 +11,6 @@ class ClientUserSettingsMapper {
             email = clientUserSettingsServer.email,
             isActive = clientUserSettingsServer.isActive,
             isProblematic = clientUserSettingsServer.isProblematic,
+            personalDiscountPercent = clientUserSettingsServer.personalDiscountPercent,
         )
 }
