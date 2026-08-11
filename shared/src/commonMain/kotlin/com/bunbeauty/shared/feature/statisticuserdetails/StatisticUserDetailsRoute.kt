@@ -63,7 +63,7 @@ fun StatisticUserDetailsRouteScreen(
     backStackEntry: NavBackStackEntry,
     viewModel: StatisticUserDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
-    goToDiscount: (String) -> Unit,
+    goToDiscount: (String, Int?) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
     val route = backStackEntry.toRoute<StatisticUserDetailsScreenDestination>()
@@ -125,7 +125,7 @@ private const val INITIAL_PERSONAL_DISCOUNT_PERCENT = -1
 private fun StatisticUserDetailsEffect(
     effects: List<StatisticUserDetails.Event>,
     goBack: () -> Unit,
-    goToDiscount: (String) -> Unit,
+    goToDiscount: (String, Int?) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -140,7 +140,11 @@ private fun StatisticUserDetailsEffect(
                     )
                     goBack()
                 }
-                is StatisticUserDetails.Event.OpenDiscount -> goToDiscount(effect.phoneNumber)
+                is StatisticUserDetails.Event.OpenDiscount ->
+                    goToDiscount(
+                        effect.phoneNumber,
+                        effect.personalDiscountPercent,
+                    )
             }
         }
         consumeEffects()

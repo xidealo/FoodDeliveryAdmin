@@ -421,9 +421,10 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
 
     statisticUserDetailsScreenRoute(
         goBack = navController::navigateUp,
-        goToDiscount = { phoneNumber ->
+        goToDiscount = { phoneNumber, personalDiscountPercent ->
             navController.navigateToStatisticUserDiscountScreen(
                 phoneNumber = phoneNumber,
+                personalDiscountPercent = personalDiscountPercent,
                 navOptions = emptyNavOptions,
             )
         },

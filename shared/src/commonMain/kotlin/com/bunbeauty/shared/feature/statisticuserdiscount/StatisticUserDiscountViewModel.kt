@@ -24,7 +24,11 @@ class StatisticUserDiscountViewModel(
         dataState: StatisticUserDiscount.DataState,
     ) {
         when (action) {
-            is StatisticUserDiscount.Action.Init -> handleInit(action.phoneNumber)
+            is StatisticUserDiscount.Action.Init ->
+                handleInit(
+                    phoneNumber = action.phoneNumber,
+                    personalDiscountPercent = action.personalDiscountPercent,
+                )
 
             is StatisticUserDiscount.Action.PercentChanged -> handlePercentChanged(action.percent)
 
@@ -37,12 +41,24 @@ class StatisticUserDiscountViewModel(
         }
     }
 
-    private fun handleInit(phoneNumber: String) {
+    private fun handleInit(
+        phoneNumber: String,
+        personalDiscountPercent: Int?,
+    ) {
         if (state.value.phoneNumber == phoneNumber) {
             return
         }
+        val initialPercentValue = personalDiscountPercent?.toString().orEmpty()
         setState {
-            copy(phoneNumber = phoneNumber)
+            copy(
+                phoneNumber = phoneNumber,
+                percentField =
+                    percentField.copy(
+                        value = initialPercentValue,
+                        isError = false,
+                    ),
+                percentError = StatisticUserDiscount.DataState.PercentError.NO_ERROR,
+            )
         }
     }
 

@@ -27,7 +27,7 @@ fun NavController.navigateToStatisticUserDetailsScreen(
 
 fun NavGraphBuilder.statisticUserDetailsScreenRoute(
     goBack: () -> Unit,
-    goToDiscount: (String) -> Unit,
+    goToDiscount: (String, Int?) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
     composable<StatisticUserDetailsScreenDestination>(

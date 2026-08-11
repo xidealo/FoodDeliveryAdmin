@@ -52,6 +52,7 @@ interface StatisticUserDetails {
 
         data class OpenDiscount(
             val phoneNumber: String,
+            val personalDiscountPercent: Int?,
         ) : Event
     }
 }

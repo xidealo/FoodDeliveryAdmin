@@ -23,6 +23,7 @@ interface StatisticUserDiscount {
     sealed interface Action : BaseAction {
         data class Init(
             val phoneNumber: String,
+            val personalDiscountPercent: Int?,
         ) : Action
 
         data class PercentChanged(

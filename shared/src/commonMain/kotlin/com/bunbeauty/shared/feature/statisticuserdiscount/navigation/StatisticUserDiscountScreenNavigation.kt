@@ -15,13 +15,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StatisticUserDiscountScreenDestination(
     val phoneNumber: String,
+    val personalDiscountPercent: Int?,
 )
 
 fun NavController.navigateToStatisticUserDiscountScreen(
     phoneNumber: String,
+    personalDiscountPercent: Int?,
     navOptions: NavOptions,
 ) = navigate(
-    route = StatisticUserDiscountScreenDestination(phoneNumber = phoneNumber),
+    route =
+        StatisticUserDiscountScreenDestination(
+            phoneNumber = phoneNumber,
+            personalDiscountPercent = personalDiscountPercent,
+        ),
     navOptions = navOptions,
 )
 

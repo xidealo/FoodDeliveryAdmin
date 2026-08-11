@@ -54,9 +54,12 @@ class StatisticUserDetailsViewModel(
     }
 
     private fun handleDiscountClick(dataState: StatisticUserDetails.DataState) {
-        val phoneNumber = dataState.statistic?.phoneNumber ?: return
+        val statistic = dataState.statistic ?: return
         sendEvent {
-            StatisticUserDetails.Event.OpenDiscount(phoneNumber = phoneNumber)
+            StatisticUserDetails.Event.OpenDiscount(
+                phoneNumber = statistic.phoneNumber,
+                personalDiscountPercent = statistic.personalDiscountPercent,
+            )
         }
     }
 

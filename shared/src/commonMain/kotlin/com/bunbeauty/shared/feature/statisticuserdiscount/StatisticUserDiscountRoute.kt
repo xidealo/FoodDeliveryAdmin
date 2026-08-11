@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,8 +69,13 @@ fun StatisticUserDiscountRouteScreen(
             }
         }
 
-    LaunchedEffect(route.phoneNumber) {
-        onAction(StatisticUserDiscount.Action.Init(phoneNumber = route.phoneNumber))
+    LaunchedEffect(route.phoneNumber, route.personalDiscountPercent) {
+        onAction(
+            StatisticUserDiscount.Action.Init(
+                phoneNumber = route.phoneNumber,
+                personalDiscountPercent = route.personalDiscountPercent,
+            ),
+        )
     }
 
     StatisticUserDiscountEffect(
@@ -102,7 +108,7 @@ private fun StatisticUserDiscountEffect(
                     onDiscountSaved(effect.personalDiscountPercent ?: RESET_PERSONAL_DISCOUNT_PERCENT)
                     showInfoMessage(
                         getString(Res.string.msg_statistic_user_discount_saved),
-                        0.dp,
+                        ButtonDefaults.MinHeight + 12.dp,
                     )
                     goBack()
                 }
