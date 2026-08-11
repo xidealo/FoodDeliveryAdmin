@@ -64,7 +64,10 @@ class StatisticUserDiscountViewModel(
             return
         }
 
-        val percentDiscount = dataState.percentField.value.trim().toIntOrNull()
+        val percentDiscount =
+            dataState.percentField.value
+                .trim()
+                .toIntOrNull()
         if (percentDiscount == null) {
             setPercentError(StatisticUserDiscount.DataState.PercentError.INVALID_PERCENT)
             return
@@ -81,8 +84,8 @@ class StatisticUserDiscountViewModel(
                 }
                 val updatedClientUserSettings =
                     updateClientUserDiscountUseCase(
-                    phoneNumber = dataState.phoneNumber,
-                    percentDiscount = percentDiscount,
+                        phoneNumber = dataState.phoneNumber,
+                        percentDiscount = percentDiscount,
                     )
                 setState {
                     copy(isLoading = false)
