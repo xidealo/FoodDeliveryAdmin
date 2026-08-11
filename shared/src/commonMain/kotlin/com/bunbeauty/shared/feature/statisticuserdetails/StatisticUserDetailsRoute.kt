@@ -46,7 +46,7 @@ import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_order_co
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_phone_number
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_pickup_order_count
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_problematic
-import fooddeliveryadmin.shared.generated.resources.ic_menu
+import fooddeliveryadmin.shared.generated.resources.ic_discount
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_discount_installed
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_saved
@@ -322,7 +322,7 @@ private fun StatisticUserDetailsSuccessContent(
             modifier =
                 Modifier
                     .fillMaxWidth(),
-            iconId = Res.drawable.ic_menu,
+            iconId = Res.drawable.ic_discount,
             label = discountLabel,
             elevated = false,
             onClick = {
