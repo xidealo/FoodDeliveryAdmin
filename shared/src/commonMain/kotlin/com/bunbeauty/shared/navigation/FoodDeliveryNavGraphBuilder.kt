@@ -444,6 +444,12 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
+        goToClientUserDetails = { userUuid ->
+            navController.navigateToStatisticUserDetailsScreen(
+                userUuid = userUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
     )
 
     editAdditionScreenRoute(

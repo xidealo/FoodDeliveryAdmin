@@ -40,6 +40,7 @@ import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.StatusNavigationTextCard
 import com.bunbeauty.shared.designsystem.compose.element.card.WarningCard
 import com.bunbeauty.shared.designsystem.compose.element.selectable.SelectableItem
+import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
@@ -55,6 +56,7 @@ import fooddeliveryadmin.shared.generated.resources.action_order_details_yes
 import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.shared.generated.resources.ic_call
+import fooddeliveryadmin.shared.generated.resources.ic_statistic
 import fooddeliveryadmin.shared.generated.resources.ic_warning
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_address
@@ -81,6 +83,7 @@ fun OrderDetailsRouteScreen(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
+    goToClientUserDetails: (String) -> Unit,
     backStackEntry: NavBackStackEntry,
 ) {
     val route = backStackEntry.toRoute<OrderDetailsScreenDestination>()
@@ -119,6 +122,7 @@ fun OrderDetailsRouteScreen(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
         goBack = goBack,
+        goToClientUserDetails = goToClientUserDetails,
         onShowCancellationWarning = {
             isCancellationWarningShown = true
         },
@@ -148,6 +152,7 @@ private fun OrderDetailsEffect(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
+    goToClientUserDetails: (String) -> Unit,
     onShowCancellationWarning: () -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -164,6 +169,10 @@ private fun OrderDetailsEffect(
 
                 OrderDetailsState.Event.GoBackEvent -> {
                     goBack()
+                }
+
+                is OrderDetailsState.Event.OpenClientProfileEvent -> {
+                    goToClientUserDetails(effect.clientUserUuid)
                 }
 
                 is OrderDetailsState.Event.SavedEvent -> {
@@ -188,11 +197,24 @@ private fun OrderDetailsScreen(
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
 ) {
+    val successState = state.state as? OrderDetailsViewState.State.Success
     AdminScaffold(
         title = state.title,
         backActionClick = {
             onAction(OrderDetailsState.Action.OnBackClicked)
         },
+        topActions =
+            successState?.let {
+                listOf(
+                    AdminTopBarAction(
+                        iconId = Res.drawable.ic_statistic,
+                        onClick = {
+                            onAction(OrderDetailsState.Action.OnClientProfileClicked)
+                        },
+                        color = AdminTheme.colors.main.primary,
+                    ),
+                )
+            } ?: emptyList(),
         backgroundColor = AdminTheme.colors.main.surface,
     ) {
         when (state.state) {

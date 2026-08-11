@@ -45,6 +45,7 @@ data class OrderDetailsViewState(
         data object Error : State
 
         data class Success(
+            val clientUserUuid: String,
             val dateTime: String,
             val deferredTime: HintWithValue?,
             val paymentMethod: String?,
@@ -103,6 +104,7 @@ internal fun OrderDetailsState.DataState.toViewState(): OrderDetailsViewState =
                 OrderDetailsState.DataState.State.SUCCESS -> {
                     orderDetails?.let { details ->
                         OrderDetailsViewState.State.Success(
+                            clientUserUuid = details.clientUser.uuid,
                             dateTime =
                                 DateTimeUtil.formatDateTime(
                                     orderDetails.time,
