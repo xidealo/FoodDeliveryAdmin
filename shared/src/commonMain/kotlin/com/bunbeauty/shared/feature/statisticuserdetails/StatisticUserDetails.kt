@@ -37,11 +37,21 @@ interface StatisticUserDetails {
         ) : Action
 
         data object OnSaveClick : Action
+
+        data object OnDiscountClick : Action
+
+        data class OnPersonalDiscountUpdated(
+            val personalDiscountPercent: Int?,
+        ) : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBack : Event
 
         data object ShowSavedMessage : Event
+
+        data class OpenDiscount(
+            val phoneNumber: String,
+        ) : Event
     }
 }

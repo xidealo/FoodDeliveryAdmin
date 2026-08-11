@@ -14,5 +14,6 @@ class ClientUserStatisticMapper {
             orderCount = clientUserStatisticServer.orderCount,
             averageCheck = clientUserStatisticServer.averageCheck,
             isProblematic = clientUserStatisticServer.isProblematic,
+            personalDiscountPercent = clientUserStatisticServer.personalDiscountPercent,
         )
 }

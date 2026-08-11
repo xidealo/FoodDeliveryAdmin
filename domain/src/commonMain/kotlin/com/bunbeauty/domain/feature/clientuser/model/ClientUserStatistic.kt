@@ -9,4 +9,5 @@ data class ClientUserStatistic(
     val orderCount: Int,
     val averageCheck: Double,
     val isProblematic: Boolean,
+    val personalDiscountPercent: Int?,
 )

@@ -12,4 +12,5 @@ data class ClientUserStatisticServer(
     val orderCount: Int,
     val averageCheck: Double,
     val isProblematic: Boolean,
+    val personalDiscountPercent: Int? = null,
 )

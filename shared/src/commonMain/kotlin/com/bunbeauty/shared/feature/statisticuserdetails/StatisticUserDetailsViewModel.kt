@@ -35,6 +35,28 @@ class StatisticUserDetailsViewModel(
                 }
             }
             StatisticUserDetails.Action.OnSaveClick -> handleSave()
+            StatisticUserDetails.Action.OnDiscountClick -> handleDiscountClick(dataState)
+            is StatisticUserDetails.Action.OnPersonalDiscountUpdated ->
+                handlePersonalDiscountUpdated(action.personalDiscountPercent)
+        }
+    }
+
+    private fun handlePersonalDiscountUpdated(personalDiscountPercent: Int?) {
+        val normalizedPersonalDiscountPercent = personalDiscountPercent?.takeIf { it > 0 }
+        setState {
+            copy(
+                statistic =
+                    statistic?.copy(
+                        personalDiscountPercent = normalizedPersonalDiscountPercent,
+                    ),
+            )
+        }
+    }
+
+    private fun handleDiscountClick(dataState: StatisticUserDetails.DataState) {
+        val phoneNumber = dataState.statistic?.phoneNumber ?: return
+        sendEvent {
+            StatisticUserDetails.Event.OpenDiscount(phoneNumber = phoneNumber)
         }
     }
 

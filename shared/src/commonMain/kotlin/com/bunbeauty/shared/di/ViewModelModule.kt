@@ -33,6 +33,7 @@ import com.bunbeauty.shared.feature.statistic.StatisticViewModel
 import com.bunbeauty.shared.feature.statisticdetails.StatisticDetailsViewModel
 import com.bunbeauty.shared.feature.statisticuser.StatisticUserViewModel
 import com.bunbeauty.shared.feature.statisticuserdetails.StatisticUserDetailsViewModel
+import com.bunbeauty.shared.feature.statisticuserdiscount.StatisticUserDiscountViewModel
 import com.bunbeauty.shared.viewmodel.main.MainViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -242,6 +243,12 @@ fun viewModelModule() =
             StatisticUserDetailsViewModel(
                 getClientUserStatisticUseCase = get(),
                 updateClientUserProblematicUseCase = get(),
+            )
+        }
+
+        viewModel {
+            StatisticUserDiscountViewModel(
+                updateClientUserDiscountUseCase = get(),
             )
         }
 
