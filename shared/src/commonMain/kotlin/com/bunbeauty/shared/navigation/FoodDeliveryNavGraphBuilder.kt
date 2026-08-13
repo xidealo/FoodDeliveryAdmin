@@ -69,12 +69,15 @@ import com.bunbeauty.shared.feature.statisticuser.navigation.navigateToStatistic
 import com.bunbeauty.shared.feature.statisticuser.navigation.statisticUserScreenRoute
 import com.bunbeauty.shared.feature.statisticuserdetails.navigation.navigateToStatisticUserDetailsScreen
 import com.bunbeauty.shared.feature.statisticuserdetails.navigation.statisticUserDetailsScreenRoute
+import com.bunbeauty.shared.feature.statisticuserdiscount.navigation.navigateToStatisticUserDiscountScreen
+import com.bunbeauty.shared.feature.statisticuserdiscount.navigation.statisticUserDiscountScreenRoute
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_UUID_LIST
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_CATEGORY_UUID_LIST
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.UPDATED_DELIVERY_ZONE_UUID
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.UPDATED_PERSONAL_DISCOUNT_PERCENT
 
 internal val emptyNavOptions = navOptions { }
 
@@ -418,6 +421,23 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
 
     statisticUserDetailsScreenRoute(
         goBack = navController::navigateUp,
+        goToDiscount = { phoneNumber, personalDiscountPercent ->
+            navController.navigateToStatisticUserDiscountScreen(
+                phoneNumber = phoneNumber,
+                personalDiscountPercent = personalDiscountPercent,
+                navOptions = emptyNavOptions,
+            )
+        },
+        showInfoMessage = showInfoMessage,
+    )
+
+    statisticUserDiscountScreenRoute(
+        goBack = navController::navigateUp,
+        onDiscountSaved = { personalDiscountPercent ->
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(UPDATED_PERSONAL_DISCOUNT_PERCENT, personalDiscountPercent)
+        },
         showInfoMessage = showInfoMessage,
     )
 
@@ -425,6 +445,12 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         showInfoMessage = showInfoMessage,
         showErrorMessage = showErrorMessage,
         goBack = navController::navigateUp,
+        goToClientUserDetails = { userUuid ->
+            navController.navigateToStatisticUserDetailsScreen(
+                userUuid = userUuid,
+                navOptions = emptyNavOptions,
+            )
+        },
     )
 
     editAdditionScreenRoute(

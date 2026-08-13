@@ -42,6 +42,8 @@ class OrderDetailsViewModel(
 
             OrderDetailsState.Action.OnStatusClicked -> onStatusClicked()
 
+            OrderDetailsState.Action.OnClientProfileClicked -> onClientProfileClicked(dataState)
+
             is OrderDetailsState.Action.OnSelectStatusClicked -> {
                 onStatusSelected(orderStatus = action.status)
             }
@@ -117,6 +119,15 @@ class OrderDetailsViewModel(
     private fun onBackClicked() {
         sendEvent {
             OrderDetailsState.Event.GoBackEvent
+        }
+    }
+
+    private fun onClientProfileClicked(dataState: OrderDetailsState.DataState) {
+        val clientUserUuid = dataState.orderDetails?.clientUser?.uuid ?: return
+        sendEvent {
+            OrderDetailsState.Event.OpenClientProfileEvent(
+                clientUserUuid = clientUserUuid,
+            )
         }
     }
 

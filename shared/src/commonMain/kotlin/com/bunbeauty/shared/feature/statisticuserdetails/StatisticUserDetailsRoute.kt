@@ -26,13 +26,17 @@ import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
 import com.bunbeauty.shared.designsystem.compose.element.button.MainButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
+import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.SwitcherCard
+import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
 import com.bunbeauty.shared.designsystem.compose.theme.medium
 import com.bunbeauty.shared.feature.statisticuserdetails.navigation.StatisticUserDetailsScreenDestination
+import com.bunbeauty.shared.navigation.NavStateHandleParameters.UPDATED_PERSONAL_DISCOUNT_PERCENT
 import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.action_statistic_user_discount
 import fooddeliveryadmin.shared.generated.resources.action_statistic_user_save
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_average_check
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_delivery_order_count
@@ -42,7 +46,9 @@ import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_order_co
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_phone_number
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_pickup_order_count
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_problematic
+import fooddeliveryadmin.shared.generated.resources.ic_discount
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_discount_installed
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_saved
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_statistic_user_details
@@ -57,9 +63,11 @@ fun StatisticUserDetailsRouteScreen(
     backStackEntry: NavBackStackEntry,
     viewModel: StatisticUserDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
+    goToDiscount: (String, Int?) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
     val route = backStackEntry.toRoute<StatisticUserDetailsScreenDestination>()
+    val savedStateHandle = backStackEntry.savedStateHandle
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
@@ -80,9 +88,27 @@ fun StatisticUserDetailsRouteScreen(
         onAction(StatisticUserDetails.Action.Init(userUuid = route.userUuid))
     }
 
+    LaunchedEffect(Unit) {
+        savedStateHandle
+            .getStateFlow(
+                key = UPDATED_PERSONAL_DISCOUNT_PERCENT,
+                initialValue = INITIAL_PERSONAL_DISCOUNT_PERCENT,
+            ).collect { personalDiscountPercent ->
+                if (personalDiscountPercent != INITIAL_PERSONAL_DISCOUNT_PERCENT) {
+                    onAction(
+                        StatisticUserDetails.Action.OnPersonalDiscountUpdated(
+                            personalDiscountPercent = personalDiscountPercent,
+                        ),
+                    )
+                    savedStateHandle.remove<Int>(UPDATED_PERSONAL_DISCOUNT_PERCENT)
+                }
+            }
+    }
+
     StatisticUserDetailsEffect(
         effects = effects,
         goBack = goBack,
+        goToDiscount = goToDiscount,
         showInfoMessage = showInfoMessage,
         consumeEffects = consumeEffects,
     )
@@ -93,10 +119,13 @@ fun StatisticUserDetailsRouteScreen(
     )
 }
 
+private const val INITIAL_PERSONAL_DISCOUNT_PERCENT = -1
+
 @Composable
 private fun StatisticUserDetailsEffect(
     effects: List<StatisticUserDetails.Event>,
     goBack: () -> Unit,
+    goToDiscount: (String, Int?) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -111,6 +140,11 @@ private fun StatisticUserDetailsEffect(
                     )
                     goBack()
                 }
+                is StatisticUserDetails.Event.OpenDiscount ->
+                    goToDiscount(
+                        effect.phoneNumber,
+                        effect.personalDiscountPercent,
+                    )
             }
         }
         consumeEffects()
@@ -185,6 +219,11 @@ private fun StatisticUserDetailsSuccessContent(
     state: StatisticUserDetailsViewState.State.Success,
     onAction: (StatisticUserDetails.Action) -> Unit,
 ) {
+    val discountLabel =
+        state.personalDiscountPercent?.let { percent ->
+            stringResource(Res.string.msg_statistic_user_discount_installed, percent)
+        } ?: stringResource(Res.string.action_statistic_user_discount)
+
     Column(
         modifier =
             Modifier
@@ -276,6 +315,32 @@ private fun StatisticUserDetailsSuccessContent(
             },
         )
 
+        AdminHorizontalDivider(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
+        NavigationIconCard(
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            iconId = Res.drawable.ic_discount,
+            label = discountLabel,
+            elevated = false,
+            onClick = {
+                onAction(StatisticUserDetails.Action.OnDiscountClick)
+            },
+        )
+
+        AdminHorizontalDivider(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
         Spacer(modifier = Modifier.height(AdminTheme.dimensions.scrollScreenBottomSpace()))
     }
 }
@@ -318,6 +383,7 @@ private fun StatisticUserDetailsScreenPreview() {
                             pickupOrderCount = "75",
                             averageCheck = "500 ₽",
                             orderCount = "25",
+                            personalDiscountPercent = null,
                             isProblematic = true,
                             hasChanges = true,
                             saving = false,

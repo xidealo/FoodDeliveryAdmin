@@ -41,6 +41,8 @@ interface OrderDetailsState {
 
         data object OnBackClicked : Action
 
+        data object OnClientProfileClicked : Action
+
         data object Retry : Action
     }
 
@@ -55,6 +57,10 @@ interface OrderDetailsState {
 
         data class SavedEvent(
             val orderCode: String,
+        ) : Event
+
+        data class OpenClientProfileEvent(
+            val clientUserUuid: String,
         ) : Event
     }
 }
