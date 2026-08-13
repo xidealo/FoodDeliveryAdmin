@@ -1,7 +1,7 @@
 object Application {
     const val versionMajor = 2
     const val versionMinor = 3
-    const val versionPatch = 0
+    const val versionPatch = 1
 
     const val versionName = "${versionMajor}.${versionMinor}.$versionPatch"
     const val applicationId = "com.bunbeauty.fooddeliveryadmin"
