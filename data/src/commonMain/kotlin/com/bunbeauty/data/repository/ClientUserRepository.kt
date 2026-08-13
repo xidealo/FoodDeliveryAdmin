@@ -3,6 +3,7 @@ package com.bunbeauty.data.repository
 import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.mapper.clientuser.ClientUserSettingsMapper
 import com.bunbeauty.data.mapper.clientuser.ClientUserStatisticMapper
+import com.bunbeauty.data.model.server.clientuser.PatchClientUserDiscountServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettings
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettingsList
@@ -109,6 +110,31 @@ class ClientUserRepository(
 
             is ApiResult.Error -> {
                 throw Exception("client user update error")
+            }
+        }
+
+    override suspend fun updateClientUserDiscount(
+        token: String,
+        phoneNumber: String,
+        percentDiscount: Int,
+    ): ClientUserSettings =
+        when (
+            val result =
+                foodDeliveryApi.patchClientUserDiscount(
+                    token = token,
+                    phoneNumber = phoneNumber,
+                    patch =
+                        PatchClientUserDiscountServer(
+                            percentDiscount = percentDiscount,
+                        ),
+                )
+        ) {
+            is ApiResult.Success -> {
+                clientUserSettingsMapper.map(result.data)
+            }
+
+            is ApiResult.Error -> {
+                throw Exception("client user discount update error")
             }
         }
 }

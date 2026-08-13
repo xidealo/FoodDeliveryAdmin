@@ -35,6 +35,7 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
     showInfoMessage: (String, Dp) -> Unit,
     showErrorMessage: (String) -> Unit,
     goBack: () -> Unit,
+    goToClientUserDetails: (String) -> Unit,
 ) {
     composable<OrderDetailsScreenDestination>(
         enterTransition = {
@@ -65,6 +66,7 @@ fun NavGraphBuilder.orderDetailsScreenRoute(
             showInfoMessage = showInfoMessage,
             showErrorMessage = showErrorMessage,
             goBack = goBack,
+            goToClientUserDetails = goToClientUserDetails,
             backStackEntry = it,
         )
     }
