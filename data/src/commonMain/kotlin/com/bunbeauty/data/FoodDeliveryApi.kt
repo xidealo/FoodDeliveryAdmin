@@ -21,6 +21,7 @@ import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserDiscountServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
+import com.bunbeauty.data.model.server.clientuser.PostClientPushServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
@@ -94,6 +95,12 @@ interface FoodDeliveryApi {
         phoneNumber: String,
         patch: PatchClientUserDiscountServer,
     ): ApiResult<ClientUserSettingsServer>
+
+    suspend fun postClientPush(
+        token: String,
+        phoneNumber: String,
+        body: PostClientPushServer,
+    ): ApiResult<Unit>
 
     // CAFE
     suspend fun getCafeList(cityUuid: String): ApiResult<ServerList<CafeServer>>
