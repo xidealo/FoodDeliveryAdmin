@@ -4,7 +4,7 @@ import android.util.Log
 import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.smithy.kotlin.runtime.net.url.Url
-import com.bunbeauty.data.BuildConfig
+import com.bunbeauty.data.YandexStorageBuildConfig
 import com.bunbeauty.data.logger.AndroidNetworkErrorLogger
 import com.bunbeauty.data.logger.NetworkErrorLogger
 import com.bunbeauty.data.repository.DataStoreRepository
@@ -54,7 +54,7 @@ actual fun platformDataModule() =
             PhotoRepository(
                 context = get(),
                 s3Client = get(),
-                bucket = BuildConfig.YC_BUCKET,
+                bucket = YandexStorageBuildConfig.YC_BUCKET,
             )
         }
         single<NetworkErrorLogger> { AndroidNetworkErrorLogger() }
@@ -66,8 +66,8 @@ actual fun platformDataModule() =
                 forcePathStyle = false
                 credentialsProvider =
                     StaticCredentialsProvider {
-                        accessKeyId = BuildConfig.YC_ACCESS_KEY
-                        secretAccessKey = BuildConfig.YC_SECRET_KEY
+                        accessKeyId = YandexStorageBuildConfig.YC_ACCESS_KEY
+                        secretAccessKey = YandexStorageBuildConfig.YC_SECRET_KEY
                     }
             }
         }

@@ -4,6 +4,10 @@ plugins {
 }
 
 kotlin {
+    android {
+        namespace = Namespace.domain
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -19,7 +23,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
             }
         }
-        val androidUnitTest by getting {
+        val androidHostTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 // Mocks for testing
@@ -28,11 +32,5 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.test)
             }
         }
-    }
-}
-android {
-    namespace = Namespace.domain
-    testOptions {
-        unitTests.isReturnDefaultValues = true
     }
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-}
-android {
-    namespace = Namespace.core
+    android {
+        namespace = Namespace.core
+    }
 }
