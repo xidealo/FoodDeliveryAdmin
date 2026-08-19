@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.crashlytics.firebase) apply false
     alias(libs.plugins.ktLint) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.kotlin.multiplatform.library) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.triplet.play) apply false
 

@@ -23,9 +23,9 @@ fun localProperty(key: String): String =
         .replace("\"", "\\\"")
 
 val generatedYandexStorageConfigDir =
-    layout.buildDirectory.dir("generated/yandexStorage/iosMain/kotlin")
+    layout.buildDirectory.dir("generated/yandexStorage/kotlin")
 
-val generateIosYandexStorageConfig by tasks.registering {
+val generateYandexStorageConfig by tasks.registering {
     val outputDir = generatedYandexStorageConfigDir
     outputs.dir(outputDir)
 
@@ -51,21 +51,10 @@ val generateIosYandexStorageConfig by tasks.registering {
     }
 }
 
-android {
-    namespace = Namespace.data
-
-    buildFeatures {
-        buildConfig = true
-    }
-
-    defaultConfig {
-        buildConfigField("String", "YC_ACCESS_KEY", "\"${localProperty("yc.accessKey")}\"")
-        buildConfigField("String", "YC_SECRET_KEY", "\"${localProperty("yc.secretKey")}\"")
-        buildConfigField("String", "YC_BUCKET", "\"${localProperty("yc.bucket")}\"")
-    }
-}
-
 kotlin {
+    android {
+        namespace = Namespace.data
+    }
 
     cocoapods {
         summary = "Main shared module with presentation layer"
@@ -100,6 +89,8 @@ kotlin {
             }
         }
         val androidMain by getting {
+            kotlin.srcDir(generatedYandexStorageConfigDir)
+
             dependencies {
                 implementation(project.dependencies.platform(libs.firebase.bom))
                 implementation(libs.firebase.messaging)
@@ -108,7 +99,6 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.services)
                 implementation(libs.datastore.preferences)
                 implementation(libs.ktor.client.okhttp)
-                // implementation(libs.ktor.client.cio)
                 implementation(libs.bundles.di)
                 implementation(libs.aws.s3)
             }
@@ -120,7 +110,7 @@ kotlin {
                 implementation(libs.ktor.client.darwin)
             }
         }
-        val androidUnitTest by getting {
+        val androidHostTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
@@ -130,9 +120,13 @@ kotlin {
     }
 }
 
+tasks.named("compileAndroidMain") {
+    dependsOn(generateYandexStorageConfig)
+}
+
 tasks
     .matching { task ->
         task.name.startsWith("compileKotlinIos")
     }.configureEach {
-        dependsOn(generateIosYandexStorageConfig)
+        dependsOn(generateYandexStorageConfig)
     }

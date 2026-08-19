@@ -23,11 +23,13 @@ tasks.named("ktlintAndroidMainSourceSetCheck") {
     enabled = false
 }
 
-android {
-    namespace = Namespace.presentation
-}
-
 kotlin {
+    android {
+        namespace = Namespace.presentation
+        androidResources {
+            enable = true
+        }
+    }
 
     cocoapods {
         summary = "Main shared module with presentation layer"
@@ -82,16 +84,6 @@ kotlin {
                 implementation(compose.uiTooling)
             }
         }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                // Mocks for testing
-                implementation(libs.bundles.mockk)
-                // Coroutine
-                implementation(libs.kotlinx.coroutines.test)
-            }
-        }
-
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
