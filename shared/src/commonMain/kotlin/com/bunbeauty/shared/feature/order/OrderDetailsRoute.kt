@@ -261,7 +261,13 @@ private fun SuccessOrderDetailsScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(AdminTheme.dimensions.screenContentSpace),
+                contentPadding =
+                    PaddingValues(
+                        start = AdminTheme.dimensions.screenContentSpace,
+                        end = AdminTheme.dimensions.screenContentSpace,
+                        top = 0.dp,
+                        bottom = AdminTheme.dimensions.screenContentSpace,
+                    ),
             ) {
                 if (state.isProblematic) {
                     item {
@@ -388,7 +394,7 @@ private fun OrderInfoCard(
         modifier =
             modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
