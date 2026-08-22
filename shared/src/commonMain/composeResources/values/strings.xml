@@ -225,6 +225,16 @@
     <string name="msg_statistic_user_discount_saved">Скидка пользователя обновлена</string>
     <string name="error_statistic_user_discount_percent">Введите значение от 0 до 99</string>
     <string name="error_statistic_user_discount_phone">Некорректный номер телефона</string>
+    <string name="action_statistic_user_push">Пуш-уведомление</string>
+    <string name="title_statistic_user_push">Пуш пользователю</string>
+    <string name="msg_statistic_user_push_hint">Уведомление отправится на устройство по номеру</string>
+    <string name="hint_statistic_user_push_title">Заголовок</string>
+    <string name="hint_statistic_user_push_body">Текст уведомления</string>
+    <string name="action_statistic_user_push_send">Отправить</string>
+    <string name="msg_statistic_user_push_saved">Пуш-уведомление отправлено</string>
+    <string name="error_statistic_user_push_title">Введите заголовок</string>
+    <string name="error_statistic_user_push_body">Введите текст уведомления</string>
+    <string name="error_statistic_user_push_phone">Некорректный номер телефона</string>
     <string name="msg_order_details_problematic_client">Проблемный клиент</string>
     <string name="description_order_details_problematic_client">Предупреждение о проблемном клиенте</string>
 
