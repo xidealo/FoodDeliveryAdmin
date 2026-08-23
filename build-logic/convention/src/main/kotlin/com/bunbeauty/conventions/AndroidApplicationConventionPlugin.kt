@@ -12,28 +12,25 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply("com.android.application")
-                apply("org.jetbrains.kotlin.android")
-            }
+            pluginManager.apply("com.android.application")
 
             extensions.configure<ApplicationExtension> {
                 compileSdk = AndroidSdk.COMPILE
-                defaultConfig.targetSdk = AndroidSdk.TARGET
 
                 defaultConfig {
                     minSdk = AndroidSdk.MIN
+                    targetSdk = AndroidSdk.TARGET
                 }
 
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_21
                     targetCompatibility = JavaVersion.VERSION_21
                 }
+            }
 
-                tasks.withType<KotlinCompile>().configureEach {
-                    compilerOptions {
-                        freeCompilerArgs.add("-Xstring-concat=inline")
-                    }
+            tasks.withType<KotlinCompile>().configureEach {
+                compilerOptions {
+                    freeCompilerArgs.add("-Xstring-concat=inline")
                 }
             }
         }

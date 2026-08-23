@@ -36,17 +36,6 @@ android {
     }
 
     buildTypes {
-        applicationVariants.all {
-            val variant = this
-            variant.outputs
-                .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                .forEach { output ->
-                    val outputFileName =
-                        "Admin_${variant.baseName}_${Application.versionName}.apk"
-                    println("OutputFileName: $outputFileName")
-                    output.outputFileName = outputFileName
-                }
-        }
         getByName("debug") {
             isDebuggable = true
             isMinifyEnabled = false
@@ -63,17 +52,27 @@ android {
                 "proguard-rules.pro",
             )
         }
+    }
 
-        buildFeatures {
-            viewBinding = true
-            compose = true
-            buildConfig = true
+    buildFeatures {
+        viewBinding = true
+        compose = true
+        buildConfig = true
+    }
+
+    playConfigs {
+        register("release") {
+            commonPlayConfig(this)
         }
+    }
+}
 
-        playConfigs {
-            register("release") {
-                commonPlayConfig(this)
-            }
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            val outputFileName = "Admin_${variant.name}_${Application.versionName}.apk"
+            println("OutputFileName: $outputFileName")
+            output.outputFileName.set(outputFileName)
         }
     }
 }

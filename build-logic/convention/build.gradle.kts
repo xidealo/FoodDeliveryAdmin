@@ -14,8 +14,8 @@ java {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21.toString()
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
     }
 }
 
@@ -24,6 +24,7 @@ dependencies {
     compileOnly(libs.gradle)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.plugin)
+    compileOnly(libs.kotlin.multiplatform.gradle.plugin)
     implementation(kotlin("test"))
 }
 
