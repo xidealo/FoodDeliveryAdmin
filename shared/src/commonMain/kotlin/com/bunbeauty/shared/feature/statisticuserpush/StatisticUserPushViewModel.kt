@@ -96,54 +96,19 @@ class StatisticUserPushViewModel(
         dataState: StatisticUserPush.DataState,
         template: QuickPushTemplate,
     ) {
-        sendPush(
-            dataState = dataState,
-            sendingPush = template.toSendingPush(),
-            getTitle = { getString(template.titleVariants.random()) },
-            getBody = { getString(template.bodyVariants.random()) },
-        )
-    }
-
-    private fun handleSendCustomClick(dataState: StatisticUserPush.DataState) {
-        sendPush(
-            dataState = dataState,
-            sendingPush = StatisticUserPush.DataState.SendingPush.CUSTOM,
-            getTitle = { dataState.customTitleField.value },
-            getBody = { dataState.customBodyField.value },
-        )
-    }
-
-    private fun sendPush(
-        dataState: StatisticUserPush.DataState,
-        sendingPush: StatisticUserPush.DataState.SendingPush,
-        getTitle: suspend () -> String,
-        getBody: suspend () -> String,
-    ) {
         if (dataState.sendingPush != null) {
             return
         }
 
+        val sendingPush = template.toSendingPush()
         viewModelScope.launchSafe(
             block = {
-                setState {
-                    copy(
-                        sendingPush = sendingPush,
-                        customTitleField = customTitleField.copy(isError = false),
-                        customBodyField = customBodyField.copy(isError = false),
-                        pushError = StatisticUserPush.DataState.PushError.NO_ERROR,
-                    )
-                }
-                sendClientPushUseCase(
-                    phoneNumber = dataState.phoneNumber,
-                    title = getTitle(),
-                    body = getBody(),
+                sendPush(
+                    dataState = dataState,
+                    sendingPush = sendingPush,
+                    title = getString(template.titleVariants.random()),
+                    body = getString(template.bodyVariants.random()),
                 )
-                setState {
-                    copy(sendingPush = null)
-                }
-                sendEvent {
-                    StatisticUserPush.Event.ShowSentMessage
-                }
             },
             onError = { throwable ->
                 handleSendError(
@@ -152,6 +117,57 @@ class StatisticUserPushViewModel(
                 )
             },
         )
+    }
+
+    private fun handleSendCustomClick(dataState: StatisticUserPush.DataState) {
+        if (dataState.sendingPush != null) {
+            return
+        }
+
+        val sendingPush = StatisticUserPush.DataState.SendingPush.CUSTOM
+        viewModelScope.launchSafe(
+            block = {
+                sendPush(
+                    dataState = dataState,
+                    sendingPush = sendingPush,
+                    title = dataState.customTitleField.value,
+                    body = dataState.customBodyField.value,
+                )
+            },
+            onError = { throwable ->
+                handleSendError(
+                    sendingPush = sendingPush,
+                    throwable = throwable,
+                )
+            },
+        )
+    }
+
+    private suspend fun sendPush(
+        dataState: StatisticUserPush.DataState,
+        sendingPush: StatisticUserPush.DataState.SendingPush,
+        title: String,
+        body: String,
+    ) {
+        setState {
+            copy(
+                sendingPush = sendingPush,
+                customTitleField = customTitleField.copy(isError = false),
+                customBodyField = customBodyField.copy(isError = false),
+                pushError = StatisticUserPush.DataState.PushError.NO_ERROR,
+            )
+        }
+        sendClientPushUseCase(
+            phoneNumber = dataState.phoneNumber,
+            title = title,
+            body = body,
+        )
+        setState {
+            copy(sendingPush = null)
+        }
+        sendEvent {
+            StatisticUserPush.Event.ShowSentMessage
+        }
     }
 
     private fun handleSendError(
