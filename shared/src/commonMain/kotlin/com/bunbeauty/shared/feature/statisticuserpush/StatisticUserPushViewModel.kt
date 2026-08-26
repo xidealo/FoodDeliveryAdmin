@@ -8,6 +8,10 @@ import com.bunbeauty.domain.feature.clientuser.exception.ClientPushTitleExceptio
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.feature.menulist.common.TextFieldData
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
+import fooddeliveryadmin.shared.generated.resources.Res
+import fooddeliveryadmin.shared.generated.resources.error_common_something_went_wrong
+import fooddeliveryadmin.shared.generated.resources.error_statistic_user_push_phone
+import org.jetbrains.compose.resources.getString
 
 class StatisticUserPushViewModel(
     private val sendClientPushUseCase: SendClientPushUseCase,
@@ -15,10 +19,10 @@ class StatisticUserPushViewModel(
         initState =
             StatisticUserPush.DataState(
                 phoneNumber = "",
-                titleField = TextFieldData.empty,
-                bodyField = TextFieldData.empty,
+                customTitleField = TextFieldData.empty,
+                customBodyField = TextFieldData.empty,
+                sendingPush = null,
                 pushError = StatisticUserPush.DataState.PushError.NO_ERROR,
-                isLoading = false,
             ),
     ) {
     override fun reduce(
@@ -28,11 +32,17 @@ class StatisticUserPushViewModel(
         when (action) {
             is StatisticUserPush.Action.Init -> handleInit(phoneNumber = action.phoneNumber)
 
-            is StatisticUserPush.Action.TitleChanged -> handleTitleChanged(action.title)
+            is StatisticUserPush.Action.QuickPushClick ->
+                handleQuickPushClick(
+                    dataState = dataState,
+                    template = action.template,
+                )
 
-            is StatisticUserPush.Action.BodyChanged -> handleBodyChanged(action.body)
+            is StatisticUserPush.Action.CustomTitleChanged -> handleCustomTitleChanged(action.title)
 
-            StatisticUserPush.Action.OnSendClick -> handleSendClick(dataState)
+            is StatisticUserPush.Action.CustomBodyChanged -> handleCustomBodyChanged(action.body)
+
+            StatisticUserPush.Action.SendCustomClick -> handleSendCustomClick(dataState)
 
             StatisticUserPush.Action.BackClick ->
                 sendEvent {
@@ -48,18 +58,19 @@ class StatisticUserPushViewModel(
         setState {
             copy(
                 phoneNumber = phoneNumber,
-                titleField = TextFieldData.empty,
-                bodyField = TextFieldData.empty,
+                customTitleField = TextFieldData.empty,
+                customBodyField = TextFieldData.empty,
+                sendingPush = null,
                 pushError = StatisticUserPush.DataState.PushError.NO_ERROR,
             )
         }
     }
 
-    private fun handleTitleChanged(title: String) {
+    private fun handleCustomTitleChanged(title: String) {
         setState {
             copy(
-                titleField =
-                    titleField.copy(
+                customTitleField =
+                    customTitleField.copy(
                         value = title,
                         isError = false,
                     ),
@@ -68,11 +79,11 @@ class StatisticUserPushViewModel(
         }
     }
 
-    private fun handleBodyChanged(body: String) {
+    private fun handleCustomBodyChanged(body: String) {
         setState {
             copy(
-                bodyField =
-                    bodyField.copy(
+                customBodyField =
+                    customBodyField.copy(
                         value = body,
                         isError = false,
                     ),
@@ -81,8 +92,34 @@ class StatisticUserPushViewModel(
         }
     }
 
-    private fun handleSendClick(dataState: StatisticUserPush.DataState) {
-        if (dataState.isLoading) {
+    private fun handleQuickPushClick(
+        dataState: StatisticUserPush.DataState,
+        template: QuickPushTemplate,
+    ) {
+        sendPush(
+            dataState = dataState,
+            sendingPush = template.toSendingPush(),
+            getTitle = { getString(template.titleVariants.random()) },
+            getBody = { getString(template.bodyVariants.random()) },
+        )
+    }
+
+    private fun handleSendCustomClick(dataState: StatisticUserPush.DataState) {
+        sendPush(
+            dataState = dataState,
+            sendingPush = StatisticUserPush.DataState.SendingPush.CUSTOM,
+            getTitle = { dataState.customTitleField.value },
+            getBody = { dataState.customBodyField.value },
+        )
+    }
+
+    private fun sendPush(
+        dataState: StatisticUserPush.DataState,
+        sendingPush: StatisticUserPush.DataState.SendingPush,
+        getTitle: suspend () -> String,
+        getBody: suspend () -> String,
+    ) {
+        if (dataState.sendingPush != null) {
             return
         }
 
@@ -90,54 +127,78 @@ class StatisticUserPushViewModel(
             block = {
                 setState {
                     copy(
-                        isLoading = true,
-                        titleField = titleField.copy(isError = false),
-                        bodyField = bodyField.copy(isError = false),
+                        sendingPush = sendingPush,
+                        customTitleField = customTitleField.copy(isError = false),
+                        customBodyField = customBodyField.copy(isError = false),
                         pushError = StatisticUserPush.DataState.PushError.NO_ERROR,
                     )
                 }
                 sendClientPushUseCase(
                     phoneNumber = dataState.phoneNumber,
-                    title = dataState.titleField.value,
-                    body = dataState.bodyField.value,
+                    title = getTitle(),
+                    body = getBody(),
                 )
                 setState {
-                    copy(isLoading = false)
+                    copy(sendingPush = null)
                 }
                 sendEvent {
-                    StatisticUserPush.Event.ShowSavedMessage
+                    StatisticUserPush.Event.ShowSentMessage
                 }
             },
             onError = { throwable ->
-                setPushError(
-                    when (throwable) {
-                        is ClientPushTitleException -> StatisticUserPush.DataState.PushError.INVALID_TITLE
-                        is ClientPushBodyException -> StatisticUserPush.DataState.PushError.INVALID_BODY
-                        is ClientPhoneNumberException -> StatisticUserPush.DataState.PushError.INVALID_PHONE
-                        else -> StatisticUserPush.DataState.PushError.SOMETHING_WENT_WRONG
-                    },
+                handleSendError(
+                    sendingPush = sendingPush,
+                    throwable = throwable,
                 )
             },
         )
     }
 
-    private fun setPushError(pushError: StatisticUserPush.DataState.PushError) {
+    private fun handleSendError(
+        sendingPush: StatisticUserPush.DataState.SendingPush,
+        throwable: Throwable,
+    ) {
+        val pushError =
+            when (throwable) {
+                is ClientPushTitleException -> StatisticUserPush.DataState.PushError.INVALID_TITLE
+                is ClientPushBodyException -> StatisticUserPush.DataState.PushError.INVALID_BODY
+                is ClientPhoneNumberException -> StatisticUserPush.DataState.PushError.INVALID_PHONE
+                else -> StatisticUserPush.DataState.PushError.SOMETHING_WENT_WRONG
+            }
+        val isCustomTitleError =
+            pushError == StatisticUserPush.DataState.PushError.INVALID_TITLE &&
+                sendingPush == StatisticUserPush.DataState.SendingPush.CUSTOM
+        val isCustomBodyError =
+            pushError == StatisticUserPush.DataState.PushError.INVALID_BODY &&
+                sendingPush == StatisticUserPush.DataState.SendingPush.CUSTOM
+
         setState {
             copy(
-                isLoading = false,
-                titleField =
-                    titleField.copy(
-                        isError = pushError == StatisticUserPush.DataState.PushError.INVALID_TITLE,
-                    ),
-                bodyField =
-                    bodyField.copy(
-                        isError =
-                            pushError == StatisticUserPush.DataState.PushError.INVALID_BODY ||
-                                pushError == StatisticUserPush.DataState.PushError.INVALID_PHONE ||
-                                pushError == StatisticUserPush.DataState.PushError.SOMETHING_WENT_WRONG,
-                    ),
+                sendingPush = null,
+                customTitleField = customTitleField.copy(isError = isCustomTitleError),
+                customBodyField = customBodyField.copy(isError = isCustomBodyError),
                 pushError = pushError,
             )
         }
+
+        if (!isCustomTitleError && !isCustomBodyError) {
+            sendEvent {
+                StatisticUserPush.Event.ShowErrorMessage(
+                    messageResource =
+                        when (pushError) {
+                            StatisticUserPush.DataState.PushError.INVALID_PHONE ->
+                                Res.string.error_statistic_user_push_phone
+
+                            else -> Res.string.error_common_something_went_wrong
+                        },
+                )
+            }
+        }
     }
 }
+
+private fun QuickPushTemplate.toSendingPush(): StatisticUserPush.DataState.SendingPush =
+    when (this) {
+        QuickPushTemplate.RARE_ORDERS -> StatisticUserPush.DataState.SendingPush.RARE_ORDERS
+        QuickPushTemplate.NEW_MENU -> StatisticUserPush.DataState.SendingPush.NEW_MENU
+    }

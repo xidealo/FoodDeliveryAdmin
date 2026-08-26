@@ -31,6 +31,7 @@ fun NavController.navigateToStatisticUserPushScreen(
 fun NavGraphBuilder.statisticUserPushScreenRoute(
     goBack: () -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
+    showErrorMessage: (String) -> Unit,
 ) {
     composable<StatisticUserPushScreenDestination>(
         enterTransition = {
@@ -61,6 +62,7 @@ fun NavGraphBuilder.statisticUserPushScreenRoute(
             backStackEntry = it,
             goBack = goBack,
             showInfoMessage = showInfoMessage,
+            showErrorMessage = showErrorMessage,
         )
     }
 }

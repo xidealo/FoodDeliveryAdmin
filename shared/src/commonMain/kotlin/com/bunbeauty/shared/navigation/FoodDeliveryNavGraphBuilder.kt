@@ -452,6 +452,7 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
     statisticUserPushScreenRoute(
         goBack = navController::navigateUp,
         showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
     )
 
     orderDetailsScreenRoute(

@@ -4,15 +4,22 @@ import com.bunbeauty.shared.feature.menulist.common.TextFieldData
 import com.bunbeauty.shared.viewmodel.base.BaseAction
 import com.bunbeauty.shared.viewmodel.base.BaseDataState
 import com.bunbeauty.shared.viewmodel.base.BaseEvent
+import org.jetbrains.compose.resources.StringResource
 
 interface StatisticUserPush {
     data class DataState(
         val phoneNumber: String,
-        val titleField: TextFieldData,
-        val bodyField: TextFieldData,
+        val customTitleField: TextFieldData,
+        val customBodyField: TextFieldData,
+        val sendingPush: SendingPush?,
         val pushError: PushError,
-        val isLoading: Boolean,
     ) : BaseDataState {
+        enum class SendingPush {
+            RARE_ORDERS,
+            NEW_MENU,
+            CUSTOM,
+        }
+
         enum class PushError {
             INVALID_TITLE,
             INVALID_BODY,
@@ -27,15 +34,19 @@ interface StatisticUserPush {
             val phoneNumber: String,
         ) : Action
 
-        data class TitleChanged(
+        data class QuickPushClick(
+            val template: QuickPushTemplate,
+        ) : Action
+
+        data class CustomTitleChanged(
             val title: String,
         ) : Action
 
-        data class BodyChanged(
+        data class CustomBodyChanged(
             val body: String,
         ) : Action
 
-        data object OnSendClick : Action
+        data object SendCustomClick : Action
 
         data object BackClick : Action
     }
@@ -43,6 +54,10 @@ interface StatisticUserPush {
     sealed interface Event : BaseEvent {
         data object GoBack : Event
 
-        data object ShowSavedMessage : Event
+        data object ShowSentMessage : Event
+
+        data class ShowErrorMessage(
+            val messageResource: StringResource,
+        ) : Event
     }
 }
