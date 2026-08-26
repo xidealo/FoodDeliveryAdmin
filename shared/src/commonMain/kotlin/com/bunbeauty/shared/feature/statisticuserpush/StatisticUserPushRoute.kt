@@ -249,8 +249,6 @@ private fun QuickPushVariants(
     val variantsLabel = stringResource(Res.string.msg_statistic_user_push_variants)
     val titleLabel = stringResource(Res.string.msg_statistic_user_push_variants_title)
     val bodyLabel = stringResource(Res.string.msg_statistic_user_push_variants_body)
-    val titles = template.titleVariants.map { titleVariant -> stringResource(titleVariant) }
-    val bodies = template.bodyVariants.map { bodyVariant -> stringResource(bodyVariant) }
 
     Text(
         modifier = modifier.fillMaxWidth(),
@@ -258,9 +256,9 @@ private fun QuickPushVariants(
             buildQuickPushVariantsText(
                 variantsLabel = variantsLabel,
                 titleLabel = titleLabel,
-                titles = titles,
+                titles = template.titleVariants,
                 bodyLabel = bodyLabel,
-                bodies = bodies,
+                bodies = template.bodyVariants,
             ),
         style = AdminTheme.typography.bodySmall,
         color = AdminTheme.colors.main.onSurfaceVariant,

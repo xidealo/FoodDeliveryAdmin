@@ -11,7 +11,6 @@ import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.error_common_something_went_wrong
 import fooddeliveryadmin.shared.generated.resources.error_statistic_user_push_phone
-import org.jetbrains.compose.resources.getString
 
 class StatisticUserPushViewModel(
     private val sendClientPushUseCase: SendClientPushUseCase,
@@ -106,8 +105,8 @@ class StatisticUserPushViewModel(
                 sendPush(
                     dataState = dataState,
                     sendingPush = sendingPush,
-                    title = getString(template.titleVariants.random()),
-                    body = getString(template.bodyVariants.random()),
+                    title = template.titleVariants.random(),
+                    body = template.bodyVariants.random(),
                 )
             },
             onError = { throwable ->

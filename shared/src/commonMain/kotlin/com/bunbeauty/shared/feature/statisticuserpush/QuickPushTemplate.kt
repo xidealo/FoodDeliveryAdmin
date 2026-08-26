@@ -3,14 +3,6 @@ package com.bunbeauty.shared.feature.statisticuserpush
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.action_statistic_user_push_new_menu
 import fooddeliveryadmin.shared.generated.resources.action_statistic_user_push_rare_orders
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_new_menu_body_1
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_new_menu_title_1
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_new_menu_title_2
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_new_menu_title_3
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_rare_orders_body_1
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_rare_orders_title_1
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_rare_orders_title_2
-import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_push_rare_orders_title_3
 import org.jetbrains.compose.resources.StringResource
 
 /**
@@ -19,20 +11,20 @@ import org.jetbrains.compose.resources.StringResource
  */
 enum class QuickPushTemplate(
     val buttonTextResource: StringResource,
-    val titleVariants: List<StringResource>,
-    val bodyVariants: List<StringResource>,
+    val titleVariants: List<String>,
+    val bodyVariants: List<String>,
 ) {
     RARE_ORDERS(
         buttonTextResource = Res.string.action_statistic_user_push_rare_orders,
         titleVariants =
             listOf(
-                Res.string.msg_statistic_user_push_rare_orders_title_1,
-                Res.string.msg_statistic_user_push_rare_orders_title_2,
-                Res.string.msg_statistic_user_push_rare_orders_title_3,
+                "Давно не заказывали? Мы соскучились 💛",
+                "У нас всё по-старому вкусно. Загляните снова",
+                "Вернём вкусные вечера? Ваше меню ждёт вас",
             ),
         bodyVariants =
             listOf(
-                Res.string.msg_statistic_user_push_rare_orders_body_1,
+                "Вернитесь к своим любимым блюдам — мы уже всё приготовили, осталось нажать кнопку.",
             ),
     ),
 
@@ -40,13 +32,14 @@ enum class QuickPushTemplate(
         buttonTextResource = Res.string.action_statistic_user_push_new_menu,
         titleVariants =
             listOf(
-                Res.string.msg_statistic_user_push_new_menu_title_1,
-                Res.string.msg_statistic_user_push_new_menu_title_2,
-                Res.string.msg_statistic_user_push_new_menu_title_3,
+                "Новинки в меню: попробуйте первым",
+                "Свежие блюда уже в меню — загляните.",
+                "Сегодня у нас премьера вкусов 🍽",
             ),
         bodyVariants =
             listOf(
-                Res.string.msg_statistic_user_push_new_menu_body_1,
+                "Мы добавили новые позиции в вашем любимом разделе. " +
+                    "Откройте приложение и выберите, что попробовать сегодня.",
             ),
     ),
 }

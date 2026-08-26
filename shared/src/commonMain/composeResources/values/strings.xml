@@ -235,15 +235,7 @@
     <string name="hint_statistic_user_push_custom_title">Заголовок пуш уведомления</string>
     <string name="hint_statistic_user_push_custom_body">Текст пуш уведомления</string>
     <string name="action_statistic_user_push_rare_orders">Пуш “Давно не заказывали”</string>
-    <string name="msg_statistic_user_push_rare_orders_title_1">Давно не заказывали? Мы соскучились 💛</string>
-    <string name="msg_statistic_user_push_rare_orders_title_2">У нас всё по-старому вкусно. Загляните снова</string>
-    <string name="msg_statistic_user_push_rare_orders_title_3">Вернём вкусные вечера? Ваше меню ждёт вас</string>
-    <string name="msg_statistic_user_push_rare_orders_body_1">Вернитесь к своим любимым блюдам — мы уже всё приготовили, осталось нажать кнопку.</string>
     <string name="action_statistic_user_push_new_menu">Пуш “У нас новинки в меню”</string>
-    <string name="msg_statistic_user_push_new_menu_title_1">Новинки в меню: попробуйте первым</string>
-    <string name="msg_statistic_user_push_new_menu_title_2">Свежие блюда уже в меню — загляните.</string>
-    <string name="msg_statistic_user_push_new_menu_title_3">Сегодня у нас премьера вкусов 🍽</string>
-    <string name="msg_statistic_user_push_new_menu_body_1">Мы добавили новые позиции в вашем любимом разделе. Откройте приложение и выберите, что попробовать сегодня.</string>
     <string name="action_statistic_user_push_send">Отправить</string>
     <string name="msg_statistic_user_push_saved">Пуш-уведомление отправлено</string>
     <string name="error_statistic_user_push_title">Введите заголовок уведомления</string>
