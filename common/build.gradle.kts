@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.admin.multiplatform.feature)
 }
-android {
-    namespace = Namespace.common
+
+kotlin {
+    android {
+        namespace = Namespace.common
+    }
 }

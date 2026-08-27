@@ -1,8 +1,8 @@
 [versions]
-gradle = "8.13.0"
+gradle = "9.2.1"
 kotlin = "2.3.10"
 compose = "1.11.0-alpha01"
-androidTools = "31.8.1"
+androidTools = "32.2.1"
 googleServices = "4.4.4"
 navigationCompose = "2.9.2"
 ktor = "3.4.3"
@@ -11,10 +11,10 @@ datastorePreferences = "1.2.1"
 koin = "4.2.1"
 kotlinxDatetime = "0.7.1"
 crashlytics = "3.0.7"
-publisher = "3.12.2"
+publisher = "4.1.1"
 joda = "2.14.1"
 ktLint = "14.0.1"
-tripletPlay = "3.12.2"
+tripletPlay = "4.1.1"
 lifecycle = "2.10.0"
 lifecycleRuntimeCompose = "2.10.0"
 material = "1.13.0"
@@ -122,6 +122,7 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-multiplatform-gradle-plugin = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "crashlytics" }
