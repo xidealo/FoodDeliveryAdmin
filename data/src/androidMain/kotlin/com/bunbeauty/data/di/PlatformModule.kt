@@ -93,7 +93,7 @@ actual fun platformDataModule() =
                     requestTimeoutMillis = 10000
                 }
                 install(DefaultRequest) {
-                    host = "fooddelivery-xidealo.amvera.io"
+                    host = "goatfood.ru"
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
                     contentType(ContentType.Application.Json)
 
