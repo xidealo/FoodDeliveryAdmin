@@ -1,4 +1,4 @@
-package com.bunbeauty.shared.feature.statisticuserdetails.navigation
+package com.bunbeauty.shared.feature.statisticuserpush.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
@@ -9,29 +9,31 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
-import com.bunbeauty.shared.feature.statisticuserdetails.StatisticUserDetailsRouteScreen
+import com.bunbeauty.shared.feature.statisticuserpush.StatisticUserPushRouteScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StatisticUserDetailsScreenDestination(
-    val userUuid: String,
+data class StatisticUserPushScreenDestination(
+    val phoneNumber: String,
 )
 
-fun NavController.navigateToStatisticUserDetailsScreen(
-    userUuid: String,
+fun NavController.navigateToStatisticUserPushScreen(
+    phoneNumber: String,
     navOptions: NavOptions,
 ) = navigate(
-    route = StatisticUserDetailsScreenDestination(userUuid = userUuid),
+    route =
+        StatisticUserPushScreenDestination(
+            phoneNumber = phoneNumber,
+        ),
     navOptions = navOptions,
 )
 
-fun NavGraphBuilder.statisticUserDetailsScreenRoute(
+fun NavGraphBuilder.statisticUserPushScreenRoute(
     goBack: () -> Unit,
-    goToDiscount: (String, Int?) -> Unit,
-    goToPush: (String) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
+    showErrorMessage: (String) -> Unit,
 ) {
-    composable<StatisticUserDetailsScreenDestination>(
+    composable<StatisticUserPushScreenDestination>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -56,12 +58,11 @@ fun NavGraphBuilder.statisticUserDetailsScreenRoute(
             )
         },
     ) {
-        StatisticUserDetailsRouteScreen(
+        StatisticUserPushRouteScreen(
             backStackEntry = it,
             goBack = goBack,
-            goToDiscount = goToDiscount,
-            goToPush = goToPush,
             showInfoMessage = showInfoMessage,
+            showErrorMessage = showErrorMessage,
         )
     }
 }

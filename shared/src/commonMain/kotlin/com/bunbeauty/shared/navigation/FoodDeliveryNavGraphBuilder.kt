@@ -71,6 +71,8 @@ import com.bunbeauty.shared.feature.statisticuserdetails.navigation.navigateToSt
 import com.bunbeauty.shared.feature.statisticuserdetails.navigation.statisticUserDetailsScreenRoute
 import com.bunbeauty.shared.feature.statisticuserdiscount.navigation.navigateToStatisticUserDiscountScreen
 import com.bunbeauty.shared.feature.statisticuserdiscount.navigation.statisticUserDiscountScreenRoute
+import com.bunbeauty.shared.feature.statisticuserpush.navigation.navigateToStatisticUserPushScreen
+import com.bunbeauty.shared.feature.statisticuserpush.navigation.statisticUserPushScreenRoute
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
@@ -428,6 +430,12 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 navOptions = emptyNavOptions,
             )
         },
+        goToPush = { phoneNumber ->
+            navController.navigateToStatisticUserPushScreen(
+                phoneNumber = phoneNumber,
+                navOptions = emptyNavOptions,
+            )
+        },
         showInfoMessage = showInfoMessage,
     )
 
@@ -439,6 +447,12 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
                 ?.set(UPDATED_PERSONAL_DISCOUNT_PERCENT, personalDiscountPercent)
         },
         showInfoMessage = showInfoMessage,
+    )
+
+    statisticUserPushScreenRoute(
+        goBack = navController::navigateUp,
+        showInfoMessage = showInfoMessage,
+        showErrorMessage = showErrorMessage,
     )
 
     orderDetailsScreenRoute(

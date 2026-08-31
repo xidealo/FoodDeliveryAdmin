@@ -225,6 +225,22 @@
     <string name="msg_statistic_user_discount_saved">Скидка пользователя обновлена</string>
     <string name="error_statistic_user_discount_percent">Введите значение от 0 до 99</string>
     <string name="error_statistic_user_discount_phone">Некорректный номер телефона</string>
+    <string name="action_statistic_user_push">Пуш-уведомление</string>
+    <string name="title_statistic_user_push">Пуши пользователю</string>
+    <string name="title_statistic_user_push_quick">Быстрые пуши</string>
+    <string name="title_statistic_user_push_custom">Свое пуш уведомление</string>
+    <string name="msg_statistic_user_push_variants">Варианты которые будут отправлены:</string>
+    <string name="msg_statistic_user_push_variants_title">Заголовок</string>
+    <string name="msg_statistic_user_push_variants_body">Текст</string>
+    <string name="hint_statistic_user_push_custom_title">Заголовок пуш уведомления</string>
+    <string name="hint_statistic_user_push_custom_body">Текст пуш уведомления</string>
+    <string name="action_statistic_user_push_rare_orders">Пуш “Давно не заказывали”</string>
+    <string name="action_statistic_user_push_new_menu">Пуш “У нас новинки в меню”</string>
+    <string name="action_statistic_user_push_send">Отправить</string>
+    <string name="msg_statistic_user_push_saved">Пуш-уведомление отправлено</string>
+    <string name="error_statistic_user_push_title">Введите заголовок уведомления</string>
+    <string name="error_statistic_user_push_body">Введите текст уведомления</string>
+    <string name="error_statistic_user_push_phone">Некорректный номер телефона</string>
     <string name="msg_order_details_problematic_client">Проблемный клиент</string>
     <string name="description_order_details_problematic_client">Предупреждение о проблемном клиенте</string>
 
