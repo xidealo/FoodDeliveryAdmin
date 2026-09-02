@@ -37,6 +37,7 @@ import com.bunbeauty.shared.feature.statisticuserdetails.navigation.StatisticUse
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.UPDATED_PERSONAL_DISCOUNT_PERCENT
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.action_statistic_user_discount
+import fooddeliveryadmin.shared.generated.resources.action_statistic_user_push
 import fooddeliveryadmin.shared.generated.resources.action_statistic_user_save
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_average_check
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_delivery_order_count
@@ -47,6 +48,7 @@ import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_phone_nu
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_pickup_order_count
 import fooddeliveryadmin.shared.generated.resources.hint_statistic_user_problematic
 import fooddeliveryadmin.shared.generated.resources.ic_discount
+import fooddeliveryadmin.shared.generated.resources.ic_new_order
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_discount_installed
 import fooddeliveryadmin.shared.generated.resources.msg_statistic_user_saved
@@ -64,6 +66,7 @@ fun StatisticUserDetailsRouteScreen(
     viewModel: StatisticUserDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
     goToDiscount: (String, Int?) -> Unit,
+    goToPush: (String) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
     val route = backStackEntry.toRoute<StatisticUserDetailsScreenDestination>()
@@ -109,6 +112,7 @@ fun StatisticUserDetailsRouteScreen(
         effects = effects,
         goBack = goBack,
         goToDiscount = goToDiscount,
+        goToPush = goToPush,
         showInfoMessage = showInfoMessage,
         consumeEffects = consumeEffects,
     )
@@ -126,6 +130,7 @@ private fun StatisticUserDetailsEffect(
     effects: List<StatisticUserDetails.Event>,
     goBack: () -> Unit,
     goToDiscount: (String, Int?) -> Unit,
+    goToPush: (String) -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -145,6 +150,8 @@ private fun StatisticUserDetailsEffect(
                         effect.phoneNumber,
                         effect.personalDiscountPercent,
                     )
+                is StatisticUserDetails.Event.OpenPush ->
+                    goToPush(effect.phoneNumber)
             }
         }
         consumeEffects()
@@ -331,6 +338,25 @@ private fun StatisticUserDetailsSuccessContent(
             elevated = false,
             onClick = {
                 onAction(StatisticUserDetails.Action.OnDiscountClick)
+            },
+        )
+
+        AdminHorizontalDivider(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
+        NavigationIconCard(
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            iconId = Res.drawable.ic_new_order,
+            label = stringResource(Res.string.action_statistic_user_push),
+            elevated = false,
+            onClick = {
+                onAction(StatisticUserDetails.Action.OnPushClick)
             },
         )
 

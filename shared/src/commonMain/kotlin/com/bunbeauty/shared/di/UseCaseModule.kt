@@ -4,6 +4,7 @@ import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.Cr
 import com.bunbeauty.domain.feature.clientuser.GetClientUserListUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserSearchUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserStatisticUseCase
+import com.bunbeauty.domain.feature.clientuser.SendClientPushUseCase
 import com.bunbeauty.domain.feature.clientuser.UpdateClientUserDiscountUseCase
 import com.bunbeauty.domain.feature.clientuser.UpdateClientUserProblematicUseCase
 import com.bunbeauty.domain.feature.clientuser.validation.ValidateClientPhoneNumberUseCase
@@ -104,6 +105,14 @@ fun useCaseModule() =
                 dataStoreRepo = get(),
                 validateClientPhoneNumberUseCase = get(),
                 validatePercentDiscountUseCase = get(),
+            )
+        }
+
+        factory {
+            SendClientPushUseCase(
+                clientUserRepo = get(),
+                dataStoreRepo = get(),
+                validateClientPhoneNumberUseCase = get(),
             )
         }
 
