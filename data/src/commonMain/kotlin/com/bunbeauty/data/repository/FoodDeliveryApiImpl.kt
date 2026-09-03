@@ -23,6 +23,7 @@ import com.bunbeauty.data.model.server.clientuser.ClientUserSettingsServer
 import com.bunbeauty.data.model.server.clientuser.ClientUserStatisticServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserDiscountServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
+import com.bunbeauty.data.model.server.clientuser.PostClientPushServer
 import com.bunbeauty.data.model.server.company.CompanyPatchServer
 import com.bunbeauty.data.model.server.company.WorkInfoData
 import com.bunbeauty.data.model.server.menuProductToAdditionGroup.MenuProductToAdditionGroupServer
@@ -145,6 +146,18 @@ class FoodDeliveryApiImpl(
             path = "client/discount",
             parameters = listOf("phoneNumber" to phoneNumber),
             body = patch,
+            token = token,
+        )
+
+    override suspend fun postClientPush(
+        token: String,
+        phoneNumber: String,
+        body: PostClientPushServer,
+    ): ApiResult<Unit> =
+        post(
+            path = "client/push",
+            parameters = listOf("phoneNumber" to phoneNumber),
+            body = body,
             token = token,
         )
 

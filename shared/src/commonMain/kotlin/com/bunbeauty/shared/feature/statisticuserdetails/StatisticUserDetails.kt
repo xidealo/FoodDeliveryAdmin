@@ -40,6 +40,8 @@ interface StatisticUserDetails {
 
         data object OnDiscountClick : Action
 
+        data object OnPushClick : Action
+
         data class OnPersonalDiscountUpdated(
             val personalDiscountPercent: Int?,
         ) : Action
@@ -53,6 +55,10 @@ interface StatisticUserDetails {
         data class OpenDiscount(
             val phoneNumber: String,
             val personalDiscountPercent: Int?,
+        ) : Event
+
+        data class OpenPush(
+            val phoneNumber: String,
         ) : Event
     }
 }

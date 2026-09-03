@@ -36,6 +36,7 @@ class StatisticUserDetailsViewModel(
             }
             StatisticUserDetails.Action.OnSaveClick -> handleSave()
             StatisticUserDetails.Action.OnDiscountClick -> handleDiscountClick(dataState)
+            StatisticUserDetails.Action.OnPushClick -> handlePushClick(dataState)
             is StatisticUserDetails.Action.OnPersonalDiscountUpdated ->
                 handlePersonalDiscountUpdated(action.personalDiscountPercent)
         }
@@ -59,6 +60,15 @@ class StatisticUserDetailsViewModel(
             StatisticUserDetails.Event.OpenDiscount(
                 phoneNumber = statistic.phoneNumber,
                 personalDiscountPercent = statistic.personalDiscountPercent,
+            )
+        }
+    }
+
+    private fun handlePushClick(dataState: StatisticUserDetails.DataState) {
+        val statistic = dataState.statistic ?: return
+        sendEvent {
+            StatisticUserDetails.Event.OpenPush(
+                phoneNumber = statistic.phoneNumber,
             )
         }
     }

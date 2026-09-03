@@ -34,4 +34,11 @@ interface ClientUserRepo {
         phoneNumber: String,
         percentDiscount: Int,
     ): ClientUserSettings
+
+    suspend fun sendClientPush(
+        token: String,
+        phoneNumber: String,
+        title: String,
+        body: String,
+    )
 }

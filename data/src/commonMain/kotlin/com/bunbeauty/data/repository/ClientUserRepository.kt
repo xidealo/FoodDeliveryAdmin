@@ -5,6 +5,7 @@ import com.bunbeauty.data.mapper.clientuser.ClientUserSettingsMapper
 import com.bunbeauty.data.mapper.clientuser.ClientUserStatisticMapper
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserDiscountServer
 import com.bunbeauty.data.model.server.clientuser.PatchClientUserProblematicServer
+import com.bunbeauty.data.model.server.clientuser.PostClientPushServer
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettings
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserSettingsList
 import com.bunbeauty.domain.feature.clientuser.model.ClientUserStatistic
@@ -137,4 +138,29 @@ class ClientUserRepository(
                 throw Exception("client user discount update error")
             }
         }
+
+    override suspend fun sendClientPush(
+        token: String,
+        phoneNumber: String,
+        title: String,
+        body: String,
+    ) {
+        when (
+            val result =
+                foodDeliveryApi.postClientPush(
+                    token = token,
+                    phoneNumber = phoneNumber,
+                    body =
+                        PostClientPushServer(
+                            title = title,
+                            body = body,
+                        ),
+                )
+        ) {
+            is ApiResult.Success -> Unit
+            is ApiResult.Error -> {
+                throw Exception("client push send error")
+            }
+        }
+    }
 }
