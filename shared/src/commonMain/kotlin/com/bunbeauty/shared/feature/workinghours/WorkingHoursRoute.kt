@@ -1,5 +1,6 @@
 package com.bunbeauty.shared.feature.workinghours
 
+import DateTimeUtil
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bunbeauty.domain.model.cafe.CafeWorkingDay
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
 import com.bunbeauty.shared.designsystem.compose.bottomBarPadding
 import com.bunbeauty.shared.designsystem.compose.element.button.LoadingButton
@@ -29,10 +31,17 @@ import fooddeliveryadmin.shared.generated.resources.error_working_hours_invalid_
 import fooddeliveryadmin.shared.generated.resources.hint_edit_cafe_from_time
 import fooddeliveryadmin.shared.generated.resources.hint_edit_cafe_to_time
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
+import fooddeliveryadmin.shared.generated.resources.msg_working_hours_friday
 import fooddeliveryadmin.shared.generated.resources.msg_working_hours_monday
+import fooddeliveryadmin.shared.generated.resources.msg_working_hours_saturday
+import fooddeliveryadmin.shared.generated.resources.msg_working_hours_sunday
+import fooddeliveryadmin.shared.generated.resources.msg_working_hours_thursday
+import fooddeliveryadmin.shared.generated.resources.msg_working_hours_tuesday
 import fooddeliveryadmin.shared.generated.resources.msg_working_hours_updated
+import fooddeliveryadmin.shared.generated.resources.msg_working_hours_wednesday
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_working_hours
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -44,7 +53,7 @@ fun WorkingHoursRouteScreen(
     goBack: () -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val dataState by viewModel.state.collectAsStateWithLifecycle()
     val onAction =
         remember {
             { event: WorkingHoursState.Action ->
@@ -72,7 +81,7 @@ fun WorkingHoursRouteScreen(
     )
 
     WorkingHoursScreen(
-        state = viewState.toViewState(),
+        state = dataState,
         onAction = onAction,
     )
 }
@@ -103,7 +112,7 @@ private fun WorkingHoursEffect(
 
 @Composable
 private fun WorkingHoursScreen(
-    state: WorkingHoursViewState,
+    state: WorkingHoursState.DataState,
     onAction: (WorkingHoursState.Action) -> Unit,
 ) {
     AdminScaffold(
@@ -113,14 +122,14 @@ private fun WorkingHoursScreen(
         },
         backgroundColor = AdminTheme.colors.main.surface,
         actionButton = {
-            if (state.state is WorkingHoursViewState.State.Success) {
+            if (state.state == WorkingHoursState.DataState.State.SUCCESS) {
                 LoadingButton(
                     modifier =
                         Modifier
                             .padding(horizontal = 16.dp)
                             .bottomBarPadding(),
                     text = stringResource(Res.string.action_edit_addition_save),
-                    isLoading = state.state.isLoading,
+                    isLoading = state.isLoading,
                     onClick = {
                         onAction(WorkingHoursState.Action.OnSaveClicked)
                     },
@@ -129,11 +138,11 @@ private fun WorkingHoursScreen(
         },
     ) {
         when (state.state) {
-            WorkingHoursViewState.State.Loading -> {
+            WorkingHoursState.DataState.State.LOADING -> {
                 LoadingScreen()
             }
 
-            WorkingHoursViewState.State.Error -> {
+            WorkingHoursState.DataState.State.ERROR -> {
                 ErrorScreen(
                     mainTextId = Res.string.title_common_can_not_load_data,
                     extraTextId = Res.string.msg_common_check_connection_and_retry,
@@ -143,9 +152,9 @@ private fun WorkingHoursScreen(
                 )
             }
 
-            is WorkingHoursViewState.State.Success -> {
+            WorkingHoursState.DataState.State.SUCCESS -> {
                 WorkingHoursSuccessScreen(
-                    state = state.state,
+                    state = state,
                     onAction = onAction,
                 )
             }
@@ -155,7 +164,7 @@ private fun WorkingHoursScreen(
 
 @Composable
 private fun WorkingHoursSuccessScreen(
-    state: WorkingHoursViewState.State.Success,
+    state: WorkingHoursState.DataState,
     onAction: (WorkingHoursState.Action) -> Unit,
 ) {
     Column(
@@ -166,10 +175,11 @@ private fun WorkingHoursSuccessScreen(
                 .padding(top = 16.dp)
                 .padding(bottom = 72.dp),
     ) {
-        state.days.forEach { day ->
+        state.workingDays.forEach { day ->
+            val isInvalid = state.hasInvalidRange && day.fromTime >= day.toTime
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = stringResource(day.titleResId),
+                text = stringResource(day.dayOfWeek.toDayTitleResId()),
                 style = AdminTheme.typography.titleMedium.bold,
                 color = AdminTheme.colors.main.onSurface,
             )
@@ -177,8 +187,8 @@ private fun WorkingHoursSuccessScreen(
                 elevated = false,
                 hasDivider = true,
                 labelText = stringResource(Res.string.hint_edit_cafe_from_time),
-                valueText = day.fromTime,
-                isError = day.isInvalid,
+                valueText = DateTimeUtil.getTimeHHMM(day.fromTime),
+                isError = isInvalid,
                 errorText = Res.string.error_working_hours_invalid_range,
                 onClick = {
                     onAction(WorkingHoursState.Action.OnFromTimeClicked(day.dayOfWeek))
@@ -187,8 +197,8 @@ private fun WorkingHoursSuccessScreen(
             NavigationTextCard(
                 elevated = false,
                 labelText = stringResource(Res.string.hint_edit_cafe_to_time),
-                valueText = day.toTime,
-                isError = day.isInvalid,
+                valueText = DateTimeUtil.getTimeHHMM(day.toTime),
+                isError = isInvalid,
                 onClick = {
                     onAction(WorkingHoursState.Action.OnToTimeClicked(day.dayOfWeek))
                 },
@@ -215,28 +225,37 @@ private fun WorkingHoursSuccessScreen(
     }
 }
 
+private fun Int.toDayTitleResId(): StringResource =
+    when (this) {
+        1 -> Res.string.msg_working_hours_monday
+        2 -> Res.string.msg_working_hours_tuesday
+        3 -> Res.string.msg_working_hours_wednesday
+        4 -> Res.string.msg_working_hours_thursday
+        5 -> Res.string.msg_working_hours_friday
+        6 -> Res.string.msg_working_hours_saturday
+        7 -> Res.string.msg_working_hours_sunday
+        else -> Res.string.msg_working_hours_monday
+    }
+
 @Preview
 @Composable
 private fun WorkingHoursScreenPreview() {
     AdminTheme {
         WorkingHoursScreen(
             state =
-                WorkingHoursViewState(
-                    state =
-                        WorkingHoursViewState.State.Success(
-                            days =
-                                listOf(
-                                    WorkingHoursViewState.Day(
-                                        dayOfWeek = 1,
-                                        titleResId = Res.string.msg_working_hours_monday,
-                                        fromTime = "10:30",
-                                        toTime = "20:30",
-                                        isInvalid = false,
-                                    ),
-                                ),
-                            isLoading = false,
-                            timePicker = null,
+                WorkingHoursState.DataState(
+                    state = WorkingHoursState.DataState.State.SUCCESS,
+                    workingDays =
+                        listOf(
+                            CafeWorkingDay(
+                                dayOfWeek = 1,
+                                fromTime = 37_800,
+                                toTime = 73_800,
+                            ),
                         ),
+                    isLoading = false,
+                    hasInvalidRange = false,
+                    timePicker = null,
                 ),
             onAction = {},
         )
