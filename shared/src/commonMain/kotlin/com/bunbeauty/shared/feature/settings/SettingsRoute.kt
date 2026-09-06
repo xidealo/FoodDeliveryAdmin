@@ -404,7 +404,7 @@ private fun WorkLoadScreen(
 ) {
     Text(
         modifier = Modifier.padding(horizontal = 16.dp),
-            text = stringResource(Res.string.action_work_load_cafe_disable),
+        text = stringResource(Res.string.action_work_load_cafe_disable),
         style = AdminTheme.typography.titleMedium.bold,
     )
     Column(modifier = Modifier.padding(top = 8.dp)) {
