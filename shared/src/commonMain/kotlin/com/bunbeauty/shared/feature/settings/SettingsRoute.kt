@@ -30,7 +30,7 @@ import com.bunbeauty.shared.designsystem.compose.element.button.RadioButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCardDefaults.noCornerCardShape
-import com.bunbeauty.shared.designsystem.compose.element.card.NavigationTextCard
+import com.bunbeauty.shared.designsystem.compose.element.card.NavigationIconCard
 import com.bunbeauty.shared.designsystem.compose.element.card.SwitcherCard
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
@@ -50,6 +50,7 @@ import fooddeliveryadmin.shared.generated.resources.ic_close_cafe
 import fooddeliveryadmin.shared.generated.resources.ic_delivery
 import fooddeliveryadmin.shared.generated.resources.ic_delivery_and_pickup
 import fooddeliveryadmin.shared.generated.resources.ic_pickup
+import fooddeliveryadmin.shared.generated.resources.ic_time
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.msg_settings_disable_orders
 import fooddeliveryadmin.shared.generated.resources.msg_settings_kitchen_appliances
@@ -256,9 +257,11 @@ private fun SuccessSettingsScreen(
                 )
             },
         )
-        NavigationTextCard(
+        NavigationIconCard(
+            modifier = Modifier.padding(vertical = 8.dp),
             elevated = false,
-            labelText = stringResource(Res.string.msg_settings_working_hours),
+            iconId = Res.drawable.ic_time,
+            labelStringId = Res.string.msg_settings_working_hours,
             onClick = {
                 onAction(SettingsState.Action.OnWorkingHoursClicked)
             },
