@@ -30,6 +30,7 @@ import com.bunbeauty.shared.designsystem.compose.element.button.RadioButton
 import com.bunbeauty.shared.designsystem.compose.element.button.SecondaryButton
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCard
 import com.bunbeauty.shared.designsystem.compose.element.card.AdminCardDefaults.noCornerCardShape
+import com.bunbeauty.shared.designsystem.compose.element.card.NavigationTextCard
 import com.bunbeauty.shared.designsystem.compose.element.card.SwitcherCard
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminHorizontalDivider
 import com.bunbeauty.shared.designsystem.compose.screen.ErrorScreen
@@ -60,6 +61,7 @@ import fooddeliveryadmin.shared.generated.resources.msg_settings_status_pickup_d
 import fooddeliveryadmin.shared.generated.resources.msg_settings_type_work
 import fooddeliveryadmin.shared.generated.resources.msg_settings_unfinished_orders_warning
 import fooddeliveryadmin.shared.generated.resources.msg_settings_unlimited_notifications
+import fooddeliveryadmin.shared.generated.resources.msg_settings_working_hours
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_average
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_high
 import fooddeliveryadmin.shared.generated.resources.msg_work_load_low
@@ -79,6 +81,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsRouteScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     goBack: () -> Unit,
+    goToWorkingHours: () -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -105,6 +108,7 @@ fun SettingsRouteScreen(
         effects = effects,
         consumeEffects = consumeEffects,
         goBack = goBack,
+        goToWorkingHours = goToWorkingHours,
         showInfoMessage = showInfoMessage,
     )
 
@@ -118,6 +122,7 @@ fun SettingsRouteScreen(
 private fun SettingsEffect(
     effects: List<SettingsState.Event>,
     goBack: () -> Unit,
+    goToWorkingHours: () -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
     consumeEffects: () -> Unit,
 ) {
@@ -126,6 +131,10 @@ private fun SettingsEffect(
             when (effect) {
                 SettingsState.Event.GoBackEvent -> {
                     goBack()
+                }
+
+                SettingsState.Event.OpenWorkingHours -> {
+                    goToWorkingHours()
                 }
 
                 SettingsState.Event.ShowSaveSettingEvent -> {
@@ -245,6 +254,13 @@ private fun SuccessSettingsScreen(
                         isKitchenAppliances = isKitchenAppliances,
                     ),
                 )
+            },
+        )
+        NavigationTextCard(
+            elevated = false,
+            labelText = stringResource(Res.string.msg_settings_working_hours),
+            onClick = {
+                onAction(SettingsState.Action.OnWorkingHoursClicked)
             },
         )
 

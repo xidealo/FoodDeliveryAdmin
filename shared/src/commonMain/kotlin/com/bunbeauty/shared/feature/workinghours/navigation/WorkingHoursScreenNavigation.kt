@@ -1,4 +1,4 @@
-package com.bunbeauty.shared.feature.settings.navigation
+package com.bunbeauty.shared.feature.workinghours.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeOut
@@ -9,20 +9,19 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForEnterFade
 import com.bunbeauty.shared.designsystem.NavAnimationSpec.navAnimationSpecDurationForSlide
-import com.bunbeauty.shared.feature.settings.SettingsRouteScreen
+import com.bunbeauty.shared.feature.workinghours.WorkingHoursRouteScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object SettingsScreenDestination
+data object WorkingHoursScreenDestination
 
-fun NavController.navigateToSettingsScreen(navOptions: NavOptions) = navigate(route = SettingsScreenDestination, navOptions)
+fun NavController.navigateToWorkingHoursScreen(navOptions: NavOptions) = navigate(route = WorkingHoursScreenDestination, navOptions)
 
-fun NavGraphBuilder.settingsScreenRoute(
+fun NavGraphBuilder.workingHoursScreenRoute(
     goBack: () -> Unit,
-    goToWorkingHours: () -> Unit,
     showInfoMessage: (String, Dp) -> Unit,
 ) {
-    composable<SettingsScreenDestination>(
+    composable<WorkingHoursScreenDestination>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -47,9 +46,8 @@ fun NavGraphBuilder.settingsScreenRoute(
             )
         },
     ) {
-        SettingsRouteScreen(
+        WorkingHoursRouteScreen(
             goBack = goBack,
-            goToWorkingHours = goToWorkingHours,
             showInfoMessage = showInfoMessage,
         )
     }

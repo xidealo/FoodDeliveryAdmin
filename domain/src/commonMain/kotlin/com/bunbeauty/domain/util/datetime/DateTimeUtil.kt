@@ -116,14 +116,18 @@ object DateTimeUtil : IDateTimeUtil {
         return "${monday.toRussianString()} - ${sunday.toRussianString()}"
     }
 
-    override fun getDaySeconds(time: LocalTime): Int = time.hour * SECONDS_IN_HOUR + time.minute * SECONDS_IN_MINUTE
+    override fun getDaySeconds(time: LocalTime): Int = getDaySeconds(hour = time.hour, minute = time.minute)
 
-    override fun getLocalTime(daySeconds: Int): LocalTime {
-        val hours = daySeconds / SECONDS_IN_HOUR
-        val minutes = daySeconds / SECONDS_IN_MINUTE
+    override fun getDaySeconds(
+        hour: Int,
+        minute: Int,
+    ): Int = hour * SECONDS_IN_HOUR + minute * SECONDS_IN_MINUTE
 
-        return LocalTime(hours, minutes)
-    }
+    override fun getHour(daySeconds: Int): Int = daySeconds / SECONDS_IN_HOUR
+
+    override fun getMinute(daySeconds: Int): Int = (daySeconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE
+
+    override fun getLocalTime(daySeconds: Int): LocalTime = LocalTime(getHour(daySeconds), getMinute(daySeconds))
 
     @OptIn(ExperimentalTime::class)
     override fun formatDateTime(

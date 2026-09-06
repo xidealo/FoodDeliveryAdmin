@@ -17,6 +17,7 @@ data class Cafe(
     val cityUuid: String,
     val workload: WorkLoad,
     val workType: WorkType,
+    val workingDays: List<CafeWorkingDay> = emptyList(),
 ) {
     companion object {
         val mock =
@@ -34,6 +35,7 @@ data class Cafe(
                 cityUuid = "",
                 workload = WorkLoad.LOW,
                 workType = WorkType.PICKUP,
+                workingDays = emptyList(),
             )
     }
 }
