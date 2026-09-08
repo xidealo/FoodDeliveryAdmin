@@ -1,10 +1,12 @@
 package com.bunbeauty.data.mapper.cafe
 
 import com.bunbeauty.data.model.server.cafe.CafeServer
+import com.bunbeauty.data.model.server.cafe.CafeWorkingDayServer
 import com.bunbeauty.data.model.server.cafe.GetDeliveryZoneResponse
 import com.bunbeauty.data.model.server.cafe.PatchCafeServer
 import com.bunbeauty.data.model.server.cafe.PatchDeliveryZone
 import com.bunbeauty.domain.model.cafe.Cafe
+import com.bunbeauty.domain.model.cafe.CafeWorkingDay
 import com.bunbeauty.domain.model.cafe.DeliveryZone
 import com.bunbeauty.domain.model.cafe.DeliveryZonePoint
 import com.bunbeauty.domain.model.cafe.UpdateCafe
@@ -29,6 +31,7 @@ class CafeMapper {
                 workload = WorkLoad.valueOf(workload),
                 workType = WorkType.valueOf(workType),
                 additional = additionalUtensils,
+                workingDays = workingDays.map { workingDay -> workingDay.toCafeWorkingDay() },
             )
         }
 
@@ -45,6 +48,7 @@ class CafeMapper {
                 workload = workload.name,
                 workType = workType.name,
                 additionalUtensils = additional,
+                workingDays = null,
             )
         }
 
@@ -61,6 +65,7 @@ class CafeMapper {
                 workload = workload?.name,
                 workType = workType?.name,
                 additionalUtensils = additionalUtensils,
+                workingDays = workingDays?.map { workingDay -> workingDay.toCafeWorkingDayServer() },
             )
         }
 
@@ -94,5 +99,19 @@ class CafeMapper {
             lowDeliveryCost = updateInfoDeliveryZone.lowDeliveryCost,
             isVisible = null,
             cafeUuid = null,
+        )
+
+    private fun CafeWorkingDayServer.toCafeWorkingDay(): CafeWorkingDay =
+        CafeWorkingDay(
+            dayOfWeek = dayOfWeek,
+            fromTime = fromTime,
+            toTime = toTime,
+        )
+
+    private fun CafeWorkingDay.toCafeWorkingDayServer(): CafeWorkingDayServer =
+        CafeWorkingDayServer(
+            dayOfWeek = dayOfWeek,
+            fromTime = fromTime,
+            toTime = toTime,
         )
 }

@@ -51,10 +51,14 @@ interface SettingsState {
         data object CancelAcceptOrders : Action
 
         data object ConfirmNotAcceptOrders : Action
+
+        data object OnWorkingHoursClicked : Action
     }
 
     sealed interface Event : BaseEvent {
         data object GoBackEvent : Event
+
+        data object OpenWorkingHours : Event
 
         data object ShowSaveSettingEvent : Event
 

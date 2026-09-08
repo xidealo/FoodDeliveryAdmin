@@ -17,6 +17,7 @@ data class UpdateCafe(
     val cityUuid: String? = null,
     val workload: WorkLoad? = null,
     val workType: WorkType? = null,
+    val workingDays: List<CafeWorkingDay>? = null,
 ) {
     companion object {
         val mock =
@@ -34,6 +35,7 @@ data class UpdateCafe(
                 cityUuid = null,
                 workload = null,
                 workType = null,
+                workingDays = null,
             )
     }
 }

@@ -265,6 +265,17 @@
     <string name="msg_work_load_low">Низкая (до 1 часа)</string>
     <string name="msg_work_load_average">Средняя (до 1.5 часов)</string>
     <string name="msg_work_load_high">Высокая (до 2 часов)</string>
+    <string name="title_working_hours">Часы работы</string>
+    <string name="msg_settings_working_hours">Часы работы</string>
+    <string name="msg_working_hours_updated">Время успешно обновлено</string>
+    <string name="msg_working_hours_monday">Понедельник</string>
+    <string name="msg_working_hours_tuesday">Вторник</string>
+    <string name="msg_working_hours_wednesday">Среда</string>
+    <string name="msg_working_hours_thursday">Четверг</string>
+    <string name="msg_working_hours_friday">Пятница</string>
+    <string name="msg_working_hours_saturday">Суббота</string>
+    <string name="msg_working_hours_sunday">Воскресенье</string>
+    <string name="error_working_hours_invalid_range">Время начала должно быть раньше времени окончания</string>
 
     <!-- CAFE LIST -->
     <string name="title_cafe_list">Рестораны</string>

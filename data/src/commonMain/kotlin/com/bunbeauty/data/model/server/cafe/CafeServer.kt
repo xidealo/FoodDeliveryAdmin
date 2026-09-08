@@ -17,4 +17,5 @@ data class CafeServer(
     val additionalUtensils: Boolean,
     val workType: String,
     val workload: String,
+    val workingDays: List<CafeWorkingDayServer> = emptyList(),
 )
