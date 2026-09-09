@@ -14,4 +14,5 @@ data class PatchCafeServer(
     val additionalUtensils: Boolean?,
     val workload: String?,
     val workType: String?,
+    val workingDays: List<CafeWorkingDayServer>? = null,
 )

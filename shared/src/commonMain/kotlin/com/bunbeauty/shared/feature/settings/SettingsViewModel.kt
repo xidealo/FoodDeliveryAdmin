@@ -55,6 +55,7 @@ class SettingsViewModel(
             SettingsState.Action.ConfirmNotAcceptOrders -> handleConfirmNotAcceptOrders(dataState)
             is SettingsState.Action.OnSelectWorkLoadClicked -> selectWorkLoad(workLoad = action.workload)
             is SettingsState.Action.OnAppliancesClicked -> setAppliancesStatus(action = action)
+            SettingsState.Action.OnWorkingHoursClicked -> openWorkingHours()
         }
     }
 
@@ -131,6 +132,12 @@ class SettingsViewModel(
     private fun onBackClicked() {
         sendEvent {
             SettingsState.Event.GoBackEvent
+        }
+    }
+
+    private fun openWorkingHours() {
+        sendEvent {
+            SettingsState.Event.OpenWorkingHours
         }
     }
 

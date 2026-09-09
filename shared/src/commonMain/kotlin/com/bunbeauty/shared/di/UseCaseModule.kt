@@ -1,6 +1,8 @@
 package com.bunbeauty.shared.di
 
 import com.bunbeauty.domain.feature.additiongrouplist.createadditiongrouplist.CreateAdditionGroupUseCase
+import com.bunbeauty.domain.feature.cafe.GetCafeWorkingDaysUseCase
+import com.bunbeauty.domain.feature.cafe.UpdateCafeWorkingDaysUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserListUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserSearchUseCase
 import com.bunbeauty.domain.feature.clientuser.GetClientUserStatisticUseCase
@@ -46,6 +48,19 @@ fun useCaseModule() =
             GetCafeUseCase(
                 dataStoreRepo = get(),
                 cafeRepository = get(),
+            )
+        }
+
+        factory {
+            GetCafeWorkingDaysUseCase(
+                getCafeUseCase = get(),
+            )
+        }
+
+        factory {
+            UpdateCafeWorkingDaysUseCase(
+                cafeRepo = get(),
+                dataStoreRepo = get(),
             )
         }
 

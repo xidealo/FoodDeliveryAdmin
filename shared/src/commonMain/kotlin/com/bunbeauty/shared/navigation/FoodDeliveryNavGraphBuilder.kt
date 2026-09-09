@@ -73,6 +73,8 @@ import com.bunbeauty.shared.feature.statisticuserdiscount.navigation.navigateToS
 import com.bunbeauty.shared.feature.statisticuserdiscount.navigation.statisticUserDiscountScreenRoute
 import com.bunbeauty.shared.feature.statisticuserpush.navigation.navigateToStatisticUserPushScreen
 import com.bunbeauty.shared.feature.statisticuserpush.navigation.statisticUserPushScreenRoute
+import com.bunbeauty.shared.feature.workinghours.navigation.navigateToWorkingHoursScreen
+import com.bunbeauty.shared.feature.workinghours.navigation.workingHoursScreenRoute
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.CROPPED_IMAGE_URI
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.REFRESH_EDIT_MENU_PRODUCT_ADDITION_GROUPS
 import com.bunbeauty.shared.navigation.NavStateHandleParameters.SELECTED_ADDITION_GROUP_UUID
@@ -397,6 +399,13 @@ fun NavGraphBuilder.foodDeliveryNavGraphBuilder(
         goToLoginScreen = navController::navigateToLoginScreenClearingBackStack,
     )
     settingsScreenRoute(
+        goBack = navController::navigateUp,
+        goToWorkingHours = {
+            navController.navigateToWorkingHoursScreen(emptyNavOptions)
+        },
+        showInfoMessage = showInfoMessage,
+    )
+    workingHoursScreenRoute(
         goBack = navController::navigateUp,
         showInfoMessage = showInfoMessage,
     )

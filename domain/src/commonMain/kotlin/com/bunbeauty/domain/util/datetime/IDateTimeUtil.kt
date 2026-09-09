@@ -7,6 +7,15 @@ interface IDateTimeUtil {
 
     fun getDaySeconds(time: LocalTime): Int
 
+    fun getDaySeconds(
+        hour: Int,
+        minute: Int,
+    ): Int
+
+    fun getHour(daySeconds: Int): Int
+
+    fun getMinute(daySeconds: Int): Int
+
     fun getLocalTime(daySeconds: Int): LocalTime
 
     fun formatDateTime(
