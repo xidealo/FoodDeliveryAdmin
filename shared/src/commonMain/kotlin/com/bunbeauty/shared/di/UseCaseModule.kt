@@ -28,6 +28,7 @@ import com.bunbeauty.domain.feature.menu.common.validation.ValidateMenuProductOl
 import com.bunbeauty.domain.feature.menu.createmenuproduct.CreateMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.GetMenuProductUseCase
 import com.bunbeauty.domain.feature.menu.editmenuproduct.UpdateMenuProductUseCase
+import com.bunbeauty.domain.feature.order.usecase.GetOrderMapQueryUseCase
 import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.feature.photo.DeletePhotoUseCase
@@ -248,6 +249,14 @@ fun useCaseModule() =
             LoadOrderDetailsUseCase(
                 dataStoreRepo = get(),
                 orderRepo = get(),
+            )
+        }
+
+        factory {
+            GetOrderMapQueryUseCase(
+                cafeRepo = get(),
+                cityRepo = get(),
+                dataStoreRepo = get(),
             )
         }
 

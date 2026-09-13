@@ -243,6 +243,7 @@
     <string name="error_statistic_user_push_phone">Некорректный номер телефона</string>
     <string name="msg_order_details_problematic_client">Проблемный клиент</string>
     <string name="description_order_details_problematic_client">Предупреждение о проблемном клиенте</string>
+    <string name="description_order_details_open_map">Открыть маршрут до адреса</string>
 
 
     <!-- SETTINGS -->
