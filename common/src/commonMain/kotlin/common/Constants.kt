@@ -11,6 +11,7 @@ object Constants {
     const val NOTIFICATION_TAG = "notificationTag"
 
     const val ADDRESS_DIVIDER = ", "
+    const val GOOGLE_MAPS_DIR_LINK = "https://www.google.com/maps/dir/?api=1&destination="
     const val RUBLE_CURRENCY = "₽"
     const val X_SYMBOL = "×"
     const val BULLET_SYMBOL = "•"

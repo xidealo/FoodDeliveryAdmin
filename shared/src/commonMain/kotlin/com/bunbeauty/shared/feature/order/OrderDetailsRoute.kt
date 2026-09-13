@@ -1,6 +1,7 @@
 package com.bunbeauty.shared.feature.order
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -53,6 +55,7 @@ import fooddeliveryadmin.shared.generated.resources.action_order_details_do_not_
 import fooddeliveryadmin.shared.generated.resources.action_order_details_no
 import fooddeliveryadmin.shared.generated.resources.action_order_details_save
 import fooddeliveryadmin.shared.generated.resources.action_order_details_yes
+import fooddeliveryadmin.shared.generated.resources.description_order_details_open_map
 import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.shared.generated.resources.ic_call
@@ -88,6 +91,7 @@ fun OrderDetailsRouteScreen(
 ) {
     val route = backStackEntry.toRoute<OrderDetailsScreenDestination>()
     val onCallPhone = rememberPhoneDialerLauncher()
+    val onOpenMap = rememberMapRouteLauncher()
     var isCancellationWarningShown by remember {
         mutableStateOf(false)
     }
@@ -132,6 +136,7 @@ fun OrderDetailsRouteScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         onCallPhone = onCallPhone,
+        onOpenMap = onOpenMap,
     )
 
     CancellationWarningDialog(
@@ -196,6 +201,7 @@ private fun OrderDetailsScreen(
     state: OrderDetailsViewState,
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
+    onOpenMap: (String) -> Unit,
 ) {
     val successState = state.state as? OrderDetailsViewState.State.Success
     AdminScaffold(
@@ -237,6 +243,7 @@ private fun OrderDetailsScreen(
                     state = state.state,
                     onAction = onAction,
                     onCallPhone = onCallPhone,
+                    onOpenMap = onOpenMap,
                 )
             }
         }
@@ -248,6 +255,7 @@ private fun SuccessOrderDetailsScreen(
     state: OrderDetailsViewState.State.Success,
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
+    onOpenMap: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -282,7 +290,10 @@ private fun SuccessOrderDetailsScreen(
                     }
                 }
                 item {
-                    OrderInfoCard(stateSuccess = state)
+                    OrderInfoCard(
+                        stateSuccess = state,
+                        onOpenMap = onOpenMap,
+                    )
                 }
                 item {
                     StatusNavigationTextCard(
@@ -389,6 +400,7 @@ private fun StatusListBottomSheet(
 private fun OrderInfoCard(
     modifier: Modifier = Modifier,
     stateSuccess: OrderDetailsViewState.State.Success,
+    onOpenMap: (String) -> Unit,
 ) {
     Column(
         modifier =
@@ -433,10 +445,23 @@ private fun OrderInfoCard(
                 )
             }
         }
-        OrderInfoTextColumn(
-            hint = stringResource(Res.string.msg_order_details_address),
-            info = stateSuccess.address,
-        )
+        val mapQuery = stateSuccess.mapQuery
+        if (mapQuery != null) {
+            OrderInfoTextColumn(
+                hint = stringResource(Res.string.msg_order_details_address),
+                info = stateSuccess.address,
+                infoColor = AdminTheme.colors.main.primary,
+                onClick = {
+                    onOpenMap(mapQuery)
+                },
+                clickLabel = stringResource(Res.string.description_order_details_open_map),
+            )
+        } else {
+            OrderInfoTextColumn(
+                hint = stringResource(Res.string.msg_order_details_address),
+                info = stateSuccess.address,
+            )
+        }
         stateSuccess.comment?.let { comment ->
             OrderInfoTextColumn(
                 hint = stringResource(Res.string.msg_order_details_comment),
@@ -451,6 +476,9 @@ private fun OrderInfoTextColumn(
     modifier: Modifier = Modifier,
     hint: String,
     info: String,
+    infoColor: Color = AdminTheme.colors.main.onSurface,
+    onClick: (() -> Unit)? = null,
+    clickLabel: String? = null,
 ) {
     Column(modifier = modifier) {
         Text(
@@ -459,9 +487,18 @@ private fun OrderInfoTextColumn(
             color = AdminTheme.colors.main.onSurfaceVariant,
         )
         Text(
+            modifier =
+                if (onClick != null) {
+                    Modifier.clickable(
+                        onClickLabel = clickLabel,
+                        onClick = onClick,
+                    )
+                } else {
+                    Modifier
+                },
             text = info,
             style = AdminTheme.typography.bodyMedium,
-            color = AdminTheme.colors.main.onSurface,
+            color = infoColor,
         )
     }
 }

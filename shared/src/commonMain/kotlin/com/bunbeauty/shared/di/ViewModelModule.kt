@@ -185,6 +185,7 @@ fun viewModelModule() =
             OrderDetailsViewModel(
                 loadOrderDetails = get(),
                 updateOrderStatus = get(),
+                getOrderMapQuery = get(),
             )
         }
 

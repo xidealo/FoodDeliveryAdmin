@@ -13,6 +13,7 @@ interface OrderDetailsState {
         val orderUuid: String = "",
         val code: String,
         val orderDetails: OrderDetails?,
+        val mapQuery: String? = null,
         val saving: Boolean,
         val showStatusList: Boolean,
     ) : BaseDataState {
