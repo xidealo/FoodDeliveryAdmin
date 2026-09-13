@@ -1,7 +1,6 @@
 package com.bunbeauty.shared.feature.order
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -59,10 +57,10 @@ import fooddeliveryadmin.shared.generated.resources.description_order_details_op
 import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.shared.generated.resources.ic_call
+import fooddeliveryadmin.shared.generated.resources.ic_point
 import fooddeliveryadmin.shared.generated.resources.ic_statistic
 import fooddeliveryadmin.shared.generated.resources.ic_warning
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
-import fooddeliveryadmin.shared.generated.resources.msg_order_details_address
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_alert
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_comment
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_delivery_cost
@@ -290,10 +288,7 @@ private fun SuccessOrderDetailsScreen(
                     }
                 }
                 item {
-                    OrderInfoCard(
-                        stateSuccess = state,
-                        onOpenMap = onOpenMap,
-                    )
+                    OrderInfoCard(stateSuccess = state)
                 }
                 item {
                     StatusNavigationTextCard(
@@ -303,6 +298,27 @@ private fun SuccessOrderDetailsScreen(
                             onAction(OrderDetailsState.Action.OnStatusClicked)
                         },
                         statusColor = state.statusColor,
+                    )
+                }
+                item {
+                    val mapQuery = state.mapQuery
+                    NavigationIconCard(
+                        iconId = Res.drawable.ic_point,
+                        iconDescriptionStringId =
+                            if (mapQuery != null) {
+                                Res.string.description_order_details_open_map
+                            } else {
+                                null
+                            },
+                        label = state.address,
+                        bordered = true,
+                        elevated = false,
+                        clickable = mapQuery != null,
+                        onClick = {
+                            if (mapQuery != null) {
+                                onOpenMap(mapQuery)
+                            }
+                        },
                     )
                 }
                 item {
@@ -400,7 +416,6 @@ private fun StatusListBottomSheet(
 private fun OrderInfoCard(
     modifier: Modifier = Modifier,
     stateSuccess: OrderDetailsViewState.State.Success,
-    onOpenMap: (String) -> Unit,
 ) {
     Column(
         modifier =
@@ -445,23 +460,6 @@ private fun OrderInfoCard(
                 )
             }
         }
-        val mapQuery = stateSuccess.mapQuery
-        if (mapQuery != null) {
-            OrderInfoTextColumn(
-                hint = stringResource(Res.string.msg_order_details_address),
-                info = stateSuccess.address,
-                infoColor = AdminTheme.colors.main.primary,
-                onClick = {
-                    onOpenMap(mapQuery)
-                },
-                clickLabel = stringResource(Res.string.description_order_details_open_map),
-            )
-        } else {
-            OrderInfoTextColumn(
-                hint = stringResource(Res.string.msg_order_details_address),
-                info = stateSuccess.address,
-            )
-        }
         stateSuccess.comment?.let { comment ->
             OrderInfoTextColumn(
                 hint = stringResource(Res.string.msg_order_details_comment),
@@ -476,9 +474,6 @@ private fun OrderInfoTextColumn(
     modifier: Modifier = Modifier,
     hint: String,
     info: String,
-    infoColor: Color = AdminTheme.colors.main.onSurface,
-    onClick: (() -> Unit)? = null,
-    clickLabel: String? = null,
 ) {
     Column(modifier = modifier) {
         Text(
@@ -487,18 +482,9 @@ private fun OrderInfoTextColumn(
             color = AdminTheme.colors.main.onSurfaceVariant,
         )
         Text(
-            modifier =
-                if (onClick != null) {
-                    Modifier.clickable(
-                        onClickLabel = clickLabel,
-                        onClick = onClick,
-                    )
-                } else {
-                    Modifier
-                },
             text = info,
             style = AdminTheme.typography.bodyMedium,
-            color = infoColor,
+            color = AdminTheme.colors.main.onSurface,
         )
     }
 }

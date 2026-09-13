@@ -31,11 +31,13 @@ fun NavigationIconCard(
     label: String = "",
     elevated: Boolean = true,
     bordered: Boolean = false,
+    clickable: Boolean = true,
     onClick: () -> Unit,
 ) {
     AdminCard(
         modifier = modifier,
         onClick = onClick,
+        clickable = clickable,
         elevated = elevated,
         border =
             if (bordered) {
