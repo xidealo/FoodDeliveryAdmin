@@ -173,7 +173,7 @@ private fun WorkingHoursSuccessScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(top = 16.dp)
-                .padding(bottom = 72.dp),
+                .padding(bottom = 88.dp),
     ) {
         state.workingDays.forEach { day ->
             val isInvalid = state.hasInvalidRange && day.fromTime >= day.toTime
