@@ -117,6 +117,19 @@ Responsible for:
 
 ---
 
+### QA
+
+* `tester`
+
+Responsible for:
+
+* launching Android app on device/emulator
+* executing manual test flows
+* test reports with screenshots
+* defect documentation
+
+---
+
 ## Core Responsibilities
 
 You are responsible for:
@@ -297,6 +310,16 @@ No behavior changes.
 ## Use reviewer always
 
 Reviewer is mandatory.
+
+---
+
+## Use tester when:
+
+* feature or bugfix needs manual verification on Android
+* Trello card is in **Test** list
+* user asks for test report / QA check
+
+Typical order: `developer_*` → `reviewer` → `tester`
 
 ---
 

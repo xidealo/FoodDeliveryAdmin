@@ -53,13 +53,14 @@ import fooddeliveryadmin.shared.generated.resources.action_order_details_do_not_
 import fooddeliveryadmin.shared.generated.resources.action_order_details_no
 import fooddeliveryadmin.shared.generated.resources.action_order_details_save
 import fooddeliveryadmin.shared.generated.resources.action_order_details_yes
+import fooddeliveryadmin.shared.generated.resources.description_order_details_open_map
 import fooddeliveryadmin.shared.generated.resources.description_order_details_problematic_client
 import fooddeliveryadmin.shared.generated.resources.hint_order_details_order_status
 import fooddeliveryadmin.shared.generated.resources.ic_call
+import fooddeliveryadmin.shared.generated.resources.ic_point
 import fooddeliveryadmin.shared.generated.resources.ic_statistic
 import fooddeliveryadmin.shared.generated.resources.ic_warning
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
-import fooddeliveryadmin.shared.generated.resources.msg_order_details_address
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_alert
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_comment
 import fooddeliveryadmin.shared.generated.resources.msg_order_details_delivery_cost
@@ -88,6 +89,7 @@ fun OrderDetailsRouteScreen(
 ) {
     val route = backStackEntry.toRoute<OrderDetailsScreenDestination>()
     val onCallPhone = rememberPhoneDialerLauncher()
+    val onOpenMap = rememberMapRouteLauncher()
     var isCancellationWarningShown by remember {
         mutableStateOf(false)
     }
@@ -132,6 +134,7 @@ fun OrderDetailsRouteScreen(
         state = viewState.toViewState(),
         onAction = onAction,
         onCallPhone = onCallPhone,
+        onOpenMap = onOpenMap,
     )
 
     CancellationWarningDialog(
@@ -196,6 +199,7 @@ private fun OrderDetailsScreen(
     state: OrderDetailsViewState,
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
+    onOpenMap: (String) -> Unit,
 ) {
     val successState = state.state as? OrderDetailsViewState.State.Success
     AdminScaffold(
@@ -237,6 +241,7 @@ private fun OrderDetailsScreen(
                     state = state.state,
                     onAction = onAction,
                     onCallPhone = onCallPhone,
+                    onOpenMap = onOpenMap,
                 )
             }
         }
@@ -248,6 +253,7 @@ private fun SuccessOrderDetailsScreen(
     state: OrderDetailsViewState.State.Success,
     onAction: (OrderDetailsState.Action) -> Unit,
     onCallPhone: (String) -> Unit,
+    onOpenMap: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -292,6 +298,27 @@ private fun SuccessOrderDetailsScreen(
                             onAction(OrderDetailsState.Action.OnStatusClicked)
                         },
                         statusColor = state.statusColor,
+                    )
+                }
+                item {
+                    val mapQuery = state.mapQuery
+                    NavigationIconCard(
+                        iconId = Res.drawable.ic_point,
+                        iconDescriptionStringId =
+                            if (mapQuery != null) {
+                                Res.string.description_order_details_open_map
+                            } else {
+                                null
+                            },
+                        label = state.address,
+                        bordered = true,
+                        elevated = false,
+                        clickable = mapQuery != null,
+                        onClick = {
+                            if (mapQuery != null) {
+                                onOpenMap(mapQuery)
+                            }
+                        },
                     )
                 }
                 item {
@@ -433,10 +460,6 @@ private fun OrderInfoCard(
                 )
             }
         }
-        OrderInfoTextColumn(
-            hint = stringResource(Res.string.msg_order_details_address),
-            info = stateSuccess.address,
-        )
         stateSuccess.comment?.let { comment ->
             OrderInfoTextColumn(
                 hint = stringResource(Res.string.msg_order_details_comment),

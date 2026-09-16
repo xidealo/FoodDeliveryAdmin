@@ -2,6 +2,7 @@ package com.bunbeauty.shared.feature.order
 
 import androidx.lifecycle.viewModelScope
 import com.bunbeauty.domain.enums.OrderStatus
+import com.bunbeauty.domain.feature.order.usecase.GetOrderMapQueryUseCase
 import com.bunbeauty.domain.feature.order.usecase.LoadOrderDetailsUseCase
 import com.bunbeauty.domain.feature.order.usecase.UpdateOrderStatusUseCase
 import com.bunbeauty.domain.model.order.details.OrderDetails
@@ -14,12 +15,14 @@ import fooddeliveryadmin.shared.generated.resources.error_order_details_can_not_
 class OrderDetailsViewModel(
     private val loadOrderDetails: LoadOrderDetailsUseCase,
     private val updateOrderStatus: UpdateOrderStatusUseCase,
+    private val getOrderMapQuery: GetOrderMapQueryUseCase,
 ) : BaseStateViewModel<OrderDetailsState.DataState, OrderDetailsState.Action, OrderDetailsState.Event>(
         initState =
             OrderDetailsState.DataState(
                 state = OrderDetailsState.DataState.State.LOADING,
                 code = "",
                 orderDetails = null,
+                mapQuery = null,
                 saving = false,
                 showStatusList = false,
             ),
@@ -70,16 +73,27 @@ class OrderDetailsViewModel(
                 state = OrderDetailsState.DataState.State.LOADING,
                 orderUuid = orderUuid,
                 code = orderCode,
+                mapQuery = null,
             )
         }
         viewModelScope.launchSafe(
             block = {
                 val orderDetails = loadOrderDetails(orderUuid)
-                updateOrderDetailsState(orderDetails)
+                val mapQuery =
+                    orderDetails?.let { details ->
+                        getOrderMapQuery(details)
+                    }
+                updateOrderDetailsState(
+                    orderDetails = orderDetails,
+                    mapQuery = mapQuery,
+                )
             },
             onError = {
                 setState {
-                    copy(state = OrderDetailsState.DataState.State.ERROR)
+                    copy(
+                        state = OrderDetailsState.DataState.State.ERROR,
+                        mapQuery = null,
+                    )
                 }
             },
         )
@@ -156,10 +170,16 @@ class OrderDetailsViewModel(
         )
     }
 
-    private fun updateOrderDetailsState(orderDetails: OrderDetails?) {
+    private fun updateOrderDetailsState(
+        orderDetails: OrderDetails?,
+        mapQuery: String?,
+    ) {
         if (orderDetails == null) {
             setState {
-                copy(state = OrderDetailsState.DataState.State.ERROR)
+                copy(
+                    state = OrderDetailsState.DataState.State.ERROR,
+                    mapQuery = null,
+                )
             }
 
             return
@@ -169,6 +189,7 @@ class OrderDetailsViewModel(
             copy(
                 state = OrderDetailsState.DataState.State.SUCCESS,
                 orderDetails = orderDetails,
+                mapQuery = mapQuery,
             )
         }
     }
