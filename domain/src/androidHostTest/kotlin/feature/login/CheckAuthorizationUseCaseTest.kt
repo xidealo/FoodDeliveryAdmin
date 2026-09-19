@@ -34,9 +34,12 @@ class CheckAuthorizationUseCaseTest {
             val isAuthorized = checkAuthorizationUseCase()
 
             assertFalse(isAuthorized)
-            coVerify(exactly = 0) { userAuthorizationRepo.validateSession()
+            coVerify(exactly = 0) {
+                userAuthorizationRepo.validateSession()
             }
-            coVerify(exactly = 0) { logoutUseCase() }
+            coVerify(exactly = 0) {
+                logoutUseCase()
+            }
         }
 
     @Test
@@ -48,8 +51,12 @@ class CheckAuthorizationUseCaseTest {
             val isAuthorized = checkAuthorizationUseCase()
 
             assertTrue(isAuthorized)
-            verify(exactly = 1) { userAuthorizationRepo.updateNotificationToken() }
-            coVerify(exactly = 0) { logoutUseCase() }
+            verify(exactly = 1) {
+                userAuthorizationRepo.updateNotificationToken()
+            }
+            coVerify(exactly = 0) {
+                logoutUseCase()
+            }
         }
 
     @Test
@@ -62,8 +69,12 @@ class CheckAuthorizationUseCaseTest {
             val isAuthorized = checkAuthorizationUseCase()
 
             assertFalse(isAuthorized)
-            coVerify(exactly = 1) { logoutUseCase() }
-            verify(exactly = 0) { userAuthorizationRepo.updateNotificationToken() }
+            coVerify(exactly = 1) {
+                logoutUseCase()
+            }
+            verify(exactly = 0) {
+                userAuthorizationRepo.updateNotificationToken()
+            }
         }
 
     @Test
@@ -75,7 +86,11 @@ class CheckAuthorizationUseCaseTest {
             val isAuthorized = checkAuthorizationUseCase()
 
             assertTrue(isAuthorized)
-            coVerify(exactly = 0) { logoutUseCase() }
-            verify(exactly = 0) { userAuthorizationRepo.updateNotificationToken() }
+            coVerify(exactly = 0) {
+                logoutUseCase()
+            }
+            verify(exactly = 0) {
+                userAuthorizationRepo.updateNotificationToken()
+            }
         }
 }
