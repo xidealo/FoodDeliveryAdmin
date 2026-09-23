@@ -5,6 +5,7 @@ import com.bunbeauty.data.FoodDeliveryApi
 import com.bunbeauty.data.model.server.request.ApiDeviceType
 import com.bunbeauty.data.model.server.request.UpdateNotificationTokenRequest
 import com.bunbeauty.data.model.server.request.UserAuthorizationRequest
+import com.bunbeauty.domain.feature.login.SessionValidationResult
 import com.bunbeauty.domain.model.user.LoginUser
 import com.bunbeauty.domain.repo.DataStoreRepo
 import com.bunbeauty.domain.repo.UserAuthorizationRepo
@@ -48,6 +49,19 @@ class IosUserAuthorizationRepository(
 
             is ApiResult.Error -> null
         }
+
+    override suspend fun validateSession(): SessionValidationResult {
+        val token = dataStoreRepo.getToken() ?: return SessionValidationResult.INVALID
+        return when (val result = networkConnector.getUser(token = token)) {
+            is ApiResult.Success -> SessionValidationResult.VALID
+            is ApiResult.Error -> {
+                when (result.apiError.code) {
+                    401, 403 -> SessionValidationResult.INVALID
+                    else -> SessionValidationResult.UNAVAILABLE
+                }
+            }
+        }
+    }
 
     override fun updateNotificationToken() {
         coroutineScope.launch {

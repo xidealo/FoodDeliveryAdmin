@@ -106,7 +106,9 @@ class LoginViewModel(
                 }
             },
             onError = {
-                // No errors
+                setState {
+                    copy(state = Login.DataState.State.SUCCESS)
+                }
             },
         )
     }

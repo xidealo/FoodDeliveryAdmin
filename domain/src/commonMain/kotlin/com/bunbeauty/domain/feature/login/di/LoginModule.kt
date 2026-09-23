@@ -10,6 +10,7 @@ fun loginModule() =
             CheckAuthorizationUseCase(
                 userAuthorizationRepo = get(),
                 dataStoreRepo = get(),
+                logoutUseCase = get(),
             )
         }
 
