@@ -23,6 +23,7 @@ data class ProfileViewState(
             val isCourierMode: Boolean,
             val logoutLoading: Boolean,
             val isShowLogoutBottomSheet: Boolean,
+            val cafeAddress: String,
         ) : State
     }
 }
@@ -46,6 +47,7 @@ internal fun Profile.DataState.toViewState(): ProfileViewState =
                             isCourierMode = user.role == UserRole.COURIER,
                             logoutLoading = logoutLoading,
                             isShowLogoutBottomSheet = isShowLogoutBottomSheet,
+                            cafeAddress = cafeAddress,
                         )
                     } ?: ProfileViewState.State.Error
                 }
