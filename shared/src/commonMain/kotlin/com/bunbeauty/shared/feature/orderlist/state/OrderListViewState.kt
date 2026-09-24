@@ -14,7 +14,6 @@ data class OrderListViewState(
         data object Loading : State
 
         data class Success(
-            val cafeAddress: String,
             val orderList: ImmutableList<OrderItem>,
             val connectionError: Boolean,
             val refreshing: Boolean,

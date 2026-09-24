@@ -34,6 +34,7 @@ import fooddeliveryadmin.shared.generated.resources.ic_menu
 import fooddeliveryadmin.shared.generated.resources.ic_point
 import fooddeliveryadmin.shared.generated.resources.ic_settings
 import fooddeliveryadmin.shared.generated.resources.ic_statistic
+import fooddeliveryadmin.shared.generated.resources.msg_common_cafe
 import fooddeliveryadmin.shared.generated.resources.msg_common_check_connection_and_retry
 import fooddeliveryadmin.shared.generated.resources.title_common_can_not_load_data
 import fooddeliveryadmin.shared.generated.resources.title_menu
@@ -179,6 +180,12 @@ private fun SuccessProfileScreen(
             hint = state.role,
             label = state.userName,
         )
+        if (state.cafeAddress.isNotBlank()) {
+            TextWithHintCard(
+                hint = stringResource(Res.string.msg_common_cafe),
+                label = state.cafeAddress,
+            )
+        }
         if (!state.isCourierMode) {
             NavigationIconCard(
                 iconId = Res.drawable.ic_menu,
@@ -253,6 +260,7 @@ private fun ProfileScreenPreview() {
                             role = com.bunbeauty.domain.feature.profile.model.UserRole.MANAGER,
                             userName = "UserName",
                         ),
+                    cafeAddress = "Дубна, ул. Университетская, д. 121",
                     showAcceptOrdersConfirmation = false,
                     logoutLoading = false,
                     isShowLogoutBottomSheet = false,
@@ -276,6 +284,7 @@ private fun CourierProfileScreenPreview() {
                             role = com.bunbeauty.domain.feature.profile.model.UserRole.COURIER,
                             userName = "CourierName",
                         ),
+                    cafeAddress = "Дубна, ул. Университетская, д. 121",
                     showAcceptOrdersConfirmation = false,
                     logoutLoading = false,
                     isShowLogoutBottomSheet = false,

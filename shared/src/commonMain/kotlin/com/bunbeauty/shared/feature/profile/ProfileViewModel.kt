@@ -1,19 +1,23 @@
 package com.bunbeauty.shared.feature.profile
 
 import androidx.lifecycle.viewModelScope
+import com.bunbeauty.domain.feature.common.GetCafeUseCase
 import com.bunbeauty.domain.feature.profile.GetProfileUserUseCase
 import com.bunbeauty.domain.usecase.LogoutUseCase
 import com.bunbeauty.shared.extension.launchSafe
 import com.bunbeauty.shared.viewmodel.base.BaseStateViewModel
+import kotlinx.coroutines.CancellationException
 
 class ProfileViewModel(
     private val getProfileUserUseCase: GetProfileUserUseCase,
+    private val getCafeUseCase: GetCafeUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseStateViewModel<Profile.DataState, Profile.Action, Profile.Event>(
         initState =
             Profile.DataState(
                 state = Profile.DataState.State.LOADING,
                 user = null,
+                cafeAddress = "",
                 showAcceptOrdersConfirmation = false,
                 logoutLoading = false,
                 isShowLogoutBottomSheet = false,
@@ -44,9 +48,24 @@ class ProfileViewModel(
         viewModelScope.launchSafe(
             block = {
                 val profileUser = getProfileUserUseCase()
+                val cafe =
+                    try {
+                        getCafeUseCase()
+                    } catch (exception: CancellationException) {
+                        throw exception
+                    } catch (_: Exception) {
+                        null
+                    }
+                val cafeAddress =
+                    if (cafe != null) {
+                        cafe.address
+                    } else {
+                        ""
+                    }
                 setState {
                     copy(
                         state = Profile.DataState.State.SUCCESS,
+                        cafeAddress = cafeAddress,
                         user =
                             Profile.DataState.User(
                                 role = profileUser.role,

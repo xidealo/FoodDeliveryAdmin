@@ -200,6 +200,7 @@ fun viewModelModule() =
         viewModel {
             ProfileViewModel(
                 getProfileUserUseCase = get(),
+                getCafeUseCase = get(),
                 logoutUseCase = get(),
             )
         }

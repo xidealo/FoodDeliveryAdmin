@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -27,7 +25,6 @@ import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bunbeauty.domain.enums.OrderStatus
 import com.bunbeauty.shared.designsystem.compose.AdminScaffold
-import com.bunbeauty.shared.designsystem.compose.element.card.TextWithHintCard
 import com.bunbeauty.shared.designsystem.compose.element.topbar.AdminTopBarAction
 import com.bunbeauty.shared.designsystem.compose.screen.LoadingScreen
 import com.bunbeauty.shared.designsystem.compose.theme.AdminTheme
@@ -39,7 +36,6 @@ import com.bunbeauty.shared.feature.orderlist.state.OrderMapper
 import fooddeliveryadmin.shared.generated.resources.Res
 import fooddeliveryadmin.shared.generated.resources.error_order_list_connection
 import fooddeliveryadmin.shared.generated.resources.ic_profile
-import fooddeliveryadmin.shared.generated.resources.msg_common_cafe
 import fooddeliveryadmin.shared.generated.resources.title_order_list_active
 import fooddeliveryadmin.shared.generated.resources.title_order_list_canceled
 import fooddeliveryadmin.shared.generated.resources.title_orders
@@ -50,7 +46,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
-const val CAFE_ADDRESS_KEY = "cafeAddress"
 private const val ORDER_LIST_ACTIVE_TITLE_KEY = "order_list_active_title"
 private const val ORDER_LIST_CANCELED_TITLE_KEY = "order_list_canceled_title"
 
@@ -62,7 +57,6 @@ fun OrderList.DataState.mapStateOrderList(orderMapper: OrderMapper = koinInject(
                 OrderList.DataState.State.LOADING -> OrderListViewState.State.Loading
                 OrderList.DataState.State.SUCCESS ->
                     OrderListViewState.State.Success(
-                        cafeAddress = cafe?.address.orEmpty(),
                         orderList =
                             orderList
                                 .map { order ->
@@ -172,6 +166,7 @@ private fun OrderListScreen(
                     onClick = goToProfileScreen,
                 ),
             ),
+        backgroundColor = AdminTheme.colors.main.surface,
         pullRefreshEnabled = state.state is OrderListViewState.State.Success,
         refreshing = (state.state as? OrderListViewState.State.Success)?.refreshing == true,
         onRefresh = {
@@ -257,14 +252,6 @@ private fun OrderListSuccessScreen(
                     orderItem.status == OrderStatus.CANCELED
                 }
 
-            item(key = CAFE_ADDRESS_KEY) {
-                TextWithHintCard(
-                    hint = stringResource(Res.string.msg_common_cafe),
-                    label = state.cafeAddress,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
             if (activeOrders.isNotEmpty()) {
                 item(key = ORDER_LIST_ACTIVE_TITLE_KEY) {
                     Text(
@@ -331,7 +318,6 @@ private fun OrderListSuccessScreenPreview() {
         OrderListSuccessScreen(
             state =
                 OrderListViewState.State.Success(
-                    cafeAddress = "Кафе сатаны",
                     orderList =
                         persistentListOf(
                             OrderListViewState.OrderItem(
