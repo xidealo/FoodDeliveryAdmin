@@ -166,6 +166,7 @@ private fun OrderListScreen(
                     onClick = goToProfileScreen,
                 ),
             ),
+        backgroundColor = AdminTheme.colors.main.surface,
         pullRefreshEnabled = state.state is OrderListViewState.State.Success,
         refreshing = (state.state as? OrderListViewState.State.Success)?.refreshing == true,
         onRefresh = {
